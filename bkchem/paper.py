@@ -676,8 +676,11 @@ class chem_paper( Canvas, object):
           if ( abs( a1.x - a2.x) < 2) and ( abs( a1.y - a2.y) < 2): 
             if (not [a2,a1] in overlap) and a1.z == a2.z:
               overlap.append( [a1,a2])
+
+    deleted = []
     if overlap:
       mols = misc.filter_unique( map( lambda a: map( lambda b: b.molecule, a), overlap))
+      print mols
       #print 3, time.time() - ttt
       a_eatenby_b1 = []
       a_eatenby_b2 = []
@@ -692,9 +695,9 @@ class chem_paper( Canvas, object):
           a_eatenby_b2.append( mol)
           self.stack.remove( mol2)
         else:
-          mol.handle_overlap()
+          deleted.extend( mol.handle_overlap())
       #print 4, time.time() - ttt
-      deleted = reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], [])
+      deleted.extend( reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], []))
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
       self.signal_to_app( _('concatenated overlaping atoms'))

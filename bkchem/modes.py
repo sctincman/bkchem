@@ -635,7 +635,6 @@ class draw_mode( edit_mode):
   def mouse_up( self, event):
     if not self._dragging:
       self.mouse_click( event)
-      self.app.paper.handle_overlap()
     else:
       if self._moved_atom:
         self.app.paper.select( [self._moved_atom])
@@ -697,6 +696,8 @@ class draw_mode( edit_mode):
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
             self.app.paper.signal_to_app( _("maximum valency exceeded!"))
           self.focused.focus() # refocus
+
+    self.app.paper.handle_overlap()
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
 
