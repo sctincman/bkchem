@@ -432,8 +432,8 @@ class bond( meta_enabled):
     # implied
     if package.getAttribute( 'bond_width'):
       self.bond_width = float( package.getAttribute( 'bond_width')) * self.paper.real_to_screen_ratio()
-    else:
-      self.bond_width = None
+    #else:
+    #  self.bond_width = None
     if package.getAttribute( 'line_width'):
       self.line_width = float( package.getAttribute( 'line_width'))
     if package.getAttribute( 'wedge_width'):
