@@ -1,3 +1,27 @@
+RELEASE 0.9.0
+----------------------------------------
+
+ * bugfixes - the startup script used on Unix systems was updated to handle
+               whitespace in filenames properly
+            - computation of free valency of an atom was fixed (hopefully)
+               so the "Check chemistry" should work again
+            - export of text to openoffice does not fail anymore
+            - the "C-t" keybinding for marking a template atom/bond works
+               also in user template mode
+            - reading of INChIs for tetravalent atoms was fixed
+
+
+ * changes - the UI was updated
+           - the entry field for text input was moved back to its original position
+              under the mode buttons and it font size was changed
+
+ * acknowledgments - thanks to everybody who sent me a bugreport
+                   - thanks to Piotr Wawrzyniak for the BKchem icon
+
+
+
+
+
 RELEASE 0.9.0-pre2
 ----------------------------------------
 

@@ -63,7 +63,7 @@ class BKchem( Tk):
     #print self.tk.call( "encoding", "system")
     #self.option_add( "*Background", "#eaeaea")
     self.option_add( "*Entry*Background", "white")
-    self.option_add( "*Entry*Foreground", "#606060")
+    self.option_add( "*Entry*Foreground", "#000000")
     self.tk_setPalette( "background", "#eaeaea",
                         "insertBackground","#ffffff")
     
@@ -93,7 +93,7 @@ class BKchem( Tk):
 
     # edit pool
     self.editPool = editPool( self, self.main_frame, width=60)
-    self.editPool.grid( row=1, sticky="wens")
+    self.editPool.grid( row=3, sticky="wens")
 
     # main drawing part packing
     self.notebook.grid( row=4, sticky="wens")
@@ -424,7 +424,7 @@ class BKchem( Tk):
   def init_mode_buttons( self):
     # mode selection panel     
     radioFrame = Frame( self.main_frame)
-    radioFrame.grid( row=2, sticky='we')
+    radioFrame.grid( row=1, sticky='we')
     self.radiobuttons = Pmw.RadioSelect(radioFrame,
                                         buttontype = 'button',
                                         selectmode = 'single',
@@ -447,7 +447,7 @@ class BKchem( Tk):
         self.radiobuttons.add( m, text=self.modes[ m].name, borderwidth=config.border_width)
     # sub-mode support
     self.subFrame = Frame( self.main_frame)
-    self.subFrame.grid( row=3, sticky='we')
+    self.subFrame.grid( row=2, sticky='we')
     self.subbuttons = []
     # the remaining of sub modes support is now in self.change_mode
 
@@ -467,7 +467,7 @@ class BKchem( Tk):
     dialog = Pmw.MessageDialog(self,
                                title = _('About BKchem'),
                                defaultbutton = 0,
-                               message_text = messages.about_text)
+                               message_text = "BKchem " + _("version") + " " + config.current_BKchem_version + "\n\n" + messages.about_text)
     dialog.iconname('BKchem')
     dialog.activate()
 
