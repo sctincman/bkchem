@@ -715,7 +715,7 @@ class BKchem( Tk):
         ## try to parse it
         try:
           doc = dom.parse( a)
-        except: 
+        except IndexError: 
           self.update_status( _("error reading file"))
           return None
         ## if it works check if its CDML of CD-SVG file

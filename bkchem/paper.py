@@ -50,6 +50,7 @@ import CDML_versions
 import os
 from id_manager import id_manager
 import parents
+from reaction import reaction
 
 
 
@@ -560,6 +561,8 @@ class chem_paper( Canvas, object):
     for p in CDML.childNodes:
       if p.nodeName in data.loadable_types:
         o = self.add_object_from_package( p)
+        if not o:
+          continue
         if o.object_type == 'molecule':
           if float( original_version) < 0.12:
             # we need to know if the bond is positioned according to the rules or the other way
@@ -606,7 +609,7 @@ class chem_paper( Canvas, object):
       os = apply_to
     for o in os:
       o.generate_id()
-      if isinstance( o, parents.container):
+      if isinstance( o, molecule):
         [ch.generate_id() for ch in o.children]
 
 
@@ -959,6 +962,12 @@ class chem_paper( Canvas, object):
       o = graphics.circle( self, package=package)
     elif package.nodeName == 'polygon':
       o = graphics.polygon( self, package=package)
+    elif package.nodeName == 'reaction':
+      react = reaction()
+      react.read_package( package, self.id_manager)
+      if react.arrows:
+        react.arrows[0].reaction = react
+      o = None
     else:
       o = None
     if o:

@@ -1544,8 +1544,8 @@ class reaction_mode( basic_mode):
   def __init__( self, app):
     basic_mode.__init__( self, app)
     self.name = _('reaction')
-    self.submodes = [['reactant','product','arrow','plus','condition']]
-    self.submodes_names = [[_('reactant'), _('product'), _('arrow'),_('plus'),_('condition')]]
+    self.submodes = [['reactant','rplus','rarrow','condition','product']]
+    self.submodes_names = [[_('reactant'),_('plus'),_('arrow'),_('condition'),_('product')]]
     self.submode = [0]
     self.focused = None
     self._items = []
@@ -1572,7 +1572,7 @@ class reaction_mode( basic_mode):
           self.arrow.reaction.products.append( m)
         else:
           self.arrow.reaction.products.remove( m)
-      elif sm == 'arrow':
+      elif sm == 'rarrow':
         if self.focused.object_type == 'point' and self.focused.arrow.object_type == 'arrow':
           self.arrow = self.focused.arrow
         elif self.focused.object_type == 'arrow':
@@ -1582,7 +1582,7 @@ class reaction_mode( basic_mode):
           self.arrow.reaction.conditions.append( self.focused)
         else:
           self.arrow.reaction.conditions.remove( self.focused)
-      elif sm == 'plus':
+      elif sm == 'rplus':
         if self.focused not in self.arrow.reaction.pluses:
           self.arrow.reaction.pluses.append( self.focused)
         else:
@@ -1607,7 +1607,7 @@ class reaction_mode( basic_mode):
     for m in self.arrow.reaction.conditions:
       self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='cyan', width=width))
     for m in self.arrow.reaction.pluses:
-      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='yellow', width=width))
+      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='orange', width=width))
 
     #self._add_bindings_according_to_submode()
 

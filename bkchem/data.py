@@ -113,7 +113,7 @@ line_types = vector_graphics_types + ('bond', 'arrow')
 saveable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon')
 
 # names of all objects that have their own element under <cdml> in CDML - for reading
-loadable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square') 
+loadable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction') 
 
 
 paper_types = { 'A4': [297,210],

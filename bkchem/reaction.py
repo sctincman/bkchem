@@ -18,6 +18,12 @@
 #--------------------------------------------------------------------------
 
 
+import dom_extensions
+
+singulars = ['reactant', 'product', 'arrow', 'condition', 'plus']
+plurals = ['reactants', 'products', 'arrows', 'conditions', 'pluses']
+
+
 
 class reaction( object):
 
@@ -38,16 +44,11 @@ class reaction( object):
 
   def get_package( self, doc):
     e = doc.createElement( 'reaction')
-    for name in ('reactant','product','arrow','condition'):
-      for m in self.__dict__[name+'s']:
-        el = doc.createElement( name)
+    for i in range( len( singulars)):
+      for m in self.__dict__[ plurals[i]]:
+        el = doc.createElement( singulars[i])
         el.setAttribute( 'idref', m.id)
         e.appendChild( el)
-    # pluses must be separate because of their fucked plural form :)
-    for m in self.pluses:
-      el = doc.createElement( 'plus')
-      el.setAttribute( 'idref', m.id)
-      e.appendChild( el)
 
     return e
 
@@ -57,3 +58,12 @@ class reaction( object):
       if self.__dict__[ name]:
         return 0
     return 1
+
+
+  def read_package( self, doc, id_manager):
+    for el in dom_extensions.childNodesWithoutEmptySpaces( doc):
+      if el.nodeName in singulars:
+        i = singulars.index( el.nodeName)
+        self.__dict__[ plurals[ i]].append( id_manager.get_object_with_id( el.getAttribute( 'idref')))
+
+    

@@ -265,6 +265,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.redraw()
 
   def read_package( self, package):
+    if package.getAttribute( 'id'):
+      self.id = package.getAttribute( 'id')
     a = ['no', 'yes']
     start = a.index( package.getAttribute( 'start'))
     end = a.index( package.getAttribute( 'end'))
@@ -286,6 +288,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def get_package( self, doc):
     a = ['no', 'yes']
     arr = doc.createElement('arrow')
+    arr.setAttribute( 'id', self.id)
     start, end = 0, 0
     if self.pin == 2 or self.pin == 3:
       start = 1
@@ -549,6 +552,8 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.move( dx, dy)
 
   def read_package( self, package):
+    if package.getAttribute( 'id'):
+      self.id = package.getAttribute( 'id')
     pnt = package.getElementsByTagName( 'point')[0]
     self.x, self.y, z = self.paper.read_xml_point( pnt)
     if package.getAttribute( 'font_size'):
@@ -560,6 +565,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   
   def get_package( self, doc):
     pls = doc.createElement('plus')
+    pls.setAttribute( 'id', self.id)
     x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( pls, 'point', (('x', x),
                                                 ('y', y)))
@@ -740,6 +746,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def read_package( self, package):
+    if package.getAttribute( 'id'):
+      self.id = package.getAttribute( 'id')
     pos = package.getElementsByTagName( 'point')[0]
     x, y, z = self.paper.read_xml_point( pos)
     self.set_xy( x, y)
@@ -763,6 +771,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def get_package( self, doc):
     a = doc.createElement('text')
+    a.setAttribute( 'id', self.id)
     if self.area_color != '#ffffff':
       a.setAttribute( 'background-color', self.area_color)
     if self.font_size != 12 or self.font_family != 'helvetica' or self.line_color != '#000':
