@@ -230,11 +230,16 @@ class basic_mode( mode):
 
 
 
+  def on_paper_switch( self, old_paper, new_paper):
+    """called when paper is switched"""
+    self.focused = None
+
+
 
 
 ### -------------------- EDIT MODE --------------------
 
-class edit_mode( mode):
+class edit_mode( basic_mode):
   """basic editing mode, also good as parent for more specialized modes"""
   def __init__( self, app):
     mode.__init__( self, app)
@@ -663,12 +668,18 @@ class draw_mode( edit_mode):
       mol = self.app.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       self.app.paper.add_bindings()
-      b = bond( self.app.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
+      b = bond( self.app.paper,
+                type=self.__mode_to_bond_type(),
+                order=self.__mode_to_bond_order(),
+                simple_double=self.submode[4])
       self.app.paper.select( [mol.add_atom_to( a, bond_to_use=b)[0]])
       self.focused = a
     else:
       if self.focused.object_type == 'atom':
-        b = bond( self.app.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
+        b = bond( self.app.paper,
+                  type=self.__mode_to_bond_type(),
+                  order=self.__mode_to_bond_order(),
+                  simple_double=self.submode[4])
         a, b = self.focused.molecule.add_atom_to( self.focused, bond_to_use=b)
         # update atom text
         self.focused.update_after_valency_change()
@@ -703,21 +714,22 @@ class draw_mode( edit_mode):
 
   def mouse_drag( self, event):
     if not self._dragging:
-#      if abs(self._starty - event.y)+ abs(self._startx - event.x) > 1: ## threshhold for dragging
       self._dragging = 1
-#      else:
-#        return
       if self.focused and self.focused.object_type == "atom":
         self._start_atom = self.focused
+        b = bond( self.app.paper,
+                  type=self.__mode_to_bond_type(),
+                  order=self.__mode_to_bond_order(),
+                  simple_double=self.submode[4])
         if self.submode[2] == 1:
-          b = bond( self.app.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
                                                                                        pos=(event.x, event.y))
         else:
-          b = bond( self.app.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b)
+        #self.app.paper.add_bindings( active_names=('atom',))
+
     if self._start_atom:
       if self.focused and self.focused != self._start_atom and self.focused.object_type == 'atom':
         x, y = self.focused.get_xy()
@@ -738,10 +750,7 @@ class draw_mode( edit_mode):
       self.focused.unfocus()
     self.focused = object
     self.focused.focus()
-    #if self._dragging:
-     # self.mouse_drag( event)
-    ### this is here to help moving moved atom to get focused as soon as it is entered
-    ### but it breakes it when button is released, therefor its commented
+
       
   def leave_object( self, event):
     if self.focused:
@@ -758,6 +767,8 @@ class draw_mode( edit_mode):
   def __mode_to_bond_order( self):
     order = self.submode[1]+1
     return order
+
+
 
 
 ## -------------------- ARROW MODE --------------------

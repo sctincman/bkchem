@@ -166,7 +166,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       t = name.decode( 'utf-8')
     self.__name = t.encode('utf-8')
     self.dirty = 1
-    self.show = int( self.__name != 'C')
+    #self.show = int( self.__name != 'C')
 
   name = property( __get_name, __set_name)
 
@@ -348,6 +348,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
           self.name = a[0]
           self.show_hydrogens = 1
           self.type = 'element'
+          #self.show = 1
           return
       # try if the name is an alkyl chain such as c6h13
       form = PT.formula_dict( name.upper())
