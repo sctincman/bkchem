@@ -95,7 +95,7 @@ cdml_namespace = 'http://www.freesoftware.fsf.org/bkchem/cdml'
 
 current_CDML_version = '0.11'
 
-current_BKchem_version = '0.5.1'
+current_BKchem_version = '0.6.0-dev'
 
 vector_graphics_types = ('oval', 'rect', 'polygon')
 

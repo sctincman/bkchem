@@ -11,7 +11,7 @@ if os.name != 'posix':
 
 set = setup(
   name = 'bkchem',
-  version = '0.5.1',
+  version = '0.6.0-dev',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
