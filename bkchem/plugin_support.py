@@ -34,17 +34,19 @@ class plugin_manager( object):
     self.descriptions = {}
 
   def get_available_plugins( self):
-    dir = os_support.get_bkchem_private_dir()
-    dir = os.path.join( dir, 'plugins')
-    if not os.path.isdir( dir):
-      return []
-    for name in os.listdir( dir):
-      base, ext = os.path.splitext( name)
-      if ext == ".xml":
-        #try:
-        self.read_plugin_file( dir, name)
-        #except:
-        #  debug.log( "could not load plugin file", name)
+    dir1 = os_support.get_bkchem_private_dir()
+    dir1 = os.path.join( dir1, 'plugins')
+    dirs = [dir1]
+    for dir in dirs:
+      if not os.path.isdir( dir):
+        break
+      for name in os.listdir( dir):
+        base, ext = os.path.splitext( name)
+        if ext == ".xml":
+          #try:
+          self.read_plugin_file( dir, name)
+          #except:
+          #  debug.log( "could not load plugin file", name)
 
     return self.plugins.keys()
 
@@ -72,23 +74,8 @@ class plugin_manager( object):
   def run_plugin( self, name):
     filename = self.plugins[ name]
 
-    the_globals = {'app': Store.app}
+    the_globals = {'App': Store.app}
     execfile( filename, the_globals)
-
-#    if 'exc' in the_globals:
-#      print the_globals['exc']
-
-##     f = file( filename, 'r')
-
-##     try:
-##       for line in f.xreadlines():
-##         print line
-##         try:
-##           eval( line)
-##         except SyntaxError:
-##           exec line
-##     finally:
-##       f.close()
 
 
 

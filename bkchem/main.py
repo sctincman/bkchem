@@ -868,7 +868,8 @@ class BKchem( Tk):
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc)
-      self.mode.startup()
+      if type( self.mode) != StringType:
+        self.mode.startup()
       self.update_status( _("loaded file: ")+self.paper.full_path)
       return 1
 
