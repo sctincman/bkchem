@@ -42,6 +42,7 @@ import pixmaps
 import types
 from temp_manager import template_manager
 import modes
+import interactors
 
 import oasa_bridge
 import plugins.plugin
@@ -110,10 +111,9 @@ class BKchem( Tk):
                    'text': modes.text_mode( self),
                    'rotate': modes.rotate_mode( self),
                    'bondalign': modes.bond_align_mode( self),
-                   'name': modes.name_mode( self),
                    'vector': modes.vector_mode( self),
                    'mark': modes.mark_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
+    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
 
     # defining menu
@@ -196,6 +196,10 @@ class BKchem( Tk):
     scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda : self.paper.swap_sides_of_selected('horizontal') )
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Configure'), command = lambda : self.paper.config_selected(), accelerator='Mouse-3')
+    scaleMenu.add( 'separator')
+    scaleMenu.add( 'command', label=_('Set molecule name'), command = lambda : interactors.ask_name_for_selected( self.paper))
+    scaleMenu.add( 'command', label=_('Set molecule ID'), command = lambda : interactors.ask_id_for_selected( self.paper))
+    
     # for dev only
 
     # CHEMISTRY MENU
@@ -449,7 +453,8 @@ class BKchem( Tk):
         return None
     else:
       return None
-
+    
+    
 
 
   def _save_according_to_extension( self, filename):

@@ -1201,24 +1201,6 @@ class bond_align_mode( edit_mode):
 
 
 
-class name_mode( edit_mode):
-
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
-    self.name = _('name')
-    self.submodes = [['id','name']]
-    self.submodes_names = [[_('id'), _('name')]]
-    self.submode = [0]
-
-
-  def mouse_click( self, event):
-    if self.focused and (self.focused.object_type == 'atom' or self.focused.object_type == 'bond'):
-      mol = self.focused.molecule
-      name = self.app.editPool.activate( text=mol.__dict__[ self.submodes[0][ self.submode[0]]])
-      if name:
-        mol.__dict__[ self.submodes[0][ self.submode[0]]] = name
-        self.app.paper.signal_to_app( _('%s %s was set to molecule') % (self.submodes_names[0][ self.submode[0]], name))
-        self.app.paper.start_new_undo_record()
 
 
 class vector_mode( edit_mode):
