@@ -209,7 +209,7 @@ class molecule( container, top_level, id_enabled):
     b = a2.y - a1.y
     return atan2( b, a)
     
-  def delete_items( self, items, redraw=1):
+  def delete_items( self, items, redraw=1, delete_single_atom=1):
     """deletes items and also makes cleaning of orphan bonds and atoms"""
     if not items:
       return items, []     # quick way to avoid costly evaluation
@@ -229,7 +229,8 @@ class molecule( container, top_level, id_enabled):
             bonds_in_connect.append( b)
       deleted += [self.delete_bond( o) for o in misc.difference( self.bonds, bonds_in_connect)]
       # delete also orphan atoms
-      deleted += [self.delete_atom( o) for o in self.atoms if not self.atoms_bonds( o)]
+      if delete_single_atom:
+        deleted += [self.delete_atom( o) for o in self.atoms if not self.atoms_bonds( o)]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
       if redraw:

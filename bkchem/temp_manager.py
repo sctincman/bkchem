@@ -89,7 +89,7 @@ class template_manager:
       xt2, yt2 = current.next_to_t_atom.get_xy()
       x1, y1 = coords
       bond_length = self.app.paper.any_to_px( self.app.paper.standard.bond_length)
-      current.delete_items( [current.t_atom], redraw=0)
+      current.delete_items( [current.t_atom], redraw=0, delete_single_atom=0)
       trans.set_move( -xt2, -yt2)
       trans.set_scaling( bond_length / math.sqrt( (xt1-xt2)**2 + (yt1-yt2)**2))
       trans.set_move( x1, y1)
@@ -107,7 +107,7 @@ class template_manager:
       if not (current.t_bond_first and current.t_bond_second):
         warn( "this template is not capable to be added to bond - sorry.")
         return None
-      current.delete_items( [current.t_atom], redraw=0)
+      current.delete_items( [current.t_atom], redraw=0, delete_single_atom=0)
       xt1, yt1 = current.t_bond_first.get_xy()
       xt2, yt2 = current.t_bond_second.get_xy()
       x1, y1, x2, y2 = coords
@@ -119,7 +119,7 @@ class template_manager:
     self.transform_template( current, trans)
     #remove obsolete info from template
     if type == 'atom1':
-      current.delete_items( [current.t_atom], redraw=0)
+      current.delete_items( [current.t_atom], redraw=0, delete_single_atom=0)
     elif type == 'atom2':
       current.t_atom.x = x1
       current.t_atom.y = y1
