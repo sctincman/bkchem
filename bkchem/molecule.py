@@ -78,9 +78,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     self.t_bond_second = None
     self.t_atom = None
     self.display_form = ''  # this is a (html like) text that defines how to present the molecule in linear form
+    self.fragments = Set()
     if package:
       self.read_package( package)
-    self.fragments = Set()
 
 
   def __iter__( self):
@@ -328,7 +328,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         self.insert_atom( cls( self.paper, package=a, molecule=self))
       
     self._id_map = [a.id for a in self.atoms]
-    for b in package.getElementsByTagName( 'bond'):
+    for b in dom_extensions.simpleXPathSearch( package, 'bond'):
       bnd = bond( self.paper, package = b, molecule=self)
       self.add_edge( bnd.atom1, bnd.atom2, bnd)
     # template related attributes
@@ -345,6 +345,13 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     if df:
       df = df[0]
       self.display_form = ''.join( [e.toxml() for e in df.childNodes]).encode('utf-8')
+
+    # fragments
+    for fel in dom_extensions.simpleXPathSearch( package, "fragment"):
+      f = fragment()
+      f.read_package( fel, self.paper.id_manager)
+      self.fragments.add( f)
+    
 
 
   def get_package( self, doc, items=None):
@@ -366,6 +373,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),))
     for i in to_export:
       mol.appendChild( i.get_package( doc))
+    if not items:
+      # we do not save fragments if the molecule is not guaranteed to be saved whole
+      [mol.appendChild( f.get_package( doc)) for f in self.fragments]
     return mol
 
 
@@ -490,7 +500,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         a.delete()
         # creating a fragment for implosion of the group
         edges = self.vertex_subgraph_to_edge_subgraph( to_draw)
-        self.create_fragment( a.name, edges)
+        self.create_fragment( a.name, edges, type="implicit")
     self.redraw()
     
 
@@ -590,9 +600,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   # fragment support
 
-  def create_fragment( self, name, edges):
+  def create_fragment( self, name, edges, type="explicit"):
     if self.defines_connected_subgraph_e( edges):
-      nf = fragment( self.paper.id_manager.generate_id( "frag"), name=name)
+      nf = fragment( self.paper.id_manager.generate_id( "frag"), name=name, type=type)
       nf.edges = Set( edges)
       self.fragments.add( nf)
       return True

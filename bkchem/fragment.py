@@ -19,15 +19,17 @@
 
 
 from sets import Set
-
+import dom_extensions as dom_ext
+import xml.sax.saxutils
 
 
 class fragment( object):
 
-  def __init__( self, id, name=""):
+  def __init__( self, id="", name="", type="explicit"):
     self.id = id
     self.name = name
     self.edges = Set()
+    self.type = type # type is one og "explicit", "implicit"
     self.properties = {}  # this is the place for information about an particular fragment
     
 
@@ -52,6 +54,7 @@ class fragment( object):
 
 
 
+
   def is_consistent( self, molecule):
     for e in self.edges:
       if e not in molecule.edges:
@@ -59,10 +62,35 @@ class fragment( object):
     return True
   
 
+
   def get_all_vertices( self):
     vs = Set()
     for e in self.edges:
       vs |= Set( e.vertices)
     return vs
 
+  # property for easier manipulation
   vertices = property( get_all_vertices, None, None, "the vertices associated with fragment bonds")
+
+
+
+  def get_package( self, doc):
+    el = doc.createElement( "fragment")
+    el.setAttribute( "id", self.id)
+    el.setAttribute( "type", self.type)
+    dom_ext.textOnlyElementUnder( el, "name", xml.sax.saxutils.escape( self.name))
+    for e in self.edges:
+      dom_ext.elementUnder( el, "bond", (("id", e.id),))
+    return el
+
+
+
+  def read_package( self, doc, id_manager):
+    self.id = doc.getAttribute( "id")
+    self.type = doc.getAttribute( "type") or "explicit"
+    name = dom_ext.getFirstChildNamed( doc, "name")
+    if name:
+      self.name = dom_ext.getAllTextFromElement( name)
+    for b in dom_ext.simpleXPathSearch( doc, "bond"):
+      self.edges.add( id_manager.get_object_with_id( b.getAttribute( "id")))
+    

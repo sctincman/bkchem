@@ -109,11 +109,15 @@ def getParentNameList( element):
     return []
 
 def getFirstChildNamed( element, name):
-  l = [o for o in element.childNodes if (not o.nodeValue) and (o.localName == name)]
+  l = getChildrenNamed( element, name)
   if l:
     return l[0]
   else:
     return None
+
+
+def getChildrenNamed( element, name):
+  return [o for o in element.childNodes if (not o.nodeValue) and (o.localName == name)]  
 
 
 
@@ -147,6 +151,6 @@ def _atomicXPathSearch( element, path):
   if path == "*":
     return element.childNodes
   else:
-    return element.getElementsByTagName( path)
+    return getChildrenNamed( element, path) #element.getElementsByTagName( path)
 
 
