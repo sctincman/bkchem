@@ -293,7 +293,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
 
   def get_text( self):
-    return self.name
+    doc = dom.parseString( "<a>%s</a>" % self.name)
+    return dom_extensions.getAllTextFromElement( doc)
 
 
   def get_ftext( self):
@@ -520,6 +521,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     on_off = ['off','on']
     a = doc.createElement('text')
     a.setAttribute( 'id', str( self.id))
+    a.setAttribute( 'pos', self.pos)
     # font properties
     if self.font_size != self.paper.standard.font_size \
        or self.font_family != self.paper.standard.font_family \

@@ -20,8 +20,12 @@
 
 """support module for some geometric mesurements ( geometric tramforms are in transform.py)"""
 
+from __future__ import division
 from math import sqrt, atan2, pi, cos, sin
 from misc import signum, normalize_coords
+import operator
+
+
 
 def find_parallel( x1, y1, x2, y2, d):
   "returns tuple of coordinates for parallel abscissa in distance d"
@@ -118,7 +122,7 @@ def clockwise_angle_from_east( dx, dy):
   return angle
 
 
-def intersection_of_line_and_rect( line, rect):
+def intersection_of_line_and_rect( line, rect, round_edges=0):
   """finds a point where a line and a rectangle intersect,
   both are given as lists of len == 4"""
   lx0, ly0, lx1, ly1 = line
@@ -129,9 +133,16 @@ def intersection_of_line_and_rect( line, rect):
     lx0, lx1 = lx1, lx0
     ly0, ly1 = ly1, ly0
 
+  # the computation itself
   ldx = lx1 - lx0
   ldy = ly1 - ly0
-  if abs( ldx) > abs( ldy):
+
+  # when ldx and ldy are close apply the rounding of edges
+  if not ldy == 0 and abs( abs( ldx) / abs( ldy) - 1) < 0.1:
+    modifier = (round_edges, round_edges, -round_edges, -round_edges)
+    rx0, ry0, rx1, ry1 = map( operator.add, normalize_coords( rect), modifier)
+  
+  if ldy == 0 or (abs( ldx) /  abs( ldy)) > (abs( rx0 -rx1) / abs( ry0 -ry1)):
     k = ldy/ldx
     q = ly0 - k*lx0
     if ldx < 0:

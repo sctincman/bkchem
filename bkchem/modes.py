@@ -1661,7 +1661,7 @@ class atom_mode( edit_mode):
           a.molecule.replace_vertices( a, v)
           a.delete()
           v.draw()
-          print v, type( v)
+          #print v, type( v)
 
           Store.app.paper.start_new_undo_record()        
           Store.app.paper.add_bindings()

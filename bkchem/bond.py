@@ -311,16 +311,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def _where_to_draw_from_and_to( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
-    bbox1 = list( self.atom1.bbox())
-    bbox2 = list( self.atom2.bbox())
+    bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
+    bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
     # nasty hacks
-    bbox1 = map( operator.add, bbox1, (-1,-1,1,1))
-    bbox2 = map( operator.add, bbox2, (-1,-1,1,1))
+    modifier = (0,0,0,-3)
+    bbox1 = map( operator.add, bbox1, modifier)
+    bbox2 = map( operator.add, bbox2, modifier)
     # // nasty hacks
     if self.atom1.show:
-      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1)
+      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1, round_edges=1)
     if self.atom2.show:
-      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2)
+      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2, round_edges=1)
     return (x1, y1, x2, y2)
 
 
@@ -417,6 +418,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
     xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0) 
     d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    if d == 0:  
+      return []  # to prevent division by zero
     dx1 = (x0 - xa)/d 
     dy1 = (y0 - ya)/d 
     dx2 = (2*x2 -x0 -2*x1 +xa)/d 
@@ -428,14 +431,19 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     ddy = y - y1 
 
     # we have to decide if the first line should be at the position of the first atom
-    draw_start = 0
-    if self.atom1.get_occupied_valency() > 1:
+    draw_start = 0  # is index not boolean
+    if not self.atom1.show and self.atom1.get_occupied_valency() > 1:
       draw_start = 1
-    draw_end = 1
-    if self.atom2.get_occupied_valency() > 1:
+    draw_end = 1     # is added to index not boolean
+    if not self.atom1.show and self.atom2.get_occupied_valency() > 1:
       draw_end = 0
-    # now we finally draw
+
+    # djust the step length
     step_size = 2*(self.line_width+1)
+    ns = round( d / step_size) or 1
+    step_size = d / ns
+
+    # now we finally draw
     items = []
     for i in range( draw_start, int( round( d/ step_size)) +draw_end):
       if self.equithick: 

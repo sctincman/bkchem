@@ -550,6 +550,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     on_off = ['off','on']
     a = doc.createElement('group')
     a.setAttribute( 'id', str( self.id))
+    a.setAttribute( 'pos', self.pos)
     # group type
     if self.group_type:
       a.setAttribute( 'group-type', self.group_type)

@@ -827,7 +827,7 @@ class BKchem( Tk):
         if hasattr( doc, 'getElementsByTagNameNS'):
           docs = doc.getElementsByTagNameNS( data.cdml_namespace, 'cdml')
         else:
-          self.update_status(_("file not loaded"))
+          Store.log( _("File was not loaded"), message_type="error")
           return None  # I don't know why this happens, but we simply ignore the document
         if docs:
           doc = docs[0]
