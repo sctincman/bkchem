@@ -77,6 +77,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def __init__( self, paper, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, paper)
     point_drawable.__init__( self)
+    # hidden
+    self.__reposition_on_redraw = 0
+
     # basic attrs
     self.molecule = molecule
 
@@ -192,6 +195,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else:
       self.__show_hydrogens = int( show_hydrogens)
     self.dirty = 1
+    self.__reposition_on_redraw = 1
 
   show_hydrogens = property( __get_show_hydrogens, __set_show_hydrogens)
 
@@ -467,6 +471,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def redraw( self):
+    if self.__reposition_on_redraw:
+      self.reposition_marks()
+      self.__reposition_on_redraw = 0
     self.update_font()
     # at first we delete everything...
     self.paper.unregister_id( self.item)

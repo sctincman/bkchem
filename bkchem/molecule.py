@@ -269,8 +269,10 @@ class molecule( container, top_level):
       t_bond_second = None
     return item
 
-  def create_new_atom( self, x, y):
+  def create_new_atom( self, x, y, name=None):
     a = atom( self.paper, xy=(x, y))
+    if name:
+      a.set_name( name)
     self.insert_atom( a)
     a.draw()
     return a
@@ -517,6 +519,12 @@ class molecule( container, top_level):
   def find_least_crowded_place_around_atom( self, a, range=10):
     atms = self.atoms_bound_to( a)
     x, y = a.get_xy()
+    if not atms:
+      # single atom molecule
+      if a.show_hydrogens and a.pos == "center-first":
+        return x -range, y
+      else:
+        return x +range, y
     angles = [geometry.clockwise_angle_from_east( at.x-a.x, at.y-a.y) for at in atms]
     angles.append( 2*pi + min( angles))
     angles.sort()

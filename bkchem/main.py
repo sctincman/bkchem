@@ -374,8 +374,9 @@ class BKchem( Tk):
                    'rotate': modes.rotate_mode( self),
                    'bondalign': modes.bond_align_mode( self),
                    'vector': modes.vector_mode( self),
-                   'mark': modes.mark_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
+                   'mark': modes.mark_mode( self),
+                   'atom': modes.atom_mode( self)}
+    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
 
 
 
@@ -511,8 +512,14 @@ class BKchem( Tk):
     # create the tab
     _tab_name = self.get_new_tab_name()
     page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
-    paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
-                        background="grey", closeenough=3, file_name=name_dic)
+    paper = chem_paper( page,
+                        app=self,
+                        width=640,
+                        height=480,
+                        scrollregion=(0,0,'210m','297m'),
+                        background="grey",
+                        closeenough=3,
+                        file_name=name_dic)
     self.__tab_name_2_paper[ _tab_name] = paper
     # the scrolling
     scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview, bd=data.border_width)

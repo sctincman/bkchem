@@ -1044,6 +1044,10 @@ class text_mode( edit_mode):
       warn( "leaving NONE", UserWarning, 2)
 
 
+
+
+
+
 class rotate_mode( edit_mode):
 
   def __init__( self, paper):
@@ -1391,6 +1395,83 @@ class mark_mode( edit_mode):
 
 
 
+
+
+## -------------------- ATOM MODE --------------------
+
+class atom_mode( edit_mode):
+
+  def __init__( self, paper):
+    edit_mode.__init__( self, paper)
+    self.name = _('atom')
+    self._start_point = None
+    self._moved_point = None
+
+  def mouse_down( self, event, modifiers = []):
+    edit_mode.mouse_down( self, event, modifiers = modifiers)
+    self.app.paper.unselect_all()
+
+  def mouse_drag( self, event):
+    if not self._dragging:
+      self._dragging = 1
+
+  def mouse_up( self, event):
+    if not self._dragging:
+      self.mouse_click( event)
+    self._dragging = 0
+
+  def mouse_click( self, event):
+    if not self.focused:
+      name = self.app.editPool.activate()
+      if not name:
+        return
+      name = unicode( name).encode( 'utf-8')
+      ## catch not well-formed text
+      try:
+        xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
+      except xml.sax.SAXParseException:
+        name = xml.sax.saxutils.escape( name)
+        # the second round of try: except: should catch problems not
+        # related to XML wellfomedness but rather to encoding
+        try:
+          xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
+        except xml.sax.SAXParseException:        
+          tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
+          self.app.paper.bell()
+          return
+      self.app.paper.set_name_to_selected( name)
+
+      if name and not dom_extensions.isOnlyTags( name):
+        mol = self.app.paper.new_molecule()
+        a = mol.create_new_atom( event.x, event.y, name=name)
+        self.app.paper.select( [a])
+        self.app.paper.add_bindings()
+        self.app.paper.start_new_undo_record()        
+    else:
+      if self.focused.object_type == 'atom':
+        self.app.paper.select( [self.focused])
+        name = self.app.editPool.activate( text = self.focused.get_text())
+        if name and not dom_extensions.isOnlyTags( name):
+          self.app.paper.set_name_to_selected( name)
+          self.app.paper.add_bindings()
+
+  def leave_object( self, event):
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
+    else:
+      warn( "leaving NONE", UserWarning, 2)
+
+
+
+
+
+
+
+
+
+
+
 def event_to_key( event):
   key = event.keysym
   # 2 hacks to prevent ' ' -> 'space', '.' -> 'period' and other conversions
@@ -1412,3 +1493,5 @@ def event_to_key( event):
   else:
     warn( 'how did we get here?!?', UserWarning, 2)
     return ''
+
+
