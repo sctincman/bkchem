@@ -36,6 +36,8 @@ import helper_graphics as hg
 import dom_extensions
 import messages
 from bond import bond
+from context_menu import context_menu
+
 
 class mode:
   """abstract parent for all modes. No to be used for inheritation because the more specialized
@@ -252,6 +254,8 @@ class edit_mode( mode):
     
     
     
+
+
   def mouse_down( self, event, modifiers = []):
     self._shift = 'shift' in modifiers
     self._ctrl = 'ctrl' in modifiers
@@ -263,7 +267,25 @@ class edit_mode( mode):
       self._startx, self._starty = event.x, event.y
     self._block_leave_event = 1
 
+
+
+
+
   def mouse_down3( self, event, modifiers = []):
+    if self.focused:
+      if self.focused not in self.app.paper.selected:
+        self.app.paper.unselect_all()
+        self.app.paper.select( [self.focused])
+      dialog = context_menu( self.app, self.app.paper.selected[:])
+      dialog.post( event.x_root, event.y_root)
+      if dialog.changes_made:
+        self.app.paper.start_new_undo_record()
+      self.app.paper.add_bindings()
+
+
+
+
+  def mouse_down2( self, event, modifiers = []):
     if self.focused:
       if self.focused not in self.app.paper.selected:
         self.app.paper.select( [self.focused])
@@ -272,6 +294,10 @@ class edit_mode( mode):
         self.app.paper.start_new_undo_record()
       self.app.paper.add_bindings()
       
+
+
+
+
   def mouse_up( self, event):
     self._block_leave_event = 0
     # this strange thing makes the moving of selected arrows and polygons possible - the problem is
@@ -479,7 +505,7 @@ class edit_mode( mode):
           self.app.paper.bell()
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
           return
-      self.app.paper.set_name_to_selected( name)
+      self.app.paper.set_name_to_selected( name, interpret=self.app.editPool.interpret)
       [self.reposition_bonds_around_bond( o) for o in self.app.paper.bonds_to_update()]
       self.app.paper.add_bindings()
 

@@ -69,22 +69,9 @@ class chem_paper( Canvas, object):
     self.__in = 1
     self._id_2_object = {}
     self.stack = []
-
-    self.bind( "<B1-Motion>", self._drag1)
-    self.bind( "<ButtonRelease-1>", self._release1)
-    self.bind( "<Button-1>", self._n_pressed1)
-    self.bind( "<Shift-Button-1>", self._s_pressed1)
-    self.bind( "<Shift-B1-Motion>", self._drag1)
-    self.bind( "<Delete>", self.key_pressed)
-    self.bind( "<Key>", self.key_pressed)
-    self.bind( "<KeyRelease>", self.key_released)
-    self.bind( "<Enter>", self.take_focus)
-    self.bind( "<Button-3>", self._n_pressed3)
-    self.bind( "<Motion>", self._move)
-    self.bind( "<Leave>", self._leave)
-#    self.bind( "<Enter>", self._enter) # enable this and you will get mysterious error
-                                        # when adding 'N' to an atom and then hitting "Return" - the app will immediately close
-                                        # I found it to be caused by Pmw mechanism of catching errors; PmwBase.py:1667 gets called 
+    
+    # bindings to input events
+    self.set_bindings()
 
     self.set_viewport()
 
@@ -100,6 +87,23 @@ class chem_paper( Canvas, object):
     self.set_paper_properties()
 
     self.changes_made = 0
+
+
+
+  def set_bindings( self):
+    self.bind( "<B1-Motion>", self._drag1)
+    self.bind( "<ButtonRelease-1>", self._release1)
+    self.bind( "<Button-1>", self._n_pressed1)
+    self.bind( "<Shift-Button-1>", self._s_pressed1)
+    self.bind( "<Shift-B1-Motion>", self._drag1)
+    self.bind( "<Delete>", self.key_pressed)
+    self.bind( "<Key>", self.key_pressed)
+    self.bind( "<KeyRelease>", self.key_released)
+    self.bind( "<Enter>", self.take_focus)
+    self.bind( "<Button-3>", self._n_pressed3)
+    self.bind( "<Button-2>", self._n_pressed2)
+    self.bind( "<Motion>", self._move)
+    self.bind( "<Leave>", self._leave)
 
 
 
@@ -257,6 +261,13 @@ class chem_paper( Canvas, object):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_down3( event, modifiers=[])
+
+
+
+  def _n_pressed2( self, event):
+    event.x = self.canvasx( event.x)
+    event.y = self.canvasy( event.y)
+    self.mode.mouse_down2( event, modifiers=[])
 
 
 

@@ -26,8 +26,13 @@ import data, re, string
 from groups_table import groups_table
 import misc
 
+
+
 font_decorations = ('italic', 'bold', 'subscript', 'superscript')
 font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
+
+
+
 
 class editPool( Frame):
 
@@ -35,6 +40,7 @@ class editPool( Frame):
     Frame.__init__( self, master, **kw)
     self.app = app
     self.text = ''
+    self.interpret = 1
     self.editPool = Entry( self, width=60, state='disabled')
     self.editPool.pack( side='left')
 
@@ -43,18 +49,34 @@ class editPool( Frame):
 
     self.editPool.bind("<KeyPress>", self._key)
 
-    self.interpretButton = Button( self, text=_('Interpret'), command=self._interpretButtonPressed, state='disabled')
+    self.interpretButton = Button( self,
+                                   text=_('Interpret'),
+                                   command=self._interpretButtonPressed,
+                                   state='disabled',
+                                   bd=data.border_width)
     self.interpretButton.pack( side='left')
 
-    self.setButton = Button( self, text=_('As is'), command=self._setButtonPressed, state='disabled')
+    self.setButton = Button( self,
+                             text=_('As is'),
+                             command=self._setButtonPressed,
+                             state='disabled',
+                             bd=data.border_width)
     self.setButton.pack( side='left')
 
     pix = self.app.request( 'pixmap', name='subnum')
     if pix:
-      self.numbersToSubButton = Button( self, image=pix, command=self._numbersToSubButtonPressed, state='disabled')
+      self.numbersToSubButton = Button( self,
+                                        image=pix,
+                                        command=self._numbersToSubButtonPressed,
+                                        state='disabled',
+                                        bd=data.border_width)
       self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
     else:
-      self.numbersToSubButton = Button( self, text=_('Sub numbers'), command=self._numbersToSubButtonPressed, state='disabled')
+      self.numbersToSubButton = Button( self,
+                                        text=_('Sub numbers'),
+                                        command=self._numbersToSubButtonPressed,
+                                        state='disabled',
+                                        bd=data.border_width)
     self.numbersToSubButton.pack( side='left')
 
     # text decoration
@@ -64,13 +86,15 @@ class editPool( Frame):
         self.__dict__[ i] = Button( self,
                                     image=pix,
                                     command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
-                                    state='disabled')
+                                    state='disabled',
+                                    bd=data.border_width)
         self.app.balloon.bind( self.__dict__[i], i)
       else:
         self.__dict__[ i] = Button( self,
                                     text=i,
                                     command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
-                                    state='disabled')
+                                    state='disabled',
+                                    bd=data.border_width)
       self.__dict__[i].pack( side='left')
 
 
@@ -87,6 +111,7 @@ class editPool( Frame):
 
   def _setButtonPressed( self, *e):
     self._setText( self.editPool.get())
+    self.interpret = 0
     self._quit()
 
   def _numbersToSubButtonPressed( self, *e):
@@ -135,6 +160,7 @@ class editPool( Frame):
   def activate( self, text=None, select=1):
     """activates edit_pool and returns inserted value (None if cancel occured),
     if parameter text is None it preserves the old one, use text='' to delete old text"""
+    self.interpret = 1
     self.focus_set()
     self.grab_set()
     self._enable()

@@ -66,7 +66,8 @@ class BKchem( Tk):
     # main drawing part
     self.papers = []
     self.notebook = Pmw.NoteBook( self.main_frame,
-                                  raisecommand=self.change_paper)
+                                  raisecommand=self.change_paper,
+                                  borderwidth=data.border_width)
     self.add_new_paper()
 
     # template and group managers
@@ -162,7 +163,7 @@ class BKchem( Tk):
 
   def init_menu( self):
     # defining menu
-    menu = Frame( self.main_frame, relief=RAISED, bd=2)
+    menu = Frame( self.main_frame, relief=RAISED, bd=data.border_width)
     menu.pack( fill = X)
 
     helpButton = Menubutton( menu, text=_('Help'))
@@ -292,6 +293,9 @@ class BKchem( Tk):
         print "cannot init default font"
     else:
       self.option_add( "*font", ("Helvetica",10,"normal"))
+    # colors
+    #self.option_add( "*background", "#d0d0d0")
+    #self.option_add( "*borderwidth", data.border_width)
     self.title( "BKchem")
     self.stat= StringVar()
     self.stat.set( "Idle")
@@ -326,9 +330,13 @@ class BKchem( Tk):
         plugin = plugins.__dict__[ name]
         self.plugins.append( plugin)
         if ('importer' in  plugin.__dict__) and plugin.importer:
-          self.import_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
+          self.import_menu.add( 'command',
+                                label=plugin.name,
+                                command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
         if ('exporter' in plugin.__dict__) and plugin.exporter:
-          self.export_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
+          self.export_menu.add( 'command',
+                                label=plugin.name,
+                                command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
 
 
 
@@ -375,36 +383,37 @@ class BKchem( Tk):
     radioFrame = Frame( self.main_frame)
     radioFrame.pack( fill=X)
     self.radiobuttons = Pmw.RadioSelect(radioFrame,
-                     buttontype = 'button',
-                     selectmode = 'single',
-                     orient = 'horizontal',
-                     command = self.change_mode,
-                     hull_borderwidth = 0,
-                     padx = 0,
-                     pady = 0,
-                     hull_relief = 'ridge',
+                                        buttontype = 'button',
+                                        selectmode = 'single',
+                                        orient = 'horizontal',
+                                        command = self.change_mode,
+                                        hull_borderwidth = 0,
+                                        padx = 0,
+                                        pady = 0,
+                                        hull_relief = 'flat',
+                                        
              )
     self.radiobuttons.pack( side=LEFT)
     # Add some buttons to the radiobutton RadioSelect.
     for m in self.modes_sort:
       if m in pixmaps.images:
-        recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey')
+        recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey',
+                                        relief='flat', borderwidth=data.border_width)
         self.balloon.bind( recent, self.modes[ m].name)
       else:
-        self.radiobuttons.add( m, text=self.modes[ m].name)
+        self.radiobuttons.add( m, text=self.modes[ m].name, borderwidth=data.border_width)
     # sub-mode support
     self.subFrame = Frame( self.main_frame)
     self.subFrame.pack( fill=X)
     self.subbuttons = []
     # the remaining of sub modes support is now in self.change_mode
-    # atom name editing support
 
 
 
 
 
   def init_status_bar( self):
-    status = Label( self.main_frame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
+    status = Label( self.main_frame, relief=SUNKEN, bd=data.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
 
 
@@ -452,10 +461,10 @@ class BKchem( Tk):
         self.subbuttons[i].pack( side=LEFT)
       for sub in m.submodes[i]:
         if sub in pixmaps.images:
-          recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey')
+          recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=data.border_width)
           self.balloon.bind( recent, m.submodes_names[i][m.submodes[i].index(sub)])
         else:
-          self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)])
+          self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=data.border_width)
       # black magic???
       j = m.submodes[i][ m.submode[i]]
       self.subbuttons[i].invoke( j)
@@ -503,8 +512,8 @@ class BKchem( Tk):
                         background="grey", closeenough=3, file_name=name_dic)
     self.__tab_name_2_paper[ _tab_name] = paper
     # the scrolling
-    scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)
-    scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview)
+    scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview, bd=data.border_width)
+    scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview, bd=data.border_width)
     paper.grid( row=0, column=0, sticky="news")
     page.grid_rowconfigure( 0, weight=1, minsize = 0)
     page.grid_columnconfigure( 0, weight=1, minsize = 0)

@@ -601,7 +601,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     self.cdml_id = package.getAttribute( 'id')
     # charge
     self.charge = package.getAttribute('charge') or 0
-    print self.charge
     # marks (we read them here because they influence the charge)
     for m in package.getElementsByTagName( 'mark'):
       auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0

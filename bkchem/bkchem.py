@@ -94,6 +94,7 @@ else:
   #splash screen
   splash = Splash()
   splash.withdraw()
+  #splash.overrideredirect( 1)
   splash.update_idletasks()
   width = splash.winfo_reqwidth()
   height = splash.winfo_reqheight()

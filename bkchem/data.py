@@ -122,3 +122,7 @@ paper_types = { 'A4': [297,210],
                 'B6': [176,125],
                 'Letter': [279.4,215.9],
                 'Legal': [355.7,215.9]}
+
+
+# border width for all components
+border_width = 1
