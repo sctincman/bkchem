@@ -1,0 +1,9 @@
+include setup.cfg
+include INSTALL INSTALL.binary RELEASE README progress.log
+include gpl.txt progress.log
+include templates/*.cdml
+include templates/oo_manifest.xml
+include pixmaps/*.gif
+include images/logo.ppm
+recursive-include doc *
+recursive-include dtd *.dtd *.xsd

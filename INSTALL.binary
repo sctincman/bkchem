@@ -1,0 +1,34 @@
+Note: This file describes the installation of binary release of BKchem. If you have
+      downloaded the source, please read the INSTALL file instead.
+
+
+
+If you have downloaded the binary package of BKchem, the installation is very
+straightforward - unpack the archive and run the program :)
+
+After unpacking the archive with the binary distribution anywhere you want, you
+should get one directory called "bkchem". Inside this directory all of BKchem is
+stored in different subdirectories. The most important is called "bkchem" and
+inside this is the binary file "bkchem" (or bkchem.exe on Win platforms) you are
+looking for. This binary must be run from the directory in which it
+resides. Trying to run it from other directory will result in error.
+
+example:
+on Windows do
+>"unpack the distro zip archive with your favorite unpacker"
+>cd "the dir where you have unpacked BKchem"/bkchem/bkchem
+>bkchem.exe
+
+If you are lucky, everything should work...
+
+
+*Note* - the binary distribution of BKchem does not come with the sources of the
+program. To get the sources visit http://savannah.gnu.org/projects/bkchem/ and
+get a source code release.
+
+*Note 2* - for users convenience the binary distribution includes packages that
+are not part of BKchem (Pmw, PIL and Python itself)! To learn more about them,
+please read the INSTALL instructions for source code release where the paths to
+corresponding resources can be found. All credit for these programs goes to
+their respective authors.
+

@@ -1,0 +1,384 @@
+-- release of 0.5.1-pre1
+
+2004-02-10  Beda Kosata	<beda@zirael.org> (sav4)
+
+	* bugfix - an ugly bug that caused focus circles to hang around when a delete operation was
+		   performed with an atom (or other item) in focus.
+	* bugfix - annoying warnings about "leaving NONE" were fixed in arrow mode
+
+	* the points of spline arrow are no more visible. You can click the arrow to get the points
+	  selected to see them (let me know if this does not suit you)
+	* in the arrow mode you can now choose if you want do create a spline arrow or a normal one.
+	  The selected type of arrow is also applied if you modify the arrow or simply click on it.
+
+
+2004-02-09  Beda Kosata	<beda@zirael.org> (sav3)
+
+	* bugfix - a config dialog bug caused by Python 2.3 introduction of boolean type was fixed
+	* bugfix - an error when configuring an arrow ("config dialog has no attribute spline_changed")
+		   was fixed
+	* bugfix - several redundant and baseless roundings of coordinates were removed
+		   (thanks to Michal Bozon for the patch)
+	* bugfix - the cyclopentane template was updated which makes it (together with the
+		   previous bugfix) 100% symmetric
+		   (thanks to Michal Bozon for the patch)
+
+	* the [1]benzothieno[3,2-b][1]benzothiophene :) template was removed
+	* in the standard dialog it is now possible to specify if all the standard values should be
+	  applied or only the changed ones.
+
+
+2004-02-08  Beda Kosata	<beda@zirael.org>
+
+	* bugfix - rotation mode no longer creates empty undo records when no rotation was performed
+
+
+2004-02-06  Beda Kosata	<beda@zirael.org> (sav2)
+
+	* bugfix - a typo that made the superscript button create subscript was fixed
+	* bugfix - wedge arrow with non-black color goes no more black after focus
+	* bugfix - the marks are now repositioned during rotation (after rotation for 3D rotation)
+
+
+2004-02-04  Beda Kosata	<beda@zirael.org> (sav1)
+
+	* bugfix - "Unable to parse text..." error was found and fixed. May this be caused by the
+	  	   unicode usage under RedHat? (I have not seen this under Gentoo)
+	
+	* code cleanup - the undo was switched to meta-info driven code which should make the code
+	  		 more easily extendable
+	* code cleanup - the bond draw method was switched to "plugable methods" code, this should
+	  		 also save much work when new bond types are added 
+
+
+2003-10-01  Beda Kosata	<beda@zirael.org>
+
+	* bugfix - problem with bond width change was fixed
+
+
+
+-- release of 0.5.0
+
+2003-09-30  Beda Kosata	<beda@zirael.org>
+
+	* PostScript export updated to support paper sizes and moved to a plugin (File/Export/Encapsulated PostScript)
+	* paper properties were added to standard so that they can be saved in personal profile
+
+
+-- release of 0.5.0-pre5
+
+2003-09-26  Beda Kosata	<beda@zirael.org>
+
+	* it is now possible to save your personal standard (from the Options/Standard dialog)
+	  which will be used everytime you start BKchem
+	* templates for common five membered heterocycles added (thanks to Petr Vodicka for them)
+	* templates for purine and chair conformation of cyclohexane were added
+	* bugfix - OpenOffice Draw export supports text color
+	* bugfix - in SVG export sometimes overlay of items did not correspond to their order in bkchem
+	* bugfix - it seems that Tkinter treats font sizes as if they were in 'px' not 'pt' as it states.
+		   The SVG generation code was fixed to output 'px' so that the SVG export is more WYSIWYG
+		   (please let me know if you find the SVG text significantly smaller than what you see in BKchem) 
+
+2003-09-25  Beda Kosata	<beda@zirael.org>
+
+	* use of standard values significantly improved
+	* dialog for standard values added
+	* second bond of double and triple bonds may be drawn shorter than the main part of the bond
+	  (the ratio is customizable via Options/Standard or in config dialog for every bond)
+	  Thanks to Michal Bozon for the original patch.
+	* all button images were converted to gifs in order to preserve their transparency
+
+2003-09-21  Beda Kosata	<beda@zirael.org>
+
+	* if file name given to bkchem on startup does not exist create a new file with this name
+
+2003-08-07  Beda Kosata	<beda@zirael.org>
+
+	* support for paper sizes and marks was added to the OpenOffice export plugin
+
+2003-08-05  Beda Kosata	<beda@zirael.org>
+
+	* bugfix - creating text that contains only tags (e.g. '<i></i>') no longer crashes
+
+
+-- release of 0.5.0-pre4
+
+2003-07-22  Beda Kosata	<beda@zirael.org>
+
+	* the same fix as in 0.5.0-pre3 for all the plugins (the statement about full compatibility
+	  of 0.5.0-pre3 with PyXML should be now more valid :)
+
+
+-- release of 0.5.0-pre3
+
+2003-07-21  Beda Kosata	<beda@zirael.org>
+
+	* a nasty bug (in fact bad coding habit) that caused saving files to crash on machines with
+	  PyXML installed was fixed. BKchem should be now fully compatible with the PyXML library.
+
+
+-- release of 0.5.0-pre2
+
+2003-07-17  Beda Kosata	<beda@zirael.org>
+
+	* templates are scaled according to the standard bond length
+
+2003-07-06  Beda Kosata	<beda@zirael.org>
+
+	* bkchem now deals with abbreviated alkyl chains (CnH2n+1) as with other groups
+	  (expansion, molecular formula etc.) 
+	* support for b-spline arrows was added, unfortunately SVG can deal only with Bezier curves
+	  and don't know how to transform b-spline -> Bezier; this means the export to SVG is far from perfect 
+	* bugfix - appending a template to an atom with non-zero Z coordinate did not work properly;
+	           code was added to detect such cases and inform the user that it is not possible
+
+2003-07-02  Beda Kosata	<beda@zirael.org>
+
+	* standard bond length was changed from pixels to cm, so that it is machine independent
+	* 'C-d n' where 'n' is number in range 2-9 appends an aliphatic chain to the focused atom
+
+2003-06-30  Beda Kosata	<beda@zirael.org>
+
+	* bugfix - reading negative coordinates no longer crashes (was typical for 3D rotated molecules)
+
+2003-06-01  Beda Kosata	<beda@zirael.org>
+
+	* bugfix - expand_group on focused group no longer causes error
+
+
+-- release of 0.5.0-pre1
+
+2003-05-25  Beda Kosata	<beda@zirael.org>
+
+	* it is now possible to pass a file name to bkchem as a command line argument
+	* all positions are now stored in 'cm'
+	  - files should now look exactly the same on different machines
+
+2003-05-24  Beda Kosata	<beda@zirael.org>
+
+	* sizes in SVG export were normalized;
+	  files should look exactly the same on machines with different dpi resolution
+
+2003-05-21  Beda Kosata	<beda@zirael.org>
+
+	* marks (radical, electron pair etc.) were introduced - no export except SVG yet
+
+2003-05-14  Beda Kosata	<beda@zirael.org>
+
+	* support for paper sizes and orientation
+
+
+-- release of 0.4.3
+
+2003-03-31  Beda Kosata	<kosatab@vscht.cz>
+
+	* bugfix - a nasty bug that caused exports to fail on new (untitled) files was fixed
+
+
+-- release of 0.4.2
+
+2003-03-26  Beda Kosata	<kosatab@vscht.cz>
+
+	* bugfix - right-clicking on a selection rectangle no longer causes error
+	* openoffice export - vector graphics is exported
+			    - proper stacking included
+			    - bonds and atoms are grouped into molecules for easier manipulation
+	* export plugins now offer the right extension for the exported file
+
+
+-- prerelease 0.4.2-pre2
+
+2003-03-25  Beda Kosata	<kosatab@vscht.cz>
+
+	* openoffice export - stereo bonds, text and pluses are now also exported
+
+
+-- prerelease 0.4.2-pre1
+
+2003-03-21  Beda Kosata	<kosatab@vscht.cz>
+
+	* openoffice export works once again - bonds (not stereo), atoms and arrows are exported
+	* Import/Export menu created under File menu
+
+2003-02-02  Beda Kosata	<kosatab@vscht.cz>
+
+	* bugfix - opening a file that contained atoms with text that seemed interpretable (Ph etc.)
+		   failed because valency information for that atom are not available at read.
+
+2002-12-23  Beda Kosata	<kosatab@vscht.cz>
+
+	* buttons for text tagging added - selected text can be tagged (b, i, sub, sup) during editing using buttons.
+	  When no text is selected an empty tag is created.
+
+
+-- release of version 0.4.1
+
+2002-12-18  Beda Kosata	<kosatab@vscht.cz>
+
+	* bugfix - removed the openoffice plugin as it is too unfinished and buggy and causes confusion
+
+2002-12-16  Beda Kosata	<kosatab@vscht.cz>
+
+	* bugfix - removed obsolete Povray export from 'Experimental exports'. It is available as a plugin.
+	* distribution of bkchem was automatized by means of distutils
+	* classic unix installation is now possible (for Unix only, of course) which makes it possible 
+	  to run bkchem from anywhere. See INSTALL for more info.
+
+
+-- release of version 0.4.0
+
+2002-10-23  Beda Kosata	<kosatab@vscht.cz>
+
+	* bug that made Alt key "hang" after Alt-Tabing out of the window and back was fixed
+
+2002-10-22  Beda Kosata	<kosatab@vscht.cz>
+
+	* fixed bug that caused crash after the user tried to insert a template to arrow or other non-molecular object
+
+2002-10-20  Beda Kosata	<kosatab@vscht.cz>
+
+	* individual points of polygon can be deleted (but new cannot be added)
+
+2002-10-19  Beda Kosata	<kosatab@vscht.cz>
+
+	* added polygon (left click to create individual points, right to finish the shape)
+	* added ability to adjust object visibility by changing its position on the stack
+
+2002-10-18  Beda Kosata	<kosatab@vscht.cz>
+
+	* bug that caused error when trying to rotate arrow was fixed (but arrow still cannot be rotated)
+
+2002-10-17  Beda Kosata	<kosatab@vscht.cz>
+
+	* fixed bug - save file dialog was not properly canceled (filename was set to 'untitled')
+	* fixed bug - 'really quit' dialog was not open when exiting the app via 'C-x C-c'
+	* fixed stupid bug in align - 'l' is left and 'r' is right now :)
+	* added circle
+
+2002-10-15  Beda Kosata	<kosatab@vscht.cz>
+
+	* fixed bug that caused error when focused atom was deleted and then some drawing action was performed
+	* added square
+
+2002-10-14  Beda Kosata	<kosatab@vscht.cz>
+
+	* color support added
+	* the title of the main window now shows the name of currently edited file
+	* 'common page' added to config dialog with line width and color selection
+
+2002-10-13  Beda Kosata	<kosatab@vscht.cz>
+
+	* cyklopropane and cyklobutane templates added
+	* another small bugfix (current file name was set even if the file was not read correctly)
+
+2002-10-09  Beda Kosata	<kosatab@vscht.cz>
+
+	* bug that caused crash after a template was put over a non-C atom was fixed
+	* bug that made Ctrl key "hang" after 'C-x C-f' was fixed
+
+2002-10-06  Beda Kosata	<kosatab@vscht.cz>
+
+	* selected items can be moved using arrows
+	* vector graphics (rectangle and oval) introduced
+
+
+-- release of version 0.3.0
+
+2002-09-15  Beda Kosata	<kosatab@vscht.cz>
+
+	* group expansion - e.g. -COOH can be now expanded to complete structure (important for CML export)
+	* small bugfixes
+	* number of undo steps limited to 20 to reduce memory consumption
+	* rewritten and improved checking of chemical validity
+	* CML plugin now performs chemistry check on export and refuses to export chemically invalid data
+	* CML plugin now expands groups on export
+	* 'C-S-a' can be now used for select_all
+
+2002-08-26  Beda Kosata	<kosatab@vscht.cz>
+
+	* work on export plugin for OpenOffice Draw format
+
+2002-08-20  Beda Kosata	<kosatab@vscht.cz>
+
+	* fixed hard-to-find-easy-to-fix bug in undo
+	* on-fly warnings on exceeded valency
+
+2002-08-05  Beda Kosata	<kosatab@vscht.cz>
+
+	* 3D support - import, export, 3D rotation
+	* checking of chemical validity of drawn molecules
+	* accelerator keys are now displayed in menus
+
+2002-08-03  Beda Kosata	<kosatab@vscht.cz>
+	
+	* minor modifications in SVG export
+
+-- release of version 0.2.0
+
+2002-07-20  Beda Kosata	<kosatab@vscht.cz>
+
+	* second line of double bond is now always automatically positioned inside a ring
+
+2002-06-23  Beda Kosata	<kosatab@vscht.cz>
+
+	* code that allows convenient reading of older versions of CDML
+	* interactive positioning of second line in double bonds
+	  (user can still override auto positioning by shift-click in draw mode)
+	* preliminary CML2 support as plugin
+
+2002-06-15  Beda Kosata	<kosatab@vscht.cz>
+
+	* reduced size of CDML - only necessary data are saved
+	* default values are used for data absent in CDML (when possible)
+	* viewport transformation possible on file read
+	* CML import sets viewport for imported data to be always visible on screen (dimensions are usually in angstroms) 
+
+2002-06-08  Beda Kosata	<kosatab@vscht.cz>
+
+	* plugin framework
+	* CML import/export plugin started
+	* moved atoms are automaticaly updated (CH3 -> H3C)
+
+2002-04-22  Beda Kosata	<kosatab@vscht.cz>
+
+	* "intelligent" judging of position of second line in double bond
+	* molecules can be named (use new mode called "name") 
+
+-- release of version 0.1.2
+
+2002-04-16  Beda Kosata	<kosatab@vscht.cz>
+
+	* reduced dependency on PIL. PIL is no longer needed to display icon buttons
+	* binary release now possible using "Install"
+
+2002-04-13  Beda Kosata	<kosatab@vscht.cz>
+
+	* bkchem now understands atoms in the chemical sense
+	* almost complete periodic table available (without lanthanoids and actinoids)
+	* information based on molecular formula available (formula, weight, composition)
+
+-- release of version 0.1.1
+
+2002-04-10  Beda Kosata	<kosatab@vscht.cz>
+
+	* freestyle submode for draw mode
+	* submodes (including freestyle) for arrow mode
+
+2002-04-08  Beda Kosata	<kosatab@vscht.cz>
+
+	* "really quit" question
+
+2002-04-06  Beda Kosata	<kosatab@vscht.cz>
+
+	* loading of CD-SVG 
+	* full support for gzipped CDML and CD-SVG
+	* file reading independent of file extension
+	* some optimization of SVG file size
+
+2002-04-05  Beda Kosata	<kosatab@vscht.cz>
+	    
+	* saving to SVG with embedded CDML (CD-SVG)
+
+2002-04-04  Beda Kosata	<kosatab@vscht.cz>
+	    
+	* font family selection
