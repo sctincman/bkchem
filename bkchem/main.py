@@ -160,7 +160,7 @@ class BKchem( Tk):
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Bring to front'), command = self.paper.lift_selected_to_top, accelerator='(C-o f)')
     scaleMenu.add( 'command', label=_('Send back'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o b)')
-    scaleMenu.add( 'command', label=_('Swap'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o s)')
+    scaleMenu.add( 'command', label=_('Swap on stack'), command = self.paper.swap_selected_on_stack, accelerator='(C-o s)')
     # not done yet
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Vertical mirror'), command = self.paper.swap_sides_of_selected)
