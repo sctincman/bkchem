@@ -13,7 +13,10 @@ remarks
 
 new bond types -
 	- select and focus must be updated as new types are added
-	- for multiple wedge or hatch - use line_width = wedge_width and bond_width = bond_width?
+	- fuck, fuck, fuck - the hatch uses all of bond_width, wedge_width and line_width!
+		- switch to these 3 in bond code
+	- make bond.second and third always lists?
+	- update exports
 
 - mode for ring creation
 

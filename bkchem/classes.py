@@ -1039,8 +1039,8 @@ class bond( meta_enabled):
     self.order = order
     meta_enabled.__init__( self, paper)
     self.item = None
-    self.second = None
-    self.third = None
+    self.second = []
+    self.third = []
     self.items = []
     self.molecule = molecule
     if atoms:
@@ -1057,19 +1057,19 @@ class bond( meta_enabled):
   def read_standard_values( self, old_standard=None):
     meta_enabled.read_standard_values( self, old_standard=old_standard)
     # wedge width or ...
-    if self.type in ('w','h'):
+    if self.type in 'whab':
       if not old_standard or (self.paper.standard.wedge_width != old_standard.wedge_width):
-        self.bond_width = self.paper.any_to_px( self.paper.standard.wedge_width)
-    # ... bond width
+        self.line_width = self.paper.any_to_px( self.paper.standard.wedge_width)
+    # ... line width
     else:
-      if not old_standard or (self.paper.standard.bond_width != old_standard.bond_width):
-        if 'bond_width' in self.__dict__:
-          self.bond_width = misc.signum( self.bond_width) *self.paper.any_to_px( self.paper.standard.bond_width)
-        else:
-          self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
+      if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
+        self.line_width = self.paper.any_to_px( self.paper.standard.line_width)
     # line width
-    if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
-      self.line_width = self.paper.any_to_px( self.paper.standard.line_width)
+    if not old_standard or (self.paper.standard.bond_width != old_standard.bond_width):
+      if 'bond_width' in self.__dict__:
+        self.bond_width = misc.signum( self.bond_width) * self.paper.any_to_px( self.paper.standard.bond_width)
+      else:
+        self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
 
   def set_molecule( self, molecule):
     self.molecule = molecule
@@ -1087,7 +1087,7 @@ class bond( meta_enabled):
     # main item
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
-    self.second = self.third = None
+    self.second = self.third = []
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
 
@@ -1108,21 +1108,21 @@ class bond( meta_enabled):
       _k = 0
     else:
       _k = (1-self.double_length_ratio)/2
-    self.second = self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)
+    self.second = [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
     if self.center:
-      self.third = self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)
+      self.third = [self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)]
 
   def _draw_n3( self):
     x1,y1,x2,y2 = self._draw_n1()
-    if self.center == None or self.bond_width == None:
+    if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
     _k = (1-self.double_length_ratio)/2
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
     dx = x-x0
     dy = y-y0
-    self.second = self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)
-    self.third = self.paper.create_line( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy, width=self.line_width, fill=self.line_color)
+    self.second = [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
+    self.third = [self.paper.create_line( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy, width=self.line_width, fill=self.line_color)]
     
 
   def _draw_h1( self):
@@ -1130,39 +1130,180 @@ class bond( meta_enabled):
     # main item
     self.paper.itemconfig( self.item, fill='')
     # the small lines
+    self.items = self._draw_hatch( (x1,y1,x2,y2), self.line_width)
+    return x1,y1,x2,y2    
+
+  def _draw_h2( self):
+    if self.center == None or self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # double
+    if self.center:
+      x1,y1,x2,y2 = self._draw_n1()
+      self.paper.itemconfig( self.item, fill='')
+      d = int( round( d/3))
+    else:
+      x1,y1,x2,y2 = self._draw_h1()
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = self._draw_hatch( (x,y,x0,y0), self.line_width)
+    if self.center:
+      self.third = self._draw_hatch( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)
+
+  def _draw_h3( self):
+    x1,y1,x2,y2 = self._draw_h1()
+    if self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = self._draw_hatch( (x,y,x0,y0), self.line_width)
+    self.third = self._draw_hatch( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)
+
+  def _draw_hatch( self, coords, width):
+    """returns list items"""
+    x1, y1, x2, y2 = coords
+    # main item
     step_size = 5
-    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.bond_width)
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, width)
     d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     dx1 = -(x1 - x0)/d
     dy1 = -(y1 - y0)/d
     dx2 = -(x1 -2*x2 +x0)/d
     dy2 = -(y1 -2*y2 +y0)/d
+    items = []
     for i in range( 1, int( round( d/ step_size))+1):
       coords = [x1+dx1*i*step_size, y1+dy1*i*step_size, x1+dx2*i*step_size, y1+dy2*i*step_size]
-      coords = map( round, coords)
       if coords[0] == coords[2] and coords[1] == coords[3]:
         if (dx1+dx2) > (dy1+dy2): 
           coords[0] += 1
         else:
           coords[1] += 1
-      self.items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
+      items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
+
+    return items
+
 
   def _draw_w1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
     # main item
-    self.item = self._draw_wedge( (x1,y1,x2,y2), self.bond_width)
+    self.item = self._draw_wedge( (x1,y1,x2,y2), self.line_width)
+    self.paper.addtag_withtag( "bond", self.item)
     # draw helper items
-    self.second = self.third = None
+    self.second = self.third = []
     self.paper.register_id( self.item, self)
+    return x1,y1,x2,y2
+
+  def _draw_w2( self):
+    if self.center == None or self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # double
+    if self.center:
+      x1,y1,x2,y2 = self._draw_n1()
+      self.paper.itemconfig( self.item, fill='')
+      d = int( round( d/3))
+    else:
+      x1,y1,x2,y2 = self._draw_w1()
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = [self._draw_wedge( (x,y,x0,y0), self.line_width)]
+    if self.center:
+      self.third = [self._draw_wedge( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)]
+
+  def _draw_w3( self):
+    x1,y1,x2,y2 = self._draw_w1()
+    if self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = [self._draw_wedge( (x,y,x0,y0), self.line_width)]
+    self.third = [self._draw_wedge( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)]
+    
     
   def _draw_wedge( self, coords, width):
     """returns the polygon item"""
     x1, y1, x2, y2 = coords
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, width)
-    return self.paper.create_polygon( (x1, y1, x0, y0, 2*x2-x0, 2*y2-y0), tags=('bond',), outline=self.line_color, fill=self.line_color, joinstyle="miter")
+    return self.paper.create_polygon( (x1, y1, x0, y0, 2*x2-x0, 2*y2-y0), outline=self.line_color, fill=self.line_color, joinstyle="miter")
+
+
+  def _draw_a1( self):
+    x1, y1 = self.atom1.get_xy()
+    x2, y2 = self.atom2.get_xy()
+    #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
+    # main item
+    self.item = self._draw_adder( (x1,y1,x2,y2), self.line_width)
+    self.paper.addtag_withtag( "bond", self.item)
+    # draw helper items
+    self.second = self.third = []
+    self.paper.register_id( self.item, self)
+    return x1,y1,x2,y2
+
+  def _draw_a2( self):
+    if self.center == None or self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # double
+    if self.center:
+      x1,y1,x2,y2 = self._draw_n1()
+      self.paper.itemconfig( self.item, fill='')
+      d = int( round( d/3))
+    else:
+      x1,y1,x2,y2 = self._draw_a1()
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = [self._draw_adder( (x,y,x0,y0), self.line_width)]
+    if self.center:
+      self.third = [self._draw_adder( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)]
+
+  def _draw_a3( self):
+    x1,y1,x2,y2 = self._draw_a1()
+    if self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    self.second = [self._draw_adder( (x,y,x0,y0), self.line_width)]
+    self.third = [self._draw_adder( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0), self.line_width)]
+
+
+  def _draw_adder( self, coords, width):
+    """returns list items"""
+    x1, y1, x2, y2 = coords
+    # main item
+    step_size = 3
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, width)
+    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    dx1 = -(x1 - x0)/d
+    dy1 = -(y1 - y0)/d
+    dx2 = -(x1 -2*x2 +x0)/d
+    dy2 = -(y1 -2*y2 +y0)/d
+    coords2 = []
+    for i in range( 0, int( round( d/ step_size))+1):
+      coords = [x1+dx1*i*step_size, y1+dy1*i*step_size, x1+dx2*i*step_size, y1+dy2*i*step_size]
+      if coords[0] == coords[2] and coords[1] == coords[3]:
+        if (dx1+dx2) > (dy1+dy2): 
+          coords[0] += 1
+        else:
+          coords[1] += 1
+      if i % 2:
+        coords2.extend((coords[0], coords[1]))
+      else:
+        coords2.extend((coords[2], coords[3]))
+    return ( self.paper.create_line( coords2, width=self.line_width, fill=self.line_color))
+
+  def _draw_b1( self):
+    self._draw_n1()
+    self.paper.itemconfigure( self.item, width = self.line_width)
+
+  def _draw_b2( self):
+    self._draw_n2()
+    items = [self.item] + self.second + self.third
+    [self.paper.itemconfigure( item, width = self.line_width) for item in items]
+
+  def _draw_b3( self):
+    self._draw_n3()
+    items = [self.item] + self.second + self.third
+    [self.paper.itemconfigure( item, width = self.line_width) for item in items]
 
 
   def redraw( self, recalc_side=0):
@@ -1179,12 +1320,10 @@ class bond( meta_enabled):
   def simple_redraw( self):
     """very fast redraw that draws only a simple line instead of the bond,
     used in 3d rotation only (as for bkchem 0.5.0)"""
-    if self.second:
-      self.paper.delete( self.second)
-      self.second = None
-    if self.third:
-      self.paper.delete( self.third)
-      self.third = None
+    [self.paper.delete( i) for i in self.second]
+    self.second = []
+    [self.paper.delete( i) for i in self.third]
+    self.third = []
     if self.items:
       map( self.paper.delete, self.items)
       self.items = []
@@ -1196,32 +1335,32 @@ class bond( meta_enabled):
     
 
   def focus( self):
-    if self.type == 'n':
-      items = [self.item]
-      if self.second:
-        items += [self.second]
-      if self.third:
-        items += [self.third]
+    # all the items of the bond
+    items = [self.item] + self.second + self.third
+
+    if self.type in 'nab':
       [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
     elif self.type == 'h':
-      [self.paper.itemconfig( item, width = self.line_width+2) for item in self.items]
+      self.paper.itemconfig( self.item, fill="black")
     elif self.type == 'w':
-      self.paper.itemconfigure( self.item, fill='white')
+      if self.center:
+        items.remove( self.item)
+      [self.paper.itemconfigure( item, fill='white') for item in items]
+      
 
   def unfocus( self):
-    if self.type == 'n':
+    items = [self.item] + self.second + self.third
+
+    if self.type in 'nab':
       if not self.item:
         return
-      items = [self.item]
-      if self.second:
-        items += [self.second]
-      if self.third:
-        items += [self.third]
       [self.paper.itemconfig( item, width = self.line_width) for item in items]
     elif self.type == 'h':
-      [self.paper.itemconfig( item, width = self.line_width) for item in self.items]
+      self.paper.itemconfig( self.item, fill = "")
     elif self.type == 'w':
-      self.paper.itemconfigure( self.item, fill=self.line_color)
+      if self.center:
+        items.remove( self.item)
+      [self.paper.itemconfigure( item, fill=self.line_color) for item in items]
 
   def select( self):
     x1, y1 = self.atom1.get_xy()
@@ -1241,35 +1380,19 @@ class bond( meta_enabled):
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
     #self.redraw()  # changed for speed, reduces time needed to move objects to 1/2 
-    b = [self.item]
-    if self.second:
-      b.append( self.second)
-    if self.third:
-      b.append( self.third)
-    if self.selector:
-      b.append( self.selector)
-    if self.items:
-      b.extend( self.items)
-    [self.paper.move( o, dx, dy) for o in b]
+    items = [self.item] + self.second + self.third + self.items
+    [self.paper.move( o, dx, dy) for o in items]
       
   def delete( self):
     self.unselect()
-    items = []
+    items = [self.item] + self.second + self.third + self.items
     if self.item:
-      items += [self.item]
       self.paper.unregister_id( self.item)
-      self.item = None
-    if self.second:
-      items += [self.second]
-      self.second = None
-    if self.third:
-      items += [self.third]
-      self.third = None
-    if self.items:
-      items.extend( self.items)
-      self.items = []
-    map( self.paper.delete, items)
     self.item = None
+    self.second = []
+    self.third = []
+    self.items = []
+    map( self.paper.delete, items)
     return self
 
   def read_package( self, package):
@@ -1317,7 +1440,7 @@ class bond( meta_enabled):
                                         ('start', self.atom1.get_cdml_id()),
                                         ('end', self.atom2.get_cdml_id()),
                                         ('double_ratio', str( self.double_length_ratio))))
-    if self.order != 1 or self.type in 'wha':
+    if self.order != 1:
       bnd.setAttribute( 'distance', str( self.bond_width  * self.paper.screen_to_real_ratio()))
       if self.order == 2:
         bnd.setAttribute( 'center', b[ self.center])
