@@ -273,7 +273,10 @@ class BKchem( Tk):
                                                  pady = 0,
                                                  hull_relief = 'ridge',
                                                  ))
-        self.subbuttons[i].pack( side=LEFT)
+        if i % 2:
+          self.subbuttons[i].pack( side=LEFT, padx=10)
+        else:
+          self.subbuttons[i].pack( side=LEFT)
       for sub in m.submodes[i]:
         if sub in pixmaps.images:
           recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey')
