@@ -39,14 +39,15 @@ class piddle_exporter( plugin.exporter):
     self.paper.unselect_all()
     scale = 720.0/self.paper.winfo_fpixels( '254m')
     if self.paper.get_paper_property( 'crop_svg'):
+      margin = self.paper.get_paper_property('crop_margin')
       items = list( self.paper.find_all())
       items.remove( self.paper.background)
       x1, y1, x2, y2 = self.paper.list_bbox( items)
       self.transformer = transform.transform()
-      self.transformer.set_move( -x1, -y1)
+      self.transformer.set_move( -x1+margin, -y1+margin)
       self.transformer.set_scaling( scale)
-      dx = x2-x1
-      dy = y2-y1
+      dx = x2-x1 +2*margin
+      dy = y2-y1 +2*margin
     else:
       self.transformer = transform.transform()
       self.transformer.set_scaling( scale)

@@ -532,9 +532,10 @@ class chem_paper( Canvas, object):
         cr = int( paper.getAttribute( 'crop_svg'))
       else:
         cr = 1
-      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr)
+      cm = int( paper.getAttribute( 'crop_margin') or self.standard.paper_crop_margin)
+      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr, crop_margin=cm)
     else:
-      self.set_paper_properties( type='A4', orientation='portrait', crop_svg=1)
+      self.set_default_paper_properties()
     # viewport
     viewport = dom_extensions.getFirstChildNamed( CDML, 'viewport')
     if viewport:
@@ -610,9 +611,12 @@ class chem_paper( Canvas, object):
                                                                    ( 'xmlns', data.cdml_namespace)))
     info = dom_extensions.elementUnder( root, 'info')
     dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',config.current_BKchem_version),))
-    paper = dom_extensions.elementUnder( root, 'paper', attributes = (('type', self._paper_properties['type']),
-                                                                      ('orientation', self._paper_properties['orientation']),
-                                                                      ('crop_svg', '%d' % self._paper_properties['crop_svg'])))
+    paper = dom_extensions.elementUnder( root, 'paper',
+                                         attributes = (('type', self._paper_properties['type']),
+                                                       ('orientation', self._paper_properties['orientation']),
+                                                       ('crop_svg', '%d' % self._paper_properties['crop_svg']),
+                                                       ('crop_margin', '%d' % self._paper_properties['crop_margin'])
+                                                       ))
     if self._paper_properties['type'] == 'custom':
       dom_extensions.setAttributes( paper, (('size_x', '%d' % self._paper_properties['size_x']),
                                             ('size_y', '%d' % self._paper_properties['size_y'])))
@@ -1472,6 +1476,9 @@ class chem_paper( Canvas, object):
 
     # crop svg
     self._paper_properties['crop_svg'] = self.standard.paper_crop_svg
+    # crop margin
+    self._paper_properties['crop_margin'] = self.standard.paper_crop_margin
+    
     
 
   def create_background( self):
@@ -1485,7 +1492,7 @@ class chem_paper( Canvas, object):
     
 
 
-  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None):
+  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None, crop_margin=None):
     if all:
       self._paper_properties = copy.copy( all)
       return
@@ -1501,14 +1508,17 @@ class chem_paper( Canvas, object):
         t = 'custom'
         o = orientation or self._paper_properties['orientation']
         sx, sy = x, y
-      self._paper_properties = {'type': t,
-                                'orientation': o,
-                                'size_x': sx,
-                                'size_y': sy}
+      self._paper_properties['type'] = t
+      self._paper_properties['orientation'] = o
+      self._paper_properties['size_x'] = sx
+      self._paper_properties['size_y'] = sy
                               
     # crop svg
     if crop_svg != None:
       self._paper_properties['crop_svg'] = crop_svg
+
+    if crop_margin != None:
+      self._paper_properties['crop_margin'] = crop_margin
 
     self.create_background()
 

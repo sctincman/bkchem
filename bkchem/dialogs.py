@@ -516,8 +516,10 @@ class file_properties_dialog:
                               title=_('File properties'),
                               command=self.done,
                               master='parent')
-    self.body = Tkinter.Frame( self.dialog.interior())
-    self.body.pack()
+    self.body = Tkinter.Frame( self.dialog.interior(),
+                               bd=2,
+                               relief="groove")
+    self.body.pack( padx=10, pady=10, anchor="n" )
     self.draw()
     self.dialog.activate()
 
@@ -533,7 +535,7 @@ class file_properties_dialog:
                                               labelpos = 'w',
                                               label_text = _('Paper size')+':',
                                               menubutton_width = 10)
-    self.paper_type_chooser.pack( anchor='w', padx=10, pady=10)
+    self.paper_type_chooser.pack( anchor='n', padx=10, pady=10)
     # paper orientation
     self.paper_orientation_chooser = Pmw.RadioSelect( self.body,
                                                       buttontype='radiobutton',
@@ -550,8 +552,24 @@ class file_properties_dialog:
     # full svg or just the filled part
     self.crop_paper_in_svg = Tkinter.IntVar()
     self.crop_paper_in_svg.set( self.paper.get_paper_property( 'crop_svg'))
-    crop = Tkinter.Checkbutton( self.body, text=_('Auto crop image in SVG?'), variable=self.crop_paper_in_svg)
+    crop = Tkinter.Checkbutton( self.dialog.interior(),
+                                anchor="n",
+                                text=_('Auto crop image in SVG?\n(applies to some other exports as well)'),
+                                variable=self.crop_paper_in_svg,
+                                command=self.crop_paper_changed)
     crop.pack( anchor='w', padx=10, pady=10)
+    # margin for cropping
+    margin = self.paper.get_paper_property( 'crop_margin')
+    self.margin_entry = Pmw.Counter( self.dialog.interior(),
+                                     labelpos = 'w',
+                                     label_text=_("Margin for cropped image (in pixels):"),
+                                     entryfield_value = margin,
+                                     entryfield_validate={ 'validator':'integer', 'min':0, 'max':1000},
+                                     entry_width = 5,
+                                     increment = 5,
+                                     datatype = 'integer')
+    self.margin_entry.pack( anchor='n', padx=10, pady=10)
+
 
 
   def done( self, button):
@@ -566,8 +584,18 @@ class file_properties_dialog:
         type = 'custom'
       self.paper.set_paper_properties( type=type,
                                        orientation=o,
-                                       crop_svg=self.crop_paper_in_svg.get())
+                                       crop_svg=self.crop_paper_in_svg.get(),
+                                       crop_margin=int( self.margin_entry.getvalue()))
       self.paper.changes_made = 1
+
+
+  def crop_paper_changed( self):
+    return 
+    val = self.crop_paper_in_svg.get()
+    if not val:
+      self.margin_entry.configure( entry_state="disabled")
+    else:
+      self.margin_entry.configure( entry_state="normal")
 
 
 
@@ -638,6 +666,7 @@ class standard_values_dialog:
     self.font_family = widgets.FontFamilyChooser( font_group, self.standard.font_family)
     self.font_family.pack( anchor="nw", side = 'bottom')
 
+    # PAPER
     # paper type
     self.paper = self.parent.paper
     paper_group = self.pages.add(_('Paper'))
@@ -670,7 +699,20 @@ class standard_values_dialog:
     self.crop_paper_in_svg.set( self.paper.get_paper_property( 'crop_svg'))
     crop = Tkinter.Checkbutton( paper_group, text=_('Auto crop image in SVG?'), variable=self.crop_paper_in_svg)
     crop.pack( anchor='w', padx=10, pady=10)
+    # crop margin
+    margin = self.paper.get_paper_property( 'crop_margin')
+    self.margin_entry = Pmw.Counter( paper_group,
+                                     labelpos = 'w',
+                                     label_text=_("Margin for cropped image (in pixels):"),
+                                     entryfield_value = margin,
+                                     entryfield_validate={ 'validator':'integer', 'min':0, 'max':1000},
+                                     entry_width = 5,
+                                     increment = 5,
+                                     datatype = 'integer')
+    self.margin_entry.pack( anchor='w', padx=10, pady=10)
 
+
+    # DIALOG WIDE PART
     # how to apply?
     apply_group = Pmw.Group( self.body, tag_text=_('Apply'))
     apply_group.pack( fill='x', padx=5, pady=5)
@@ -745,6 +787,8 @@ class standard_values_dialog:
       st.paper_orientation = 'landscape'
     # crop_svg
     st.paper_crop_svg = self.crop_paper_in_svg.get()
+    # crop_margin
+    st.paper_crop_margin = self.margin_entry.getvalue()
     return st
 
   def _apply_button_callback( self, tag):
@@ -826,6 +870,7 @@ class preferences_dialog:
     self.font_family = widgets.FontFamilyChooser( font_group, self.standard.font_family)
     self.font_family.pack( anchor="nw", side = 'bottom')
 
+    # PAPER
     # paper type
     self.paper = self.parent.paper
     paper_group = self.pages.add(_('Paper'))
@@ -858,7 +903,20 @@ class preferences_dialog:
     self.crop_paper_in_svg.set( self.paper.get_paper_property( 'crop_svg'))
     crop = Tkinter.Checkbutton( paper_group, text=_('Auto crop image in SVG?'), variable=self.crop_paper_in_svg)
     crop.pack( anchor='w', padx=10, pady=10)
+    # crop margin
+    margin = self.paper.get_paper_property( 'crop_margin')
+    self.margin_entry = Pmw.Counter( paper_group,
+                                     labelpos = 'w',
+                                     label_text=_("Margin for cropped image (in pixels):"),
+                                     entryfield_value = margin,
+                                     entryfield_validate={ 'validator':'integer', 'min':0, 'max':1000},
+                                     entry_width = 5,
+                                     increment = 5,
+                                     datatype = 'integer')
+    self.margin_entry.pack( anchor='w', padx=10, pady=10)
 
+
+    # DIALOG WIDE PART
     # how to apply?
     apply_group = Pmw.Group( self.body, tag_text=_('Apply'))
     apply_group.pack( fill='x', padx=5, pady=5)
@@ -933,6 +991,8 @@ class preferences_dialog:
       st.paper_orientation = 'landscape'
     # crop_svg
     st.paper_crop_svg = self.crop_paper_in_svg.get()
+    # crop_margin
+    st.paper_crop_margin = self.margin_entry.getvalue()
     return st
 
   def _apply_button_callback( self, tag):

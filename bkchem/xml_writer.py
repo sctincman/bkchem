@@ -66,7 +66,7 @@ class SVG_writer( XML_writer):
   def construct_dom_tree( self, top_levels):
     """constructs the SVG dom from all top_levels"""
     # the constants
-    border_size = 10
+    border_size = self.paper.get_paper_property( 'crop_margin')
 
     # converter
     px_to_cm_txt = lambda x: self.paper.px_to_text_with_unit( x, unit="cm", round_to=5)

@@ -66,6 +66,7 @@ class standard:
     self.paper_type = 'A4'
     self.paper_orientation = 'portrait'
     self.paper_crop_svg = 0
+    self.paper_crop_margin = 10
 
 
   def __eq__( self, other):
@@ -90,7 +91,8 @@ class standard:
                                         ('area_color', self.area_color),
                                         ('paper_type', self.paper_type),
                                         ('paper_orientation', self.paper_orientation),
-                                        ('paper_crop_svg', str( self.paper_crop_svg))))
+                                        ('paper_crop_svg', str( self.paper_crop_svg)),
+                                        ('paper_crop_margin', str( self.paper_crop_margin))))
     dom_extensions.elementUnder( ret, 'bond', (('length', str( self.bond_length)),
                                                ('width', str( self.bond_width)),
                                                ('wedge-width', str( self.wedge_width)),
@@ -100,11 +102,12 @@ class standard:
 
   def read_package( self, p):
     for attr in ('line_width', 'font_size', 'font_family', 'line_color','area_color',
-                 'paper_crop_svg','paper_orientation','paper_type'):
+                 'paper_crop_svg','paper_orientation','paper_type','paper_crop_margin'):
       if p.getAttribute( attr):
         self.__dict__[ attr] = p.getAttribute( attr)
     self.font_size = int( self.font_size)
     self.paper_crop_svg = int( self.paper_crop_svg)
+    self.paper_crop_margin = int( self.paper_crop_margin)
     b = dom_extensions.getFirstChildNamed( p, 'bond')
     if b:
       self.bond_length = b.getAttribute( 'length') or self.bond_length
