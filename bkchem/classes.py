@@ -1052,7 +1052,7 @@ class bond( meta_enabled):
   meta__used_standard_values = ['line_color','double_length_ratio']
   # undo related metas
   meta__undo_simple = ('atom1', 'atom2', 'type', 'line_width', 'center', 'bond_width',
-                       'molecule', 'line_color','double_length_ratio', 'wedge_width')
+                       'molecule', 'line_color','double_length_ratio', 'wedge_width', 'order')
 
 
   def __init__( self, paper, atoms=(), package=None, molecule=None, type='s', order=1):

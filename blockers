@@ -13,7 +13,6 @@ remarks
 
 - the fucked booleans corrupt saving of str( boolean) - was 1 or 0 now is 'True' or 'False'
 - undo not working well with double bond positioning (the bond should recalculate the sign after transformation)
-- bond.order not undone
 
 
 new bond types -
