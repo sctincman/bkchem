@@ -1077,11 +1077,8 @@ class text_mode( edit_mode):
           self.app.paper.set_name_to_selected( name)
           self.app.paper.add_bindings()
       elif self.focused.object_type == 'atom':
-        self.app.paper.select( [self.focused])
-        name = self.app.editPool.activate( text = self.focused.get_text())
-        if name and not dom_extensions.isOnlyTags( name):
-          self.app.paper.set_name_to_selected( name)
-          self.app.paper.add_bindings()
+        self.app.paper.signal_to_app( _("The text mode can no longer be used to edit atoms, use atom mode."))
+
 
   def leave_object( self, event):
     if self.focused:
@@ -1524,7 +1521,7 @@ class atom_mode( edit_mode):
         self.app.paper.select( [self.focused])
         name = self.app.editPool.activate( text = self.focused.get_text())
         if name and not dom_extensions.isOnlyTags( name):
-          self.app.paper.set_name_to_selected( name)
+          self.app.paper.set_name_to_selected( name, interpret=self.app.editPool.interpret)
           self.app.paper.add_bindings()
 
   def leave_object( self, event):
