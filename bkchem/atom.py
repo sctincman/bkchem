@@ -36,7 +36,8 @@ import groups_table as GT
 import marks
 from parents import meta_enabled, area_colored, point_drawable, text_like, child
 import data
-
+import re
+import debug
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
@@ -316,7 +317,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def _set_name( self, name, interpret=1, check_valency=1):
-    # every time name is set the charge should be set to zero
+    # every time name is set the charge should be set to zero or the value specified by marks
     self.charge = self.get_charge_from_marks()
     self.dirty = 1
     # name should not be interpreted
@@ -331,11 +332,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.show = 1
     else:
       self.show = 0
-    if name.capitalize() in PT.periodic_table:
-      # name is element symbol
-      self.name = name.capitalize()
+    elch = self.split_element_and_charge( name)
+    if elch:
+      # name is element symbol + charge
+      self.name = elch[0]
       self.show_hydrogens = 0
       self.type = 'element'
+      self.charge += elch[1]
+      debug.log( name, self.charge, self.get_ftext())
     elif (name.lower() in GT.groups_table) and ( not check_valency or self.molecule.get_atoms_occupied_valency( self) == 1):
       # name is a known group
       self.name = GT.groups_table[ name.lower()]['name']
@@ -367,6 +371,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.name = name
       self.show_hydrogens = 0
       self.type = 'text'
+      debug.log( name, 'is text')
 
 
 
@@ -658,8 +663,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     a = ['no','yes']
     on_off = ['off','on']
     self.id = package.getAttribute( 'id')
-    # charge
-    self.charge = package.getAttribute('charge') or 0
     # marks (we read them here because they influence the charge)
     for m in package.getElementsByTagName( 'mark'):
       auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
@@ -687,6 +690,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'), check_valency=0, interpret=0)
     else:
       self.set_name( package.getAttribute( 'name'), check_valency=0)
+    # charge
+    self.charge = package.getAttribute('charge') and int( package.getAttribute('charge')) or 0
+    # hydrogens
     if package.getAttribute( 'hydrogens'):
       self.show_hydrogens = package.getAttribute('hydrogens')
     else:
@@ -1058,3 +1064,26 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
           return (self.x + dx, self.y + 0.3*self.font_size, self.x - length + dx, self.y - 0.7*self.font_size) 
       else:
         return self.x, self.y, self.x, self.y
+
+
+
+  def split_element_and_charge( self, txt):
+    """returns tuple of (element, charge) or None if the text does not match this pattern"""
+    ### this could be a static method
+    splitter = re.compile("([a-z]+)([0-9]*)([+-]?)")
+    match = splitter.match( txt.lower())
+    if match:
+      if match.group(1).capitalize() not in PT.periodic_table:
+        return None
+      if match.group(3) == '+':
+        charge = match.group(2) and int( match.group(2)) or 1
+      elif match.group(3) == '-':
+        charge = match.group(2) and -int( match.group(2)) or -1
+      else:
+        charge = 0
+      return (match.group(1).capitalize(), charge)
+    else:
+      return None
+
+
+

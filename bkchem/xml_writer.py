@@ -279,7 +279,8 @@ class SVG_writer( XML_writer):
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
                                          ( 'stroke', t.line_color),
-                                         ( 'fill', t.line_color)))
+                                         ( 'fill', t.line_color),
+                                         ( 'textLength', "%dpx" % (x2-x-2))))   # -2 is a nasty hack
     self.group.appendChild( text)
 
   def add_plus( self, p):

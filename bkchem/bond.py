@@ -930,7 +930,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
         # if type was changed simply apply the change
         self.switch_to_type( to_type)
         self.switch_to_order( to_order)
-      elif to_order == 1 and to_type == 'nd':
+      elif to_order == 1 and to_type in 'nd':
         # we want to treat order=1, type='n' as special in order to support the s=>d d=>t t=>s behaviour
         # but only in case the type is 'n'
         v1 = self.atom1.get_free_valency()

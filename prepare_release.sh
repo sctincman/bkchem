@@ -12,7 +12,8 @@ echo "release number in:"
 echo "setup.py"
 echo "bkchem/data.py"
 echo "RELEASE"
-
+echo
+echo "set config.debug to 0"
 
 
 
