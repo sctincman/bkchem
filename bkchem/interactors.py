@@ -328,3 +328,19 @@ def create_fragment_from_selected( paper):
 def view_fragments( paper):
   a = dialogs.fragment_dialog( paper)
   a.activate()
+
+
+
+def set_atom_number( atoms):
+  dial = Pmw.PromptDialog( Store.app,
+                           title=_('Atom number'),
+                           label_text=_('Enter atom number:'),
+                           entryfield_labelpos = 'w',
+                           buttons=(_('OK'),_('Cancel')))
+  res = dial.activate()
+  if res == _('OK'):
+    for a in atoms:
+      a.number = dial.get()
+    Store.log( _("Number %s was set to atom(s).") % dial.get(), message_type="info")
+
+  

@@ -313,7 +313,6 @@ class SVG_writer( XML_writer):
                                                  ('font-family', p.font_family),
                                                  ( "x", str( x)),
                                                  ( "y", str( round( y1))),
-                                                 ( 'stroke', p.line_color),
                                                  ( 'fill', p.line_color)))
 
   def add_atom( self, a):

@@ -101,8 +101,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     self.marks = Set()
 
     # chemistry attrs
-    #   self.number = 0
-    #   self.show_number = 0
+    self.show_number = True
+    self.number = None
     self.show_hydrogens = 0
     self.show = 0
 
@@ -306,6 +306,19 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
   drawn = property( _get_drawn, None, None, "tells if the atom is already drawn")
 
 
+  # number
+  def _set_number( self, number):
+    self._number = number
+    if self._number != None and self.show_number:
+      numbers = [m for m in self.marks if m.__class__.__name__ == "atom_number"]
+      if not numbers:
+        self.create_mark( "atom_number", draw=self.drawn)
+
+
+  def _get_number( self):
+    return self._number
+
+  number = property( _get_number, _set_number, None, "the number associated with the atom")
 
 
 
@@ -691,7 +704,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     # valency
     if package.getAttribute( 'valency'):
       self.valency = int( package.getAttribute( 'valency'))
-      
+    # number
+    if package.getAttribute( 'number'):
+      self.number = package.getAttribute( 'number')
 
 
 
@@ -736,7 +751,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       a.setAttribute( 'multiplicity', str( self.multiplicity))
     # valency
     a.setAttribute( 'valency', str( self.valency))
-
+    # number
+    if self.number:
+      a.setAttribute( 'number', self.number)
+      a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
     return a
 
 

@@ -27,6 +27,7 @@ from atom import atom
 from group import group
 from sets import Set
 import types
+import interactors
 
 
 
@@ -92,6 +93,7 @@ class context_menu( Tkinter.Menu):
     self.add_separator()        
     self.register_command( _("Center bond"), ('bond',), center)
     self.register_command( _("Expand group"), ('atom',), expand_groups)
+    self.register_command( _("Set atom number"), ('atom',), set_atom_number)
 
     # common commands
     self.add_separator()
@@ -189,10 +191,11 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   (-1, _("anti-auto")))),
                   'order':            ( _("Bond order"),         (0,1,2,3)),
                   'size':             ( _("Mark size"),          (2,4,6,8,10,12,14,16,18)),
+                  'number':           ( _("Atom number"),        ('1','2','3','4','5','6','7','8','9','10','11','12'))
                   }
 
 
-configurable = {'atom':    ('show', 'font_size', 'show_hydrogens','pos'),
+configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number'),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),
@@ -220,3 +223,5 @@ def expand_groups( groups):
     mol.expand_groups( atoms=gs)
     
 
+def set_atom_number( atoms):
+  interactors.set_atom_number( atoms)

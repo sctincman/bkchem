@@ -28,6 +28,8 @@ import warnings
 from parents import simple_parent
 from singleton_store import Screen
 import data
+import tkFont
+
 
 
 class mark( simple_parent):
@@ -106,7 +108,7 @@ class mark( simple_parent):
 
   def set_color( self, color):
     [self.paper.itemconfig( i, outline=color, fill=color) for i in self.items if self.paper.type( i) in ("oval",)]
-    [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
+    [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line","text")]
     
 
   def register( self):
@@ -125,8 +127,13 @@ class mark( simple_parent):
                                       ('y', y),
                                       ('auto', str( int( self.auto))),
                                       ('size', str( self.size))))
-    if hasattr( self, "draw_circle"):
-      a.setAttribute( "draw_circle", data.booleans[ int( self.draw_circle)])
+    for (attr, typ) in self.meta__save_attrs.iteritems():
+      val = getattr( self, attr)
+      if typ == bool:
+        value = data.booleans[ int( val)]
+      else:
+        value = str( val)
+      a.setAttribute( attr, value)
     return a
 
 
@@ -142,10 +149,19 @@ class mark( simple_parent):
         m = cls( atom, x, y, size=size, auto=int(auto))
       else:
         m = cls( atom, x, y, auto=int(auto))
-      if hasattr( m, "draw_circle"):
-        circle = package.getAttribute( "draw_circle")
-        if circle != '':
-          m.draw_circle = bool( data.booleans.index( circle))
+
+      # class specific attributes
+      for (attr, typ) in m.meta__save_attrs.iteritems():
+        val = package.getAttribute( attr)
+        if val != '':
+          if typ == bool:
+            value = bool( data.booleans.index( val))
+          elif typ == int:
+            value = int( val)
+          else:
+            value = val
+          setattr( m, attr, value)
+
       return m
     else:
       raise ValueError, "no such mark type %s" % typ
@@ -306,6 +322,7 @@ class plus( mark):
   standard_size = 10
   meta__undo_simple = mark.meta__undo_simple + \
                       ('draw_circle',)
+  meta__save_attrs = {"draw_circle": bool}
 
 
   def __init__( self, atom, x, y, size=10, auto=1):
@@ -368,10 +385,13 @@ class minus( mark):
   standard_size = 10
   meta__undo_simple = mark.meta__undo_simple + \
                       ('draw_circle',)
+  meta__save_attrs = {"draw_circle": bool}
+  
 
   def __init__( self, atom, x, y, size=10, auto=1):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
     self.draw_circle = True
+
 
   def draw( self):
     if self.items:
@@ -416,3 +436,85 @@ class minus( mark):
     [self.paper.itemconfig( i, outline=color) for i in self.items if self.paper.type( i) in ("oval",)]
     [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
 
+
+
+
+
+class text_mark( mark):
+
+  meta__undo_simple = mark.meta__undo_simple + ('text',)
+  meta__save_attrs = {"text": str}
+    
+
+  def __init__( self, atom, x, y, text="", size=8, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
+    self.text = text
+
+  # the text property
+  def _set_text( self, text):
+    self._text = str( text)
+
+  def _get_text( self):
+    return self._text
+
+  text = property( _get_text, _set_text, None, "the text of the mark")
+    
+
+  def draw( self):
+    
+    self.items = [self.paper.create_text( self.x,
+                                          self.y,
+                                          text=self.text,
+                                          fill=self.atom.line_color,
+                                          font=(self.atom.font_family, self.size, "normal"),
+                                          tags="mark")]
+
+
+  def get_svg_element( self, doc):
+    e = doc.createElement( 'g')
+    x, y = self.x, self.y
+    font = tkFont.Font( family=self.atom.font_family, size=self.size)
+    dx = font.measure( self.text) / 2
+
+    text = dom_extensions.textOnlyElementUnder( e, 'text', self.text,
+                                                (('font-size', "%dpt" % self.size),
+                                                 ('font-family', self.atom.font_family),
+                                                 ( "x", str( x - dx)),
+                                                 ( "y", str( y)),
+                                                 ( 'fill', self.atom.line_color)))
+    return e
+
+
+
+
+
+class referencing_text_mark( text_mark, mark):
+  """similar to text mark but the text is taken from the referenced atom"""
+
+  meta__undo_simple = mark.meta__undo_simple
+  meta__save_attrs = {"refname": str}
+  
+
+  def __init__( self, atom, x, y, refname, size=8, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
+    self.refname = refname
+
+  # the text property
+  def _get_text( self):
+    if hasattr( self.atom, self.refname):
+      return getattr( self.atom, self.refname)
+
+  text = property( _get_text, None, None, "the text of the mark")
+
+
+  def draw( self):
+    text_mark.draw( self)
+
+
+
+
+class atom_number( referencing_text_mark):
+
+  def __init__( self, atom, x, y, size=8, auto=1):
+    referencing_text_mark.__init__( self, atom, x, y, "number", size=size, auto=auto)
+  
