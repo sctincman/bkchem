@@ -373,8 +373,14 @@ class molecule( simple_parent):
   def delete( self):
     [o.delete() for o in self.bonds+self.atoms_map]
 
-  def redraw( self):
-    [o.redraw() for o in self.bonds+self.atoms_map]
+  def redraw( self, reposition_double=0):
+    for o in self.bonds:
+      if o.order == 2:
+        o.redraw( recalc_side=reposition_double)
+      else:
+        o.redraw()
+    [o.redraw() for o in self.atoms_map]  
+
     
   def get_atoms_valency( self, atom):
     val = 0

@@ -5,6 +5,7 @@ remarks
   calls.
 - make use of get_submode() in modes
 - why does _decide_distance_and_center compute bond_width from length? It should take it from the standard
+- recalc_side needs to be really perfect, which isn't
 
 
 0.6.0
@@ -14,12 +15,13 @@ remarks
 new bond types -
 	- update exports and imports
 
+- vertical and horizontal swap
+  - not containers
+  - things should remain selected
+  - shit - i found a case where recalc_side does not work right, needs some work!
+
 - mode for ring creation
 
-
-- vertical and horizontal swap
-  - double bonds
-  - not containers
 - meta infos - is_container
 	- distinguish between container as molecule and containers as all top level classes
 	- is simple?

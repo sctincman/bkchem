@@ -1237,7 +1237,10 @@ class BKpaper( Canvas):
           for i in o.get_shape_defining_children():
             x, y = i.get_xy()
             i.move_to( x0_2 - x, y)
-          o.redraw()
+          if o.object_type == 'molecule':
+            o.redraw( reposition_double=1)
+          else:
+            o.redraw()
         else:
           print "fuck"
     # horizontal (rotate around x axis)
@@ -1249,7 +1252,10 @@ class BKpaper( Canvas):
           for i in o.get_shape_defining_children():
             x, y = i.get_xy()
             i.move_to( x, y0_2 -y)
-          o.redraw()
+          if o.object_type == 'molecule':
+            o.redraw( reposition_double=1)
+          else:
+            o.redraw()
         else:
           print "fuck"
 
