@@ -841,6 +841,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   def switch_to_order( self, order):
     self.order = order
+    if self.order == 3:
+      self.center = 0
     if self.order > 1:
       self._decide_distance_and_center()
     

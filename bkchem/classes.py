@@ -732,7 +732,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
     try:
-      self.xml_text = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
+      self.set_text( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], ''))
     except IndexError:
       self.xml_text = "?"
 
