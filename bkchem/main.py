@@ -43,6 +43,8 @@ import misc
 from edit_pool import editPool
 import pixmaps
 import types
+from temp_manager import template_manager
+import modes
 
 
 class BKchem( Tk):
@@ -67,10 +69,6 @@ class BKchem( Tk):
     self.save_file = None
     self.svg_dir = '.'
     self.svg_file = ''
-    self.post_file = ''
-    self.kil_file = ''
-    self.png_file = ''
-    self.pov_file = ''
 
     self._untitled_counter = 0
 
@@ -84,37 +82,13 @@ class BKchem( Tk):
     # main drawing part
     self.papers = []
     self.notebook = Pmw.NoteBook( mainFrame,
-                                  raisecommand=self.paper_change)
+                                  raisecommand=self.change_paper)
 
-    for i in range( 1):
-      name = 'untitled%d.svg' % self._untitled_counter
-      self._untitled_counter += 1
-      paperFrame = self.notebook.add( name)
-      paper = BKpaper( paperFrame, app=self,
-                       width=640, height=480,
-                       scrollregion=(0,0,'210m','297m'),
-                       background="grey", closeenough=5,
-                       name=name)
-      scroll_y = Scrollbar( paperFrame, orient = VERTICAL, command = paper.yview)
-      scroll_x = Scrollbar( paperFrame, orient = HORIZONTAL, command = paper.xview)
-      paper.grid( row=0, column=0, sticky="news")
-      paperFrame.grid_rowconfigure( 0, weight=1, minsize = 0)
-      paperFrame.grid_columnconfigure( 0, weight=1, minsize = 0)
-      scroll_x.grid( row=1, column=0, sticky='we')
-      scroll_y.grid( row=0, column=1, sticky='ns')
-      paper['yscrollcommand'] = scroll_y.set
-      paper['xscrollcommand'] = scroll_x.set
-      self.papers.append( paper)
-      
-    self.paper = self.papers[0]
-    self.paper.focus_set()
+    self.add_new_paper()
 
     #
     # here are all the functions needed for multiple papers
     #
-    from temp_manager import template_manager
-    import modes
-
     # template_manager
     self.tm = template_manager( self.paper)
     self.tm.add_template_from_CDML( "templates.cdml")
@@ -230,14 +204,6 @@ class BKchem( Tk):
     optionsButton['menu'] = optionsMenu
     optionsMenu.add( 'command', label=_('Standard'), command=self.standard_values)
 
-
-    # EXPERIMENTAL EXPORTS
-    #exportButton = Menubutton( menu, text=_('Experimental exports'))
-    #exportButton.pack( side= 'left')
-    #exportMenu = Menu( exportButton, tearoff=0)
-    #exportButton['menu'] = exportMenu
-    #exportMenu.add( 'command', label=_('Export PNG'), command = self.save_PNG, state=import_checker.PIL_state)
-    
     # PLUGINS
     if plugins.__all__:
       self.plugins = []
@@ -270,7 +236,7 @@ class BKchem( Tk):
         self.balloon.bind( recent, self.modes[ m].name)
       else:
         radiobuttons.add( m, text=self.modes[ m].name)
-    #sub-mode support
+    # sub-mode support
     self.subFrame = Frame( mainFrame)
     self.subFrame.pack( fill=X)
     self.subbuttons = []
@@ -349,36 +315,54 @@ class BKchem( Tk):
       self.after_cancel( self._after)
     self._after = self.after( time*1000, func=self.clear_status)
 
-  def paper_change( self, name):
+  def change_paper( self, name):
     if self.papers:
       i = self.notebook.index( name)
       self.paper = self.papers[i]
       self.paper.mode = self.mode
 
   def add_new_paper( self, name=''):
-    if not name:
-      name = 'untitled%d.svg' % self._untitled_counter
-      self._untitled_counter += 1
-    page = self.notebook.add( name)
-    paper = BKpaper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5, name=name)
-    paper.pack* 
+    name_dic = self.get_name_dic( name=name)
+    page = self.notebook.add( name_dic['name'])
+    paper = BKpaper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5,
+                     file_name=name_dic)
+    # the scrolling
+    scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)
+    scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview)
+    paper.grid( row=0, column=0, sticky="news")
+    page.grid_rowconfigure( 0, weight=1, minsize = 0)
+    page.grid_columnconfigure( 0, weight=1, minsize = 0)
+    scroll_x.grid( row=1, column=0, sticky='we')
+    scroll_y.grid( row=0, column=1, sticky='ns')
+    paper['yscrollcommand'] = scroll_y.set
+    paper['xscrollcommand'] = scroll_x.set
+
     self.papers.append( paper)
     self.paper = paper
+    self.notebook.selectpage( Pmw.END)
+    self.paper.focus_set()
 
   def clear_status( self):
     self.stat.set( '')
 
   def save_CDML( self):
-    if not self.paper.name:
-      self.save_as_CDML()
+    """saves content of self.paper (recent paper) under its filename,
+    if the filename was automaticaly given by bkchem it will call save_as_CDML
+    in order to ask for the name"""
+    if self.paper.file_name['auto']:
+      new_name = self.save_as_CDML()
+      if new_name:
+        self.paper.file_name = new_name
     else:
-      a = os.path.join( self.save_dir, self.paper.name)
+      a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
       self._save_according_to_extension( a)
 
   def save_as_CDML( self):
-    if not self.save_file:
-      self.save_file = self._get_file_name()
-    a = asksaveasfilename( defaultextension = ".svg", initialdir = self.save_dir, initialfile = self.save_file,
+    """asks the user the name for a file and saves the current paper there,
+    dir and name should be given as starting values"""
+    dir = self.paper.file_name['dir']
+    name = self.paper.file_name['name']
+    a = asksaveasfilename( defaultextension = ".svg", initialdir = dir, initialfile = name,
                            title = _("Save As..."), parent = self,
                            filetypes=((_("CD-SVG file"),".svg"),
                                       (_("Gzipped CD-SVG file"),".svgz"),
@@ -386,14 +370,15 @@ class BKchem( Tk):
                                       (_("Gzipped CDML file"),".cdgz")))
     if a != '':
       if self._save_according_to_extension( a):
-        self.title( 'BKchem - %s' % self.save_file)
+        return self.get_name_dic( a)
       else:
-        self.save_file = None
+        return None
     else:
-      self.save_file = None
+      return None
 
   def _save_according_to_extension( self, filename):
-    self.save_dir, self.save_file = os.path.split( filename)
+    """decides the format from the file extension and saves self.paper in it"""
+    self.save_dir, save_file = os.path.split( filename)
     ext = os.path.splitext( filename)[1]
     if ext == '.cdgz':
       type = _('gzipped CDML')
@@ -408,35 +393,27 @@ class BKchem( Tk):
       type = _('CD-SVG')
       success = export.export_CD_SVG( self.paper, filename, gzipped=0)
     if success:
-      self.update_status( _("saved to %s file: %s") % (type, self.save_file))
+      self.update_status( _("saved to %s file: %s") % (type, save_file))
       self.paper.changes_made = 0
       return 1
     else:
-      self.update_status( _("failed to save to %s file: %s") % (type, self.save_file))
+      self.update_status( _("failed to save to %s file: %s") % (type, save_file))
       return 0
 
   def set_file_name( self, name, check_ext=0):
     """if check_ext is true append a .svg extension if no is present"""
     if check_ext and not os.path.splitext( name)[1]:
-      self.save_file = name + ".svg"
+      self.paper.file_name = self.get_name_dic( name + ".svg")
     else:
-      self.save_file = name
-    self.title( 'BKchem - %s' % self.save_file)
+      self.paper.file_name = self.get_name_dic( name)
 
-  def load_CDML( self, file=None):
-    if not self._load_CDML( file=file):
-      self.save_file = None
-    else:
-      self.title( 'BKchem - %s' % self.save_file)
-
-  def _load_CDML( self, file=None):
+  def load_CDML( self, file=None, replace=0):
     if not file:
       if self.paper.changes_made:
         if tkMessageBox.askyesno( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='yes') == 0:
           return 0
       a = askopenfilename( defaultextension = "",
                            initialdir = self.save_dir,
-                           initialfile = self.save_file,
                            title = _("Load"),
                            parent = self,
                            filetypes=((_("All native formats"), (".svg", ".svgz", ".cdml", ".cdgz")),
@@ -448,11 +425,13 @@ class BKchem( Tk):
                                       (_("All files"),"*")))
     else:
       a = file
+    if not replace:
+      self.add_new_paper()
     return self._load_CDML_file( a)
 
   def _load_CDML_file( self, a):
     if a != '':
-      self.save_dir, self.save_file = os.path.split( a)
+      self.save_dir, save_file = os.path.split( a)
       ## try if the file is gzipped
       # try to open the file
       try:
@@ -515,16 +494,17 @@ class BKchem( Tk):
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc)
+      self.paper.file_name = self.get_name_dic( a)
+      self.notebook.tab( Pmw.SELECT).configure( text = self.paper.file_name['name'])
       self.update_status( _("loaded file: ")+a)
       return 1
 
   def save_SVG( self):
-    if not self.svg_file:
-      self.svg_file = self._get_file_name()+".svg"
-    a = asksaveasfilename( defaultextension = ".svg", initialdir = self.svg_dir, initialfile = self.svg_file,
+    svg_file = self.paper.get_base_name()+".svg"
+    a = asksaveasfilename( defaultextension = ".svg", initialdir = self.svg_dir, initialfile = svg_file,
                          title = _("Export SVG"), parent = self, filetypes=((_("SVG file"),"*.svg"),))
     if a != '':
-      self.svg_dir, self.svg_file = os.path.split( a)
+      self.svg_dir, svg_file = os.path.split( a)
       try:
         inp = open( a, "w")
       except IOError, x:
@@ -534,20 +514,7 @@ class BKchem( Tk):
       dom_extensions.safe_indent( exporter.document.childNodes[0])
       inp.write( exporter.document.toxml())
       inp.close()
-      self.update_status( _("exported to SVG file: ")+self.svg_file)
-
-  def save_PNG( self):
-    if not self.png_file:
-      self.png_file = self._get_file_name()+".png"
-    a = asksaveasfilename( defaultextension = ".png", initialdir = self.svg_dir, initialfile = self.png_file,
-                         title = _("Export PNG"), parent = self, filetypes=((_("PNG file"),"*.png"),))
-    if a != '':
-      self.svg_dir, self.png_file = os.path.split( a)
-      try:
-        non_xml_writer.Bitmap_writer( self.paper).write_image( a)
-      except IOError, x:
-        raise "unable to open to file ", x
-      self.update_status( _("exported to PNG file: ")+self.png_file)
+      self.update_status( _("exported to SVG file: ")+svg_file)
 
 
   def _update_geometry( self, e):
@@ -559,11 +526,17 @@ class BKchem( Tk):
       x, y = dialog.result
       self.paper.scale_selected( x/100, y/100)
     
-  def _get_file_name( self):
-    if self.save_file:
-      return os.path.splitext( self.save_file)[0]
+  def get_name_dic( self, name=''):
+    if not name:
+      name = 'untitled%d.svg' % self._untitled_counter
+      name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1}
+      self._untitled_counter += 1
     else:
-      return 'untitled'
+      dir, name = os.path.split( name)
+      if not dir:
+        dir = self.save_dir
+      name_dic = {'name':name, 'dir':dir, 'auto': 0}
+    return name_dic
 
   def _quit( self):
     if self.paper.changes_made:
@@ -611,7 +584,7 @@ class BKchem( Tk):
     exporter = plugin.exporter( self.paper)
     if not exporter.on_begin():
       return
-    file_name = self._get_file_name()
+    file_name = self.paper.get_base_name()
     types = []
     if 'extensions' in plugin.__dict__ and plugin.extensions:
       file_name += plugin.extensions[0]
@@ -643,7 +616,6 @@ class BKchem( Tk):
     self.paper.clean_paper()
     self.paper.set_paper_properties( type='A4', orientation='portrait')
     self.save_file = None
-    self.title( "BKchem")
 
 
   def change_properties( self):

@@ -96,7 +96,7 @@ if len( sys.argv) > 1:
     if i > 1:
       myapp.add_new_paper()
     if os.path.isfile( sys.argv[1]):
-      myapp.load_CDML( file=sys.argv[i])
+      myapp.load_CDML( file=sys.argv[i], replace=1)
     else:
       myapp.set_file_name( sys.argv[i], check_ext=1)
 

@@ -19,6 +19,11 @@ FOR MULTIPLE PAPERS
 - remove the paper.mode ref, use only app.mode
 - saving should take care if untitled was set by user of automaticaly by the user
 - the saving is a mess
+- standard should be read on paper creation, the sizes should not be given by app
+- move load_file to paper?
+- check the saving and loading
+- add methods to close tabs
+- make sure copying works between papers
 
 
 0.x.0

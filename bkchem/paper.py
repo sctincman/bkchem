@@ -49,7 +49,7 @@ import dialogs
 
 class BKpaper( Canvas):
 
-  def __init__( self, master = None, app = None, name='', **kw):
+  def __init__( self, master = None, app = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)
     
     self.app = app
@@ -96,7 +96,8 @@ class BKpaper( Canvas):
     #
     self.changes_made = 0
     #
-    self.name = name
+    self.file_name = file_name
+
 
   def initialise( self):
     # template manager
@@ -1256,3 +1257,5 @@ class BKpaper( Canvas):
         self.start_new_undo_record()
       self.add_bindings()
 
+  def get_base_name( self):
+    return os.path.splitext( self.file_name['name'])[0]
