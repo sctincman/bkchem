@@ -21,6 +21,7 @@
 from sets import Set
 import dom_extensions as dom_ext
 import xml.sax.saxutils
+from singleton_store import Store
 
 
 class fragment( object):
@@ -85,12 +86,12 @@ class fragment( object):
 
 
 
-  def read_package( self, doc, id_manager):
+  def read_package( self, doc):
     self.id = doc.getAttribute( "id")
     self.type = doc.getAttribute( "type") or "explicit"
     name = dom_ext.getFirstChildNamed( doc, "name")
     if name:
       self.name = dom_ext.getAllTextFromElement( name)
     for b in dom_ext.simpleXPathSearch( doc, "bond"):
-      self.edges.add( id_manager.get_object_with_id( b.getAttribute( "id")))
+      self.edges.add( Store.id_manager.get_object_with_id( b.getAttribute( "id")))
     

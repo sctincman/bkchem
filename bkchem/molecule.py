@@ -337,10 +337,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     temp = package.getElementsByTagName('template')
     if temp:
       temp = temp[0]
-      self.t_atom = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'atom'))
+      self.t_atom = Store.id_manager.get_object_with_id( temp.getAttribute( 'atom'))
       if temp.getAttribute('bond_first') and temp.getAttribute('bond_second'):
-        self.t_bond_first = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_first'))
-        self.t_bond_second = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_second'))
+        self.t_bond_first = Store.id_manager.get_object_with_id( temp.getAttribute( 'bond_first'))
+        self.t_bond_second = Store.id_manager.get_object_with_id( temp.getAttribute( 'bond_second'))
       self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
     # display form
     df = package.getElementsByTagName('display-form')
@@ -351,7 +351,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     # fragments
     for fel in dom_extensions.simpleXPathSearch( package, "fragment"):
       f = fragment()
-      f.read_package( fel, self.paper.id_manager)
+      f.read_package( fel)
       self.fragments.add( f)
 
     # final check of atoms valecies
@@ -607,7 +607,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   def create_fragment( self, name, edges, type="explicit"):
     if self.defines_connected_subgraph_e( edges):
-      nf = fragment( self.paper.id_manager.generate_id( "frag"), name=name, type=type)
+      nf = fragment( Store.id_manager.generate_id( "frag"), name=name, type=type)
       nf.edges = Set( edges)
       self.fragments.add( nf)
       return True

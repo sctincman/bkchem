@@ -33,6 +33,9 @@ import xml.dom.minidom as dom
 import os.path
 import os_support
 
+from singleton_store import Store
+
+
 
 class external_data_manager( object):
 
@@ -101,7 +104,7 @@ class external_data_manager( object):
 
 
 
-  def set_data( self, dclass, obj, category, value, id_manager=None):
+  def set_data( self, dclass, obj, category, value):
     """sets the data into the internal dictionary"""
     if self.value_matches_definition( dclass, obj, category, value):
       if not obj in self.records[ dclass]:
@@ -109,7 +112,7 @@ class external_data_manager( object):
       # the type should be...
       t = self.definitions[ dclass][ obj.object_type][ category]['type']
       try:
-        self.records[ dclass][ obj][ category] = self.convert_to_type( value, t, id_manager=id_manager)
+        self.records[ dclass][ obj][ category] = self.convert_to_type( value, t)
       except ValueError:
         raise "the value '%s' type does not match the definition." % str( value)
     else:
@@ -180,7 +183,7 @@ class external_data_manager( object):
     return e
 
 
-  def read_package( self, root, id_manager):
+  def read_package( self, root):
     """reads the data from xml (CDML) format. Is not intended for reading of definition
     files, use read_data_definition instead"""
     for ecls in dom_ext.simpleXPathSearch( root, "class"):
@@ -188,27 +191,26 @@ class external_data_manager( object):
       if not cls in self.records.keys():
         self.records[ cls] = {}
       for eobj in dom_ext.simpleXPathSearch( ecls, "object"):
-        obj = id_manager.get_object_with_id( eobj.getAttribute( 'ref'))
+        obj = Store.id_manager.get_object_with_id( eobj.getAttribute( 'ref'))
         for evalue in dom_ext.simpleXPathSearch( eobj, "value"):
           vcat = evalue.getAttribute( 'category')
           vvalue = evalue.getAttribute( 'value')
-          self.set_data( cls, obj, vcat, vvalue, id_manager=id_manager)
+          self.set_data( cls, obj, vcat, vvalue)
 
 
 
 
-  def convert_to_type( self, value, vtype, id_manager=None):
+  def convert_to_type( self, value, vtype):
     if vtype in types.__dict__:
       t = self.expand_type( vtype)[0]
       return t( value)
-    elif id_manager:
-      v = id_manager.get_object_with_id_or_none( value)
+    else:
+      v = Store.id_manager.get_object_with_id_or_none( value)
       if v:
         return v
       else:
         return value
-    else:
-      return value        
+
 
 
 

@@ -23,7 +23,7 @@ mostly the desired meta_behaviour"""
 
 
 import misc
-
+from singleton_store import Store
 
 
 class simple_parent( object):
@@ -65,7 +65,7 @@ class id_enabled( simple_parent):
 
 
   def _generate_id( self):
-    return self.paper.id_manager.generate_and_register_id( self, prefix=self.object_type)
+    return Store.id_manager.generate_and_register_id( self, prefix=self.object_type)
 
   # id
   def _get_id( self):
@@ -76,9 +76,9 @@ class id_enabled( simple_parent):
     return self.__id
 
   def _set_id( self, id):
-    if self.paper.id_manager.is_registered_object( self):
-      self.paper.id_manager.unregister_object( self) 
-    self.paper.id_manager.register_id( self, id)
+    if Store.id_manager.is_registered_object( self):
+      Store.id_manager.unregister_object( self) 
+    Store.id_manager.register_id( self, id)
     self.__id = id
 
   id = property( _get_id, _set_id)

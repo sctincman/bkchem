@@ -50,7 +50,6 @@ import copy
 import dialogs
 import CDML_versions
 import os
-from id_manager import id_manager
 import parents
 from reaction import reaction
 import debug
@@ -60,6 +59,7 @@ from group import group
 import oasa
 import geometry
 from sets import Set
+from id_manager import id_manager
       
 from singleton_store import Store
 
@@ -74,7 +74,6 @@ class chem_paper( Canvas, object):
     Canvas.__init__( self, master, kw)
     
     self.clipboard = None
-    self.id_manager = id_manager()
 
     self.standard = self.get_personal_standard()
     self.submode = None
@@ -563,7 +562,7 @@ class chem_paper( Canvas, object):
     # external data
     ees = CDML.getElementsByTagName( "external-data")
     if ees:
-      [self.edm.read_package( ee, self.id_manager) for ee in ees]
+      [self.edm.read_package( ee) for ee in ees]
 
     # finish
     # we close the sandbox and generate new ids for everything
@@ -577,12 +576,12 @@ class chem_paper( Canvas, object):
     """For reading we provide a new, clean id_manager as a sandbox to prevent
     clashes between ids that might be already on the paper and ids that are in the file.
     This is especialy needed for copying and template addition (although this is done somewhere else)"""
-    self.__old_id_manager = self.id_manager
-    self.id_manager = id_manager()
+    self.__old_id_manager = Store.id_manager
+    Store.id_manager = id_manager()
     
 
   def onread_id_sandbox_finish( self, apply_to=None):
-    self.id_manager = self.__old_id_manager
+    Store.id_manager = self.__old_id_manager
     del self.__old_id_manager
     if apply_to == None:
       os = self.stack
@@ -638,7 +637,6 @@ class chem_paper( Canvas, object):
     self.um.mrproper()
 
     del self.clipboard
-    del self.id_manager
     del self.standard
     del self.submode
     self.mode = None
@@ -991,7 +989,7 @@ class chem_paper( Canvas, object):
       o = graphics.polygon( self, package=package)
     elif package.nodeName == 'reaction':
       react = reaction()
-      react.read_package( package, self.id_manager)
+      react.read_package( package)
       if react.arrows:
         react.arrows[0].reaction = react
       o = None

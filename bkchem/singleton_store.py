@@ -33,6 +33,7 @@ class Store:
   pm = None           # the preferences manager
   logger = None       # the logger
   log = None          # the log method of the logger (usually)
-  # recently unused
   id_manager = None   # the id manager
+  
+  # recently unused
   clipboard = None    # the clipboard

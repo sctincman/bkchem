@@ -1885,7 +1885,7 @@ class external_data_mode( basic_mode):
 
 
   def _entry_entered( self, e):
-    obj = Store.app.paper.id_manager.get_object_with_id_or_none( e.value)
+    obj = Store.id_manager.get_object_with_id_or_none( e.value)
     if obj:
       self._focus_selector = Store.app.paper.create_rectangle( obj.bbox(), outline="orange", width=2)
     self._add_bindings_according_to_active_name( e.type)
@@ -1906,7 +1906,7 @@ class external_data_mode( basic_mode):
           if v['type'] in Store.app.paper.edm.reference_types:
             # can be passed to edm.set_data now
             try:
-              val = Store.app.paper.id_manager.get_object_with_id( val)
+              val = Store.id_manager.get_object_with_id( val)
             except KeyError:
               Store.log( "id %s is not valid (object with such id does not exist)" % val, message_type="error")
               continue
@@ -1940,7 +1940,7 @@ class external_data_mode( basic_mode):
     for e in self._entries.values():
       if e.type_class == "reference":
         e.cleanup( Store.app.paper)
-        obj = Store.app.paper.id_manager.get_object_with_id_or_none( e.value)
+        obj = Store.id_manager.get_object_with_id_or_none( e.value)
         if obj:
           e.arrow = self._draw_arrow_from_to( e, obj)
     self._add_bindings_according_to_submode()

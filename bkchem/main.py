@@ -47,6 +47,8 @@ import interactors
 import os_support
 import pref_manager
 import popen2
+from id_manager import id_manager
+
 
 import oasa_bridge
 import plugins.plugin
@@ -396,6 +398,9 @@ class BKchem( Tk):
     # logger
     Store.logger = logger()
     Store.log = Store.logger.log
+
+    # id_manager
+    Store.id_manager = id_manager()
 
 
     from plugin_support import plugin_manager

@@ -36,6 +36,9 @@ import debug
 
 import oasa
 
+from singleton_store import Store
+
+
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
 ### not set in __init__ itself
@@ -908,8 +911,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     else:
       self.equithick = 0
     # end of implied
-    self.atom1 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'start'))
-    self.atom2 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'end'))
+    self.atom1 = Store.id_manager.get_object_with_id( package.getAttribute( 'start'))
+    self.atom2 = Store.id_manager.get_object_with_id( package.getAttribute( 'end'))
 
 
 

@@ -20,6 +20,10 @@
 
 import dom_extensions
 import sys
+    
+from singleton_store import Store
+
+
 
 singulars = ['reactant', 'product', 'arrow', 'condition', 'plus']
 plurals = ['reactants', 'products', 'arrows', 'conditions', 'pluses']
@@ -64,11 +68,11 @@ class reaction( object):
     return 1
 
 
-  def read_package( self, doc, id_manager):
+  def read_package( self, doc):
     for el in dom_extensions.childNodesWithoutEmptySpaces( doc):
       if el.nodeName in singulars:
         i = singulars.index( el.nodeName)
-        self.__dict__[ plurals[ i]].append( id_manager.get_object_with_id( el.getAttribute( 'idref')))
+        self.__dict__[ plurals[ i]].append( Store.id_manager.get_object_with_id( el.getAttribute( 'idref')))
 
     
 
