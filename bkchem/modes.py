@@ -163,6 +163,9 @@ class mode:
         b = sequence_base
       self.register_key_sequence( b+str(i), misc.lazy_apply( function, (i,)))
 
+  def cleanup( self):
+    """called when switching to another mode"""
+    pass
 
 
 ### -------------------- EDIT MODE --------------------
@@ -1042,8 +1045,7 @@ class bond_align_mode( edit_mode):
         if self._needs_two_atoms[ self.submode[0]]:
           self.first_atom_selected = self.focused
           self.first_atom_selected.select()
-          # bez tohodle ta selekce neni videt:
-          self.paper.lower(self.paper.background)
+          self.paper.add_bindings()
           self._rotated_mol = self.focused.molecule
           return
         else:
@@ -1141,6 +1143,10 @@ class bond_align_mode( edit_mode):
     tr.set_move(centerx, centery)
     return tr
 
+  def cleanup( self):
+    if self.first_atom_selected:
+      self.first_atom_selected.unselect()
+      self.first_atom_selected = None
 
 
   def mouse_click( self, event):

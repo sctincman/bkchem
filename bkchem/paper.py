@@ -60,7 +60,6 @@ class BKpaper( Canvas):
 
     self.standard = self.get_personal_standard()
     self.molecules = []     # list of molecules present in the drawing
-    self.mode = 'draw'      # current mode
     self.submode = None
     self.selected = []    # selected item
     self.__in = 1
@@ -111,7 +110,7 @@ class BKpaper( Canvas):
                    'vector': modes.vector_mode( self),
                    'mark': modes.mark_mode( self)}
     self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
-    self.mode = 'draw'
+    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
     self.um = undo.undo_manager( self)  # undo manager
 
     # paper sizes etc.
@@ -535,7 +534,11 @@ class BKpaper( Canvas):
     return o in self._id_2_object.values()
 
   def switch_to_mode( self, name):
+    # this is necessary because at first the mode is a string
+    if type( self.mode) != types.StringType:
+      self.mode.cleanup()
     self.mode = self.modes[ name]
+
 
   def switch_to_submode( self, name):
     self.mode.set_submode( name)
