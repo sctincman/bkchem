@@ -122,43 +122,6 @@ def clockwise_angle_from_east( dx, dy):
   return angle
 
 
-def intersection_of_line_and_rect_old( line, rect, round_edges=0):
-  """finds a point where a line and a rectangle intersect,
-  both are given as lists of len == 4"""
-  lx0, ly0, lx1, ly1 = line
-  rx0, ry0, rx1, ry1 = normalize_coords( rect)
-
-  # find which end of line is in the rect and reverse the line if needed
-  if (lx0 > rx0) and (lx0 < rx1) and (ly0 > ry0) and (ly0 < ry1):
-    lx0, lx1 = lx1, lx0
-    ly0, ly1 = ly1, ly0
-
-  # the computation itself
-  ldx = lx1 - lx0
-  ldy = ly1 - ly0
-
-  if ldy == 0 or (abs( ldx) /  abs( ldy)) > (abs( rx0 -rx1) / abs( ry0 -ry1)):
-    # we calculate using y = f(x)
-    k = ldy/ldx
-    q = ly0 - k*lx0
-    if ldx < 0:
-      x = rx1
-    else:
-      x = rx0
-    y = k*x + q
-  else:
-    # we calculate using x = f(y)
-    k = ldx/ldy
-    q = lx0 - k*ly0
-    if ldy < 0:
-      y = ry1
-    else:
-      y = ry0
-    x = k*y + q
-  return (x, y)
-
-
-
 
 def intersection_of_line_and_rect( line, rect, round_edges=0):
   """finds a point where a line and a rectangle intersect,
@@ -175,7 +138,7 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
   ldx = lx1 - lx0
   ldy = ly1 - ly0
 
-  if abs( ldx) > 0 and abs( ldy/ldx) < 5:
+  if abs( ldx) > 0:
     # we calculate using y = f(x)
     k = ldy/ldx
     q = ly0 - k*lx0
@@ -184,11 +147,16 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
     else:
       xx = rx0
     xy = k*xx + q
+    # the result must be in the rectangle boundaries
+    # but sometimes is not because rounding problems
+    if not ry0 < xy < ry1:
+      xx = lx0
+      xy = ly0
   else:
     xx = lx0
     xy = ly0
     
-  if abs( ldy) > 0 and abs( ldx/ldy) < 5:
+  if abs( ldy) > 0:
     # we calculate using x = f(y)
     k = ldx/ldy
     q = lx0 - k*ly0
@@ -197,6 +165,11 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
     else:
       yy = ry0
     yx = k*yy + q
+    # the result must be in the rectangle boundaries
+    # but sometimes is not because rounding problems
+    if not rx0 < yx < rx1:
+      yy = ly0
+      yx = lx0
   else:
     yy = ly0
     yx = lx0

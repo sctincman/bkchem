@@ -103,8 +103,6 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     if package:
       self.read_package( package)
 
-    self.update_font()
-
 
 
   ## ---------------------------------------- PROPERTIES ------------------------------

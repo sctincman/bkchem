@@ -100,7 +100,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     if package:
       self.read_package( package)
 
-    self.update_font()
 
 
 

@@ -1380,7 +1380,9 @@ Enter IChI:""")
     i = 0
     for mol in self.paper.molecules:
       for edges in mol.get_all_cycles_e():
+      #for ring in mol.get_smallest_independent_cycles():
         i += 1
+        #edges = mol.vertex_subgraph_to_edge_subgraph( ring)
         ring = mol.edge_subgraph_to_vertex_subgraph( edges)
         self.paper.unselect_all()
         self.paper.select( tuple( ring | edges))
@@ -1418,13 +1420,13 @@ Enter IChI:""")
   ## ------------------------------ THE BATCH MODE ------------------------------
 
 
-  def process_batch( self, opts, files=None):
+  def process_batch( self, opts):
 
-    if opts[0][0] == "-b":
-      plugin = opts[0][1]
+    if opts[0] == "-b":
+      plugin = opts[1]
 
       the_globals = {'App': Store.app,
-                     'Args': files}
+                     'Args': opts[2:]}
 
       execfile( plugin, the_globals)
 

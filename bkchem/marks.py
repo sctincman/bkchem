@@ -81,10 +81,16 @@ class mark( simple_parent):
     self.move_to( x, y)
 
   def focus( self):
-    [self.paper.itemconfig( i, outline="red", fill="red") for i in self.items]
+    self.set_color( "red")
 
   def unfocus( self):
-    [self.paper.itemconfig( i, outline=self.atom.line_color, fill=self.atom.line_color) for i in self.items]
+    self.set_color( self.atom.line_color)
+
+
+  def set_color( self, color):
+    [self.paper.itemconfig( i, outline=color, fill=color) for i in self.items if self.paper.type( i) in ("oval",)]
+    [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
+    
 
 
 
@@ -221,11 +227,6 @@ class electronpair( mark):
       self.paper.coords( i, tuple( tr_coords))
 
 
-  def focus( self):
-    [self.paper.itemconfig( i, fill="red") for i in self.items]
-
-  def unfocus( self):
-    [self.paper.itemconfig( i, fill=self.atom.line_color) for i in self.items]
 
 
 
@@ -236,6 +237,8 @@ class plus( mark):
 
   def __init__( self, paper, x, y, atom=None, size=10, auto=1):
     mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
+    self.draw_circle = True
+
 
   def draw( self):
     if self.items:
@@ -276,11 +279,9 @@ class plus( mark):
     return e
 
 
-  def focus( self):
-    self.paper.itemconfig( self.items[0], outline="red")
-
-  def unfocus( self):
-    self.paper.itemconfig( self.items[0], outline="")
+  def set_color( self, color):
+    [self.paper.itemconfig( i, outline=color) for i in self.items if self.paper.type( i) in ("oval",)]
+    [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
 
 
 
@@ -292,6 +293,7 @@ class minus( mark):
 
   def __init__( self, paper, x, y, atom=None, size=10, auto=1):
     mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
+    self.draw_circle = True
 
   def draw( self):
     if self.items:
@@ -300,9 +302,9 @@ class minus( mark):
     x, y = self.x, self.y
     s = round( self.size / 2)
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
-                                               fill=self.atom.line_color, tags='mark')]
+                                          fill=self.atom.line_color, tags='mark')]
     self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                          outline=self.atom.line_color, tags='mark'))
+                                               outline=self.atom.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):
@@ -330,10 +332,7 @@ class minus( mark):
     return e
 
 
-  def focus( self):
-    self.paper.itemconfig( self.items[1], outline="red")
-
-  def unfocus( self):
-    self.paper.itemconfig( self.items[1], outline=self.atom.line_color)
-
+  def set_color( self, color):
+    [self.paper.itemconfig( i, outline=color) for i in self.items if self.paper.type( i) in ("oval",)]
+    [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
 

@@ -28,7 +28,7 @@ exported in __all__."""
 import misc
 import copy
 from types import *  #should be safe
-import sets
+from sets import Set
 import inspect
 
 __all__= ['undo_manager']
@@ -166,7 +166,7 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = o.__dict__[a]
-      if type( obj) == ListType or type( obj) == sets.Set:
+      if type( obj) == ListType or type( obj) == Set:
         [self.record_object( i) for i in obj]
       elif type( obj) == DictType:
         [self.record_object( i) for i in obj.itervalues() if i]
@@ -182,6 +182,7 @@ class state_record:
     not changed values are not touched)."""
     # we need to know about deleted bonds before we try to redraw them (when updating atom)
     deleted = misc.difference( self.objects, previous.objects)
+    to_redraw = Set()
     ## CHANGED OBJECTS
     i = 0
     for o in self.objects:
@@ -218,22 +219,30 @@ class state_record:
           subrec.append( copy.copy( line))
         o.__dict__[ a] = subrec
 
-      # this part is not really meta info driven but who cares 
       if changed:
-        if o.object_type == 'atom':
-          [b.redraw() for b in o.molecule.atoms_bonds( o) if b not in deleted]
-        elif o.object_type == 'point':
-          o.arrow.redraw()  ## redraws arrow multiple times, should be fixed someday
-        if o not in deleted and o.object_type != 'molecule':
-          if o.object_type == 'atom':
-            o.redraw( suppress_reposition=1)
-          elif o.object_type == 'bond':
-            [a.redraw( suppress_reposition=1) for a in o.get_atoms() if a.show and not a in deleted]
-            o.redraw()
-          else:
-            o.redraw()
+        to_redraw.add( o)
+
+      # some hacks needed to ensure complete redraw
+      if o.object_type == 'atom':
+        to_redraw |= Set( [b for b in o.molecule.atoms_bonds( o) if b not in deleted])
+      elif o.object_type == 'bond':
+        to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
+      elif o.object_type == 'point':
+        to_redraw.add( o)
+
       i += 1
-      # end of explicit rules
+
+    # now redrawing
+    # sort the to_redraw
+    to_redraw = list( to_redraw)
+    to_redraw.sort( _redraw_sorting)
+    for o in to_redraw:
+      if o not in deleted and o.object_type != 'molecule':
+        if o.object_type == 'atom':
+          o.redraw( suppress_reposition=1)
+        else:
+          o.redraw()
+
 
     ## DELETED OBJECTS
     # deleted are known from the top of this def
@@ -275,4 +284,15 @@ class state_record:
     
 
 
+REDRAW_PREFERENCES = ("atom", "bond")
+
+def _redraw_sorting( o1, o2):
+  for obj_type in REDRAW_PREFERENCES:
+    if o1.object_type == obj_type:
+      return -1
+    if o2.object_type == obj_type:
+      return 1
+
+  return -1
+  
   

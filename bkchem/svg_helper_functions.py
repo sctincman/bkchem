@@ -29,29 +29,36 @@ def ftext_to_svg_dom( ftext):
   return ftext_dom_to_svg_dom( fd, svg)
 
 
-def ftext_dom_to_svg_dom( ftext, doc):
+def ftext_dom_to_svg_dom( ftext, doc, add_to=None):
+  if not add_to:
+    element = doc.createElement( 'text')
+  else:
+    element = add_to
+
   if not ftext.nodeValue:
     name = ftext.nodeName
-    my_svg = None
-    if name == 'b':
+    # check if to add attributes to already existing element or create a new one
+    if not element.lastChild and element.nodeName == "tspan":
+      my_svg = element
+    else:
       my_svg = doc.createElement( 'tspan')
+      element.appendChild( my_svg)
+
+    # now put the attributes inside
+    if name == 'b':
       dom_extensions.setAttributes( my_svg, (('font-weight', 'bold'),))
     elif name == 'i':
-      my_svg = doc.createElement( 'tspan')
       dom_extensions.setAttributes( my_svg, (('font-style', 'italic'),))
     elif name == 'sup':
-      my_svg = doc.createElement( 'tspan')
       dom_extensions.setAttributes( my_svg, (('baseline-shift', 'super'),('font-size','75%')))
     elif name == 'sub':
-      my_svg = doc.createElement( 'tspan')
       dom_extensions.setAttributes( my_svg, (('baseline-shift', 'sub'),('font-size','75%')))
-    elif name == 'ftext':
-      my_svg = doc.createElement( 'text')
-    if my_svg:
-      for el in ftext.childNodes:
-        my_svg.appendChild( ftext_dom_to_svg_dom( el, doc))
-      return my_svg
-  else:
-    return doc.createTextNode( ftext.nodeValue)
 
+    # continue with the children
+    for el in ftext.childNodes:
+      ftext_dom_to_svg_dom( el, doc, add_to=my_svg)
+  else:
+    element.appendChild( doc.createTextNode( ftext.nodeValue))
+
+  return element
 

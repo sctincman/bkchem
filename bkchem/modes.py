@@ -782,7 +782,7 @@ class draw_mode( edit_mode):
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
-        if self.submode[2] == 1:
+        if self.submode[3] == 1:
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
                                                                                        pos=(event.x, event.y))
@@ -1043,7 +1043,7 @@ class template_mode( edit_mode):
       else:
         return
     Store.app.paper.stack.append( t)
-    t.draw()
+    t.draw( automatic="both")
     #Store.app.paper.signal_to_app( ("Added molecule from template: ")+\
     #                              Store.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
     Store.app.paper.select( [o for o in t])
@@ -1582,10 +1582,10 @@ class mark_mode( edit_mode):
     [self._unregister_mark( i, paper) for i in self._all_marks( paper)]    
 
   def _register_mark( self, mark, paper):
-    paper.register_id( mark.items[0], mark)
+    [paper.register_id( i, mark) for i in mark.items]
 
   def _unregister_mark( self, mark, paper):
-    paper.unregister_id( mark.items[0])
+    [paper.unregister_id( i) for i in mark.items]
 
   def _all_marks( self, paper):
     for m in paper.molecules:

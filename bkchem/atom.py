@@ -114,7 +114,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       self.read_package( package)
     else:
       self.set_name( 'C')
-    self.update_font()
 
 
 
@@ -207,6 +206,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       self.__show_hydrogens = data.on_off.index( show_hydrogens)
     else:
       self.__show_hydrogens = int( show_hydrogens)
+    if self.__show_hydrogens:
+      self.show = 1  # hydrogens imply showing the symbol
     self.dirty = 1
     self.__reposition_on_redraw = 1
 

@@ -85,30 +85,27 @@ myapp.withdraw()
 
 if __name__ == '__main__':
 
-  # parse the command line options
-  opts = ()
-  files = ()
-  if len( sys.argv) > 1:
-    import os.path
-    from getopt import gnu_getopt, GetoptError
-    try:
-      opts, files = gnu_getopt( sys.argv[1:], "b:")
-    except GetoptError, o:
-      print _(" * unknown option -%s")
-      sys.exit()
-
-
   # now initialize the main application part or the batch mode
-  if opts and opts[0][0] == "-b":
+  if len( sys.argv) > 1 and sys.argv[1] == "-b":
     # we are in batch mode
     #import time
     #t = time.time()
     myapp.initialize_batch()
-    myapp.process_batch( opts, files)
+    myapp.process_batch( sys.argv[1:])
     #print " %f ms" % (1000*(time.time()-t))
     sys.exit()
   else:
     # normal interactive mode
+    opts = ()
+    files = ()
+    from getopt import gnu_getopt, GetoptError
+    import os.path
+    try:
+      opts, files = gnu_getopt( sys.argv[1:], "")
+    except GetoptError, o:
+      print _(" * unknown option -%s" % o)
+      sys.exit()
+
     if opts:
       print "the command line options are ignored in interactive mode, use -b to switch to batch mode"
     # splash screen
@@ -141,11 +138,11 @@ if __name__ == '__main__':
         myapp.set_file_name( files[i], check_ext=1)
 
     ## here we try to load psyco - this could speed things up
-    try:
-      import psyco
-      psyco.profile()
-    except ImportError:
-      pass
+##     try:
+##       import psyco
+##       psyco.profile()
+##     except ImportError:
+##       pass
 
     # destroy splash
     splash.destroy()

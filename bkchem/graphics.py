@@ -46,6 +46,7 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
 
   
   def __init__( self, paper, coords=(), package=None, width=1):
+    self.paper = paper
     meta_enabled.__init__( self, standard=paper.standard)
     self.selector = None
     self.item = None
@@ -123,7 +124,7 @@ class rect( vector_graphics_item):
   object_type = 'rect'
 
   def __init__( self, paper, coords=(), package=None, width=1):
-    vector_agraphics_item.__init__( self, paper, coords=coords, package=package, width=width)
+    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
 
   def draw( self):
     self.item = self.paper.create_rectangle( tuple( self.coords),

@@ -391,7 +391,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
 
 
-  def draw( self, automatic="both"):
+  def draw( self, automatic="none"):
     [a.draw() for a in self.atoms]
     [a.draw( automatic=automatic) for a in self.bonds]
     self.lift()
@@ -476,7 +476,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def delete( self):
     """deletes the molecule from canvas by calling delete for its children"""
-    [o.delete() for o in self.bonds+self.atoms]
+    [o.delete() for o in list(self.bonds)+self.atoms]
 
 
 
@@ -601,7 +601,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def create_vertex_according_to_text( self, old, text, interpret=1):
     if not interpret:
-      return self.create_vertex( vertex_class=textatom)
+      v = self.create_vertex( vertex_class=textatom)
+      v.set_name( text)
+      return v
     val = old and old.get_occupied_valency() or 0
     for cls in (atom, group, textatom):
       v = self.create_vertex( vertex_class=cls)

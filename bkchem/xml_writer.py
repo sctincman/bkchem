@@ -135,15 +135,19 @@ class SVG_writer( XML_writer):
     l_group = dom_extensions.elementUnder( self.group, 'g',
                                            (( 'stroke-width', str( line_width)),
                                             ( 'stroke', b.line_color)))
+    if sum( [int( a.show) for a in b.atoms]) == 2:
+      # both atoms are visible, it does not look good with round caps
+      l_group.setAttribute('stroke-linecap', 'butt')
+
     # items to be exported
     if b.type == 'd':
       # d is a little bit twisted
-      if b.simple_double and not b.center and not b.order == 1:
+      if b.simple_double and not b.center and not b.order in (0,1):
         line_items = [b.item]
         items = b.second + b.third
       else:
-        line_items = []
-        items = b.items + b.second + b.third
+        line_items = b.items
+        items = b.second + b.third
     else:
       if b.type == 'h':
         items = b.items

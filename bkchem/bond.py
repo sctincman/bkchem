@@ -86,7 +86,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.selector = None
 
     # implicit values
-    self.center = 0
+    self.center = None
     self.auto_bond_sign = 1
     self.simple_double = simple_double
     self.equithick = 1
@@ -291,13 +291,13 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
 
-  def draw( self, automatic="both"):
+  def draw( self, automatic="none"):
     """call the appropriate draw method, automatic specifies what to automatically compute -
     all, sign, none (sign is often needed to retain the look after transformation)"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
     method = "_draw_%s%d" % (self.type, self.order or 1)
-    if automatic != "none" and self.order == 2 and self.auto_bond_sign == 1:
+    if (automatic != "none" or self.center == None) and (self.order == 2 and self.auto_bond_sign == 1):
       sign, center = self._compute_sign_and_center()
       self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
       if automatic == "both":
