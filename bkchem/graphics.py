@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """set of basic vector graphics classes such as rect, oval etc."""
 
@@ -28,9 +25,11 @@ import dom_extensions
 import misc
 import classes
 import operator
-from parents import meta_enabled
+from parents import meta_enabled, drawable, interactive, area_colored, container, with_line
 
-class vector_graphics_item( meta_enabled):
+
+
+class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, with_line):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -39,8 +38,11 @@ class vector_graphics_item( meta_enabled):
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color']
   # undo related metas
-  meta__undo_simple = ('line_color', 'area_color', 'line_width')
+  meta__undo_properties = area_colored.meta__undo_properties + \
+                          with_line.meta__undo_properties
   meta__undo_copy = ('coords',)
+
+
   
   def __init__( self, paper, coords=(), package=None, width=1):
     meta_enabled.__init__( self, paper)
@@ -270,8 +272,11 @@ class circle( oval):
     self.paper.coords( self.item, self.coords)
 
 
+
+
+
 # POLYGON
-class polygon( vector_graphics_item):
+class polygon( vector_graphics_item, container):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -369,3 +374,11 @@ class polygon( vector_graphics_item):
     self.paper.unregister_id( self.item)
     self.item = None
 
+
+
+  # shape_defining_points
+  def __get_shape_defining_points( self):
+    return self.points
+
+  shape_defining_points = property( __get_shape_defining_points, None, None,
+                                    "should give list of point_drawable instances")

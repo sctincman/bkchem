@@ -32,7 +32,8 @@ import dom_extensions
 import xml.dom.minidom as dom
 import operator
 import tkFont
-from parents import meta_enabled, simple_parent
+from parents import meta_enabled, container, with_line, text_like, line_colored
+from parents import area_colored, point_drawable, interactive, drawable
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -114,7 +115,7 @@ class standard:
 
 ##-------------------- ARROW CLASS ------------------------------
 
-class arrow( meta_enabled):
+class arrow( meta_enabled, drawable, with_line, line_colored, container, interactive):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -126,12 +127,20 @@ class arrow( meta_enabled):
   # other meta infos
   meta__is_container = 1
   # undo related metas
-  meta__undo_simple = ('pin', 'spline', 'line_width', 'line_color')
+  meta__undo_simple = ('pin', 'spline')
+  meta__undo_properties = with_line.meta__undo_properties + \
+                          line_colored.meta__undo_properties
   meta__undo_copy = ('points',)
   meta__undo_children_to_record = ('points',)
 
+
+
   def __init__( self, paper, points=[], shape=(8,10,3), pin=1, spline=0, package=None, fill="#000"):
     meta_enabled.__init__( self, paper)
+    drawable.__init__( self)
+    with_line.__init__( self)
+    line_colored.__init__( self)
+
     self.points = []
     self.spline = spline
     self.paper = paper
@@ -145,11 +154,26 @@ class arrow( meta_enabled):
     if package:
       self.read_package( package)
 
+
+  # PROPERTIES
+
+  # shape_defining_points
+  def __get_shape_defining_points( self):
+    return self.points
+
+  shape_defining_points = property( __get_shape_defining_points, None, None,
+                                    "should give list of point_drawable instances")
+
+  # // PROPERTIES
+
+
   def read_standard_values( self, old_standard=None):
     meta_enabled.read_standard_values( self, old_standard=old_standard)
     if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
       self.line_width = self.paper.any_to_px( self.paper.standard.line_width)    
     
+
+
   def draw( self):
     if len( self.points) > 1:
       #type = self.spline and 'circle' or 'invisible'
@@ -294,9 +318,10 @@ class arrow( meta_enabled):
       yield i
 
 
+
 ## -------------------- POINT CLASS ------------------------------
 
-class point( simple_parent):
+class point( point_drawable, interactive):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -304,9 +329,11 @@ class point( simple_parent):
   object_type = 'point'
 
   # undo related metas
-  meta__undo_simple = ('x','y')
+  meta__undo_properties = point_drawable.meta__undo_properties
+  
 
   def __init__( self, paper, xy=(), arrow=None, package=None, type='invisible'):
+    point_drawable.__init__( self)
     if xy:
       self.x, self.y = xy
     self.paper = paper
@@ -418,7 +445,7 @@ class point( simple_parent):
 
 ##-------------------- PLUS CLASS ------------------------------
 
-class plus( meta_enabled):
+class plus( meta_enabled, interactive, point_drawable, text_like, area_colored):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -427,10 +454,16 @@ class plus( meta_enabled):
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color','font_family']
   # undo related metas
-  meta__undo_simple = ('x', 'y', 'font_size', 'font_family', 'line_color','area_color')
+  meta__undo_properties = point_drawable.meta__undo_properties +\
+                          text_like.meta__undo_properties +\
+                          area_colored.meta__undo_properties
 
   def __init__( self, paper, xy=(), package=None):
     meta_enabled.__init__( self, paper)
+    point_drawable.__init__( self)
+    text_like.__init__( self)
+    area_colored.__init__( self)
+
     self.x = self.y = None
     self.focus_item = None
     self.selector = None
@@ -540,7 +573,7 @@ class plus( meta_enabled):
 
 ##--------------------TEXT CLASS--------------------
 
-class text( meta_enabled):
+class text( meta_enabled, interactive, point_drawable, text_like, area_colored):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -549,10 +582,17 @@ class text( meta_enabled):
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color','font_size','font_family']
   # undo related metas
+  meta__undo_properties = point_drawable.meta__undo_properties +\
+                          text_like.meta__undo_properties +\
+                          area_colored.meta__undo_properties
   meta__undo_simple = ('x', 'y', 'text', 'font_size', 'font_family', 'line_color', 'area_color')
 
   def __init__( self, paper, xy=(), text='', package=None):
     meta_enabled.__init__( self, paper)
+    point_drawable.__init__( self)
+    text_like.__init__( self)
+    area_colored.__init__( self)
+    
     self.selector = None
     self._selected = 0
     self.ftext = None
@@ -606,10 +646,16 @@ class text( meta_enabled):
       self.paper.itemconfig( self.selector, outline='black')
     self._selected = 1
 
+
+
+
   def unselect( self):
     if self.selector:
       self.paper.itemconfig( self.selector, outline=self.area_color)
     self._selected = 0
+
+
+
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
@@ -621,6 +667,9 @@ class text( meta_enabled):
     if self.ftext:
       self.ftext.move( dx, dy)
 
+
+
+
   def move_to( self, x, y):
     dx = x - self.x
     dy = y - self.y
@@ -631,14 +680,24 @@ class text( meta_enabled):
     if self.ftext:
       self.ftext.move_to( x, y)
 
+
+
   def get_x( self):
     return self.x
+
+
 
   def get_y( self):
     return self.y
 
+
+
+
   def get_xy( self):
     return self.x, self.y
+
+
+
 
   def delete( self):
     if self.focus_item:
@@ -652,6 +711,9 @@ class text( meta_enabled):
     if self.ftext:
       self.ftext.delete()
     return self
+
+
+
 
   def read_package( self, package):
     pos = package.getElementsByTagName( 'point')[0]
@@ -670,6 +732,8 @@ class text( meta_enabled):
     if package.getAttribute( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
 
+
+
   def get_package( self, doc):
     a = doc.createElement('text')
     if self.area_color != '#ffffff':
@@ -683,24 +747,37 @@ class text( meta_enabled):
     a.appendChild( self.parsed_text)
     return a
 
+
+
   def set_text( self, text):
     self.text = text
     self.parsed_text = dom.parseString( '<ftext>'+self.text+'</ftext>').childNodes[0]
 
+
+
   def get_text( self):
     return self.text
 
+
+
   def bbox( self):
     return self.ftext.bbox()
+
+
 
   def update_font( self):
     #if 'font_family' in self.__dict__ and 'font_size' in self.__dict__:
     self.font = tkFont.Font( family=self.font_family, size=self.font_size)
 
+
+
   def scale_font( self, ratio):
     """scales font of text. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
+
+
+
 
   def lift( self):
     if self.selector:
@@ -709,3 +786,6 @@ class text( meta_enabled):
       self.ftext.lift()
     if self.item:
       self.paper.lift( self.item)
+
+
+

@@ -277,7 +277,7 @@ class BKchem( Tk):
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
-    self.start_server()
+    #self.start_server()
 
 
 

@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2003  Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2003, 2004  Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,13 +16,14 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """This file stores the oldest parents of used classes which are used to provide
 mostly the desired meta_behaviour"""
+
+
+
+
 
 
 class simple_parent( object):
@@ -43,6 +44,11 @@ class simple_parent( object):
   meta__undo_children_to_record = ()
 
 
+
+
+
+
+
 class meta_enabled( simple_parent):
   """class that has usefull behaviour implemented according to meta infomation"""
 
@@ -61,9 +67,247 @@ class meta_enabled( simple_parent):
       if old_standard and (self.paper.standard.__dict__[i] == old_standard.__dict__[i]):
         continue
       else:
-	# property
-	if i in self.__class__.__dict__:
-	  self.__class__.__dict__[i].fset( self, self.paper.standard.__dict__[i])
-	else:
-	  self.__dict__[i] = self.paper.standard.__dict__[i]
+	# properties
+        is_prop = 0
+        for p in self.__class__.mro():
+          if i in p.__dict__:
+            p.__dict__[i].fset( self, self.paper.standard.__dict__[i])
+            is_prop = 1
+            break
+        if not is_prop:
+          self.__dict__[i] = self.paper.standard.__dict__[i]
+
+
+
+
+
+
+
+
+class drawable( simple_parent):
+  """basic class for all drawable type - sets the dirty property and the
+  move, draw and redraw methods"""
+
+  def __init__( self):
+    simple_parent.__init__( self)
+    self.dirty = 0
+
+
+  # public properties
+
+  # dirty
+  def __get_dirty( self):
+    return self.__dirty
+
+  def __set_dirty( self, dirty):
+    self.__dirty = dirty
+
+  dirty = property( __get_dirty, __set_dirty)
+
+  
+  # public methods
+  def move( self, dx, dy):
+    pass
+
+  def draw( self):
+    pass
+
+  def redraw( self):
+    pass
+
+
+
+
+
+
+class point_drawable( drawable):
+  """this is a specialized drawable that is of point nature - that is has x,y coords
+  that define its position"""
+
+  meta__undo_properties = ("x","y")
+
+  def __init__( self):
+    drawable.__init__( self)
+    self.x = 0
+    self.y = 0
+
+  # public properties
+
+  # x
+  def __get_x( self):
+    return self.__x
+
+  def __set_x( self, x):
+    self.__x = x
+    self.dirty = 1
+
+  x = property( __get_x, __set_x)
+
+  # y
+  def __get_y( self):
+    return self.__y
+
+  def __set_y( self, y):
+    self.__y = y
+    self.dirty = 1
+
+  y = property( __get_y, __set_y)
+
+
+
+
+
+
+class with_line( simple_parent):
+
+  meta__undo_properties = ("line_width",)
+  
+  # line_width
+  def __get_line_width( self):
+    return self.__line_width
+
+  def __set_line_width( self, line_width):
+    self.__line_width = line_width
+    self.dirty = 1
+
+  line_width = property( __get_line_width, __set_line_width)
+  
+
+
+
+
+
+class line_colored( simple_parent):
+  """parent for objects having line shape and thus defining only one color -
+  the line_color"""
+
+  meta__undo_properties = ("line_color",)
+  
+
+  def __init__( self):
+    simple_parent.__init__( self)
+    self.line_color = '#000'
+
+  # public properties
+
+  # line_color
+  def __get_line_color( self):
+    return self.__line_color
+
+  def __set_line_color( self, line_color):
+    self.__line_color = line_color
+    self.dirty = 1
+
+  line_color = property( __get_line_color, __set_line_color)
+
+
+
+
+  
+
+
+class area_colored( line_colored):
+
+  meta__undo_properties = line_colored.meta__undo_properties + \
+                          ("area_color",)
+  
+  def __init__( self):
+    line_colored.__init__( self)
+    self.area_color = '#ffffff'
+
+  # public properties
+
+  # area_color
+  def __get_area_color( self):
+    return self.__area_color
+
+  def __set_area_color( self, area_color):
+    self.__area_color = area_color
+    self.dirty = 1
+
+  area_color = property( __get_area_color, __set_area_color)
+
+
+
+
+
+
+
+
+class text_like( simple_parent):
+  """for text like objects needing font_size and font_family properties"""
+
+  meta__undo_properties = ("font_size", "font_family", "xml_text")
+
+
+  def __init__( self):
+    simple_parent.__init__( self)
+    self.xml_text = ''
+    self.font_size = 10
+    self.font_family = 'helvetica'
+
+
+  # font_size
+  def __get_font_size( self):
+    return self.__font_size
+
+  def __set_font_size( self, font_size):
+    self.__font_size = font_size
+    self.dirty = 1
+
+  font_size = property( __get_font_size, __set_font_size)
+
+
+  # font_family
+  def __get_font_family( self):
+    return self.__font_family
+
+  def __set_font_family( self, font_family):
+    self.__font_family = font_family
+    self.dirty = 1
+
+  font_family = property( __get_font_family, __set_font_family)
+
+
+  # xml_text
+  def __get_xml_text( self):
+    return self.__xml_text
+
+  def __set_xml_text( self, xml_text):
+    self.__xml_text = xml_text
+    self.dirty = 1
+
+  xml_text = property( __get_xml_text, __set_xml_text)
+
+
+
+
+
+
+class interactive( simple_parent):
+
+  def focus( self):
+    pass
+
+  def unfocus( self):
+    pass
+
+  def select( self):
+    pass
+
+  def unselect( self):
+    pass
+
+
+
+
+class container( simple_parent):
+
+  # shape_defining_points
+  def __get_shape_defining_points( self):
+    return []
+
+  shape_defining_points = property( __get_shape_defining_points, None, None,
+                                    "should give list of point_drawable instances")
+
 

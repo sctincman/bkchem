@@ -37,7 +37,7 @@ import tkFont
 import periodic_table as PT
 import groups_table as GT
 import marks
-from parents import meta_enabled
+from parents import meta_enabled, area_colored, point_drawable, text_like
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -46,7 +46,7 @@ from parents import meta_enabled
 
 
 ### Class ATOM --------------------------------------------------
-class atom( meta_enabled):
+class atom( meta_enabled, area_colored, point_drawable, text_like):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -59,8 +59,10 @@ class atom( meta_enabled):
   # undo meta infos
   meta__undo_fake = ('text',)
   meta__undo_simple = ()
-  meta__undo_properties = ('x', 'y', 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
-			   'font_size', 'font_family' ,'line_color', 'area_color', 'pos', 'type')
+  meta__undo_properties = area_colored.meta__undo_properties + \
+                          point_drawable.meta__undo_properties + \
+                          text_like.meta__undo_properties + \
+                          ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens', 'pos', 'type')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
@@ -69,9 +71,7 @@ class atom( meta_enabled):
 
   def __init__( self, paper, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, paper)
-    # private attrs
-    self.__dirty = 0
-    
+    point_drawable.__init__( self)
     # basic attrs
     self.molecule = molecule
 
@@ -153,7 +153,7 @@ class atom( meta_enabled):
 
   def __set_name( self, name):
     self.__name = name
-    self.__dirty = 1
+    self.dirty = 1
 
   name = property( __get_name, __set_name)
 
@@ -164,7 +164,7 @@ class atom( meta_enabled):
 
   def __set_show( self, show):
     self.__show = show
-    self.__dirty = 1
+    self.dirty = 1
 
   show = property( __get_show, __set_show)
 
@@ -175,7 +175,7 @@ class atom( meta_enabled):
 
   def __set_show_hydrogens( self, show_hydrogens):
     self.__show_hydrogens = show_hydrogens
-    self.__dirty = 1
+    self.dirty = 1
 
   show_hydrogens = property( __get_show_hydrogens, __set_show_hydrogens)
 
@@ -186,53 +186,10 @@ class atom( meta_enabled):
 
   def __set_charge( self, charge):
     self.__charge = charge
-    self.__dirty = 1
+    self.dirty = 1
 
   charge = property( __get_charge, __set_charge)
 
-
-  # font_size
-  def __get_font_size( self):
-    return self.__font_size
-
-  def __set_font_size( self, font_size):
-    self.__font_size = font_size
-    self.__dirty = 1
-
-  font_size = property( __get_font_size, __set_font_size)
-
-
-  # font_family
-  def __get_font_family( self):
-    return self.__font_family
-
-  def __set_font_family( self, font_family):
-    self.__font_family = font_family
-    self.__dirty = 1
-
-  font_family = property( __get_font_family, __set_font_family)
-
-
-  # line_color
-  def __get_line_color( self):
-    return self.__line_color
-
-  def __set_line_color( self, line_color):
-    self.__line_color = line_color
-    self.__dirty = 1
-
-  line_color = property( __get_line_color, __set_line_color)
-
-
-  # area_color
-  def __get_area_color( self):
-    return self.__area_color
-
-  def __set_area_color( self, area_color):
-    self.__area_color = area_color
-    self.__dirty = 1
-
-  area_color = property( __get_area_color, __set_area_color)
 
 
   # pos
@@ -241,7 +198,7 @@ class atom( meta_enabled):
 
   def __set_pos( self, pos):
     self.__pos = pos
-    self.__dirty = 1
+    self.dirty = 1
 
   pos = property( __get_pos, __set_pos)
 
@@ -252,7 +209,7 @@ class atom( meta_enabled):
 
   def __set_type( self, type):
     self.__type = type
-    self.__dirty = 1
+    self.dirty = 1
 
   type = property( __get_type, __set_type)
 
@@ -281,6 +238,18 @@ class atom( meta_enabled):
 
 
 
+  # xml_text (override of text_like.xml_text)
+  def __get_xml_text( self):
+    return self.get_ftext()
+
+  def __set_xml_text( self, xml_text):
+    self.set_name( xml_text)
+
+  xml_text = property( __get_xml_text, __set_xml_text)
+
+
+
+
   ## // -------------------- END OF PROPERTIES --------------------------
 
 
@@ -288,6 +257,7 @@ class atom( meta_enabled):
   def set_name( self, name, interpret=1, check_valency=1):
     # every time name is set the charge should be set to zero
     self.charge = 0
+    self.dirty = 1
     # name should not be interpreted
     if not interpret:
       self.name = name
@@ -487,9 +457,9 @@ class atom( meta_enabled):
       self.select()
     else:
       self.unselect()
-    if not self.__dirty:
+    if not self.dirty:
       print "redrawing non-dirty atom"
-    self.__dirty = 0
+    self.dirty = 0
 
       
 

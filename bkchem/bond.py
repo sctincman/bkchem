@@ -32,7 +32,7 @@ import xml.dom.minidom as dom
 import operator
 import data
 import copy
-from parents import meta_enabled
+from parents import meta_enabled, line_colored, drawable, with_line, interactive
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -41,7 +41,7 @@ from parents import meta_enabled
 
 
 # class BOND--------------------------------------------------
-class bond( meta_enabled):
+class bond( meta_enabled, line_colored, drawable, with_line, interactive):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -52,14 +52,23 @@ class bond( meta_enabled):
   # widths need to be calculated therefore are also not here (to be fixed)
   meta__used_standard_values = ['line_color','double_length_ratio']
   # undo related metas
-  meta__undo_simple = ('atom1', 'atom2', 'type', 'line_width', 'center', 'bond_width',
-                       'line_color','double_length_ratio', 'wedge_width', 'order',
-                       'simple_double')
-  meta__undo_properties = ('molecule',)
+  meta__undo_properties = line_colored.meta__undo_properties + \
+                          with_line.meta__undo_properties + \
+                          ('molecule', 'type', 'order', 'atom1', 'atom2',
+                           'center', 'bond_width','double_length_ratio', 'wedge_width',
+                           'simple_double','auto_bond_sign')
+
+
 
 
   def __init__( self, paper, atoms=(), package=None, molecule=None, type='s', order=1,
                 simple_double=1):
+    # initiation
+    meta_enabled.__init__( self, paper)
+    line_colored.__init__( self)
+    drawable.__init__( self)
+    with_line.__init__( self)
+    # 
     self.type = type
     self.order = order
     meta_enabled.__init__( self, paper)
@@ -74,7 +83,7 @@ class bond( meta_enabled):
 
     # implicit values
     self.center = 0
-    self._auto_bond_sign = 1
+    self.auto_bond_sign = 1
     self.simple_double = simple_double
 
     if package:
@@ -95,9 +104,118 @@ class bond( meta_enabled):
   molecule = property( __get_molecule, __set_molecule)
 
 
+  # type
+  def __get_type( self):
+    return self.__type
+
+  def __set_type( self, mol):
+    self.__type = mol
+    self.__dirty = 1
+
+  type = property( __get_type, __set_type)
+
+
+  # order
+  def __get_order( self):
+    return self.__order
+
+  def __set_order( self, mol):
+    self.__order = mol
+    self.__dirty = 1
+
+  order = property( __get_order, __set_order)
+
+
+  # atom1
+  def __get_atom1( self):
+    return self.__atom1
+
+  def __set_atom1( self, mol):
+    self.__atom1 = mol
+    self.__dirty = 1
+
+  atom1 = property( __get_atom1, __set_atom1)
+
+
+  # atom2
+  def __get_atom2( self):
+    return self.__atom2
+
+  def __set_atom2( self, mol):
+    self.__atom2 = mol
+    self.__dirty = 1
+
+  atom2 = property( __get_atom2, __set_atom2)
+
+
+  # center
+  def __get_center( self):
+    return self.__center
+
+  def __set_center( self, mol):
+    self.__center = mol
+    self.__dirty = 1
+
+  center = property( __get_center, __set_center)
+
+
+  # bond_width
+  def __get_bond_width( self):
+    return self.__bond_width
+
+  def __set_bond_width( self, mol):
+    self.__bond_width = mol
+    self.__dirty = 1
+
+  bond_width = property( __get_bond_width, __set_bond_width)
+
+
+  # wedge_width
+  def __get_wedge_width( self):
+    return self.__wedge_width
+
+  def __set_wedge_width( self, mol):
+    self.__wedge_width = mol
+    self.__dirty = 1
+
+  wedge_width = property( __get_wedge_width, __set_wedge_width)
+
+
+  # simple_double
+  def __get_simple_double( self):
+    return self.__simple_double
+
+  def __set_simple_double( self, mol):
+    self.__simple_double = mol
+    self.__dirty = 1
+
+  simple_double = property( __get_simple_double, __set_simple_double)
+
+
+  # double_length_ratio
+  def __get_double_length_ratio( self):
+    return self.__double_length_ratio
+
+  def __set_double_length_ratio( self, mol):
+    self.__double_length_ratio = mol
+    self.__dirty = 1
+
+  double_length_ratio = property( __get_double_length_ratio, __set_double_length_ratio)
+
+
+  # auto_bond_sign
+  def __get_auto_bond_sign( self):
+    return self.__auto_bond_sign
+
+  def __set_auto_bond_sign( self, mol):
+    self.__auto_bond_sign = mol
+    self.__dirty = 1
+
+  auto_bond_sign = property( __get_auto_bond_sign, __set_auto_bond_sign)
 
 
   ## // ------------------------------ END OF PROPERTIES --------------------
+
 
 
 
@@ -119,14 +237,17 @@ class bond( meta_enabled):
 
 
 
+
   def draw( self, no_automatic=0):
     """call the appropriate draw method, no_automatic is used on file read when no automatic decisions are needed"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
     method = "_draw_%s%d" % (self.type, self.order)
-    if not no_automatic and self.order == 2 and self._auto_bond_sign == 1:
+    if not no_automatic and self.order == 2 and self.auto_bond_sign == 1:
       self._decide_distance_and_center()
     self.__class__.__dict__[ method]( self)
+
+
 
   def _draw_n1( self):
     x1, y1 = self.atom1.get_xy()
@@ -383,6 +504,8 @@ class bond( meta_enabled):
 
 
   def redraw( self, recalc_side=0):
+    if not self.__dirty:
+      print "redrawing non-dirty bond"
     if recalc_side:
       self._decide_distance_and_center()
     sel = self.selector
@@ -392,6 +515,10 @@ class bond( meta_enabled):
     # reselect
     if sel:
       self.select()
+    self.__dirty = 0
+
+
+
 
   def simple_redraw( self):
     """very fast redraw that draws only a simple line instead of the bond,
@@ -409,6 +536,9 @@ class bond( meta_enabled):
     self.paper.coords( self.item, x1, y1, x2, y2)
     self.paper.itemconfig( self.item, width = self.line_width, fill=self.line_color)
     
+
+
+
 
   def focus( self):
     # all the items of the bond
@@ -428,6 +558,9 @@ class bond( meta_enabled):
         items.remove( self.item)
       [self.paper.itemconfigure( item, fill='white') for item in items]
       
+
+
+
 
   def unfocus( self):
     # all the items of the bond
@@ -449,6 +582,9 @@ class bond( meta_enabled):
         items.remove( self.item)
       [self.paper.itemconfigure( item, fill=self.line_color) for item in items]
 
+
+
+
   def select( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
@@ -460,9 +596,15 @@ class bond( meta_enabled):
       self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2)
     self.paper.lower( self.selector)
 
+
+
+
   def unselect( self):
     self.paper.delete( self.selector)
     self.selector = None
+
+
+
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
@@ -471,6 +613,9 @@ class bond( meta_enabled):
       items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
       
+
+
+
   def delete( self):
     self.unselect()
     items = [self.item] + self.second + self.third + self.items
@@ -482,6 +627,10 @@ class bond( meta_enabled):
     self.items = []
     map( self.paper.delete, items)
     return self
+
+
+
+
 
   def read_package( self, package):
     b = ['no', 'yes']
@@ -512,10 +661,13 @@ class bond( meta_enabled):
     if package.getAttribute( 'simple_double'):
       self.simple_double = int( package.getAttribute( 'simple_double'))
     if package.getAttribute( 'auto_sign'):
-      self._auto_bond_sign = int( package.getAttribute( 'auto_sign'))
+      self.auto_bond_sign = int( package.getAttribute( 'auto_sign'))
     # end of implied
     self.atom1 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'start'))
     self.atom2 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'end'))
+
+
+
 
   def post_read_analysis( self):
     """this method is called by molecule after the *whole* molecule is
@@ -524,9 +676,12 @@ class bond( meta_enabled):
     if self.order == 2:
       sign, center = self._compute_sign_and_center()
       if self.bond_width and self.bond_width * sign < 0:
-        self._auto_bond_sign = -1
+        self.auto_bond_sign = -1
       
   
+
+
+
   def get_package( self, doc):
     b = ['no', 'yes']
     bnd = doc.createElement('bond')
@@ -539,8 +694,8 @@ class bond( meta_enabled):
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))
       if self.order == 2:
         bnd.setAttribute( 'center', b[ self.center])
-        if self._auto_bond_sign != 1:
-          bnd.setAttribute( 'auto_sign', str( self._auto_bond_sign))
+        if self.auto_bond_sign != 1:
+          bnd.setAttribute( 'auto_sign', str( self.auto_bond_sign))
     if self.type != 'n':
       bnd.setAttribute( 'wedge_width', str( self.wedge_width * self.paper.screen_to_real_ratio())) 
     if self.line_color != '#000':
@@ -548,6 +703,10 @@ class bond( meta_enabled):
     if self.type != 'n' and self.order != 1:
       bnd.setAttribute( 'simple_double', str( int( self.simple_double)))
     return bnd
+
+
+
+
 
   def toggle_type( self, only_shift = 0, to_type='n', to_order=1, simple_double=1):
     # just simply use the simple_double value
@@ -582,11 +741,11 @@ class bond( meta_enabled):
           # we will shift the position of the second bond
           if self.center:
             self.bond_width = -self.bond_width
-            self._auto_bond_sign = -self._auto_bond_sign
+            self.auto_bond_sign = -self.auto_bond_sign
             self.center = 0
           elif self.bond_width > 0:
             self.bond_width = -self.bond_width
-            self._auto_bond_sign = -self._auto_bond_sign
+            self.auto_bond_sign = -self.auto_bond_sign
           else:
             self.center = 1
         else:
@@ -596,17 +755,21 @@ class bond( meta_enabled):
       # we will shift the position of the second bond
       if self.center:
         self.bond_width = -self.bond_width
-        self._auto_bond_sign = -self._auto_bond_sign
+        self.auto_bond_sign = -self.auto_bond_sign
         self.center = 0
       elif self.bond_width > 0:
         self.bond_width = -self.bond_width
-        self._auto_bond_sign = -self._auto_bond_sign
+        self.auto_bond_sign = -self.auto_bond_sign
       else:
         self.center = 1
     else:
       # we ignore it when shift only appears for non-double bonds
       pass
     self.redraw()
+
+
+
+
 
   def switch_to_type( self, type):
     if type in "wha" and self.type not in "wha":
@@ -617,11 +780,19 @@ class bond( meta_enabled):
       self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
     self.type = type
 
+
+
+
+
   def switch_to_order( self, order):
     self.order = order
     if self.order > 1:
       self._decide_distance_and_center()
     
+
+
+
+
 
   def _decide_distance_and_center( self):
     """according to molecular geometry decide what bond.center and bond.bond_width should be"""
@@ -634,8 +805,12 @@ class bond( meta_enabled):
     if self.order != 2:
       return 
     sign, center = self._compute_sign_and_center()
-    self.bond_width = self._auto_bond_sign * sign * abs( self.bond_width)
+    self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
     self.center = center
+
+
+
+
 
   def _compute_sign_and_center( self):
     """returns tuple of (sign, center) where sign is the default sign of the self.bond_width"""
@@ -711,12 +886,22 @@ class bond( meta_enabled):
         return (1, 0)
     
 
+
+
+
   def get_atoms( self):
     return self.atom1, self.atom2
+
+
+
 
   def set_atoms( self, a1, a2):
     self.atom1 = a1
     self.atom2 = a2
+
+
+
+
 
   def change_atoms( self, a1, a2):
     """used in overlap situations, it replaces reference to atom a1 with
@@ -728,8 +913,15 @@ class bond( meta_enabled):
     else:
       warn("not bonds' atom in bond.change_atoms()", UserWarning, 2)
 
+
+
+
   def bbox( self):
     return self.paper.bbox( self.item)
+
+
+
+
 
   def lift( self):
     [self.paper.lift( i) for i in self.items]
@@ -741,6 +933,10 @@ class bond( meta_enabled):
       [self.paper.lift( o) for o in self.third]
     if self.item:
       self.paper.lift( self.item)
+
+
+
+
 
   def transform( self, tr):
     for i in [self.item] + self.second + self.third + self.items:

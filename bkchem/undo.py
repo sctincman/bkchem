@@ -129,7 +129,10 @@ class state_record:
     for a in o.meta__undo_simple:
       rec[a] = o.__dict__[a]
     for a in o.meta__undo_properties:
-      rec[a] = o.__class__.__dict__[a].fget( o)
+      for p in o.__class__.mro():
+        if a in p.__dict__:
+          rec[a] = p.__dict__[a].fget( o)
+          break
     for a in o.meta__undo_copy:
       rec[a] = copy.copy( o.__dict__[a])
     for a in o.meta__undo_2d_copy:
@@ -172,9 +175,12 @@ class state_record:
           if a != 'molecule':  # this jumps a little from the clean, meta-driven design, however saves much time
             changed = 1
       for a in o.meta__undo_properties:
-        if self.records[i][a] != o.__class__.__dict__[a].fget( o):
-          o.__class__.__dict__[a].fset( o, self.records[i][a])
-          changed = 1
+        for p in o.__class__.mro():
+          if a in p.__dict__:
+            if self.records[i][a] != p.__dict__[a].fget( o):
+              p.__dict__[a].fset( o, self.records[i][a])
+              changed = 1
+            break
       for a in o.meta__undo_copy:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = copy.copy( self.records[i][a])
