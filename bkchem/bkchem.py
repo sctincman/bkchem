@@ -1,4 +1,3 @@
-#! /usr/bin/python
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
 #     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
@@ -17,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """this is just a starter of the application"""
 
@@ -69,40 +65,70 @@ from splash import Splash
 myapp = BKchem()
 myapp.withdraw()
 
-#splash screen
-splash = Splash()
-splash.withdraw()
-splash.update_idletasks()
-width = splash.winfo_reqwidth()
-height = splash.winfo_reqheight()
-x = (myapp.winfo_screenwidth() - width) / 2 - myapp.winfo_vrootx()
-y = (myapp.winfo_screenheight() - height) / 3 - myapp.winfo_vrooty()
-if x < 0:
-    x = 0
-if y < 0:
-    y = 0
-geometry = '%dx%d+%d+%d' % (width, height, x, y)
-splash.geometry(geometry)
-splash.update_idletasks()
-splash.deiconify()
-myapp.update()
 
-# now initialize the main application part
-myapp.initialize()
+
+# parse the command line options
+opts = ()
+files = ()
 if len( sys.argv) > 1:
   import os.path
-  to_load = []
-  for i in range( 1, len( sys.argv)):
-    if i > 1:
-      myapp.add_new_paper()
-    if os.path.isfile( sys.argv[1]):
-      myapp.load_CDML( file=sys.argv[i], replace=1)
-    else:
-      myapp.set_file_name( sys.argv[i], check_ext=1)
+  from getopt import gnu_getopt, GetoptError
+  try:
+    opts, files = gnu_getopt( sys.argv[1:], "f:t:o:")
+  except GetoptError, o:
+    print _(" * unknown option -%s\n * Only -f (from format), -t (to format), -o (output file) options are allowed!" % o.opt)
+    sys.exit()
 
-# destroy splash
-splash.destroy()
-del splash
+
+# now initialize the main application part or the batch mode
+if opts:
+  # we are in batch mode
+  import time
+  t = time.time()
+  myapp.initialize_batch()
+  myapp.process_batch( opts, files)
+  print " %f ms" % (1000*(time.time()-t))
+  sys.exit()
+else:
+  # normal interactive mode
+  #splash screen
+  splash = Splash()
+  splash.withdraw()
+  splash.update_idletasks()
+  width = splash.winfo_reqwidth()
+  height = splash.winfo_reqheight()
+  x = (myapp.winfo_screenwidth() - width) / 2 - myapp.winfo_vrootx()
+  y = (myapp.winfo_screenheight() - height) / 3 - myapp.winfo_vrooty()
+  if x < 0:
+      x = 0
+  if y < 0:
+      y = 0
+  geometry = '%dx%d+%d+%d' % (width, height, x, y)
+  splash.geometry(geometry)
+  splash.update_idletasks()
+  splash.deiconify()
+  myapp.update()
+
+  # application initialization
+  myapp.initialize()
+  for i in range( 0, len( files)):
+    if i > 0:
+      myapp.add_new_paper()
+    if os.path.isfile( files[0]):
+      myapp.load_CDML( file=files[0], replace=1)
+    else:
+      myapp.set_file_name( files[i], check_ext=1)
+
+  ## here we try to load psyco - this could speed things up
+  try:
+    import psyco
+    psyco.profile()
+  except ImportError:
+    pass
+
+  # destroy splash
+  splash.destroy()
+  del splash
 
 #start the application
 geometry = "+10+10"

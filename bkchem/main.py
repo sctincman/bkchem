@@ -59,74 +59,107 @@ class BKchem( Tk):
 
 
   def initialize( self):
-    Pmw.initialise( self)
-    import pixmaps
-    if os.name == 'posix':
-      try:
-        self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-*-100-*-*-*-*-*-*"))
-      except:
-        print "cannot init default font"
-    else:
-      self.option_add( "*font", ("Helvetica",10,"normal"))
-    self.title( "BKchem")
-    self.stat= StringVar()
-    self.stat.set( "Idle")
-    self.save_dir = '.'
-    self.save_file = None
-    self.svg_dir = '.'
-    self.svg_file = ''
-
-    self._clipboard = None
-    self._clipboard_pos = None
-
-    self._untitled_counter = 0
-    self.__tab_name_2_paper = {}
-    self.__last_tab = 0
-
-
-    self._after = None
-
-    self.balloon = Pmw.Balloon( self)
-    mainFrame = Frame( self)
-    mainFrame.pack( fill='both', expand=1)
-
+    self.init_basics()
+    
     # main drawing part
     self.papers = []
-    self.notebook = Pmw.NoteBook( mainFrame,
+    self.notebook = Pmw.NoteBook( self.main_frame,
                                   raisecommand=self.change_paper)
     self.add_new_paper()
 
-    #
-    # here are all the functions needed for multiple papers
-    #
-    # template_manager
-    self.tm = template_manager( self)
-    self.tm.add_template_from_CDML( "templates.cdml")
+    # template and group managers
+    self.init_managers()
 
-    # manager for user user defined templates
-    self.utm = template_manager( self)
-    self.read_user_templates()
+    # menu initialization
+    self.init_menu()
 
-    # groups manager
-    self.gm = template_manager( self)
-    self.gm.add_template_from_CDML( "groups.cdml")
-    self.gm.add_template_from_CDML( "groups2.cdml")
-
-    self.modes = { 'draw': modes.draw_mode( self),
-                   'edit': modes.edit_mode( self),
-                   'arrow': modes.arrow_mode( self),
-                   'plus': modes.plus_mode( self),
-                   'template': modes.template_mode( self),
-                   'text': modes.text_mode( self),
-                   'rotate': modes.rotate_mode( self),
-                   'bondalign': modes.bond_align_mode( self),
-                   'vector': modes.vector_mode( self),
-                   'mark': modes.mark_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
+    # modes initialization
+    self.init_modes()
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
+    self.init_mode_buttons()
 
+    # edit pool
+    self.editPool = editPool( self, self.main_frame, width=60)
+    self.editPool.pack( anchor=W)
+
+    # main drawing part packing
+    self.notebook.pack( fill='both', expand=1)
+    for p in self.papers:
+      p.initialise()
+    self.notebook.setnaturalsize()
+
+    # init status bar
+    self.init_status_bar()
+
+    # 
+    self.radiobuttons.invoke( self.mode)
+
+    # protocol bindings
+    self.protocol("WM_DELETE_WINDOW", self._quit)
+
+
+    #self.start_server()
+
+
+
+
+
+  def initialize_batch( self):
+    self.init_basics()
+    
+    # main drawing part
+    self.papers = []
+    self.notebook = Pmw.NoteBook( self.main_frame,
+                                  raisecommand=self.change_paper)
+    self.add_new_paper()
+
+    
+    #self.paper = chem_paper( self.main_frame, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
+    #                    background="grey", closeenough=5, file_name=self.get_name_dic("a"))
+
+    # template and group managers
+    self.init_managers()
+
+    # menu initialization
+    #self.init_menu()
+
+    # modes initialization
+    #self.init_modes()
+    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
+    #self.init_mode_buttons()
+
+    # edit pool
+    #self.editPool = editPool( self, self.main_frame, width=60)
+    #self.editPool.pack( anchor=W)
+
+    # main drawing part packing
+    self.notebook.pack( fill='both', expand=1)
+    for p in self.papers:
+      p.initialise()
+    self.notebook.setnaturalsize()
+
+
+    self.papers.append( self.paper)
+
+    # init status bar
+    #self.init_status_bar()
+
+    # 
+    #self.radiobuttons.invoke( self.mode)
+
+    # protocol bindings
+    self.protocol("WM_DELETE_WINDOW", self._quit)
+
+
+    #self.start_server()
+
+    
+
+
+
+  def init_menu( self):
     # defining menu
-    menu = Frame( mainFrame, relief=RAISED, bd=2)
+    menu = Frame( self.main_frame, relief=RAISED, bd=2)
     menu.pack( fill = X)
 
     helpButton = Menubutton( menu, text=_('Help'))
@@ -152,8 +185,8 @@ class BKchem( Tk):
     export_cascade = fileMenu.add( 'cascade', label=_('Export'), menu = export_menu)
     export_menu.add( 'command', label=_('SVG'), command = self.save_SVG)
     # import cascade
-    import_menu = Menu( fileButton, tearoff=0)
-    import_cascade = fileMenu.add( 'cascade', label=_('Import'), menu = import_menu)
+    self.import_menu = Menu( fileButton, tearoff=0)
+    import_cascade = fileMenu.add( 'cascade', label=_('Import'), menu = self.import_menu)
     # file properties
     fileMenu.add( 'separator')
     fileMenu.add( 'command', label=_('File properties'), command=self.change_properties)
@@ -242,6 +275,46 @@ class BKchem( Tk):
     optionsButton['menu'] = optionsMenu
     optionsMenu.add( 'command', label=_('Standard'), command=self.standard_values)
 
+
+
+
+  def init_basics( self):
+    Pmw.initialise( self)
+    import pixmaps
+    if os.name == 'posix':
+      try:
+        self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-*-100-*-*-*-*-*-*"))
+      except:
+        print "cannot init default font"
+    else:
+      self.option_add( "*font", ("Helvetica",10,"normal"))
+    self.title( "BKchem")
+    self.stat= StringVar()
+    self.stat.set( "Idle")
+    self.save_dir = '.'
+    self.save_file = None
+    self.svg_dir = '.'
+    self.svg_file = ''
+
+    self._clipboard = None
+    self._clipboard_pos = None
+
+    self._untitled_counter = 0
+    self.__tab_name_2_paper = {}
+    self.__last_tab = 0
+
+
+    self._after = None
+
+    self.balloon = Pmw.Balloon( self)
+    self.main_frame = Frame( self)
+    self.main_frame.pack( fill='both', expand=1)
+
+
+
+
+
+  def init_plugins_menu( self):
     # PLUGINS
     if plugins.__all__:
       self.plugins = []
@@ -249,12 +322,53 @@ class BKchem( Tk):
         plugin = plugins.__dict__[ name]
         self.plugins.append( plugin)
         if ('importer' in  plugin.__dict__) and plugin.importer:
-          import_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
+          self.import_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
         if ('exporter' in plugin.__dict__) and plugin.exporter:
           export_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
 
+
+
+
+
+  def init_managers( self):
+    # template_manager
+    self.tm = template_manager( self)
+    self.tm.add_template_from_CDML( "templates.cdml")
+
+    # manager for user user defined templates
+    self.utm = template_manager( self)
+    self.read_user_templates()
+
+    # groups manager
+    self.gm = template_manager( self)
+    self.gm.add_template_from_CDML( "groups.cdml")
+    self.gm.add_template_from_CDML( "groups2.cdml")
+
+
+
+
+
+
+  def init_modes( self):
+    self.modes = { 'draw': modes.draw_mode( self),
+                   'edit': modes.edit_mode( self),
+                   'arrow': modes.arrow_mode( self),
+                   'plus': modes.plus_mode( self),
+                   'template': modes.template_mode( self),
+                   'text': modes.text_mode( self),
+                   'rotate': modes.rotate_mode( self),
+                   'bondalign': modes.bond_align_mode( self),
+                   'vector': modes.vector_mode( self),
+                   'mark': modes.mark_mode( self)}
+    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
+
+
+
+
+
+  def init_mode_buttons( self):
     # mode selection panel     
-    radioFrame = Frame( mainFrame)
+    radioFrame = Frame( self.main_frame)
     radioFrame.pack( fill=X)
     self.radiobuttons = Pmw.RadioSelect(radioFrame,
                      buttontype = 'button',
@@ -275,29 +389,21 @@ class BKchem( Tk):
       else:
         self.radiobuttons.add( m, text=self.modes[ m].name)
     # sub-mode support
-    self.subFrame = Frame( mainFrame)
+    self.subFrame = Frame( self.main_frame)
     self.subFrame.pack( fill=X)
     self.subbuttons = []
     # the remaining of sub modes support is now in self.change_mode
     # atom name editing support
-    self.editPool = editPool( self, mainFrame, width=60)
-    self.editPool.pack( anchor=W)
 
-    # main drawing part packing
-    self.notebook.pack( fill='both', expand=1)
-    for p in self.papers:
-      p.initialise()
-    self.notebook.setnaturalsize()
 
-    status = Label( mainFrame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
+
+
+
+  def init_status_bar( self):
+    status = Label( self.main_frame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
-    self.radiobuttons.invoke( self.mode)
-
-    # protocol bindings
-    self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
-    self.start_server()
 
 
 
@@ -308,6 +414,7 @@ class BKchem( Tk):
                                message_text = data.about_text)
     dialog.iconname('BKchem')
     dialog.activate()
+
 
 
 
@@ -610,10 +717,13 @@ class BKchem( Tk):
 
 
 
-  def save_SVG( self):
-    svg_file = self.paper.get_base_name()+".svg"
-    a = asksaveasfilename( defaultextension = ".svg", initialdir = self.svg_dir, initialfile = svg_file,
-                         title = _("Export SVG"), parent = self, filetypes=((_("SVG file"),"*.svg"),))
+  def save_SVG( self, file_name=None):
+    if not file_name:
+      svg_file = self.paper.get_base_name()+".svg"
+      a = asksaveasfilename( defaultextension = ".svg", initialdir = self.svg_dir, initialfile = svg_file,
+                             title = _("Export SVG"), parent = self, filetypes=((_("SVG file"),"*.svg"),))
+    else:
+      a = file_name
     if a != '':
       self.svg_dir, svg_file = os.path.split( a)
       try:
@@ -954,3 +1064,31 @@ Enter IChI:""")
     self.radiobuttons.invoke( "template")
     self.subbuttons[0].invoke( "userdefined")
     self.mode._user_selected_template = name
+
+
+
+  def process_batch( self, opts, files):
+    f = None
+    t = None
+    o = None
+    for opt in opts:
+      if opt[0] == '-f':
+        f = opt[1]
+      elif opt[0] == '-t':
+        t = opt[1]
+      elif opt[0] == '-o':
+        o = opt[1]
+    f = f or 'cdml'
+    t = t or 'svg'
+
+    for file in files:
+      # choose the output filename
+      if not o:
+        out = file+'.'+t
+      else:
+        out = o
+      # 
+      if f == 'cdml':
+        self.load_CDML( file, replace=1)
+      if t == 'svg':
+        self.save_SVG( out)
