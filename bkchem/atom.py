@@ -372,7 +372,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
       ret = self.name
       # hydrogens
       if self.show_hydrogens:
-        v = self.get_free_valency()
+        v = self.free_valency
         if v:
           h = 'H'
         else:
@@ -406,7 +406,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     ret = self.name
     # hydrogens
     if self.show_hydrogens:
-      v = self.get_free_valency()
+      v = self.free_valency
       if v:
         h = 'H'
       else:
@@ -783,10 +783,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
     ret = PT.formula_dict( self.name)
-    free_val = self.get_free_valency()
-    if free_val > 0:
-      ret['H'] = free_val
-    return ret
+    if self.free_valency > 0:
+      ret['H'] = self.free_valency
+    return re
 
 
 
@@ -864,6 +863,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
 
 
+
+
   def reposition_marks( self):
     for k,m in self.marks.iteritems():
       if m and m.auto:
@@ -923,7 +924,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     for val in PT.periodic_table[ self.name]['valency']:
       self.valency = val
       try:
-        fv = self.get_free_valency( strict=1)
+        fv = self.free_valency
       except:
         return  # this happens on read
       if fv >= 0:
