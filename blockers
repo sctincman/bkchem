@@ -14,7 +14,6 @@ remarks
 - vertical and horizontal swap
   - not containers
   - things should remain selected
-- main window is resized when switching modes because the draw sybmodes are too long
 
 
 0.x.0
@@ -34,8 +33,6 @@ remarks
 - code cleanup!
   - yes|no in get_package
   - widgets for paper properties selection
-- do something with pixmaps and their fucked behaviour of not working when imported on the top of the file
-  - needs some proper module initiation?
 - translate italic, bold etc. in editPool
 - spline - svg, exports - HOW? the SVG does not know b-splines
 - marks and the real coords, plus and real coords - drop real coords and make importers scale the drawing? what about CML output?

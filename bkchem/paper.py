@@ -1239,10 +1239,10 @@ class BKpaper( Canvas):
       x0 = (max( xs) + min( xs)) / 2.0
       for o in to_align:
         if o.meta__is_container:
-          tr = transform3d()
-          tr.set_move( -x0, 0, 0)
-          tr.set_rotation_y( math.pi)
-          tr.set_move( x0, 0, 0)
+          tr = transform()
+          tr.set_move( -x0, 0)
+          tr.set_scaling_xy( -1, 1)
+          tr.set_move( x0, 0)
           o.transform( tr)
         else:
           print "fuck"
@@ -1252,10 +1252,10 @@ class BKpaper( Canvas):
       y0 = (max( ys) + min( ys)) / 2.0
       for o in to_align:
         if o.meta__is_container:
-          tr = transform3d()
-          tr.set_move( 0, -y0, 0)
-          tr.set_rotation_x( math.pi)
-          tr.set_move( 0, y0, 0)
+          tr = transform()
+          tr.set_move( 0, -y0)
+          tr.set_scaling_xy( 1, -1)
+          tr.set_move( 0, y0)
           o.transform( tr)
         else:
           print "fuck"
