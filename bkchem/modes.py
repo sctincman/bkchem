@@ -1017,7 +1017,7 @@ class bond_align_mode( edit_mode):
     self.submodes = [['tohoriz','tovert']]
     self.submodes_names = [[_('horizontal align'),_('vertical align')]]
     self.submode = [0]
-
+    self._one_atom_is_enough_for_this_submode = [0,0]
 
   def mouse_down( self, event, modifiers = []):
     if not self.focused:
@@ -1039,9 +1039,6 @@ class bond_align_mode( edit_mode):
     elif self.focused.object_type == 'atom':
       if not self.first_atom_selected: # first atom picked
         self.first_atom_selected = self.focused
-        # po vyberu 1. atmu a prechodu do jineho rezimu
-        # selekce zustava .. co s tim ?
-        # udelat metody metody pro uklidove prace pri zmene rezimu?
         self.first_atom_selected.select()
         # bez tohodle ta selekce neni videt:
         self.paper.lower(self.paper.background)
@@ -1058,33 +1055,7 @@ class bond_align_mode( edit_mode):
         x2, y2 = self.focused.get_xy()
         self.first_atom_selected.unselect()
         self.first_atom_selected = None
-    self._centerx = ( x1 + x2) / 2
-    self._centery = ( y1 + y2) / 2
-    angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
-    if angle0 >= math.pi :
-      angle0 = angle0 - math.pi
-    if self.submode[0] == 0: # tohoriz
-      if (angle0 > -0.005) and (angle0 < .005) :
-      # if angle0 == 0  :
-        # bond is already horizontal => horizontal "flip"
-        angle = math.pi
-      elif angle0 <= math.pi/2:
-        angle = -angle0
-      else: # pi/2 < angle < pi
-        angle = math.pi - angle0
-
-    else: # tovert
-      if (angle0 > math.pi/2 - .005) and (angle0 < math.pi/2 + 0.005):
-      # if angle0 == math.pi/2:
-        # bond is already vertical => vertical "flip"
-        angle = math.pi
-      else:
-        angle = math.pi/2 - angle0
-
-    tr = transform.transform()
-    tr.set_move( -self._centerx, -self._centery)
-    tr.set_rotation( angle)
-    tr.set_move(self._centerx, self._centery)
+    tr = self.__class__.__dict__['_transform_'+self.get_submode(0)]( self, x1, y1, x2, y2)
     self._rotated_mol.transform( tr)
     self._rotated_mol = None
     self.paper.start_new_undo_record()
@@ -1093,6 +1064,46 @@ class bond_align_mode( edit_mode):
     if self.focused:
       self.focused.unfocus()
       self.focused = None
+
+
+  def _transform_tohoriz( self, x1, y1, x2, y2):
+    centerx = ( x1 + x2) / 2
+    centery = ( y1 + y2) / 2
+    angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+    if angle0 >= math.pi :
+      angle0 = angle0 - math.pi
+    if (angle0 > -0.005) and (angle0 < .005) :
+    # if angle0 == 0  :
+      # bond is already horizontal => horizontal "flip"
+      angle = math.pi
+    elif angle0 <= math.pi/2:
+      angle = -angle0
+    else: # pi/2 < angle < pi
+      angle = math.pi - angle0
+    tr = transform.transform()
+    tr.set_move( -centerx, -centery)
+    tr.set_rotation( angle)
+    tr.set_move(centerx, centery)
+    return tr
+      
+
+  def _transform_tovert( self, x1, y1, x2, y2):
+    centerx = ( x1 + x2) / 2
+    centery = ( y1 + y2) / 2
+    angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+    if angle0 >= math.pi :
+      angle0 = angle0 - math.pi
+    if (angle0 > math.pi/2 - .005) and (angle0 < math.pi/2 + 0.005):
+    # if angle0 == math.pi/2:
+      # bond is already vertical => vertical "flip"
+      angle = math.pi
+    else:
+      angle = math.pi/2 - angle0
+    tr = transform.transform()
+    tr.set_move( -centerx, -centery)
+    tr.set_rotation( angle)
+    tr.set_move(centerx, centery)
+    return tr
 
   def mouse_click( self, event):
     pass
