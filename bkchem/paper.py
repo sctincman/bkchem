@@ -123,6 +123,10 @@ class chem_paper( Canvas, object):
       self.bind( "<Button-2>", self._n_pressed2)
       self.bind( "<Motion>", self._move)
       self.bind( "<Leave>", self._leave)
+      # scrolling (linux only?)
+      self.bind( "<Button-4>", lambda e: self.yview( "scroll", -1, "units"))
+      self.bind( "<Button-5>", lambda e: self.yview( "scroll", 1, "units"))
+
 
 
 
@@ -461,32 +465,6 @@ class chem_paper( Canvas, object):
       
 
 
-
-
-  def bonds_to_update2( self):
-    a = map( lambda o: o.molecule.atoms_bonds( o), filter( lambda o: o.object_type == 'atom', self.selected))
-    if a:
-      return misc.filter_unique( reduce( operator.add, a))
-    else:
-      return []
-    
-
-
-
-
-  def bonds_to_update3( self):
-    a = []
-    for o in self.selected:
-      if o.object_type == 'atom':
-        for b in o.molecule.atoms_bonds( o):
-          if (b not in a):
-            a.append( b)
-    return a
-
-
-
-
-
   def bonds_to_update( self):
     a = []
     s_atoms = [o for o in self.selected if o.object_type == 'atom'] # selected atoms
@@ -521,11 +499,6 @@ class chem_paper( Canvas, object):
     return misc.filter_unique( a)
 
 
-
-
-
-  def signal_to_app( self, signal, time=4):
-    self.app.update_status( signal, time=time)
 
 
 

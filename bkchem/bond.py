@@ -881,6 +881,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     else:
       self.type = 'n'
       self.order = 1
+    self.id = package.getAttribute( 'id')
     # implied
     if package.getAttribute( 'bond_width'):
       self.bond_width = float( package.getAttribute( 'bond_width')) * self.paper.real_to_screen_ratio()
@@ -936,6 +937,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
                                         ('line_width', str( self.line_width)),
                                         ('start', self.atom1.id),
                                         ('end', self.atom2.id),
+                                        ('id', str( self.id)),
                                         ('double_ratio', str( self.double_length_ratio))))
     if hasattr( self, 'equithick') and self.equithick:
       bnd.setAttribute( 'equithick', str(1))

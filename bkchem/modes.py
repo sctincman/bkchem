@@ -1828,7 +1828,8 @@ class external_data_mode( basic_mode):
     self._entries = {}
     self._win = None
     self._active_object = None
-
+    self._object_selector = None  # item that highlights the active object
+    self._focus_selector = None  # item that highlights the object refered in entry
 
 
   def mouse_down( self, event):
@@ -1836,6 +1837,8 @@ class external_data_mode( basic_mode):
       e = self._get_active_entry()
       if e:
         e.value = self.focused.id
+        self._entry_left()
+        self._entry_entered( e)
       else:
         self._activate_object( self.focused)
         self._populate_table_for_active_object()
@@ -1849,8 +1852,9 @@ class external_data_mode( basic_mode):
 
   def _activate_object( self, obj):
     self._active_object = obj
-    rect = self.app.paper.create_rectangle( obj.bbox(), outline='green', width=2)
-    self._items.add( rect)
+    if self._object_selector:
+      self.app.paper.delete( self._object_selector)
+    self._object_selector = self.app.paper.create_rectangle( obj.bbox(), outline='red', width=2)
     self._add_bindings_according_to_submode()
 
 
@@ -1863,7 +1867,18 @@ class external_data_mode( basic_mode):
           self._entries[ k].value = val.id
         else:
           self._entries[ k].value = val
+    self._draw_the_arrows()
 
+
+  def _entry_entered( self, e):
+    obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
+    if obj:
+      self._focus_selector = self.app.paper.create_rectangle( obj.bbox(), outline="orange", width=2)
+      self._add_bindings_according_to_submode()
+
+  def _entry_left( self):
+    if self._focus_selector:
+      self.app.paper.delete( self._focus_selector)
 
 
   def _set_data( self):
@@ -1872,7 +1887,8 @@ class external_data_mode( basic_mode):
       for k,v in defs.iteritems():
         val = self._entries[ k].value
         if val != '':
-          if v['type'] in ('atom','molecule','bond'):
+          if v['type'] in self.app.paper.edm.reference_types:
+            # can be passed to edm.set_data now
             try:
               val = self.app.paper.id_manager.get_object_with_id( val)
             except KeyError:
@@ -1880,6 +1896,7 @@ class external_data_mode( basic_mode):
               continue
           self.app.paper.edm.set_data( self.get_submode( 1), self._active_object, k, val)
 
+    self._draw_the_arrows()
     self.app.log( _("The data were set to the active item"), message_type="info")
 
 
@@ -1890,14 +1907,39 @@ class external_data_mode( basic_mode):
       self._win = self.app.paper.create_window( 500, 100, window=self._frame)
       for k,v in defs.iteritems():
         label = Tkinter.Label( self._frame, text=v['text'])
-        entry = external_data.StrEntry( self._frame)
+        if v['type'] in self.app.paper.edm.reference_types:
+          entry = external_data.ExternalDataEntry( self._frame, "reference")
+          entry.bind( "<FocusIn>", lambda e: self._entry_entered( e.widget))
+          entry.bind( "<FocusOut>", lambda e: self._entry_left())
+        else:
+          entry = external_data.ExternalDataEntry( self._frame, "internal")
         self._items.add( label)
         self._entries[ k] = entry
         label.pack()
         entry.pack()
       Tkinter.Button( self._frame, text=_("Set"), command=self._set_data).pack()
     
-      
+
+  def _draw_the_arrows( self):
+    for e in self._entries.values():
+      if e.type == "reference":
+        e.cleanup( self.app.paper)
+        obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
+        if obj:
+          e.arrow = self._draw_arrow_from_to( e, obj)
+    self._add_bindings_according_to_submode()
+    
+
+  def _draw_arrow_from_to( self, e, obj):
+    e.update()
+    x0, y0 = self.app.paper.bbox( self._win)[0:2]
+    x1 = x0
+    y1 = y0 + e.winfo_y() + e.winfo_height()/2
+    bbox = obj.bbox()
+    x2 = (bbox[0]+bbox[2])/2
+    y2 = (bbox[1]+bbox[3])/2
+    arrow = self.app.paper.create_line( x1, y1, x2, y2, arrow="last", fill="blue", width=1)
+    return arrow
 
 
   def _add_bindings_according_to_submode( self):
@@ -1939,10 +1981,14 @@ class external_data_mode( basic_mode):
     pap = paper or self.app.paper
     if self._win:
       self._items = Set()
+      [e.cleanup( pap) for e in self._entries.values()]
       self._entries = {}
       self._frame = None
       pap.delete( self._win)
       self._win = None
+    for x in ('_object_selector','_focus_selector'):
+      pap.delete( self.__dict__[ x])
+      self.__dict__[ x] = None
 
 
 

@@ -45,6 +45,12 @@ class id_manager:
     return self.id_map[ id]
 
 
+
+  def get_object_with_id_or_none( self, id):
+    return self.id_map.get( id, None)
+
+
+
   def generate_id( self, prefix='id'):
     while 1:
       id = prefix + str( randint( 1, 100000))

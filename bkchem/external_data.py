@@ -41,6 +41,8 @@ class external_data_manager( object):
            }
            
 
+  reference_types = ("atom", "molecule", "bond")
+
 
   def __init__( self):
     self.records = {}
@@ -97,7 +99,7 @@ class external_data_manager( object):
 
 
 
-  def set_data( self, dclass, obj, category, value):
+  def set_data( self, dclass, obj, category, value, id_manager=None):
     """sets the data into the internal dictionary"""
     if self.value_matches_definition( dclass, obj, category, value):
       if not obj in self.records[ dclass]:
@@ -105,7 +107,7 @@ class external_data_manager( object):
       # the type should be...
       t = self.definitions[ dclass][ obj.object_type][ category]['type']
       try:
-        self.records[ dclass][ obj][ category] = self.convert_to_type( value, t)
+        self.records[ dclass][ obj][ category] = self.convert_to_type( value, t, id_manager=id_manager)
       except ValueError:
         raise "the value '%s' type does not match the definition." % str( value)
     else:
@@ -175,7 +177,7 @@ class external_data_manager( object):
 
 
   def read_package( self, root, id_manager):
-    """reads the data from xml (CDML) format. Is not intended for reading of definitions
+    """reads the data from xml (CDML) format. Is not intended for reading of definition
     files, use read_data_definition instead"""
     for ecls in dom_ext.simpleXPathSearch( root, "class"):
       cls = ecls.getAttribute( 'name')
@@ -186,18 +188,23 @@ class external_data_manager( object):
         for evalue in dom_ext.simpleXPathSearch( eobj, "value"):
           vcat = evalue.getAttribute( 'category')
           vvalue = evalue.getAttribute( 'value')
-          self.set_data( cls, obj, vcat, vvalue)
+          self.set_data( cls, obj, vcat, vvalue, id_manager=id_manager)
 
 
 
 
-  def convert_to_type( self, value, vtype):
+  def convert_to_type( self, value, vtype, id_manager=None):
     if vtype in types.__dict__:
       t = self.expand_type( vtype)[0]
       return t( value)
+    elif id_manager:
+      v = id_manager.get_object_with_id_or_none( value)
+      if v:
+        return v
+      else:
+        return value
     else:
-      return value
-        
+      return value        
 
 
 
@@ -205,10 +212,12 @@ class external_data_manager( object):
 from Tkinter import Entry
 
 
-class StrEntry( Entry, object):
+class ExternalDataEntry( Entry, object):
 
-  def __init__( self, parent, **kw):
+  def __init__( self, parent, type, **kw):
     Entry.__init__( self, parent, kw)
+    self.arrow = None
+    self.type = type  # is one of ("internal", "reference")
     #self.value = None
 
 
@@ -224,4 +233,9 @@ class StrEntry( Entry, object):
   value = property( _get_value, _set_value, None, "value of the Entry, str() is run on it when displaying")
 
 
+
+  def cleanup( self, paper):
+    if self.arrow:
+      paper.delete( self.arrow)
+      self.arrow = None
     
