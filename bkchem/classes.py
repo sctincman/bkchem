@@ -599,10 +599,10 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   meta__undo_simple = ('text',)
 
   def __init__( self, paper, xy=(), text='', package=None):
-    meta_enabled.__init__( self, paper)
-    point_drawable.__init__( self)
     text_like.__init__( self)
+    point_drawable.__init__( self)
     area_colored.__init__( self)
+    meta_enabled.__init__( self, paper)
     
     self.selector = None
     self._selected = 0
@@ -614,6 +614,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if package:
       self.read_package( package)
     self.focus_item = None
+
+    print self.font_size
 
   # public methods
 
