@@ -973,15 +973,7 @@ class rotate_mode( edit_mode):
         tr.set_move( -self._centerx, -self._centery)
         tr.set_rotation( angle)
         tr.set_move( self._centerx, self._centery)
-        for a in self._rotated_mol.atoms_map:
-          x, y = a.get_xy()
-          x, y = tr.transform_xy( x, y)
-          a.move_to( x, y)
-          # its no very time-optimal (it would be better to recalculate the position of marks using the
-          # rotation calculation) but it works and takes only 0.1 ms per turn step on 800 MHz
-          a.reposition_marks()
-        for a in self._rotated_mol.bonds:
-          a.redraw()
+        self._rotated_mol.transform( tr)
       else:
         # 3D rotation
         angle1 = round( dx1 / 50.0, 2)
@@ -1080,13 +1072,7 @@ class bond_align_mode( edit_mode):
     tr.set_move( -self._centerx, -self._centery)
     tr.set_rotation( angle)
     tr.set_move(self._centerx, self._centery)
-    for a in self._rotated_mol.atoms_map:
-      x, y = a.get_xy()
-      x, y = tr.transform_xy( x, y)
-      a.move_to( x, y)
-    # nasledujicim si nejsem jisty.. vicemene prevzato z rotate
-    # if self._rotated_mol:
-    [b.redraw() for b in self._rotated_mol.bonds]
+    self._rotated_mol.transform( tr)
     self._rotated_mol = None
     self.paper.start_new_undo_record()
     self.paper.add_bindings()

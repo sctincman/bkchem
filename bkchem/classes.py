@@ -467,6 +467,18 @@ class molecule( simple_parent):
       f.write('%d %d\n' % (self.atoms_map.index( b.atom1), self.atoms_map.index( b.atom2)))
     f.close()
 
+  def transform( self, tr):
+    """applies given transformation to its children"""
+    for a in self.atoms_map:
+      x, y = a.get_xy()
+      x, y = tr.transform_xy( x, y)
+      a.move_to( x, y)
+      # its no very time-optimal (it would be better to recalculate the position of marks using the
+      # rotation calculation) but it works and takes only 0.1 ms per turn step on 800 MHz
+      a.reposition_marks()
+    for b in self.bonds:
+      b.transform( tr)
+
 
 
 ### Class ATOM --------------------------------------------------
@@ -1623,6 +1635,13 @@ class bond( meta_enabled):
       self.paper.lift( self.third)
     if self.item:
       self.paper.lift( self.item)
+
+  def transform( self, tr):
+    for i in [self.item] + self.second + self.third + self.items:
+      coords = self.paper.coords( i)
+      tr_coords = tr.transform_flat_list( coords)
+      self.paper.coords( i, tuple( tr_coords))
+      
 
 
 ##-------------------- STANDARD CLASS ------------------------------
