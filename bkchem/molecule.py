@@ -47,7 +47,8 @@ class molecule( container, top_level):
   # other meta infos
   meta__is_container = 1
   # undo meta infos
-  meta__undo_simple = ('name','id')
+  meta__undo_simple = ('name',)
+  meta__undo_properties = ('id',)
   meta__undo_copy = ('atoms', 'bonds')
   meta__undo_2d_copy = ('connect',)
   meta__undo_children_to_record = ('atoms','bonds')
@@ -60,7 +61,7 @@ class molecule( container, top_level):
     self.sign = 1
     self._last_used_atom = None 
     self.name = ''
-    self.id = ''
+    self.id = self.generate_id()
     self._iterator = 0
     self.t_bond_first = None  # template
     self.t_bond_second = None
@@ -68,7 +69,7 @@ class molecule( container, top_level):
     self.focus_item = None
     if package:
       self.read_package( package) 
-    
+
   def __iter__( self):
     return self
 
@@ -355,7 +356,8 @@ class molecule( container, top_level):
 
   def read_package( self, package):
     self.name = package.getAttribute( 'name')
-    self.id = package.getAttribute( 'id')
+    if package.getAttribute( 'id'):
+      self.id = package.getAttribute( 'id')
     for a in package.getElementsByTagName( 'atom'):
       self.insert_atom( atom( self.paper, package=a, molecule=self))
     self._id_map = map( lambda a: a.cdml_id, self.atoms)

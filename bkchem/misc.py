@@ -30,6 +30,8 @@ import string
 from warnings import warn
 import re
 import types
+import base64
+
 
 def intersection( a, b):
   "returns intersection of 2 lists"
@@ -110,3 +112,28 @@ def split_number_and_unit( txt):
 def lazy_apply( function, arguments):
   """similar to apply but returns a callable (lambda) that performs the apply when called."""
   return lambda: apply( function, arguments)
+
+
+
+
+
+class id_generator:
+  
+  i = 0
+
+  def generate_id( self, prefix="i"):
+    """static method generating and id with optional prefix"""
+    self.i += 1
+    return prefix + str( self.i)
+
+  generate_id = classmethod( generate_id)
+
+
+
+
+def extend_bbox( bbox, pixels=1):
+  minx = min( (bbox[0], bbox[2]))
+  maxx = max( (bbox[0], bbox[2]))
+  miny = min( (bbox[1], bbox[3]))
+  maxy = max( (bbox[1], bbox[3]))
+  return minx-pixels, miny-pixels, maxx+pixels, maxy+pixels

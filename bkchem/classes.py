@@ -35,6 +35,7 @@ import tkFont
 from parents import meta_enabled, container, with_line, text_like, line_colored
 from parents import area_colored, point_drawable, interactive, drawable, top_level
 from parents import child
+from reaction import reaction
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -142,6 +143,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     with_line.__init__( self)
     line_colored.__init__( self)
 
+    self.id = self.generate_id()
     self.points = []
     self.spline = spline
     self.paper = paper
@@ -152,6 +154,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       for p in points:
         pnt = point( self.paper, p[0], p[1], arrow=self)
         self.points.append( pnt)
+    self.reaction = reaction()
+    self.reaction.arrows.append( self)
     if package:
       self.read_package( package)
 
@@ -164,6 +168,16 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   shape_defining_points = property( __get_shape_defining_points, None, None,
                                     "should give list of point_drawable instances")
+
+
+  def __get_reaction( self):
+    return self.__reaction
+
+  def __set_reaction( self, reaction):
+    self.__reaction = reaction
+
+  reaction = property( __get_reaction, __set_reaction, None, "the reaction associated with this arrow")
+
 
   # // PROPERTIES
 
@@ -475,6 +489,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     text_like.__init__( self)
     area_colored.__init__( self)
 
+    self.id = self.generate_id()
     self.x = self.y = None
     self.focus_item = None
     self.selector = None
@@ -602,7 +617,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     point_drawable.__init__( self)
     area_colored.__init__( self)
     meta_enabled.__init__( self, paper)
-    
+
+    self.id = self.generate_id()    
     self.selector = None
     self._selected = 0
     self.ftext = None

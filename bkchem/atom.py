@@ -80,6 +80,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
     # basic attrs
     self.molecule = molecule
+    self.id = self.generate_id()
 
     # presentation attrs
     self.selector = None

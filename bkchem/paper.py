@@ -54,7 +54,7 @@ import os
 class chem_paper( Canvas, object):
 
   object_type = 'paper'
-
+  all_names_to_bind = ('atom','bond','arrow','point','plus','text','vector','helper_rect')
 
 
   def __init__( self, master = None, app = None, file_name={}, **kw):
@@ -172,32 +172,27 @@ class chem_paper( Canvas, object):
 
 
 
-  def add_bindings( self):
+  def add_bindings( self, active_names=()):
     self.lower( self.background)
     [o.lift() for o in self.stack]
-    self.tag_bind( 'atom', '<Enter>', self.enter_item)
-    self.tag_bind( 'bond', '<Enter>', self.enter_item)
-    self.tag_bind( 'atom', '<Leave>', self.leave_item)
-    self.tag_bind( 'bond', '<Leave>', self.leave_item)
-    self.tag_bind( 'arrow', "<Enter>", self.enter_item)
-    self.tag_bind( 'arrow', "<Leave>", self.leave_item)
-    self.tag_bind( 'point', "<Enter>", self.enter_item)
-    self.tag_bind( 'point', "<Leave>", self.leave_item)
-    self.tag_bind( 'plus', "<Enter>", self.enter_item)
-    self.tag_bind( 'plus', "<Leave>", self.leave_item)
-    self.tag_bind( 'text', "<Enter>", self.enter_item)
-    self.tag_bind( 'text', "<Leave>", self.leave_item)
-    self.tag_bind( 'vector', "<Enter>", self.enter_item)
-    self.tag_bind( 'vector', "<Leave>", self.leave_item)
-    self.tag_bind( 'helper_rect', "<Enter>", self.enter_item)
-    self.tag_bind( 'helper_rect', "<Leave>", self.leave_item)
+    if not active_names:
+      names = self.all_names_to_bind
+    else:
+      names = active_names
+    for name in names:
+      self.tag_bind( name, '<Enter>', self.enter_item)
+      self.tag_bind( name, '<Leave>', self.leave_item)
+
+
+  def remove_bindings( self):
+    for tag in self.all_names_to_bind:
+      self.tag_unbind( tag, '<Enter>')
+      self.tag_unbind( tag, '<Leave>')
+    
     
   ## event bound methods
 
   ## overall
-  
-
-
 
 
   def _s_pressed1( self, event):
@@ -606,6 +601,9 @@ class chem_paper( Canvas, object):
     root.appendChild( self.standard.get_package( doc))
     for o in self.stack:
       root.appendChild( o.get_package( doc))
+    for a in self.arrows:
+      if not a.reaction.is_empty():
+        root.appendChild( a.reaction.get_package( doc))
     return doc
     
 

@@ -22,13 +22,13 @@
 mostly the desired meta_behaviour"""
 
 
-
+import misc
 
 
 
 class simple_parent( object):
   """this class only gives reasonable default values to meta attributes"""
-  # other
+  object_type = "object"
   # if a class is a container in paper meaning (is not part of bigger structure)
   meta__is_container = 0
 
@@ -44,9 +44,27 @@ class simple_parent( object):
   meta__undo_children_to_record = ()
 
 
+  def __init__( self):
+    pass
 
 
+  def generate_id( self):
+    return misc.id_generator.generate_id( prefix=self.object_type)
 
+  generate_id = classmethod( generate_id)
+
+
+  # id
+  def __get_id( self):
+    return self.__id
+
+  def __set_id( self, id):
+    self.__id = id
+
+  id = property( __get_id, __set_id)
+
+
+  
 
 
 class meta_enabled( simple_parent):
@@ -55,6 +73,7 @@ class meta_enabled( simple_parent):
   meta__used_standard_values = []
 
   def __init__( self, paper):
+    simple_parent.__init__( self)
     self.paper = paper
     if self.paper:
       self.read_standard_values()

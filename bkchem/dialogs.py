@@ -16,10 +16,6 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
 """set of dialogs used by BKchem"""
 
@@ -737,4 +733,5 @@ class standard_values_dialog:
     else:
       self.apply_button2.invoke(1)
       self.apply_button2.configure( Button_state = 'disabled')
+
 

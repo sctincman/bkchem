@@ -32,7 +32,7 @@ import os.path
 
 class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
-  dirs = ('smiles','inchi')
+  dirs = ('smiles','inchi','gtml')
 
   def __init__( self, *args):
     BaseHTTPServer.BaseHTTPRequestHandler.__init__( self, *args)
@@ -82,16 +82,22 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     else:
       self.server.app.paper.clean_paper()
       self.server.app.paper.set_paper_properties()
-      self.server.app.paper.app.read_smiles( path_list[0])
+      self.server.app.read_smiles( path_list[0])
       self.serve__content_svg()
 
   def servedir_inchi( self, path_list):
     self.server.app.paper.clean_paper()
     self.server.app.paper.set_paper_properties()
-    self.server.app.paper.app.read_inchi( '/'.join( path_list))
+    self.server.app.read_inchi( '/'.join( path_list))
     self.serve__content_svg()
 
 
+  def servedir_gtml( self, path_list):
+    self.server.app.paper.clean_paper()
+    self.server.app.paper.set_paper_properties()
+    self.server.app.plugin_import( 'GTML', '/'.join( path_list))
+    self.serve__content_svg()
+    
 
 
   def return_error( self):

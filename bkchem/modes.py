@@ -37,6 +37,7 @@ import dom_extensions
 import messages
 from bond import bond
 from context_menu import context_menu
+from reaction import reaction
 
 
 class mode:
@@ -144,6 +145,7 @@ class mode:
           self.app.paper.signal_to_app( messages.__dict__[txt_name], time=20)
         except KeyError:
           pass
+    self.on_submode_switch( name)
 
   def register_key_sequence( self, sequence, function, use_warning = 1):
     """registers a function with its coresponding key sequence
@@ -176,17 +178,62 @@ class mode:
         b = sequence_base
       self.register_key_sequence( b+str(i), misc.lazy_apply( function, (i,)))
 
+
+  def unregister_all_sequences( self):
+    self._key_sequences = {}
+
+
   def cleanup( self):
     """called when switching to another mode"""
     pass
+
+  def startup( self):
+    """called when switching to this mode"""
+    pass
+
+  def on_submode_switch( self, name):
+    """called when submode is switched"""
+    pass
+
+
+
+
+## -------------------- BASIC MODE --------------------
+
+class basic_mode( mode):
+  """little more sophisticated parent mode""" 
+
+
+  def __init__( self, app):
+    mode.__init__( self, app)
+    self.focused = None
+
+
+
+  def enter_object( self, object, event):
+    if self.focused:
+      self.focused.unfocus()
+    self.focused = object
+    self.focused.focus()
+
+
+
+  def leave_object( self, event):
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
+
+
+
+
 
 
 ### -------------------- EDIT MODE --------------------
 
 class edit_mode( mode):
   """basic editing mode, also good as parent for more specialized modes"""
-  def __init__( self, paper):
-    mode.__init__( self, paper)
+  def __init__( self, app):
+    mode.__init__( self, app)
     self.name = _('edit')
     self._dragging = 0
     self._dragged_molecule = None
@@ -554,8 +601,8 @@ class edit_mode( mode):
 
 class draw_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('draw')
     self._moved_atom = None
     self._start_atom = None
@@ -712,8 +759,8 @@ class draw_mode( edit_mode):
 
 class arrow_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('arrow')
     self._start_point = None
     self._moved_point = None
@@ -831,8 +878,8 @@ class arrow_mode( edit_mode):
 
 class plus_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('plus')
     self._start_point = None
     self._moved_point = None
@@ -872,8 +919,8 @@ class plus_mode( edit_mode):
 
 class template_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('template')
     self.submodes = [self.app.tm.get_template_names()+['userdefined']]
     self.submodes_names = [self.app.tm.get_template_names()+[_('user defined')]]
@@ -976,8 +1023,8 @@ class template_mode( edit_mode):
 
 class text_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('text')
     self._start_point = None
     self._moved_point = None
@@ -1050,8 +1097,8 @@ class text_mode( edit_mode):
 
 class rotate_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('rotate')
     self._rotated_mol = None
     self.submodes = [['2D','3D']]
@@ -1126,8 +1173,8 @@ class rotate_mode( edit_mode):
 
 class bond_align_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('transformation mode')
     self._rotated_mol = None
     self.first_atom_selected = None
@@ -1287,8 +1334,8 @@ class bond_align_mode( edit_mode):
 
 class vector_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('vector graphics')
     self.submodes = [['rectangle','square','oval', 'circle', 'polygon']]
     self.submodes_names = [[_('rectangle'),_('square'),_('oval'),_('circle'),_('polygon')]]
@@ -1382,8 +1429,8 @@ class vector_mode( edit_mode):
 
 class mark_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('mark')
     self.submodes = [['radical','biradical','electronpair','plusincircle','minusincircle']]
     self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'),
@@ -1426,8 +1473,8 @@ class mark_mode( edit_mode):
 
 class atom_mode( edit_mode):
 
-  def __init__( self, paper):
-    edit_mode.__init__( self, paper)
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
     self.name = _('atom')
     self._start_point = None
     self._moved_point = None
@@ -1489,6 +1536,116 @@ class atom_mode( edit_mode):
 
 
 
+
+## -------------------- REACTION MODE --------------------
+
+class reaction_mode( basic_mode):
+
+  def __init__( self, app):
+    basic_mode.__init__( self, app)
+    self.name = _('reaction')
+    self.submodes = [['reactant','product','arrow','plus','condition']]
+    self.submodes_names = [[_('reactant'), _('product'), _('arrow'),_('plus'),_('condition')]]
+    self.submode = [0]
+    self.focused = None
+    self._items = []
+    self.arrow = None
+
+
+  def mouse_down( self, event):
+    if self.focused:
+      if not self.arrow:
+        tkMessageBox.showerror( _("No arrow present"),
+                                _("""The reaction information in bkchem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."""))
+        return
+
+      sm = self.get_submode(0)
+      if sm == 'reactant':
+        m = self.focused.molecule
+        if m not in self.arrow.reaction.reactants:
+          self.arrow.reaction.reactants.append( m)
+        else:
+          self.arrow.reaction.reactants.remove( m)
+      elif sm == 'product':
+        m = self.focused.molecule
+        if m not in self.arrow.reaction.reactants:
+          self.arrow.reaction.products.append( m)
+        else:
+          self.arrow.reaction.products.remove( m)
+      elif sm == 'arrow':
+        if self.focused.object_type == 'point' and self.focused.arrow.object_type == 'arrow':
+          self.arrow = self.focused.arrow
+        elif self.focused.object_type == 'arrow':
+          self.arrow = self.focused
+      elif sm == 'condition':
+        if self.focused not in self.arrow.reaction.conditions:
+          self.arrow.reaction.conditions.append( self.focused)
+        else:
+          self.arrow.reaction.conditions.remove( self.focused)
+      elif sm == 'plus':
+        if self.focused not in self.arrow.reaction.pluses:
+          self.arrow.reaction.pluses.append( self.focused)
+        else:
+          self.arrow.reaction.pluses.remove( self.focused)
+          
+      self._mark_reaction()
+      
+
+
+  def _mark_reaction( self):
+    for i in self._items:
+      self.app.paper.delete( i)
+    self._items = []
+    width = 3
+    
+    self._items.append( self.app.paper.create_rectangle( self.arrow.bbox(), fill='', outline='blue', width=width))
+    
+    for m in self.arrow.reaction.reactants:
+      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='green', width=width))
+    for m in self.arrow.reaction.products:
+      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='red', width=width))
+    for m in self.arrow.reaction.conditions:
+      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='cyan', width=width))
+    for m in self.arrow.reaction.pluses:
+      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='yellow', width=width))
+
+    #self._add_bindings_according_to_submode()
+
+
+  def _add_bindings_according_to_submode( self):
+    name = self.get_submode(0)
+    if name == 'reactant' or name == 'product':
+      self.app.paper.add_bindings( active_names=('atom','bond'))
+    elif name == 'arrow':
+      self.app.paper.add_bindings( active_names=('arrow','point'))
+    elif name == 'plus':
+      self.app.paper.add_bindings( active_names=('plus',))
+    elif name == 'condition':
+      self.app.paper.add_bindings( active_names=('text',))
+    
+
+
+  def on_submode_switch( self, name):
+    self.app.paper.remove_bindings()
+    self._add_bindings_according_to_submode()
+
+
+  def startup( self):
+    self.app.paper.unselect_all()
+    arrows = self.app.paper.arrows
+    if arrows:
+      self.arrow = arrows[0]
+    else:
+      self.arrow = None
+    if self.arrow:
+      self._mark_reaction()
+
+
+  def cleanup( self):
+    for i in self._items:
+      self.app.paper.delete( i)
+    self._items = []
+    self.app.paper.add_bindings()
 
 
 

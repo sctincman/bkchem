@@ -377,8 +377,9 @@ class BKchem( Tk):
                    'bondalign': modes.bond_align_mode( self),
                    'vector': modes.vector_mode( self),
                    'mark': modes.mark_mode( self),
-                   'atom': modes.atom_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'vector', 'mark']
+                   'atom': modes.atom_mode( self),
+                   'reaction': modes.reaction_mode( self)}
+    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text', 'rotate', 'bondalign', 'vector']
 
 
 
@@ -475,6 +476,7 @@ class BKchem( Tk):
       j = m.submodes[i][ m.submode[i]]
       self.subbuttons[i].invoke( j)
     self.paper.mode = self.mode
+    self.mode.startup()
     self.update_status( _('mode changed to ')+self.modes[ tag].name)
 
 
