@@ -43,7 +43,7 @@ class XML_writer:
     self.top = None # top level element
     #self.construct_dom_tree()
 
-  def construct_dom_tree( self, containers):
+  def construct_dom_tree( self, top_levels):
     pass
 
   def write_xml_to_file( self, file):
@@ -66,8 +66,8 @@ class SVG_writer( XML_writer):
     XML_writer.__init__( self, paper)
     self.full_size = not (paper.get_paper_property( 'crop_svg') and len( paper.stack))
 
-  def construct_dom_tree( self, containers):
-    """constructs the SVG dom from all containers"""
+  def construct_dom_tree( self, top_levels):
+    """constructs the SVG dom from all top_levels"""
     self._id = 0
     doc = self.document
     self.top = dom_extensions.elementUnder( doc, "svg", attributes=(("xmlns", "http://www.w3.org/2000/svg"),
@@ -94,10 +94,10 @@ class SVG_writer( XML_writer):
     if not self.full_size:
       self.group.setAttribute( 'transform', 'translate('+str(-x1+10)+', '+str(-y1+10)+')')
       
-    # sort the containers according to paper.stack
+    # sort the top_levels according to paper.stack
     cs = []
     for c in self.paper.stack:
-      if c in containers:
+      if c in top_levels:
         cs.append( c)
     for o in cs:
       if o.object_type == 'molecule':

@@ -829,7 +829,7 @@ Enter IChI:""")
   def gen_smiles( self):
     if not oasa_bridge.oasa_available:
       return
-    u, i = self.paper.selected_to_unique_containers()
+    u, i = self.paper.selected_to_unique_top_levels()
     sms = []
     for m in u:
       if m.object_type == 'molecule':

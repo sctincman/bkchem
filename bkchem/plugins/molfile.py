@@ -51,7 +51,7 @@ class molfile_exporter( plugin.exporter):
     plugin.exporter.__init__( self, paper)
 
   def on_begin( self):
-    conts, u = self.paper.selected_to_unique_containers()
+    conts, u = self.paper.selected_to_unique_top_levels()
     mols = [o for o in conts if o.object_type == 'molecule']
     if not mols:
       import tkMessageBox

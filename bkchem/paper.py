@@ -103,7 +103,55 @@ class chem_paper( Canvas, object):
 
 
 
+  ### PROPERTIES
 
+
+  # molecules
+  def __get_molecules( self):
+    return [o for o in self.stack if isinstance( o, molecule)]
+
+  molecules = property( __get_molecules)
+
+
+  # arrows
+  def __get_arrows( self):
+    return [o for o in self.stack if isinstance( o, classes.arrow)]
+
+  arrows = property( __get_arrows)
+
+
+  # pluses
+  def __get_pluses( self):
+    return [o for o in self.stack if isinstance( o, classes.plus)]
+
+  pluses = property( __get_pluses)
+
+
+
+  # texts
+  def __get_texts( self):
+    return [o for o in self.stack if isinstance( o, classes.text)]
+
+  texts = property( __get_texts)
+
+
+  # vectors
+  def __get_vectors( self):
+    return [o for o in self.stack if isinstance( o, graphics.vector_graphics_item)]
+
+  vectors = property( __get_vectors)
+
+
+  # top_levels
+  def __get_top_levels( self):
+    print [o for o in self.stack if not isinstance( o, graphics.top_level)]
+    return self.stack
+    #return [o for o in self.stack if isinstance( o, graphics.top_level)]
+
+  top_levels = property( __get_top_levels)
+
+
+  ### // PROPERTIES
 
 
 
@@ -293,7 +341,7 @@ class chem_paper( Canvas, object):
       elif o not in self.selected:
         self.selected.append( o)
         o.select()
-
+    #print [o.object_type for o in self.selected]
 
 
 
@@ -786,7 +834,7 @@ class chem_paper( Canvas, object):
 
   def selected_to_clipboard( self, delete_afterwards=0):
     if self.selected:
-      cp, unique = self.selected_to_unique_containers()
+      cp, unique = self.selected_to_unique_top_levels()
       # now find center of bbox of all objects in cp
       bboxs = []
       xmin, ymin, xmax, ymax = cp[0].bbox()
@@ -882,14 +930,14 @@ class chem_paper( Canvas, object):
   def align_selected( self, mode):
     """aligns selected items according to mode - t=top, b=bottom,
     l=left, r=right, h=horizontal center, v=vertical center"""
-    # locate all selected containers, filter them to be unique
-    to_align, unique = self.selected_to_unique_containers()
+    # locate all selected top_levels, filter them to be unique
+    to_align, unique = self.selected_to_unique_top_levels()
     # check if there is anything to align
     if len( to_align) < 2:
       return None
     bboxes = []
     if not unique:
-      # if not unique align is done according to bboxes of containers
+      # if not unique align is done according to bboxes of top_levels
       for o in to_align:
         bboxes.extend( o.bbox())
     else:
@@ -959,9 +1007,9 @@ class chem_paper( Canvas, object):
 
 
 
-  def selected_to_unique_containers( self):
-    """maps all items in self.selected to their containers (atoms->molecule etc.),
-    filters them to be unique and returns tuple of (unique_containers, unique)
+  def selected_to_unique_top_levels( self):
+    """maps all items in self.selected to their top_levels (atoms->molecule etc.),
+    filters them to be unique and returns tuple of (unique_top_levels, unique)
     where unique is true when there was only one item from each container"""
     filtrate = []
     unique = 1
@@ -1014,11 +1062,11 @@ class chem_paper( Canvas, object):
 
 
   def scale_selected( self, ratio_x, ratio_y, scale_font=1):
-    containers, unique = self.selected_to_unique_containers()
+    top_levels, unique = self.selected_to_unique_top_levels()
     ratio = math.sqrt( ratio_x*ratio_y) # ratio for operations where x and y can't be distinguished (font size etc.)
     tr = transform()
     tr.set_scaling_xy( ratio_x, ratio_y)
-    for o in containers:
+    for o in top_levels:
       if o.object_type == 'molecule':
         for i in o.atoms_map:
           x, y = tr.transform_xy( i.x, i.y)
@@ -1053,7 +1101,7 @@ class chem_paper( Canvas, object):
         o.redraw()
         o.unselect()
         o.select()
-    if containers:
+    if top_levels:
       self.add_bindings()
       self.start_new_undo_record()
 
@@ -1063,13 +1111,13 @@ class chem_paper( Canvas, object):
 
 
   def selected_to_real_clipboard_as_SVG( self):
-    """exports selected containers as SVG to system clipboard"""
-    cont, unique = self.selected_to_unique_containers()
+    """exports selected top_levels as SVG to system clipboard"""
+    cont, unique = self.selected_to_unique_top_levels()
     exporter = xml_writer.SVG_writer( self)
     exporter.construct_dom_tree( cont)
     self.clipboard_clear()
     self.clipboard_append( exporter.get_nicely_formated_document())
-    self.signal_to_app( _("selected containers were exported to clipboard in SVG"))
+    self.signal_to_app( _("selected top_levels were exported to clipboard in SVG"))
 
 
 
@@ -1085,7 +1133,7 @@ class chem_paper( Canvas, object):
 
 
   def display_weight_of_selected( self):
-    s_mols = [m for m in self.selected_to_unique_containers()[0] if m.object_type == 'molecule']
+    s_mols = [m for m in self.selected_to_unique_top_levels()[0] if m.object_type == 'molecule']
     w = 0
     for m in s_mols:
       w += m.get_formula_dict().get_molecular_weight()
@@ -1096,7 +1144,7 @@ class chem_paper( Canvas, object):
 
 
   def display_info_on_selected( self):
-    s_mols = [m for m in self.selected_to_unique_containers()[0] if m.object_type == 'molecule']
+    s_mols = [m for m in self.selected_to_unique_top_levels()[0] if m.object_type == 'molecule']
     if not s_mols:
       return
 
@@ -1141,7 +1189,7 @@ class chem_paper( Canvas, object):
   def check_chemistry_of_selected( self):
     import validator
     val = validator.validator()
-    s_mols = [m for m in self.selected_to_unique_containers()[0] if m.object_type == 'molecule']
+    s_mols = [m for m in self.selected_to_unique_top_levels()[0] if m.object_type == 'molecule']
     if not s_mols:
       return
 
@@ -1229,7 +1277,7 @@ class chem_paper( Canvas, object):
   def expand_groups( self, selected=1):
     """expands groups, if selected==1 only for selected, otherwise for all"""
     if selected:
-      mols = [o for o in self.selected_to_unique_containers()[0] if o.object_type == 'molecule']
+      mols = [o for o in self.selected_to_unique_top_levels()[0] if o.object_type == 'molecule']
       atoms = [o for o in self.selected if (o.object_type == 'atom' and o.type in ('group','chain'))]
       self.unselect_all()
       for mol in mols:
@@ -1246,7 +1294,7 @@ class chem_paper( Canvas, object):
 
 
   def lift_selected_to_top( self):
-    os = self.selected_to_unique_containers()[0]
+    os = self.selected_to_unique_top_levels()[0]
     for o in os:
       self.stack.remove( o)
       self.stack.append( o)
@@ -1259,7 +1307,7 @@ class chem_paper( Canvas, object):
 
 
   def lower_selected_to_bottom( self):
-    os = self.selected_to_unique_containers()[0]
+    os = self.selected_to_unique_top_levels()[0]
     for o in os:
       self.stack.remove( o)
       self.stack.insert( 0, o)
@@ -1272,7 +1320,7 @@ class chem_paper( Canvas, object):
 
 
   def swap_selected_on_stack( self):
-    os = self.selected_to_unique_containers()[0]
+    os = self.selected_to_unique_top_levels()[0]
     indxs = [self.stack.index( o) for o in os]
     indxs.sort()
     for i in range( len( indxs) // 2):
@@ -1536,8 +1584,8 @@ class chem_paper( Canvas, object):
   def swap_sides_of_selected( self, mode="vertical"):
     """mirrors the selected things, vertical uses y-axis as a mirror plane,
     horizontal x-axis"""
-    # locate all selected containers, filter them to be unique
-    to_align, unique = self.selected_to_unique_containers()
+    # locate all selected top_levels, filter them to be unique
+    to_align, unique = self.selected_to_unique_top_levels()
     to_select_then = copy.copy( self.selected)
     self.unselect_all()
     # check if there is anything to align
@@ -1583,7 +1631,7 @@ class chem_paper( Canvas, object):
 
 
   def flush_first_selected_mol_to_graph_file( self):
-    mols, u = self.selected_to_unique_containers()
+    mols, u = self.selected_to_unique_top_levels()
     for m in mols:
       if m in self.molecules:
         m.flush_graph_to_file()
@@ -1637,48 +1685,4 @@ class chem_paper( Canvas, object):
     
   create_window_name = staticmethod( create_window_name)
 
-
-  # molecules
-  def __get_molecules( self):
-    return [o for o in self.stack if isinstance( o, molecule)]
-
-  molecules = property( __get_molecules)
-
-
-  # arrows
-  def __get_arrows( self):
-    return [o for o in self.stack if isinstance( o, classes.arrow)]
-
-  arrows = property( __get_arrows)
-
-
-  # pluses
-  def __get_pluses( self):
-    return [o for o in self.stack if isinstance( o, classes.plus)]
-
-  pluses = property( __get_pluses)
-
-
-
-  # texts
-  def __get_texts( self):
-    return [o for o in self.stack if isinstance( o, classes.text)]
-
-  texts = property( __get_texts)
-
-
-  # vectors
-  def __get_vectors( self):
-    return [o for o in self.stack if isinstance( o, graphics.vector_graphics_item)]
-
-  vectors = property( __get_vectors)
-
-
-  # top_levels
-  def __get_top_levels( self):
-    print [o for o in self.stack if not isinstance( o, graphics.top_level)]
-    return self.stack
-    #return [o for o in self.stack if isinstance( o, graphics.top_level)]
-
-  top_levels = property( __get_top_levels)
 
