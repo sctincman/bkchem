@@ -43,7 +43,7 @@ def export_CD_SVG( paper, filename, gzipped=0):
   cdml = paper.get_package().childNodes[0]
   doc.childNodes[0].appendChild( cdml)
   dom_extensions.safe_indent( doc.childNodes[0])
-  inp.write( doc.toxml())
+  inp.write( unicode(doc.toxml()).encode('utf-8'))
   inp.close()
   return 1
 
@@ -60,7 +60,7 @@ def export_CDML( paper, filename, gzipped=0):
     return 0
   doc = paper.get_package()
   dom_extensions.safe_indent( doc.childNodes[0])
-  inp.write( doc.toxml())
+  inp.write( unicode(doc.toxml()).encode('utf-8'))
   inp.close()
   return 1
 

@@ -406,7 +406,11 @@ class bond( meta_enabled):
       
 
   def unfocus( self):
-    items = [self.item] + self.second + self.third
+    # all the items of the bond
+    if self.simple_double and not self.center:
+      items = [self.item]
+    else:
+      items = [self.item] + self.second + self.third
 
     if self.type in 'na':
       if not self.item:
