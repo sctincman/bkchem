@@ -470,7 +470,7 @@ class point( point_drawable, interactive, child):
 
   # parent
   def _get_parent( self):
-    return self.molecule
+    return self.arrow
 
   def _set_parent( self, par):
     self.molecule = par
