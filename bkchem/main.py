@@ -602,7 +602,7 @@ class BKchem( Tk):
       self.notebook.tab( i).configure( background="#777777", fg="white")
       # the rest
       self.paper = self.papers[i]
-      if hasattr( self, 'mode') and not type( self.mode) == StringType and old_paper in self.papers:
+      if hasattr( self, 'mode') and not type( self.mode) == StringType and old_paper in self.papers and self.paper != old_paper:
         # this is not true on startup and tab closing
         self.mode.on_paper_switch( old_paper, self.paper)
 
@@ -868,6 +868,7 @@ class BKchem( Tk):
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc)
+      self.mode.startup()
       self.update_status( _("loaded file: ")+self.paper.full_path)
       return 1
 

@@ -359,7 +359,8 @@ class edit_mode( basic_mode):
 
     # config
     self.rectangle_selection = True  # this can be overriden by children
-    
+
+    self._move_sofar = 0
     
 
 
@@ -410,6 +411,7 @@ class edit_mode( basic_mode):
 
   def mouse_up( self, event):
     self._block_leave_event = 0
+    self._move_sofar = 0
     # this strange thing makes the moving of selected arrows and polygons possible - the problem is
     # that these objects are not in Store.app.paper.selected (only their points) and thus ...
     if self._moving_selected_arrow:
@@ -479,6 +481,13 @@ class edit_mode( basic_mode):
 
   def mouse_drag( self, event):
     if not self._dragging:
+      # drag threshhold
+      dx = event.x-self._startx
+      dy = event.y-self._starty
+      self._move_sofar += math.sqrt( dx**2 + dy**2)
+      if self._move_sofar <= 1.0:
+        return
+
       if self.focused and (self.focused.object_type == 'arrow' or self.focused.object_type == 'polygon'):
         for p in self.focused.points:
           if p in Store.app.paper.selected:
@@ -1623,6 +1632,12 @@ class mark_mode( edit_mode):
         if hasattr( a, 'marks'):
           for mark in a.marks:
             yield mark
+
+
+  def on_paper_switch( self, old, new):
+    self.cleanup( old)
+    self.startup()
+
 
 
 

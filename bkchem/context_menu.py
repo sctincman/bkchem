@@ -69,34 +69,18 @@ class context_menu( Tkinter.Menu):
               casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
           # to know what is already there
           already_there.append( attr)
-      # special, not-so-easily-done-by-meta-infos things
-      # atom valency
-      if obj_type == 'atom':
-        atoms = [o for o in self.selected if o.object_type == 'atom']
-        # we want only the real atoms
-        elements_only = 1
-        for a in atoms:
-          if not isinstance( a, atom):
-            elements_only = 0
-            break
-        if not elements_only:
-          continue
-        # the names must be the same
-        if misc.has_one_value_only( [a.name for a in atoms]):
-          name = atoms[0].name
-          casc = Tkinter.Menu( self, tearoff=0)
-          self.add_cascade( label=_('Atom valency'), menu=casc)
-          for v in PT.periodic_table[ name]['valency']:
-            casc.add_command( label=v, command=misc.lazy_apply( self._set_valency, (v,)))
           
     # commands
-    self.add_separator()        
-    self.register_command( _("Center bond"), ('bond',), center)
-    self.register_command( _("Expand group"), ('atom',), expand_groups)
-    self.register_command( _("Set atom number"), ('atom',), set_atom_number)
+    if already_there:
+      self.add_separator()        
+    i = False
+    i += self.register_command( _("Center bond"), ('bond',), center)
+    i += self.register_command( _("Expand group"), ('atom',), expand_groups)
+    i += self.register_command( _("Set atom number"), ('atom',), set_atom_number)
 
     # common commands
-    self.add_separator()
+    if i:
+      self.add_separator()
     self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
 
 
@@ -111,9 +95,14 @@ class context_menu( Tkinter.Menu):
 
   def set_value( self, o, name, value):
     """little more enhanced version of misc.set_attr_or_property"""
-    if misc.set_attr_or_property( o, name, value):
-      o.redraw()
-      self.changes_made = 1    
+    if name in setter_functions:
+      f = setter_functions[ name]
+      f( o, value)
+      self.changes_made = 1
+    else:
+      if misc.set_attr_or_property( o, name, value):
+        o.redraw()
+        self.changes_made = 1    
 
 
   def finish( self):
@@ -141,9 +130,10 @@ class context_menu( Tkinter.Menu):
     for t in types:
       apply_to.extend( [o for o in self.selected if o.object_type == t])
     if not apply_to:
-      return
+      return False
     self.add_command( label=label,
                       command=lambda : self.apply_command( callback, apply_to))
+    return True
 
 
 
@@ -152,16 +142,6 @@ class context_menu( Tkinter.Menu):
     Store.app.paper.start_new_undo_record()
     Store.app.paper.add_bindings()
 
-
-  # specialized, private methods
-
-  def _set_valency( self, value):
-    for a in Store.app.paper.selected:
-      if a.object_type == 'atom':
-        a.valency = value
-        a.redraw()
-    self.changes_made = 1
-    self.finish()
 
 
 
@@ -184,6 +164,23 @@ def show_number( objs):
     return "show_number", (_("Show number"), ((True, _("yes")), (False, _("no"))))
 
 
+def atom_valency( objs):
+  # atom valency
+  atoms = [o for o in objs if hasattr( o, 'valency') and isinstance( o, atom)]
+  # the names must be the same
+  if misc.has_one_value_only( [a.name for a in atoms]):
+    name = atoms[0].name
+    return "valency", (_('Atom valency'), PT.periodic_table[ name]['valency'])
+  return "valency", None
+
+
+def set_show( o, value):
+  o.show = value
+  o.redraw()
+  [b.redraw() for b in o.paper.bonds_to_update()]
+  
+  
+
 
 
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
@@ -203,19 +200,20 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                   }
 
 
-configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',show_number),
+configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',show_number,atom_valency),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',),
                 'mark':    ('size', draw_mark_circle)
-
                 }
 
 
 I18N_NAME = 0
 VALUES = 1
 
+
+setter_functions = {'show': set_show}
 
 
 def center( bonds):
