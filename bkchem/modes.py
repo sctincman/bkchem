@@ -471,7 +471,12 @@ class edit_mode( basic_mode):
           self.double_click( event)
         else:
           self._last_click_time = t
+    if self._ctrl:
+      self._delete_selected()
+      Store.app.paper.start_new_undo_record()
     Store.app.paper.add_bindings()
+
+
 
   def double_click( self, event):
     if self.focused:
@@ -721,7 +726,7 @@ class draw_mode( edit_mode):
         # at first atom text
         self._start_atom.update_after_valency_change()
         # warn when valency is exceeded
-        if self._start_atom.get_free_valency() < 0:
+        if self._start_atom.free_valency < 0:
           Store.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self._start_atom, group):
@@ -757,7 +762,7 @@ class draw_mode( edit_mode):
         if hasattr( self.focused, 'update_after_valency_change'):
           self.focused.update_after_valency_change()
         # warn when valency is exceeded
-        if self.focused.get_free_valency() < 0:
+        if self.focused.free_valency < 0:
           Store.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self.focused, group):
@@ -779,7 +784,7 @@ class draw_mode( edit_mode):
           # update the atoms
           [a.redraw() for a in self.focused.atoms]
           # warn when valency is exceeded
-          if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
+          if self.focused.atom1.free_valency < 0 or self.focused.atom2.free_valency < 0:
             Store.log( _("maximum valency exceeded!"), message_type="warning")
           self.focused.focus() # refocus
 
@@ -1033,7 +1038,7 @@ class template_mode( edit_mode):
           Store.log( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."),
                         message_type="hint")
           return
-        if self.focused.get_free_valency() >= self._get_templates_valency():
+        if self.focused.free_valency >= self._get_templates_valency():
           x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
           x2, y2 = self.focused.get_xy()
           t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=Store.app.paper)
@@ -1064,9 +1069,9 @@ class template_mode( edit_mode):
     Store.app.paper.handle_overlap()
     # checking of valency
     if self.focused:
-      if isinstance( self.focused, bond) and (self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0):
+      if isinstance( self.focused, bond) and (self.focused.atom1.free_valency < 0 or self.focused.atom2.free_valency < 0):
         Store.log( _("maximum valency exceeded!"), message_type="warning")
-      elif isinstance( self.focused, oasa.graph.vertex) and self.focused.get_free_valency() < 0:
+      elif isinstance( self.focused, oasa.graph.vertex) and self.focused.free_valency < 0:
         Store.log( _("maximum valency exceeded!"), message_type="warning")
 
     Store.app.paper.start_new_undo_record()

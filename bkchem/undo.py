@@ -256,7 +256,7 @@ class state_record:
     ## ADDED OBJECTS
     added = misc.difference( previous.objects, self.objects)
     for o in added:
-      if o.object_type != 'molecule':
+      if o.object_type != 'molecule' and hasattr( o, "delete"):
         o.delete()
 
     self.paper.stack = copy.copy( self.stack)

@@ -85,6 +85,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     self._selected = 0 #with ftext self.selector can no longer be used to determine if atom is selected
     self.item = None
     self.ftext = None
+    self.free_valency = 0
 
     self.pos = None
     self.focus_item = None

@@ -63,9 +63,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # undo meta infos
   meta__undo_simple = ('name',)
   meta__undo_properties = ('id',)
-  meta__undo_copy = ('atoms', 'bonds')
+  meta__undo_copy = ('atoms', 'bonds', 'fragments')
   meta__undo_2d_copy = ()
-  meta__undo_children_to_record = ('atoms','bonds')
+  meta__undo_children_to_record = ('atoms','bonds','fragments')
   
   def __init__( self, paper=None, package = None):
     oasa.molecule.__init__( self)

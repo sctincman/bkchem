@@ -22,9 +22,14 @@ from sets import Set
 import dom_extensions as dom_ext
 import xml.sax.saxutils
 from singleton_store import Store
+from parents import simple_parent
 
 
-class fragment( object):
+class fragment( simple_parent):
+
+  meta__undo_properties = ('name', 'id')
+  meta__undo_copy = ('edges', 'properties')
+
 
   def __init__( self, id="", name="", type="explicit"):
     self.id = id

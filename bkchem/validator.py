@@ -57,7 +57,7 @@ class validator:
     elif isinstance( a, group):
       self.report.group_atoms.append( a)
     else:
-      fval = a.get_free_valency()
+      fval = a.free_valency
       if fval < 0:
         self.report.exceeded_valency.append( a)
 
