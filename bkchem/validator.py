@@ -24,7 +24,8 @@
 """provides validator class that checks chemistry"""
 
 import types
-import classes
+import atom
+import molecule
 
 class validator:
 
@@ -41,9 +42,9 @@ class validator:
   def validate_object( self, o):
     if type( o) == types.ListType:
       self.validate_list( o)
-    elif isinstance( o, classes.atom):
+    elif isinstance( o, atom.atom):
       self.validate_atom( o)
-    elif isinstance( o, classes.molecule):
+    elif isinstance( o, molecule.molecule):
       self.validate_molecule( o)
 
   def validate_atom( self, a):

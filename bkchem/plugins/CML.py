@@ -49,7 +49,7 @@ class CML_importer( plugin.importer):
   def get_cdml_dom( self, file_name):
     tree = dom.parse( file_name)
     out = dom.Document()
-    root = dom_ext.elementUnder( out, 'cdml', (('version','0.8'),))
+    root = dom_ext.elementUnder( out, 'cdml', (('version','0.11'),))
     for m in tree.getElementsByTagName( 'molecule'):
       out_m = self.transform_molecule( m, out)
       if out_m:
@@ -114,12 +114,12 @@ class CML_importer( plugin.importer):
 
   def transform_CML_bond( self, bond, doc):
     """called by transform_bond in order to do the transform from CML_bond instance to CDML"""
-    bond_types = ['no','single', 'double','triple','wedge','hatch']
     if bond.not_enough_data():
       # bond does not have sufficient data to be safely converted to cdml
       raise plugin.import_exception( "missing "+str( bond.not_enough_data())+" in bond specification")
     out = doc.createElement( 'bond')
-    dom_ext.setAttributes( out,  (('type', bond_types[ bond.type]),
+    type = (bond.stereo.lower() or 'n') + str( bond.order)
+    dom_ext.setAttributes( out,  (('type', type),
                                   ('start', bond.atom1),
                                   ('end', bond.atom2)))
     return out
@@ -317,9 +317,10 @@ class CML_atom:
 class CML_bond:
 
   def __init__( self, bond=None, cml=None):
-    self.type = 1
+    self.order = 1
     self.atom1 = None
     self.atom2 = None
+    self.stereo = 'n'
     if bond:
       self.read_bond( bond)
     elif cml:
@@ -336,17 +337,21 @@ class CML_bond:
     #atom2
     dom_ext.textOnlyElementUnder( out, 'string', str( self.atom2), (('builtin','atomRef'),
                                                                     ('convention','CML')))
-    #type
-    dom_ext.textOnlyElementUnder( out, 'string', str( self.type), (('builtin','order'),
-                                                                   ('convention','CML')))
+    #order
+    dom_ext.textOnlyElementUnder( out, 'string', str( self.order), (('builtin','order'),
+                                                                    ('convention','CML')))
+    #stereo
+    if self.stereo:
+      dom_ext.textOnlyElementUnder( out, 'string', str( self.stereo), (('builtin','stereo'),
+                                                                       ('convention','CML')))
     return out
 
   def not_enough_data( self):
-    if (self.type and self.atom1 and self.atom2):
+    if (self.order and self.atom1 and self.atom2):
       return 0
     else:
       res = []
-      for i in ['atom1','atom2','type']:
+      for i in ['atom1','atom2','order']:
         if not self.__dict__[i]:
           res.append( i)
       return res
@@ -355,7 +360,12 @@ class CML_bond:
   def read_bond( self, bond):
     self.atom1 = bond.atom1.get_cdml_id()
     self.atom2 = bond.atom2.get_cdml_id()
-    self.type = bond.type
+    # stereo
+    if bond.type in "wh":
+      self.stereo = bond.type.upper()
+    else:
+      self.stereo = ""
+    self.order = bond.order
 
   def read_CML( self, cml):
     for e in cml.childNodes:
@@ -368,14 +378,18 @@ class CML_bond:
         else:
           self.atom2 = dom_ext.getTextFromElement( e)
       elif attr == 'order':
-        type = dom_ext.getTextFromElement( e)
-        if type == 'A':
-          self.type = 1
+        order = dom_ext.getTextFromElement( e)
+        if order == 'A':
+          self.order = 1
         else:
           try:
-            self.type = int( type)
+            self.order = int( order)
           except ValueError:
-            raise cml_exception( "Wrong bond type '%s'" % type)
+            raise cml_exception( "Wrong bond order '%s'" % order)
+      elif attr == 'stereo':
+        stereo = dom_ext.getTextFromElement( e)
+        if stereo:
+          self.stereo = stereo.upper()
 
       
 ## a = CML_importer()

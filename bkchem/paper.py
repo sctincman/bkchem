@@ -399,14 +399,16 @@ class BKpaper( Canvas):
     else:
       self.set_viewport()
     # standard must be read before all items
+    new_standard = self.read_standard_from_dom( CDML)
     old_standard = self.standard
-    self.standard = self.read_standard_from_dom( CDML)
+    if new_standard:
+      self.standard = new_standard
     for p in CDML.childNodes:
       if p.nodeName in data.loadable_types:
         o = self.add_object_from_package( p)
         o.draw()
     # now check if the old standard differs
-    if old_standard != self.standard:
+    if new_standard and old_standard != self.standard:
       if not tkMessageBox.askyesno( _('Replace standard values'),
                                     data.standards_differ_text,
                                     default = 'yes'):

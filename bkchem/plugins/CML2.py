@@ -124,7 +124,8 @@ class CML2_atom( CML.CML_atom):
 class CML2_bond( CML.CML_bond):
 
   def __init__( self, bond=None, cml=None):
-    self.type = 1
+    self.order = 1
+    self.stereo = 'n'
     self.atom1 = None
     self.atom2 = None
     if bond:
@@ -137,29 +138,24 @@ class CML2_bond( CML.CML_bond):
     if self.not_enough_data():
       return None
     out = doc.createElement( 'bond')
-    if self.type == 4:
-      out.setAttribute( 'order', 's')
-      dom_ext.textOnlyElementUnder( out, 'stereo', 'W')
-    elif self.type == 5:
-      out.setAttribute( 'order', 's')
-      dom_ext.textOnlyElementUnder( out, 'stereo', 'H')
-    else:
-      out.setAttribute('order', str( self.type))
+    out.setAttribute('order', str( self.order))    
+    if self.stereo:
+      dom_ext.textOnlyElementUnder( out, 'stereo', self.stereo)
     out.setAttribute( 'atomRefs2', '%s %s' % ( str( self.atom1), str( self.atom2)))
 
     return out
 
   def read_CML( self, cml):
     if cml.getAttribute( 'order'):
-      self.type = cml.getAttribute( 'order')
-      if self.type.isdigit():
-        self.type = int( self.type)
+      self.order = cml.getAttribute( 'order')
+      if self.order.isdigit():
+        self.order = int( self.order)
       else:
         types = ['s','d','t']
-        if self.type.lower() in types:
-          self.type = types.index( self.type.lower()) + 1
+        if self.order.lower() in types:
+          self.order = types.index( self.order.lower()) + 1
         else:
-          raise plugin.import_exception, "unknown bond type %s" % self.type
+          raise plugin.import_exception, "unknown bond type %s" % self.order
     if cml.getAttribute( 'atomRefs2'):
       atoms = cml.getAttribute( 'atomRefs2').split( ' ')
       if len( atoms) == 2:
@@ -168,10 +164,10 @@ class CML2_bond( CML.CML_bond):
     if stereo:
       stereo = stereo[0]
       text = dom_ext.getTextFromElement( stereo)
-      if text in ['w','W']:
-        self.type = 4
-      elif text in ['h','H']:
-        self.type = 5
+      if text.lower() in 'wh':
+        self.stereo = text.lower()
+      else:
+        self.stereo = 'n'
 
 class cml_exception( Exception):
   def __init__( self, value):
