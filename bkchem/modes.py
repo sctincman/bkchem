@@ -197,12 +197,12 @@ class edit_mode( mode):
     self.register_key_sequence( 'C-a h', lambda : self.app.paper.align_selected( 'h'))
     self.register_key_sequence( 'C-a v', lambda : self.app.paper.align_selected( 'v'))
     # other
-    self.register_key_sequence( 'C-x c', self.app.paper.toggle_center_for_selected)
-    self.register_key_sequence( 'C-d w', self.app.paper.display_weight_of_selected)
-    self.register_key_sequence( 'C-d i', self.app.paper.display_info_on_selected)
+    self.register_key_sequence( 'C-x c', lambda : self.app.paper.toggle_center_for_selected())
+    self.register_key_sequence( 'C-d w', lambda : self.app.paper.display_weight_of_selected())
+    self.register_key_sequence( 'C-d i', lambda : self.app.paper.display_info_on_selected())
     # object related key bindings
-    self.register_key_sequence( 'C-o i', self.app.paper.display_info_on_selected)
-    self.register_key_sequence( 'C-o c', self.app.paper.check_chemistry_of_selected)
+    self.register_key_sequence( 'C-o i', lambda : self.app.paper.display_info_on_selected())
+    self.register_key_sequence( 'C-o c', lambda : self.app.paper.check_chemistry_of_selected())
     self.register_key_sequence( 'C-o e', self._expand_groups)
     # emacs like key bindings
     self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
@@ -210,22 +210,22 @@ class edit_mode( mode):
     self.register_key_sequence( 'C-x C-f', self.app.load_CDML)
     self.register_key_sequence( 'C-x C-c', self.app._quit)
     self.register_key_sequence( 'C-x C-t', self.app.close_current_paper)
-    self.register_key_sequence( 'A-w', self.app.paper.selected_to_clipboard)
-    self.register_key_sequence( 'M-w', self.app.paper.selected_to_clipboard)
+    self.register_key_sequence( 'A-w', lambda : self.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'M-w', lambda : self.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
     self.register_key_sequence( 'C-y', self._paste_clipboard)
-    self.register_key_sequence( 'C-/', self.app.paper.undo)
-    self.register_key_sequence( 'C-S-?', self.app.paper.redo) #note that 'S-/' => 'S-?'  !!!
+    self.register_key_sequence( 'C-/', lambda : self.app.paper.undo())
+    self.register_key_sequence( 'C-S-?', lambda : self.app.paper.redo()) #note that 'S-/' => 'S-?'  !!!
     # windows style key bindings
     self.register_key_sequence( 'C-s', self.app.save_CDML)
-    self.register_key_sequence( 'C-c', self.app.paper.selected_to_clipboard)
+    self.register_key_sequence( 'C-c', lambda : self.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'C-v', self._paste_clipboard)
-    self.register_key_sequence( 'C-z', self.app.paper.undo)
-    self.register_key_sequence( 'C-S-z', self.app.paper.redo)
+    self.register_key_sequence( 'C-z', lambda : self.app.paper.undo())
+    self.register_key_sequence( 'C-S-z', lambda : self.app.paper.redo())
     # 'C-x' from windoze is in use - 'C-k' instead
     self.register_key_sequence( 'C-k', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
     # 'C-a' from windoze is in use - 'C-S-a' instead
-    self.register_key_sequence( 'C-S-a', self.app.paper.select_all)
+    self.register_key_sequence( 'C-S-a', lambda : self.app.paper.select_all)
     # debuging
     #self.register_key_sequence( 'A-i', self._debug_info_for_focused)
     #self.register_key_sequence( 'A-d c', self.app.paper._open_debug_console)
@@ -235,11 +235,12 @@ class edit_mode( mode):
     self.register_key_sequence( 'Left', lambda : self._move_selected( -1, 0))
     self.register_key_sequence( 'Right', lambda : self._move_selected( 1, 0))
     # manipulation of the paper.stack
-    self.register_key_sequence( 'C-o f', self.app.paper.lift_selected_to_top)
-    self.register_key_sequence( 'C-o b', self.app.paper.lower_selected_to_bottom)
-    self.register_key_sequence( 'C-o s', self.app.paper.swap_selected_on_stack)
+    self.register_key_sequence( 'C-o f', lambda : self.app.paper.lift_selected_to_top())
+    self.register_key_sequence( 'C-o b', lambda : self.app.paper.lower_selected_to_bottom())
+    self.register_key_sequence( 'C-o s', lambda : self.app.paper.swap_selected_on_stack())
     # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
+    
     
   def _debug_info_for_focused( self):
     print self.focused

@@ -91,14 +91,16 @@ class BKpaper( Canvas):
     # undo manages
     self.um = undo.undo_manager( self)  # undo manager
 
+    # file name
+    self.file_name = file_name
+
     # paper sizes etc.
     self._paper_properties = {}
     self.set_paper_properties()
 
-    #
     self.changes_made = 0
-    #
-    self.file_name = file_name
+
+
 
 
   def initialise( self):

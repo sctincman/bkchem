@@ -148,6 +148,7 @@ class BKchem( Tk):
     fileMenu.add( 'command', label=_('Close tab'), command = self.close_current_paper, accelerator='(C-x C-t)')
     fileMenu.add( 'command', label=_('Exit'), command = self._quit, accelerator='(C-x C-c)')
 
+
     # edit menu
     editButton = Menubutton( menu, text=_('Edit'))
     editButton.pack( side = LEFT)
@@ -488,7 +489,7 @@ class BKchem( Tk):
     else:
       a = file
     if not replace:
-      self.add_new_paper()
+      self.add_new_paper( name=a)
     return self._load_CDML_file( a)
 
 
