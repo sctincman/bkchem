@@ -1537,9 +1537,10 @@ class mark_mode( edit_mode):
   def __init__( self):
     edit_mode.__init__( self)
     self.name = _('mark')
-    self.submodes = [['radical','biradical','electronpair','plusincircle','minusincircle'],
+    self.submodes = [['radical','biradical','electronpair','dottedelectronpair','plusincircle','minusincircle'],
                      ['add','remove']]
-    self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'), _('plus'), _('minus')],
+    self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'), _('dotted electron pair'),
+                            _('plus'), _('minus')],
                            [_('add'), _('remove')]]
     self.submode = [0, 0]
 
@@ -1552,8 +1553,12 @@ class mark_mode( edit_mode):
 
 
   def mouse_click( self, event):
-    a = ['radical','biradical','electronpair','plus','minus']
-    mark_name = a[ self.submode[0]]
+    mark_name = self.get_submode( 0)
+    recode = {'dottedelectronpair':'dotted_electronpair',
+              'plusincircle'      :'plus',
+              'minusincircle'     :'minus'}
+    if mark_name in recode:
+      mark_name = recode[ mark_name]
     if self.get_submode( 1) == 'add':
       # we are adding a mark
       if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):

@@ -429,13 +429,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       if self.charge -self.get_charge_from_marks() > 0:
         ch = '<sup>%s+</sup>' % ch
       else:
-        ch = '<sup>%s-</sup>' % ch
+        ch = u'<sup>%s-</sup>' % ch
     else:
       ch = ''
     if self.pos == 'center-last':
-      return ch + ret
+      ret = ch + ret
     else:
-      return ret + ch
+      ret = ret + ch
+    return ret.encode('utf-8')
 
 
 

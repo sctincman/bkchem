@@ -266,6 +266,12 @@ class biradical( mark):
 
 
 
+class dotted_electronpair( biradical):
+  """this is the same as biradical but does not change the multiplicity of the atom"""
+
+  pass
+
+
 
 
 class electronpair( mark):

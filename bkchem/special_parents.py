@@ -47,7 +47,7 @@ class vertex_common( object):
 
   # number
   def _set_number( self, number):
-    self._number = str( number)
+    self._number = unicode( number)
     if self._number != None and self.show_number:
       numbers = self.get_marks_by_type( "atom_number")
       if not numbers:
