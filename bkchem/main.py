@@ -167,7 +167,7 @@ class BKchem( Tk):
 # for dev only
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Configure'), command = self.paper.config_selected, accelerator='Mouse-3')
-    #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
+    scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))

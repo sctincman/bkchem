@@ -63,6 +63,9 @@ class template_manager:
   def get_template( self, n):
     return self.templates[n]
 
+  def get_templates_valency( self, name):
+    return self._prepared_templates[ name].next_to_t_atom.get_valency() -1
+
   def get_template_names( self):
     return [o.name for o in self._prepared_templates]
 

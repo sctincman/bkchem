@@ -500,6 +500,9 @@ class atom( meta_enabled):
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
 
+  def get_valency( self):
+    return self.molecule.get_atoms_valency( self)
+
   def get_free_valency( self):
     """returns free valency of atom."""
     if self.type != 'element':

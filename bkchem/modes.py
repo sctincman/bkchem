@@ -821,7 +821,7 @@ class template_mode( edit_mode):
         if self.focused.z != 0:
           self.paper.signal_to_app( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."))
           return
-        if len( self.focused.molecule.atoms_bound_to( self.focused)) == 1:
+        if self.focused.get_free_valency() >= self.paper.tm.get_templates_valency( self.submode[0]):
           x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
           x2, y2 = self.focused.get_xy()
           t = self.paper.tm.get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1')

@@ -134,13 +134,26 @@ class OO_exporter( plugin.exporter):
         items = []
       else:
         items = [b.item]
-    items += b.second
-    items += b.third
+    # simple doubles?
+    if b.type == 'n' or (not b.simple_double and not b.center):
+      items += b.second
+      items += b.third
+      line_items = []
+    else:
+      line_items = b.second + b.third
     # the export itself
-    if b.type in 'nbh':
+    if b.type in 'nh':
       for i in items:
         coords = map( self.paper.px_to_cm, self.paper.coords( i))
         self.create_oo_line( coords, page, style_name)
+    elif b.type == 'b':
+      # bold bonds width is determined by the wedge_width
+      s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
+                          stroke_width=self.paper.px_to_cm( b.wedge_width))
+      b_style_name = self.get_appropriate_style_name( s)
+      for i in items:
+        coords = map( self.paper.px_to_cm, self.paper.coords( i))
+        self.create_oo_line( coords, page, b_style_name)
     elif b.type == 'w':
       s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
                           fill_color=self.paper.any_color_to_rgb_string( b.line_color),
@@ -165,20 +178,31 @@ class OO_exporter( plugin.exporter):
         for j in range( 0, len( coords), 2):
           points.append( ( self.paper.px_to_cm( coords[j]), self.paper.px_to_cm(coords[j+1])))
         self.create_oo_polyline( points, page, style_name)
+    # line_items
+    for i in line_items:
+      coords = map( self.paper.px_to_cm, self.paper.coords( i))
+      self.create_oo_line( coords, page, style_name)
+
 
 
   def add_atom( self, a, page):
     """adds atom to document"""
     if a.show:
+      coords = map( self.paper.px_to_cm, self.paper.coords( a.selector))
+      # we need to use negative padding of the text because oo puts too much space above
+      # and under text
+      dy = abs( coords[3]-coords[1])
+      ptop = -0.25*dy
+      pbot = -0.2*dy
       gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
-                                 fill_color=self.paper.any_color_to_rgb_string( a.area_color))
+                                 fill_color=self.paper.any_color_to_rgb_string( a.area_color),
+                                 padding=(ptop,pbot))
       gr_style_name = self.get_appropriate_style_name( gr_style)
       para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family, color=a.line_color)
       para_style_name = self.get_appropriate_style_name( para_style)
       txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
       txt_style_name = self.get_appropriate_style_name( txt_style)
 
-      coords = map( self.paper.px_to_cm, self.paper.coords( a.selector))
       self.create_oo_text( '<ftext>%s</ftext>' % a.get_ftext(), coords, page, para_style_name, txt_style_name, gr_style_name)
     # marks
     for name,m in a.marks.iteritems():
@@ -330,10 +354,13 @@ class OO_exporter( plugin.exporter):
         coords = self.paper.coords( i)
         # because some weird bug in tcl/tk i had to hack the coordinates in marks.py
         # the hack is reversed here in order to get the coords back
+        # I also reduce the size of the mark a little
         if o.items.index( i) == 1:
-          coords[0] += -1
+          coords[0] += 0
+          coords[2] += -1
         elif o.items.index( i) == 2:
-          coords[1] += -1
+          coords[1] += 0
+          coords[3] += -1
         # end of hack
         coords = map( self.paper.px_to_cm, coords)
         self.create_oo_line( coords, page, style_name)
@@ -530,7 +557,7 @@ class style:
 class graphics_style( style):
 
   def __init__( self, name='gr', stroke_color='#ffffff', fill='solid', fill_color='#ffffff', stroke_width=1,
-                marker_end=None, marker_end_width=None, marker_start=None, marker_start_width=None):
+                marker_end=None, marker_end_width=None, marker_start=None, marker_start_width=None, padding=(0,0)):
     self.name = name
     self.family = 'graphics'
     self.stroke_color = stroke_color
@@ -542,18 +569,25 @@ class graphics_style( style):
     self.marker_end_width = marker_end_width
     self.marker_start = marker_start
     self.marker_start_width = marker_start_width
+    self.padding_top, self.padding_bottom = padding
 
   def to_dom( self, doc):
     style = doc.createElement( 'style:style')
     dom_extensions.setAttributes( style, (('style:family', self.family),
                                           ('style:name', self.name),
                                           ('style:parent-style-name','standard')))
+    pad_top = "%scm" % self.padding_top
+    pad_bot = "%scm" % self.padding_bottom
     prop = dom_extensions.elementUnder( style, 'style:properties', (( 'draw:fill', self.fill),
                                                                     ( 'svg:stroke-color', self.stroke_color),
                                                                     ( 'draw:fill-color', self.fill_color),
                                                                     ( 'svg:stroke-width', '%fcm' % self.stroke_width),
                                                                     ( 'draw:auto-grow-width', 'true'),
-                                                                    ( 'draw:auto-grow-height', 'true')))
+                                                                    ( 'draw:auto-grow-height', 'true'),
+                                                                    ( 'draw:textarea-horizontal-align','left'),
+                                                                    ( 'draw:textarea-vertical-align','middle'),
+                                                                    ( 'fo:padding-top', pad_top),
+                                                                    ( 'fo:padding-bottom', pad_bot)))
     if self.marker_end:
       prop.setAttribute( 'draw:marker-end', 'Arrow')
       if self.marker_end_width:

@@ -11,11 +11,8 @@ remarks
 0.6.0
 =======
 
-- vertical and horizontal swap
-  - not containers
 - template adding should think about orders of bonds also (addition of benzene to double bond
   produces now chemical a non-sense)
-- export support for new bond types
 - never center the 'whab' double bonds?
 
 
@@ -23,6 +20,7 @@ remarks
 0.x.0
 =======
 
+- vertical and horizontal swap - for all
 - remove the name mode and make it accessible through the menu
 - bond drawing could be much simplified by e.g.- draw_order( order, line_drawing_method=draw_wedge)
 - it should be possible to make bond.item always an invisible line and put rest into one list

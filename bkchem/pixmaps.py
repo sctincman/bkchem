@@ -76,14 +76,6 @@ name_recode_map = { 'vector': 'oval',
                     'mark': 'biradical'}
 
 
-splash_image_path = 'logo.ppm'
-
 images = images_dict()
 
-
-# splash image
-try:
-  splash_image = Tkinter.PhotoImage( file = os_support.get_path( splash_image_path, 'image'))
-except:
-  splash_image = None
 

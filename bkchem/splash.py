@@ -24,8 +24,8 @@
 """the Splash class resides here"""
 
 import Tkinter
-import import_checker
 import data
+import os_support
 
 class Splash( Tkinter.Toplevel):
 
@@ -33,18 +33,21 @@ class Splash( Tkinter.Toplevel):
     Tkinter.Toplevel.__init__( self)
 
     self.title(_('BKchem starting...'))
-    #if import_checker.PIL_available:
-    import pixmaps
-    splash_image = pixmaps.splash_image
-    #else:
-    #  splash_image = None
-    #splash_image = Tkinter.PhotoImage( file = '../images/logo.ppm')
+
+    # splash image
+    splash_image_path = 'logo.ppm'
+    #try:
+    self.splash_image = Tkinter.PhotoImage( file = os_support.get_path( splash_image_path, 'image'))
+
+    #except:
+    #splash_image = None
+
     text = Tkinter.Label( self,
                           font=('Helvetica', 12, 'normal'),
                           relief = 'raised',
                           borderwidth = 2,
                           padx=50, pady=50,
-                          image = splash_image,
+                          image = self.splash_image,
                           text = data.splash_text
                           )
     text.pack(fill = 'both', expand = 1)
