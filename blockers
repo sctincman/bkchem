@@ -14,6 +14,7 @@ new bond types -
 	- when a single bond is clicked with triple selected it should convert to triple
 	- remake toggle_type
 	- select and focus must be updated as new types are added
+	- for multiple wedge or hatch - use line_width = wedge_width and bond_width = bond_width?
 
 - mode for ring creation
 

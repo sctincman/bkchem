@@ -1150,14 +1150,21 @@ class bond( meta_enabled):
   def _draw_w1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
-    x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
+    #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
     # main item
-    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.bond_width)
-    self.item = self.paper.create_polygon( (x1, y1, x0, y0, 2*x2-x0, 2*y2-y0), tags=('bond',), outline=self.line_color, fill=self.line_color, joinstyle="miter")
+    self.item = self._draw_wedge( (x1,y1,x2,y2), self.bond_width)
     # draw helper items
     self.second = self.third = None
     self.paper.register_id( self.item, self)
     
+  def _draw_wedge( self, coords, width):
+    """returns the polygon item"""
+    x1, y1, x2, y2 = coords
+    # main item
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, width)
+    return self.paper.create_polygon( (x1, y1, x0, y0, 2*x2-x0, 2*y2-y0), tags=('bond',), outline=self.line_color, fill=self.line_color, joinstyle="miter")
+
+
   def redraw( self, recalc_side=0):
     if recalc_side:
       self._decide_distance_and_center()
