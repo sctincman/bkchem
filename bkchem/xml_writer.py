@@ -157,11 +157,11 @@ class SVG_writer( XML_writer):
                                              ( 'y2', convert( y2))))
     elif b.type == 'w':
       for i in items:
-        x1, y1, x2, y2, x3, y3 = self.paper.coords( b.item)
+        coords = self.paper.coords( b.item)
         line = dom_extensions.elementUnder( l_group, 'polygon',
                                             (( 'fill', b.line_color),
                                              ( 'stroke', b.line_color),
-                                             ( 'points', '%d %d %d %d %d %d' % (x1, y1, x2, y2, x3, y3))))
+                                             ( 'points', list_to_svg_points( coords))))
     elif b.type == 'h':
       for i in items:
         for p in i:
@@ -360,3 +360,10 @@ class SVG_writer( XML_writer):
 
 
 
+def list_to_svg_points( l):
+  for a in l:
+    return ' '.join( map( str, l))
+
+
+
+  

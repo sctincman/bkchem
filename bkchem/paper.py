@@ -680,7 +680,6 @@ class chem_paper( Canvas, object):
     deleted = []
     if overlap:
       mols = misc.filter_unique( map( lambda a: map( lambda b: b.molecule, a), overlap))
-      print mols
       #print 3, time.time() - ttt
       a_eatenby_b1 = []
       a_eatenby_b2 = []
