@@ -357,8 +357,8 @@ class BKchem( Tk):
 
   def init_preferences( self):
     # save_dir must be set after the preference manager is initiated
-    self.save_dir = self.pm.get_preference( "default-dir")
-
+    #self.save_dir = self.pm.get_preference( "default-dir")
+    pass
 
   def init_modes( self):
     self.modes = { 'draw': modes.draw_mode( self),
@@ -676,6 +676,9 @@ class BKchem( Tk):
 
 
   def load_CDML( self, file=None, replace=0):
+    """loads a file into the current paper,
+    file is the name of the file to load (if not supplied dialog is fired),
+    if replace == 0 the content of the file is added to the current content of the file"""
     if not file:
       if self.paper.changes_made and replace:
 	if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:

@@ -25,12 +25,14 @@ __all__ = []
 _names = ['CML','CML2','openoffice','postscript','molfile','gtml','pdf','bitmap', 'postscript2']
 
 
+import sys
+
 for _name in _names:
   try:
     exec 'import %s' % _name
     __all__.append( _name)
   except:
-    print "could not load module %s" % _name
+    print >> sys.stderr, "could not load module %s" % _name
 
 del _name
 del _names

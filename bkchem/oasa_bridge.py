@@ -137,6 +137,7 @@ def bkchem_atom_to_oasa_atom( a):
   x, y = a.get_xy()
   ret.x = x
   ret.y = y
+  ret.charge = a.charge
   return ret
 
 def bkchem_bond_to_oasa_bond( b):

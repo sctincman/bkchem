@@ -95,19 +95,20 @@ class chem_paper( Canvas, object):
 
 
   def set_bindings( self):
-    self.bind( "<B1-Motion>", self._drag1)
-    self.bind( "<ButtonRelease-1>", self._release1)
-    self.bind( "<Button-1>", self._n_pressed1)
-    self.bind( "<Shift-Button-1>", self._s_pressed1)
-    self.bind( "<Shift-B1-Motion>", self._drag1)
-    self.bind( "<Delete>", self.key_pressed)
-    self.bind( "<Key>", self.key_pressed)
-    self.bind( "<KeyRelease>", self.key_released)
-    self.bind( "<Enter>", self.take_focus)
-    self.bind( "<Button-3>", self._n_pressed3)
-    self.bind( "<Button-2>", self._n_pressed2)
-    self.bind( "<Motion>", self._move)
-    self.bind( "<Leave>", self._leave)
+    if not self.app.in_batch_mode:
+      self.bind( "<B1-Motion>", self._drag1)
+      self.bind( "<ButtonRelease-1>", self._release1)
+      self.bind( "<Button-1>", self._n_pressed1)
+      self.bind( "<Shift-Button-1>", self._s_pressed1)
+      self.bind( "<Shift-B1-Motion>", self._drag1)
+      self.bind( "<Delete>", self.key_pressed)
+      self.bind( "<Key>", self.key_pressed)
+      self.bind( "<KeyRelease>", self.key_released)
+      self.bind( "<Enter>", self.take_focus)
+      self.bind( "<Button-3>", self._n_pressed3)
+      self.bind( "<Button-2>", self._n_pressed2)
+      self.bind( "<Motion>", self._move)
+      self.bind( "<Leave>", self._leave)
 
 
 
@@ -177,13 +178,14 @@ class chem_paper( Canvas, object):
   def add_bindings( self, active_names=()):
     self.lower( self.background)
     [o.lift() for o in self.stack]
-    if not active_names:
-      names = self.all_names_to_bind
-    else:
-      names = active_names
-    for name in names:
-      self.tag_bind( name, '<Enter>', self.enter_item)
-      self.tag_bind( name, '<Leave>', self.leave_item)
+    if not self.app.in_batch_mode:
+      if not active_names:
+        names = self.all_names_to_bind
+      else:
+        names = active_names
+      for name in names:
+        self.tag_bind( name, '<Enter>', self.enter_item)
+        self.tag_bind( name, '<Leave>', self.leave_item)
 
 
   def remove_bindings( self):
@@ -575,11 +577,7 @@ class chem_paper( Canvas, object):
     if new_standard and old_standard != self.standard and not self.app.in_batch_mode:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
 				       data.standards_differ_text,
-				
-
-
-
-       default = 'ok',
+                                       default = 'ok',
 				       parent=self):
         self.standard = old_standard
 
