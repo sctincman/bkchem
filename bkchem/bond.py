@@ -53,8 +53,9 @@ class bond( meta_enabled):
   meta__used_standard_values = ['line_color','double_length_ratio']
   # undo related metas
   meta__undo_simple = ('atom1', 'atom2', 'type', 'line_width', 'center', 'bond_width',
-                       'molecule', 'line_color','double_length_ratio', 'wedge_width', 'order',
+                       'line_color','double_length_ratio', 'wedge_width', 'order',
                        'simple_double')
+  meta__undo_properties = ('molecule',)
 
 
   def __init__( self, paper, atoms=(), package=None, molecule=None, type='s', order=1,
@@ -79,6 +80,28 @@ class bond( meta_enabled):
     if package:
       self.read_package( package)
 
+
+
+  ## ------------------------------ PROPERTIES ------------------------------
+
+
+  # molecule
+  def __get_molecule( self):
+    return self.__molecule
+
+  def __set_molecule( self, mol):
+    self.__molecule = mol
+
+  molecule = property( __get_molecule, __set_molecule)
+
+
+
+
+  ## // ------------------------------ END OF PROPERTIES --------------------
+
+
+
+
   def read_standard_values( self, old_standard=None):
     meta_enabled.read_standard_values( self, old_standard=old_standard)
     # wedge width
@@ -94,8 +117,7 @@ class bond( meta_enabled):
       else:
         self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
 
-  def set_molecule( self, molecule):
-    self.molecule = molecule
+
 
   def draw( self, no_automatic=0):
     """call the appropriate draw method, no_automatic is used on file read when no automatic decisions are needed"""
@@ -510,8 +532,8 @@ class bond( meta_enabled):
     bnd = doc.createElement('bond')
     dom_extensions.setAttributes( bnd, (('type', "%s%d" % (self.type, self.order)),
                                         ('line_width', str( self.line_width)),
-                                        ('start', self.atom1.get_cdml_id()),
-                                        ('end', self.atom2.get_cdml_id()),
+                                        ('start', self.atom1.cdml_id),
+                                        ('end', self.atom2.cdml_id),
                                         ('double_ratio', str( self.double_length_ratio))))
     if self.order != 1:
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))

@@ -25,7 +25,7 @@
 mostly the desired meta_behaviour"""
 
 
-class simple_parent:
+class simple_parent( object):
   """this class only gives reasonable default values to meta attributes"""
   # other
   # if a class is a container in paper meaning (is not part of bigger structure)
@@ -37,6 +37,7 @@ class simple_parent:
   # undo related
   meta__undo_fake = () # fakes serve only to force redraw in some cases however do not perform any undo
   meta__undo_simple = ()
+  meta__undo_properties = ()
   meta__undo_copy = ()
   meta__undo_2d_copy = ()
   meta__undo_children_to_record = ()
@@ -60,4 +61,9 @@ class meta_enabled( simple_parent):
       if old_standard and (self.paper.standard.__dict__[i] == old_standard.__dict__[i]):
         continue
       else:
-        self.__dict__[i] = self.paper.standard.__dict__[i]
+	# property
+	if i in self.__class__.__dict__:
+	  self.__class__.__dict__[i].fset( self, self.paper.standard.__dict__[i])
+	else:
+	  self.__dict__[i] = self.paper.standard.__dict__[i]
+

@@ -94,14 +94,15 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   movex = 320 - scale*(maxx+minx)/2
   movey = 240 - scale*(maxy+miny)/2
   for a in m.atoms_map:
-    a.set_xy( movex + scale*a.x, movey + scale*a.y)
+    a.x = movex + scale*a.x
+    a.y = movey + scale*a.y
   return m
 
 
 def oasa_atom_to_bkchem_atom( a, paper, m):
   at = atom.atom( paper, molecule=m)
-  #at.set_xy( a.x*30+300, a.y*30+300)
-  at.set_xy( a.x, a.y)
+  at.x = a.x
+  at.y = a.y
   at.set_name( a.symbol, interpret=1)
   at.charge = a.charge
   return at

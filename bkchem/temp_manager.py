@@ -114,7 +114,8 @@ class template_manager:
     if type == 'atom1':
       current.delete_items( [current.t_atom])
     elif type == 'atom2':
-      current.t_atom.set_xy( x1, y1)
+      current.t_atom.x = x1
+      current.t_atom.y = y1
     current.t_atom = None
     current.t_bond_first = None
     current.t_bond_second = None
@@ -123,9 +124,7 @@ class template_manager:
   
   def transform_template( self, temp, trans):
     for a in temp.atoms_map:
-      x, y = a.get_xy()
-      x, y = trans.transform_xy( x, y)
-      a.set_xy( x, y)
+      a.x, a.y = trans.transform_xy( a.x, a.y)
       a.scale_font( self._scale_ratio)
     for b in temp.bonds:
       if b.order != 1:

@@ -442,10 +442,10 @@ class edit_mode( mode):
         item = self.app.paper.selected[0]
         if item.object_type in ('text','atom'):
           text = item.get_text()
-        if text:
-          name = self.app.editPool.activate( text=text)
-        else:
-          name = self.app.editPool.activate()
+      if text:
+	name = self.app.editPool.activate( text=text)
+      else:
+	name = self.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
       # i really don't know if I should call the unicode first

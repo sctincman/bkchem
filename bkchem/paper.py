@@ -611,7 +611,7 @@ class chem_paper( Canvas):
         if (a != b) and ( 'atom' in self.gettags( b)):
           a1 = self.id_to_object( a)
           a2 = self.id_to_object( b)
-          if ( abs( a1.get_x() - a2.get_x()) < 2) and ( abs( a1.get_y() - a2.get_y()) < 2): 
+          if ( abs( a1.x - a2.x) < 2) and ( abs( a1.y - a2.y) < 2): 
             if (not [a2,a1] in overlap) and a1.z == a2.z:
               overlap.append( [a1,a2])
     if overlap:

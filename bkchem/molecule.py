@@ -97,7 +97,8 @@ class molecule( simple_parent):
     for i in range( len( connect)):
       self.connect.append( l*[0])
       self.connect[l+i].extend( connect[i])
-    [o.set_molecule( self) for o in self]
+    for o in self:
+      o.molecule = self
       
   def eat_molecule( self, mol):
     "transfers everything from mol to self, now only calls feed_data"
@@ -125,15 +126,15 @@ class molecule( simple_parent):
     self.connect[ self.atoms_map.index( b.atom2)][ self.atoms_map.index( b.atom1)] = b
     self.bonds.append( b)
     if not b.molecule:
-      b.set_molecule( self)
+      b.molecule = self
 
   def find_place( self, a, distance, added_order=1):
     """tries to find accurate place for next atom around atom 'id',
     returns x,y and list of ids of 'items' found there for overlap, those atoms are not bound to id"""
     ids_bonds = self.atoms_bound_to( a)
     if len( ids_bonds) == 0:
-      x = a.get_x() + cos( pi/6) *distance
-      y = a.get_y() - sin( pi/6) *distance
+      x = a.x + cos( pi/6) *distance
+      y = a.y - sin( pi/6) *distance
     elif len( ids_bonds) == 1:
       neigh = ids_bonds[0]
       if self.atoms_bonds( a)[0].order != 3 and added_order != 3:
@@ -142,23 +143,23 @@ class molecule( simple_parent):
           # the user has either deleted the last added bond and wants it to be on the other side
           # or it is simply impossible to define a transoid configuration
           self.sign = -self.sign
-          x = a.get_x() + cos( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
-          y = a.get_y() + sin( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
+          x = a.x + cos( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
+          y = a.y + sin( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
         else:
           # we would add the new bond transoid
           neighs2 = self.atoms_bound_to( neigh)
           neigh2 = (neighs2[0] == a) and neighs2[1] or neighs2[0]
-          x = a.get_x() + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
-          y = a.get_y() + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+          x = a.x + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+          y = a.y + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
           side = geometry.on_which_side_is_point( (neigh.x,neigh.y,a.x,a.y), (x,y))
           if side == geometry.on_which_side_is_point(  (neigh.x,neigh.y,a.x,a.y), (neigh2.x,neigh2.y)):
             self.sign = -self.sign
-            x = a.get_x() + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
-            y = a.get_y() + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+            x = a.x + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+            y = a.y + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
           self._last_used_atom = a
       else:
-        x = a.get_x() + cos( self.get_angle( a, ids_bonds[0]) + pi) *distance
-        y = a.get_y() + sin( self.get_angle( a, ids_bonds[0]) + pi) *distance
+        x = a.x + cos( self.get_angle( a, ids_bonds[0]) + pi) *distance
+        y = a.y + sin( self.get_angle( a, ids_bonds[0]) + pi) *distance
     else:
       x, y = self.find_least_crowded_place_around_atom( a, range=distance)
     return x, y
@@ -177,8 +178,8 @@ class molecule( simple_parent):
 
   def get_angle( self, a1, a2):
     "what is the angle between horizontal line through i1 and i1-i2 line"
-    a = a2.get_x() - a1.get_x()
-    b = a2.get_y() - a1.get_y()
+    a = a2.x - a1.x
+    b = a2.y - a1.y
     return atan2( b, a)
     
   def delete_items( self, items):
@@ -259,7 +260,7 @@ class molecule( simple_parent):
     else:
       self.connect = [[0]]
     self.atoms_map.append( at)
-    at.set_molecule( self)
+    at.molecule = self
   
 
   def get_connected_components( self):
@@ -336,7 +337,7 @@ class molecule( simple_parent):
     self.id = package.getAttribute( 'id')
     for a in package.getElementsByTagName( 'atom'):
       self.insert_atom( atom( self.paper, package=a, molecule=self))
-    self._id_map = map( lambda a: a.get_cdml_id(), self.atoms_map)
+    self._id_map = map( lambda a: a.cdml_id, self.atoms_map)
     for b in package.getElementsByTagName( 'bond'):
       self.insert_bond( bond( self.paper, package = b, molecule=self))
     temp = package.getElementsByTagName('template')
@@ -354,11 +355,11 @@ class molecule( simple_parent):
     mol.setAttribute( 'id', self.id)
     if self.t_atom:
       if self.t_bond_second and self.t_bond_first:
-        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.get_cdml_id())),
-                                                        ('bond_first', str( self.t_bond_first.get_cdml_id())),
-                                                        ('bond_second', str( self.t_bond_second.get_cdml_id()))))
+        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.cdml_id)),
+                                                        ('bond_first', str( self.t_bond_first.cdml_id)),
+                                                        ('bond_second', str( self.t_bond_second.cdml_id))))
       else:
-        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.get_cdml_id())),))
+        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.cdml_id)),))
     for i in self:
       mol.appendChild( i.get_package( doc))
     return mol

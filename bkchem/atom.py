@@ -58,17 +58,20 @@ class atom( meta_enabled):
   meta__used_standard_values = ['line_color','area_color','font_size','font_family']
   # undo meta infos
   meta__undo_fake = ('text',)
-  meta__undo_simple = ('x', 'y', 'z', 'pos', 'show', 'name', 'molecule', 'font_family',
-                       'font_size', 'charge', 'show_hydrogens', 'type', 'line_color', 'area_color')
+  meta__undo_simple = ()
+  meta__undo_properties = ('x', 'y', 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
+			   'font_size', 'font_family' ,'line_color', 'area_color', 'pos', 'type')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
 
 
 
-
   def __init__( self, paper, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, paper)
+    # private attrs
+    self.__dirty = 0
+    
     # basic attrs
     self.molecule = molecule
 
@@ -78,7 +81,7 @@ class atom( meta_enabled):
     self.item = None
     self.ftext = None
     if xy:
-      self.set_xy( xy[0], xy[1])
+      self.x, self.y = xy
     self.z = 0
     self.pos = None
     self.focus_item = None
@@ -100,6 +103,185 @@ class atom( meta_enabled):
     else:
       self.set_name( 'C')
 
+
+
+  ## ---------------------------------------- PROPERTIES ------------------------------
+      
+  # molecule
+  def __get_molecule( self):
+    return self.__molecule
+
+  def __set_molecule( self, mol):
+    self.__molecule = mol
+
+  molecule = property( __get_molecule, __set_molecule)
+
+
+  # x
+  def __get_x( self):
+    return self.__x
+
+  def __set_x( self, x):
+    self.__x = self.paper.any_to_px( x)
+
+  x = property( __get_x, __set_x)
+
+
+  # y
+  def __get_y( self):
+    return self.__y
+
+  def __set_y( self, y):
+    self.__y = self.paper.any_to_px( y)
+
+  y = property( __get_y, __set_y)
+
+
+  # z
+  def __get_z( self):
+    return self.__z
+
+  def __set_z( self, z):
+    self.__z = z
+
+  z = property( __get_z, __set_z)
+
+
+  # name
+  def __get_name( self):
+    return self.__name
+
+  def __set_name( self, name):
+    self.__name = name
+    self.__dirty = 1
+
+  name = property( __get_name, __set_name)
+
+
+  # show
+  def __get_show( self):
+    return self.__show
+
+  def __set_show( self, show):
+    self.__show = show
+    self.__dirty = 1
+
+  show = property( __get_show, __set_show)
+
+
+  # show_hydrogens
+  def __get_show_hydrogens( self):
+    return self.__show_hydrogens
+
+  def __set_show_hydrogens( self, show_hydrogens):
+    self.__show_hydrogens = show_hydrogens
+    self.__dirty = 1
+
+  show_hydrogens = property( __get_show_hydrogens, __set_show_hydrogens)
+
+
+  # charge
+  def __get_charge( self):
+    return self.__charge
+
+  def __set_charge( self, charge):
+    self.__charge = charge
+    self.__dirty = 1
+
+  charge = property( __get_charge, __set_charge)
+
+
+  # font_size
+  def __get_font_size( self):
+    return self.__font_size
+
+  def __set_font_size( self, font_size):
+    self.__font_size = font_size
+    self.__dirty = 1
+
+  font_size = property( __get_font_size, __set_font_size)
+
+
+  # font_family
+  def __get_font_family( self):
+    return self.__font_family
+
+  def __set_font_family( self, font_family):
+    self.__font_family = font_family
+    self.__dirty = 1
+
+  font_family = property( __get_font_family, __set_font_family)
+
+
+  # line_color
+  def __get_line_color( self):
+    return self.__line_color
+
+  def __set_line_color( self, line_color):
+    self.__line_color = line_color
+    self.__dirty = 1
+
+  line_color = property( __get_line_color, __set_line_color)
+
+
+  # area_color
+  def __get_area_color( self):
+    return self.__area_color
+
+  def __set_area_color( self, area_color):
+    self.__area_color = area_color
+    self.__dirty = 1
+
+  area_color = property( __get_area_color, __set_area_color)
+
+
+  # pos
+  def __get_pos( self):
+    return self.__pos
+
+  def __set_pos( self, pos):
+    self.__pos = pos
+    self.__dirty = 1
+
+  pos = property( __get_pos, __set_pos)
+
+
+  # type
+  def __get_type( self):
+    return self.__type
+
+  def __set_type( self, type):
+    self.__type = type
+    self.__dirty = 1
+
+  type = property( __get_type, __set_type)
+
+
+
+  # cdml_id
+  def __get_cdml_id( self):
+    if self.item:
+      self.__cdml_id = 'a'+str( self.item)
+      return self.__cdml_id
+    if self.__cdml_id:
+      return self.__cdml_id
+    return None
+
+  def __set_cdml_id( self, id):
+    self.__cdml_id = id
+
+  cdml_id = property( __get_cdml_id, __set_cdml_id)
+
+
+  # valency
+  def get_valency( self):
+    return self.molecule.get_atoms_valency( self)
+
+  valency = property( get_valency)
+
+
+
+  ## // -------------------- END OF PROPERTIES --------------------------
 
 
 
@@ -238,21 +420,7 @@ class atom( meta_enabled):
     elif self.type == 'chain':
       return PT.formula_dict( self.name).get_html_repr_as_string( reverse=(self.pos=='center-last'))
 
-  # properties
-  #name = property( get_name, set_name)
 
-
-
-
-  def set_molecule( self, molecule):
-    self.molecule = molecule
-
-
-
-
-  def set_xy( self, x, y):
-    self.x = self.paper.any_to_px( x) #round( x, 2)
-    self.y = self.paper.any_to_px( y) #round( y, 2)
 
 
 
@@ -261,9 +429,9 @@ class atom( meta_enabled):
     as = self.molecule.atoms_bound_to( self)
     p = 0
     for a in as:
-      if a.get_x() < self.x:
+      if a.x < self.x:
         p -= 1
-      elif a.get_x() > self.x:
+      elif a.x > self.x:
         p += 1
     if p > 0:
       self.pos = 'center-last'
@@ -282,7 +450,7 @@ class atom( meta_enabled):
       self.update_font()
       if not self.pos:
         self.decide_pos()
-      # we use self.text to force undo whet it is changed (e.g. when atom is added to OH so it changes to O)
+      # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
       self.text = self.get_ftext()
       parsed_name = dom.parseString( '<ftext>%s</ftext>' % self.text).childNodes[0]
       self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=parsed_name, font=self.font, pos=self.pos, fill=self.line_color)
@@ -319,6 +487,10 @@ class atom( meta_enabled):
       self.select()
     else:
       self.unselect()
+    if not self.__dirty:
+      print "redrawing non-dirty atom"
+    self.__dirty = 0
+
       
 
 
@@ -391,20 +563,8 @@ class atom( meta_enabled):
   def move_to( self, x, y, dont_move_marks=0):
     dx = x - self.x
     dy = y - self.y
-    #self.set_xy( x, y)
     self.move( dx, dy, dont_move_marks=dont_move_marks)
 
-
-
-
-  def get_x( self):
-    return self.x
-
-
-
-
-  def get_y( self):
-    return self.y
 
 
 
@@ -425,12 +585,6 @@ class atom( meta_enabled):
     else:
       return self.x, self.y, self.z
 
-
-
-
-  def round_coords( self, precision=0):
-    self.x = round( self.x, precision)
-    self.y = round( self.y, precision)
 
 
 
@@ -461,7 +615,7 @@ class atom( meta_enabled):
   def read_package( self, package):
     a = ['no','yes']
     on_off = ['off','on']
-    self._cdml_id = package.getAttribute( 'id')
+    self.cdml_id = package.getAttribute( 'id')
     #self.show_number = a.index( package.getAttribute( 'show_number'))
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
@@ -471,7 +625,8 @@ class atom( meta_enabled):
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
     x, y = self.paper.real_to_screen_coords( (x, y))
-    self.set_xy( x, y)
+    self.x = x
+    self.y = y
     ft = package.getElementsByTagName('ftext')
     if ft:
       self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], ''), check_valency=0, interpret=0)
@@ -518,7 +673,7 @@ class atom( meta_enabled):
     y = ['no','yes']
     on_off = ['off','on']
     a = doc.createElement('atom')
-    a.setAttribute( 'id', str( self.get_cdml_id()))
+    a.setAttribute( 'id', str( self.cdml_id))
     #show attribute is set only when non default
     if (self.show and self.name=='C') or (not self.show and self.name!='C'): 
       a.setAttribute('show', y[ self.show])
@@ -554,10 +709,6 @@ class atom( meta_enabled):
 
 
 
-  def get_cdml_id( self):
-    if self.item:
-      self._cdml_id = 'a'+str( self.item)
-    return self._cdml_id
 
 
 
@@ -591,10 +742,6 @@ class atom( meta_enabled):
     self.update_font()
 
 
-
-
-  def get_valency( self):
-    return self.molecule.get_atoms_valency( self)
 
 
 
