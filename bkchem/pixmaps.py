@@ -69,8 +69,8 @@ class images_dict( dict):
 
 # images for which the name and file name differs
 name_recode_map = { 'vector': 'oval',
-                    'fixed': 'fixed_length',
-                    'mark': 'biradical'}
+                    'fixed': 'fixed_length'
+                    }
 
 
 images = images_dict()

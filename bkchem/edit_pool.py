@@ -50,60 +50,59 @@ class editPool( Frame):
 
     self.editPool.bind("<KeyPress>", self._key)
 
+
     if 'interpret' in buttons:
+      pix = self.app.request( 'pixmap', name='interpret')
       self.interpretButton = Button( self,
                                      text=_('Interpret'),
+                                     image=pix,
                                      command=self._interpretButtonPressed,
                                      state='disabled',
                                      bd=config.border_width)
+      self.app.balloon.bind( self.interpretButton, _('Interpret text (where applicable)'))
       self.interpretButton.pack( side='left')
     else:
       self.interpretButton = None
 
     if 'asis' in buttons:
+      pix = self.app.request( 'pixmap', name='asis')      
       self.setButton = Button( self,
+                               image=pix,
                                text=_('As is'),
                                command=self._setButtonPressed,
                                state='disabled',
                                bd=config.border_width)
+      self.app.balloon.bind( self.setButton, _('Leave text as is - do not interpret'))
       self.setButton.pack( side='left')
     else:
       self.setButton = None
 
+
     pix = self.app.request( 'pixmap', name='subnum')
-    if pix:
-      self.numbersToSubButton = Button( self,
-                                        image=pix,
-                                        command=self._numbersToSubButtonPressed,
-                                        state='disabled',
-                                        bd=config.border_width)
-      self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
-    else:
-      self.numbersToSubButton = Button( self,
-                                        text=_('Sub numbers'),
-                                        command=self._numbersToSubButtonPressed,
-                                        state='disabled',
-                                        bd=config.border_width)
+    self.numbersToSubButton = Button( self,
+                                      image=pix,
+                                      text=_('Sub numbers'),
+                                      command=self._numbersToSubButtonPressed,
+                                      state='disabled',
+                                      bd=config.border_width)
+    self.app.balloon.bind( self.numbersToSubButton, _('Convert numbers to subscript'))
     self.numbersToSubButton.pack( side='left')
 
     # text decoration
+    decorFrame = Frame( self)
+    decorFrame.pack( padx=5, side="left")
     for i in font_decorations:
       pix = self.app.request( 'pixmap', name=i)
-      if pix:
-        self.__dict__[ i] = Button( self,
-                                    image=pix,
-                                    command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
-                                    state='disabled',
-                                    bd=config.border_width)
-        self.app.balloon.bind( self.__dict__[i], i)
-      else:
-        self.__dict__[ i] = Button( self,
-                                    text=i,
-                                    command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
-                                    state='disabled',
-                                    bd=config.border_width)
-      self.__dict__[i].pack( side='left')
+      self.__dict__[ i] = Button( self,
+                                  image=pix,
+                                  command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
+                                  state='disabled',
+                                  text=i,
+                                  bd=config.border_width)
+      self.app.balloon.bind( self.__dict__[i], i)
+      self.__dict__[ i].pack( side="left")
 
+      
 
   def _interpretButtonPressed( self, *e):
     t = self.editPool.get()

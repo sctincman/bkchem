@@ -61,7 +61,12 @@ class BKchem( Tk):
     self.tk.call("tk", "useinputmethods", "1")
     #self.tk.call( "encoding", "system", "iso8859-2")
     #print self.tk.call( "encoding", "system")
-
+    #self.option_add( "*Background", "#eaeaea")
+    self.option_add( "*Entry*Background", "white")
+    self.option_add( "*Entry*Foreground", "#606060")
+    self.tk_setPalette( "background", "#eaeaea",
+                        "insertBackground","#ffffff")
+    
 
   def initialize( self):
     self.in_batch_mode = 0
