@@ -79,6 +79,9 @@ class BKchem( Tk):
     self._clipboard_pos = None
 
     self._untitled_counter = 0
+    self.__tab_name_2_paper = {}
+    self.__last_tab = 0
+
 
     self._after = None
 
@@ -369,11 +372,12 @@ class BKchem( Tk):
       tkMessageBox.showerror( _("File already opened!"),_("Sorry but I cannot open one file twice."))
       return 0
     name_dic = self.get_name_dic( name=name)
-    # check if a file with same name is opened
-    page = self.notebook.add( chem_paper.create_window_name( name_dic))
-        
+    # create the tab
+    _tab_name = self.get_new_tab_name()
+    page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
     paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
                         background="grey", closeenough=5, file_name=name_dic)
+    self.__tab_name_2_paper[ _tab_name] = paper
     # the scrolling
     scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)
     scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview)
@@ -411,7 +415,9 @@ class BKchem( Tk):
       elif result == _('Cancel'):
         return 0 # we skip away
     self.papers.remove( p)
-    self.notebook.delete( p.window_name or Pmw.SELECT)
+    # find the name of the tab
+    name = self.get_paper_tab_name( p)
+    self.notebook.delete( name or Pmw.SELECT)
     return 1
 
 
@@ -427,8 +433,6 @@ class BKchem( Tk):
     in order to ask for the name"""
     if self.paper.file_name['auto']:
       new_name = self.save_as_CDML()
-      if new_name:
-        self.paper.file_name = new_name
     else:
       a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
       self._save_according_to_extension( a)
@@ -448,7 +452,9 @@ class BKchem( Tk):
                                       (_("Gzipped CDML file"),".cdgz")))
     if a != '' and a!=():
       if self._save_according_to_extension( a):
-        return self.get_name_dic( a)
+        self.paper.file_name = self.get_name_dic( a)
+        self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
+        return new_name
       else:
         return None
     else:
@@ -489,6 +495,8 @@ class BKchem( Tk):
       self.paper.file_name = self.get_name_dic( name + ".svg")
     else:
       self.paper.file_name = self.get_name_dic( name)
+    self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
+
 
 
 
@@ -900,3 +908,13 @@ Enter IChI:""")
     t.start()
 
 
+
+  def get_new_tab_name( self):
+    self.__last_tab += 1
+    return "tab"+str(self.__last_tab)
+
+  def get_paper_tab_name( self, paper):
+    for k in self.__tab_name_2_paper:
+      if self.__tab_name_2_paper[ k] == paper:
+        return k
+    return None
