@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """the modes in which the paper operates (such as edit, draw etc.) reside here"""
 
@@ -37,6 +34,7 @@ import xml.sax, xml.sax.saxutils
 import tkMessageBox
 import helper_graphics as hg
 import dom_extensions
+import messages
 
 class mode:
   """abstract parent for all modes. No to be used for inheritation because the more specialized
@@ -138,6 +136,11 @@ class mode:
       if name in sms:
         i = self.submodes.index( sms)
         self.submode[i] = sms.index( name)
+        txt_name = self.__class__.__name__+'_'+name
+        try:
+          self.paper.signal_to_app( messages.__dict__[txt_name], time=20)
+        except KeyError:
+          pass
 
   def register_key_sequence( self, sequence, function, use_warning = 1):
     """registers a function with its coresponding key sequence

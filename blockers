@@ -14,6 +14,10 @@ remarks
 - vertical and horizontal swap
   - not containers
   - things should remain selected
+- changing direction of a wedge double bond should reverse the sign
+- double and triple bond clicking is strange
+- remove the name mode and make it accessible through the menu
+- focus circle is positioned strangely on freestyle arrow drawing
 
 
 0.x.0

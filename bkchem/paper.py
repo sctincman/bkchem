@@ -363,8 +363,8 @@ class BKpaper( Canvas):
     a = map( lambda o: o.arrow, filter( lambda p: p.object_type == 'point', self.selected))
     return misc.filter_unique( a)
 
-  def signal_to_app( self, signal):
-    self.app.update_status( signal)
+  def signal_to_app( self, signal, time=4):
+    self.app.update_status( signal, time=time)
 
   def read_package( self, CDML):
     import CDML_versions

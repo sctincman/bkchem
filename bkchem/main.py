@@ -240,7 +240,7 @@ class BKchem( Tk):
     self.paper['yscrollcommand'] = self.scroll_y.set
     self.paper['xscrollcommand'] = self.scroll_x.set
 
-    status = Label( mainFrame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w')
+    status = Label( mainFrame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
     radiobuttons.invoke( self.paper.mode)
 
@@ -294,11 +294,11 @@ class BKchem( Tk):
   def change_submode( self, tag):
     self.paper.switch_to_submode( tag)
 
-  def update_status( self, signal):
+  def update_status( self, signal, time=4):
     self.stat.set( signal)
     if self._after:
       self.after_cancel( self._after)
-    self._after = self.after( 4000, func=self.clear_status)
+    self._after = self.after( time*1000, func=self.clear_status)
 
   def clear_status( self):
     self.stat.set( '')
