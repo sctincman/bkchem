@@ -24,7 +24,7 @@
 """support for backward compatible CDML reading"""
 
 import dom_extensions as dom_ext      
-
+import data
 
 class CDML_transformer_06_07:
 
@@ -85,13 +85,39 @@ class CDML_transformer_09_10:
                           (('length','1.6cm'),))
 
 
+class CDML_transformer_10_11:
+
+  output_version = '0.11'
+  input_version = '0.10'
+  bond_type_remap = ['','n1','n2','n3','w1','h1']
+
+  def tranform_dom( self, dom):
+    for b in dom.getElementsByTagName("bond"):
+      type = b.getAttribute( 'type')
+      if not type:
+        continue
+      elif type in data.alternative_bond_types:
+        type = data.alternative_bond_types.index( type)
+      elif type in data.bond_types:
+        type = data.alternative_bond_types.index( type)
+      else:
+        try:
+          type = int( type)
+        except:
+          continue
+      type = self.bond_type_remap[ type]
+      b.setAttribute('type', type)
+      
+
+
 
 # LIST OF AVAILABLE TRANSFORMERS
 
 transformers = { '0.6': CDML_transformer_06_07,
                  '0.7': CDML_transformer_07_08,
                  '0.8': CDML_transformer_08_09,
-                 '0.9': CDML_transformer_09_10}
+                 '0.9': CDML_transformer_09_10,
+                 '0.10': CDML_transformer_10_11}
 
 
 # TRANSFORMING FUNCTION

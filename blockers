@@ -10,8 +10,10 @@ remarks
 =======
 
 
-new bond types - modes, saving, loading, back compatibility
+new bond types -
 	- when a single bond is clicked with triple selected it should convert to triple
+	- remake toggle_type
+	- select and focus must be updated as new types are added
 
 - mode for ring creation
 

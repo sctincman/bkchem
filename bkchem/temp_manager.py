@@ -126,7 +126,7 @@ class template_manager:
       a.set_xy( x, y)
       a.scale_font( self._scale_ratio)
     for b in temp.bonds:
-      if b.type != 1:
+      if b.order != 1:
         b.bond_width *= self._scale_ratio
     # update template according to current default values
     self.paper.apply_current_standard( [temp])

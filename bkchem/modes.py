@@ -385,12 +385,12 @@ class edit_mode( mode):
 
   def reposition_bonds_around_atom( self, a):
     bs = a.molecule.atoms_bonds( a)
-    [b.redraw( recalc_side = 1) for b in bs if b.type == 2]
+    [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     a.reposition_marks()
 
   def reposition_bonds_around_bond( self, b):
     bs = misc.filter_unique( b.molecule.atoms_bonds( b.atom1) +  b.molecule.atoms_bonds( b.atom2))
-    [b.redraw( recalc_side = 1) for b in bs if b.type == 2]
+    [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     # all atoms to update
     as = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
     [a.reposition_marks() for a in as]
@@ -462,7 +462,7 @@ class edit_mode( mode):
     a = self.focused
     mol = a.molecule
     for i in range( n):
-      a, b = mol.add_atom_to( a) #, bond_type=self.__mode_to_bond_type())[0]]
+      a, b = mol.add_atom_to( a)
       self.paper.select( [a])
     self.paper.start_new_undo_record()
     self.paper.add_bindings()
@@ -477,9 +477,9 @@ class draw_mode( edit_mode):
     self.name = _('draw')
     self._moved_atom = None
     self._start_atom = None
-    self.submodes = [['30','18','6','1'],['simple','double','triple'],
+    self.submodes = [['30','18','6','1'],['single','double','triple'],
                      ['normal','wedge','hatch','adder','bbold'],['fixed','freestyle']]
-    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],[_('simple'),_('double'),_('triple')],
+    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],[_('single'),_('double'),_('triple')],
                            [_('normal'),_('wedge'),_('hatch'),_('adder'),_('bold')],
                            [_('fixed length'),_('freestyle')]]
     self.submode = [0, 0, 0, 0]
@@ -524,11 +524,13 @@ class draw_mode( edit_mode):
       mol = self.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       self.paper.add_bindings()
-      self.paper.select( [mol.add_atom_to( a, bond_type=self.__mode_to_bond_type())[0]])
+      self.paper.select( [mol.add_atom_to( a, bond_type=self.__mode_to_bond_type(),
+                                           bond_order=self.__mode_to_bond_order())[0]])
       self.focused = a
     else:
       if self.focused.object_type == 'atom':
-        a, b = self.focused.molecule.add_atom_to( self.focused, bond_type=self.__mode_to_bond_type())
+        a, b = self.focused.molecule.add_atom_to( self.focused, bond_type=self.__mode_to_bond_type(),
+                                                  bond_order=self.__mode_to_bond_order())
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
           self.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -561,9 +563,14 @@ class draw_mode( edit_mode):
       if self.focused and self.focused.object_type == "atom":
         self._start_atom = self.focused
         if self.submode[2] == 1:
-          self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,  bond_type=self.__mode_to_bond_type(), pos=(event.x, event.y))
+          self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
+                                                                                       bond_type=self.__mode_to_bond_type(),
+                                                                                       bond_order=self.__mode_to_bond_order(),
+                                                                                       pos=(event.x, event.y))
         else:
-          self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,  bond_type=self.__mode_to_bond_type())
+          self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
+                                                                                       bond_type=self.__mode_to_bond_type(),
+                                                                                       bond_order=self.__mode_to_bond_order())
     if self._start_atom:
       if self.focused and self.focused != self._start_atom and self.focused.object_type == 'atom':
         x, y = self.focused.get_xy()
@@ -598,16 +605,12 @@ class draw_mode( edit_mode):
 
   def __mode_to_bond_type( self):
     """maps bond type submode to bond_type number"""
-    order = self.submode[1]+1
     type = self.submodes[2][ self.submode[2]][0]
-    type = "%s%d" % (type, order) 
-    #print type
-##     if type == 'normal':
-##       type = 1
-##     else:
-##      type = data.bond_types.index( type)
-    return order
+    return type
 
+  def __mode_to_bond_order( self):
+    order = self.submode[1]+1
+    return order
 
 
 ## -------------------- ARROW MODE --------------------

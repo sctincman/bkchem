@@ -111,7 +111,7 @@ class molecule( simple_parent):
     "transfers everything from mol to self, now only calls feed_data"
     self.feed_data( mol.atoms_map, mol.bonds, mol.connect)
 
-  def add_atom_to( self, a1, pos = None, bond_type=1):
+  def add_atom_to( self, a1, pos=None, bond_type='n', bond_order=1):
     """adds new atom bound to atom id with bond, the position of new atom can be specified in pos or is
     decided calling find_place(),"""
     if pos != None:
@@ -119,7 +119,7 @@ class molecule( simple_parent):
     else:
       x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
     a2 = self.create_new_atom( x, y)
-    b = self.create_new_bond( a1, a2, bond_type=bond_type)
+    b = self.create_new_bond( a1, a2, bond_type=bond_type, bond_order=bond_order)
     return a2, b
 
   def insert_bond( self, b):
@@ -176,7 +176,7 @@ class molecule( simple_parent):
       # delete also orphan atoms
       deleted += map( self.delete_atom, filter( lambda o: not self.atoms_bonds( o), self.atoms_map))
       # recalculation of second line of double bond position
-      [o.redraw( recalc_side=1) for o in self.bonds if o.type == 2 and o.item]
+      [o.redraw( recalc_side=1) for o in self.bonds if o.order == 2 and o.item]
       # recalculate marks positions
       [o.reposition_marks() for o in self.atoms_map]
     else:
@@ -226,8 +226,8 @@ class molecule( simple_parent):
     self.atoms_map.append( at)
     at.set_molecule( self)
   
-  def create_new_bond( self, a1, a2, bond_type=1):
-    b = bond( self.paper, atoms=(a1, a2), type=bond_type)
+  def create_new_bond( self, a1, a2, bond_type='n', bond_order=1):
+    b = bond( self.paper, atoms=(a1, a2), type=bond_type, order=bond_order)
     self.insert_bond( b)
     b.draw()
     return b
@@ -379,10 +379,7 @@ class molecule( simple_parent):
   def get_atoms_valency( self, atom):
     val = 0
     for b in self.atoms_bonds( atom):
-      if b.type == 1 or b.type == 4 or b.type == 5:
-        val += 1
-      else:
-        val += b.type
+        val += b.order
     return val
 
   def get_formula_dict( self):
@@ -417,7 +414,7 @@ class molecule( simple_parent):
         a.set_name( 'C')
         a.redraw()
         for i in range( n-1):
-          a,b = self.add_atom_to( a) #, bond_type=self.__mode_to_bond_type())[0]]
+          a,b = self.add_atom_to( a)
 
   def move_bonds_between_atoms( self, a1, a2):
     """transfers all bonds from one atom to the other; both atoms must be in self"""
@@ -1037,8 +1034,9 @@ class bond( meta_enabled):
                        'molecule', 'line_color','double_length_ratio')
 
 
-  def __init__( self, paper, atoms=(), package=None, molecule=None, type=1):
+  def __init__( self, paper, atoms=(), package=None, molecule=None, type='s', order=1):
     self.type = type
+    self.order = order
     meta_enabled.__init__( self, paper)
     self.item = None
     self.second = None
@@ -1059,7 +1057,7 @@ class bond( meta_enabled):
   def read_standard_values( self, old_standard=None):
     meta_enabled.read_standard_values( self, old_standard=old_standard)
     # wedge width or ...
-    if self.type in (4,5):
+    if self.type in ('w','h'):
       if not old_standard or (self.paper.standard.wedge_width != old_standard.wedge_width):
         self.bond_width = self.paper.any_to_px( self.paper.standard.wedge_width)
     # ... bond width
@@ -1080,10 +1078,10 @@ class bond( meta_enabled):
     """call the appropriate draw method"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
-    type = data.bond_type_remap[ self.type]
-    self.__class__.__dict__[ '_draw_'+type]( self)
+    method = "_draw_%s%d" % (self.type, self.order)
+    self.__class__.__dict__[ method]( self)
 
-  def _draw_s1( self):
+  def _draw_n1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     # main item
@@ -1093,8 +1091,8 @@ class bond( meta_enabled):
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
 
-  def _draw_s2( self):
-    x1,y1,x2,y2 = self._draw_s1()
+  def _draw_n2( self):
+    x1,y1,x2,y2 = self._draw_n1()
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -1114,8 +1112,8 @@ class bond( meta_enabled):
     if self.center:
       self.third = self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)
 
-  def _draw_s3( self):
-    x1,y1,x2,y2 = self._draw_s1()
+  def _draw_n3( self):
+    x1,y1,x2,y2 = self._draw_n1()
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -1128,7 +1126,7 @@ class bond( meta_enabled):
     
 
   def _draw_h1( self):
-    x1,y1,x2,y2 = self._draw_s1()    
+    x1,y1,x2,y2 = self._draw_n1()    
     # main item
     self.paper.itemconfig( self.item, fill='')
     # the small lines
@@ -1191,20 +1189,20 @@ class bond( meta_enabled):
     
 
   def focus( self):
-    if self.type in (1,2,3):
+    if self.type == 'n':
       items = [self.item]
       if self.second:
         items += [self.second]
       if self.third:
         items += [self.third]
       [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
-    elif self.type == 5:
+    elif self.type == 'h':
       [self.paper.itemconfig( item, width = self.line_width+2) for item in self.items]
-    elif self.type == 4:
+    elif self.type == 'w':
       self.paper.itemconfigure( self.item, fill='white')
 
   def unfocus( self):
-    if self.type in (1,2,3):
+    if self.type == 'n':
       if not self.item:
         return
       items = [self.item]
@@ -1213,9 +1211,9 @@ class bond( meta_enabled):
       if self.third:
         items += [self.third]
       [self.paper.itemconfig( item, width = self.line_width) for item in items]
-    elif self.type == 5:
+    elif self.type == 'h':
       [self.paper.itemconfig( item, width = self.line_width) for item in self.items]
-    elif self.type == 4:
+    elif self.type == 'w':
       self.paper.itemconfigure( self.item, fill=self.line_color)
 
   def select( self):
@@ -1271,14 +1269,11 @@ class bond( meta_enabled):
     b = ['no', 'yes']
     type = package.getAttribute( 'type')
     if type:
-      if type == 'forth':
-        self.type = 4
-      else:
-        for type_set in ('bond_types', 'alternative_bond_types', 'numbered_bond_types'):
-          if type in data.__dict__[type_set]:
-            self.type = data.__dict__[type_set].index( type)
+      self.type = type[0]
+      self.order = int( type[1])
     else:
       self.type = 1
+      self.order = 1
     # implied
     if package.getAttribute( 'distance'):
       self.bond_width = float( package.getAttribute( 'distance')) * self.paper.real_to_screen_ratio()
@@ -1308,17 +1303,16 @@ class bond( meta_enabled):
       
   
   def get_package( self, doc):
-    a = data.alternative_bond_types
     b = ['no', 'yes']
     bnd = doc.createElement('bond')
-    dom_extensions.setAttributes( bnd, (('type', a[self.type]),
+    dom_extensions.setAttributes( bnd, (('type', "%s%d" % (self.type, self.order)),
                                         ('width', str( self.line_width)),
                                         ('start', self.atom1.get_cdml_id()),
                                         ('end', self.atom2.get_cdml_id()),
                                         ('double_ratio', str( self.double_length_ratio))))
-    if self.type != 1:
+    if self.order != 1:
       bnd.setAttribute( 'distance', str( self.bond_width  * self.paper.screen_to_real_ratio()))
-      if self.type == 2:
+      if self.order == 2:
         bnd.setAttribute( 'center', b[ self.center])
     if self.line_color != '#000':
       bnd.setAttribute( 'color', self.line_color)
@@ -1380,7 +1374,7 @@ class bond( meta_enabled):
       self.bond_width = round( length / 5, 1)
     # does not need to go further if the bond is not double
     # the str is to support the future notation for bond types
-    if not '2' in str( self.type):
+    if self.order != 2:
       return 
     sign, center = self._compute_sing_and_center()
     self.bond_width = self._auto_bond_sign * sign * abs( self.bond_width)

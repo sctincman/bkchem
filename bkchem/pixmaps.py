@@ -73,7 +73,10 @@ paths = { 'draw': 'draw.gif',
           'superscript': 'superscript.gif',
           'subnum': 'subnum.gif',
           'anormal': 'anormal.gif',
-          'spline': 'spline.gif'}
+          'spline': 'spline.gif',
+          'single': 'single.gif',
+          'double': 'double.gif',
+          'triple': 'triple.gif'}
 
 splash_image_path = 'logo.ppm'
 

@@ -129,8 +129,8 @@ class SVG_writer( XML_writer):
                                               ( 'stroke', b.line_color)))
     else:
       l_group = self.group #dom_extensions.elementUnder( self.group, 'g')
-    if b.type <= 3:
-      if not (b.type == 2 and b.center): 
+    if b.type == 'n':
+      if not (b.order == 2 and b.center): 
         x1, y1, x2, y2 = reduce( operator.add, [o.get_xy() for o in b.get_atoms()])
         line = dom_extensions.elementUnder( l_group, 'line',
                                             (( 'x1', str( round( x1))),
@@ -151,13 +151,13 @@ class SVG_writer( XML_writer):
                                              ( 'y1', str( round( y1))),
                                              ( 'x2', str( round( x2))),
                                              ( 'y2', str( round( y2)))))
-    elif b.type == 4:
+    elif b.type == 'w':
       x1, y1, x2, y2, x3, y3 = self.paper.coords( b.item)
       line = dom_extensions.elementUnder( l_group, 'polygon',
                                           (( 'fill', b.line_color),
                                            ( 'stroke', b.line_color),
                                            ( 'points', '%d %d %d %d %d %d' % (x1, y1, x2, y2, x3, y3))))
-    elif b.type == 5:
+    elif b.type == 'h':
       for i in b.items:
         x1, y1, x2, y2 = self.paper.coords( i)
         line = dom_extensions.elementUnder( l_group, 'line',

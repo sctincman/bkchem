@@ -33,7 +33,7 @@ numbered_bond_types = ['no','1', '2','3','W','H']
 
 # support for plugable draw methods
 # the remaping to new style of bond type names
-bond_type_remap = ['','s1','s2','s3','w1','h1']
+bond_type_remap = ['','n1','n2','n3','w1','h1']
 
 
 special_key_symbols = { 'Control_L':'C',
@@ -93,9 +93,9 @@ standards_differ_text = _('''This CDML document was created using different stan
 
 cdml_namespace = 'http://www.freesoftware.fsf.org/bkchem/cdml'
 
-current_CDML_version = '0.10'
+current_CDML_version = '0.11'
 
-current_BKchem_version = '0.5.0'
+current_BKchem_version = '0.5.1'
 
 vector_graphics_types = ('oval', 'rect', 'polygon')
 
