@@ -273,6 +273,7 @@ class SVG_writer( XML_writer):
                                   ( 'fill', t.area_color),
                                   ( 'stroke', t.area_color)))
     y1 += (y2-y)/4.0
+    x += 2 ## hack to compensate for the wrong measuring of text
     text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document)
     dom_extensions.setAttributes( text, (( "x", str( x)),
                                          ( "y", str( y1)),
@@ -280,7 +281,7 @@ class SVG_writer( XML_writer):
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
                                          ( 'stroke', t.line_color),
                                          ( 'fill', t.line_color),
-                                         ( 'textLength', "%dpx" % (x2-x-2))))   # -2 is a nasty hack
+                                         ( 'textLength', "%dpx" % (x2-x))))
     self.group.appendChild( text)
 
   def add_plus( self, p):
@@ -321,6 +322,7 @@ class SVG_writer( XML_writer):
                                     ( 'fill', a.area_color),
                                     ( 'stroke', a.area_color)))
       y1 += (y2-y)/4.0
+      x += 2 ## hack to compensate for the wrong measuring of text
       text = svg_help.ftext_to_svg_dom( a.get_ftext())
       dom_extensions.setAttributes( text, (( "x", str( x)),
                                            ( "y", str( y1)),
@@ -328,7 +330,7 @@ class SVG_writer( XML_writer):
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
                                            ( 'stroke', a.line_color),
                                            ( 'fill', a.line_color),
-                                           ( 'textLength', "%dpx" % (x2-x-2))))  # -2 is a nasty hack
+                                           ( 'textLength', "%dpx" % (x2-x))))
       self.group.appendChild( text)
     for m in a.marks.itervalues():
       if m:

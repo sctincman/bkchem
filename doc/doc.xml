@@ -313,22 +313,22 @@
   <title>Modes</title>
   <para>Central part of the functionality of BKchem is provided by the so called modes. There is
   always one active mode, which determines how the objects respond to user actions. You can choose
-  the mode on the <xref linkend="pict.modes-all" endterm="pict.modes-all.title"/>.</para>
+  the mode on the <xref linkend="pict.modes-all"/>.</para>
 
   <figure id="pict.modes-all">
-    <title id="pict.modes-all.title">Mode selection panel</title>
+    <title>Mode selection panel</title>
     <screenshot>
       <graphic fileref="img/modes-all.png"/>
     </screenshot>
   </figure>
 
-  <segmentedlist>
+<!--  <segmentedlist>
     <segtitle>Edit mode</segtitle>
     <seglistitem>
       <seg></seg>
     </seglistitem>
   </segmentedlist>
-
+-->
 </chapter>
 </part>
 
