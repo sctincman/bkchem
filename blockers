@@ -14,7 +14,7 @@ remarks
 - vertical and horizontal swap
   - not containers
   - things should remain selected
-- write some autosearch code for pixmaps
+- main window is resized when switching modes because the draw sybmodes are too long
 
 
 0.x.0

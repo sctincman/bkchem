@@ -25,78 +25,61 @@
 
 import import_checker
 import os_support
+import Tkinter
+
 
 __all__ = ['images', 'splash_image']
 
-paths = { 'draw': 'draw.gif',
-          'edit': 'edit.gif',
-          'text': 'text.gif',
-          'rotate': 'rotate.gif',
-          'plus': 'plus.gif',
-          'template': 'template.gif',
-          'arrow': 'arrow.gif',
-          'vector': 'oval.gif',
-          'bondalign': 'bondalign.gif',
-          '1': '1.gif',
-          '6': '6.gif',
-          '18': '18.gif',
-          '30': '30.gif',
-          'benzene': 'benzene.gif',
-          'cyklopentadiene': 'cyklopentadiene.gif',
-          'cyklopentane': 'cyklopentane.gif',
-          'cyklohexane': 'cyklohexane.gif',
-          'cyklopropane': 'cyklopropane.gif',
-          'cyklobutane': 'cyklobutane.gif',
-          'cyclooctane': 'cyclooctane.gif',
-          'cycloheptane': 'cycloheptane.gif',
-          'thiophene': 'thiophene.gif',
-          'furane': 'furane.gif',
-          'pyrrole': 'pyrrole.gif',
-          'purine': 'purine.gif',
-          'chair':'chair.gif',
-          'normal': 'normal.gif',
-          'wedge': 'forth.gif',
-          'hatch': 'back.gif',
-          'oval': 'oval.gif',
-          'circle': 'circle.gif',
-          'rectangle': 'rect.gif',
-          'square': 'square.gif',
-          'polygon': 'polygon.gif',
-          'fixed': 'fixed_length.gif',
-          'freestyle': 'freestyle.gif',
-          'minusincircle': 'minus_in_circle.gif',
-          'plusincircle': 'plus_in_circle.gif',
-          'radical': 'radical.gif',
-          'biradical': 'biradical.gif',
-          'electronpair': 'electron_pair.gif',
-          'mark': 'biradical.gif',
-          'bold': 'bold.gif',
-          'italic': 'italic.gif',
-          'subscript': 'subscript.gif',
-          'superscript': 'superscript.gif',
-          'subnum': 'subnum.gif',
-          'anormal': 'anormal.gif',
-          'spline': 'spline.gif',
-          'tovert': 'tovert.gif',
-          'tohoriz': 'tohoriz.gif',
-          'single': 'single.gif',
-          'double': 'double.gif',
-          'triple': 'triple.gif'}
+
+class images_dict( dict):
+  """if asked about an pixmap it looks to the filesystem and
+  adds the path into itself if found"""
+
+  def __getitem__( self, item):
+    # try if we need to recode the name
+    try:
+      item = name_recode_map[ item]
+    except KeyError:
+      pass
+    try:
+      return dict.__getitem__( self, item)
+    except:
+      try:
+        i = Tkinter.PhotoImage( file = os_support.get_path( item+'.gif', 'pixmap'))
+        self.__setitem__( item, i)
+        return i
+      except ValueError:
+        raise KeyError
+
+
+  def __contains__( self, item):
+    # try if we need to recode the name
+    try:
+      item = name_recode_map[ item]
+    except KeyError:
+      pass
+
+    if dict.__contains__( self, item):
+      return 1
+    else:
+      try:
+        self.__setitem__( item, Tkinter.PhotoImage( file = os_support.get_path( item+'.gif', 'pixmap')))
+        return 1
+      except:
+        #print "pixmap not found: " + item
+        return 0
+
+
+# images for which the name and file name differs
+name_recode_map = { 'vector': 'oval',
+                    'fixed': 'fixed_length',
+                    'mark': 'biradical'}
+
 
 splash_image_path = 'logo.ppm'
 
+images = images_dict()
 
-
-import Tkinter
-
-#images for buttons
-images = {}
-for name in paths:
-  try:
-    # try if the picture can be read by Tkinter
-    images[name] = Tkinter.PhotoImage( file = os_support.get_path( paths[name], 'pixmap'))
-  except:
-    pass
 
 # splash image
 try:
