@@ -29,6 +29,7 @@ class context_menu( Tkinter.Menu):
     self.app = app
     self.selected = selected
     self.changes_made = 0
+    already_there = []
 
     obj_types = misc.filter_unique( [o.object_type for o in selected])
     obj_types.sort()
@@ -36,13 +37,15 @@ class context_menu( Tkinter.Menu):
     for obj_type in obj_types:
       if obj_type not in configurable:
         continue
-      for attr, vals in configurable[ obj_type].iteritems():
-        if vals:
+      for attr in configurable[ obj_type]:
+        vals = config_values[ attr]
+        if vals and attr not in already_there:
           casc = Tkinter.Menu( self, tearoff=0)
           self.add_cascade( label=vals[ I18N_NAME], menu=casc)
           for v in vals[ VALUES]:
             casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
-
+          # to know what is already there
+          already_there.append( attr)
 
   def callback( self, command, value):
     for o in self.selected:
@@ -72,9 +75,19 @@ class context_menu( Tkinter.Menu):
 
 
 
-configurable = {'atom': {'show': ( _("show"), ('yes','no')),
-                         'font_size': ( _("font size"), (8,10,12,14,16))
-                         }
+config_values = { 'show':             ( _("show"),             ('yes','no')),
+                  'show_hydrogens':   ( _("hydrogens"),        ('on','off')),
+                  'font_size':        ( _("font size"),        (8,10,12,14,16,18)),
+                  'line_width':       ( _("line width"),       (1.0,1.5,2.0,2.5,3.0))
+                  }
+
+
+configurable = {'atom':    ('show', 'font_size', 'show_hydrogens'),
+                'text':    ('font_size',),
+                'bond':    ('line_width',),
+                'plus':    ('font_size',),
+                'arrow':   ('line_width',)
+
                 }
 
 

@@ -468,7 +468,7 @@ class molecule( container, top_level):
 
   def expand_groups( self, atoms=[]):
     """expands all group atoms; optional atoms selects atoms to expand - all used if not present"""
-    names = self.paper.gm.get_template_names()
+    names = self.paper.app.gm.get_template_names()
     if not atoms:
       map = copy.copy( self.atoms) # need to do that because the self.atoms gets changed during the cycle
     else:
@@ -479,7 +479,7 @@ class molecule( container, top_level):
           a2 = self.atoms_bound_to( a)[0]
           x1, y1 = a2.get_xy()
           x2, y2 = a.get_xy()
-          t = self.paper.gm.get_transformed_template( names.index( a.name), (x1,y1,x2,y2), type='atom1')
+          t = self.paper.app.gm.get_transformed_template( names.index( a.name), (x1,y1,x2,y2), type='atom1')
           t.draw()
           self.eat_molecule( t)
           self.move_bonds_between_atoms( a, t.next_to_t_atom)

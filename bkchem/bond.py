@@ -550,7 +550,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     sel = self.selector
     if self.item:
       self.delete()
-    self.draw()
+    self.draw( no_automatic=not recalc_side)
     # reselect
     if sel:
       self.select()
