@@ -128,26 +128,35 @@ class SVG_writer( XML_writer):
     else:
       l_group = self.group #dom_extensions.elementUnder( self.group, 'g')
     # items to be exported
-    if b.type == 'h':
-      items = b.items
-    else:
-      if b.center:
-        if not b.order == 2:
-          print b.order, b.center, b.type
-        items = []
+    if b.type == 'd':
+      # d is a little bit twisted
+      if b.simple_double and not b.center and not b.order == 1:
+        line_items = [b.item]
+        items = b.second + b.third
       else:
-        items = [b.item]
-    # simple doubles?
-    if b.type == 'n' or (not b.simple_double and not b.center):
-      items += b.second
-      items += b.third
-      line_items = []
+        line_items = []
+        items = b.items + b.second + b.third
     else:
-      line_items = b.second + b.third
+      if b.type == 'h':
+        items = b.items
+      else:
+        if b.center:
+          if not b.order == 2:
+            print b.order, b.center, b.type
+          items = []
+        else:
+          items = [b.item]
+      # simple doubles?
+      if b.type == 'n' or (not b.simple_double and not b.center):
+        items += b.second
+        items += b.third
+        line_items = []
+      else:
+        line_items = b.second + b.third
     # the conversion function for coordinates
     convert = str
     # export itself
-    if b.type in 'nbh':
+    if b.type in 'nbhd':
       for i in items:
         x1, y1, x2, y2 = self.paper.coords( i)
         line = dom_extensions.elementUnder( l_group, 'line',
@@ -162,7 +171,7 @@ class SVG_writer( XML_writer):
                                             (( 'fill', b.line_color),
                                              ( 'stroke', b.line_color),
                                              ( 'points', list_to_svg_points( coords))))
-    elif b.type == 'h':
+    elif b.type in 'h':
       for i in items:
         for p in i:
           x1, y1, x2, y2 = self.paper.coords( p)

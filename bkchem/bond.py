@@ -284,6 +284,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   # THE DRAW HELPER METHODS
 
+
+  # normal bond
+
   def _draw_n1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
@@ -328,6 +331,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     self.second = [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
     self.third = [self.paper.create_line( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy, width=self.line_width, fill=self.line_color)]
     
+
+
 
   def _draw_h1( self):
     x1,y1,x2,y2 = self._draw_n1()    
@@ -414,6 +419,95 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
     return items
 
+
+  # dashed bond
+
+  def _draw_d1( self):
+    x1,y1,x2,y2 = self._draw_n1()    
+    # main item
+    self.paper.itemconfig( self.item, fill='')
+    # the small lines
+    self.items = self._draw_dash( (x1,y1,x2,y2))
+    return x1,y1,x2,y2    
+
+  def _draw_d2( self):
+    if self.center == None or self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # double
+    if self.center:
+      x1,y1,x2,y2 = self._draw_n1()
+      self.paper.itemconfig( self.item, fill='')
+      d = int( round( d/3))
+    else:
+      if self.simple_double:
+        x1,y1,x2,y2 = self._draw_n1()
+      else:
+        x1,y1,x2,y2 = self._draw_d1()
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    # shortening of the second bond
+    dx = x-x0
+    dy = y-y0
+    # we don't want to shorten the bonds (yet)
+    #if self.center:
+    #  _k = 0
+    #else:
+    #  _k = (1-self.double_length_ratio)/2
+    _k = 0
+    self.second = self._draw_dash(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
+    if self.center:
+      self.third = self._draw_dash(( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
+  def _draw_d3( self):
+    if self.simple_double:
+      x1,y1,x2,y2 = self._draw_n1()
+    else:
+      x1,y1,x2,y2 = self._draw_d1()
+    if self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # we don't want to shorten the bonds (yet)
+    #_k = (1-self.double_length_ratio)/2
+    _k = 0
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
+    dx = x-x0
+    dy = y-y0
+    self.second = self._draw_dash(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
+    self.third = self._draw_dash(( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy))
+
+
+  def _draw_dash( self, coords):
+    """returns list items"""
+    x1, y1, x2, y2 = coords
+    # main item
+    dashing = (5, 5) # pixels full, pixels empty
+    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    # we adjust the dashing lengths
+    _d = dashing[0]
+    while not _d > d:
+      _d += sum( dashing)
+    dashing = map( lambda x: x * d/_d, dashing)
+    # //
+    dx = (x2 - x1)/d 
+    dy = (y2 - y1)/d 
+
+    # now we finally draw
+    items = []
+    x = x1
+    y = y1
+    while min(x1,x2) <= x <= max(x1, x2) and min(y1,y2) <= y <= max(y1,y2):
+      xn = x + dx*dashing[0]
+      yn = y + dy*dashing[0]
+      coords = (x, y, xn, yn)
+      items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
+      x = xn + dx*dashing[1]
+      y = yn + dy*dashing[1]
+    return items
+
+
+
+
+
   def _draw_second_line( self, coords):
     x, y, x0, y0 = coords
     # shortening of the second bond
@@ -424,6 +518,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     else:
       _k = (1-self.double_length_ratio)/2
     return [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
+
+
+  # wedge bonds
 
   def _draw_w1( self):
     x1, y1 = self.atom1.get_xy()
@@ -656,6 +753,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
       [self.paper.itemconfig( item, width = self.wedge_width+2) for item in items]
     elif self.type == 'h':
       self.paper.itemconfig( self.item, fill="black")
+    elif self.type == 'd':
+      if self.simple_double and not self.center and not self.order == 1:
+        [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
+      else:
+        [self.paper.itemconfig( item, width = self.line_width + 2) for item in self.items+self.second+self.third]
     elif self.type == 'w':
       if self.center:
         items.remove( self.item)
@@ -678,8 +780,13 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
       [self.paper.itemconfig( item, width = self.line_width) for item in items]
     elif self.type == 'b':
       [self.paper.itemconfig( item, width = self.wedge_width) for item in items]
-    elif self.type == 'h':
+    elif self.type in 'h':
       self.paper.itemconfig( self.item, fill = "")
+    elif self.type == 'd':
+      if self.simple_double and not self.center and not self.order == 1:
+        [self.paper.itemconfig( item, width = self.line_width) for item in items]
+      else:
+        [self.paper.itemconfig( item, width = self.line_width) for item in self.items+self.second+self.third]
     elif self.type == 'w':
       if self.center:
         items.remove( self.item)
@@ -825,7 +932,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
         # if type was changed simply apply the change
         self.switch_to_type( to_type)
         self.switch_to_order( to_order)
-      elif to_order == 1 and to_type == 'n':
+      elif to_order == 1 and to_type == 'nd':
         # we want to treat order=1, type='n' as special in order to support the s=>d d=>t t=>s behaviour
         # but only in case the type is 'n'
         v1 = self.atom1.get_free_valency()

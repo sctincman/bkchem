@@ -10,10 +10,11 @@
     </author>
     <copyright>
       <year>2002</year>
+      <year>2004</year>
       <holder>Beda Kosata</holder>
     </copyright>
     <legalnotice>
-      <para>Copyright (c)  2002  Beda Kosata.
+      <para>Copyright (c) 2002,2004  Beda Kosata.
       Permission is granted to copy, distribute and/or modify this document
       under the terms of the GNU Free Documentation License, Version 1.1
       or any later version published by the Free Software Foundation;
@@ -26,14 +27,14 @@
 
   <preface>
     <title>Foreword and Warning</title>
-    <para>I am not a programmer by training. Programming is just my hobby and I am doing it for fun.</para>
-    <para>Therefor you should not expect BKchem to be perfect or even usable. The coding style is probably horrible and trying 
-      to read the code may seriously affect your mental health :)</para>
+    <para>I am not a programmer by training. Programming is just my hobby and I am doing it for fun.
+    Therefor you should not expect BKchem to be perfect or even usable. The coding style is probably horrible and trying 
+    to read the code may seriously affect your mental health :)</para>
     <para>You are however welcome to read the code, modify it and send me suggestions or patches. I'm still learning. On the other
-      hand don't flame me about the style - you have been warned.</para>
+    hand don't flame me about the style - you have been warned.</para>
     <para>Any reports on bugs are also welcome (especially those with suggestions on their sources or
     solutions).</para>
-    <para>Before you start to use BKchem you should read the license. BKchem is distributed under
+    <para>Before you start to use BKchem, you should read the license. BKchem is distributed under
     GNU GPL (see the file gpl.txt in the main distribution directory). This license gives you
     freedom to study and modify BKchem as you wish. On the other hand you should be warned that
     <emphasis> "This program is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -50,7 +51,7 @@
 	complete, but rather tries to cover the very basics and the things that are not easy to find
 	out without help. On the other hand many things are so self-evident that it would be useless
 	to describe them. If you find that something you would like to know is not described in this
-	manual, please email me to <email>kosatab@vscht.cz</email>.</para>
+	manual, please email me to <email>beda@zirael.org</email>.</para>
     </chapter>
     <chapter>
       <title>Drawing</title>
@@ -72,7 +73,7 @@
 		<row>
 		  <entry>item</entry>
 		  <entry>Any single undividable piece of the drawing - atom, bond, arrow point,
-		  plus. Not molecule or arrow (see container).</entry>
+		  plus. Not a molecule or arrow (see container).</entry>
 		</row>
 
 		<row>
@@ -92,8 +93,8 @@
 
 		<row>
 		  <entry>select(ed)</entry>
-		  <entry>In contrast with focus, to select an item the user must take some action
-		  (usually click the mouse while the pointer is over an item (its focused). The
+		  <entry>In contrast to focus, to select an item the user must take some action
+		  (usually click the mouse while the pointer is over an item (it is focused). The
 		  focus follows the mouse pointer, the selection is permanent until some action that
 		  unselects the item is performed. In contrast with focus it is possible to have more
 		  selected items.</entry>
@@ -189,7 +190,7 @@
 	    be activated letting you enter your text. To apply the entered text hit "Enter" or press
 	    one of the buttons on side of "edit pool". To cancel the action hit "Escape". The three
 	    buttons are used for setting text in different modes. The "Set" button serves for
-	    applying the text just as it was entered, "Set & Interpret" will search the inner
+	    applying the text just as it was entered, "Set &amp; Interpret" will search the inner
 	    database of BKchem to find if the entered text has some known interpretation. The
 	    "Sub-numbers" is used to turn all numbers in subscript and is useful for molecular
 	    formulas that are not known to BKchem.</para>
@@ -251,10 +252,12 @@
 
       <sect1>
 	<title>Key bindings</title>
+	<para>In the menu there are accelerator keys displayed on the right side of some of the
+	commands. You can use these key sequences as shorcuts to trigger the respective actions
+	without having to go to the menu.</para>
 	<para>The style of key bindings is very similar to that of Emacs. So if you are familiar
 	with this concept (you know what "C-x C-f" means and how does it differ from "C-x f") you
-	can skip this intro straight to the key-bindings. If know nothing about "C-x C-f" then here is
-	a short intro.</para>
+	can skip this chapter. If you know nothing about "C-x C-f" then here is	a short intro.</para>
 	<para>Each key-sequence can be composed from any number of individual keystrokes. Each keystroke
 	than consists of optional modifier(s) and a key. The modifiers are "C" for "Control", "M"
 	for "Meta", "A" for "Alt" and "S" for "Shift". For example
@@ -266,162 +269,9 @@
 	that you have to press "k" while holding simultaneously "Control", "Meta" and "Shift"
 	keys. The best way to get used to this concept is by practice. So try it inside of BKchem
 	or get Emacs.</para>
-	
-	<sect2>
-	  <title>Global bindings</title>
-
-	  <para>When talking about key bindings, we must distinguish between keys that do the same
-	  regardless of the recent mode and keys that are mode specific. In this section the global
-	  key bindings will be summarized.</para>
-	  
-	  <para>In the key-bindings for usual operations such as copying, saving files etc. I have
-	  tried to reflect the usual habits of both windows and emacs users. Thus if you are used to
-	  ordinary bindings on one of these two platforms :) you will find yourself at home.</para>
-	  
-	  <para>In the following table global key-bindings are summarized. When an action has more
-	    then one key-sequence assigned they are separated by a semicolon (";").</para>
-
-	  <para>
-	  <table frame="all">
-	      <title>Global key bindings</title>
-	      <tgroup cols="3">
-		<colspec colnum="3" colwidth="3*"/>
-		<thead>
-		  <row>
-		    <entry>Keyword</entry>
-		    <entry>Key Code</entry>
-		    <entry>Description</entry>
-		  </row>
-		</thead>
-		<tbody>
-		  
-		  <row>
-		    <entry>align</entry>
-		    <entry><keysym>C-a</keysym></entry>
-		    <entry>Enters align mode. When one of "tblrhv" is pressed right after, items are
-		      aligned, otherwise does nothing. (Note: More about align was earlier in this chapter.
-		    </entry>
-		  </row>
-		  
-		  <row>
-		    <entry>copy</entry>		    
-		    <entry>
-		      <keysym>A-w</keysym>;
-		      <keysym>M-w</keysym>;
-		      <keysym>C-c</keysym>
-		    </entry>
-		    <entry>Copies all top-level items that have at least one part selected to clipboard. Thus
-		    molecules are copied even when only one atom is selected (you cannot copy single
-		    atoms). The same goes for arrows.</entry>
-		  </row>
-		  
-		  <row>
-		    <entry>delete</entry>
-		    <entry><keysym>Del</keysym></entry>
-		    <entry>Deletes selected items. Also performs orphan items (bonds, atoms,...) cleanup.</entry>
-		  </row>
-		  
-		  <row>
-		    <entry>kill</entry>
-		    <entry>
-		      <keysym>C-w</keysym>;<keysym>C-k</keysym>
-		    </entry>
-		    <entry>On windows usually called Cut.</entry>
-		  </row>
-
-		  <row>
-		    <entry>open</entry>
-		    <entry>
-		      <keycombo>
-			<keysym>C-x</keysym><keysym>C-f</keysym>
-		      </keycombo>
-		    </entry>
-		    <entry>Opens "Open file" dialog</entry>
-		  </row>
-
-		  <row>
-		    <entry>set old text</entry>
-		    <entry><keysym>Return</keysym></entry>
-		    <entry>Sets previously used text for all selected text or atom items. The old text
-		    is visible in the text entry. <tip>
-			<para>Useful when you want to set the same text as previously.</para>
-		      </tip>
-		  </entry>
-		  </row>
-		  
-		  <row>
-		    <entry>set text for selected</entry>		  
-		    <entry><keysym>Space</keysym></entry>
-		    <entry>Entry for text is activated and entered text is then set to all selected
-		    text and atom items. (More on work with text is earlier in this chapter.)
-		  </entry>
-		  </row>
-		  
-		  <row>
-		    <entry>save</entry>
-		    <entry>
-		      <keycombo>
-			<keysym>C-x</keysym><keysym>C-s</keysym>
-		      </keycombo>;
-		      <keycombo>
-			<keysym>C-s</keysym>
-		      </keycombo>
-		    </entry>
-		    <entry>Saves current drawing</entry>
-		  </row>
-
-		  <row>
-		    <entry>save as</entry>
-		    <entry>
-		      <keycombo><keysym>C-x</keysym><keysym>C-w</keysym></keycombo>
-		    </entry>
-		    <entry>Opens Save As.. dialog</entry>
-		  </row>
-
-		  <row>
-		    <entry>paste</entry>
-		    <entry>
-		      <keysym>C-y</keysym>;
-		      <keysym>C-v</keysym>
-		    </entry>
-		    <entry>Pastes objects (if any) from clipboard so that the common center of all
-		    pasted objects is on current cursor position. <emphasis>Merges accidentally
-		      overlapping items.</emphasis></entry>
-		  </row>
-
-		  <row>
-		    <entry>quit</entry>
-		    <entry>
-		      <keycombo>
-			<keysym>C-x</keysym><keysym>C-c</keysym>
-		      </keycombo>
-		    </entry>
-		    <entry>Quits the application</entry>
-		  </row>
-
-		  <row>
-		    <entry>redo</entry>
-		    <entry>
-		      <keysym>C-S-?</keysym>;
-		      <keysym>C-S-z</keysym>
-		    </entry>
-		    <entry>Re-does previous undo.</entry>
-		  </row>
-
-		  <row>
-		    <entry>undo</entry>
-		    <entry><keysym>C-/</keysym>;<keysym>C-z</keysym></entry>
-		    <entry>Undoes the last action. (Note: BKchem has unlimited undo. This means that
-		      you can repeat the undo until the very beginning of your work.)</entry>
-		  </row>
-
-		</tbody>
-	      </tgroup>
-	    </table>
-	</para>
-	</sect2>
       </sect1>
     </chapter>
+
     <chapter>
       <title>Saving files</title>
       <sect1>
@@ -457,8 +307,32 @@
 	  http://www.povray.org for more information about PovRay.</para>
       </sect1>
     </chapter>
-  </part>
-  <part>
+
+
+<chapter>
+  <title>Modes</title>
+  <para>Central part of the functionality of BKchem is provided by the so called modes. There is
+  always one active mode, which determines how the objects respond to user actions. You can choose
+  the mode on the <xref linkend="pict.modes-all" endterm="pict.modes-all.title"/>.</para>
+
+  <figure id="pict.modes-all">
+    <title id="pict.modes-all.title">Mode selection panel</title>
+    <screenshot>
+      <graphic fileref="img/modes-all.png"/>
+    </screenshot>
+  </figure>
+
+  <segmentedlist>
+    <segtitle>Edit mode</segtitle>
+    <seglistitem>
+      <seg></seg>
+    </seglistitem>
+  </segmentedlist>
+
+</chapter>
+</part>
+
+<part>
     <title>Programmers Guide</title>
     <chapter>
       <title>Intro</title>
@@ -466,6 +340,11 @@
       for now I am too busy with other more interesting and important things.</para>
     </chapter>
   </part>
+
+
+
+
+
 
 
 
