@@ -45,7 +45,7 @@ from reaction import reaction
 import parents
 import oasa
 import Pmw, Tkinter
-import periodic_table as PT
+from oasa import periodic_table as PT
 import external_data
 from sets import Set
 

@@ -36,9 +36,21 @@ class PS_exporter( plugin.exporter):
 
   def write_to_file( self, name):
     self.paper.unselect_all()
-    width = self.paper.get_paper_property( 'size_x')
-    height = self.paper.get_paper_property( 'size_y')
-    self.paper.postscript( file=name, rotate=0, height='%dm'%height, width='%dm'%width, x=0, y=0)
+    if self.paper.get_paper_property( 'crop_svg'):
+      items = list( self.paper.find_all())
+      items.remove( self.paper.background)
+      x1, y1, x2, y2 = self.paper.list_bbox( items)
+      margin = self.paper.get_paper_property( 'crop_margin')
+      h = y2 -y1 +2*margin
+      w = x2 -x1 +2*margin
+      x = x1 - margin
+      y = y1 - margin
+      self.paper.postscript ( file=name, rotate=0, height=h, width=w, x=x, y=y)
+    else:
+      width = self.paper.get_paper_property( 'size_x')
+      height = self.paper.get_paper_property( 'size_y')
+      self.paper.postscript( file=name, rotate=0, height='%dm'%height, width='%dm'%width, x=0, y=0)
+
 
 
 name = "Encapsulated PostScript"
