@@ -53,7 +53,9 @@ from id_manager import id_manager
 import oasa_bridge
 import plugins.plugin
 import config
-from logger import logger
+import logger
+from plugin_support import plugin_manager
+
 
 from singleton_store import Store, Screen
 
@@ -141,6 +143,8 @@ class BKchem( Tk):
     # template and group managers
     self.init_singletons()
 
+    # not very verbose logging strategy
+    Store.logger.handling = logger.batch_mode
 
     # main drawing part packing
     self.notebook.grid( row=4, sticky="wens")
@@ -399,17 +403,16 @@ class BKchem( Tk):
     Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
 
     # logger
-    Store.logger = logger()
+    Store.logger = logger.logger()
     Store.log = Store.logger.log
 
     # id_manager
     Store.id_manager = id_manager()
 
-
-    from plugin_support import plugin_manager
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
     print "loaded plugins:", plugs
+
 
 
   def init_preferences( self):
@@ -1413,107 +1416,14 @@ Enter IChI:""")
 
 
   def process_batch( self, opts, files=None):
-    import time
 
-    # at first we parse the input options
-    input_format = None  # -f
-    output_format = None  # -t
-    output_to = None  # -o
-    output_dir = None  # -d
-    for opt in opts:
-      if opt[0] == '-f':
-        input_format = opt[1]
-      elif opt[0] == '-t':
-        output_format = opt[1]
-      elif opt[0] == '-o':
-        output_to = opt[1]
-      elif opt[0] == '-d':
-        output_dir = opt[1]
-      elif opt[0] == '-l':
-        if not files:
-          files = []
-          file_list = opt[1]
-          file_file = open( file_list, 'r')
-          for name in [l.strip() for l in file_file.xreadlines()]:
-            if os.path.isfile( name):
-              files.append( name)
-              sys.stderr.write( " * added file from list: %s\n" % name)
-        else:
-          print "-l option is ignored when input file is given"
+    if opts[0][0] == "-b":
+      plugin = opts[0][1]
 
-    # default values for input and output formats
-    input_format = input_format or 'cdml'
-    output_format = output_format or 'cd-svg'
-    output_dir = output_dir or ""
-
-    # processing of the files
-    for file in files:
-      start_time = time.time()
-      file_name = os.path.basename( file)
-      # choose the output filename
-      if not output_to:
-        out = os.path.join( output_dir, file_name+'.'+output_format)
-      else:
-        if output_dir:
-          print "-d ignored when -o is given"
-        out = output_to
-
-      # read
-      if input_format == 'cdml':
-        sys.stderr.write( " * reading file: %s\n" % file)
-        ret = self.load_CDML( file, replace=1)
-        if not ret:
-          sys.stderr.write( " !! failed, will not proceed.")
-          return
-      elif input_format == 'gtml':
-        self.plugin_import( 'GTML', filename=file)
-
-      # write
-      if output_format == 'svg':
-        self.save_SVG( out)
-      elif output_format == 'cd-svg':
-        result = self.save_CDML( out)
-        if not result:
-          sys.stderr.write( " * failed to write CD-SVG file: %s\n" % out)
-        else:
-          sys.stderr.write( " * writing CD-SVG file: %s\n" % out)
-          sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))
+      the_globals = {'app': Store.app,
+                     'attrs': files}
+      execfile( plugin, the_globals)
 
 
-
-
-
-
-  # just testing
-
-  def update_svgs_in_path( self, dir="/home/beda/python/gold-svg/svgs"):
-
-    self.in_batch_mode = 1
-    made = 0
-    ignored = 0
-
-    if os.path.isfile( dir):
-      self.update_svg( dir)
-    elif os.path.isdir( dir):
-      for f in os.listdir( dir):
-        i = self.update_svg( os.path.join( dir, f))
-        if i:
-          made += 1
-        else:
-          ignored += 1
-
-    self.log( "resaved %d files, ignored %d" % (made, ignored))
-    self.in_batch_mode = 0
-
-
-  def update_svg( self, f):
-    print f, "...",
-    if self.load_CDML( f, replace=1):
-      print "OK"
-      self.save_CDML()
-      return 1
-    else:
-      print "ignoring"
-      return 0
 
 

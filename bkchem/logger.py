@@ -87,3 +87,19 @@ class logger:
       tkMessageBox.showinfo( heading, message)
       
   
+
+
+# logging strategies
+
+batch_mode = {'info': 'ignore',
+               'warning': 'console',
+               'error': 'console',
+               'debug': 'ignore',
+               'hint': 'ignore'}
+
+
+ignorant = {'info': 'ignore',
+            'warning': 'ignore',
+            'error': 'ignore',
+            'debug': 'ignore',
+            'hint': 'ignore'}

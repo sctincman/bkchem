@@ -72,11 +72,11 @@ class plugin_manager( object):
   def run_plugin( self, name):
     filename = self.plugins[ name]
 
-    globals = {'app': Store.app}
-    execfile( filename, globals)
+    the_globals = {'app': Store.app}
+    execfile( filename, the_globals)
 
-    if 'exc' in globals:
-      print globals['exc']
+#    if 'exc' in the_globals:
+#      print the_globals['exc']
 
 ##     f = file( filename, 'r')
 

@@ -92,7 +92,7 @@ if __name__ == '__main__':
     import os.path
     from getopt import gnu_getopt, GetoptError
     try:
-      opts, files = gnu_getopt( sys.argv[1:], "bf:t:o:l:d:")
+      opts, files = gnu_getopt( sys.argv[1:], "b:")
     except GetoptError, o:
       print _(" * unknown option -%s")
       sys.exit()
@@ -101,11 +101,11 @@ if __name__ == '__main__':
   # now initialize the main application part or the batch mode
   if opts and opts[0][0] == "-b":
     # we are in batch mode
-    import time
-    t = time.time()
+    #import time
+    #t = time.time()
     myapp.initialize_batch()
     myapp.process_batch( opts, files)
-    print " %f ms" % (1000*(time.time()-t))
+    #print " %f ms" % (1000*(time.time()-t))
     sys.exit()
   else:
     # normal interactive mode
