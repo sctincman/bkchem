@@ -147,7 +147,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   def add_atom_to( self, a1, bond_to_use=None, pos=None):
     """adds new atom bound to atom id with bond, the position of new atom can be specified in pos or is
-    decided calling find_place(),"""
+    decided calling find_place(), if x, y is specified and matches already existing atom it will be
+    used instead of creating new one """
     if pos != None:
       x, y = pos
     else:
@@ -155,7 +156,15 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length), added_order=bond_to_use.order)
       else:
         x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
-    a2 = self.create_new_atom( x, y)
+    a2 = None # the new atom
+    if pos:
+      # try if the coordinates are the same as of another atom
+      for at in self.atoms:
+        if abs( at.x - x) < 2 and abs( at.y - y) < 2:
+          a2 = at
+          break
+    if not a2:
+      a2 = self.create_new_atom( x, y)
     b = bond_to_use or bond( self.paper, order=1, type='n')
     b.atom1 = a1
     b.atom2 = a2

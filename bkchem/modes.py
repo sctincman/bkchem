@@ -45,6 +45,7 @@ from reaction import reaction
 import parents
 import oasa
 import Pmw, Tkinter
+import periodic_table as PT
 
 
 class mode:
@@ -165,7 +166,7 @@ class mode:
     if sequence.find( "##") >= 0:
       prefix, end = sequence.split('##')
       for c in end:
-        self.register_key_sequence( prefix+c, misc.lazy_apply( function, (prefix+c,)))
+        self.register_key_sequence( prefix+c, misc.lazy_apply( function, (prefix+c,)), use_warning=use_warning)
     # check of already registered values
     if use_warning and sequence in self._key_sequences:
       warn( "binding of sequence %s to function %s overrides its binding to function %s" %
@@ -1858,10 +1859,19 @@ class rapid_draw_mode( edit_mode):
     self.name = _('Rapid drawing')
     self._moved_line = None
     self._start_atom = None
-    self.submodes = []
-    self.submodes_names = []
-    self.submode = []
+
+    self.submodes = [['30','18','6','1'],
+                     ['fixed','freestyle'],
+                     ['noclean','autoclean']]
+    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],
+                           [_('fixed length'),_('freestyle')],
+                           [_('do nothing after drawing is done'),_('auto clean after drawing is finished')]]
+    self.submode = [0, 0, 0]
+
     self.molecule = None
+    self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_last, use_warning=0)
+    self._key_to_atom_map = {'l':'Cl', 'r':'Br', 'a':'Na','i':'Li'}
+    self._bond_to_fix = None
     
   def mouse_down( self, event, modifiers = []):
     #edit_mode.mouse_down( self, event, modifiers = modifiers)
@@ -1873,34 +1883,39 @@ class rapid_draw_mode( edit_mode):
     if not self.focused:
       if not self.molecule:
         self.molecule = self.app.paper.new_molecule()
-        a = self.molecule.create_new_atom( event.x, event.y)
-        #self.focused = a
-        #a.focus()
-        self._start_atom = a
+        self._start_atom = self.molecule.create_new_atom( event.x, event.y)
       else:
-        a, b = self.molecule.add_atom_to( self._start_atom, bond_to_use=self.get_edge( self.molecule, modifiers), pos=(event.x, event.y))
-        self._start_atom = a
+        x, y = self._get_xy_according_to_submodes( event)
+        self._start_atom, b = self.molecule.add_atom_to( self._start_atom, bond_to_use=self.get_edge( self.molecule, modifiers), pos=(x, y))
     elif isinstance( self.focused, oasa.graph.vertex):
       if self.molecule and self.focused != self._start_atom:
-        e = self.molecule.add_edge( self._start_atom, self.focused, e=self.get_edge( self.molecule, modifiers))
-        e.draw()
-        self._start_atom = self.focused
+        if self.focused.molecule == self.molecule:
+          if not self._start_atom in self.focused.neighbors:
+            e = self.molecule.add_edge( self._start_atom, self.focused, e=self.get_edge( self.molecule, modifiers))
+            e.draw()
+            self._start_atom = self.focused
+          else:
+            self._start_atom = self.focused
+        else:
+          mol = self.focused.molecule
+          self.molecule.eat_molecule( self.focused.molecule)
+          self.app.paper.stack.remove( mol)
+          e = self.molecule.add_edge( self.focused, self._start_atom, e=self.get_edge( self.molecule, modifiers))
+          e.draw()
+          self._start_atom = self.focused
       elif not self.molecule:
         self.molecule = self.focused.molecule
         self._start_atom = self.focused
+        self._bond_to_fix = list( self.molecule.bonds)[0]
     else:
       return 
 
     if self._moved_line:
       self.app.paper.delete( self._moved_line)
 
-    if button == 3:
-      self._start_atom = None
-      self.molecule = None
-      self._moved_line = None
-      self.app.paper.start_new_undo_record()
-    else:
-      self._moved_line = self.app.paper.create_line( self._start_atom.x, self._start_atom.y, event.x, event.y)
+    # create the _moved_line according to set submodes
+    x, y = self._get_xy_according_to_submodes( event)
+    self._moved_line = self.app.paper.create_line( self._start_atom.x, self._start_atom.y, x, y)
 
     self.app.paper.add_bindings()
     
@@ -1915,14 +1930,31 @@ class rapid_draw_mode( edit_mode):
     return e
 
 
+
   def mouse_move( self, event):
     if self._moved_line:
-      self.app.paper.coords( self._moved_line, (self._start_atom.x, self._start_atom.y, event.x, event.y))
+      x, y = self._get_xy_according_to_submodes( event)
+      self.app.paper.coords( self._moved_line, (self._start_atom.x, self._start_atom.y, x, y))
 
 
 
   def mouse_down3( self, event, modifiers = []):
-    self.handle_click( event, modifiers=modifiers, button=3)
+    if self._moved_line:
+      self.app.paper.delete( self._moved_line)
+
+    self.app.paper.start_new_undo_record()
+
+    if self.get_submode( 2) == 'autoclean':
+      if self._bond_to_fix:
+        self.app.paper.select( [self._bond_to_fix])
+        self._bond_to_fix = None
+      else:
+        self.app.paper.select( [self._start_atom.get_neighbor_edges()[0]])
+      self.app.clean()
+
+    self._start_atom = None
+    self.molecule = None
+    self._moved_line = None
 
 
     
@@ -1953,7 +1985,32 @@ class rapid_draw_mode( edit_mode):
       pass #warn( "leaving NONE", UserWarning, 2)
 
 
+  def _set_name_to_last( self, char=''):
+    if char and self._start_atom:
+      if char.upper() in PT.periodic_table:
+        self._start_atom.set_name( char.upper())
+        self._start_atom.redraw()
+      elif char in self._key_to_atom_map:
+        self._start_atom.set_name( self._key_to_atom_map[ char])
+        self._start_atom.redraw()
 
+
+
+  def _get_xy_according_to_submodes( self, event):
+    if self._start_atom:
+      if self.get_submode(1) == "freestyle":
+        return event.x, event.y
+      else:
+        dx = event.x - self._start_atom.x
+        dy = event.y - self._start_atom.y
+        x,y = geometry.point_on_circle( self._start_atom.x,
+                                        self._start_atom.y,
+                                        self.app.paper.any_to_px( self.app.paper.standard.bond_length),
+                                        direction = (dx, dy),
+                                        resolution = int( self.get_submode( 0)))
+        return x, y
+    else:
+      return event.x, event.y
 
 
 
