@@ -73,6 +73,7 @@ class ftext:
           scale = 0.7
         else:
           scale = 1
+          ch.ignore_y = True
         if Set(('sub','sup')) & last_attrs:
           self._current_x = last_x
       last_x = self._current_x
@@ -136,7 +137,17 @@ class ftext:
     
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
-    return self.canvas.list_bbox( [i.item for i in self.items])
+    bbox = list( self.canvas.list_bbox( [i.item for i in self.items if not i.ignore_y]))
+    for i in self.items:
+      if i.ignore_y:
+        x1, y1, x2, y2 = self.canvas.bbox( i.item)
+        bbox[0] = min( (bbox[0], x1))
+        bbox[2] = max( (bbox[2], x2))
+        if y1 < bbox[1]:
+          bbox[1] -= 2 # hack
+    return bbox
+          
+
 
   def move( self, dx, dy):
     for i in self.items:
@@ -166,7 +177,7 @@ class text_chunk:
     self.attrs = attrs or Set()
     self.item = None
     self.dx = 0
-
+    self.ignore_y = False
 
 
 class FtextHandler ( xml.sax.ContentHandler):
