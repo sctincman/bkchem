@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """the main application class resides here"""
 
@@ -279,6 +276,8 @@ class BKchem( Tk):
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
+
+    self.start_server()
 
 
 
@@ -748,32 +747,39 @@ class BKchem( Tk):
       return None
     
 
-  def read_smiles( self):
+  def read_smiles( self, smiles=None):
     if not oasa_bridge.oasa_available:
       return 
     lt = _("""Before you use this tool, be warned that not all features of SMILES are currently supported.
 There is no support for stereo-related information, for the square brackets [] and a few more things.
 
 Enter SMILES:""")
-    dial = Pmw.PromptDialog( self,
-                             title='Smiles',
-                             label_text=lt,
-                             entryfield_labelpos = 'n',
-                             buttons=(_('OK'),_('Cancel')))
-    res = dial.activate()
-    if res == _('OK'):
-      text = dial.get()
-      if text:
-        try:
-          mol = oasa_bridge.read_smiles( text, self.paper)
-        except :
-          tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
-                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
-          return
-        self.paper.add_new_container( mol)
-        mol.draw()
-        self.paper.add_bindings()
-        self.paper.start_new_undo_record()
+    if not smiles:
+      dial = Pmw.PromptDialog( self,
+			       title='Smiles',
+			       label_text=lt,
+			       entryfield_labelpos = 'n',
+			       buttons=(_('OK'),_('Cancel')))
+      res = dial.activate()
+      if res == _('OK'):
+	text = dial.get()
+      else:
+	return
+    else:
+      text = smiles
+
+    if text:
+      try:
+	mol = oasa_bridge.read_smiles( text, self.paper)
+      except :
+	if not smiles:
+	  tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
+				  _("The oasa library ended with error:\n%s") % sys.exc_value)
+	return
+      self.paper.add_new_container( mol)
+      mol.draw()
+      self.paper.add_bindings()
+      self.paper.start_new_undo_record()
 
 
   def read_inchi( self):
@@ -837,3 +843,19 @@ Enter IChI:""")
 
   def get_clipboard_pos( self):
     return self._clipboard_pos
+
+
+  def start_server( self):
+
+    import http_server
+    
+    server_address = ('', 8008)
+    httpd = http_server.bkchem_http_server( self.paper, server_address, http_server.bkchem_http_handler)
+
+    import threading
+
+    t = threading.Thread( target=httpd.serve_forever, name='server')
+    t.setDaemon( 1)
+    t.start()
+
+

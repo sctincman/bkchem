@@ -882,3 +882,7 @@ class atom( meta_enabled):
   def update_after_valency_change( self):
     if self.type == 'element' and self.show_hydrogens:
       self.redraw()
+
+
+  def __str__( self):
+    return self.cdml_id

@@ -174,6 +174,7 @@ class state_record:
       for a in o.meta__undo_properties:
         if self.records[i][a] != o.__class__.__dict__[a].fget( o):
           o.__class__.__dict__[a].fset( o, self.records[i][a])
+          changed = 1
       for a in o.meta__undo_copy:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = copy.copy( self.records[i][a])

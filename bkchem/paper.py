@@ -51,7 +51,7 @@ import CDML_versions
 
 class chem_paper( Canvas):
 
-
+  object_type = 'paper'
 
 
 
@@ -494,7 +494,7 @@ class chem_paper( Canvas):
         cr = int( paper.getAttribute( 'crop_svg'))
       else:
         cr = 1
-      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr)
+      self.paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr)
     else:
       self.set_paper_properties( type='A4', orientation='portrait', crop_svg=1)
     # viewport
