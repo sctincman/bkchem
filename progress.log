@@ -1,3 +1,21 @@
+RELEASE 0.8.1
+----------------------------------------
+
+ * bugfixes - usage of context menu under windows no longer causes hanging
+            - crash under windows on bkchem exit fixed
+            - not finished "free rotation around single bond" in transformation mode was removed
+
+
+
+
+RELEASE 0.8.0
+----------------------------------------
+
+ * bugfixes - unneeded import causing dependency on the XMLplus package was removed
+
+
+
+
 RELEASE 0.8.0-pre2
 ----------------------------------------
 

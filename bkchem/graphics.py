@@ -149,8 +149,9 @@ class rect( vector_graphics_item):
   def read_package( self, pack):
     self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
-    for n in ('area_color', 'line_color'):
-      self.__dict__[ n] = pack.getAttribute( n) or self.__dict__[ n]
+    self.area_color = pack.getAttribute( 'area_color') or self.area_color
+    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+
     w = pack.getAttribute( 'width')
     if w:
       self.line_width = float( w)
@@ -229,8 +230,10 @@ class oval( vector_graphics_item):
   def read_package( self, pack):
     self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
-    for n in ('line_color', 'area_color'):
-      self.__dict__[ n] = pack.getAttribute( n) or self.__dict__[ n]
+
+    self.area_color = pack.getAttribute( 'area_color') or self.area_color
+    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+
     w = pack.getAttribute( 'width')
     if w:
       self.line_width = float( w)
@@ -342,8 +345,10 @@ class polygon( vector_graphics_item, container):
     self.points = []
     for p in pack.getElementsByTagName( 'point'):
       self.points.append( classes.point( self.paper, arrow=self, package=p))
-    for n in ('area_color', 'line_color'):
-      self.__dict__[ n] = pack.getAttribute( n) or self.__dict__[ n]
+
+    self.area_color = pack.getAttribute( 'area_color') or self.area_color
+    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+
     w = pack.getAttribute( 'width')
     if w:
       self.line_width = float( w)

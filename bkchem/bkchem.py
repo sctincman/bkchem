@@ -143,6 +143,7 @@ myapp.geometry(geometry)
 myapp.update_idletasks()
 myapp.deiconify()
 myapp.mainloop()
+myapp.destroy()
 #import profile
 #profile.run( 'myapp.mainloop()')
 #print "BKchem finished"

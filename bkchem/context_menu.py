@@ -22,6 +22,7 @@ import Tkinter
 import misc
 import types
 import periodic_table as PT
+import os
 
 
 class context_menu( Tkinter.Menu):
@@ -105,7 +106,8 @@ class context_menu( Tkinter.Menu):
 
   def post( self, x, y):
     Tkinter.Menu.post( self, x, y)
-    self.grab_set()
+    if os.name != 'nt':
+      self.grab_set()
     
 
 

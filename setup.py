@@ -19,7 +19,7 @@ if os.name != 'posix':
 
 set = setup(
   name = 'bkchem',
-  version = '0.8.0-pre2',
+  version = '0.8.1',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
@@ -42,7 +42,8 @@ set = setup(
                ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo']),
                ('share/locale/fr/LC_MESSAGES', ['locale/fr/LC_MESSAGES/BKchem.mo'])
                ],
-  windows=['bkchem/bkchem.py']
+  windows=['bkchem/bkchem.py'],
+  options = {"py2exe": {"packages": ["encodings"]}}
   )
 
 

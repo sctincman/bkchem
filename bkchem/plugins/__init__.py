@@ -26,7 +26,7 @@ import CML, CML2
 import openoffice
 import postscript
 import molfile
-import gtml
+#import gtml
 
 
-__all__ = ['CML','CML2','openoffice','postscript','molfile','gtml']
+__all__ = ['CML','CML2','openoffice','postscript','molfile'] #,'gtml']
