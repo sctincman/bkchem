@@ -24,6 +24,8 @@
 from molecule import molecule
 import Pmw
 import tkMessageBox
+import validator
+
 
 
 def ask_name_for_selected( paper):
@@ -104,3 +106,35 @@ def ask_id_for_selected( paper):
   m.id = id
   paper.signal_to_app( _('ID %s was set to molecule') % id)
   paper.start_new_undo_record()
+
+
+
+
+
+def check_validity( app, mols):
+  val = validator.validator()
+  val.validate( mols)
+  if val.report.text_atoms:
+    import tkMessageBox
+    tkMessageBox.showerror( _("Validity error"),
+                            _("Sorry but your drawing includes 'text atoms'\n - atoms with no chemical sense.") + "\n\n" +
+                            _("It is not possible to export them.") + "\n\n" +
+                            _("For details check the chemistry with '%s/%s'.") % (_("Object"), _("Check chemistry")))
+    return 0
+  if val.report.exceeded_valency:
+    import tkMessageBox
+    tkMessageBox.showwarning( _("Validity warning"),
+                              _("Your drawing includes some atoms with exceeded valency.") + "\n\n" + 
+                              _("For details check the chemistry with '%s/%s'.") % (_("Object"), _("Check chemistry")))
+  if val.report.group_atoms:
+    import tkMessageBox
+    yes = tkMessageBox.askokcancel( _("Expand groups?"),
+                                    _("Your drawing includes some groups.") + "\n\n" + 
+                                    _("These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards.") + "\n\n"+
+                                    _("Proceed with expansion?"))
+    if yes:
+      app.paper.expand_groups( selected=0)
+      return 1
+    else:
+      return 0
+  return 1

@@ -103,7 +103,7 @@ class BKchem( Tk):
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
-    #self.start_server()
+    self.start_server()
 
 
 
@@ -958,7 +958,7 @@ Enter SMILES:""")
   def read_inchi( self, inchi=None):
     if not oasa_bridge.oasa_available:
       return 
-    lt = _("""Before you use his tool, be warned that not all features of IChI are currently supported.
+    lt = _("""Before you use his tool, be warned that not all features of INChI are currently supported.
 There is no support for stereo-related information, isotopes and a few more things.
 The IChI should be entered in the plain text form, e.g.- 1.0Beta/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
 
@@ -966,7 +966,7 @@ Enter IChI:""")
     text = None
     if not inchi:
       dial = Pmw.PromptDialog( self,
-                               title='IChI',
+                               title='INChI',
                                label_text=lt,
                                entryfield_labelpos = 'n',
                                buttons=(_('OK'),_('Cancel')))
@@ -981,7 +981,7 @@ Enter IChI:""")
         mol = oasa_bridge.read_inchi( text, self.paper)
       except:
         if not inchi:
-          tkMessageBox.showerror( _("Error processing %s") % 'IChI',
+          tkMessageBox.showerror( _("Error processing %s") % 'INChI',
                                   _("The oasa library ended with error:\n%s") % sys.exc_value)
         return
 
@@ -1051,7 +1051,7 @@ Enter IChI:""")
     import http_server
     
     server_address = ('', 8008)
-    httpd = http_server.bkchem_http_server( self.paper, server_address, http_server.bkchem_http_handler)
+    httpd = http_server.bkchem_http_server( self, server_address, http_server.bkchem_http_handler)
 
     import threading
 
@@ -1155,6 +1155,8 @@ Enter IChI:""")
       return
     u, i = self.paper.selected_to_unique_top_levels()
     sms = []
+    if not interactors.check_validity( u):
+      return
     for m in u:
       if m.object_type == 'molecule':
         plugin = plugins.molfile
@@ -1181,3 +1183,5 @@ Enter IChI:""")
                            buttons=(_('OK'),))
     dial.insert( 'end', text)
     dial.activate()
+
+
