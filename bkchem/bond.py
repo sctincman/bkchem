@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -305,6 +305,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     # main item
+    # calculation of what part of line to draw
+    if self.atom1.show:
+      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom1.bbox())
+    if self.atom2.show:
+      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom2.bbox())
+
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
     self.second = self.third = []

@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ from context_menu import context_menu
 from reaction import reaction
 import parents
 import oasa
+import Pmw, Tkinter
 
 
 class mode:
@@ -150,7 +151,8 @@ class mode:
           self.app.paper.signal_to_app( messages.__dict__[txt_name], time=20)
         except KeyError:
           pass
-    self.on_submode_switch( name)
+        self.on_submode_switch( i, name)
+        break
 
   def register_key_sequence( self, sequence, function, use_warning = 1):
     """registers a function with its coresponding key sequence
@@ -196,7 +198,7 @@ class mode:
     """called when switching to this mode"""
     pass
 
-  def on_submode_switch( self, name=''):
+  def on_submode_switch( self, submode_index, name=''):
     """called when submode is switched"""
     pass
 
@@ -1688,7 +1690,7 @@ class reaction_mode( basic_mode):
     
 
 
-  def on_submode_switch( self, name=''):
+  def on_submode_switch( self, submode_index, name=''):
     self.app.paper.remove_bindings()
     self._add_bindings_according_to_submode()
 
@@ -1715,7 +1717,7 @@ class reaction_mode( basic_mode):
   def on_paper_switch( self, old_paper, new_paper):
     self.cleanup( old_paper)
     self.startup()
-    self.on_submode_switch()
+    self.on_submode_switch( 0)
 
 
 
@@ -1738,8 +1740,92 @@ class user_template_mode( template_mode):
 
 
 
+## -------------------- EXTERNAL DATA MODE --------------------
+
+class external_data_mode( basic_mode):
+
+  def __init__( self, app):
+    basic_mode.__init__( self, app)
+    self.name = _('External data management')
+    self.submodes = [['molecule','atom','bond'],['reactivity']]
+    self.submodes_names = [[_('molecule'),_('atom'),_('bond')],[_('reactivity')]]
+    self.submode = [0,0]
+    self.pulldown_menu_submodes = [1]
+    self.focused = None
+    self._items = {}
+    self._win = None
+    # just the saving bindings
+    self.register_key_sequence( 'C-s', self.app.save_CDML)
+    self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
 
 
+  def mouse_down( self, event):
+    if self.focused:
+      self._populate_table_for_focused()
+
+
+  def _populate_table_for_focused( self):
+    pass
+
+
+  def _show_table_for_submode( self):
+    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    if defs:
+      self._frame = Tkinter.Frame( self.app.paper)
+      self._win = self.app.paper.create_window( 500, 100, window=self._frame)
+      for k,v in defs.iteritems():
+        self._items[ k] = Pmw.EntryField( self._frame,
+                                          labelpos='w',
+                                          label_text=v['text'],
+                                          validate=None)
+        self._items[ k].pack()
+      Tkinter.Button( self._frame, text=_("Set"), command=self._set).pack()
+    
+      
+
+
+  def _add_bindings_according_to_submode( self):
+    name = self.get_submode(0)
+    if name == 'molecule':
+      self.app.paper.add_bindings( active_names=('atom','bond'))
+    elif name == 'atom':
+      self.app.paper.add_bindings( active_names=('atom',))
+    elif name == 'bond':
+      self.app.paper.add_bindings( active_names=('bond',))
+    
+
+
+  def on_submode_switch( self, submode_index, name=''):
+    self.app.paper.remove_bindings()
+    self._add_bindings_according_to_submode()
+    self._show_table_for_submode()
+
+
+  def startup( self):
+    self.app.paper.unselect_all()
+
+
+
+  def cleanup( self, paper=None):
+    pap = paper or self.app.paper
+    if self._win:
+      #for item in self._items.values():
+      #  item.pack_forget()
+      self._items = {}
+      self._frame = None
+      pap.delete( self._win)
+      self._win = None
+    pap.add_bindings()
+
+
+  def on_paper_switch( self, old_paper, new_paper):
+    self.cleanup( old_paper)
+    self.startup()
+    self.on_submode_switch()
+
+
+  def _set( self):
+    pass
 
 
 

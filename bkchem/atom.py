@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003, 2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -501,7 +501,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
       x1, y1, x2, y2 = self.ftext.bbox()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
       ## shrink the selector to improve appearance (y2-2)
-      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
+      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='', outline='',tags='helper_a')
       self.ftext.lift()
       self.paper.lift( self.item)
     else:

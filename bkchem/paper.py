@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ import parents
 from reaction import reaction
 import debug
 import oasa
-
+from external_data import external_data_manager
 
 
 class chem_paper( Canvas, object):
@@ -86,6 +86,9 @@ class chem_paper( Canvas, object):
 
     # undo manages
     self.um = undo.undo_manager( self)  # undo manager
+
+    # external data management
+    self.edm = external_data_manager()
 
     # file name
     self.file_name = file_name

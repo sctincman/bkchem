@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -399,9 +399,11 @@ class BKchem( Tk):
                    'mark': modes.mark_mode( self),
                    'atom': modes.atom_mode( self),
                    'reaction': modes.reaction_mode( self),
-                   'usertemplate': modes.user_template_mode( self)}
+                   'usertemplate': modes.user_template_mode( self),
+                   'externaldata': modes.external_data_mode( self)
+                   }
     self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
-                        'rotate', 'bondalign', 'vector', 'usertemplate']
+                        'rotate', 'bondalign', 'vector', 'usertemplate', 'externaldata']
 
 
 

@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,15 +16,12 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """support module for some geometric mesurements ( geometric tramforms are in transform.py)"""
 
 from math import sqrt, atan2, pi, cos, sin
-from misc import signum
+from misc import signum, normalize_coords
 
 def find_parallel( x1, y1, x2, y2, d):
   "returns tuple of coordinates for parallel abscissa in distance d"
@@ -120,4 +117,29 @@ def clockwise_angle_from_east( dx, dy):
     angle = 2*pi + angle
   return angle
 
+
+def intersection_of_line_and_rect( line, rect):
+  """finds a point where a line and a rectangle intersect,
+  both are given as lists of len == 4"""
+  lx0, ly0, lx1, ly1 = line
+  rx0, ry0, rx1, ry1 = normalize_coords( rect)
+  ldx = lx1 - lx0
+  ldy = ly1 - ly0
+  if abs( ldx) > abs( ldy):
+    k = ldy/ldx
+    q = ly0 - k*lx0
+    if ldx < 0:
+      x = rx1
+    else:
+      x = rx0
+    y = k*x + q
+  else:
+    k = ldx/ldy
+    q = lx0 - k*ly0
+    if ldy < 0:
+      y = ry1
+    else:
+      y = ry0
+    x = k*y + q
+  return (x, y)
 
