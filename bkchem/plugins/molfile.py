@@ -39,11 +39,11 @@ class molfile_importer( plugin.importer):
   def on_begin( self):
     return 1
 
-  def get_molecule( self, name):
+  def get_molecules( self, name):
     file = open( name, 'r')
     mol = oasa_bridge.read_molfile( file, self.paper)
     file.close()
-    return mol
+    return [mol]
 
 
 class molfile_exporter( plugin.exporter):

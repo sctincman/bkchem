@@ -555,6 +555,30 @@ class molecule( container, top_level):
       b.transform( tr)
 
 
+  def get_geometry( self):
+    """returns a tuple of ((minx, miny, max, maxy), mean_bond_length)"""
+    maxx, maxy, minx, miny = 4 * [None]
+    for a2 in self.atoms:
+      if not maxx or a2.x > maxx:
+        maxx = a2.x
+      if not minx or a2.x < minx:
+        minx = a2.x
+      if not miny or a2.y < miny:
+        miny = a2.y
+      if not maxy or a2.y > maxy:
+        maxy = a2.y
+    bond_lengths = []
+    for b2 in self.bonds:
+      bond_lengths.append( sqrt( (b2.atom1.x-b2.atom2.x)**2 + (b2.atom1.y-b2.atom2.y)**2))
+    # rescale
+    if bond_lengths:
+      bl = sum( bond_lengths) / len( bond_lengths)
+    else:
+      bl = None
+    return ((maxx,maxy,minx,miny),bl)
+
+
+
 
 def get_index_of_vertex_connected_to_first_vertex( mat):
   """returns an index of vertex that is connected to the vertex in first line

@@ -28,7 +28,8 @@ from molecule import molecule
 from atom import atom
 from bond import bond
 import math
-
+import xml.sax
+import StringIO
 
 ## gtml_to_bkchem_bond_order_remap = {'single':1,
 ##                                    'double':2,
@@ -49,8 +50,8 @@ class gtml_importer:
   def __init__( self, paper):
     self.paper = paper
     self._atom_id_remap = {}
-
-
+    self._mol_ids = {}
+    self._reactions = []
 
 
   def on_begin( self):
@@ -60,17 +61,43 @@ class gtml_importer:
 
 
 
-  def get_molecule( self, file_name):
+  def get_molecules( self, file_name):
     self.molecules = []
 
-    doc = dom.parse( file_name)
+    # prepare the file to resolve entities
+    f = StringIO.StringIO()
+    f.write( "<!DOCTYPE item [")
+    entities = file( 'mathmlentities.ent')
+    f.write( entities.read())
+    entities.close()
+    f.write( "<!ENTITY epsilon '&#x3B5;'><!ENTITY nevim '&amp;nevim;'>]>")
+
+    the_file = file( file_name)
+    f.write( the_file.read())
+    the_file.close()
+    f.seek(0)
+    
+    doc = dom.parse( f)
+    f.close()
+
+
     for ch in xpath.Evaluate( "//graph[@type='molecule']", doc):
       m = self._read_molecule( ch)
       self.molecules.append( m)
 
+    # reactions
+    self.process_reactions( doc)
+    if self._reactions:
+      print "no support for reactions, yet"
+      return []
+
     self.place_molecules()
 
-    return self.molecules[0]
+    # things that have to be done after the whole molecule is read and places
+    for m in self.molecules:
+      [a.generate_marks_from_cheminfo() for a in m.atoms]
+
+    return self.molecules
 
 
 
@@ -86,6 +113,8 @@ class gtml_importer:
     for b in xpath.Evaluate("edge", el):
       b2 = self._read_bond( b)
       m.insert_bond( b2)
+
+    self._mol_ids[ el.getAttribute( 'id')] = m
     return m
 
 
@@ -97,6 +126,12 @@ class gtml_importer:
     a.x = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/x", at)[0]))
     a.y = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/y", at)[0]))
     a.z = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/z", at)[0]))
+    a.show_hydrogens = int( a.name != 'C')
+    # charge
+    chel = xpath.Evaluate("charge", at)
+    if chel:
+      a.charge = int( dom_ext.getAllTextFromElement( chel[0]))
+    # remap of ids
     self._atom_id_remap[ at.getAttribute( 'id')] = a
     return a
 
@@ -113,28 +148,46 @@ class gtml_importer:
 
   def place_molecules( self):
     # data for rescaling
-    maxx, maxy, minx, miny = 4 * [None]
-    bond_lengths = []
-    for m in self.molecules:
-      for a2 in m.atoms:
-        if not maxx or a2.x > maxx:
-          maxx = a2.x
-        if not minx or a2.x < minx:
-          minx = a2.x
-        if not miny or a2.y < miny:
-          miny = a2.y
-        if not maxy or a2.y > maxy:
-          maxy = a2.y
-      for b2 in m.bonds:
-        bond_lengths.append( math.sqrt( (b2.atom1.x-b2.atom2.x)**2 + (b2.atom1.y-b2.atom2.y)**2))
-      # rescale
-      bl = sum( bond_lengths) / len( bond_lengths)
-      scale = self.paper.any_to_px( self.paper.standard.bond_length) / bl
-      movex = 320 - scale*(maxx+minx)/2
-      movey = 240 - scale*(maxy+miny)/2
-      for a in m.atoms:
-        a.x = movex + scale*a.x
-        a.y = movey + scale*a.y
+    if self._reactions:
+      for react in self.reactions:
+        reactants, products = react
+          
+    else:
+      for m in self.molecules:
+        bbox, bl = m.get_geometry()
+        maxx, maxy, minx, miny = bbox
+
+        if bl:
+          scale = self.paper.any_to_px( self.paper.standard.bond_length) / bl
+        else:
+          scale = 1
+        movex = 320 #- scale*(maxx+minx)/2
+        movey = 240 #- scale*(maxy+miny)/2
+        for a in m.atoms:
+          a.x = movex + scale*a.x
+          a.y = movey + scale*a.y
+
+
+  def _scale_and_move_molecule( self, mol):
+    pass
+
+
+
+  def process_reactions( self, doc):
+    for react in xpath.Evaluate( "//graph[@type='reaction']", doc):
+      print react
+      reactants = []
+      products = []
+      for e in xpath.Evaluate( "edge/end[@type='initial']", react):
+        id = e.getAttribute( 'idref')
+        if id not in reactants:
+          reactants.append( id)
+      for e in xpath.Evaluate( "edge/end[@type='terminal']", react):
+        id = e.getAttribute( 'idref')
+        if id not in products:
+          products.append( id)
+      self._reactions.append( (reactants,products))
+          
 
 
 
@@ -156,3 +209,6 @@ exporter = gtml_exporter
 
 
 ## PRIVATE CLASSES AND FUNCTIONS
+
+
+

@@ -321,25 +321,27 @@ class BKchem( Tk):
     self.main_frame = Frame( self)
     self.main_frame.pack( fill='both', expand=1)
 
+    self.plugins = {}
+    if plugins.__all__:
+      for name in plugins.__all__:
+        plugin = plugins.__dict__[ name]
+        self.plugins[ plugin.name] = plugin
+
 
 
 
 
   def init_plugins_menu( self):
     # PLUGINS
-    if plugins.__all__:
-      self.plugins = []
-      for name in plugins.__all__:
-        plugin = plugins.__dict__[ name]
-        self.plugins.append( plugin)
-        if ('importer' in  plugin.__dict__) and plugin.importer:
-          self.import_menu.add( 'command',
-                                label=plugin.name,
-                                command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
-        if ('exporter' in plugin.__dict__) and plugin.exporter:
-          self.export_menu.add( 'command',
-                                label=plugin.name,
-                                command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
+    for plugin in self.plugins.itervalues():
+      if ('importer' in  plugin.__dict__) and plugin.importer:
+        self.import_menu.add( 'command',
+                              label=plugin.name,
+                              command = misc.lazy_apply( self.plugin_import, (plugin.name,)))
+      if ('exporter' in plugin.__dict__) and plugin.exporter:
+        self.export_menu.add( 'command',
+                              label=plugin.name,
+                              command = misc.lazy_apply( self.plugin_export, (plugin.name,)))
 
 
 
@@ -808,56 +810,62 @@ class BKchem( Tk):
 
 
       
-  def plugin_import( self, pl_id):
+  def plugin_import( self, pl_id, filename=None):
     plugin = self.plugins[ pl_id]
-    if self.paper.changes_made:
-      if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
-        return 0
-    types = []
-    if 'extensions' in plugin.__dict__ and plugin.extensions:
-      for e in plugin.extensions:
-        types.append( (plugin.name+" "+_("file"), e))
-    types.append( (_("All files"),"*"))
-    a = askopenfilename( defaultextension = "",
-                         initialdir = self.save_dir,
-                         initialfile = self.save_file,
-                         title = _("Load")+" "+plugin.name,
-                         parent = self,
-                         filetypes=types)
-    if a:
-      if plugin.importer.gives_molecule:
-        # plugins returning molecule need paper instance for molecule initialization
-        importer = plugin.importer( self.paper)
+    if not filename:
+      if self.paper.changes_made:
+        if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
+          return 0
+      types = []
+      if 'extensions' in plugin.__dict__ and plugin.extensions:
+        for e in plugin.extensions:
+          types.append( (plugin.name+" "+_("file"), e))
+      types.append( (_("All files"),"*"))
+      a = askopenfilename( defaultextension = "",
+                           initialdir = self.save_dir,
+                           initialfile = self.save_file,
+                           title = _("Load")+" "+plugin.name,
+                           parent = self,
+                           filetypes=types)
+      if a:
+        filename = a
       else:
-        importer = plugin.importer()
-      if importer.on_begin():
-        cdml = None
-        # some importers give back a cdml dom object
-        if importer.gives_cdml:
-          cdml = 1
-          try:
-            doc = importer.get_cdml_dom( a)
-          except plugins.plugin.import_exception, detail:
-            tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
-            return
-        # others give directly a molecule object
-        elif importer.gives_molecule:
-          cdml = 0
-          try:
-            doc = importer.get_molecule( a)
-          except plugins.plugin.import_exception, detail:
-            tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
-        self.paper.clean_paper()
-        if cdml == 0:
-          # doc is a molecule
-          self.paper.set_paper_properties()
-          self.paper.stack.append( doc)
-          doc.draw()
-          self.paper.add_bindings()
-          self.paper.start_new_undo_record()
-        elif cdml:
-          self.paper.read_package( doc)
-        self.update_status( _("loaded file: ")+a)
+        return
+    # we have filename already
+    if plugin.importer.gives_molecule:
+      # plugins returning molecule need paper instance for molecule initialization
+      importer = plugin.importer( self.paper)
+    else:
+      importer = plugin.importer()
+    if importer.on_begin():
+      cdml = None
+      # some importers give back a cdml dom object
+      if importer.gives_cdml:
+        cdml = 1
+        try:
+          doc = importer.get_cdml_dom( filename)
+        except plugins.plugin.import_exception, detail:
+          tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
+          return
+      # others give directly a molecule object
+      elif importer.gives_molecule:
+        cdml = 0
+        try:
+          doc = importer.get_molecules( filename)
+        except plugins.plugin.import_exception, detail:
+          tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
+      self.paper.clean_paper()
+      if cdml == 0:
+        # doc is a molecule
+        self.paper.set_paper_properties()
+        for m in doc:
+          self.paper.stack.append( m)
+          m.draw()
+        self.paper.add_bindings()
+        self.paper.start_new_undo_record()
+      elif cdml:
+        self.paper.read_package( doc)
+      self.update_status( _("loaded file: ")+filename)
 
 
 
@@ -963,6 +971,8 @@ Enter SMILES:""")
       self.paper.start_new_undo_record()
 
 
+
+
   def read_inchi( self, inchi=None):
     if not oasa_bridge.oasa_available:
       return 
@@ -997,6 +1007,8 @@ Enter IChI:""")
       mol.draw()
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
+
+
 
 
   def gen_smiles( self):
@@ -1142,7 +1154,9 @@ Enter IChI:""")
         ret = self.load_CDML( file, replace=1)
         if not ret:
           sys.stderr.write( " !! failed, will not proceed.")
-          return 
+          return
+      elif f == 'gtml':
+        self.plugin_import( 'GTML', filename=file)
 
       # write
       start_time = time.time()

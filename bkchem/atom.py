@@ -60,7 +60,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   meta__undo_properties = area_colored.meta__undo_properties + \
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
-                          ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens', 'pos', 'type')
+                          ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
+                            'pos', 'type', 'multiplicity')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
@@ -69,9 +70,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                         'show_hydrogens': (int, str),
                         'charge': (int, str)
                         }
-
-
-
 
 
   def __init__( self, paper, xy = (), package = None, molecule = None):
@@ -93,6 +91,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     self.z = 0
     self.pos = None
     self.focus_item = None
+    self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
+                  'plus': None, 'minus': None}
 
     # chemistry attrs
     #   self.number = 0
@@ -100,8 +100,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     self.show_hydrogens = 0
     self.show = 0
     self.charge = 0
-    self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
-                  'plus': None, 'minus': None}
+    self.multiplicity = 1
     # used only for monitoring when undo is necessary, it does not always correspond to the atom name
     # only in case of self.show == 1
     self.text = ''
@@ -110,6 +109,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.read_package( package)
     else:
       self.set_name( 'C')
+    self.update_font()
 
 
 
@@ -166,6 +166,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       t = name.decode( 'utf-8')
     self.__name = t.encode('utf-8')
     self.dirty = 1
+    self.show = int( self.__name != 'C')
 
   name = property( __get_name, __set_name)
 
@@ -180,6 +181,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else:
       self.__show = int( show)
     self.dirty = 1
+    self.__reposition_on_redraw = 1
 
   show = property( __get_show, __set_show, None,
                    "should the atom symbol be displayed? accepts both 0|1 and yes|no")
@@ -268,12 +270,41 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   xml_text = property( __get_xml_text, __set_xml_text)
 
 
+
+  # font_size (override of text_like.xml_text)
+  def __get_font_size( self):
+    return self.__font_size
+
+  def __set_font_size( self, font_size):
+    self.__font_size = font_size
+    self.dirty = 1
+    self.__reposition_on_redraw = 1
+
+  font_size = property( __get_font_size, __set_font_size)
+
+
+
   # parent
   def __get_parent( self):
     return self.molecule
 
   parent = property( __get_parent, None, None,
                      "returns self.molecule")
+
+
+
+  # multiplicity
+  def __get_multiplicity( self):
+    return self.__multiplicity
+  
+  def __set_multiplicity( self, multiplicity):
+    self.__multiplicity = multiplicity
+
+  multiplicity = property( __get_multiplicity, __set_multiplicity, None,
+                           "returns multiplicity of molecule")
+
+
+
 
 
 
@@ -671,7 +702,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     # background color
     if package.getAttribute( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
-
+    # multiplicity
+    if package.getAttribute( 'multiplicity'):
+      self.multiplicity = int( package.getAttribute( 'multiplicity'))
 
 
 
@@ -706,6 +739,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
+    # marks
     for m, o in self.marks.items():
       if o:
         x ,y = map( self.paper.px_to_text_with_unit, (o.x, o.y))
@@ -713,6 +747,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                                                             ('x', x),
                                                             ('y', y),
                                                             ('auto', str( int( o.auto)))))
+    # multiplicity
+    if self.multiplicity != 1:
+      a.setAttribute( 'multiplicity', str( self.multiplicity))
+
     return a
 
 
@@ -756,7 +794,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     """returns free valency of atom."""
     if self.type != 'element':
       return 0
-    valency = self.molecule.get_atoms_valency( self)
+    valency = self.valency
     if self.name in PT.periodic_table:
       vals = PT.periodic_table[ self.name]['valency']
       for v in vals:
@@ -777,7 +815,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         else:
           charge = 0
         if valency+charge <= v:
-          return v-valency-charge
+          return v-valency-charge-self.multiplicity+1
       # if valency is exceeded return lowest possible negative value
       return max( PT.periodic_table[ self.name]['valency']) - valency - charge
     # if unsuccessful return 0
@@ -827,39 +865,56 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def set_mark( self, mark='radical', toggle=1, angle='auto'):
+    """sets the mark and takes care of toggling and charge and multiplicity changes"""
     if mark in self.marks:
       if toggle:
         if self.marks[ mark]:
           self.marks[ mark].delete()
           self.marks[ mark] = None
-          if mark == 'plus':
-            self.charge -= 1
-          elif mark == 'minus':
-            self.charge += 1
+          self._set_mark_helper( mark, sign=-1)
         else:
           self.create_mark( mark=mark, angle=angle)
-          if mark == 'plus':
-            self.charge += 1
-          elif mark == 'minus':
-            self.charge -= 1
-
+          self._set_mark_helper( mark, sign=1)
       else:
         if not self.marks[ mark]:
           self.create_mark( mark=mark, angle=angle)
-          if mark == 'plus':
-            self.charge += 1
-          elif mark == 'minus':
-            self.charge -= 1
+          self._set_mark_helper( mark, sign=1)
 
 
 
+  def _set_mark_helper( self, mark, sign=1):
+    if mark == 'plus':
+      self.charge += 1*sign
+    elif mark == 'minus':
+      self.charge -= 1*sign
+    elif mark == "radical":
+      self.multiplicity += 1*sign
+    elif mark == "biradical":
+      self.multiplicity += 2*sign
 
-  def create_mark( self, mark='radical', angle='auto'):
-    if self.show:
-      dist = self.font_size/2 + round( marks.__dict__[ mark].standard_size/2) + 2
-    else:
+    
+
+
+
+  def create_mark( self, mark='radical', angle='auto', draw=1):
+    """creates the mark, does not care about the chemical meaning of this"""
+    # decide where to put the mark
+    if angle == 'auto' and self.show:
+      # atoms with visible text
+      if len( self.molecule.atoms_bound_to( self)) == 0:
+        if self.show_hydrogens and self.pos == "center-last":
+          maxx = self.x + self.font.measure( self.name[0]) / 2
+          x = maxx + 2 + marks.__dict__[ mark].standard_size / 2
+          y = self.y - marks.__dict__[ mark].standard_size / 2
+        else:
+          minx = self.x - self.font.measure( self.name[0]) / 2
+          x = minx - 2 - marks.__dict__[ mark].standard_size / 2
+          y = self.y - marks.__dict__[ mark].standard_size / 2
+      else:
+        x = self.x
+        y = self.y -2 - 3/4*self.font_size - marks.__dict__[ mark].standard_size / 2
+    elif angle == 'auto':
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
-    if angle == 'auto':
       x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
       #ang = round( geometry.clockwise_angle_from_east( x -self.x, y -self.y))
     else:
@@ -867,33 +922,20 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       y = self.y + round( sin( angle) *dist)
       #ang = angle
 
-    # quick fix for marks above an atom
-    if self.show and abs(x - self.x) < 1 and (y - self.y) < 0:
-      y -= self.font_size/4
-
     self.marks[ mark] = marks.__dict__[ mark]( self.paper, x, y,
                                                atom = self,
                                                auto=(angle=='auto'))
-    self.marks[ mark].draw()
+    if draw:
+      self.marks[ mark].draw()
 
 
 
 
   def reposition_marks( self):
-    for m in self.marks.itervalues():
+    for k,m in self.marks.iteritems():
       if m and m.auto:
-        if self.show:
-          dist = self.font_size/2 + round( m.size/2) + 2
-        else:
-          dist = 5 + round( m.size / 2)
-        x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
-
-        # quick fix for marks above an atom
-        if self.show and abs(x - self.x) < 1 and (y - self.y) < 0:
-          y -= self.font_size/4
-
-        m.move_to( x, y)
-
+        self.set_mark( k, toggle=1)
+        self.set_mark( k, toggle=1)
 
 
 
@@ -921,3 +963,17 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   def get_charge_from_marks( self):
     return (self.marks['plus'] != None and 1) + (self.marks['minus'] != None and -1)
+
+
+
+
+  def generate_marks_from_cheminfo( self):
+    if self.charge == 1 and not self.marks[ 'plus']:
+      self.create_mark( 'plus', draw=0)
+    elif self.charge == -1 and not self.marks[ 'minus']:
+      self.create_mark( 'minus', draw=0)
+    if self.multiplicity == 2 and not self.marks[ 'radical']:
+      self.create_mark( 'radical', draw=0)
+    elif self.multiplicity == 3 and not self.marks[ 'biradical']:
+      self.create_mark( 'biradical', draw=0)
+  

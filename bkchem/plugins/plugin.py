@@ -44,8 +44,8 @@ class importer:
   def get_cdml_dom( self, file_name):
     return None
 
-  def get_molecule( self, file_name):
-    return None 
+  def get_molecules( self, file_name):
+    return []
  
   
 class exporter:
