@@ -1849,6 +1849,112 @@ class external_data_mode( basic_mode):
 
 
 
+### -------------------- RAPID DRAW MODE --------------------
+
+class rapid_draw_mode( edit_mode):
+
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
+    self.name = _('Rapid drawing')
+    self._moved_line = None
+    self._start_atom = None
+    self.submodes = []
+    self.submodes_names = []
+    self.submode = []
+    self.molecule = None
+    
+  def mouse_down( self, event, modifiers = []):
+    #edit_mode.mouse_down( self, event, modifiers = modifiers)
+    self.app.paper.unselect_all()
+    self.handle_click( event, modifiers=modifiers, button=1)
+
+
+  def handle_click( self, event, modifiers=[], button=1):
+    if not self.focused:
+      if not self.molecule:
+        self.molecule = self.app.paper.new_molecule()
+        a = self.molecule.create_new_atom( event.x, event.y)
+        #self.focused = a
+        #a.focus()
+        self._start_atom = a
+      else:
+        a, b = self.molecule.add_atom_to( self._start_atom, bond_to_use=self.get_edge( self.molecule, modifiers), pos=(event.x, event.y))
+        self._start_atom = a
+    elif isinstance( self.focused, oasa.graph.vertex):
+      if self.molecule and self.focused != self._start_atom:
+        e = self.molecule.add_edge( self._start_atom, self.focused, e=self.get_edge( self.molecule, modifiers))
+        e.draw()
+        self._start_atom = self.focused
+      elif not self.molecule:
+        self.molecule = self.focused.molecule
+        self._start_atom = self.focused
+    else:
+      return 
+
+    if self._moved_line:
+      self.app.paper.delete( self._moved_line)
+
+    if button == 3:
+      self._start_atom = None
+      self.molecule = None
+      self._moved_line = None
+      self.app.paper.start_new_undo_record()
+    else:
+      self._moved_line = self.app.paper.create_line( self._start_atom.x, self._start_atom.y, event.x, event.y)
+
+    self.app.paper.add_bindings()
+    
+
+
+  def get_edge( self, mol, modifiers):
+    e = mol.create_edge()
+    if 'shift' in modifiers:
+      e.order = 2
+    else:
+      e.order = 1
+    return e
+
+
+  def mouse_move( self, event):
+    if self._moved_line:
+      self.app.paper.coords( self._moved_line, (self._start_atom.x, self._start_atom.y, event.x, event.y))
+
+
+
+  def mouse_down3( self, event, modifiers = []):
+    self.handle_click( event, modifiers=modifiers, button=3)
+
+
+    
+  def mouse_up( self, event):
+    pass
+
+
+  def mouse_click( self, event):
+    pass
+
+
+  def mouse_drag( self, event):
+    pass
+
+
+  def enter_object( self, object, event):
+    if self.focused:
+      self.focused.unfocus()
+    self.focused = object
+    self.focused.focus()
+
+      
+  def leave_object( self, event):
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
+    else:
+      pass #warn( "leaving NONE", UserWarning, 2)
+
+
+
+
 
 
 

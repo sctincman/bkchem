@@ -405,10 +405,11 @@ class BKchem( Tk):
                    'atom': modes.atom_mode( self),
                    'reaction': modes.reaction_mode( self),
                    'usertemplate': modes.user_template_mode( self),
-                   'externaldata': modes.external_data_mode( self)
+                   'externaldata': modes.external_data_mode( self),
+                   'rapiddraw': modes.rapid_draw_mode( self)
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
-                        'rotate', 'bondalign', 'vector', 'usertemplate', 'externaldata']
+                        'rotate', 'bondalign', 'vector', 'usertemplate', 'externaldata', 'rapiddraw']
 
 
 
