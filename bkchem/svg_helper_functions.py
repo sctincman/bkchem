@@ -38,7 +38,7 @@ def ftext_dom_to_svg_dom( ftext, doc, add_to=None):
   if not ftext.nodeValue:
     name = ftext.nodeName
     # check if to add attributes to already existing element or create a new one
-    if not element.lastChild and element.nodeName == "tspan":
+    if (not element.lastChild and element.nodeName == "tspan") or name == "ftext":
       my_svg = element
     else:
       my_svg = doc.createElement( 'tspan')

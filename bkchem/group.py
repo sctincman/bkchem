@@ -719,7 +719,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
 
     elif self.group_type == "implicit":
       if not self.group_graph:
-        self.set_name( self.name, occupied_valency=self.valency)
+        self.set_name( self.name, occupied_valency=self.get_occupied_valency())
       for v in self.group_graph.vertices:
         v.x, v.y = None, None
         v.show = v.symbol != 'C'
@@ -730,5 +730,16 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     self.molecule.eat_molecule( self.group_graph)
     self.molecule.move_bonds_between_atoms( self, replacement)
     self.molecule.delete_vertex( self)
-    oasa.coords_generator.calculate_coords( self.molecule, bond_length=-1)
+    if self.get_occupied_valency():
+      oasa.coords_generator.calculate_coords( self.molecule, bond_length=-1)
+    else:
+      # if the group is the only vertex of the molecule we must set the bond_length explicitly
+      # and the move the whole molecule
+      replacement.x = None
+      replacement.y = None
+      x, y = self.x, self.y
+      oasa.coords_generator.calculate_coords( self.molecule, bond_length=Screen.any_to_px( self.paper.standard.bond_length))
+      dx = x - replacement.x
+      dy = y - replacement.y
+      [a.move( dx, dy) for a in self.group_graph.vertices]
     return self.group_graph.vertices

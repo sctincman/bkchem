@@ -133,10 +133,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   # order
   def _get_order( self):
-    return self.__order
+    return self.get_order()
 
   def _set_order( self, mol):
-    self.__order = mol
+    self.set_order( mol)
     self.__dirty = 1
 
   order = property( _get_order, _set_order)
