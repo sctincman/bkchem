@@ -26,7 +26,7 @@ import Pmw
 import tkMessageBox
 import validator
 import widgets
-
+import xml
 
 
 def ask_name_for_selected( paper):
@@ -40,7 +40,7 @@ def ask_name_for_selected( paper):
     return
 
   dial = Pmw.PromptDialog( paper,
-                           title='Name',
+                           title=_('Name'),
                            label_text=_('Name:'),
                            entryfield_labelpos = 'n',
                            buttons=(_('OK'),_('Cancel')))
@@ -80,7 +80,7 @@ def ask_id_for_selected( paper):
 
   while 1:
     dial = Pmw.PromptDialog( paper,
-                             title='Id',
+                             title=_('Id'),
                              label_text=_('Id:'),
                              entryfield_labelpos = 'n',
                              buttons=(_('OK'),_('Cancel')))
@@ -157,3 +157,50 @@ def ask_inchi_program_path( app):
     app.chemistry_menu.entryconfigure( _("Generate INChI"), state="normal")
     return 1
   return 0
+
+
+
+def ask_display_form_for_selected( paper):
+  top_levels, unique = paper.selected_to_unique_top_levels()
+  ms = [o for o in top_levels if isinstance( o, molecule)]
+
+  if not ms:
+    tkMessageBox.showerror( _("No molecule selected."),
+                            _("At least one molecule must be selected. Please select it."))
+    return
+
+  dial = Pmw.Dialog( paper,
+                     title=_('Display Form'),
+                     #defaultbutton = _('OK'),
+                     buttons=(_('OK'),_('Cancel')))
+  input = widgets.HTMLLikeInput( dial.interior(), paper.app)
+  input.pack()
+  input.editPool.focus_set()
+                                 
+  # if only one mol is selected use it as default
+  if len( ms) == 1 and ms[0].display_form:
+    input.text = ms[0].display_form
+  res = dial.activate()
+  if res == _('OK'):
+    df = input.editPool.get()
+    df = unicode( df).encode( 'utf-8')
+    ## catch not well-formed text
+    try:
+      xml.sax.parseString( "<a>%s</a>" % df, xml.sax.ContentHandler())
+    except xml.sax.SAXParseException:
+      df = xml.sax.saxutils.escape( df)
+      # the second round of try: except: should catch problems not
+      # related to XML wellfomedness but rather to encoding
+      try:
+        xml.sax.parseString( "<a>%s</a>" % df, xml.sax.ContentHandler())
+      except xml.sax.SAXParseException:        
+        tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
+        self.app.paper.bell()
+        return
+  else:
+    return
+
+  for m in ms:
+    m.display_form = df
+  paper.signal_to_app( _('Display form %s was set to molecule(s)') % df)
+  paper.start_new_undo_record()

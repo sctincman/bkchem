@@ -68,6 +68,7 @@ class molecule( container, top_level, id_enabled):
     self.t_bond_second = None
     self.t_atom = None
     self.focus_item = None
+    self.display_form = ''  # this is a (html like) text that defines how to present the molecule in linear form
     if package:
       self.read_package( package) 
 
@@ -365,6 +366,7 @@ class molecule( container, top_level, id_enabled):
     self._id_map = [a.id for a in self.atoms]
     for b in package.getElementsByTagName( 'bond'):
       self.insert_bond( bond( self.paper, package = b, molecule=self))
+    # template related attributes
     temp = package.getElementsByTagName('template')
     if temp:
       temp = temp[0]
@@ -373,12 +375,19 @@ class molecule( container, top_level, id_enabled):
         self.t_bond_first = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_first'))
         self.t_bond_second = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_second'))
       self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
+    # display form
+    df = package.getElementsByTagName('display-form')
+    if df:
+      df = df[0]
+      self.display_form = ''.join( [e.toxml() for e in df.childNodes]).encode('utf-8')
 
 
   def get_package( self, doc):
     mol = doc.createElement('molecule')
     mol.setAttribute( 'name', self.name)
     mol.setAttribute( 'id', self.id)
+    if self.display_form:
+      mol.appendChild( dom.parseString( '<display-form>%s</display-form>' % self.display_form).childNodes[0])
     if self.t_atom:
       if self.t_bond_second and self.t_bond_first:
         dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),

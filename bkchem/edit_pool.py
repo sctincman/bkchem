@@ -25,6 +25,7 @@ import Tkinter
 import data, re, string
 from groups_table import groups_table
 import misc
+from keysymdef import keysyms
 
 
 
@@ -36,7 +37,7 @@ font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'supers
 
 class editPool( Frame):
 
-  def __init__( self, app, master, **kw):
+  def __init__( self, app, master, buttons=('interpret','asis'), **kw):
     Frame.__init__( self, master, **kw)
     self.app = app
     self.text = ''
@@ -49,19 +50,25 @@ class editPool( Frame):
 
     self.editPool.bind("<KeyPress>", self._key)
 
-    self.interpretButton = Button( self,
-                                   text=_('Interpret'),
-                                   command=self._interpretButtonPressed,
-                                   state='disabled',
-                                   bd=data.border_width)
-    self.interpretButton.pack( side='left')
+    if 'interpret' in buttons:
+      self.interpretButton = Button( self,
+                                     text=_('Interpret'),
+                                     command=self._interpretButtonPressed,
+                                     state='disabled',
+                                     bd=data.border_width)
+      self.interpretButton.pack( side='left')
+    else:
+      self.interpretButton = None
 
-    self.setButton = Button( self,
-                             text=_('As is'),
-                             command=self._setButtonPressed,
-                             state='disabled',
-                             bd=data.border_width)
-    self.setButton.pack( side='left')
+    if 'asis' in buttons:
+      self.setButton = Button( self,
+                               text=_('As is'),
+                               command=self._setButtonPressed,
+                               state='disabled',
+                               bd=data.border_width)
+      self.setButton.pack( side='left')
+    else:
+      self.setButton = None
 
     pix = self.app.request( 'pixmap', name='subnum')
     if pix:
@@ -188,7 +195,6 @@ class editPool( Frame):
       
 
   def _key( self, event):
-    from keysymdef import keysyms
     if len(event.keysym) > 1 and event.keysym in keysyms:
       if self.editPool.selection_present():
         self.editPool.delete( "anchor", "insert")

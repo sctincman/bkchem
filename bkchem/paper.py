@@ -1733,4 +1733,3 @@ class chem_paper( Canvas, object):
     
   create_window_name = staticmethod( create_window_name)
 
-

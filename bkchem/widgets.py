@@ -36,6 +36,8 @@ import re
 import misc
 import tkFileDialog
 import os.path
+from keysymdef import keysyms
+
 
 
 class ColorButton( Tkinter.Button):
@@ -317,6 +319,86 @@ class FileSelectionWithText( Pmw.Dialog):
     self.entry.delete( 0, "end")
     self.entry.insert( 0, self.value)
 
+
+
+
+
+
+
+class HTMLLikeInput( Tkinter.Frame, object):
+
+  font_decorations = ('italic', 'bold', 'subscript', 'superscript')
+  font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
+
+
+  def __init__( self, master, app, **kw):
+    Tkinter.Frame.__init__( self, master, **kw)
+    self.app = app
+    self.editPool = Tkinter.Entry( self, width=60)
+    self.editPool.pack( side='left')
+
+    self.editPool.bind("<KeyPress>", self._key)
+
+    pix = self.app.request( 'pixmap', name='subnum')
+    if pix:
+      self.numbersToSubButton = Tkinter.Button( self,
+                                                image=pix,
+                                                command=self._numbersToSubButtonPressed,
+                                                bd=data.border_width)
+      self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
+    else:
+      self.numbersToSubButton = Tkinter.Button( self,
+                                               text=_('Sub numbers'),
+                                               command=self._numbersToSubButtonPressed,
+                                               bd=data.border_width)
+    self.numbersToSubButton.pack( side='left')
+
+    # text decoration
+    for i in self.font_decorations:
+      pix = self.app.request( 'pixmap', name=i)
+      if pix:
+        self.__dict__[ i] = Tkinter.Button( self,
+                                    image=pix,
+                                    command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
+                                    bd=data.border_width)
+        self.app.balloon.bind( self.__dict__[i], i)
+      else:
+        self.__dict__[ i] = Tkinter.Button( self,
+                                    text=i,
+                                    command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
+                                    bd=data.border_width)
+      self.__dict__[i].pack( side='left')
+
+
+  def __get_text( self):
+    return self.editPool.get()
+
+  def __set_text( self, text):
+    self.editPool.delete(0, last='end')
+    self.editPool.insert(0, text)
+
+  text = property( __get_text, __set_text, None, "the text property")
+
+
+  def _numbersToSubButtonPressed( self, *e):
+    self.text = re.sub( "\d+", '<sub>\g<0></sub>', self.text)
+
+
+  def _tag_it( self, tag):
+    if self.editPool.selection_present():
+      self.editPool.insert( Tkinter.SEL_FIRST, '<%s>' % tag)
+      self.editPool.insert( Tkinter.SEL_LAST, '</%s>' % tag)
+    else:
+      self.editPool.insert( Tkinter.INSERT, '<%s></%s>' % (tag, tag))
+      self.editPool.icursor( self.editPool.index( Tkinter.INSERT) - len( tag) - 3)
+      
+
+  def _key( self, event):
+    if len(event.keysym) > 1 and event.keysym in keysyms:
+      if self.editPool.selection_present():
+        self.editPool.delete( "anchor", "insert")
+      self.editPool.insert( 'insert', unicode( keysyms[ event.keysym]))
+      return "break"
 
 
 
