@@ -10,18 +10,18 @@ remarks
 0.6.0
 =======
 
-- update povray export or get rid of it! The same for PNG export
 - vertical and horizontal swap
   - not containers
   - things should remain selected
-- changing direction of a wedge double bond should reverse the sign
-- double and triple bond clicking is strange
 - remove the name mode and make it accessible through the menu
 - focus circle is positioned strangely on freestyle arrow drawing
-
+- add Menu/Configure as an alias for right click
 
 0.x.0
 =======
+
+- bond drawing could be much simplified by e.g.- draw_order( order, line_drawing_method=draw_wedge)
+- it should be possible to make bond.item always an invisible line and put rest into one list
 
 - think about how to make selecting of the whole molecule by means of a rectange
 

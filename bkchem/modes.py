@@ -35,6 +35,7 @@ import tkMessageBox
 import helper_graphics as hg
 import dom_extensions
 import messages
+from bond import bond
 
 class mode:
   """abstract parent for all modes. No to be used for inheritation because the more specialized
@@ -496,12 +497,17 @@ class draw_mode( edit_mode):
     self.name = _('draw')
     self._moved_atom = None
     self._start_atom = None
-    self.submodes = [['30','18','6','1'],['single','double','triple'],
-                     ['normal','wedge','hatch','adder','bbold'],['fixed','freestyle']]
-    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],[_('single'),_('double'),_('triple')],
+    self.submodes = [['30','18','6','1'],
+                     ['single','double','triple'],
+                     ['normal','wedge','hatch','adder','bbold'],
+                     ['fixed','freestyle'],
+                     ['nosimpledouble','simpledouble']]
+    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],
+                           [_('single'),_('double'),_('triple')],
                            [_('normal'),_('wedge'),_('hatch'),_('adder'),_('bold')],
-                           [_('fixed length'),_('freestyle')]]
-    self.submode = [0, 0, 0, 0]
+                           [_('fixed length'),_('freestyle')],
+                           [_('normal double bonds for wedge/hatch'),_('simple double bonds for wedge/hatch')]]
+    self.submode = [0, 0, 0, 0, 1]
     
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
@@ -543,13 +549,13 @@ class draw_mode( edit_mode):
       mol = self.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       self.paper.add_bindings()
-      self.paper.select( [mol.add_atom_to( a, bond_type=self.__mode_to_bond_type(),
-                                           bond_order=self.__mode_to_bond_order())[0]])
+      b = bond( self.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
+      self.paper.select( [mol.add_atom_to( a, bond_to_use=b)[0]])
       self.focused = a
     else:
       if self.focused.object_type == 'atom':
-        a, b = self.focused.molecule.add_atom_to( self.focused, bond_type=self.__mode_to_bond_type(),
-                                                  bond_order=self.__mode_to_bond_order())
+        b = bond( self.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
+        a, b = self.focused.molecule.add_atom_to( self.focused, bond_to_use=b)
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
           self.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -563,10 +569,13 @@ class draw_mode( edit_mode):
       elif self.focused.object_type == 'bond':
         if self._shift:
           self.focused.toggle_type( only_shift = 1, to_type=self.__mode_to_bond_type(),
-                                    to_order=self.__mode_to_bond_order())
+                                    to_order=self.__mode_to_bond_order(),
+                                    simple_double = self.submode[4])
           self.focused.focus() # refocus
         else:
-          self.focused.toggle_type( to_type=self.__mode_to_bond_type(), to_order=self.__mode_to_bond_order())
+          self.focused.toggle_type( to_type=self.__mode_to_bond_type(),
+                                    to_order=self.__mode_to_bond_order(),
+                                    simple_double = self.submode[4])
           # warn when valency is exceeded
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
             self.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -583,18 +592,18 @@ class draw_mode( edit_mode):
       if self.focused and self.focused.object_type == "atom":
         self._start_atom = self.focused
         if self.submode[2] == 1:
+          b = bond( self.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
-                                                                                       bond_type=self.__mode_to_bond_type(),
-                                                                                       bond_order=self.__mode_to_bond_order(),
+                                                                                       bond_to_use=b,
                                                                                        pos=(event.x, event.y))
         else:
+          b = bond( self.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
-                                                                                       bond_type=self.__mode_to_bond_type(),
-                                                                                       bond_order=self.__mode_to_bond_order())
+                                                                                       bond_to_use=b)
     if self._start_atom:
       if self.focused and self.focused != self._start_atom and self.focused.object_type == 'atom':
         x, y = self.focused.get_xy()
-      elif self.submode[2] == 1:
+      elif self.submode[3] == 1:
         x, y = event.x, event.y
       else:
         dx = event.x - self._startx
@@ -894,6 +903,7 @@ class text_mode( edit_mode):
   def mouse_click( self, event):
     if not self.focused:
       name = self.paper.app.editPool.activate()
+      name = unicode( name).encode( 'utf-8')
       ## catch not well-formed text
       try:
         xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())

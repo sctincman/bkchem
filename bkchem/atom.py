@@ -425,6 +425,8 @@ class atom( meta_enabled):
     # marks
     for m in package.getElementsByTagName( 'mark'):
       auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
+      if auto == True:
+        auto = 1
       type = m.getAttribute( 'type')
       x, y, z = self.paper.read_xml_point( m)
       self.marks[ type] = marks.__dict__[ type]( self.paper,

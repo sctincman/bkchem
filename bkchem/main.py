@@ -133,8 +133,6 @@ class BKchem( Tk):
     editMenu.add( 'command', label=_('Selected to clipboard as SVG'), command = self.paper.selected_to_real_clipboard_as_SVG)
     editMenu.add( 'separator')
     editMenu.add( 'command', label=_('Select all'), command = self.paper.select_all, accelerator='(C-S-a)')
-    #editMenu.add( 'separator')
-    #editMenu.add( 'command', label=_('Sweep junk'), command = self.paper.sweep_junk)
     
     alignButton = Menubutton( menu, text=_('Align'))
     alignButton.pack( side = LEFT)
@@ -170,11 +168,7 @@ class BKchem( Tk):
 #    scaleMenu.add( 'separator')
 #    scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
-    
-    # following 2 lines should be commented in releases 
-    #    scaleMenu.add( 'separator')
-    #    scaleMenu.add( 'command', label=_('Debug'), command = self.paper._open_debug_console, accelerator='(A-d c)')
-    
+    # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
     optionsButton.pack( side= 'left')
     optionsMenu = Menu( optionsButton, tearoff=0)
@@ -183,11 +177,11 @@ class BKchem( Tk):
 
 
     # EXPERIMENTAL EXPORTS
-    exportButton = Menubutton( menu, text=_('Experimental exports'))
-    exportButton.pack( side= 'left')
-    exportMenu = Menu( exportButton, tearoff=0)
-    exportButton['menu'] = exportMenu
-    exportMenu.add( 'command', label=_('Export PNG'), command = self.save_PNG, state=import_checker.PIL_state)
+    #exportButton = Menubutton( menu, text=_('Experimental exports'))
+    #exportButton.pack( side= 'left')
+    #exportMenu = Menu( exportButton, tearoff=0)
+    #exportButton['menu'] = exportMenu
+    #exportMenu.add( 'command', label=_('Export PNG'), command = self.save_PNG, state=import_checker.PIL_state)
     
     # PLUGINS
     if plugins.__all__:

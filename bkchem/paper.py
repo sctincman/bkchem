@@ -1212,18 +1212,6 @@ class BKpaper( Canvas):
     return 0
 
 
-  def sweep_junk( self):
-    """does not work, no time to fix it"""
-    self.delete( 'all')
-    self.background = None
-    self.unselect_all()
-    self.set_paper_properties()
-    [o.draw() for o in self.get_all_containers() if o.object_type != 'molecule']
-    for m in self.molecules:
-      [b.draw() for b in m.bonds]
-      [a.draw() for a in m.atoms_map]
-
-
   def swap_sides_of_selected( self, mode="vertical"):
     """mirrors the selected things, vertical uses y-axis as a mirror plane,
     horizontal x-axis"""

@@ -102,7 +102,7 @@ class molecule( simple_parent):
     "transfers everything from mol to self, now only calls feed_data"
     self.feed_data( mol.atoms_map, mol.bonds, mol.connect)
 
-  def add_atom_to( self, a1, pos=None, bond_type='n', bond_order=1):
+  def add_atom_to( self, a1, bond_to_use=None, pos=None):
     """adds new atom bound to atom id with bond, the position of new atom can be specified in pos or is
     decided calling find_place(),"""
     if pos != None:
@@ -110,7 +110,10 @@ class molecule( simple_parent):
     else:
       x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
     a2 = self.create_new_atom( x, y)
-    b = self.create_new_bond( a1, a2, bond_type=bond_type, bond_order=bond_order)
+    b = bond_to_use or bond( order=1, type='n')
+    b.set_atoms( a1, a2)
+    self.insert_bond( b)
+    b.draw()
     return a2, b
 
   def insert_bond( self, b):
@@ -217,12 +220,6 @@ class molecule( simple_parent):
     self.atoms_map.append( at)
     at.set_molecule( self)
   
-  def create_new_bond( self, a1, a2, bond_type='n', bond_order=1):
-    b = bond( self.paper, atoms=(a1, a2), type=bond_type, order=bond_order)
-    self.insert_bond( b)
-    b.draw()
-    return b
-
   def check_integrity( self):
     """after deleting atoms or bonds it is important to see if it's needed to divide molecule to fragments
     and return them in form of list of new molecules"""

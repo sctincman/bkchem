@@ -22,8 +22,8 @@
 #--------------------------------------------------------------------------
 
 import CML, CML2
-import povray
+#import povray
 import openoffice
 import postscript
 
-__all__ = ['CML','CML2','povray','openoffice','postscript']
+__all__ = ['CML','CML2','openoffice','postscript']
