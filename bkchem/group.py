@@ -41,7 +41,7 @@ import debug
 import oasa
 import oasa_bridge
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -121,7 +121,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     return self.__x
 
   def _set_x( self, x):
-    self.__x = self.paper.any_to_px( x)
+    self.__x = Screen.any_to_px( x)
 
   x = property( _get_x, _set_x)
 
@@ -131,7 +131,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     return self.__y
 
   def _set_y( self, y):
-    self.__y = self.paper.any_to_px( y)
+    self.__y = Screen.any_to_px( y)
 
   y = property( _get_y, _set_y)
 
@@ -515,7 +515,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
-    x, y, z = self.paper.read_xml_point( position)
+    x, y, z = Screen.read_xml_point( position)
     if z != None:
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
@@ -568,7 +568,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     if self.area_color != self.paper.standard.area_color:
       a.setAttribute( 'background-color', self.area_color)
     # needed to support transparent handling of molecular size
-    x, y, z = map( self.paper.px_to_text_with_unit, self.get_xyz( real=1))
+    x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
     else: 

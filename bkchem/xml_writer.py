@@ -30,6 +30,8 @@ import svg_helper_functions as svg_help
 import dom_extensions
 import os
 
+from singleton_store import Screen
+
 
 class XML_writer:
   """This is abstract class that serves as parent for specialized writters - CDML, SVG ...
@@ -69,8 +71,8 @@ class SVG_writer( XML_writer):
     border_size = self.paper.get_paper_property( 'crop_margin')
 
     # converter
-    px_to_cm_txt = lambda x: self.paper.px_to_text_with_unit( x, unit="cm", round_to=5)
-    px_to_mm_txt = lambda x: self.paper.px_to_text_with_unit( x, unit="mm", round_to=5)
+    px_to_cm_txt = lambda x: Screen.px_to_text_with_unit( x, unit="cm", round_to=5)
+    px_to_mm_txt = lambda x: Screen.px_to_text_with_unit( x, unit="mm", round_to=5)
 
     # the code
     self._id = 0
@@ -82,7 +84,7 @@ class SVG_writer( XML_writer):
       sy = self.paper.get_paper_property( 'size_y')
       dom_extensions.setAttributes( self.top, (("width", '%fmm' % sx),
                                                ("height", '%fmm' % sy),
-                                               ('viewBox', '0 0 %d %d' % (self.paper.mm_to_px(sx), self.paper.mm_to_px(sy)))))
+                                               ('viewBox', '0 0 %d %d' % (Screen.mm_to_px(sx), Screen.mm_to_px(sy)))))
     else:
       items = list( self.paper.find_all())
       items.remove( self.paper.background)

@@ -37,6 +37,7 @@ from parents import area_colored, point_drawable, interactive, drawable, top_lev
 from parents import child, with_font
 from reaction import reaction
 
+from singleton_store import Screen
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
@@ -192,7 +193,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def read_standard_values( self, standard, old_standard=None):
     meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
     if not old_standard or (standard.line_width != old_standard.line_width):
-      self.line_width = self.paper.any_to_px( standard.line_width)    
+      self.line_width = Screen.any_to_px( standard.line_width)    
     
 
 
@@ -446,7 +447,7 @@ class point( point_drawable, interactive, child):
 
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
-    x, y, z = self.paper.read_xml_point( package)
+    x, y, z = Screen.read_xml_point( package)
     self.x, self.y = self.paper.real_to_screen_coords( (x,y))
     #self.z = int( package.getAttribute( 'z') )
   
@@ -455,7 +456,7 @@ class point( point_drawable, interactive, child):
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
     pnt = doc.createElement('point')
-    x, y = map( self.paper.px_to_text_with_unit, self.paper.screen_to_real_coords( (self.x, self.y)))
+    x, y = map( Screen.px_to_text_with_unit, self.paper.screen_to_real_coords( (self.x, self.y)))
     dom_extensions.setAttributes( pnt, (('x', x),
                                         ('y', y)))
     return pnt
@@ -577,7 +578,7 @@ class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, 
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     pnt = package.getElementsByTagName( 'point')[0]
-    self.x, self.y, z = self.paper.read_xml_point( pnt)
+    self.x, self.y, z = Screen.read_xml_point( pnt)
     if package.getAttribute( 'font_size'):
       self.font_size = int( package.getAttribute( 'font_size')) 
     if package.getAttribute( 'color'):
@@ -591,7 +592,7 @@ class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, 
     (the returned element is not inserted into the document)"""
     pls = doc.createElement('plus')
     pls.setAttribute( 'id', self.id)
-    x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
+    x, y = Screen.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( pls, 'point', (('x', x),
                                                 ('y', y)))
     pls.setAttribute('font_size', str( self.font_size))
@@ -783,7 +784,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     pos = package.getElementsByTagName( 'point')[0]
-    x, y, z = self.paper.read_xml_point( pos)
+    x, y, z = Screen.read_xml_point( pos)
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
     try:
@@ -817,7 +818,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       font = dom_extensions.elementUnder( a, 'font', attributes=(('size', str( self.font_size)), ('family', self.font_family)))
       if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
-    x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
+    x, y = Screen.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( a, 'point', attributes=(('x', x),('y', y)))
     a.appendChild( self.get_parsed_text())
     return a

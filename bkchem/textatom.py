@@ -41,6 +41,8 @@ import marks
 
 import oasa
 
+from singleton_store import Screen
+
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
@@ -122,7 +124,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     return self.__x
 
   def _set_x( self, x):
-    self.__x = self.paper.any_to_px( x)
+    self.__x = Screen.any_to_px( x)
 
   x = property( _get_x, _set_x)
 
@@ -132,7 +134,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     return self.__y
 
   def _set_y( self, y):
-    self.__y = self.paper.any_to_px( y)
+    self.__y = Screen.any_to_px( y)
 
   y = property( _get_y, _set_y)
 
@@ -475,7 +477,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     for m in package.getElementsByTagName( 'mark'):
       auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
       type = m.getAttribute( 'type')
-      x, y, z = self.paper.read_xml_point( m)
+      x, y, z = Screen.read_xml_point( m)
       self.marks[ type] = marks.__dict__[ type]( self.paper,
                                                  x, y,
                                                  atom=self,
@@ -484,7 +486,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
-    x, y, z = self.paper.read_xml_point( position)
+    x, y, z = Screen.read_xml_point( position)
     if z != None:
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
@@ -531,7 +533,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     if self.area_color != self.paper.standard.area_color:
       a.setAttribute( 'background-color', self.area_color)
     # needed to support transparent handling of molecular size
-    x, y, z = map( self.paper.px_to_text_with_unit, self.get_xyz( real=1))
+    x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
     else: 
@@ -539,7 +541,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     # marks
     for m, o in self.marks.items():
       if o:
-        x ,y = map( self.paper.px_to_text_with_unit, (o.x, o.y))
+        x ,y = map( Screen.px_to_text_with_unit, (o.x, o.y))
         dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
                                                             ('x', x),
                                                             ('y', y),

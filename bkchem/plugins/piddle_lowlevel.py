@@ -22,6 +22,7 @@ import plugin
 from tk2piddle import tk2piddle
 import transform
 
+from singleton_store import Screen
 
 
 class piddle_exporter( plugin.exporter):
@@ -51,8 +52,8 @@ class piddle_exporter( plugin.exporter):
     else:
       self.transformer = transform.transform()
       self.transformer.set_scaling( scale)
-      dx = self.paper.mm_to_px( self.paper._paper_properties['size_x'])
-      dy = self.paper.mm_to_px( self.paper._paper_properties['size_y'])
+      dx = Screen.mm_to_px( self.paper._paper_properties['size_x'])
+      dy = Screen.mm_to_px( self.paper._paper_properties['size_y'])
 
     self.canvas = self.init_canvas( pagesize=(scale*dx, scale*dy))
     self.converter = tk2piddle()

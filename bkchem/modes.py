@@ -50,7 +50,7 @@ import external_data
 from sets import Set
 import interactors
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 
@@ -800,7 +800,7 @@ class draw_mode( edit_mode):
         dx = event.x - self._startx
         dy = event.y - self._starty
         x0, y0 = self._start_atom.get_xy()
-        x,y = geometry.point_on_circle( x0, y0, Store.app.paper.any_to_px( Store.app.paper.standard.bond_length),
+        x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_atom.move_to( x, y)
@@ -890,7 +890,7 @@ class arrow_mode( edit_mode):
         dy = event.y - self._starty
         x0, y0 = self._start_point.get_xy()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Store.app.paper.any_to_px( Store.app.paper.standard.arrow_length),
+                                        Screen.any_to_px( Store.app.paper.standard.arrow_length),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_point.move_to( x, y)
@@ -913,7 +913,7 @@ class arrow_mode( edit_mode):
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        pnt = self._arrow_to_update.create_new_point( x0+Store.app.paper.any_to_px( Store.app.paper.standard.arrow_length),
+        pnt = self._arrow_to_update.create_new_point( x0+Screen.any_to_px( Store.app.paper.standard.arrow_length),
                                                       y0, position=pos)
         Store.app.paper.select( [pnt])
         self._arrow_to_update.redraw()
@@ -1025,7 +1025,7 @@ class template_mode( edit_mode):
           t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=Store.app.paper)
         else:
           x1, y1 = self.focused.get_xy()
-          x2, y2 = self.focused.molecule.find_place( self.focused, Store.app.paper.any_to_px( Store.app.paper.standard.bond_length))
+          x2, y2 = self.focused.molecule.find_place( self.focused, Screen.any_to_px( Store.app.paper.standard.bond_length))
           t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=Store.app.paper)
       elif isinstance( self.focused, bond):
         x1, y1 = self.focused.atom1.get_xy()
@@ -2182,7 +2182,7 @@ class rapid_draw_mode( edit_mode):
         dy = event.y - self._start_atom.y
         x,y = geometry.point_on_circle( self._start_atom.x,
                                         self._start_atom.y,
-                                        Store.app.paper.any_to_px( Store.app.paper.standard.bond_length),
+                                        Screen.any_to_px( Store.app.paper.standard.bond_length),
                                         direction = (dx, dy),
                                         resolution = int( self.get_submode( 0)))
         return x, y

@@ -45,7 +45,7 @@ from sets import Set
 
 import oasa
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 
@@ -160,9 +160,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       x, y = pos
     else:
       if bond_to_use:
-        x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length), added_order=bond_to_use.order)
+        x, y = self.find_place( a1, Screen.any_to_px( self.paper.standard.bond_length), added_order=bond_to_use.order)
       else:
-        x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
+        x, y = self.find_place( a1, Screen.any_to_px( self.paper.standard.bond_length))
     a2 = None # the new atom
     if pos:
       # try if the coordinates are the same as of another atom

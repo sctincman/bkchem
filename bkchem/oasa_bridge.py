@@ -30,6 +30,7 @@ import atom
 import math
 import operator
 
+from singleton_store import Screen
 
 
 def read_smiles( text, paper):
@@ -102,7 +103,7 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   # rescale
   if calc_position:
     bl = sum( bond_lengths) / len( bond_lengths)
-    scale = paper.any_to_px( paper.standard.bond_length) / bl
+    scale = Screen.any_to_px( paper.standard.bond_length) / bl
     movex = 320 - scale*(maxx+minx)/2
     movey = 240 - scale*(maxy+miny)/2
     for a in m.atoms:

@@ -30,7 +30,7 @@ import widgets
 import classes
 from sets import Set
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 ## SCALE DIALOG
@@ -415,13 +415,13 @@ class config_dialog:
         elif o.object_type == 'bond':
           # width is in common now
           # bond_width
-          d = self.parent.paper.any_to_px( self.bond_dist.getvalue())
+          d = Screen.any_to_px( self.bond_dist.getvalue())
           if d:
             if d != abs( o.bond_width):
               o.bond_width = d * misc.signum( o.bond_width)
               change = 1
           # wedge_width
-          d = self.parent.paper.any_to_px( self.wedge_width.getvalue())
+          d = Screen.any_to_px( self.wedge_width.getvalue())
           if d:
             if d != o.wedge_width:
               o.wedge_width = d
@@ -465,7 +465,7 @@ class config_dialog:
               change = 1
         # LINE WIDTH
         if hasattr( o, 'line_width'):
-          w = self.parent.paper.any_to_px( self.line_width.getvalue())
+          w = Screen.any_to_px( self.line_width.getvalue())
           if w:
             if w != o.line_width:
               o.line_width = w

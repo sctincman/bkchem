@@ -61,7 +61,7 @@ import geometry
 from sets import Set
 from id_manager import id_manager
       
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 class chem_paper( Canvas, object):
@@ -1527,98 +1527,6 @@ class chem_paper( Canvas, object):
 ##     else:
 ##       return Canvas.coords( self, item)
 
-
-
-
-
-  def px_to_cm( self, px):
-    """transforms coord from px to cm"""
-    return self.px_to_unit( px, unit='cm')
-
-
-
-
-
-  def cm_to_px( self, cm):
-    """transforms coord from cm to px"""
-    return self.winfo_fpixels( str( cm)+'c')
-
-
-
-
-  def mm_to_px( self, mm):
-    """transforms coord from mm to px"""
-    return self.winfo_fpixels( '%fm' % mm)
-
-
-
-
-
-  def read_xml_point( self, point):
-    x = point.getAttribute( 'x')
-    y = point.getAttribute( 'y')
-    z = point.getAttribute( 'z')
-    return map( self.any_to_px, (x,y,z))
-    
-
-
-
-
-  def any_to_px( self, xyz):
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:
-      return [self.any_to_px( i) for i in xyz]
-    a, au = misc.split_number_and_unit( xyz)
-    if au:
-      if au == 'cm':
-        a = self.cm_to_px( a)
-      elif au == 'mm':
-        a = self.mm_to_px( a)
-      if au == 'px':
-        return a
-    return a
-
-
-
-
-
-  def px_to_unit( self, xyz, unit='cm', round_to=3):
-    # handle sets of values
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:
-      return [self.px_to_unit( i, unit=unit, round_to=round_to) for i in xyz]
-    # handle empty queries
-    if xyz == None:
-      return None
-    # different units
-    if unit == 'cm':
-      dots_per_unit = self.winfo_fpixels( '100m')/10.0
-    elif unit == 'mm':
-      dots_per_unit = self.winfo_fpixels( '100m')/100.0
-    elif unit == 'in':
-      dots_per_unit = self.winfo_fpixels( '254m')/10.0
-    else:
-      warn( "unknown unit passed to paper.px_to_unit")
-      return None
-    # round or not round and return
-    if round_to == None:
-      return xyz/dots_per_unit
-    else:
-      return round( xyz/dots_per_unit, round_to)
-  
-    
-
-
-
-
-  def px_to_text_with_unit( self, xyz, unit='cm', round_to=3):
-    # handle sets of values
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:    
-      return [self.px_to_text_with_unit( i, unit=unit, round_to=round_to) for i in xyz]
-    # round or not round and return
-    if round_to == None:
-      return '%f%s' % (self.px_to_unit( xyz, unit=unit, round_to=round_to), unit)
-    else:
-      return ('%.'+str( round_to)+'f%s') % (self.px_to_unit( xyz, unit=unit, round_to=round_to), unit)
-    
 
 
 

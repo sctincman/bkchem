@@ -27,6 +27,7 @@ import classes
 import operator
 from parents import meta_enabled, drawable, interactive, area_colored, container, with_line, top_level
 
+from singleton_store import Screen
 
 
 class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, with_line, top_level):
@@ -57,7 +58,7 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
   def read_standard_values( self, standard, old_standard=None):
     meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
     if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
-      self.line_width = self.paper.any_to_px( self.paper.standard.line_width)    
+      self.line_width = Screen.any_to_px( self.paper.standard.line_width)    
 
   def draw( self):
     pass
@@ -144,7 +145,7 @@ class rect( vector_graphics_item):
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'rect')
-    x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
+    x1, y1, x2, y2 = Screen.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
                                          ('y1', y1),
                                          ('x2', x2),
@@ -156,7 +157,7 @@ class rect( vector_graphics_item):
                            
   def read_package( self, pack):
     """reads the dom element pack and sets internal state according to it"""
-    self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
+    self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
     self.area_color = pack.getAttribute( 'area_color') or self.area_color
     self.line_color = pack.getAttribute( 'line_color') or self.line_color
@@ -175,7 +176,7 @@ class square( rect):
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'square')
-    x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
+    x1, y1, x2, y2 = Screen.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
                                          ('y1', y1),
                                          ('x2', x2),
@@ -232,7 +233,7 @@ class oval( vector_graphics_item):
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'oval')
-    x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
+    x1, y1, x2, y2 = Screen.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
                                          ('y1', y1),
                                          ('x2', x2),
@@ -244,7 +245,7 @@ class oval( vector_graphics_item):
                            
   def read_package( self, pack):
     """reads the dom element pack and sets internal state according to it"""
-    self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
+    self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
 
     self.area_color = pack.getAttribute( 'area_color') or self.area_color
@@ -265,7 +266,7 @@ class circle( oval):
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'circle')
-    x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
+    x1, y1, x2, y2 = Screen.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
                                          ('y1', y1),
                                          ('x2', x2),

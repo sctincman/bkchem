@@ -1035,10 +1035,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def switch_to_type( self, type):
     if type in "wha" and self.type not in "wha":
       # get the standard width only if the changes is not within the "wha" group
-      self.wedge_width = self.paper.any_to_px( self.paper.standard.wedge_width)
+      self.wedge_width = Screen.any_to_px( self.paper.standard.wedge_width)
     elif type not in "wha" and self.type in "wha":
       # when both are outside the 'wha' do the similar
-      self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
+      self.bond_width = Screen.any_to_px( self.paper.standard.bond_width)
     self.type = type
 
 

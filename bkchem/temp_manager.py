@@ -34,7 +34,7 @@ import os_support
 import xml.sax
 import misc
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 class template_manager:
@@ -91,7 +91,7 @@ class template_manager:
       xt1, yt1 = current.t_atom.get_xy()
       xt2, yt2 = current.next_to_t_atom.get_xy()
       x1, y1 = coords
-      bond_length = Store.app.paper.any_to_px( Store.app.paper.standard.bond_length)
+      bond_length = Screen.any_to_px( Store.app.paper.standard.bond_length)
       current.delete_items( [current.t_atom], redraw=0, delete_single_atom=0)
       trans.set_move( -xt2, -yt2)
       trans.set_scaling( bond_length / math.sqrt( (xt1-xt2)**2 + (yt1-yt2)**2))
