@@ -1343,44 +1343,7 @@ Enter IChI:""")
 
 
   def clean( self):
-    import oasa
-    import geometry, transform, math
-      
-
-
-    if len( self.paper.selected) == 1 and self.paper.selected[0].object_type == "bond":
-      b = self.paper.selected[0]
-      mol = b.molecule
-      for a in mol.atoms:
-        if a != b.atom1 and a!=b.atom2:
-          aaa = a
-          side = geometry.on_which_side_is_point( (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y), (aaa.x,aaa.y))
-          a.x = None
-          a.y = None
-
-
-      oasa.coords_generator.calculate_coords( mol, force=0, bond_length=-1)
-
-      side2 = geometry.on_which_side_is_point( (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y), (aaa.x,aaa.y))
-
-      if side != side2:
-        x1, y1, x2, y2 = (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y)
-        centerx = ( x1 + x2) / 2
-        centery = ( y1 + y2) / 2
-        angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
-        if angle0 >= math.pi :
-          angle0 = angle0 - math.pi
-        tr = transform.transform()
-        tr.set_move( -centerx, -centery)
-        tr.set_rotation( -angle0)
-        tr.set_scaling_xy( 1, -1)
-        tr.set_rotation( angle0)
-        tr.set_move(centerx, centery)
-
-        mol.transform( tr)
-
-      mol.redraw( reposition_double=1)
-      self.paper.start_new_undo_record()
+    self.paper.clean_selected()
 
     
 

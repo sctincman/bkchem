@@ -57,6 +57,11 @@ import debug
 import oasa
 from external_data import external_data_manager
 from group import group
+import oasa
+import geometry
+from sets import Set
+      
+
 
 
 class chem_paper( Canvas, object):
@@ -1810,3 +1815,67 @@ class chem_paper( Canvas, object):
     
   create_window_name = staticmethod( create_window_name)
 
+
+
+  def clean_selected( self):
+    """cleans the geomerty of all selected molecules, the position of atoms that are selected will not be changed.
+    The selection must define a continuos subgraph of the molecule(s) otherwise the coords generation would not be possible,
+    at least two atoms (one bond) must be selected for the program to give some meaningfull result"""
+    # normalization of selection
+    for item in self.selected:
+      if item.object_type == 'bond':
+        for a in item.atoms:
+          if a not in self.selected:
+            self.select( [a])
+
+    mols, u = self.selected_to_unique_top_levels()
+    for mol in mols:
+      if isinstance( mol, molecule):
+        notselected = Set( mol.atoms) - Set( self.selected)
+        selected = Set( mol.atoms) & Set( self.selected)
+        # we must check if the selection defines one connected subgraph of the molecule
+        # otherwise the coordinate generation will not work
+        if len( selected) == 1:
+          print "sorry, but the selection must contain at least two atoms (one bond)"
+          return
+        else:
+          sub = mol.get_new_induced_subgraph( selected, mol.vertex_subgraph_to_edge_subgraph( selected))
+          subs = [comp for comp in sub.get_connected_components()]
+          if len( subs) != 1:
+            print "sorry, but the selection must define a continuos block in the molecule"
+            return
+
+        # now we check what has been selected
+        side = None
+        if len( selected) == 2:
+          # if only two atoms are selected we need the information about positioning to guess
+          # how to mirror the molecule at the end
+          atom1, atom2 = selected
+          side = sum( [geometry.on_which_side_is_point( (atom1.x, atom1.y, atom2.x, atom2.y), (a.x,a.y)) for a in notselected])
+          
+        for a in notselected:
+          a.x = None
+          a.y = None
+          
+        oasa.coords_generator.calculate_coords( mol, force=0, bond_length=-1)
+
+        if len( selected) == 2:
+          side2 = sum( [geometry.on_which_side_is_point( (atom1.x, atom1.y, atom2.x, atom2.y), (a.x,a.y)) for a in notselected])
+          if side * side2 < 0:
+            x1, y1, x2, y2 = (atom1.x, atom1.y, atom2.x, atom2.y)
+            centerx = ( x1 + x2) / 2
+            centery = ( y1 + y2) / 2
+            angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+            if angle0 >= math.pi :
+              angle0 = angle0 - math.pi
+            tr = transform()
+            tr.set_move( -centerx, -centery)
+            tr.set_rotation( -angle0)
+            tr.set_scaling_xy( 1, -1)
+            tr.set_rotation( angle0)
+            tr.set_move(centerx, centery)
+
+            mol.transform( tr)
+
+      mol.redraw( reposition_double=1)
+      self.start_new_undo_record()
