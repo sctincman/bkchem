@@ -637,28 +637,31 @@ class BKpaper( Canvas):
         ymax = y1
       xy = ( xmin+(xmax-xmin)/2, ymin+(ymax-ymin)/2)
       clipboard_doc = dom.Document()
-      self.clipboard = dom_extensions.elementUnder( clipboard_doc, 'clipboard')
+      clipboard = dom_extensions.elementUnder( clipboard_doc, 'clipboard')
       for o in cp:
-        self.clipboard.appendChild( o.get_package( clipboard_doc))
-      self.clipboard_pos = xy
+        clipboard.appendChild( o.get_package( clipboard_doc))
+      self.app.put_to_clipboard( clipboard, xy)
       if delete_afterwards:
         [self.del_container(o) for o in cp]
         self.signal_to_app( _("killed %s object(s) to clipboard") % str( len( cp)))
+	self.start_new_undo_record()
       else:
         self.signal_to_app( _("copied %s object(s) to clipboard") % str( len( cp)))
-      self.start_new_undo_record()
+
 
   def paste_clipboard( self, xy):
     """pastes items from clipboard to position xy"""
-    if self.clipboard:
+    clipboard = self.app.get_clipboard()
+    clipboard_pos = self.app.get_clipboard_pos()
+    if clipboard:
       new = []
       self.unselect_all()
       if xy:
-        dx = xy[0] - self.clipboard_pos[0]
-        dy = xy[1] - self.clipboard_pos[1]
+        dx = xy[0] - clipboard_pos[0]
+        dy = xy[1] - clipboard_pos[1]
       else:
         dx, dy = 20, 20
-      for p in self.clipboard.childNodes:
+      for p in clipboard.childNodes:
         o = self.add_object_from_package( p)
         o.draw()
         o.move( dx, dy)

@@ -74,6 +74,9 @@ class BKchem( Tk):
     self.svg_dir = '.'
     self.svg_file = ''
 
+    self._clipboard = None
+    self._clipboard_pos = None
+
     self._untitled_counter = 0
 
     self._after = None
@@ -819,3 +822,14 @@ Enter IChI:""")
     dial.insert( 'end', text)
     dial.activate()
     
+
+  def put_to_clipboard( self, xml, pos):
+    self._clipboard = xml
+    self._clipboard_pos = pos
+
+
+  def get_clipboard( self):
+    return self._clipboard
+
+  def get_clipboard_pos( self):
+    return self._clipboard_pos
