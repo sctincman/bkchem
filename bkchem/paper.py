@@ -791,6 +791,10 @@ class chem_paper( Canvas, object):
 
 
 
+  def is_registered_id( self, id):
+    return id in self._id_2_object.keys()
+
+
 
 
   def new_molecule( self):

@@ -362,7 +362,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
           return
       # try if the name is an alkyl chain such as c6h13
       form = PT.formula_dict( name.upper())
-      if form.is_saturated_alkyl_chain():
+      if form.is_saturated_alkyl_chain() and self.get_occupied_valency() == 1:
         self.name = str( form)
         self.show_hydrogens = 1
         self.type = 'chain'

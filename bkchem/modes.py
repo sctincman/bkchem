@@ -320,6 +320,12 @@ class edit_mode( basic_mode):
     self._shift = 'shift' in modifiers
     self._ctrl = 'ctrl' in modifiers
     self._alt = 'alt' in modifiers
+    # we focus what is under cursor if its not focused already
+    if not self.focused:
+      ids = self.app.paper.find_overlapping( event.x, event.y, event.x, event.y)
+      if ids and self.app.paper.is_registered_id( ids[-1]):
+        self.focused = self.app.paper.id_to_object( ids[-1])
+        self.focused.focus()
     if self.focused and isinstance( self.focused, hg.selection_square):
       # we will need that later to fix the right corner of the selection_square
       self._startx, self._starty = self.focused.get_fix()
@@ -367,8 +373,8 @@ class edit_mode( basic_mode):
     else:
       if self._dragging == 3:
         self.app.paper.select( filter( lambda o: o,\
-                                   map( self.app.paper.id_to_object,\
-                                        self.app.paper.find_enclosed( self._startx, self._starty, event.x, event.y))))
+                               map( self.app.paper.id_to_object,\
+                                    self.app.paper.find_enclosed( self._startx, self._starty, event.x, event.y))))
         self.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
