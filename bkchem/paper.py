@@ -202,7 +202,7 @@ class chem_paper( Canvas, object):
 
 
   def remove_bindings( self):
-    for tag in self.all_names_to_bind:
+    for tag in self.all_names_to_bind + ("mark",):
       self.tag_unbind( tag, '<Enter>')
       self.tag_unbind( tag, '<Leave>')
     

@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """set of marks such as charges, radicals etc."""
 
@@ -83,6 +80,13 @@ class mark( simple_parent):
     x, y = tr.transform_xy( self.x, self.y)
     self.move_to( x, y)
 
+  def focus( self):
+    [self.paper.itemconfig( i, outline="red", fill="red") for i in self.items]
+
+  def unfocus( self):
+    [self.paper.itemconfig( i, outline=self.atom.line_color, fill=self.atom.line_color) for i in self.items]
+
+
 
 class radical( mark):
 
@@ -96,6 +100,8 @@ class radical( mark):
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s,
                                           fill=self.atom.line_color, outline=self.atom.line_color,
                                           tags='mark')]
+
+
 
   def get_svg_element( self, doc):
     e = doc.createElement( 'ellipse')
@@ -215,6 +221,15 @@ class electronpair( mark):
       self.paper.coords( i, tuple( tr_coords))
 
 
+  def focus( self):
+    [self.paper.itemconfig( i, fill="red") for i in self.items]
+
+  def unfocus( self):
+    [self.paper.itemconfig( i, fill=self.atom.line_color) for i in self.items]
+
+
+
+
 class plus( mark):
 
   standard_size = 10
@@ -261,6 +276,14 @@ class plus( mark):
     return e
 
 
+  def focus( self):
+    self.paper.itemconfig( self.items[0], outline="red")
+
+  def unfocus( self):
+    self.paper.itemconfig( self.items[0], outline="")
+
+
+
 
 
 class minus( mark):
@@ -276,10 +299,10 @@ class minus( mark):
       self.delete()
     x, y = self.x, self.y
     s = round( self.size / 2)
-    self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                          outline=self.atom.line_color, tags='mark')]
-    self.items.append( self.paper.create_line( x-s+2, y, x+s-2, y,
-                                               fill=self.atom.line_color, tags='mark'))
+    self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
+                                               fill=self.atom.line_color, tags='mark')]
+    self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
+                                          outline=self.atom.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):
@@ -305,5 +328,12 @@ class minus( mark):
                                      ( 'stroke', self.atom.line_color)))
 
     return e
+
+
+  def focus( self):
+    self.paper.itemconfig( self.items[1], outline="red")
+
+  def unfocus( self):
+    self.paper.itemconfig( self.items[1], outline=self.atom.line_color)
 
 

@@ -48,6 +48,8 @@ import Pmw, Tkinter
 import periodic_table as PT
 
 
+## -------------------- PARENT MODES--------------------
+
 class mode:
   """abstract parent for all modes. No to be used for inheritation because the more specialized
   edit mode has all the methods for editing - just override what you need to change"""
@@ -215,7 +217,7 @@ class mode:
 
 ## -------------------- BASIC MODE --------------------
 
-class basic_mode( mode):
+class simple_mode( mode):
   """little more sophisticated parent mode""" 
 
 
@@ -248,25 +250,11 @@ class basic_mode( mode):
 
 
 
-### -------------------- EDIT MODE --------------------
+class basic_mode( simple_mode):
 
-class edit_mode( basic_mode):
-  """basic editing mode, also good as parent for more specialized modes"""
   def __init__( self, app):
-    mode.__init__( self, app)
-    self.name = _('edit')
-    self._dragging = 0
-    self._dragged_molecule = None
-    self._block_leave_event = 0
-    self._moving_selected_arrow = None
-    self._last_click_time = 0
-    self.focused = None
-    # responses to key events
-    self.register_key_sequence( ' ', self._set_name_to_selected)
-    self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
-    self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
-    self.register_key_sequence( 'Return', lambda : self.app.paper.set_name_to_selected( self.app.editPool.text)) 
-    self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
+    simple_mode.__init__( self, app)
+    self.name = "simple"
     # align
     self.register_key_sequence( 'C-a C-t', lambda : self.app.paper.align_selected( 't'))
     self.register_key_sequence( 'C-a C-b', lambda : self.app.paper.align_selected( 'b'))
@@ -281,7 +269,6 @@ class edit_mode( basic_mode):
     # object related key bindings
     self.register_key_sequence( 'C-o C-i', lambda : self.app.paper.display_info_on_selected())
     self.register_key_sequence( 'C-o C-c', lambda : self.app.paper.check_chemistry_of_selected())
-    self.register_key_sequence( 'C-o C-e', self._expand_groups)
     # emacs like key bindings
     self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
     self.register_key_sequence( 'C-x C-w', self.app.save_as_CDML)
@@ -289,25 +276,14 @@ class edit_mode( basic_mode):
     self.register_key_sequence( 'C-x C-c', self.app._quit)
     self.register_key_sequence( 'C-x C-t', self.app.close_current_paper)
     self.register_key_sequence( 'C-x C-n', self.app.add_new_paper)
-    self.register_key_sequence( 'A-w', lambda : self.app.paper.selected_to_clipboard())
-    self.register_key_sequence( 'M-w', lambda : self.app.paper.selected_to_clipboard())
-    self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
-    self.register_key_sequence( 'C-y', self._paste_clipboard)
     self.register_key_sequence( 'C-/', lambda : self.app.paper.undo())
     self.register_key_sequence( 'C-S-?', lambda : self.app.paper.redo()) #note that 'S-/' => 'S-?'  !!!
     # windows style key bindings
     self.register_key_sequence( 'C-s', self.app.save_CDML)
-    self.register_key_sequence( 'C-c', lambda : self.app.paper.selected_to_clipboard())
-    self.register_key_sequence( 'C-v', self._paste_clipboard)
     self.register_key_sequence( 'C-z', self.undo)
     self.register_key_sequence( 'C-S-z', self.redo)
-    # 'C-x' from windoze is in use - 'C-k' instead
-    self.register_key_sequence( 'C-k', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
     # 'C-a' from windoze is in use - 'C-S-a' instead
     self.register_key_sequence( 'C-S-a', lambda : self.app.paper.select_all)
-    # debuging
-    #self.register_key_sequence( 'A-i', self._debug_info_for_focused)
-    #self.register_key_sequence( 'A-d c', self.app.paper._open_debug_console)
     # arrow moving
     self.register_key_sequence( 'Up', lambda : self._move_selected( 0, -1))
     self.register_key_sequence( 'Down', lambda : self._move_selected( 0, 1))
@@ -318,8 +294,64 @@ class edit_mode( basic_mode):
     self.register_key_sequence( 'C-o C-b', lambda : self.app.paper.lower_selected_to_bottom())
     self.register_key_sequence( 'C-o C-s', lambda : self.app.paper.swap_selected_on_stack())
     # chains (C-d as draw)
+
+
+  def undo( self):
+    self.app.paper.undo()
+    if self.focused and not self.app.paper.is_registered_object( self.focused):
+      # focused object was deleted
+      self.focused = None
+
+  def redo( self):
+    self.app.paper.redo()
+    if self.focused and not self.app.paper.is_registered_object( self.focused):
+      # focused object was deleted
+      self.focused = None
+  
+
+
+
+## /// -------------------- PARENT MODES --------------------
+
+
+
+### -------------------- EDIT MODE --------------------
+
+class edit_mode( basic_mode):
+  """basic editing mode, also good as parent for more specialized modes"""
+  def __init__( self, app):
+    basic_mode.__init__( self, app)
+    self.name = _('edit')
+    self._dragging = 0
+    self._dragged_molecule = None
+    self._block_leave_event = 0
+    self._moving_selected_arrow = None
+    self._last_click_time = 0
+    self.focused = None
+    # responses to key events
+    self.register_key_sequence( ' ', self._set_name_to_selected)
+    self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
+    self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
+    self.register_key_sequence( 'Return', lambda : self.app.paper.set_name_to_selected( self.app.editPool.text)) 
+    self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
+    # object related key bindings
+    self.register_key_sequence( 'C-o C-e', self._expand_groups)
+    # emacs like key bindings
+    self.register_key_sequence( 'A-w', lambda : self.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'M-w', lambda : self.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
+    self.register_key_sequence( 'C-y', self._paste_clipboard)
+    # windows style key bindings
+    self.register_key_sequence( 'C-c', lambda : self.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'C-v', self._paste_clipboard)
+    # 'C-x' from windoze is in use - 'C-k' instead
+    self.register_key_sequence( 'C-k', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
+    # 'C-a' from windoze is in use - 'C-S-a' instead
+    # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
-    
+
+    # config
+    self.rectangle_selection = True  # this can be overriden by children
     
     
 
@@ -404,6 +436,8 @@ class edit_mode( basic_mode):
         self.app.paper.start_new_undo_record()
       self._dragging = 0
       self.app.paper.add_bindings()
+
+
     
   def mouse_click( self, event):
     if not self._shift:
@@ -465,12 +499,15 @@ class edit_mode( basic_mode):
           self._dragged_molecule = self.focused
         self.focused.unfocus()
         self.focused = None
-      else:
+      elif self.rectangle_selection:
         ### select everything in selection rectangle
         if not self._shift:
           self.app.paper.unselect_all()
         self._dragging = 3
         self._selection_rect = self.app.paper.create_rectangle( self._startx, self._starty, event.x, event.y)
+      else:
+        ### don't do anything
+        self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
       dx = event.x-self._startx
       dy = event.y-self._starty
@@ -617,17 +654,6 @@ class edit_mode( basic_mode):
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
 
-  def undo( self):
-    self.app.paper.undo()
-    if self.focused and not self.app.paper.is_registered_object( self.focused):
-      # focused object was deleted
-      self.focused = None
-
-  def redo( self):
-    self.app.paper.redo()
-    if self.focused and not self.app.paper.is_registered_object( self.focused):
-      # focused object was deleted
-      self.focused = None
 
 
     
@@ -1501,6 +1527,7 @@ class mark_mode( edit_mode):
     self.register_key_sequence( 'Left', lambda : self._move_mark_for_selected( -1, 0), use_warning=0)
     self.register_key_sequence( 'Right', lambda : self._move_mark_for_selected( 1, 0), use_warning=0)
 
+    self.rectangle_selection = False
 
 
   def mouse_click( self, event):
@@ -1525,6 +1552,34 @@ class mark_mode( edit_mode):
       self.app.paper.um.delete_last_record()
     self.app.paper.start_new_undo_record( name="arrow-key-move")
 
+
+  def startup( self):
+    self._register_all_marks( self.app.paper)
+    self.app.paper.remove_bindings()
+    self.app.paper.add_bindings( active_names=("mark","atom"))
+
+
+
+  def cleanup( self, paper=None):
+    pap = paper or self.app.paper
+    self._unregister_all_marks( pap)
+    pap.remove_bindings()
+    pap.add_bindings()
+
+
+  def _register_all_marks( self, paper):
+    [i.paper.register_id( i.items[0], i) for i in self._all_marks( paper)]
+
+  def _unregister_all_marks( self, paper):
+    [i.paper.unregister_id( i.items[0]) for i in self._all_marks( paper)]    
+
+
+  def _all_marks( self, paper):
+    for m in paper.molecules:
+      for a in m.atoms:
+        for (name, mark) in a.marks.iteritems():
+          if mark:
+            yield mark
 
 
 
@@ -1624,9 +1679,6 @@ class reaction_mode( basic_mode):
     self.focused = None
     self._items = []
     self.arrow = None
-    # just the saving bindings
-    self.register_key_sequence( 'C-s', self.app.save_CDML)
-    self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
 
 
   def mouse_down( self, event):
@@ -1772,9 +1824,7 @@ class external_data_mode( basic_mode):
     self.focused = None
     self._items = {}
     self._win = None
-    # just the saving bindings
-    self.register_key_sequence( 'C-s', self.app.save_CDML)
-    self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
+
 
 
   def mouse_down( self, event):
