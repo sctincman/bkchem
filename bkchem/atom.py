@@ -300,7 +300,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
   # drawn
   def _get_drawn( self):
     """is the atoms drawn on the paper or just virtual"""
-    if self.item:
+    if hasattr( self, 'item') and self.item:
       return 1
     return 0
 

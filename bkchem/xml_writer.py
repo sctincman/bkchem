@@ -51,7 +51,7 @@ class XML_writer:
 
   def get_nicely_formated_document( self):
     """returns text form of self.document indented with dom_extensions.safe_indent"""
-    dom_extensions.safe_indent( self.top)
+    dom_extensions.safe_indent( self.top, dont_indent=("text","ftext","user-data"))
     return self.document.toxml()
 
 # Tkinter states that it takes font sizes in pt. However this is not true (as for python 2.2.2)

@@ -29,18 +29,18 @@ import operator
 #from __future__ import division
 
 
-def safe_indent( element, level=0, step=2):
+def safe_indent( element, level=0, step=2, dont_indent=("ftext","text")):
   """indents DOM tree. Does not add any extra whitespaces to text elements."""
   if not element.childNodes:
     pass
   elif reduce( operator.add, [isinstance( child, dom.Text) for child in element.childNodes], 0):
     pass
-  elif element.nodeName == 'ftext' or element.nodeName == 'text':
+  elif element.nodeName in dont_indent:
     pass
   else:
     for child in element.childNodes[:]:
       element.insertBefore( element.ownerDocument.createTextNode("\n"+(level+step)*" "), child)
-      safe_indent( child, level=level+step, step=step)
+      safe_indent( child, level=level+step, step=step, dont_indent=dont_indent)
     element.appendChild(  element.ownerDocument.createTextNode("\n"+level*" "))
 
 

@@ -1620,8 +1620,9 @@ class mark_mode( edit_mode):
   def _all_marks( self, paper):
     for m in paper.molecules:
       for a in m.atoms:
-        for mark in a.marks:
-          yield mark
+        if hasattr( a, 'marks'):
+          for mark in a.marks:
+            yield mark
 
 
 
@@ -2218,6 +2219,54 @@ class rapid_draw_mode( edit_mode):
     else:
       return event.x, event.y
 
+
+
+
+
+# -------------------- MISCELANOUS MODE --------------------
+
+class misc_mode( edit_mode):
+  """container mode for small, seldom needen modes"""
+
+  def __init__( self):
+    edit_mode.__init__( self)
+    self.name = _('Miscelanous small modes')
+    self.submodes = [['numbering']]
+    self.submodes_names = [[_('Numbering')]]
+    self.submode = [0]
+
+    self._number = 1
+
+
+
+  def mouse_click( self, event):
+    if self.focused and hasattr( self.focused, 'number'):
+      self.focused.number = str( self._number)
+      self._number += 1
+
+
+
+  def cleanup( self):
+    Store.app.paper.remove_bindings()
+    Store.app.paper.add_bindings()
+
+
+
+  def startup( self):
+    Store.app.paper.remove_bindings()
+    Store.app.paper.add_bindings( active_names=('atom',))
+
+    Store.app.paper.unselect_all()
+    self._number = 1
+    
+
+
+  def leave_object( self, event):
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
+    else:
+      warn( "leaving NONE", UserWarning, 2)
 
 
 

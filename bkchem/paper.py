@@ -990,7 +990,6 @@ class chem_paper( Canvas, object):
 
       # put the id_manager back
       self.onread_id_sandbox_finish( apply_to=os)
-      
       self.handle_overlap()
       self.start_new_undo_record()
       

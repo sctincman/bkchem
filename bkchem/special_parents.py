@@ -40,18 +40,20 @@ class vertex_common( object):
   def __init__( self):
     self.marks = Set()
     # numbering
-    self.show_number = True
-    self.number = None
+    self._show_number = True
+    self._number = None
 
 
 
   # number
   def _set_number( self, number):
-    self._number = number
+    self._number = str( number)
     if self._number != None and self.show_number:
       numbers = self.get_marks_by_type( "atom_number")
       if not numbers:
         self.create_mark( "atom_number", draw=self.drawn)
+      elif self.drawn:
+        numbers[0].redraw()
 
 
   def _get_number( self):
@@ -143,7 +145,7 @@ class vertex_common( object):
 
 
   def get_marks_by_type( self, mark_type):
-    return [m for m in self.marks in m.__class__.__name__ == mark_type]
+    return [m for m in self.marks if m.__class__.__name__ == mark_type]
 
 
 

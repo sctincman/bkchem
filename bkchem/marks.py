@@ -41,6 +41,7 @@ class mark( simple_parent):
   standard_size = 4
   # undo related metas
   meta__undo_simple = ('x', 'y', 'auto','size')
+  meta__save_attrs = {}
 
   def __init__( self, atom, x, y, size=4, auto=1):
     """size is a diameter of the mark"""
