@@ -443,7 +443,8 @@ class BKchem( Tk):
 
     if self.subbuttons:
       for butts in self.subbuttons:
-        butts.deleteall()
+        if hasattr( butts, 'deleteall()'):
+          butts.deleteall()
         butts.destroy()
     self.subbuttons = []
     m = self.mode
@@ -578,8 +579,12 @@ class BKchem( Tk):
       elif result == _('Cancel'):
         return 0 # we skip away
     self.papers.remove( p)
+
+    # cleanup
     # find the name of the tab
     name = self.get_paper_tab_name( p)
+    del self.__tab_name_2_paper[ name]
+    p.mrproper()
     self.notebook.delete( name or Pmw.SELECT)
     return 1
 

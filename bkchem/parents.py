@@ -73,6 +73,8 @@ class id_enabled( simple_parent):
     return self.__id
 
   def __set_id( self, id):
+    if self.paper.id_manager.is_registered_object( self):
+      self.paper.id_manager.unregister_object( self) 
     self.paper.id_manager.register_id( self, id)
     self.__id = id
 

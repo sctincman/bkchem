@@ -258,7 +258,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     return self.get_ftext()
 
   def __set_xml_text( self, xml_text):
-    self.set_name( xml_text)
+    pass
+    #self.set_name( xml_text)  -- ignored for now
 
   xml_text = property( __get_xml_text, __set_xml_text)
 

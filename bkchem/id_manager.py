@@ -27,7 +27,7 @@ class id_manager:
 
 
   def register_id( self, obj, id):
-    if obj in self.id_map.values():
+    if self.is_registered_object( obj):
       raise "object is already registered "+str(obj)
     self.id_map[ id] = obj
 
@@ -57,3 +57,19 @@ class id_manager:
     id = self.generate_id( self, prefix=prefix)
     self.register_id( obj, id)
     return id
+
+
+  def is_registered_object( self, obj): 
+    return (obj in self.id_map.values())
+
+
+  def get_id_of_object( self, obj):
+    for k,v in self.id_map.iteritems():
+      if v == obj:
+        return k
+    return None
+
+
+
+  def unregister_object( self, obj):
+    self.unregister_id( self.get_id_of_object( obj))

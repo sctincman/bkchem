@@ -80,6 +80,13 @@ class undo_manager:
     self._pos = -1
     del self._records[:]
 
+
+  def mrproper( self):
+    self.clean()
+    del self.paper
+    del self._records
+
+
   def get_last_record_name( self):
     """returns the last closed record name"""
     if self._pos >= 1:
@@ -199,6 +206,9 @@ class state_record:
         if o not in deleted and o.object_type != 'molecule':
           if o.object_type == 'atom':
             o.redraw( suppress_reposition=1)
+          elif o.object_type == 'bond':
+            [a.redraw( suppress_reposition=1) for a in o.get_atoms() if a.show]
+            o.redraw()
           else:
             o.redraw()
       i += 1

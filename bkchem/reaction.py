@@ -19,6 +19,7 @@
 
 
 import dom_extensions
+import sys
 
 singulars = ['reactant', 'product', 'arrow', 'condition', 'plus']
 plurals = ['reactants', 'products', 'arrows', 'conditions', 'pluses']
@@ -67,3 +68,9 @@ class reaction( object):
         self.__dict__[ plurals[ i]].append( id_manager.get_object_with_id( el.getAttribute( 'idref')))
 
     
+
+  def check_the_references( self, available):
+    for name in ('reactants','products','conditions', 'pluses'):
+      for obj in self.__dict__[ name]:
+        if obj not in available:
+          self.__dict__[ name].remove( obj)

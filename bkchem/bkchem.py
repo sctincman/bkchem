@@ -25,6 +25,9 @@
 import os_support, sys
 sys.path.append( os_support.get_module_path())
 
+# this is here to import the modified piddle and not the one in lib/python
+sys.path.insert( 1, 'plugins/piddle')
+
 ### now starting for real
 
 ## first turn locale support on

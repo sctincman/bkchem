@@ -21,14 +21,16 @@
 #
 #--------------------------------------------------------------------------
 
-import CML, CML2
-#import povray
-import openoffice
-import postscript
-import molfile
-import gtml
-import pdf
-import bitmap
-import postscript2
+__all__ = []
+_names = ['CML','CML2','openoffice','postscript','molfile','gtml','pdf','bitmap', 'postscript2']
 
-__all__ = ['CML','CML2','openoffice','postscript','molfile','gtml','pdf','bitmap', 'postscript2']
+
+for _name in _names:
+  try:
+    exec 'import %s' % _name
+    __all__.append( _name)
+  except:
+    print "could not load module %s" % _name
+
+del _name
+del _names

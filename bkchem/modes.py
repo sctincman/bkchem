@@ -116,6 +116,7 @@ class mode:
             return None
         # if we get here it means that the key is neither used nor a prefix
         self._recent_key_seq = ''
+
       
   def key_released( self, event):
     key = event_to_key( event)

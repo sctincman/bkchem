@@ -436,6 +436,9 @@ class chem_paper( Canvas, object):
     self.selected = []
     #return deleted
 
+    ## check reactions
+    [a.reaction.check_the_references( self.stack) for a in self.arrows]
+      
 
       
 
@@ -598,6 +601,7 @@ class chem_paper( Canvas, object):
 
   def onread_id_sandbox_finish( self, apply_to=None):
     self.id_manager = self.__old_id_manager
+    del self.__old_id_manager
     if apply_to == None:
       os = self.stack
     else:
@@ -629,6 +633,32 @@ class chem_paper( Canvas, object):
         root.appendChild( a.reaction.get_package( doc))
     return doc
     
+
+  def mrproper( self):
+    self.unselect_all()
+    
+    import parents
+    for a in self.stack:
+      if isinstance( a, parents.container):
+        for ch in a.children:
+          del ch.paper
+      del a.paper
+
+    self.clean_paper()
+    self.um.mrproper()
+
+    del self.app
+    del self.clipboard
+    del self.id_manager
+    del self.standard
+    del self.submode
+    self.mode = None
+    self.gm = None
+    self.tm = None
+    del self.selected
+    del self._id_2_object
+    del self.um
+    del self.file_name
 
 
 
