@@ -214,17 +214,18 @@ from Tkinter import Entry
 
 class ExternalDataEntry( Entry, object):
 
-  def __init__( self, parent, type, **kw):
+  def __init__( self, parent, type, type_class, **kw):
     Entry.__init__( self, parent, kw)
     self.arrow = None
-    self.type = type  # is one of ("internal", "reference")
+    self.type_class = type_class  # is one of ("internal", "reference")
+    self.type = type
     #self.value = None
 
 
   def _set_value( self, value):
+    self.delete( 0, last='end')
     if value != None:
       self._value = value
-      self.delete( 0, last='end')
       self.insert( 0, str( self._value))
 
   def _get_value( self):

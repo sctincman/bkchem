@@ -65,7 +65,7 @@ class BKchem( Tk):
     #self.option_add( "*Background", "#eaeaea")
     self.option_add( "*Entry*Background", "white")
     self.option_add( "*Entry*Foreground", "#000000")
-    self.tk_setPalette( "background", "#eaeaea",
+    self.tk_setPalette( "background", config.background_color,
                         "insertBackground","#ffffff")
     
 
@@ -561,7 +561,16 @@ class BKchem( Tk):
   def change_paper( self, name):
     if self.papers:
       old_paper = self.paper
+      # de-highlighting of current tab
+      try:
+        i = self.papers.index( old_paper)
+        self.notebook.tab( i).configure( background=config.background_color)
+      except:
+        pass
       i = self.notebook.index( name)
+      # highlighting of current tab
+      self.notebook.tab( i).configure( background="white")
+      # the rest
       self.paper = self.papers[i]
       if hasattr( self, 'mode') and old_paper in self.papers:
         # this is not true on startup and tab closing

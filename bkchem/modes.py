@@ -1840,13 +1840,16 @@ class external_data_mode( basic_mode):
         self._entry_left()
         self._entry_entered( e)
       else:
-        self._activate_object( self.focused)
+        if self.get_submode( 0) == "molecule":
+          self._activate_object( self.focused.parent)
+        else:
+          self._activate_object( self.focused)
         self._populate_table_for_active_object()
 
 
   def _get_active_entry( self):
     e = self.app.focus_get()
-    if e in self._entries.values():
+    if e in self._entries.values() and e.type_class == "reference":
       return e
 
 
@@ -1874,11 +1877,13 @@ class external_data_mode( basic_mode):
     obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
     if obj:
       self._focus_selector = self.app.paper.create_rectangle( obj.bbox(), outline="orange", width=2)
-      self._add_bindings_according_to_submode()
+    self._add_bindings_according_to_active_name( e.type)
+
 
   def _entry_left( self):
     if self._focus_selector:
       self.app.paper.delete( self._focus_selector)
+    self._add_bindings_according_to_submode()
 
 
   def _set_data( self):
@@ -1908,11 +1913,11 @@ class external_data_mode( basic_mode):
       for k,v in defs.iteritems():
         label = Tkinter.Label( self._frame, text=v['text'])
         if v['type'] in self.app.paper.edm.reference_types:
-          entry = external_data.ExternalDataEntry( self._frame, "reference")
+          entry = external_data.ExternalDataEntry( self._frame, v['type'], "reference")
           entry.bind( "<FocusIn>", lambda e: self._entry_entered( e.widget))
           entry.bind( "<FocusOut>", lambda e: self._entry_left())
         else:
-          entry = external_data.ExternalDataEntry( self._frame, "internal")
+          entry = external_data.ExternalDataEntry( self._frame, v['type'], "internal")
         self._items.add( label)
         self._entries[ k] = entry
         label.pack()
@@ -1922,7 +1927,7 @@ class external_data_mode( basic_mode):
 
   def _draw_the_arrows( self):
     for e in self._entries.values():
-      if e.type == "reference":
+      if e.type_class == "reference":
         e.cleanup( self.app.paper)
         obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
         if obj:
@@ -1944,12 +1949,19 @@ class external_data_mode( basic_mode):
 
   def _add_bindings_according_to_submode( self):
     name = self.get_submode(0)
+    self._add_bindings_according_to_active_name( name)
+    
+
+  def _add_bindings_according_to_active_name( self, name):
+    self.app.paper.remove_bindings()
     if name == 'molecule':
       self.app.paper.add_bindings( active_names=('atom','bond'))
     elif name == 'atom':
       self.app.paper.add_bindings( active_names=('atom',))
     elif name == 'bond':
       self.app.paper.add_bindings( active_names=('bond',))
+
+
     
 
 
