@@ -288,7 +288,7 @@ class SVG_writer( XML_writer):
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
                                          ( 'fill', t.line_color),
-                                         ( 'textLength', "%dpx" % (x2-x))))
+                                         ( 'textLength', "%d" % (x2-x))))
     self.group.appendChild( text)
 
   def add_plus( self, p):
@@ -318,25 +318,20 @@ class SVG_writer( XML_writer):
       item = a.selector
       x1, y1 = a.get_xy()
       x, y, x2, y2 = self.paper.bbox( item)
-      #if os.name == 'nt':
-      #  x += 2  #nasty hack to improve results on win machines (they have larger fonts?!?)
-      #  x2 -= 2 
-##       dom_extensions.elementUnder( self.group, 'rect',
-##                                    (( 'x', str( x)),
-##                                     ( 'y', str( y)),
-##                                     ( 'width', str( x2-x)),
-##                                     ( 'height', str( y2-y)),
-##                                     ( 'fill', a.area_color),
-##                                     ( 'stroke', a.area_color)))
-      y1 += (y2-y)/4.0
-      x += 2 ## hack to compensate for the wrong measuring of text
+
+      # some fine tuning 
+      y1 += a.font.metrics('descent') #(y2-y)/4.0
+      x += 1.3 ## hack to compensate for the wrong measuring of text
+
       text = svg_help.ftext_to_svg_dom( a.get_ftext())
       dom_extensions.setAttributes( text, (( "x", str( x)),
                                            ( "y", str( y1)),
                                            ( "font-family", a.font_family),
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
-                                           ( 'fill', a.line_color),
-                                           ( 'textLength', "%dpx" % (x2-x))))
+                                           ( 'fill', a.line_color)))
+      # set the text length but only for text longer than threshold
+      if (x2-x) > 50:
+        text.setAttribute( 'textLength', "%.1f" % (x2-x))
       self.group.appendChild( text)
 
     if hasattr( a, "marks"):

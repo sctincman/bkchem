@@ -311,17 +311,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def _where_to_draw_from_and_to( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
-    bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
-    bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
     # nasty hacks
     modifier = (0,0,0,-3)
-    bbox1 = map( operator.add, bbox1, modifier)
-    bbox2 = map( operator.add, bbox2, modifier)
     # // nasty hacks
     if self.atom1.show:
-      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1, round_edges=1)
+      bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
+      bbox1 = map( operator.add, bbox1, modifier)
+      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1, round_edges=0)
     if self.atom2.show:
-      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2, round_edges=1)
+      bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
+      bbox2 = map( operator.add, bbox2, modifier)
+      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2, round_edges=0)
     return (x1, y1, x2, y2)
 
 

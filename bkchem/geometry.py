@@ -137,12 +137,8 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
   ldx = lx1 - lx0
   ldy = ly1 - ly0
 
-  # when ldx and ldy are close apply the rounding of edges
-  if not ldy == 0 and abs( abs( ldx) / abs( ldy) - 1) < 0.1:
-    modifier = (round_edges, round_edges, -round_edges, -round_edges)
-    rx0, ry0, rx1, ry1 = map( operator.add, normalize_coords( rect), modifier)
-  
   if ldy == 0 or (abs( ldx) /  abs( ldy)) > (abs( rx0 -rx1) / abs( ry0 -ry1)):
+    # we calculate using y = f(x)
     k = ldy/ldx
     q = ly0 - k*lx0
     if ldx < 0:
@@ -151,6 +147,7 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
       x = rx0
     y = k*x + q
   else:
+    # we calculate using x = f(y)
     k = ldx/ldy
     q = lx0 - k*ly0
     if ldy < 0:
@@ -160,3 +157,9 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
     x = k*y + q
   return (x, y)
 
+
+
+
+
+def point_distance( x1, y1, x2, y2):
+  return sqrt( (x2-x1)**2 + (y2-y1)**2)
