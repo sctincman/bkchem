@@ -18,132 +18,45 @@
 #--------------------------------------------------------------------------
 
 
-import piddlePDF
-import piddle
-import tkFont
+import plugin
+from tk2piddle import tk2piddle
+import transform
 
 
-class piddle_exporter:
 
-  def __init__( self):
+class piddle_exporter( plugin.exporter):
+
+  def __init__( self, paper):
+    self.paper = paper
+
+
+  def init_canvas( self, pagesize=None):
     pass
 
 
+
   def on_begin( self):
-    self.canvas = piddlePDF.PDFCanvas() # pagesize=(72*21/2.54, 72*29.7/2.54))
-    self.convert = self.paper_to_canvas_coord
+    scale = 720.0/self.paper.winfo_fpixels( '254m')
+    if self.paper.get_paper_property( 'crop_svg'):
+      items = list( self.paper.find_all())
+      items.remove( self.paper.background)
+      x1, y1, x2, y2 = self.paper.list_bbox( items)
+      self.transformer = transform.transform()
+      self.transformer.set_move( -x1, -y1)
+      self.transformer.set_scaling( scale)
+      dx = x2-x1
+      dy = y2-y1
+    else:
+      self.transformer = transform.transform()
+      self.transformer.set_scaling( scale)
+      dx = self.paper.mm_to_px( self.paper._paper_properties['size_x'])
+      dy = self.paper.mm_to_px( self.paper._paper_properties['size_y'])
+
+    self.canvas = self.init_canvas( pagesize=(scale*dx, scale*dy))
+    self.converter = tk2piddle()
     return 1
 
   def write_to_file( self, name):
-    self.draw_document()
-    self.canvas.flush()
+    self.converter.export_to_piddle_canvas( self.paper, self.canvas, transformer=self.transformer)
     self.canvas.save( name)
 
-
-  def paper_to_canvas_color( self, color):
-    if not color:
-      return piddle.transparent
-    colors = self.paper.winfo_rgb( color)
-    return piddle.Color( *map( lambda x: x/65535.0, colors))
-
-
-  def paper_to_canvas_coord( self, x):
-    dpi = self.paper.winfo_fpixels( '254m')/10.0
-    return 72*x/dpi
-
-
-  def draw_document( self):
-    # the conversion function for coordinates
-    for item in self.paper.find_all():
-      method = "_draw_" + self.paper.type( item)
-      if not method in self.__class__.__dict__:
-        print "method to draw %s is not implemented" % self.paper.type( item)
-      else:
-        self.__class__.__dict__[ method]( self, item)
-
-
-
-  def _draw_line( self, item):
-    if self.paper.itemcget( item, 'fill') != '':
-      coords = map( self.convert, self.paper.coords( item))
-      if len( coords) > 4:
-        # polyline
-        outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-        fill = piddle.transparent
-        width = self.convert( float( self.paper.itemcget( item, 'width')))
-        i = 0
-        cs = []
-        for c in coords:
-          if i == 0:
-            x = c
-            i = 1
-          else:
-            cs.append( (x, c))
-            i = 0
-        self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
-      else:
-        # simple line
-        fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-        width = self.convert( float( self.paper.itemcget( item, 'width')))
-        x1, y1, x2, y2 = coords
-        self.canvas.drawLine( x1, y1, x2, y2, color=fill, width=width)
-    else:
-      pass #transparent things
-
-
-  def _draw_text( self, item):
-    text = self.paper.itemcget( item, 'text')
-    #x, y = map( self.convert, self.paper.coords( item))
-    x1, y1, x2, y2 = map( self.convert, self.paper.bbox( item))
-    afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
-    conf = afont.config()
-    font_family = conf['family']
-    font_size = conf[ 'size']
-    italic = 'italic' in conf['slant']
-    bold = 'bold' in conf['weight']
-    y = max(y1,y2)- self.convert( afont.metrics()['descent'])
-    fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-    font = piddle.Font( face=font_family, size=font_size, bold=bold, italic=italic)
-    self.canvas.drawString( text, x1+self.convert(2), y, font=font, color=fill)  # +2 is a hack
-
-
-  def _draw_rectangle( self, item):
-    coords = map( self.convert, self.paper.coords( item))
-    outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'outline'))
-    fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
-    x1, y1, x2, y2 = coords
-    self.canvas.drawRect( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
-    
-    
-  def _draw_polygon( self, item):
-    coords = map( self.convert, self.paper.coords( item))
-    outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'outline'))
-    fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
-    i = 0
-    cs = []
-    for c in coords:
-      if i == 0:
-        x = c
-        i = 1
-      else:
-        cs.append( (x, c))
-        i = 0
-    self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=1)
-    
-
-  def _draw_oval( self, item):
-    coords = map( self.convert, self.paper.coords( item))
-    outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'outline'))
-    fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
-    x1, y1, x2, y2 = coords
-    self.canvas.drawEllipse( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
-    
-
-
-# PLUGIN INTERFACE SPECIFICATION
-name = "Piddle"
-extensions = [".pdf"]
-exporter = piddle_exporter

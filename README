@@ -2,7 +2,7 @@ BKchem is a free molecular drawing program.
 
 For more info on program capabilities, install instructions etc. see
 documentation in directory "doc" in the main BKchem directory or the BKchem
-website on http://www.freesoftware.fsf.org/bkchem/
+website on http://zirael.org/bkchem/
 
 ---
 BKchem is free software and is distributed under GNU GPL. The program is
@@ -11,14 +11,14 @@ file "gpl.txt" in main bkchem directory.
 
 
 ---
-For latest news and updates visit the BKchem page at savannah.gnu.org
-- http://savannah.gnu.org/projects/bkchem/
-
-
----
 For installation instructions see the file INSTALL in main BKchem directory.
  
 
----
-Even if you don't usually read documentation you should at least check the section "Key
-bindings". It can save you a lot of time and effort.
+
+
+
+NOTE: Starting with the version 0.9.0-pre1 I ship piddle sources together with
+bkchem. Piddle is a library provided under the GPL license and seems to be dead
+to at least 2 years. Therefore I have decided to put it inside bkchem sources and
+distribute any eventual additions this way. I case I will make any major changes
+I will release piddle as a standalone library.

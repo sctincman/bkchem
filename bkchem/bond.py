@@ -288,13 +288,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
 
 
 
-  def draw( self, no_automatic=0):
-    """call the appropriate draw method, no_automatic is used on file read when no automatic decisions are needed"""
+  def draw( self, automatic="both"):
+    """call the appropriate draw method, automatic specifies what to automatically compute -
+    all, sign, none (sign is often needed to retain the look after transformation)"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
     method = "_draw_%s%d" % (self.type, self.order or 1)
-    if not no_automatic and self.order == 2 and self.auto_bond_sign == 1:
-      self._decide_distance_and_center()
+    if automatic != "none" and self.order == 2 and self.auto_bond_sign == 1:
+      sign, center = self._compute_sign_and_center()
+      self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
+      if automatic == "both":
+        self.center = center
     self.__class__.__dict__[ method]( self)
 
 
@@ -738,7 +742,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     sel = self.selector
     if self.item:
       self.delete()
-    self.draw( no_automatic=not recalc_side)
+    self.draw( automatic=recalc_side and "both" or "none")
     # reselect
     if sel:
       self.select()

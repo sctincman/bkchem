@@ -19,7 +19,7 @@
 
 
 import plugin
-import piddlePIL
+from piddle import piddlePIL
 from tk2piddle import tk2piddle
 
 

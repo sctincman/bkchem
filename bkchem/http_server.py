@@ -81,20 +81,20 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       self.return_error()
     else:
       self.server.app.paper.clean_paper()
-      self.server.app.paper.set_paper_properties()
+      self.server.app.paper.create_rectangle()
       self.server.app.read_smiles( path_list[0])
       self.serve__content_svg()
 
   def servedir_inchi( self, path_list):
     self.server.app.paper.clean_paper()
-    self.server.app.paper.set_paper_properties()
+    self.server.app.paper.create_background()
     self.server.app.read_inchi( '/'.join( path_list))
     self.serve__content_svg()
 
 
   def servedir_gtml( self, path_list):
     self.server.app.paper.clean_paper()
-    self.server.app.paper.set_paper_properties()
+    self.server.app.paper.create_background()
     self.server.app.plugin_import( 'GTML', '/'.join( path_list))
     self.serve__content_svg()
     

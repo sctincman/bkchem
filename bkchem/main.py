@@ -927,7 +927,7 @@ class BKchem( Tk):
       self.paper.clean_paper()
       if cdml == 0:
         # doc is a molecule
-        self.paper.set_paper_properties()
+        self.paper.create_background()
         for m in doc:
           self.paper.stack.append( m)
           m.draw()

@@ -358,10 +358,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     return mol
 
 
-  def draw( self, no_automatic=0):
-    """draw the molecule, optional argument no_automatic is passed to bonds
-    to toggle on/off the automatic positioning of double bonds"""
-    [a.draw( no_automatic=no_automatic) for a in self.bonds]
+
+  def draw( self, automatic="both"):
+    [a.draw( automatic=automatic) for a in self.bonds]
     [a.draw() for a in self.atoms]
     
 

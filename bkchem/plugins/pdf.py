@@ -18,27 +18,16 @@
 #--------------------------------------------------------------------------
 
 
-import plugin
-import piddlePDF
-from tk2piddle import tk2piddle
+from piddle_lowlevel import piddle_exporter
+from piddle import piddlePDF
 
 
-class pdf_exporter( plugin.exporter):
-
-  def __init__( self, paper):
-    self.paper = paper
+class pdf_exporter( piddle_exporter):
 
 
-  def on_begin( self):
-    dx = self.paper._paper_properties['size_x']
-    dy = self.paper._paper_properties['size_y']
-    self.canvas = piddlePDF.PDFCanvas( pagesize=(72*dx/25.4, 72*dy/25.4))
-    self.converter = tk2piddle()
-    return 1
+  def init_canvas( self, pagesize=None):
+    return piddlePDF.PDFCanvas( pagesize=pagesize)
 
-  def write_to_file( self, name):
-    self.converter.export_to_piddle_canvas( self.paper, self.canvas)
-    self.canvas.save( name)
 
 
 # PLUGIN INTERFACE SPECIFICATION

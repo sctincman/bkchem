@@ -1,4 +1,5 @@
 include setup.cfg
+include win_inst.py
 include INSTALL INSTALL.binary RELEASE README progress.log
 include gpl.txt progress.log
 include templates/*.cdml

@@ -96,7 +96,7 @@ class chem_paper( Canvas, object):
 
     # paper sizes etc.
     self._paper_properties = {}
-    self.set_paper_properties()
+    self.set_default_paper_properties()
 
     self.changes_made = 0
 
@@ -578,7 +578,7 @@ class chem_paper( Canvas, object):
             # it was in version '0.12' of CDML moved to the saved package and does not have to be
             # checked on start anymore
             [b.post_read_analysis() for b in o.bonds]
-          o.draw( no_automatic=1)
+          o.draw( automatic="none")
         else:
           o.draw()
     # now check if the old standard differs
@@ -1446,37 +1446,65 @@ class chem_paper( Canvas, object):
   
 
 
-
-
-
-  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None):
-    if all:
-      self._paper_properties = copy.copy( all)
-      return
-    if type != 'custom':
-      t = type or self.standard.paper_type
-      o = orientation or self.standard.paper_orientation
-      if o == 'portrait':
-        sy, sx = data.paper_types[t]
-      else:
-        sx, sy = data.paper_types[t]
+  def set_default_paper_properties( self):
+    t = self.standard.paper_type
+    o = self.standard.paper_orientation
+    if o == 'portrait':
+      sy, sx = data.paper_types[t]
     else:
-      t = 'custom'
-      o = orientation or self._paper_properties['orientation']
-      sx, sy = x, y
+      sx, sy = data.paper_types[t]
+
     self._paper_properties = {'type': t,
                               'orientation': o,
                               'size_x': sx,
                               'size_y': sy}
                               
     if not 'background' in self.__dict__ or not self.background:
-      self.background = self.create_rectangle( 0, 0, '%dm'%sx, '%dm'%sy, fill='white', outline='black')
+      self.background = self.create_rectangle( 0, 0, '%dm'%sx, '%dm'%sy, fill='white', outline='black', tags="no_export")
     else:
       self.coords( self.background, 0, 0, '%dm'%sx, '%dm'%sy)
 
     # crop svg
-    self._paper_properties['crop_svg'] = crop_svg or self.standard.paper_crop_svg
+    self._paper_properties['crop_svg'] = self.standard.paper_crop_svg
+    
 
+  def create_background( self):
+    sx = self._paper_properties['size_x']
+    sy = self._paper_properties['size_y']
+
+    if not 'background' in self.__dict__ or not self.background:
+      self.background = self.create_rectangle( 0, 0, '%dm'%sx, '%dm'%sy, fill='white', outline='black', tags="no_export")
+    else:
+      self.coords( self.background, 0, 0, '%dm'%sx, '%dm'%sy)
+    
+
+
+  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None):
+    if all:
+      self._paper_properties = copy.copy( all)
+      return
+    if type:
+      if type != 'custom':
+        t = type or self.standard.paper_type
+        o = orientation or self.standard.paper_orientation
+        if o == 'portrait':
+          sy, sx = data.paper_types[t]
+        else:
+          sx, sy = data.paper_types[t]
+      else:
+        t = 'custom'
+        o = orientation or self._paper_properties['orientation']
+        sx, sy = x, y
+      self._paper_properties = {'type': t,
+                                'orientation': o,
+                                'size_x': sx,
+                                'size_y': sy}
+                              
+    # crop svg
+    if crop_svg != None:
+      self._paper_properties['crop_svg'] = crop_svg
+
+    self.create_background()
 
 
 
@@ -1615,7 +1643,7 @@ class chem_paper( Canvas, object):
     """if no objects are given all are used, if old_standard is given only the values
     that have changed are applied; in template mode no changes of paper format are made"""
     if not template_mode:
-      self.set_paper_properties()
+      self.create_background()
     objs = objects or self.top_levels
     to_redraw = []
     st = self.standard

@@ -1,3 +1,42 @@
+RELEASE 0.9.0-pre1
+----------------------------------------
+
+ * bugfixes - colors of vector graphics were not read from CDML (SVG)
+            - reaction mode crashed when part of the reaction was removed
+            - a bug in undo of atoms with attached hydrogens was fixed
+            - vector graphics did not respond to mouse event once dragged
+               (until the mouse left it and reentered)
+            - chages are now handled correctly by molfile and other exports
+            - molfile export of atom charges was fixed (influences also inchi generation)
+            - export of wedges to openoffice was fixed (thanks to Alex Thurgood for bugreport)
+            - Expand groups failed on "Me"
+            - Expand groups had problems with positioning of double bonds (for COOH and similar)
+
+
+ * enhancements - user template mode added - it is now possible for the user to create
+                   her own templates (more in doc/custom_templates_en.html or on the homepage)
+                - Chemistry/Set display form enables you to set a string representation
+                   of a molecule (usefull only for external tools for now)
+                - rotation around bond added to the "transformation mode"
+                   (it enables rapid changes of conformation of molecules)
+                - dash bond added
+                - when entering atom text with charge (such as Al3+) it gets parsed correctly
+                   (does not work with atoms bearing a hydrogen such as ch2+ - it is ambiguous)
+                - bond order can be set from the context menu
+                - bond order can be explicitly set to 0 to allow describing of hydrogen bonds etc.
+                - PDF and Postscript(2) export plugins added based on Piddle (arrows export is not complete)
+                - bkchem can now be started and scripted from outside
+                   (see doc/external_import.html or homepage)
+
+
+ * changes - marks are now positioned above atoms, so it is no more possible for
+              a mark to be hidden under an atom
+           - svg export of text was hacked to compensate for wrong calculation of
+              text size in Tkinter
+
+
+
+
 RELEASE 0.8.1
 ----------------------------------------
 

@@ -103,7 +103,9 @@ class undo_manager:
       del self._records[ self._pos-1]
       self._pos -= 1
 
-
+  def get_number_of_records( self):
+    return len( self._records)
+  
 
 
 ##-------------------- STATE RECORD --------------------

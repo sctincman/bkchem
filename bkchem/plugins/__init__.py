@@ -16,14 +16,11 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 __all__ = []
-_names = ['CML','CML2','openoffice','postscript','molfile','gtml','pdf','bitmap', 'postscript2']
-
+_names = ['CML','CML2','openoffice','postscript','molfile','pdf', 'postscript2']
+# 'bitmap' and 'gtml' were removed for the release
 
 import sys
 
