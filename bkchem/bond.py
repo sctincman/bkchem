@@ -448,12 +448,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     # shortening of the second bond
     dx = x-x0
     dy = y-y0
-    # we don't want to shorten the bonds (yet)
-    #if self.center:
-    #  _k = 0
-    #else:
-    #  _k = (1-self.double_length_ratio)/2
-    _k = 0
+    if self.center:
+      _k = 0
+    else:
+      _k = (1-self.double_length_ratio)/2
     self.second = self._draw_dash(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
     if self.center:
       self.third = self._draw_dash(( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
@@ -467,7 +465,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
       self._decide_distance_and_center()
     d = self.bond_width
     # we don't want to shorten the bonds (yet)
-    #_k = (1-self.double_length_ratio)/2
+    _k = (1-self.double_length_ratio)/2
     _k = 0
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
     dx = x-x0

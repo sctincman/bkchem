@@ -250,7 +250,7 @@ class BKchem( Tk):
     self.chemistry_menu.add( 'command', label=_('Generate INChI'),
                              command = self.gen_inchi,
                              state=self.pm.has_preference("inchi_program_path") and "normal" or "disabled")
-    #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
+    self.chemistry_menu.add( 'command', label=_('Flush mol'), command = lambda : self.paper.flush_first_selected_mol_to_graph_file())
     self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper))
     
     # HACKS MENU
@@ -662,9 +662,9 @@ class BKchem( Tk):
   def set_file_name( self, name, check_ext=0):
     """if check_ext is true append a .svg extension if no is present"""
     if check_ext and not os.path.splitext( name)[1]:
-      self.paper.file_name = self.get_name_dic( name + ".svg")
+      self.paper.file_name = self.get_name_dic( name + ".svg", local_file=1)
     else:
-      self.paper.file_name = self.get_name_dic( name)
+      self.paper.file_name = self.get_name_dic( name, local_file=1)
     self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
 
 
@@ -807,7 +807,7 @@ class BKchem( Tk):
 
 
     
-  def get_name_dic( self, name=''):
+  def get_name_dic( self, name='', local_file=0):
     if not name:
       while 1:
         name = 'untitled%d.svg' % self._untitled_counter
@@ -817,8 +817,11 @@ class BKchem( Tk):
       name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1, 'ord': 0}
     else:
       dir, name = os.path.split( name)
-      if not dir:
+      if not dir and not local_file:
         dir = self.save_dir
+      elif not dir:
+        # the file should be in the local directory
+        dir = "./"
       name_dic = {'name':name, 'dir':dir, 'auto': 0, 'ord': 0}
       i = self.check_number_of_opened_same_names( name_dic)
       name_dic['ord'] = i
