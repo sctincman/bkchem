@@ -298,6 +298,9 @@ class molecule( simple_parent):
         self.t_bond_first = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_first'))
         self.t_bond_second = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_second'))
       self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
+    # we need to analyze the positioning of the double bond in order to be able
+    # to use the initial values later
+    [b.post_read_analysis() for b in self.bonds]
 
   def get_package( self, doc):
     mol = doc.createElement('molecule')
@@ -315,7 +318,8 @@ class molecule( simple_parent):
     return mol
 
   def draw( self):
-    map( lambda a: a.draw(), self)
+    # the molecule is an iterator
+    [a.draw() for a in self]
 
   def bond_between( self, a1, a2):
     "returns id of bond between atoms i1 and i2"
@@ -1047,6 +1051,7 @@ class bond( meta_enabled):
 
     # implicit values
     self.center = 0
+    self._auto_bond_sign = 1
 
     if package:
       self.read_package( package)
@@ -1081,7 +1086,6 @@ class bond( meta_enabled):
   def _draw_1s( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
-    #MB# x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
     # main item
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
@@ -1292,7 +1296,16 @@ class bond( meta_enabled):
       self.double_length_ratio = float( package.getAttribute( 'double_ratio'))
     # end of implied
     self.atom1 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'start'))
-    self.atom2 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'end'))      
+    self.atom2 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'end'))
+
+  def post_read_analysis( self):
+    """this method is called by molecule after the *whole* molecule is
+    read to perform a post-load analysis of double bond positioning"""
+    # after read analysis
+    sign, center = self._compute_sing_and_center()
+    if self.bond_width and self.bond_width * sign < 0:
+      self._auto_bond_sign = -1
+      
   
   def get_package( self, doc):
     a = data.alternative_bond_types
@@ -1336,11 +1349,14 @@ class bond( meta_enabled):
         self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
       else:
         if only_shift:
+          # should be called only for double bonds
           if self.center:
             self.bond_width = -self.bond_width
+            self._auto_bond_sign = -self._auto_bond_sign
             self.center = 0
           elif self.bond_width > 0:
             self.bond_width = -self.bond_width
+            self._auto_bond_sign = -self._auto_bond_sign
           else:
             self.center = 1
         else:
@@ -1358,9 +1374,6 @@ class bond( meta_enabled):
 
   def _decide_distance_and_center( self):
     """according to molecular geometry decide what bond.center and bond.bond_width should be"""
-    atms = self.molecule.atoms_bound_to( self.atom1) + self.molecule.atoms_bound_to( self.atom2)
-    atms = misc.difference( atms, [self.atom1, self.atom2])
-    coords = [a.get_xy() for a in atms]
     line = self.atom1.get_xy() + self.atom2.get_xy()
     if not self.bond_width:
       length = sqrt((line[0]-line[2])**2  + (line[1]-line[3])**2)
@@ -1369,6 +1382,16 @@ class bond( meta_enabled):
     # the str is to support the future notation for bond types
     if not '2' in str( self.type):
       return 
+    sign, center = self._compute_sing_and_center()
+    self.bond_width = self._auto_bond_sign * sign * abs( self.bond_width)
+    self.center = center
+
+  def _compute_sing_and_center( self):
+    """returns tuple of (sign, center) where sign is the default sign of the self.bond_width"""
+    line = self.atom1.get_xy() + self.atom2.get_xy()
+    atms = self.molecule.atoms_bound_to( self.atom1) + self.molecule.atoms_bound_to( self.atom2)
+    atms = misc.difference( atms, [self.atom1, self.atom2])
+    coords = [a.get_xy() for a in atms]
 
     # searching for circles
 
@@ -1422,7 +1445,7 @@ class bond( meta_enabled):
     # on which side to put the second line
     if side == 0 and (len( self.molecule.atoms_bound_to( self.atom1)) == 1 or len( self.molecule.atoms_bound_to( self.atom2)) == 1):
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
-      self.center = 1
+      return (1 ,1)
     else:
       if not circles:
         # recompute side with weighting of atom types
@@ -1433,11 +1456,9 @@ class bond( meta_enabled):
             sides[i] *= 0.2 # this makes "non C" less then C but more then H
           side = reduce( operator.add, sides, 0)
       if side < 0:
-        self.center = 0
-        self.bond_width = -abs( self.bond_width)
+        return (-1, 0)
       else:
-        self.center = 0
-        self.bond_width = abs( self.bond_width)
+        return (1, 0)
     
 
   def get_atoms( self):
