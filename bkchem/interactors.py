@@ -25,6 +25,7 @@ from molecule import molecule
 import Pmw
 import tkMessageBox
 import validator
+import widgets
 
 
 
@@ -119,13 +120,13 @@ def check_validity( app, mols):
     tkMessageBox.showerror( _("Validity error"),
                             _("Sorry but your drawing includes 'text atoms'\n - atoms with no chemical sense.") + "\n\n" +
                             _("It is not possible to export them.") + "\n\n" +
-                            _("For details check the chemistry with '%s/%s'.") % (_("Object"), _("Check chemistry")))
+                            _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
     return 0
   if val.report.exceeded_valency:
     import tkMessageBox
     tkMessageBox.showwarning( _("Validity warning"),
                               _("Your drawing includes some atoms with exceeded valency.") + "\n\n" + 
-                              _("For details check the chemistry with '%s/%s'.") % (_("Object"), _("Check chemistry")))
+                              _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
   if val.report.group_atoms:
     import tkMessageBox
     yes = tkMessageBox.askokcancel( _("Expand groups?"),
@@ -138,3 +139,21 @@ def check_validity( app, mols):
     else:
       return 0
   return 1
+
+
+
+
+
+def ask_inchi_program_path( app):
+  path = app.pm.get_preference( "inchi_program_path") or ""
+  dial = widgets.FileSelectionWithText( app, title=_("The INChI program path"),
+                                        prompt =_("Select the INChI program executable: "),
+                                        value = path,
+                                        filetypes=((_("Executable files"), ("*",)),)
+                                        )
+  a = dial.activate()
+  if a == _("OK"):
+    app.pm.add_preference( "inchi_program_path", dial.value)
+    app.chemistry_menu.entryconfigure( _("Generate INChI"), state="normal")
+    return 1
+  return 0

@@ -119,24 +119,11 @@ class BKchem( Tk):
                                   raisecommand=self.change_paper)
     self.add_new_paper()
 
-    
-    #self.paper = chem_paper( self.main_frame, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
-    #                    background="grey", closeenough=5, file_name=self.get_name_dic("a"))
-
     # template and group managers
     self.init_managers()
 
-    # menu initialization
-    #self.init_menu()
-
     # modes initialization
-    #self.init_modes()
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
-    #self.init_mode_buttons()
-
-    # edit pool
-    #self.editPool = editPool( self, self.main_frame, width=60)
-    #self.editPool.pack( anchor=W)
 
     # main drawing part packing
     self.notebook.pack( fill='both', expand=1)
@@ -147,17 +134,8 @@ class BKchem( Tk):
 
     self.papers.append( self.paper)
 
-    # init status bar
-    #self.init_status_bar()
-
-    # 
-    #self.radiobuttons.invoke( self.mode)
-
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
-
-
-    #self.start_server()
 
     
 
@@ -221,14 +199,14 @@ class BKchem( Tk):
     alignButton.pack( side = LEFT)
     alignMenu = Menu( alignButton, tearoff=0)
     alignButton['menu'] = alignMenu
-    alignMenu.add( 'command', label=_('Top'), command = lambda : self.paper.align_selected( 't'), accelerator='(C-a t)')
-    alignMenu.add( 'command', label=_('Bottom'), command = lambda : self.paper.align_selected( 'b'), accelerator='(C-a b)')
+    alignMenu.add( 'command', label=_('Top'), command = lambda : self.paper.align_selected( 't'), accelerator='(C-a C-t)')
+    alignMenu.add( 'command', label=_('Bottom'), command = lambda : self.paper.align_selected( 'b'), accelerator='(C-a C-b)')
     alignMenu.add( 'separator')
-    alignMenu.add( 'command', label=_('Left'), command = lambda : self.paper.align_selected( 'l'), accelerator='(C-a l)')
-    alignMenu.add( 'command', label=_('Right'), command = lambda : self.paper.align_selected( 'r'), accelerator='(C-a r)')
+    alignMenu.add( 'command', label=_('Left'), command = lambda : self.paper.align_selected( 'l'), accelerator='(C-a C-l)')
+    alignMenu.add( 'command', label=_('Right'), command = lambda : self.paper.align_selected( 'r'), accelerator='(C-a C-r)')
     alignMenu.add( 'separator')
-    alignMenu.add( 'command', label=_('Center horizontaly'), command = lambda : self.paper.align_selected( 'h'), accelerator='(C-a h)')
-    alignMenu.add( 'command', label=_('Center verticaly'), command = lambda : self.paper.align_selected( 'v'), accelerator="(C-a v)")
+    alignMenu.add( 'command', label=_('Center horizontaly'), command = lambda : self.paper.align_selected( 'h'), accelerator='(C-a C-h)')
+    alignMenu.add( 'command', label=_('Center verticaly'), command = lambda : self.paper.align_selected( 'v'), accelerator="(C-a C-v)")
 
     scaleButton = Menubutton( menu, text=_('Object'))
     scaleButton.pack( side= 'left')
@@ -236,9 +214,9 @@ class BKchem( Tk):
     scaleButton['menu'] = scaleMenu
     scaleMenu.add( 'command', label=_('Scale'), command = self.scale)
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Bring to front'), command = lambda : self.paper.lift_selected_to_top(), accelerator='(C-o f)')
-    scaleMenu.add( 'command', label=_('Send back'), command = lambda : self.paper.lower_selected_to_bottom(), accelerator='(C-o b)')
-    scaleMenu.add( 'command', label=_('Swap on stack'), command = lambda : self.paper.swap_selected_on_stack(), accelerator='(C-o s)')
+    scaleMenu.add( 'command', label=_('Bring to front'), command = lambda : self.paper.lift_selected_to_top(), accelerator='(C-o C-f)')
+    scaleMenu.add( 'command', label=_('Send back'), command = lambda : self.paper.lower_selected_to_bottom(), accelerator='(C-o C-b)')
+    scaleMenu.add( 'command', label=_('Swap on stack'), command = lambda : self.paper.swap_selected_on_stack(), accelerator='(C-o C-s)')
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Vertical mirror'), command = lambda : self.paper.swap_sides_of_selected())
     scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda : self.paper.swap_sides_of_selected('horizontal') )
@@ -253,27 +231,29 @@ class BKchem( Tk):
     # CHEMISTRY MENU
     chemistry_button = Menubutton( menu, text=_('Chemistry'))
     chemistry_button.pack( side= 'left')
-    chemistry_menu = Menu( chemistry_button, tearoff=0)
-    chemistry_button['menu'] = chemistry_menu
-    chemistry_menu.add( 'command', label=_('Info'), command = lambda : self.paper.display_info_on_selected(), accelerator='(C-o i)')
-    chemistry_menu.add( 'command', label=_('Check chemistry'), command = lambda : self.paper.check_chemistry_of_selected(), accelerator='(C-o c)')
-    chemistry_menu.add( 'command', label=_('Expand groups'), command = lambda : self.paper.expand_groups(), accelerator='(C-o e)')
-    chemistry_menu.add( 'separator')
+    self.chemistry_menu = Menu( chemistry_button, tearoff=0)
+    chemistry_button['menu'] = self.chemistry_menu
+    self.chemistry_menu.add( 'command', label=_('Info'), command = lambda : self.paper.display_info_on_selected(), accelerator='(C-o C-i)')
+    self.chemistry_menu.add( 'command', label=_('Check chemistry'), command = lambda : self.paper.check_chemistry_of_selected(), accelerator='(C-o C-c)')
+    self.chemistry_menu.add( 'command', label=_('Expand groups'), command = lambda : self.paper.expand_groups(), accelerator='(C-o C-e)')
+    self.chemistry_menu.add( 'separator')
     # oasa related stuff
     oasa_state = oasa_bridge.oasa_available and 'normal' or 'disabled'
-    chemistry_menu.add( 'command', label=_('Read SMILES'), command = self.read_smiles, state=oasa_state)
-    chemistry_menu.add( 'command', label=_('Read INChI'), command = self.read_inchi, state=oasa_state)
-    chemistry_menu.add( 'separator')
-    chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
-    chemistry_menu.add( 'command', label=_('Generate INChI'), command = self.gen_inchi, state=oasa_state)
+    self.chemistry_menu.add( 'command', label=_('Read SMILES'), command = self.read_smiles, state=oasa_state)
+    self.chemistry_menu.add( 'command', label=_('Read INChI'), command = self.read_inchi, state=oasa_state)
+    self.chemistry_menu.add( 'separator')
+    self.chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
+    self.chemistry_menu.add( 'command', label=_('Generate INChI'),
+                             command = self.gen_inchi,
+                             state=self.pm.has_preference("inchi_program_path") and "normal" or "disabled")
     #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
     # USER DEFINE TEMPLATES
-    utm_button = Menubutton( menu, text=_('User templates'))
-    utm_button.pack( side= 'left')
-    self.utm_menu = Menu( utm_button, tearoff=0)
-    utm_button['menu'] = self.utm_menu
-    self.populate_utm_menu()
+##     utm_button = Menubutton( menu, text=_('User templates'))
+##     utm_button.pack( side= 'left')
+##     self.utm_menu = Menu( utm_button, tearoff=0)
+##     utm_button['menu'] = self.utm_menu
+##     self.populate_utm_menu()
 
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
@@ -281,7 +261,7 @@ class BKchem( Tk):
     optionsMenu = Menu( optionsButton, tearoff=0)
     optionsButton['menu'] = optionsMenu
     optionsMenu.add( 'command', label=_('Standard'), command=self.standard_values)
-
+    optionsMenu.add( 'command', label=_('INChI program path'), command=lambda : interactors.ask_inchi_program_path( self))
 
 
 
@@ -331,6 +311,8 @@ class BKchem( Tk):
 
 
 
+
+
   def init_plugins_menu( self):
     # PLUGINS
     for plugin in self.plugins.itervalues():
@@ -353,8 +335,8 @@ class BKchem( Tk):
     self.tm.add_template_from_CDML( "templates.cdml")
 
     # manager for user user defined templates
-    self.utm = template_manager( self)
-    self.read_user_templates()
+##     self.utm = template_manager( self)
+##     self.read_user_templates()
 
     # groups manager
     self.gm = template_manager( self)
@@ -498,12 +480,13 @@ class BKchem( Tk):
 
 
   def change_paper( self, name):
-    old_paper = self.paper
     if self.papers:
+      old_paper = self.paper
       i = self.notebook.index( name)
       self.paper = self.papers[i]
-      self.paper.mode = self.mode
-      self.mode.on_paper_switch( old_paper, self.paper)
+      if hasattr( self, 'mode') and old_paper in self.papers:
+        # this is not true on startup and tab closing
+        self.mode.on_paper_switch( old_paper, self.paper)
 
 
 
@@ -538,14 +521,17 @@ class BKchem( Tk):
     paper['xscrollcommand'] = scroll_x.set
 
     self.papers.append( paper)
-    self.paper = paper
+    self.change_paper( _tab_name)
     self.notebook.selectpage( Pmw.END)
     self.paper.focus_set()
 
 
   def close_current_paper( self):
-    return self.close_paper()
-
+    ret = self.close_paper()
+    if self.papers == []:
+      self._quit()
+    return ret
+  
 
   def close_paper( self, paper=None):
     p = paper or self.paper
@@ -603,6 +589,10 @@ class BKchem( Tk):
                                       (_("Gzipped CDML file"),".cdgz")))
     if a != '' and a!=():
       if self._save_according_to_extension( a):
+        name = self.get_name_dic( a)
+        if self.check_if_the_file_is_opened( name['name'], check_current=0):
+          tkMessageBox.showerror( _("File already opened!"), _("Sorry but you are already editing a file with this name (%s), please choose a different name or close the other file.") % name['name'])
+          return None
         self.paper.file_name = self.get_name_dic( a)
         self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
         return self.paper.file_name
@@ -790,9 +780,12 @@ class BKchem( Tk):
     
   def get_name_dic( self, name=''):
     if not name:
-      name = 'untitled%d.svg' % self._untitled_counter
+      while 1:
+        name = 'untitled%d.svg' % self._untitled_counter
+        self._untitled_counter += 1
+        if not self.check_if_the_file_is_opened( name):
+          break
       name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1, 'ord': 0}
-      self._untitled_counter += 1
     else:
       dir, name = os.path.split( name)
       if not dir:
@@ -1018,6 +1011,8 @@ Enter IChI:""")
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
+    if not interactors.check_validity( self, u):
+      return
     sms = []
     for m in u:
       if m.object_type == 'molecule':
@@ -1053,8 +1048,12 @@ Enter IChI:""")
 ##     return None
 
 
-  def check_if_the_file_is_opened( self, name):
+  def check_if_the_file_is_opened( self, name, check_current=1):
+    """check_current says if the self.paper should be also included into the check,
+    this is usefull to make it 0 for renames"""
     for p in self.papers:
+      if not check_current and p == self.paper:
+        continue
       if p.full_path == os.path.abspath( name):
         return p
     return None
@@ -1173,7 +1172,7 @@ Enter IChI:""")
 
 
   def gen_inchi( self):
-    program = "/home/beda/inchi/cINChI11b"
+    program = self.pm.get_preference( "inchi_program_path")
     import tempfile
     
     if not oasa_bridge.oasa_available:
@@ -1186,21 +1185,26 @@ Enter IChI:""")
       if m.object_type == 'molecule':
         plugin = plugins.molfile
         exporter = plugin.exporter( self.paper)
-        name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
-        file = open( name, 'w')
-        oasa_bridge.write_molfile( m, file)
-        file.close()
+        try:
+          name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
+          file = open( name, 'w')
+          oasa_bridge.write_molfile( m, file)
+          file.close()
+        except:
+          sms.append( _("It was imposible to write a temporary Molfile %s" % name))
+          break
 
         in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
-        #print program, name, in_name
 
-        os.spawnvp( os.P_WAIT, program, (program, name, in_name, "-AUXNONE"))
+        exit_code = os.spawnv( os.P_WAIT, program, (program, name, in_name, "-AUXNONE"))
 
-        in_file = open( in_name, 'r')
-        [line for line in in_file.readlines()]
-        sms.append( line[6:].strip())
-        in_file.close()
-
+        if exit_code == 0:
+          in_file = open( in_name, 'r')
+          [line for line in in_file.readlines()]
+          sms.append( line[6:].strip())
+          in_file.close()
+        else:
+          sms.append( _("Inchi program returned exit code %d") % exit_code)
 
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,

@@ -34,6 +34,9 @@ import Pmw
 import data
 import re
 import misc
+import tkFileDialog
+import os.path
+
 
 class ColorButton( Tkinter.Button):
   """button used for color selection; has the choosen color in background and
@@ -268,6 +271,55 @@ class LengthChooser( ValueWithUnitParent):
     ValueWithUnitParent.__init__( self, parent, value, LengthCounter, label=label,
                                   units={'cm':{'ratio':1, 'increment': 0.2, 'round': 2},
                                          'px':{'ratio':30,  'increment': 10   , 'round': 0}})
+
+
+
+
+# a meta dialog for opening files
+
+
+class FileSelectionWithText( Pmw.Dialog):
+
+  def __init__( self, parent, title="", prompt="", value="", filetypes=()):
+    Pmw.Dialog.__init__( self,
+                         parent,
+                         buttons = (_('OK'),_('Cancel')),
+                         title = title)
+
+    self.parent = parent
+    self.value = value
+    self.filetypes = filetypes
+    
+    Tkinter.Label( self.interior(), text=prompt).pack( padx=10)
+
+    self.entry = Tkinter.Entry( self.interior(), width=40)
+    self.entry.pack( side="left", padx=10)
+    self.update_entry()
+
+    self.button = Tkinter.Button( self.interior(),
+                                  text = _("Browse"),
+                                  command = self.browse)
+    self.button.pack( side="left", padx=10)
+
+
+  def browse( self):
+    a = tkFileDialog.askopenfilename( defaultextension = "",
+                                      initialdir = os.path.dirname( self.value),
+                                      title = _("Select the file"),
+                                      parent = self.parent,
+                                      filetypes = self.filetypes)
+    if a:
+      self.value = a
+      self.update_entry()
+
+
+  def update_entry( self):
+    self.entry.delete( 0, "end")
+    self.entry.insert( 0, self.value)
+
+
+
+
 
 
 

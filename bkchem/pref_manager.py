@@ -49,6 +49,10 @@ class pref_manager( object):
 
 
 
+  def has_preference( self, name):
+    return name in self.data
+
+
 
   def read_pref_file( self, name):
     doc = dom.parse( name)

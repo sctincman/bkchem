@@ -16,10 +16,6 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
 """this module implements undo_manager and state_record classes,
 should provide everything needed to perform undo management.
@@ -98,6 +94,9 @@ class undo_manager:
     if self._pos > 0:
       del self._records[ self._pos-1]
       self._pos -= 1
+
+
+
 
 ##-------------------- STATE RECORD --------------------
     
@@ -198,7 +197,10 @@ class state_record:
         elif o.object_type == 'point':
           o.arrow.redraw()  ## redraws arrow multiple times, should be fixed someday
         if o not in deleted and o.object_type != 'molecule':
-          o.redraw()
+          if o.object_type == 'atom':
+            o.redraw( suppress_reposition=1)
+          else:
+            o.redraw()
       i += 1
       # end of explicit rules
 

@@ -298,10 +298,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-
-
-
-
   ## // -------------------- END OF PROPERTIES --------------------------
 
   def set_name( self, name, interpret=1, check_valency=1):
@@ -498,8 +494,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-  def redraw( self):
-    if self.__reposition_on_redraw:
+  def redraw( self, suppress_reposition=0):
+    if self.__reposition_on_redraw and not suppress_reposition:
       self.reposition_marks()
       self.__reposition_on_redraw = 0
     self.update_font()
@@ -519,7 +515,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else:
       self.unselect()
     if not self.dirty:
-      print "redrawing non-dirty atom"
+      pass
+      #print "redrawing non-dirty atom"
     self.dirty = 0
 
       
@@ -718,9 +715,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       a.setAttribute('show', y[ self.show])
     if self.show:
       a.setAttribute( 'pos', self.pos)
-    if self.font_size != 12 or self.font_family != 'helvetica' or self.line_color != '#000':
+    if self.font_size != self.paper.standard.font_size \
+       or self.font_family != self.paper.standard.font_family \
+       or self.line_color != self.paper.standard.line_color:
       font = dom_extensions.elementUnder( a, 'font', attributes=(('size', str( self.font_size)), ('family', self.font_family)))
-      if self.line_color != '#000':
+      if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
     if self.type == 'text':
       a.appendChild( dom.parseString( '<ftext>%s</ftext>' % self.name).childNodes[0])
@@ -790,7 +789,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def get_free_valency( self):
     """returns free valency of atom."""
     if self.type != 'element':
-      return 0
+      return 4
     occupied_valency = self.get_occupied_valency()
 
     v = self.valency
@@ -896,13 +895,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def create_mark( self, mark='radical', angle='auto', draw=1):
     """creates the mark, does not care about the chemical meaning of this"""
     # decide where to put the mark
-    if angle == 'auto' and self.show:
-      # atoms with visible text
-      x, y = self.find_place_for_mark()
-    elif angle == 'auto':
-      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
-      x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
-      #ang = round( geometry.clockwise_angle_from_east( x -self.x, y -self.y))
+    if angle == 'auto':
+      x, y = self.find_place_for_mark( mark)
     else:
       x = self.x + round( cos( angle) *dist)
       y = self.y + round( sin( angle) *dist)
@@ -982,16 +976,24 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-  def find_place_for_mark( self):
-    range = 10
+  def find_place_for_mark( self, mark):
+    if not self.show:
+      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
+    else:
+      dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
+
     atms = self.molecule.atoms_bound_to( self)
     x, y = self.get_xy()
+
+    # special cases
     if not atms:
       # single atom molecule
       if self.show_hydrogens and self.pos == "center-first":
-        return x -range, y-3
+        return x -dist, y-3
       else:
-        return x +range, y-3
+        return x +dist, y-3
+
+    # normal case
     coords = [(a.x,a.y) for a in atms]
     # we have to take marks into account
     [coords.append( (self.marks[m].x, self.marks[m].y)) for m in self.marks if self.marks[m]]
@@ -1009,5 +1011,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     diffs = misc.list_difference( angles)
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
-    return x +range*cos( angle), y +range*sin( angle)
+
+    # in visible text x,y are not on the center, therefore we compensate for it
+    if self.show:
+      y -= 0.166 * self.font_size
+    
+    return x +dist*cos( angle), y +dist*sin( angle)
     

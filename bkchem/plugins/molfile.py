@@ -83,3 +83,4 @@ importer = molfile_importer
 
 if not oasa_bridge.oasa_available:
   del importer
+  del exporter

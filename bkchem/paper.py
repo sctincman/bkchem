@@ -169,8 +169,6 @@ class chem_paper( Canvas, object):
     self.tm = self.app.tm
     # groups manager (for group expansions)
     self.gm = self.app.gm
-    # this is not needed but is purer to mention it here because it will be set by self.app
-    self.mode = None
 
 
 
@@ -203,7 +201,7 @@ class chem_paper( Canvas, object):
     "button 1 with shift"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_down( event, modifiers=['shift'])
+    self.app.mode.mouse_down( event, modifiers=['shift'])
 
 
 
@@ -213,7 +211,7 @@ class chem_paper( Canvas, object):
     "button 1 without anything"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_down( event)
+    self.app.mode.mouse_down( event)
 
 
 
@@ -222,7 +220,7 @@ class chem_paper( Canvas, object):
   def _release1( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_up( event)
+    self.app.mode.mouse_up( event)
     
 
 
@@ -233,7 +231,7 @@ class chem_paper( Canvas, object):
     # when B1 is down such events do not occur
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_drag( event) 
+    self.app.mode.mouse_drag( event) 
     b = self.find_enclosed( event.x-2, event.y-2, event.x+2, event.y+2)
     if b:
       a = self.id_to_object( b[0])
@@ -242,15 +240,15 @@ class chem_paper( Canvas, object):
     if a:
       if not self.__in:
         self.__in = a
-        self.mode.enter_object( self.__in, event)
+        self.app.mode.enter_object( self.__in, event)
       elif a != self.__in:
         self.__in = a
-        self.mode.leave_object( event)
-        self.mode.enter_object( self.__in, event)
+        self.app.mode.leave_object( event)
+        self.app.mode.enter_object( self.__in, event)
     else:
       if self.__in:
         self.__in = None
-        self.mode.leave_object( event)
+        self.app.mode.leave_object( event)
 
 
 
@@ -259,14 +257,14 @@ class chem_paper( Canvas, object):
   def _n_pressed3( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_down3( event, modifiers=[])
+    self.app.mode.mouse_down3( event, modifiers=[])
 
 
 
   def _n_pressed2( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_down2( event, modifiers=[])
+    self.app.mode.mouse_down2( event, modifiers=[])
 
 
 
@@ -275,21 +273,21 @@ class chem_paper( Canvas, object):
   def _move( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.mode.mouse_move( event)
+    self.app.mode.mouse_move( event)
 
 
 
 
 
   def _enter( self, event):
-    self.mode.clean_key_query()
+    self.app.mode.clean_key_query()
 
 
 
 
 
   def _leave( self, event):
-    self.mode.clean_key_query()
+    self.app.mode.clean_key_query()
 
   # item bound methods
 
@@ -306,7 +304,7 @@ class chem_paper( Canvas, object):
       a = None
     if a and a != self.__in:
       self.__in = a
-      self.mode.enter_object( self.__in, event)
+      self.app.mode.enter_object( self.__in, event)
 
 
 
@@ -317,21 +315,21 @@ class chem_paper( Canvas, object):
     event.y = self.canvasy( event.y)
     if self.__in:
       self.__in = None
-      self.mode.leave_object( event)
+      self.app.mode.leave_object( event)
 
 
 
 
 
   def key_pressed( self, event):
-    self.mode.key_pressed( event)
+    self.app.mode.key_pressed( event)
 
 
 
 
 
   def key_released( self, event):
-    self.mode.key_released( event)
+    self.app.mode.key_released( event)
 
   ## end of event bound methods
 
@@ -417,8 +415,11 @@ class chem_paper( Canvas, object):
     bonds = [o for o in self.selected if o.object_type == 'bond']
     atoms = [o for o in self.selected if o.object_type == 'atom']
     deleted, new, mols_to_delete = [], [], []
+    changed_mols = []
     for mol in self.molecules:
       items = [o for o in bonds+atoms if o.molecule == mol]
+      if items:
+        changed_mols.append( mol)
       now_deleted, new_mols = mol.delete_items( items)
       deleted += now_deleted
       new += new_mols
@@ -429,12 +430,6 @@ class chem_paper( Canvas, object):
       self.stack.extend( new)
     empty_mols = filter( lambda o: o.is_empty(), self.molecules)
     [self.stack.remove( o) for o in empty_mols]
-    # REDRAW OF NECESSARY THINGS
-    for m in self.molecules:
-      for a in m.atoms:
-        if a.show and a.type == 'element' and len( a.name) > 1:
-          a.decide_pos()
-          a.redraw()
     # start new undo
     if self.selected:
       self.start_new_undo_record()
@@ -1387,7 +1382,7 @@ class chem_paper( Canvas, object):
 
 
   def _open_debug_console( self):
-    m = self.mode
+    m = self.app.mode
     for i in m.__dict__:
       print i, ' : ', m.__dict__[i]
 

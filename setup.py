@@ -4,14 +4,22 @@ from distutils.core import setup
 import glob
 import os
 import sys
+try:
+  import py2exe
+except:
+  pass
+
+## if os.name != 'posix':
+##   print "Sorry, but install is not available for non-posix OSes, yet"
+##   sys.exit()
 
 if os.name != 'posix':
-  print "Sorry, but install is not available for non-posix OSes, yet"
-  sys.exit()
+  sys.path.insert( 0, 'bkchem')
+
 
 set = setup(
   name = 'bkchem',
-  version = '0.7.0',
+  version = '0.8.0-pre2',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
@@ -33,7 +41,8 @@ set = setup(
                ('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo']),
                ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo']),
                ('share/locale/fr/LC_MESSAGES', ['locale/fr/LC_MESSAGES/BKchem.mo'])
-               ]
+               ],
+  windows=['bkchem/bkchem.py']
   )
 
 

@@ -84,6 +84,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     self.center = 0
     self.auto_bond_sign = 1
     self.simple_double = simple_double
+    self.equithick = 1
 
     if package:
       self.read_package( package)
@@ -606,7 +607,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   def redraw( self, recalc_side=0):
     if not self.__dirty:
-      print "redrawing non-dirty bond"
+      pass
+      #print "redrawing non-dirty bond"
     if recalc_side:
       self._decide_distance_and_center()
     sel = self.selector
@@ -763,6 +765,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
       self.simple_double = int( package.getAttribute( 'simple_double'))
     if package.getAttribute( 'auto_sign'):
       self.auto_bond_sign = int( package.getAttribute( 'auto_sign'))
+    if package.getAttribute( 'equithick'):
+      self.equithick = int( package.getAttribute( 'equithick'))
+    else:
+      self.equithick = 0
     # end of implied
     self.atom1 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'start'))
     self.atom2 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'end'))
@@ -791,6 +797,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
                                         ('start', self.atom1.id),
                                         ('end', self.atom2.id),
                                         ('double_ratio', str( self.double_length_ratio))))
+    if hasattr( self, 'equithick') and self.equithick:
+      bnd.setAttribute( 'equithick', str(1))
     if self.order != 1:
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))
       if self.order == 2:

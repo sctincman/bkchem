@@ -38,6 +38,7 @@ import messages
 from bond import bond
 from context_menu import context_menu
 from reaction import reaction
+import parents
 
 
 class mode:
@@ -524,6 +525,14 @@ class edit_mode( basic_mode):
 
   def _set_name_to_selected( self, char=''):
     if self.app.paper.selected:
+      # at first we check if there is something to set text to...
+      text_items_are_inside = 0
+      for i in self.app.paper.selected:
+        if isinstance( i, parents.text_like) and i.object_type != 'plus':
+          text_items_are_inside = 1
+          break
+      if not text_items_are_inside:
+        return # well, we do not want to set text to bonds and pluses anyway
       # check if we should start with the last used text or edit the one of selected things
       text = ''
       select = 1
@@ -572,6 +581,7 @@ class edit_mode( basic_mode):
     [o.redraw() for o in _arrows_to_update]
     if self.app.paper.um.get_last_record_name() == "arrow-key-move":
       self.app.paper.um.delete_last_record()
+    self.app.paper.add_bindings()
     self.app.paper.start_new_undo_record( name="arrow-key-move")
 
   def _expand_groups( self):
@@ -703,6 +713,8 @@ class draw_mode( edit_mode):
           self.focused.toggle_type( to_type=self.__mode_to_bond_type(),
                                     to_order=self.__mode_to_bond_order(),
                                     simple_double = self.submode[4])
+          # update the atoms
+          [a.redraw() for a in self.focused.atoms]
           # warn when valency is exceeded
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
             self.app.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -938,8 +950,8 @@ class template_mode( edit_mode):
   def __init__( self, app):
     edit_mode.__init__( self, app)
     self.name = _('template')
-    self.submodes = [self.app.tm.get_template_names()+['userdefined']]
-    self.submodes_names = [self.app.tm.get_template_names()+[_('user defined')]]
+    self.submodes = [self.app.tm.get_template_names()] #+['userdefined']]
+    self.submodes_names = [self.app.tm.get_template_names()] #+[_('user defined')]]
     self.submode = [0]
     self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
@@ -1525,11 +1537,12 @@ class atom_mode( edit_mode):
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
           self.app.paper.bell()
           return
-      self.app.paper.set_name_to_selected( name)
 
       if name and not dom_extensions.isOnlyTags( name):
         mol = self.app.paper.new_molecule()
-        a = mol.create_new_atom( event.x, event.y, name=name)
+        a = mol.create_new_atom( event.x, event.y)
+        a.set_name( name, interpret=self.app.editPool.interpret)
+        a.redraw()
         self.app.paper.select( [a])
         self.app.paper.add_bindings()
         self.app.paper.start_new_undo_record()        
@@ -1581,12 +1594,18 @@ class reaction_mode( basic_mode):
         m = self.focused.molecule
         if m not in self.arrow.reaction.reactants:
           self.arrow.reaction.reactants.append( m)
+          # remove it from products
+          if m in self.arrow.reaction.products:
+            self.arrow.reaction.products.remove( m)
         else:
           self.arrow.reaction.reactants.remove( m)
       elif sm == 'product':
         m = self.focused.molecule
         if m not in self.arrow.reaction.products:
           self.arrow.reaction.products.append( m)
+          # remove it from reactants
+          if m in self.arrow.reaction.reactants:
+            self.arrow.reaction.reactants.remove( m)
         else:
           self.arrow.reaction.products.remove( m)
       elif sm == 'rarrow':

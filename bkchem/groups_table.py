@@ -59,6 +59,8 @@ groups_table = {'och3':   { 'name': 'OCH3', 'textf': 'OCH<sub>3</sub>',
                 'cocl': { 'name': 'COCl', 'textf': 'COCl',
                          'textb': 'ClOC', 'composition': 'COCl'},
 
+                'ch2oh': {'name': 'CH2OH', 'textf': 'CH<sub>2</sub>OH',
+                          'textb': 'HOCH<sub>2</sub>', 'composition': 'CH3O'},
 
                 }
 

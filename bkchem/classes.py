@@ -774,9 +774,11 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     a.setAttribute( 'id', self.id)
     if self.area_color != '#ffffff':
       a.setAttribute( 'background-color', self.area_color)
-    if self.font_size != 12 or self.font_family != 'helvetica' or self.line_color != '#000':
+    if self.font_size != self.paper.standard.font_size \
+       or self.font_family != self.paper.standard.font_family \
+       or self.line_color != self.paper.standard.line_color:
       font = dom_extensions.elementUnder( a, 'font', attributes=(('size', str( self.font_size)), ('family', self.font_family)))
-      if self.line_color != '#000':
+      if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
     x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( a, 'point', attributes=(('x', x),('y', y)))

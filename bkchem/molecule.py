@@ -208,7 +208,7 @@ class molecule( container, top_level, id_enabled):
     b = a2.y - a1.y
     return atan2( b, a)
     
-  def delete_items( self, items):
+  def delete_items( self, items, redraw=1):
     """deletes items and also makes cleaning of orphan bonds and atoms"""
     if not items:
       return items, []     # quick way to avoid costly evaluation
@@ -231,15 +231,16 @@ class molecule( container, top_level, id_enabled):
       deleted += [self.delete_atom( o) for o in self.atoms if not self.atoms_bonds( o)]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
-      bonds_to_redraw = []
-      for b in deleted:
-        if b.object_type == 'bond':
-          for a in b.atoms:
-            if a in self.atoms:
-              bonds_to_redraw.extend( self.atoms_bonds( a))
-      [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
-      # recalculate marks positions
-      [o.reposition_marks() for o in self.atoms]
+      if redraw:
+        bonds_to_redraw = []
+        for b in deleted:
+          if b.object_type == 'bond':
+            for a in b.atoms:
+              if a in self.atoms:
+                bonds_to_redraw.extend( self.atoms_bonds( a))
+        [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
+        [o.decide_pos() for o in self.atoms if o.type == "element"]
+        [o.redraw() for o in self.atoms]
     else:
       deleted += map( self.delete_bond, self.bonds)
     return deleted, self.check_integrity()

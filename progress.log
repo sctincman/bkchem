@@ -1,3 +1,84 @@
+RELEASE 0.8.0-pre2
+----------------------------------------
+
+ * bugfixes - when multiple filenames were given from the command line, only the existence
+              of the first was properly checked
+            - some triple bonds were not exported correctly into SVG
+            - "As-is" text interpretation did not work proprly for atoms
+            - bond and mark positioning was reduntandly recalculated after 2D rotation
+            - error was triggered by closing a tab with an item focused
+            - after moving items via arrow keys some atoms were inactive for some time
+            - it is not possible to save a file under a name of already opened file anymore
+            - repositioning of marks is not called on all marks after deletion of something
+              (it was really annoying)
+            - when a standard value for font size was != 12 and some text had font size == 12 it
+              was rescaled to the standard value on rereading of the file (the font size was not saved)
+            - undo of marks was fixed (they were sometimes not deleted on undo) 
+
+
+ * enhancements - some wrapper methods enable now non-ascii characters input on much wider
+                  set of systems
+                - chemical meaning of all marks (except the lone electron pair) is now taken into account
+                - context menu bound to the right mouse key was added (thus the previous functionality
+                  of the right key was moved to the middle key)
+                - INChI can be generated via an external INChI program (the capabilities are limited to
+                  the capabilities of the Molfile export plugin)
+                - window geometry is saved and restored on next start (with a slight, strange shift in case of
+                  some window managers)
+                - svg export of wedges was fixed for bonds with line-width != 1.0
+                - atom mode added to enable creation of sigle-atom molecules
+                - marks on selected atoms can be moved via arrow keys in mark mode (select the atom, go to the
+                  mark mode and use the arrow keys to move the marks), it is a quick addition that will be
+                  hopefully enhanced in the next release
+                - reaction mode was added (you can define the reactants, products etc. for each arrow)
+                - equithick hatch bonds were introduced and made default (you can change it by clicking on the
+                  bond more than once), this is because it is recommended as sharp hatch bonds are usually
+                  wrongly interpreted. Thanks to Michal Bozon for the patch
+                - CH2OH group was added
+                - INChI reading was updated to version 1.12Beta (older version is also supported)
+                - INChI reading of molecules with movable H atoms was fixed
+ 
+
+ * changes - Name mode was removed, Menu/Object/Set molecule name (ID) was introduced instead
+           - the keybindings were changes so that using a-zA-Z characters have the same effect
+             as the Space character, thus you can start to type directly without pressing Space first
+           - because of the previous point, all keybindings now contain a Ctrl or Alt in every part
+             (C-o b => C-o C-b)
+           - atom text could be no longer edited in the text mode, use atom mode instead
+           - the organization of buttons in menu was slightly changed
+
+
+ * acknowledgments - to Michal Bozon for the equithick patch
+
+
+
+----------------------------------------
+RELEASE 0.8.0-pre1
+
+ * bugfixes - text created by copying disappeared from the saved file (and corrupted it)
+              (the corrupted files are now read and the lost text is marked with ? mark)
+            - some double bond did not respond to shift-clicking to reposition the second line
+            - size of arrow-heads in SVG export was fixed for arrows thicker than 1px
+            - when using the "As-is" button for atom text change, the text is now always diplayed
+            - when focused atom was removed by undo a bug was triggered
+            - oasa - reading of smiles such as C1CccCC1 was corrupted 
+
+ * enhancements - support for multiple files was added
+                - it is possible to copy objects from one file to another 
+                - oasa - support for new format of INChI (was IChI) was added 
+
+
+
+----------------------------------------
+RELEASE 0.7.1
+
+ * bugfixes - file permissions were fixed so that the "python setup.py install" works
+              
+ * acknowledgments - Eugenia Loli-Queru (bugreport)
+
+
+
+
 ----------------------------------------
 RELEASE 0.7.0
 
@@ -11,7 +92,7 @@ RELEASE 0.7.0
                 - template addition was optimized (speedup of 10-100x for large molecules)
                 - deletion of parts of molecules was optimized (up to 10x speedup for larger molecules)
                 - new bonds are always added transoid
-                - addition of/to triple bonds is always in PI angle (180 deg.)
+                - addition of/to triple bonds is always in 180 deg. angle
 
  * changes - None
  
