@@ -40,9 +40,8 @@ class mark( simple_parent):
   # undo related metas
   meta__undo_simple = ('x', 'y', 'auto','size')
 
-  def __init__( self, paper, x, y, atom=None, size=4, auto=1):
+  def __init__( self, atom, x, y, size=4, auto=1):
     """size is a diameter of the mark"""
-    self.paper = paper
     self.x = x
     self.y = y
     self.atom = atom
@@ -51,10 +50,19 @@ class mark( simple_parent):
     self.auto = auto
     #self.draw()
 
+  def _get_paper( self):
+    return self.atom.paper
+
+  paper = property( _get_paper, None, None, "the paper the mark is drawn onto")
+  
+
+
   def draw( self):
     pass
 
   def delete( self):
+    if self.paper.is_registered_object( self):
+      self.unregister()
     [self.paper.delete( o) for o in self.items]
     self.items = []
 
@@ -75,6 +83,8 @@ class mark( simple_parent):
     registered = self.paper.is_registered_object( self)
     if registered:
       self.unregister()
+    else:
+      warnings.warn( "sdsddsd", UserWarning, 2)
     self.delete()
     self.draw()
     if registered:
@@ -131,9 +141,9 @@ class mark( simple_parent):
       x, y, z = Screen.read_xml_point( package)
       size = package.getAttribute( 'size') and int( package.getAttribute( 'size')) or None
       if size:
-        m = cls( atom.paper, x, y, atom=atom, size=size, auto=int(auto))
+        m = cls( atom, x, y, size=size, auto=int(auto))
       else:
-        m = cls( atom.paper, x, y, atom=atom, auto=int(auto))
+        m = cls( atom, x, y, auto=int(auto))
       if hasattr( m, "draw_circle"):
         circle = package.getAttribute( "draw_circle")
         m.draw_circle = bool( data.booleans.index( circle))
@@ -142,6 +152,9 @@ class mark( simple_parent):
       raise ValueError, "no such mark type %s" % typ
 
   read_package = classmethod( read_package)
+
+
+
 
 
 
@@ -171,6 +184,10 @@ class radical( mark):
                                   ( 'stroke', self.atom.line_color),
                                   ( 'stroke-width', '1')))
     return e
+
+
+
+
 
 
 
@@ -232,10 +249,13 @@ class biradical( mark):
 
 
 
+
+
+
 class electronpair( mark):
 
-  def __init__( self, paper, x, y, atom=None, size=10, auto=1):
-    mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
+  def __init__( self, atom, x, y, size=10, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
 
   def move( self, dx, dy):
     """marks that have a direction and not only position should be redrawn on move"""
@@ -289,8 +309,8 @@ class plus( mark):
                       ('draw_circle',)
 
 
-  def __init__( self, paper, x, y, atom=None, size=10, auto=1):
-    mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
+  def __init__( self, atom, x, y, size=10, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
     self.draw_circle = True
 
 
@@ -349,8 +369,8 @@ class minus( mark):
   meta__undo_simple = mark.meta__undo_simple + \
                       ('draw_circle',)
 
-  def __init__( self, paper, x, y, atom=None, size=10, auto=1):
-    mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
+  def __init__( self, atom, x, y, size=10, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
     self.draw_circle = True
 
   def draw( self):

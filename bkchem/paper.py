@@ -656,10 +656,8 @@ class chem_paper( Canvas, object):
             ch.group_graph = None
 
           if isinstance( ch, atom) or isinstance( ch, textatom):
-            for m in ch.marks.values():
-              if m:
-                m.paper = None
-                m.atom = None
+            for m in ch.marks:
+              m.atom = None
 
 
     self.clean_paper()

@@ -339,9 +339,8 @@ class SVG_writer( XML_writer):
       self.group.appendChild( text)
 
     if hasattr( a, "marks"):
-      for m in a.marks.itervalues():
-        if m:
-          self.group.appendChild( m.get_svg_element( self.document))
+      for m in a.marks:
+        self.group.appendChild( m.get_svg_element( self.document))
 
 
 

@@ -1524,10 +1524,11 @@ class mark_mode( edit_mode):
   def __init__( self):
     edit_mode.__init__( self)
     self.name = _('mark')
-    self.submodes = [['radical','biradical','electronpair','plusincircle','minusincircle']]
-    self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'),
-                            _('plus'), _('minus')]]
-    self.submode = [0]
+    self.submodes = [['radical','biradical','electronpair','plusincircle','minusincircle'],
+                     ['add','remove']]
+    self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'), _('plus'), _('minus')],
+                           [_('add'), _('remove')]]
+    self.submode = [0, 0]
 
     self.register_key_sequence( 'Up', lambda : self._move_mark_for_selected( 0, -1), use_warning=0)
     self.register_key_sequence( 'Down', lambda : self._move_mark_for_selected( 0, 1), use_warning=0)
@@ -1539,13 +1540,35 @@ class mark_mode( edit_mode):
 
   def mouse_click( self, event):
     a = ['radical','biradical','electronpair','plus','minus']
-    if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):
-      m = self.focused.set_mark( mark=a[ self.submode[0]])
-      if m:
-        m.register()
-      if self.focused.show_hydrogens and self.focused.show:
-        self.focused.redraw()
-      Store.app.paper.start_new_undo_record()
+    mark_name = a[ self.submode[0]]
+    if self.get_submode( 1) == 'add':
+      # we are adding a mark
+      if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):
+        m = self.focused.set_mark( mark=mark_name)
+        if m:
+          m.register()
+        if (self.focused.show_hydrogens and self.focused.show) and not isinstance( self.focused, textatom):
+          self.focused.redraw()
+        Store.app.paper.start_new_undo_record()
+    elif self.get_submode( 1) == 'remove':
+      # we are removing a mark
+      if self.focused:
+        if isinstance( self.focused, atom) or isinstance( self.focused, textatom):
+          # we do it by name
+          m = self.focused.remove_mark( mark_name)
+          if not m:
+            Store.log( _("There are no marks of type %s on the focused atom") % mark_name, message_type="warning")
+          else:
+            if (self.focused.show_hydrogens and self.focused.show) and not isinstance( self.focused, textatom):
+              self.focused.redraw()
+            Store.app.paper.start_new_undo_record()
+        elif isinstance( self.focused, marks.mark):
+          # we do it by reference
+          m = self.focused.atom.remove_mark( self.focused)
+          if (self.focused.atom.show_hydrogens and self.focused.atom.show) and not isinstance( self.focused, textatom):
+            self.focused.atom.redraw()
+          Store.app.paper.start_new_undo_record()
+
     Store.app.paper.add_bindings()
 
 
@@ -1562,9 +1585,8 @@ class mark_mode( edit_mode):
     to_move = [a for a in Store.app.paper.selected if isinstance( a, oasa.graph.vertex)]
     
     for a in to_move:
-      for k,v in a.marks.iteritems():
-        if v:
-          v.move( dx, dy)
+      for m in a.marks:
+        m.move( dx, dy)
 
     if Store.app.paper.um.get_last_record_name() == "arrow-key-move":
       Store.app.paper.um.delete_last_record()
@@ -1594,9 +1616,8 @@ class mark_mode( edit_mode):
   def _all_marks( self, paper):
     for m in paper.molecules:
       for a in m.atoms:
-        for (name, mark) in a.marks.iteritems():
-          if mark:
-            yield mark
+        for mark in a.marks:
+          yield mark
 
 
 

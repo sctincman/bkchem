@@ -38,6 +38,8 @@ import data
 import re
 import debug
 import marks
+from sets import Set
+import types
 
 import oasa
 
@@ -89,8 +91,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
     self.pos = None
     self.focus_item = None
-    self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
-                  'plus': None, 'minus': None}
+    self.marks = Set()
 
     self.__reposition_on_redraw = 0
 
@@ -316,7 +317,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
 
 
-  def draw( self):
+  def draw( self, redraw=False):
     "draws atom with respect to its properties"
     if self.item:
       warn( "drawing atom that is probably drawn", UserWarning, 2)
@@ -336,7 +337,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     self.ftext.lift()
     self.paper.lift( self.item)
     # marks
-    [m.draw() for m in self.marks.itervalues() if m]
+    if not redraw:
+      [m.draw() for m in self.marks]
 
     self.paper.register_id( self.item, self)
     self.__reposition_on_redraw = 0
@@ -356,9 +358,10 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     if self.ftext:
       self.ftext.delete()
     self.item = None # to ensure that warning in draw() is not triggered when redrawing
-    [m.delete() for m in self.marks.itervalues() if m]
     # ...then we draw it again
-    self.draw()
+    self.draw( redraw=True)
+    [m.redraw() for m in self.marks]
+
     if self._selected:
       self.select()
     else:
@@ -409,8 +412,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
         self.ftext.move( dx, dy)
       if not dont_move_marks:
         for m in self.marks:
-          if self.marks[m]:
-            self.marks[m].move( dx, dy)
+          m.move( dx, dy)
     # restoring dirty value because move does not dirty the atom
     # self.dirty = d
 
@@ -447,8 +449,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
   def delete( self):
     for m in self.marks:
-      if self.marks[m]:
-        self.marks[m].delete()
+      m.delete()
 
     if self.focus_item:
       self.unfocus()
@@ -474,13 +475,9 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     self.id = package.getAttribute( 'id')
     # marks
     for m in package.getElementsByTagName( 'mark'):
-      auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
-      type = m.getAttribute( 'type')
-      x, y, z = Screen.read_xml_point( m)
-      self.marks[ type] = marks.__dict__[ type]( self.paper,
-                                                 x, y,
-                                                 atom=self,
-                                                 auto= int(auto))
+      mrk = marks.mark.read_package( m, self)
+      self.marks.add( mrk)
+
     # position
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
@@ -539,13 +536,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
-    for m, o in self.marks.items():
-      if o:
-        x ,y = map( Screen.px_to_text_with_unit, (o.x, o.y))
-        dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
-                                                            ('x', x),
-                                                            ('y', y),
-                                                            ('auto', str( int( o.auto)))))
+    for o in self.marks:
+      a.appendChild( o.get_package( doc))
 
     return a
 
@@ -606,7 +598,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     if self.selector:
       self.paper.lift( self.selector)
     # marks
-    [m.lift() for m in self.marks.itervalues() if m]
+    [m.lift() for m in self.marks]
     if self.ftext:
       self.ftext.lift()
     if self.item:
@@ -616,21 +608,37 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
 
   # marks related methods
-  
-  def set_mark( self, mark='radical', toggle=1, angle='auto'):
-    """sets the mark and takes care of toggling and charge and multiplicity changes"""
-    if mark in self.marks:
-      if toggle:
-        if self.marks[ mark]:
-          self.marks[ mark].delete()
-          self.marks[ mark] = None
-        else:
-          self.create_mark( mark=mark, angle=angle)
-          return self.marks[ mark]
+
+  def set_mark( self, mark='radical', angle='auto'):
+    """sets the mark and takes care of charge and multiplicity changes"""
+    m = self.create_mark( mark=mark, angle=angle)
+    return m
+
+
+
+  def remove_mark( self, mark=None):
+    """mark is either mark instance of type, in case of instance, the instance is removed,
+    in case of type a random mark of this type (if present is removed).
+    Returns the removed mark or None"""
+    if type( mark) == types.StringType:
+      ms = [m for m in self.marks if m.__class__.__name__ == mark]
+      if ms:
+        m = ms[0]
       else:
-        if not self.marks[ mark]:
-          self.create_mark( mark=mark, angle=angle)
-          return self.marks[ mark]
+        return None
+    elif isinstance( mark, marks.mark):
+      if mark in self.marks:
+        m = mark
+      else:
+        raise ValueError, "trying to remove a mark that does not belong to this atom"
+    else:
+      raise TypeError, "mark is on unknown type " + str( mark)
+
+    m.delete()
+    self.marks.remove( m)
+    return m
+
+
 
 
 
@@ -644,20 +652,22 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
       y = self.y + round( sin( angle) *dist)
       #ang = angle
 
-    self.marks[ mark] = marks.__dict__[ mark]( self.paper, x, y,
-                                               atom = self,
-                                               auto=(angle=='auto'))
+    m = marks.__dict__[ mark]( self, x, y, auto=(angle=='auto'))
     if draw:
-      self.marks[ mark].draw()
+      m.draw()
+    self.marks.add( m)
+    return m
 
 
 
 
   def reposition_marks( self):
-    for k,m in self.marks.iteritems():
-      if m and m.auto:
-        self.set_mark( k, toggle=1)
-        self.set_mark( k, toggle=1)
+    ms = Set( [m for m in self.marks if m.auto])
+    self.marks -= ms
+    for m in ms:
+      x, y = self.find_place_for_mark( m.__class__.__name__)
+      m.move_to( x, y)
+      self.marks.add( m)
 
 
 
@@ -681,7 +691,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     # normal case
     coords = [(a.x,a.y) for a in atms]
     # we have to take marks into account
-    [coords.append( (self.marks[m].x, self.marks[m].y)) for m in self.marks if self.marks[m]]
+    [coords.append( (m.x, m.y)) for m in self.marks]
     # hydrogen positioning is also important
     if self.show_hydrogens and self.show:
       if self.pos == 'center-last':
@@ -709,9 +719,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)
     self.move_to( x, y, dont_move_marks=1)
-    for m in self.marks.values():
-      if m:
-        m.transform( tr)
+    for m in self.marks:
+      m.transform( tr)
 
 
   def __str__( self):

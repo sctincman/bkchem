@@ -38,6 +38,8 @@ from parents import meta_enabled, area_colored, point_drawable, text_like, child
 import data
 import re
 import debug
+from sets import Set
+import types
 
 import oasa
 from singleton_store import Screen
@@ -96,8 +98,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
     self.pos = None
     self.focus_item = None
-    self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
-                  'plus': None, 'minus': None}
+    self.marks = Set()
 
     # chemistry attrs
     #   self.number = 0
@@ -463,7 +464,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
 
 
-  def draw( self):
+  def draw( self, redraw=False):
     "draws atom with respect to its properties"
     if self.item:
       warn( "drawing atom that is probably drawn", UserWarning, 2)
@@ -485,7 +486,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     else:
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
       self.selector = None
-    [m.draw() for m in self.marks.itervalues() if m]
+    if not redraw:
+      [m.draw() for m in self.marks]
     self.paper.register_id( self.item, self)
     # 
     self.__reposition_on_redraw = 0
@@ -505,9 +507,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     if self.ftext:
       self.ftext.delete()
     self.item = None # to ensure that warning in draw() is not triggered when redrawing
-    [m.delete() for m in self.marks.itervalues() if m]
     # ...then we draw it again
-    self.draw()
+    self.draw( redraw=True)
+    [m.redraw() for m in self.marks]
+
     if self._selected:
       self.select()
     else:
@@ -583,8 +586,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
         self.ftext.move( dx, dy)
       if not dont_move_marks:
         for m in self.marks:
-          if self.marks[m]:
-            self.marks[m].move( dx, dy)
+          m.move( dx, dy)
     # restoring dirty value because move does not dirty the atom
     # self.dirty = d
 
@@ -621,8 +623,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
   def delete( self):
     for m in self.marks:
-      if self.marks[m]:
-        self.marks[m].delete()
+      m.delete()
     if self.focus_item:
       self.unfocus()
     if self.selector:
@@ -650,7 +651,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     # marks (we read them here because they influence the charge)
     for m in package.getElementsByTagName( 'mark'):
       mrk = marks.mark.read_package( m, self)
-      self.marks[ mrk.__class__.__name__] = mrk
+      self.marks.add( mrk)
     #self.show_number = a.index( package.getAttribute( 'show_number'))
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
@@ -734,9 +735,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
-    for m, o in self.marks.items():
-      if o:
-        a.appendChild( o.get_package( doc))
+    for o in self.marks:
+      a.appendChild( o.get_package( doc))
     # multiplicity
     if self.multiplicity != 1:
       a.setAttribute( 'multiplicity', str( self.multiplicity))
@@ -805,7 +805,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     if self.selector:
       self.paper.lift( self.selector)
     # marks
-    [m.lift() for m in self.marks.itervalues() if m]
+    [m.lift() for m in self.marks]
     if self.ftext:
       self.ftext.lift()
     if self.item:
@@ -814,23 +814,37 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
 
 
-  def set_mark( self, mark='radical', toggle=1, angle='auto'):
-    """sets the mark and takes care of toggling and charge and multiplicity changes"""
-    if mark in self.marks:
-      if toggle:
-        if self.marks[ mark]:
-          self.marks[ mark].delete()
-          self.marks[ mark] = None
-          self._set_mark_helper( mark, sign=-1)
-        else:
-          self.create_mark( mark=mark, angle=angle)
-          self._set_mark_helper( mark, sign=1)
-          return self.marks[ mark]
+  def set_mark( self, mark='radical', angle='auto'):
+    """sets the mark and takes care of charge and multiplicity changes"""
+    m = self.create_mark( mark=mark, angle=angle)
+    self._set_mark_helper( mark, sign=1)
+    return m
+
+
+
+  def remove_mark( self, mark=None):
+    """mark is either mark instance of type, in case of instance, the instance is removed,
+    in case of type a random mark of this type (if present is removed).
+    Returns the removed mark or None"""
+    if type( mark) == types.StringType:
+      ms = [m for m in self.marks if m.__class__.__name__ == mark]
+      if ms:
+        m = ms[0]
       else:
-        if not self.marks[ mark]:
-          self.create_mark( mark=mark, angle=angle)
-          self._set_mark_helper( mark, sign=1)
-          return self.marks[ mark]
+        return None
+    elif isinstance( mark, marks.mark):
+      if mark in self.marks:
+        m = mark
+      else:
+        raise ValueError, "trying to remove a mark that does not belong to this atom"
+    else:
+      raise TypeError, "mark is on unknown type " + str( mark)
+
+    m.delete()
+    self.marks.remove( m)
+    self._set_mark_helper( m.__class__.__name__, sign=-1)
+    return m
+
 
 
   def _set_mark_helper( self, mark, sign=1):
@@ -857,31 +871,30 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       y = self.y + round( sin( angle) *dist)
       #ang = angle
 
-    self.marks[ mark] = marks.__dict__[ mark]( self.paper, x, y,
-                                               atom = self,
-                                               auto=(angle=='auto'))
+    m = marks.__dict__[ mark]( self, x, y, auto=(angle=='auto'))
     if draw:
-      self.marks[ mark].draw()
-
-
+      m.draw()
+    self.marks.add( m)
+    return m
 
 
 
 
   def reposition_marks( self):
-    for k,m in self.marks.iteritems():
-      if m and m.auto:
-        self.set_mark( k, toggle=1)
-        self.set_mark( k, toggle=1)
+    ms = Set( [m for m in self.marks if m.auto])
+    self.marks -= ms
+    for m in ms:
+      x, y = self.find_place_for_mark( m.__class__.__name__)
+      m.move_to( x, y)
+      self.marks.add( m)
 
 
 
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)
     self.move_to( x, y, dont_move_marks=1)
-    for m in self.marks.values():
-      if m:
-        m.transform( tr)
+    for m in self.marks:
+      m.transform( tr)
 
 
 
@@ -899,19 +912,29 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
 
   def get_charge_from_marks( self):
-    return (self.marks['plus'] != None and 1) + (self.marks['minus'] != None and -1)
+    res = 0
+    for m in self.marks:
+      if m.__class__.__name__ == 'plus':
+        res += 1
+      elif self.__class__.__name__ == "minus":
+        res -= 1
+    return res
 
+
+
+  def get_marks_by_type( self, mark_type):
+    return [m for m in self.marks in m.__class__.__name__ == mark_type]
 
 
 
   def generate_marks_from_cheminfo( self):
-    if self.charge == 1 and not self.marks[ 'plus']:
+    if self.charge == 1 and not self.get_marks_by_type( 'plus'):
       self.create_mark( 'plus', draw=0)
-    elif self.charge == -1 and not self.marks[ 'minus']:
+    elif self.charge == -1 and not self.get_marks_by_type( 'minus'):
       self.create_mark( 'minus', draw=0)
-    if self.multiplicity == 2 and not self.marks[ 'radical']:
+    if self.multiplicity == 2 and not self.get_marks_by_type( 'radical'):
       self.create_mark( 'radical', draw=0)
-    elif self.multiplicity == 3 and not self.marks[ 'biradical']:
+    elif self.multiplicity == 3 and not (self.get_marks_by_type( 'biradical') or len( self.get_marks_by_type( 'radical')) == 2):
       self.create_mark( 'biradical', draw=0)
   
 
@@ -956,7 +979,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     # normal case
     coords = [(a.x,a.y) for a in atms]
     # we have to take marks into account
-    [coords.append( (self.marks[m].x, self.marks[m].y)) for m in self.marks if self.marks[m]]
+    [coords.append( (m.x, m.y)) for m in self.marks]
     # hydrogen positioning is also important
     if self.show_hydrogens and self.show:
       if self.pos == 'center-last':
