@@ -42,7 +42,7 @@ groups_table = {'och3':   { 'name': 'OCH3', 'textf': 'OCH<sub>3</sub>',
                         'textb': 'NC', 'composition': 'CN'},
 
                 'so3h': { 'name': 'SO3H', 'textf': 'SO<sub>3</sub>H',
-                          'textb': 'H<sub>3</sub>OS', 'composition': 'SO3H'},
+                          'textb': 'HO<sub>3</sub>S', 'composition': 'SO3H'},
 
                 'pph3': { 'name': 'PPh3', 'textf': 'PPh<sub>3</sub>',
                           'textb': 'Ph<sub>3</sub>P', 'composition': 'C18H15P'},

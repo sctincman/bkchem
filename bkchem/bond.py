@@ -737,8 +737,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     if not self.__dirty:
       pass
       #print "redrawing non-dirty bond"
-    if recalc_side:
-      self._decide_distance_and_center()
     sel = self.selector
     if self.item:
       self.delete()

@@ -194,6 +194,12 @@ class state_record:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = copy.copy( self.records[i][a])
           changed = 1
+          # this part is not meta driven, I have to rewrite it one day
+          if a == 'bonds':
+            o.edges = o.bonds
+          elif a == 'atoms':
+            o.vertices = o.atoms
+          # / end of the shitty patch
       for a in o.meta__undo_2d_copy:
         subrec = []
         for line in self.records[i][a]:
@@ -222,8 +228,8 @@ class state_record:
     for o in deleted:
       if o.object_type not in ( 'molecule','mark'):
         # no_automatic where possible
-        if 'no_automatic' in inspect.getargspec( o.draw)[0]:
-          o.draw( no_automatic = 1)
+        if 'automatic' in inspect.getargspec( o.draw)[0]:
+          o.draw( automatic = "none")
         else:
           o.draw()
     ## ADDED OBJECTS
