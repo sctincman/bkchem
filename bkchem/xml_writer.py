@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002, 2003, 2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,12 +16,9 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""provides exporters to XML formats (SVG, KIL etc.)"""
+
+"""provides exporters to XML formats (SVG for now)"""
 
 import xml.dom.minidom as dom
 from xml.dom.minidom import Document
@@ -361,103 +358,5 @@ class SVG_writer( XML_writer):
                                          ( 'stroke', o.line_color),
                                          ( 'fill-rule', 'evenodd')))
 
-
-
-class KIL_writer( XML_writer):
-  "export to KIlustrator format"
-  def construct_dom_tree( self):
-    doc = self.document
-    top = doc.createElement("doc")
-    doc.appendChild( top)
-    top.setAttribute( "editor", "BKchem")
-    top.setAttribute( "mime", "application/x-killustrator")
-    top.setAttribute( "comment", "(null)")
-    top.setAttribute( "keyword", "(null)")
-
-    head = doc.createElement( "head")
-    top.appendChild( head)
-    layout = doc.createElement( "layout")
-    head.appendChild( layout)
-    layout.setAttribute( "format", "a4")
-    layout.setAttribute( "orientation", "portrait")
-    layout.setAttribute( "width", "0")
-    layout.setAttribute( "height", "0")
-    layout.setAttribute( "lmargin", "0")
-    layout.setAttribute( "tmargin", "0")
-    layout.setAttribute( "rmargin", "0")
-    layout.setAttribute( "bmargin", "0")
-
-    grid = doc.createElement( "grid")
-    head.appendChild( grid)
-    grid.setAttribute( "dx", "20")
-    grid.setAttribute( "dy", "20")
-    grid.setAttribute( "align", "0")
-
-    helplines = doc.createElement( "helplines")
-    helplines.appendChild( doc.createTextNode( " "))
-    head.appendChild( helplines)
-    helplines.setAttribute( "align","0")
-
-    for item in self.paper.find_all():
-      if "nonSVG" not in self.paper.gettags( item):
-        if self.paper.type( item) == "line":
-          x1, y1, x2, y2 = self.paper.coords( item)
-          line = doc.createElement( 'polyline')
-          top.appendChild( line)
-          line.setAttribute( "matrix", "1 0 0 0 1 0 0 0 1")
-          color = self.paper.winfo_rgb( self.paper.itemcget( item, 'fill'))
-          line.setAttribute( "strokecolor", str( int( color[0]/256))+' '+str( int( color[1]/256))+' '+str( int( color[2]/256)))
-          line.setAttribute( "strokestyle", "1")
-          line.setAttribute( "linewidth", self.paper.itemcget( item, 'width'))
-          line.setAttribute( "fillstyle", "0")
-          arrow = self.paper.itemcget( item, 'arrow')
-          if arrow == "both" or arrow == "first":
-            line.setAttribute( "arrow1", "3")
-          else:
-            line.setAttribute( "arrow1", "0")
-          if arrow == "both" or arrow == "last":
-            line.setAttribute( "arrow2", "3")
-          else:
-            line.setAttribute( "arrow2", "0")
-          p1 = doc.createElement( "point")
-          line.appendChild( p1)
-          p1.setAttribute( "x", str( round(x1)))
-          p1.setAttribute( "y", str( round(y1)))
-          p2 = doc.createElement( "point")
-          line.appendChild( p2)
-          p2.setAttribute( "x", str( round(x2)))
-          p2.setAttribute( "y", str( round(y2)))
-        elif self.paper.type( item) == "text":
-          x, y = self.paper.bbox( item)[0], self.paper.bbox( item)[1]
-          text = doc.createElement( "text")
-          top.appendChild( text)
-          text.setAttribute( "matrix", "1 0 0 0 1 0 "+str(x+1)+" "+str(y)+" 1")
-          color = self.paper.winfo_rgb( self.paper.itemcget( item, 'fill'))
-          text.setAttribute( "strokecolor", str( int( color[0]/256))+' '+str( int( color[1]/256))+' '+str( int( color[2]/256)))
-          text.setAttribute( "strokestyle", "1")
-          text.setAttribute( "linewidth", "1")
-          text.setAttribute( "fillstyle", "0")
-          text.setAttribute( "align", "0")
-          font = doc.createElement( "font")
-          text.appendChild( font)
-          font.setAttribute( "face", "helvetica")
-          font.setAttribute( "point-size", "12")
-          font.setAttribute( "weight", "50")
-          font.appendChild( doc.createTextNode( self.paper.itemcget( item, 'text')))
-        elif self.paper.type( item) == "rectangle":
-          x1, y1, x2, y2 = self.paper.coords( item)
-          rect = doc.createElement( "rectangle")
-          top.appendChild( rect)
-          rect.setAttribute( "matrix", "1 0 0 0 1 0 0 0 1")
-          rect.setAttribute( "strokecolor", "0 0 0")
-          rect.setAttribute( "strokestyle", "0")
-          rect.setAttribute( "linewidth", "1")
-          rect.setAttribute( "fillstyle", "1")
-          rect.setAttribute( "fillcolor", "255 255 255")
-          rect.setAttribute( "x", str( x1))
-          rect.setAttribute( "y", str( y1))
-          rect.setAttribute( "width", str( x2 -x1))
-          rect.setAttribute( "height", str( y2 -y1))
-          rect.setAttribute( "rounding", "0")
 
 

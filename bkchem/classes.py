@@ -768,8 +768,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     try:
       t = unicode( text)
     except UnicodeDecodeError:
-      t = text
-    self.text = t #.encode('utf-8')
+      t = text.decode( 'utf-8')
+    self.text = t.encode('utf-8')
     self.parsed_text = dom.parseString( '<ftext>'+self.text+'</ftext>').childNodes[0]
 
 

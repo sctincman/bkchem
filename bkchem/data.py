@@ -22,6 +22,7 @@
 Serves as central storage of text and other data"""
 
 booleans = ['no', 'yes']
+on_off = ['off', 'on']
 
 # note that 'no' is there just to shift the index of single to 1
 bond_types = ['no','single', 'double','triple','wedge','hatch']
@@ -126,3 +127,10 @@ paper_types = { 'A4': [297,210],
 
 # border width for all components
 border_width = 1
+
+
+# index codes for meta__configurable
+
+FROM_STRING = 0
+TO_STRING = 1
+

@@ -74,14 +74,14 @@ if len( sys.argv) > 1:
   import os.path
   from getopt import gnu_getopt, GetoptError
   try:
-    opts, files = gnu_getopt( sys.argv[1:], "f:t:o:")
+    opts, files = gnu_getopt( sys.argv[1:], "bf:t:o:l:")
   except GetoptError, o:
-    print _(" * unknown option -%s\n * Only -f (from format), -t (to format), -o (output file) options are allowed!" % o.opt)
+    print _(" * unknown option -%s")
     sys.exit()
 
 
 # now initialize the main application part or the batch mode
-if opts:
+if opts and opts[0][0] == "-b":
   # we are in batch mode
   import time
   t = time.time()
@@ -91,7 +91,9 @@ if opts:
   sys.exit()
 else:
   # normal interactive mode
-  #splash screen
+  if opts:
+    print "the command line options are ignored in interactive mode, use -b to switch to batch mode"
+  # splash screen
   splash = Splash()
   splash.withdraw()
   #splash.overrideredirect( 1)
@@ -131,7 +133,7 @@ else:
   splash.destroy()
   del splash
 
-#start the application
+# start the application
 geometry = "+10+10"
 myapp.geometry(geometry)
 myapp.update_idletasks()

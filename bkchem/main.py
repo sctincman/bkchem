@@ -61,6 +61,7 @@ class BKchem( Tk):
 
 
   def initialize( self):
+    self.in_batch_mode = 0
     self.init_basics()
     
     # main drawing part
@@ -109,6 +110,7 @@ class BKchem( Tk):
 
 
   def initialize_batch( self):
+    self.in_batch_mode = 1
     self.init_basics()
     
     # main drawing part
@@ -560,16 +562,19 @@ class BKchem( Tk):
 
 
 
-  def save_CDML( self):
+  def save_CDML( self, name=None):
     """saves content of self.paper (recent paper) under its filename,
     if the filename was automaticaly given by bkchem it will call save_as_CDML
     in order to ask for the name"""
-    if self.paper.file_name['auto']:
-      new_name = self.save_as_CDML()
+    if not name:
+      if self.paper.file_name['auto']:
+        new_name = self.save_as_CDML()
+        return
+      else:
+        a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
+        self._save_according_to_extension( a)
     else:
-      a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
-      self._save_according_to_extension( a)
-
+      self._save_according_to_extension( name)
 
 
   def save_as_CDML( self):
@@ -1084,7 +1089,9 @@ Enter IChI:""")
 
 
 
-  def process_batch( self, opts, files):
+  def process_batch( self, opts, files=None):
+    import time
+    
     f = None
     t = None
     o = None
@@ -1095,8 +1102,21 @@ Enter IChI:""")
         t = opt[1]
       elif opt[0] == '-o':
         o = opt[1]
+      elif opt[0] == '-l':
+        if not files:
+          files = []
+          file_list = opt[1]
+          file_file = open( file_list, 'r')
+          for name in [l.strip() for l in file_file.xreadlines()]:
+            if os.path.isfile( name):
+              files.append( name)
+              sys.stderr.write( " * added file from list: %s\n" % name)
+        else:
+          print "-l option is ignored when input file is given"
+
+    # default values for input and output formats
     f = f or 'cdml'
-    t = t or 'svg'
+    t = t or 'cd-svg'
 
     for file in files:
       # choose the output filename
@@ -1104,8 +1124,20 @@ Enter IChI:""")
         out = file+'.'+t
       else:
         out = o
-      # 
+
+      # read
       if f == 'cdml':
+        sys.stderr.write( " * reading file: %s\n" % file)
+        #try:
         self.load_CDML( file, replace=1)
+        #except e:
+        #  sys.stderr.write( " !! failed with error: %s\n" % e)
+
+      # write
+      start_time = time.time()
       if t == 'svg':
         self.save_SVG( out)
+      elif t == 'cd-svg':
+        self.save_CDML( o)
+        sys.stderr.write( " * writing CD-SVG file: %s\n" % o)
+        sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))

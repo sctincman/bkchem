@@ -35,6 +35,7 @@ import periodic_table as PT
 import groups_table as GT
 import marks
 from parents import meta_enabled, area_colored, point_drawable, text_like, child
+import data
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -62,6 +63,13 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens', 'pos', 'type')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
+
+
+  meta__configurable = {'show': (None, str),
+                        'show_hydrogens': (int, str),
+                        'charge': (int, str)
+                        }
+
 
 
 
@@ -152,8 +160,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     try:
       t = unicode( name)
     except UnicodeDecodeError:
-      t = name
-    self.__name = t #.decode('utf-8')
+      t = name.decode( 'utf-8')
+    self.__name = t.encode('utf-8')
     self.dirty = 1
 
   name = property( __get_name, __set_name)
@@ -164,10 +172,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     return self.__show
 
   def __set_show( self, show):
-    self.__show = show
+    if show in data.booleans:
+      self.__show = data.booleans.index( show)
+    else:
+      self.__show = int( show)
     self.dirty = 1
 
-  show = property( __get_show, __set_show)
+  show = property( __get_show, __set_show, None,
+                   "should the atom symbol be displayed? accepts both 0|1 and yes|no")
 
 
   # show_hydrogens
@@ -175,7 +187,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     return self.__show_hydrogens
 
   def __set_show_hydrogens( self, show_hydrogens):
-    self.__show_hydrogens = show_hydrogens
+    if show_hydrogens in data.on_off:
+      self.__show_hydrogens = data.on_off.index( show_hydrogens)
+    else:
+      self.__show_hydrogens = int( show_hydrogens)
     self.dirty = 1
 
   show_hydrogens = property( __get_show_hydrogens, __set_show_hydrogens)
@@ -630,7 +645,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else:
       self.set_name( package.getAttribute( 'name'), check_valency=0)
     if package.getAttribute( 'hydrogens'):
-      self.show_hydrogens = on_off.index( package.getAttribute('hydrogens'))
+      self.show_hydrogens = package.getAttribute('hydrogens')
     else:
       self.show_hydrogens = 0
     # font and fill color
@@ -643,7 +658,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         self.line_color = fnt.getAttribute( 'color')
     # show
     if package.getAttribute( 'show'):
-      self.show = a.index( package.getAttribute( 'show'))
+      self.show = package.getAttribute( 'show')
     else:
       self.show = (self.name!='C')
     # background color

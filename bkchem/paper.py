@@ -571,7 +571,7 @@ class chem_paper( Canvas, object):
         else:
           o.draw()
     # now check if the old standard differs
-    if new_standard and old_standard != self.standard:
+    if new_standard and old_standard != self.standard and not self.app.in_batch_mode:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
 				       data.standards_differ_text,
 				
