@@ -68,20 +68,20 @@ class id_enabled( simple_parent):
     return self.paper.id_manager.generate_id( prefix=self.object_type)
 
   # id
-  def __get_id( self):
+  def _get_id( self):
     try:
       return self.__id
     except AttributeError:
       self.__id = self._generate_id()
     return self.__id
 
-  def __set_id( self, id):
+  def _set_id( self, id):
     if self.paper.id_manager.is_registered_object( self):
       self.paper.id_manager.unregister_object( self) 
     self.paper.id_manager.register_id( self, id)
     self.__id = id
 
-  id = property( __get_id, __set_id)
+  id = property( _get_id, _set_id)
   
 
   def copy_settings( self, other):
@@ -139,13 +139,13 @@ class drawable( simple_parent):
   # public properties
 
   # dirty
-  def __get_dirty( self):
+  def _get_dirty( self):
     return self.__dirty
 
-  def __set_dirty( self, dirty):
+  def _set_dirty( self, dirty):
     self.__dirty = dirty
 
-  dirty = property( __get_dirty, __set_dirty)
+  dirty = property( _get_dirty, _set_dirty)
 
   
   # public methods
@@ -177,24 +177,24 @@ class point_drawable( drawable):
   # public properties
 
   # x
-  def __get_x( self):
+  def _get_x( self):
     return self.__x
 
-  def __set_x( self, x):
+  def _set_x( self, x):
     self.__x = x
     self.dirty = 1
 
-  x = property( __get_x, __set_x)
+  x = property( _get_x, _set_x)
 
   # y
-  def __get_y( self):
+  def _get_y( self):
     return self.__y
 
-  def __set_y( self, y):
+  def _set_y( self, y):
     self.__y = y
     self.dirty = 1
 
-  y = property( __get_y, __set_y)
+  y = property( _get_y, _set_y)
 
 
   def copy_settings( self, other):
@@ -212,14 +212,14 @@ class with_line( simple_parent):
   meta__undo_properties = ("line_width",)
   
   # line_width
-  def __get_line_width( self):
+  def _get_line_width( self):
     return self.__line_width
 
-  def __set_line_width( self, line_width):
+  def _set_line_width( self, line_width):
     self.__line_width = line_width
     self.dirty = 1
 
-  line_width = property( __get_line_width, __set_line_width)
+  line_width = property( _get_line_width, _set_line_width)
   
 
   def copy_settings( self, other):
@@ -245,14 +245,14 @@ class line_colored( simple_parent):
   # public properties
 
   # line_color
-  def __get_line_color( self):
+  def _get_line_color( self):
     return self.__line_color
 
-  def __set_line_color( self, line_color):
+  def _set_line_color( self, line_color):
     self.__line_color = line_color
     self.dirty = 1
 
-  line_color = property( __get_line_color, __set_line_color)
+  line_color = property( _get_line_color, _set_line_color)
 
 
   def copy_settings( self, other):
@@ -276,14 +276,14 @@ class area_colored( line_colored):
   # public properties
 
   # area_color
-  def __get_area_color( self):
+  def _get_area_color( self):
     return self.__area_color
 
-  def __set_area_color( self, area_color):
+  def _set_area_color( self, area_color):
     self.__area_color = area_color
     self.dirty = 1
 
-  area_color = property( __get_area_color, __set_area_color)
+  area_color = property( _get_area_color, _set_area_color)
 
 
   def copy_settings( self, other):
@@ -307,25 +307,25 @@ class with_font( simple_parent):
 
 
   # font_size
-  def __get_font_size( self):
+  def _get_font_size( self):
     return self.__font_size
 
-  def __set_font_size( self, font_size):
+  def _set_font_size( self, font_size):
     self.__font_size = font_size
     self.dirty = 1
 
-  font_size = property( __get_font_size, __set_font_size)
+  font_size = property( _get_font_size, _set_font_size)
 
 
   # font_family
-  def __get_font_family( self):
+  def _get_font_family( self):
     return self.__font_family
 
-  def __set_font_family( self, font_family):
+  def _set_font_family( self, font_family):
     self.__font_family = font_family
     self.dirty = 1
 
-  font_family = property( __get_font_family, __set_font_family)
+  font_family = property( _get_font_family, _set_font_family)
 
 
   def copy_settings( self, other):
@@ -348,14 +348,14 @@ class text_like( with_font):
     self.xml_text = ''
 
   # xml_text
-  def __get_xml_text( self):
+  def _get_xml_text( self):
     return self.__xml_text
 
-  def __set_xml_text( self, xml_text):
+  def _set_xml_text( self, xml_text):
     self.__xml_text = xml_text
     self.dirty = 1
 
-  xml_text = property( __get_xml_text, __set_xml_text)
+  xml_text = property( _get_xml_text, _set_xml_text)
 
 
 
@@ -382,18 +382,18 @@ class interactive( simple_parent):
 class container( simple_parent):
 
   # shape_defining_points
-  def __get_shape_defining_points( self):
+  def _get_shape_defining_points( self):
     return []
 
-  shape_defining_points = property( __get_shape_defining_points, None, None,
+  shape_defining_points = property( _get_shape_defining_points, None, None,
                                     "should give list of point_drawable instances")
 
 
   # children
-  def __get_children( self):
+  def _get_children( self):
     return self.shape_defining_points
 
-  children = property( __get_children, None, None,
+  children = property( _get_children, None, None,
                        "should give list of child instances, by default is alias for self.shape_defining_points")
 
 ##   # iterator
@@ -409,13 +409,13 @@ class container( simple_parent):
 class child( simple_parent):
 
   # parent
-  def __get_parent( self):
+  def _get_parent( self):
     return None
 
-  def __set_parent( self, par):
+  def _set_parent( self, par):
     pass
 
-  parent = property( __get_parent, __set_parent, None,
+  parent = property( _get_parent, _set_parent, None,
                      "should give a container")
 
 

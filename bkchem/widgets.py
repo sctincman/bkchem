@@ -384,14 +384,14 @@ class HTMLLikeInput( Tkinter.Frame, object):
       self.__dict__[i].pack( side='left')
 
 
-  def __get_text( self):
+  def _get_text( self):
     return self.editPool.get()
 
-  def __set_text( self, text):
+  def _set_text( self, text):
     self.editPool.delete(0, last='end')
     self.editPool.insert(0, text)
 
-  text = property( __get_text, __set_text, None, "the text property")
+  text = property( _get_text, _set_text, None, "the text property")
 
 
   def _numbersToSubButtonPressed( self, *e):

@@ -406,8 +406,8 @@ class polygon( vector_graphics_item, container):
 
 
   # shape_defining_points
-  def __get_shape_defining_points( self):
+  def _get_shape_defining_points( self):
     return self.points
 
-  shape_defining_points = property( __get_shape_defining_points, None, None,
+  shape_defining_points = property( _get_shape_defining_points, None, None,
                                     "should give list of point_drawable instances")

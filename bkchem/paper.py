@@ -129,48 +129,48 @@ class chem_paper( Canvas, object):
 
 
   # molecules
-  def __get_molecules( self):
+  def _get_molecules( self):
     return [o for o in self.stack if isinstance( o, molecule)]
 
-  molecules = property( __get_molecules)
+  molecules = property( _get_molecules)
 
 
   # arrows
-  def __get_arrows( self):
+  def _get_arrows( self):
     return [o for o in self.stack if isinstance( o, classes.arrow)]
 
-  arrows = property( __get_arrows)
+  arrows = property( _get_arrows)
 
 
   # pluses
-  def __get_pluses( self):
+  def _get_pluses( self):
     return [o for o in self.stack if isinstance( o, classes.plus)]
 
-  pluses = property( __get_pluses)
+  pluses = property( _get_pluses)
 
 
 
   # texts
-  def __get_texts( self):
+  def _get_texts( self):
     return [o for o in self.stack if isinstance( o, classes.text)]
 
-  texts = property( __get_texts)
+  texts = property( _get_texts)
 
 
   # vectors
-  def __get_vectors( self):
+  def _get_vectors( self):
     return [o for o in self.stack if isinstance( o, graphics.vector_graphics_item)]
 
-  vectors = property( __get_vectors)
+  vectors = property( _get_vectors)
 
 
   # top_levels
-  def __get_top_levels( self):
+  def _get_top_levels( self):
     #print [o for o in self.stack if not isinstance( o, graphics.top_level)]
     return self.stack
     #return [o for o in self.stack if isinstance( o, graphics.top_level)]
 
-  top_levels = property( __get_top_levels)
+  top_levels = property( _get_top_levels)
 
 
   ### // PROPERTIES
@@ -246,6 +246,7 @@ class chem_paper( Canvas, object):
     # when B1 is down such events do not occur
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
+    self.app.update_cursor_position( event.x, event.y)
     self.app.mode.mouse_drag( event) 
     b = self.find_enclosed( event.x-2, event.y-2, event.x+2, event.y+2)
     if b:
@@ -288,6 +289,7 @@ class chem_paper( Canvas, object):
   def _move( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
+    self.app.update_cursor_position( event.x, event.y)
     self.app.mode.mouse_move( event)
 
 
@@ -1790,19 +1792,19 @@ class chem_paper( Canvas, object):
 
 
 
-  def __get_full_path( self):
+  def _get_full_path( self):
     return os.path.abspath( os.path.join( self.file_name['dir'], self.file_name['name']))
 
-  full_path = property( __get_full_path)
+  full_path = property( _get_full_path)
     
 
 
 
 
-  def __get_window_name( self):
+  def _get_window_name( self):
     return self.create_window_name( self.file_name)
 
-  window_name = property( __get_window_name)
+  window_name = property( _get_window_name)
 
 
 

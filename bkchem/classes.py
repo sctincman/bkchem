@@ -165,20 +165,20 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # PROPERTIES
 
   # shape_defining_points
-  def __get_shape_defining_points( self):
+  def _get_shape_defining_points( self):
     return self.points
 
-  shape_defining_points = property( __get_shape_defining_points, None, None,
+  shape_defining_points = property( _get_shape_defining_points, None, None,
                                     "should give list of point_drawable instances")
 
 
-  def __get_reaction( self):
+  def _get_reaction( self):
     return self.__reaction
 
-  def __set_reaction( self, reaction):
+  def _set_reaction( self, reaction):
     self.__reaction = reaction
 
-  reaction = property( __get_reaction, __set_reaction, None, "the reaction associated with this arrow")
+  reaction = property( _get_reaction, _set_reaction, None, "the reaction associated with this arrow")
 
 
   # // PROPERTIES
@@ -469,13 +469,13 @@ class point( point_drawable, interactive, child):
 
 
   # parent
-  def __get_parent( self):
+  def _get_parent( self):
     return self.molecule
 
-  def __set_parent( self, par):
+  def _set_parent( self, par):
     self.molecule = par
 
-  parent = property( __get_parent, __set_parent, None,
+  parent = property( _get_parent, _set_parent, None,
                      "returns self.molecule")
 
 

@@ -317,6 +317,7 @@ class BKchem( Tk):
     #self.option_add( "*borderwidth", config.border_width)
     self.title( "BKchem")
     self.stat= StringVar()
+    self.cursor_position = StringVar()
     self.stat.set( "Idle")
     self.save_dir = '.'
     self.save_file = None
@@ -462,8 +463,12 @@ class BKchem( Tk):
 
 
   def init_status_bar( self):
-    status = Label( self.main_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
-    status.grid( row=5, sticky="we")
+    status_frame = Frame( self.main_frame)
+    status_frame.grid( row=5, sticky="we")
+    status = Label( status_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
+    status.pack( side="left", expand=1, fill="both")
+    position = Label( status_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.cursor_position, anchor='w', height=2, justify='l')
+    position.pack( side="right")
 
 
 
@@ -1372,6 +1377,9 @@ Enter IChI:""")
     self.paper.clean_selected()
 
     
+
+  def update_cursor_position( self, x, y):
+    self.cursor_position.set( "(%d, %d)" % (x,y))
 
     
 

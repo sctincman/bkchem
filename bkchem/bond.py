@@ -98,167 +98,167 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
 
   # dirty
   # override of drawable.dirty
-  def __get_dirty( self):
+  def _get_dirty( self):
     return self.__dirty # or self.atom1.dirty or self.atom2.dirty
 
-  def __set_dirty( self, dirty):
+  def _set_dirty( self, dirty):
     self.__dirty = dirty
 
-  dirty = property( __get_dirty, __set_dirty)
+  dirty = property( _get_dirty, _set_dirty)
 
 
   # molecule
-  def __get_molecule( self):
+  def _get_molecule( self):
     return self.__molecule
 
-  def __set_molecule( self, mol):
+  def _set_molecule( self, mol):
     self.__molecule = mol
 
-  molecule = property( __get_molecule, __set_molecule)
+  molecule = property( _get_molecule, _set_molecule)
 
 
   # type
-  def __get_type( self):
+  def _get_type( self):
     return self.__type
 
-  def __set_type( self, mol):
+  def _set_type( self, mol):
     self.__type = mol
     self.__dirty = 1
 
-  type = property( __get_type, __set_type)
+  type = property( _get_type, _set_type)
 
 
   # order
-  def __get_order( self):
+  def _get_order( self):
     return self.__order
 
-  def __set_order( self, mol):
+  def _set_order( self, mol):
     self.__order = mol
     self.__dirty = 1
 
-  order = property( __get_order, __set_order)
+  order = property( _get_order, _set_order)
 
 
   # atom1
-  def __get_atom1( self):
+  def _get_atom1( self):
     try:
       return self._vertices[0]
     except IndexError:
       return None
 
-  def __set_atom1( self, mol):
+  def _set_atom1( self, mol):
     try:
       self._vertices[0] = mol
     except IndexError:
       self._vertices = [mol, None]
     self.__dirty = 1
 
-  atom1 = property( __get_atom1, __set_atom1)
+  atom1 = property( _get_atom1, _set_atom1)
 
 
   # atom2
-  def __get_atom2( self):
+  def _get_atom2( self):
     try:
       return self._vertices[1]
     except IndexError:
       return None
 
-  def __set_atom2( self, mol):
+  def _set_atom2( self, mol):
     try:
       self._vertices[1] = mol
     except IndexError:
       self._vertices = [None, mol]
     self.__dirty = 1
 
-  atom2 = property( __get_atom2, __set_atom2)
+  atom2 = property( _get_atom2, _set_atom2)
 
 
   # atoms
-  def __get_atoms( self):
+  def _get_atoms( self):
     return self._vertices
 
-  def __set_atoms( self, mol):
+  def _set_atoms( self, mol):
     self._vertices = mol
     self.__dirty = 1
 
-  atoms = property( __get_atoms, __set_atoms)
+  atoms = property( _get_atoms, _set_atoms)
 
 
   # center
-  def __get_center( self):
+  def _get_center( self):
     return self.__center
 
-  def __set_center( self, mol):
+  def _set_center( self, mol):
     self.__center = mol
     self.__dirty = 1
 
-  center = property( __get_center, __set_center)
+  center = property( _get_center, _set_center)
 
 
   # bond_width
-  def __get_bond_width( self):
+  def _get_bond_width( self):
     return self.__bond_width
 
-  def __set_bond_width( self, mol):
+  def _set_bond_width( self, mol):
     self.__bond_width = mol
     self.__dirty = 1
 
-  bond_width = property( __get_bond_width, __set_bond_width)
+  bond_width = property( _get_bond_width, _set_bond_width)
 
 
   # wedge_width
-  def __get_wedge_width( self):
+  def _get_wedge_width( self):
     return self.__wedge_width
 
-  def __set_wedge_width( self, mol):
+  def _set_wedge_width( self, mol):
     self.__wedge_width = mol
     self.__dirty = 1
 
-  wedge_width = property( __get_wedge_width, __set_wedge_width)
+  wedge_width = property( _get_wedge_width, _set_wedge_width)
 
 
   # simple_double
-  def __get_simple_double( self):
+  def _get_simple_double( self):
     return self.__simple_double
 
-  def __set_simple_double( self, mol):
+  def _set_simple_double( self, mol):
     self.__simple_double = mol
     self.__dirty = 1
 
-  simple_double = property( __get_simple_double, __set_simple_double)
+  simple_double = property( _get_simple_double, _set_simple_double)
 
 
   # double_length_ratio
-  def __get_double_length_ratio( self):
+  def _get_double_length_ratio( self):
     return self.__double_length_ratio
 
-  def __set_double_length_ratio( self, mol):
+  def _set_double_length_ratio( self, mol):
     self.__double_length_ratio = mol
     self.__dirty = 1
 
-  double_length_ratio = property( __get_double_length_ratio, __set_double_length_ratio)
+  double_length_ratio = property( _get_double_length_ratio, _set_double_length_ratio)
 
 
   # auto_bond_sign
-  def __get_auto_bond_sign( self):
+  def _get_auto_bond_sign( self):
     return self.__auto_bond_sign
 
-  def __set_auto_bond_sign( self, mol):
+  def _set_auto_bond_sign( self, mol):
     self.__auto_bond_sign = mol
     self.__dirty = 1
 
-  auto_bond_sign = property( __get_auto_bond_sign, __set_auto_bond_sign)
+  auto_bond_sign = property( _get_auto_bond_sign, _set_auto_bond_sign)
 
 
 
   # parent
-  def __get_parent( self):
+  def _get_parent( self):
     return self.molecule
 
-  def __set_parent( self, par):
+  def _set_parent( self, par):
     self.molecule = par
 
-  parent = property( __get_parent, __set_parent, None,
+  parent = property( _get_parent, _set_parent, None,
                      "returns self.molecule")
 
 

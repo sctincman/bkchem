@@ -105,50 +105,50 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
   ## ---------------------------------------- PROPERTIES ------------------------------
       
   # molecule
-  def __get_molecule( self):
+  def _get_molecule( self):
     return self.__molecule
 
-  def __set_molecule( self, mol):
+  def _set_molecule( self, mol):
     self.__molecule = mol
 
-  molecule = property( __get_molecule, __set_molecule)
+  molecule = property( _get_molecule, _set_molecule)
 
 
   # x
-  def __get_x( self):
+  def _get_x( self):
     return self.__x
 
-  def __set_x( self, x):
+  def _set_x( self, x):
     self.__x = self.paper.any_to_px( x)
 
-  x = property( __get_x, __set_x)
+  x = property( _get_x, _set_x)
 
 
   # y
-  def __get_y( self):
+  def _get_y( self):
     return self.__y
 
-  def __set_y( self, y):
+  def _set_y( self, y):
     self.__y = self.paper.any_to_px( y)
 
-  y = property( __get_y, __set_y)
+  y = property( _get_y, _set_y)
 
 
   # z
-  def __get_z( self):
+  def _get_z( self):
     return self.__z or 0
 
-  def __set_z( self, z):
+  def _set_z( self, z):
     self.__z = z
 
-  z = property( __get_z, __set_z)
+  z = property( _get_z, _set_z)
 
 
   # name
-  def __get_name( self):
+  def _get_name( self):
     return self.__name
 
-  def __set_name( self, name):
+  def _set_name( self, name):
     try:
       t = unicode( name)
     except UnicodeDecodeError:
@@ -156,110 +156,110 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
     self.__name = t.encode('utf-8')
     self.dirty = 1
 
-  name = property( __get_name, __set_name)
+  name = property( _get_name, _set_name)
 
 
 
   #LOOK charge
-  def __get_charge( self):
+  def _get_charge( self):
     return 0
 
-  def __set_charge( self, charge):
+  def _set_charge( self, charge):
     pass
 
-  charge = property( __get_charge, __set_charge)
+  charge = property( _get_charge, _set_charge)
 
 
 
   # pos
-  def __get_pos( self):
+  def _get_pos( self):
     return self.__pos
 
-  def __set_pos( self, pos):
+  def _set_pos( self, pos):
     self.__pos = pos
     self.dirty = 1
 
-  pos = property( __get_pos, __set_pos)
+  pos = property( _get_pos, _set_pos)
 
 
 
   #valency (setting)
-  def __get_valency( self):
+  def _get_valency( self):
     return 1
 
-  def __set_valency( self, val):
+  def _set_valency( self, val):
     pass
 
-  valency = property( __get_valency, __set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
+  valency = property( _get_valency, _set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
 
 
 
   # xml_text (override of text_like.xml_text)
-  def __get_xml_text( self):
+  def _get_xml_text( self):
     return self.get_ftext()
 
-  def __set_xml_text( self, xml_text):
+  def _set_xml_text( self, xml_text):
     pass
     #self.set_name( xml_text)  -- ignored for now
 
-  xml_text = property( __get_xml_text, __set_xml_text)
+  xml_text = property( _get_xml_text, _set_xml_text)
 
 
 
   # font_size (override of text_like.xml_text)
-  def __get_font_size( self):
+  def _get_font_size( self):
     return self.__font_size
 
-  def __set_font_size( self, font_size):
+  def _set_font_size( self, font_size):
     self.__font_size = font_size
     self.dirty = 1
 
-  font_size = property( __get_font_size, __set_font_size)
+  font_size = property( _get_font_size, _set_font_size)
 
 
 
   # parent
-  def __get_parent( self):
+  def _get_parent( self):
     return self.molecule
 
-  def __set_parent( self, par):
+  def _set_parent( self, par):
     self.molecule = par
 
-  parent = property( __get_parent, __set_parent, None,
+  parent = property( _get_parent, _set_parent, None,
                      "returns self.molecule")
 
 
 
   # drawn
-  def __get_drawn( self):
+  def _get_drawn( self):
     """is the atoms drawn? on the paper or just virtual"""
     if self.item:
       return 1
     return 0
 
-  drawn = property( __get_drawn, None, None, "tells if the atom is already drawn")
+  drawn = property( _get_drawn, None, None, "tells if the atom is already drawn")
 
 
   ## JUST TO MIMICK ATOM
   # show
-  def __get_show( self):
+  def _get_show( self):
     return 1
 
-  def __set_show( self, show):
+  def _set_show( self, show):
     pass
 
-  show = property( __get_show, __set_show, None,
+  show = property( _get_show, _set_show, None,
                    "should the atom symbol be displayed? accepts both 0|1 and yes|no")
 
 
   # show_hydrogens
-  def __get_show_hydrogens( self):
+  def _get_show_hydrogens( self):
     return 1
 
-  def __set_show_hydrogens( self, show_hydrogens):
+  def _set_show_hydrogens( self, show_hydrogens):
     pass
 
-  show_hydrogens = property( __get_show_hydrogens, __set_show_hydrogens)
+  show_hydrogens = property( _get_show_hydrogens, _set_show_hydrogens)
 
   ## //
 
