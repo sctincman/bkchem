@@ -166,7 +166,7 @@ class external_data_manager( object):
     for dclass in self.records:
       ecls = dom_ext.elementUnder( e, "class", (("name", dclass),))
       for obj in self.records[ dclass]:
-        eobj = dom_ext.elementUnder( ecls, "object", (("ref", obj.id),))
+        eobj = dom_ext.elementUnder( ecls, "object", (("ref", obj.id),("type", obj.object_type)))
         for cat in self.records[ dclass][ obj]:
           val = self.get_data( dclass, obj, cat)
           if hasattr( val, 'id'):

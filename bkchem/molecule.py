@@ -39,6 +39,7 @@ from bond import bond
 from atom import atom
 from group import group
 from textatom import textatom
+from fragment import fragment
 
 from sets import Set
 
@@ -79,6 +80,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     self.display_form = ''  # this is a (html like) text that defines how to present the molecule in linear form
     if package:
       self.read_package( package)
+    self.fragments = Set()
 
 
   def __iter__( self):
@@ -486,6 +488,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         to_draw = a.expand() or []
         [o.draw() for o in to_draw]
         a.delete()
+        # creating a fragment for implosion of the group
+        edges = self.vertex_subgraph_to_edge_subgraph( to_draw)
+        self.create_fragment( a.name, edges)
     self.redraw()
     
 
@@ -580,3 +585,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       v = self.create_vertex( vertex_class=cls)
       if v.set_name( text, occupied_valency=val):
         return v
+
+
+  def create_fragment( self, name, edges):
+    if self.defines_connected_subgraph_e( edges):
+      nf = fragment( self.paper.id_manager.generate_id( "fragment"), name=name)
+      self.fragments.add( nf)
+      return True
+    else:
+      return False

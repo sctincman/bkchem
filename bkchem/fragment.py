@@ -18,17 +18,36 @@
 #--------------------------------------------------------------------------
 
 
-debug = 1
-devel = 1
-
-current_CDML_version = '0.14'
-
-current_BKchem_version = '0.10.0-devel'
+from sets import Set
 
 
 
-# border width for all components of interface
-border_width = 1
+class fragment( object):
 
-background_color = "#eaeaea"
+  def __init__( self, id, name=""):
+    self.id = id
+    self.name = name
+    self.edges = Set()
+    self.properties = {}  # this is the place for information about an particular fragment
+    
 
+  def _get_name( self):
+    return self._name
+
+  def _set_name( self, name):
+    self._name = name
+
+  name = property( _get_name, _set_name, None, "name of the fragment")
+
+
+  def _get_id( self):
+    return self._id
+
+  def _set_id( self, id):
+    self._id = id
+
+  id = property( _get_id, _set_id, None, "id of the fragment")
+
+
+  
+  

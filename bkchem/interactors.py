@@ -291,3 +291,18 @@ def save_as_template( paper):
 
       else:
         return name
+
+
+
+def create_fragment_from_selected( paper):
+  top_levels, unique = paper.selected_to_unique_top_levels()
+  if len( top_levels) != 1:
+    paper.app.log( _("The selected items must be part of exactly one molecule."), message_type="error")
+    return
+
+  mol = top_levels[0]
+  es = [e for e in paper.selected if e in mol.edges]
+  if mol.create_fragment( "fragment", es):
+    paper.app.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
+  else:
+    paper.app.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
