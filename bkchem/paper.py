@@ -104,10 +104,11 @@ class BKpaper( Canvas):
                    'template': modes.template_mode( self),
                    'text': modes.text_mode( self),
                    'rotate': modes.rotate_mode( self),
+                   'bondalign': modes.bond_align_mode( self),
                    'name': modes.name_mode( self),
                    'vector': modes.vector_mode( self),
                    'mark': modes.mark_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'name', 'vector', 'mark']
+    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
     self.mode = 'draw'
     self.um = undo.undo_manager( self)  # undo manager
 
@@ -1087,7 +1088,6 @@ class BKpaper( Canvas):
   def mm_to_px( self, mm):
     """transforms coord from mm to px"""
     return self.winfo_fpixels( '%fm' % mm)
-
 
   def read_xml_point( self, point):
     x = point.getAttribute( 'x')

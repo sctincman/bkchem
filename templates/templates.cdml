@@ -94,6 +94,80 @@
     <bond end="a34" start="a38" type="s" width="1.0"/>
     <bond end="a39" start="a34" type="s" width="1.0"/>
   </molecule>
+  <molecule id="cycloheptane" name="cycloheptane">
+      <template atom="a700" bond_first="a702" bond_second="a701"/>
+    <atom id="a700" name="C">
+        <point x="5.0cm" y="3.133cm"/>
+    </atom>
+    <atom id="a701" name="C">
+      <point x="5.0cm" y="4.0cm"/>
+    </atom>
+    <atom id="a702" name="C">
+      <point x="5.782cm" y="4.377cm"/>
+    </atom>
+    <atom id="a703" name="C">
+        <point x="5.975cm" y="5.223cm"/>
+    </atom>
+    <atom id="a704" name="C">
+      <point x="5.434cm" y="5.901cm"/>
+    </atom>
+    <atom id="a705" name="C">
+      <point x="4.566cm" y="5.901cm"/>
+    </atom>
+    <atom id="a706" name="C">
+      <point x="4.025cm" y="5.223cm"/>
+    </atom>
+    <atom id="a707" name="C">
+      <point x="4.218cm" y="4.377cm"/>
+    </atom>
+    <bond end="a702" start="a701" type="s" width="1.0"/>
+    <bond end="a703" start="a702" type="s" width="1.0"/>
+    <bond end="a704" start="a703" type="s" width="1.0"/>
+    <bond end="a705" start="a704" type="s" width="1.0"/>
+    <bond end="a706" start="a705" type="s" width="1.0"/>
+    <bond end="a707" start="a706" type="s" width="1.0"/>
+    <bond end="a701" start="a707" type="s" width="1.0"/>
+    <bond end="a700" start="a701" type="s" width="1.0"/>
+  </molecule>
+  <molecule id="cyclooctane" name="cyclooctane">
+      <template atom="a800" bond_first="a802" bond_second="a801"/>
+    <atom id="a801" name="C">
+      <point x="5.5000cm" y="3.7929cm"/>
+    </atom>
+    <atom id="a802" name="C">
+      <point x="6.2071cm" y="4.5000cm"/>
+    </atom>
+    <atom id="a803" name="C">
+        <point x="6.2071cm" y="5.5000cm"/>
+    </atom>
+    <atom id="a804" name="C">
+      <point x="5.5000cm" y="6.2071cm"/>
+    </atom>
+    <atom id="a805" name="C">
+      <point x="4.5000cm" y="6.2071cm"/>
+    </atom>
+    <atom id="a806" name="C">
+      <point x="3.7929cm" y="5.5000cm"/>
+    </atom>
+    <atom id="a807" name="C">
+      <point x="3.7929cm" y="4.5000cm"/>
+    </atom>
+    <atom id="a808" name="C">
+        <point x="4.5000cm" y="3.7929cm"/>
+    </atom>
+    <atom id="a800" name="C">
+        <point x="5.8827cm" y="2.8690cm"/>
+    </atom>
+    <bond end="a802" start="a801" type="s" width="1.0"/>
+    <bond end="a803" start="a802" type="s" width="1.0"/>
+    <bond end="a804" start="a803" type="s" width="1.0"/>
+    <bond end="a805" start="a804" type="s" width="1.0"/>
+    <bond end="a806" start="a805" type="s" width="1.0"/>
+    <bond end="a807" start="a806" type="s" width="1.0"/>
+    <bond end="a808" start="a807" type="s" width="1.0"/>
+    <bond end="a801" start="a808" type="s" width="1.0"/>
+    <bond end="a800" start="a801" type="s" width="1.0"/>
+  </molecule>
   <molecule id="cyklohexane" name="cyklohexane">
     <template atom="a52" bond_first="a50" bond_second="a51"/>
     <atom id="a46" name="C">

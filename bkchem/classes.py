@@ -452,7 +452,7 @@ class molecule( simple_parent):
     for i in self.atoms_map:
       yield i
 
-  def flush_graph_to_file( self, name="/home/beda/oasa/graph/mol.graph"):
+  def flush_graph_to_file( self, name="/tmp/mol.graph"):
     f = file( name, 'w')
     for a in self.atoms_map:
       f.write('v')
@@ -1826,7 +1826,7 @@ class arrow( meta_enabled):
     if self.pin == 1 or self.pin ==3:
       end = 1
     dom_extensions.setAttributes( arr, (('shape', str( self.shape)),
-                                        ('spline', a[self.spline]),
+                                       ('spline', a[self.spline]),
                                         ('width', str( self.line_width)),
                                         ('start', a[start]),
                                         ('end', a[end]),

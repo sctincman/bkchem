@@ -1002,6 +1002,110 @@ class rotate_mode( edit_mode):
     pass
 
 
+class bond_align_mode( edit_mode):
+
+  def __init__( self, paper):
+    edit_mode.__init__( self, paper)
+    self.name = _('bond align')
+    self._rotated_mol = None
+    self.first_atom_selected = None
+    self.submodes = [['tohoriz','tovert']]
+    self.submodes_names = [[_('horizontal align'),_('vertical align')]]
+    self.submode = [0]
+
+
+  def mouse_down( self, event, modifiers = []):
+    if not self.focused:
+      return
+    if self.focused.object_type not in ['atom', 'bond']:
+      return
+    # edit_mode.mouse_down( self, event, modifiers = modifiers)
+    self._block_leave_event = 0
+    if not self.first_atom_selected:
+      self.paper.unselect_all()
+    if self.focused.object_type == 'bond':
+      if self.first_atom_selected:
+        # waiting for second atom selection, clicking bond does nothing
+        self.paper.signal_to_app( _("select the second atom, please."))
+        return
+      self._rotated_mol = self.focused.molecule
+      x1, y1 = self.focused.atom1.get_xy()
+      x2, y2 = self.focused.atom2.get_xy()
+    elif self.focused.object_type == 'atom':
+      if not self.first_atom_selected: # first atom picked
+        self.first_atom_selected = self.focused
+        # po vyberu 1. atmu a prechodu do jineho rezimu
+        # selekce zustava .. co s tim ?
+        # udelat metody metody pro uklidove prace pri zmene rezimu?
+        self.first_atom_selected.select()
+        # bez tohodle ta selekce neni videt:
+        self.paper.lower(self.paper.background)
+        self._rotated_mol = self.focused.molecule
+        return
+      else: # second atom picked
+        if self.focused.molecule != self.first_atom_selected.molecule:
+          self.paper.signal_to_app( _("atoms must be in the same molecule!"))
+          return
+        if self.focused == self.first_atom_selected:
+          self.paper.signal_to_app( _("atoms must be different!"))
+          return
+        x1, y1 = self.first_atom_selected.get_xy()
+        x2, y2 = self.focused.get_xy()
+        self.first_atom_selected.unselect()
+        self.first_atom_selected = None
+    self._centerx = ( x1 + x2) / 2
+    self._centery = ( y1 + y2) / 2
+    angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+    if angle0 >= math.pi :
+      angle0 = angle0 - math.pi
+    if self.submode[0] == 0: # tohoriz
+      if (angle0 > -0.005) and (angle0 < .005) :
+      # if angle0 == 0  :
+        # bond is already horizontal => horizontal "flip"
+        angle = math.pi
+      elif angle0 <= math.pi/2:
+        angle = -angle0
+      else: # pi/2 < angle < pi
+        angle = math.pi - angle0
+
+    else: # tovert
+      if (angle0 > math.pi/2 - .005) and (angle0 < math.pi/2 + 0.005):
+      # if angle0 == math.pi/2:
+        # bond is already vertical => vertical "flip"
+        angle = math.pi
+      else:
+        angle = math.pi/2 - angle0
+
+    tr = transform.transform()
+    tr.set_move( -self._centerx, -self._centery)
+    tr.set_rotation( angle)
+    tr.set_move(self._centerx, self._centery)
+    for a in self._rotated_mol.atoms_map:
+      x, y = a.get_xy()
+      x, y = tr.transform_xy( x, y)
+      a.move_to( x, y)
+    # nasledujicim si nejsem jisty.. vicemene prevzato z rotate
+    # if self._rotated_mol:
+    [b.redraw() for b in self._rotated_mol.bonds]
+    self._rotated_mol = None
+    self.paper.start_new_undo_record()
+    self.paper.add_bindings()
+
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
+
+  def mouse_click( self, event):
+    pass
+
+  def mouse_up( self, event):
+    pass
+
+  def mouse_drag( self, event):
+    pass
+
+
+
 class name_mode( edit_mode):
 
   def __init__( self, paper):
