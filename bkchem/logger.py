@@ -34,6 +34,12 @@ class logger:
                   'warning': _('Warning'),
                   'hint': _('Hint')}
 
+  handle_to_text = {'status_bar': _('Status bar'),
+                    'dialog': _('Dialog'),
+                    'console': _('Console'),
+                    'ignore': _('Ignore')}
+
+
 
   def __init__( self, app):
     self.app = app

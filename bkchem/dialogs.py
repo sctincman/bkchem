@@ -1015,3 +1015,38 @@ class fragment_dialog( Pmw.Dialog):
   def done( self, button):
     self.clean()
     self.deactivate()
+
+
+
+
+## -------------------- logging dialog --------------------
+
+class logging_dialog( Pmw.Dialog):
+
+  def __init__( self, paper):
+    self.app = paper.app
+    Pmw.Dialog.__init__( self,
+                         self.app,
+                         buttons=(_('OK'), _('Cancel')),
+                         defaultbutton=_('OK'),
+                         title=_('Logging'),
+                         command=self.done,
+                         master='parent')
+
+
+  def init_list( self):
+    self.list = Pmw.ScrolledListBox( self.interior(),
+                                     selectioncommand=self.select,
+                                     labelpos = "n",
+                                     label_text=_("Fragments"),
+                                     listbox_selectmode="single",
+                                     listbox_width=30,
+                                     items=self.get_all_fragments())
+    self.list.pack()
+
+
+  def done( self, button):
+    self.deactivate()
+
+
+
