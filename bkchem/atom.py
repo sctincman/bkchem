@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002, 2003, 2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """home for atom class"""
 
@@ -152,7 +149,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     return self.__name
 
   def __set_name( self, name):
-    self.__name = name #.decode('utf-8')
+    try:
+      t = unicode( name)
+    except UnicodeDecodeError:
+      t = name
+    self.__name = t #.decode('utf-8')
     self.dirty = 1
 
   name = property( __get_name, __set_name)
@@ -265,7 +266,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   def set_name( self, name, interpret=1, check_valency=1):
     # every time name is set the charge should be set to zero
-    self.charge = 0
+    self.charge = self.get_charge_from_marks()
     self.dirty = 1
     # name should not be interpreted
     if not interpret:
@@ -341,8 +342,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       if self.charge:
         ch = ''
         if abs( self.charge) > 1:
-          ch += str( abs( self.charge))
-        if self.charge > 0:
+          ch += str( abs( self.charge - self.get_charge_from_marks()))
+        if self.charge -self.get_charge_from_marks() > 0:
           ch += '+'
         else:
           ch += '-'
@@ -382,11 +383,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         else:
           ret = ret + h
       # charge
-      if self.charge:
+      if self.charge -self.get_charge_from_marks():
         ch = ''
         if abs( self.charge) > 1:
-          ch += str( abs( self.charge))
-        if self.charge > 0:
+          ch += str( abs( self.charge -self.get_charge_from_marks()))
+        if self.charge -self.get_charge_from_marks() > 0:
           ch = '<sup>%s+</sup>' % ch
         else:
           ch = '<sup>%s-</sup>' % ch
@@ -598,6 +599,20 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     a = ['no','yes']
     on_off = ['off','on']
     self.cdml_id = package.getAttribute( 'id')
+    # charge
+    self.charge = package.getAttribute('charge') or 0
+    print self.charge
+    # marks (we read them here because they influence the charge)
+    for m in package.getElementsByTagName( 'mark'):
+      auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
+      if auto == True:
+        auto = 1
+      type = m.getAttribute( 'type')
+      x, y, z = self.paper.read_xml_point( m)
+      self.marks[ type] = marks.__dict__[ type]( self.paper,
+                                                 x, y,
+                                                 atom=self,
+                                                 auto= int(auto))
     #self.show_number = a.index( package.getAttribute( 'show_number'))
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
@@ -634,19 +649,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     # background color
     if package.getAttribute( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
-    # marks
-    for m in package.getElementsByTagName( 'mark'):
-      auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
-      if auto == True:
-        auto = 1
-      type = m.getAttribute( 'type')
-      x, y, z = self.paper.read_xml_point( m)
-      self.marks[ type] = marks.__dict__[ type]( self.paper,
-                                                 x, y,
-                                                 atom=self,
-                                                 auto= int(auto))
-                          
-
 
 
 
@@ -656,9 +658,12 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     on_off = ['off','on']
     a = doc.createElement('atom')
     a.setAttribute( 'id', str( self.cdml_id))
+    # charge
+    if self.charge:
+      a.setAttribute( "charge", str( self.charge))
     #show attribute is set only when non default
     if (self.show and self.name=='C') or (not self.show and self.name!='C'): 
-      a.setAttribute('show', [ self.show])
+      a.setAttribute('show', y[ self.show])
     if self.show:
       a.setAttribute( 'pos', self.pos)
     if self.font_size != 12 or self.font_family != 'helvetica' or self.line_color != '#000':
@@ -805,11 +810,24 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         if self.marks[ mark]:
           self.marks[ mark].delete()
           self.marks[ mark] = None
+          if mark == 'plus':
+            self.charge -= 1
+          elif mark == 'minus':
+            self.charge += 1
         else:
           self.create_mark( mark=mark, angle=angle)
+          if mark == 'plus':
+            self.charge += 1
+          elif mark == 'minus':
+            self.charge -= 1
+
       else:
         if not self.marks[ mark]:
           self.create_mark( mark=mark, angle=angle)
+          if mark == 'plus':
+            self.charge += 1
+          elif mark == 'minus':
+            self.charge -= 1
 
 
 
@@ -867,3 +885,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   def __str__( self):
     return self.cdml_id
+
+
+
+  def get_charge_from_marks( self):
+    return (self.marks['plus'] != None and 1) + (self.marks['minus'] != None and -1)

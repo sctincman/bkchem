@@ -136,6 +136,23 @@ class CDML_transformer_11_12:
 
 
 
+class CDML_transformer_12_13:
+
+  output_version = '0.13'
+  input_version = '0.12'
+
+  def tranform_dom( self, dom):
+    for a in dom.getElementsByTagName( 'atom'):
+      ch = a.getAttribute("charge") or 0
+      for m in a.getElementsByTagName( 'mark'):
+        if m.getAttribute( 'type') == 'plus':
+          ch += 1
+        elif m.getAttribute( 'type') == 'minus':
+          ch -= 1
+      a.setAttribute( 'charge', str( ch))
+      
+
+
 # LIST OF AVAILABLE TRANSFORMERS
 
 transformers = { '0.6': CDML_transformer_06_07,
@@ -143,7 +160,8 @@ transformers = { '0.6': CDML_transformer_06_07,
                  '0.8': CDML_transformer_08_09,
                  '0.9': CDML_transformer_09_10,
                  '0.10': CDML_transformer_10_11,
-                 '0.11': CDML_transformer_11_12}
+                 '0.11': CDML_transformer_11_12,
+                 '0.12': CDML_transformer_12_13}
 
 
 # TRANSFORMING FUNCTION

@@ -765,7 +765,11 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def set_text( self, text):
-    self.text = text
+    try:
+      t = unicode( text)
+    except UnicodeDecodeError:
+      t = text
+    self.text = t #.encode('utf-8')
     self.parsed_text = dom.parseString( '<ftext>'+self.text+'</ftext>').childNodes[0]
 
 
