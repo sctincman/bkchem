@@ -34,7 +34,7 @@ from oasa import periodic_table as PT
 import groups_table as GT
 import copy
 import helper_graphics as hg
-from parents import container, top_level, id_enabled
+from parents import container, top_level, id_enabled, with_paper
 from bond import bond
 from atom import atom
 from group import group
@@ -49,7 +49,7 @@ from singleton_store import Store
 
 
 
-class molecule( container, top_level, id_enabled, oasa.molecule):
+class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -67,11 +67,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
   meta__undo_2d_copy = ()
   meta__undo_children_to_record = ('atoms','bonds')
   
-  def __init__( self, paper, package = None):
+  def __init__( self, paper=None, package = None):
     oasa.molecule.__init__( self)
-    id_enabled.__init__( self, paper)
+    id_enabled.__init__( self)
     container.__init__( self)
 
+    self.paper = paper
     self.sign = 1
     self._last_used_atom = None 
     self.name = ''
@@ -125,10 +126,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
   def create_vertex( self, vertex_class=None):
     if not vertex_class:
       vertex_class = self.vertex_class
-    return vertex_class( self.paper)
+    std = self.paper and self.paper.standard or None
+    return vertex_class( standard=std)
 
   def create_edge( self):
-    return bond( self.paper)
+    std = self.paper and self.paper.standard or None
+    return bond( standard=std)
 
   def add_vertex( self, v=None):
     x = oasa.molecule.add_vertex( self, v=v)
@@ -169,7 +172,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
           break
     if not a2:
       a2 = self.create_new_atom( x, y)
-    b = bond_to_use or bond( self.paper, order=1, type='n')
+    b = bond_to_use or bond( self.paper.standard, order=1, type='n')
     b.atom1 = a1
     b.atom2 = a2
     self.add_edge( a1, a2, e=b)
@@ -322,16 +325,19 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
+    # the standard
+    std = self.paper and self.paper.standard or None
+
     self.name = package.getAttribute( 'name')
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     for name, cls in {'atom':atom, 'group':group, 'text': textatom}.iteritems():
       for a in dom_extensions.simpleXPathSearch( package, name):
-        self.insert_atom( cls( self.paper, package=a, molecule=self))
+        self.insert_atom( cls( standard=std, package=a, molecule=self))
       
     self._id_map = [a.id for a in self.atoms]
     for b in dom_extensions.simpleXPathSearch( package, 'bond'):
-      bnd = bond( self.paper, package = b, molecule=self)
+      bnd = bond( standard=std, package=b, molecule=self)
       self.add_edge( bnd.atom1, bnd.atom2, bnd)
     # template related attributes
     temp = package.getElementsByTagName('template')

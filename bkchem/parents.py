@@ -56,9 +56,9 @@ class simple_parent( object):
 class id_enabled( simple_parent):
   """the basic parent that has something to do with the paper, it provides id support"""
 
-  def __init__( self, paper):
+  def __init__( self):
     simple_parent.__init__( self)
-    self.paper = paper
+
 
   def generate_id( self):
     self.id = self._generate_id()
@@ -87,7 +87,6 @@ class id_enabled( simple_parent):
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     other.id = self.id
-    other.paper = self.paper
 
     
 
@@ -97,31 +96,28 @@ class meta_enabled( id_enabled):
 
   meta__used_standard_values = []
 
-  def __init__( self, paper):
-    id_enabled.__init__( self, paper)
-    if self.paper:
-      self.read_standard_values()
+  def __init__( self, standard=None):
+    id_enabled.__init__( self)
+    if standard:
+      self.read_standard_values( standard)
 
-  def read_standard_values( self, old_standard=None):
+  def read_standard_values( self, standard, old_standard=None):
     """if old_standard is given the recent value is read from standard
     only if it differs from the old one - used for 'inteligent' changes of
     standard properties of existing drawing"""
     for i in self.meta__used_standard_values:
-      if old_standard and (self.paper.standard.__dict__[i] == old_standard.__dict__[i]):
+      if old_standard and (standard.__dict__[i] == old_standard.__dict__[i]):
         continue
       else:
 	# properties
         is_prop = 0
         for p in self.__class__.mro():
           if i in p.__dict__:
-            p.__dict__[i].fset( self, self.paper.standard.__dict__[i])
+            p.__dict__[i].fset( self, standard.__dict__[i])
             is_prop = 1
             break
         if not is_prop:
-          self.__dict__[i] = self.paper.standard.__dict__[i]
-
-
-
+          self.__dict__[i] = standard.__dict__[i]
 
 
 
@@ -429,4 +425,34 @@ class child( simple_parent):
 class top_level:
 
   pass
+
+
+
+
+class with_paper( object):
+
+  # paper
+  def _get_paper( self):
+    return self._paper
+
+  def _set_paper( self, paper):
+    self._paper = paper
+
+  paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
+
+
+
+class child_with_paper( child, with_paper):
+
+  # paper
+  def _get_paper( self):
+    if self.parent:
+      return self.parent.paper
+    else:
+      return None
+
+  def _set_paper( self, paper):
+    raise "trying to set paper in a child - set it in parent instead"
+
+  paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
 

@@ -112,7 +112,7 @@ def oasa_mol_to_bkchem_mol( mol, paper):
 
 
 def oasa_atom_to_bkchem_atom( a, paper, m):
-  at = atom.atom( paper, molecule=m)
+  at = atom.atom( molecule=m)
   at.x = a.x
   at.y = a.y
   at.set_name( a.symbol, interpret=1)

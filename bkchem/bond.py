@@ -31,12 +31,12 @@ import dom_extensions
 import xml.dom.minidom as dom
 import operator
 import copy
-from parents import meta_enabled, line_colored, drawable, with_line, interactive, child
+from parents import meta_enabled, line_colored, drawable, with_line, interactive, child_with_paper
 import debug
 
 import oasa
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -45,7 +45,7 @@ from singleton_store import Store
 
 
 # class BOND--------------------------------------------------
-class bond( meta_enabled, line_colored, drawable, with_line, interactive, child, oasa.bond):
+class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_with_paper, oasa.bond):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -65,11 +65,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
 
 
 
-  def __init__( self, paper, atoms=(), package=None, molecule=None, type='n', order=1,
+  def __init__( self, standard=None, atoms=(), package=None, molecule=None, type='n', order=1,
                 simple_double=1):
     # initiation
+    self.molecule = molecule
     oasa.bond.__init__( self, order=order, vs=atoms, type=type)
-    meta_enabled.__init__( self, paper)
+    meta_enabled.__init__( self, standard=standard)
     line_colored.__init__( self)
     drawable.__init__( self)
     with_line.__init__( self)
@@ -80,7 +81,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     self.second = []
     self.third = []
     self.items = []
-    self.molecule = molecule
     if atoms:
       self.atom1, self.atom2 = atoms
     self.selector = None
@@ -273,20 +273,20 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
 
 
 
-  def read_standard_values( self, old_standard=None):
-    meta_enabled.read_standard_values( self, old_standard=old_standard)
+  def read_standard_values( self, standard, old_standard=None):
+    meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
     # wedge width
-    if not old_standard or (self.paper.standard.wedge_width != old_standard.wedge_width):
-      self.wedge_width = self.paper.any_to_px( self.paper.standard.wedge_width)
+    if not old_standard or (standard.wedge_width != old_standard.wedge_width):
+      self.wedge_width = Screen.any_to_px( standard.wedge_width)
     # line width
-    if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
-      self.line_width = self.paper.any_to_px( self.paper.standard.line_width)
+    if not old_standard or (standard.line_width != old_standard.line_width):
+      self.line_width = Screen.any_to_px( standard.line_width)
     # bond width
-    if not old_standard or (self.paper.standard.bond_width != old_standard.bond_width):
+    if not old_standard or (standard.bond_width != old_standard.bond_width):
       if 'bond_width' in self.__dict__:
-        self.bond_width = misc.signum( self.bond_width) * self.paper.any_to_px( self.paper.standard.bond_width)
+        self.bond_width = misc.signum( self.bond_width) * Screen.any_to_px( standard.bond_width)
       else:
-        self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
+        self.bond_width = Screen.any_to_px( standard.bond_width)
 
 
 

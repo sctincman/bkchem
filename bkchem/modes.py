@@ -726,7 +726,7 @@ class draw_mode( edit_mode):
       mol = Store.app.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       Store.app.paper.add_bindings()
-      b = bond( Store.app.paper,
+      b = bond( standard = Store.app.paper.standard,
                 type=self.__mode_to_bond_type(),
                 order=self.__mode_to_bond_order(),
                 simple_double=self.submode[4])
@@ -734,7 +734,7 @@ class draw_mode( edit_mode):
       self.focused = a
     else:
       if isinstance( self.focused, oasa.graph.vertex):
-        b = bond( Store.app.paper,
+        b = bond( standard = Store.app.paper.standard,
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
@@ -778,7 +778,7 @@ class draw_mode( edit_mode):
       self._dragging = 1
       if self.focused and isinstance( self.focused, oasa.graph.vertex):
         self._start_atom = self.focused
-        b = bond( Store.app.paper,
+        b = bond( standard = Store.app.paper.standard,
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])

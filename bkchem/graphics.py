@@ -45,7 +45,7 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
 
   
   def __init__( self, paper, coords=(), package=None, width=1):
-    meta_enabled.__init__( self, paper)
+    meta_enabled.__init__( self, standard=paper.standard)
     self.selector = None
     self.item = None
     self.coords = []
@@ -54,8 +54,8 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
     if package:
       self.read_package( package)
 
-  def read_standard_values( self, old_standard=None):
-    meta_enabled.read_standard_values( self, old_standard=old_standard)
+  def read_standard_values( self, standard, old_standard=None):
+    meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
     if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
       self.line_width = self.paper.any_to_px( self.paper.standard.line_width)    
 
@@ -122,7 +122,7 @@ class rect( vector_graphics_item):
   object_type = 'rect'
 
   def __init__( self, paper, coords=(), package=None, width=1):
-    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
+    vector_agraphics_item.__init__( self, paper, coords=coords, package=package, width=width)
 
   def draw( self):
     self.item = self.paper.create_rectangle( tuple( self.coords),

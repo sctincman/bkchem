@@ -34,7 +34,7 @@ import tkFont
 from oasa import periodic_table as PT
 import groups_table as GT
 import marks
-from parents import meta_enabled, area_colored, point_drawable, text_like, child
+from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
 import data
 import re
 import debug
@@ -48,7 +48,7 @@ import oasa
 
 
 ### Class ATOM --------------------------------------------------
-class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.atom):
+class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.atom):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -76,18 +76,16 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
                         }
 
 
-  def __init__( self, paper, xy = (), package = None, molecule = None):
-    meta_enabled.__init__( self, paper)
-    point_drawable.__init__( self)
+  def __init__( self, standard=None, xy = (), package = None, molecule = None):
+    meta_enabled.__init__( self, standard=standard)
+    self.molecule = molecule
     if xy:
       oasa.atom.__init__( self, coords=(xy[0],xy[1],0))
     else:
       oasa.atom.__init__( self)
+    point_drawable.__init__( self)
     # hidden
     self.__reposition_on_redraw = 0
-
-    # basic attrs
-    self.molecule = molecule
 
     # presentation attrs
     self.selector = None
@@ -136,7 +134,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     return self.__x
 
   def _set_x( self, x):
-    self.__x = self.paper.any_to_px( x)
+    if self.paper:
+      self.__x = self.paper.any_to_px( x)
+    else:
+      self.__x = x
 
   x = property( _get_x, _set_x)
 
@@ -146,7 +147,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     return self.__y
 
   def _set_y( self, y):
-    self.__y = self.paper.any_to_px( y)
+    if self.paper:
+      self.__y = self.paper.any_to_px( y)
+    else:
+      self.__y = y
 
   y = property( _get_y, _set_y)
 
@@ -297,12 +301,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
   # drawn
   def _get_drawn( self):
-    """is the atoms drawn? on the paper or just virtual"""
+    """is the atoms drawn on the paper or just virtual"""
     if self.item:
       return 1
     return 0
 
   drawn = property( _get_drawn, None, None, "tells if the atom is already drawn")
+
+
 
 
 

@@ -144,10 +144,12 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def __init__( self, paper, points=[], shape=(8,10,3), pin=1, spline=0, package=None, fill="#000"):
-    meta_enabled.__init__( self, paper)
+    meta_enabled.__init__( self, standard=paper.standard)
     drawable.__init__( self)
     with_line.__init__( self)
     line_colored.__init__( self)
+
+    self.paper = paper
 
     self.points = []
     self.spline = spline
@@ -187,10 +189,10 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # // PROPERTIES
 
 
-  def read_standard_values( self, old_standard=None):
-    meta_enabled.read_standard_values( self, old_standard=old_standard)
-    if not old_standard or (self.paper.standard.line_width != old_standard.line_width):
-      self.line_width = self.paper.any_to_px( self.paper.standard.line_width)    
+  def read_standard_values( self, standard, old_standard=None):
+    meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
+    if not old_standard or (standard.line_width != old_standard.line_width):
+      self.line_width = self.paper.any_to_px( standard.line_width)    
     
 
 
@@ -502,10 +504,12 @@ class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, 
                           area_colored.meta__undo_properties
 
   def __init__( self, paper, xy=(), package=None):
-    meta_enabled.__init__( self, paper)
+    meta_enabled.__init__( self, standard=paper.standard)
     point_drawable.__init__( self)
     with_font.__init__( self)
     area_colored.__init__( self)
+
+    self.paper = paper
 
     self.x = self.y = None
     self.focus_item = None
@@ -646,7 +650,9 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     text_like.__init__( self)
     point_drawable.__init__( self)
     area_colored.__init__( self)
-    meta_enabled.__init__( self, paper)
+    meta_enabled.__init__( self, standard=paper.standard)
+
+    self.paper = paper
 
     self.selector = None
     self._selected = 0

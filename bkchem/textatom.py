@@ -33,7 +33,7 @@ import operator
 import tkFont
 from oasa import periodic_table as PT
 import groups_table as GT
-from parents import meta_enabled, area_colored, point_drawable, text_like, child
+from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
 import data
 import re
 import debug
@@ -48,7 +48,7 @@ import oasa
 
 
 ### Class TEXTATOM --------------------------------------------------
-class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.graph.vertex):
+class textatom( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.graph.vertex):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -69,17 +69,15 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
   meta__undo_children_to_record = ('marks',)
 
 
-  def __init__( self, paper, xy = (), package = None, molecule = None):
-    meta_enabled.__init__( self, paper)
+  def __init__( self, standard=None, xy = (), package = None, molecule = None):
+    meta_enabled.__init__( self, standard=standard)
+    self.molecule = molecule
     point_drawable.__init__( self)
     oasa.graph.vertex.__init__( self)
 
     if xy:
       self.x, self.y = xy
     self.z = 0
-
-    # basic attrs
-    self.molecule = molecule
 
     # presentation attrs
     self.selector = None

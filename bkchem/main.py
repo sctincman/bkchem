@@ -55,7 +55,7 @@ import plugins.plugin
 import config
 from logger import logger
 
-from singleton_store import Store
+from singleton_store import Store, Screen
 
 
 
@@ -64,7 +64,10 @@ class BKchem( Tk):
 
   def __init__( self):
     Tk.__init__( self)
+    # setting the singleton values
     Store.app = self
+    Screen.dpi = self.winfo_fpixels( "1i")
+
     self.tk.call("tk", "useinputmethods", "1")
     #self.tk.call( "encoding", "system", "iso8859-2")
     #print self.tk.call( "encoding", "system")
@@ -1228,7 +1231,7 @@ Enter IChI:""")
 
 
   def read_user_templates( self):
-    [self.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
+    [Store.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
 
 
   def gen_inchi_for_molecule( self, m):

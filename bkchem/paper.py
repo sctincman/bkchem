@@ -628,10 +628,7 @@ class chem_paper( Canvas, object):
     
     import parents
     for a in self.stack:
-      if isinstance( a, parents.container):
-        for ch in a.children:
-          del ch.paper
-      del a.paper
+      a.paper = None
 
     self.clean_paper()
     self.um.mrproper()
