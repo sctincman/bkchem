@@ -711,7 +711,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
-    items = [self.item] + self.second + self.third + self.items
+    items = filter( None, [self.item] + self.second + self.third + self.items)
     if self.selector:
       items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
@@ -1050,6 +1050,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
   def transform( self, tr):
+    if not self.item:
+      return 
     for i in [self.item] + self.second + self.third + self.items:
       coords = self.paper.coords( i)
       tr_coords = tr.transform_xy_flat_list( coords)

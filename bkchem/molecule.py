@@ -443,7 +443,12 @@ class molecule( container, top_level, id_enabled):
     items = []
     for a in self.atoms:
       items.append( a.item)
-    return self.paper.list_bbox( items)
+    if None in items:
+      # the molecule was not drawn yet, we have to calculate it, huh
+      bboxes = [a.bbox() for a in self.atoms]
+      return misc.smallest_common_bbox( bboxes)
+    else:
+      return self.paper.list_bbox( items)
 
 
   def delete( self):

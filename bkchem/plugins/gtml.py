@@ -21,19 +21,21 @@
 """GTML import-export plugin"""
 
 import plugin
-import xml.dom.minidom as dom
-import dom_extensions as dom_ext
-from xml import xpath
 from molecule import molecule
 from atom import atom
 from bond import bond
+from classes import plus, arrow
+from reaction import reaction
+from transform import transform
+
 import math
 import xml.sax
 import StringIO
+import dom_extensions as dom_ext
+import xml.dom.minidom as dom
+from xml import xpath
 
-## gtml_to_bkchem_bond_order_remap = {'single':1,
-##                                    'double':2,
-##                                    'triple':3}
+
 
 gtml_to_bkchem_bond_order_remap = ['empty','single','double','triple']
 
@@ -52,6 +54,7 @@ class gtml_importer:
     self._atom_id_remap = {}
     self._mol_ids = {}
     self._reactions = []
+    self._xshift = 20
 
 
   def on_begin( self):
@@ -87,15 +90,14 @@ class gtml_importer:
 
     # reactions
     self.process_reactions( doc)
-    if self._reactions:
-      print "no support for reactions, yet"
-      return []
 
+    # placing the molecules
     self.place_molecules()
 
-    # things that have to be done after the whole molecule is read and places
+    # things that have to be done after the whole molecule is read and placed
     for m in self.molecules:
-      [a.generate_marks_from_cheminfo() for a in m.atoms]
+      if isinstance( m, molecule):
+        [a.generate_marks_from_cheminfo() for a in m.atoms]
 
     return self.molecules
 
@@ -122,15 +124,20 @@ class gtml_importer:
 
   def _read_atom( self, at, mol):
     a = atom( self.paper, molecule=mol)
-    a.name = dom_ext.getAllTextFromElement( xpath.Evaluate("symbol", at)[0])
-    a.x = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/x", at)[0]))
-    a.y = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/y", at)[0]))
-    a.z = float( dom_ext.getAllTextFromElement( xpath.Evaluate("coordinates/z", at)[0]))
+    a.set_name( dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( at, "symbol")))
+    coords = dom_ext.getFirstChildNamed( at, "coordinates")
+    a.x = float( dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( coords, "x")))
+    a.y = float( dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( coords, "y")))
+    a.z = float( dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( coords, "z")))
     a.show_hydrogens = int( a.name != 'C')
     # charge
-    chel = xpath.Evaluate("charge", at)
+    chel = dom_ext.getFirstChildNamed( at, "charge")
     if chel:
-      a.charge = int( dom_ext.getAllTextFromElement( chel[0]))
+      a.charge = int( dom_ext.getAllTextFromElement( chel))
+    # multiplicity
+    radical = dom_ext.getFirstChildNamed( at, "radical")
+    if radical:
+      a.multiplicity = 1 + int( dom_ext.getAllTextFromElement( radical))
     # remap of ids
     self._atom_id_remap[ at.getAttribute( 'id')] = a
     return a
@@ -147,35 +154,79 @@ class gtml_importer:
 
 
   def place_molecules( self):
+    last_anchor_x = 80
+    last_anchor_y = 200
     # data for rescaling
     if self._reactions:
-      for react in self.reactions:
-        reactants, products = react
+      for react in self._reactions:
+        reactants, products = react  # these are ids
+        plus_objs = []
+        for part in (reactants, products):
+          for id in part:
+            m = self._mol_ids[ id]
+            last_anchor_x = self._scale_and_move_molecule( m, last_anchor_x, last_anchor_y)
+            last_anchor_x += self._xshift
+            if id != part[-1]:
+              # we add some pluses
+              p = plus( self.paper, xy=(last_anchor_x, last_anchor_y))
+              plus_objs.append( p)
+              self.molecules.append( p)
+              bbox = p.bbox()
+              dx = (bbox[0] - bbox[2])
+              p.move( dx / 2, 0)
+              last_anchor_x += self._xshift + dx
+          if part == reactants:
+            arr = arrow( self.paper)
+            # first point
+            arr.create_new_point( last_anchor_x, last_anchor_y)
+            last_anchor_x += self.paper.any_to_px( self.paper.standard.arrow_length)
+            # second point
+            arr.create_new_point( last_anchor_x, last_anchor_y)
+            last_anchor_x += self._xshift
+            # adding the reaction information into the arrow.reaction
+            arr.reaction.reactants.extend( [self._mol_ids[m] for m in reactants])
+            arr.reaction.products.extend( [self._mol_ids[m] for m in products])
+            arr.pluses = plus_objs
+            self.molecules.append( arr)
           
     else:
       for m in self.molecules:
-        bbox, bl = m.get_geometry()
-        maxx, maxy, minx, miny = bbox
-
-        if bl:
-          scale = self.paper.any_to_px( self.paper.standard.bond_length) / bl
-        else:
-          scale = 1
-        movex = 320 #- scale*(maxx+minx)/2
-        movey = 240 #- scale*(maxy+miny)/2
-        for a in m.atoms:
-          a.x = movex + scale*a.x
-          a.y = movey + scale*a.y
+        last_anchor_x = self._scale_and_move_molecule( m, last_anchor_x, last_anchor_y)
+        last_anchor_x += self._xshift
 
 
-  def _scale_and_move_molecule( self, mol):
-    pass
+  def _scale_and_move_molecule( self, m, anchor_x, anchor_y):
+    bbox, bl = m.get_geometry()
+    maxx, maxy, minx, miny = m.bbox()
+
+    if bl:
+      scale = self.paper.any_to_px( self.paper.standard.bond_length) / bl
+    else:
+      scale = 1
+
+    # at first we scale to the standard bond length
+    tr = transform()
+    tr.set_move( -minx, -miny)
+    tr.set_scaling( scale)
+    m.transform( tr)
+
+    # then we recalculate the bbox and position the molecule
+    #    we need to decide pos first, it is vital for bbox calculation and normaly done on draw
+    [a.decide_pos() for a in m.atoms]
+    maxx, maxy, minx, miny = m.bbox()
+    m.move( anchor_x-minx, anchor_y - (maxy-miny)/2 - miny)
+
+    #import graphics
+    #self.molecules.append( graphics.rect( self.paper, coords = m.bbox()))                                       
+    #self.molecules.append( graphics.rect( self.paper, coords = (anchor_x + (maxx), 100, anchor_x + (maxx) + 2, 300)))
+
+    return anchor_x + maxx - minx
+
 
 
 
   def process_reactions( self, doc):
     for react in xpath.Evaluate( "//graph[@type='reaction']", doc):
-      print react
       reactants = []
       products = []
       for e in xpath.Evaluate( "edge/end[@type='initial']", react):

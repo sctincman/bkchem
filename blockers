@@ -11,22 +11,19 @@ remarks
 - what about the dpi problem on windows?
 
 
-0.8.0
+0.9.0
 =======
 
-- check permission denied on plugin output
-- should I use the C-x c ?  self.register_key_sequence( 'C-x c', self.app.paper.toggle_center_for_selected)
+- saving default-dir when no prefs are available results in storing None and not being able to restart bkchem
+- what happens when there are not user defined templates?
 
-FOR MULTIPLE PAPERS
 
-- make clipboard a queue?
 
 
 0.x.0
 =======
 
 - vertical and horizontal swap - for all
-- remove the name mode and make it accessible through the menu
 - bond drawing could be much simplified by e.g.- draw_order( order, line_drawing_method=draw_wedge)
 - it should be possible to make bond.item always an invisible line and put rest into one list
 

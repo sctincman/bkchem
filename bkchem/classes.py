@@ -495,7 +495,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.focus_item = None
     self.selector = None
     self._selected = 0
-    self.font_size = 20
+    self.font_size = 14
     if xy:
       self.x, self.y = xy
     if package:
@@ -542,7 +542,8 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def move( self, dx, dy):
     self.x += dx
     self.y += dy
-    self.paper.move( self.item, dx, dy)
+    if hasattr( self, 'item') and self.item:
+      self.paper.move( self.item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
 
@@ -585,7 +586,11 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return self.x, self.y
 
   def bbox( self):
-    return self.paper.bbox( self.item)
+    if hasattr( self, 'item') and self.item:
+      return self.paper.bbox( self.item)
+    else:
+      dx = self.font.measure( '+') / 2
+      return self.x + dx, self.y + 0.7*self.font_size, self.x - dx, self.y - 0.3*self.font_size
 
   def scale_font( self, ratio):
     """scales font of plus. does not redraw !!"""

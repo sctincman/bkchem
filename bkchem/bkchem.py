@@ -48,7 +48,7 @@ else:
   except IOError:
     import __builtin__
     __builtin__.__dict__['_'] = lambda m: m
-      
+
 # import modules
 import import_checker
 # can't do without Pmw
@@ -74,7 +74,7 @@ if len( sys.argv) > 1:
   import os.path
   from getopt import gnu_getopt, GetoptError
   try:
-    opts, files = gnu_getopt( sys.argv[1:], "bf:t:o:l:")
+    opts, files = gnu_getopt( sys.argv[1:], "bf:t:o:l:d:")
   except GetoptError, o:
     print _(" * unknown option -%s")
     sys.exit()

@@ -296,6 +296,16 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                            "returns multiplicity of molecule")
 
 
+  # drawn
+  def __get_drawn( self):
+    """is the atoms drawn? on the paper or just virtual"""
+    if self.item:
+      return 1
+    return 0
+
+  drawn = property( __get_drawn, None, None, "tells if the atom is already drawn")
+
+
 
 
   ## // -------------------- END OF PROPERTIES --------------------------
@@ -577,15 +587,16 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     # d = self.dirty
     self.x += dx
     self.y += dy
-    self.paper.move( self.item, dx, dy)
-    if self.selector:
-      self.paper.move( self.selector, dx, dy)
-    if self.ftext:
-      self.ftext.move( dx, dy)
-    if not dont_move_marks:
-      for m in self.marks:
-        if self.marks[m]:
-          self.marks[m].move( dx, dy)
+    if self.drawn:
+      self.paper.move( self.item, dx, dy)
+      if self.selector:
+        self.paper.move( self.selector, dx, dy)
+      if self.ftext:
+        self.ftext.move( dx, dy)
+      if not dont_move_marks:
+        for m in self.marks:
+          if self.marks[m]:
+            self.marks[m].move( dx, dy)
     # restoring dirty value because move does not dirty the atom
     # self.dirty = d
 
@@ -786,35 +797,41 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-  def get_free_valency( self):
+  def get_free_valency( self, strict=0):
     """returns free valency of atom."""
-    if self.type != 'element':
-      return 4
-    occupied_valency = self.get_occupied_valency()
-
-    v = self.valency
-    # should we increase or decrease valency with charge ?
-    if self.charge:
-      if abs( self.charge) > 1:
-        # charges higher than one should always decrease valency
-        charge = abs( self.charge)
-      elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
-        # elements that can accept cations to increase their valency (NH4+)
-        charge = -1
-      elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
-        # elements that can accept anions to increase their valency (BH4-)
-        charge = -1
-      else:
-        # otherwise charge reduces valency 
-        charge = abs( self.charge)
+    if not strict:
+      while not self.get_free_valency( strict=1) >= 0:
+        vals = list( PT.periodic_table[ self.name]['valency'])
+        if self.valency not in vals:
+          self.valency = vals[0]
+        elif self.valency == vals[-1]:
+          return 0
+        else:
+          self.valency = vals[ vals.index( self.valency) + 1]
+      return self.get_free_valency( strict = 1)
     else:
-      charge = 0
-    if occupied_valency+charge <= v:
+      if self.type != 'element':
+        return 4
+      occupied_valency = self.get_occupied_valency()
+
+      v = self.valency
+      # should we increase or decrease valency with charge ?
+      if self.charge:
+        if abs( self.charge) > 1:
+          # charges higher than one should always decrease valency
+          charge = abs( self.charge)
+        elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
+          # elements that can accept cations to increase their valency (NH4+)
+          charge = -1
+        elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
+          # elements that can accept anions to increase their valency (BH4-)
+          charge = -1
+        else:
+          # otherwise charge reduces valency 
+          charge = abs( self.charge)
+      else:
+        charge = 0
       return v-occupied_valency-charge-self.multiplicity+1
-    print v, occupied_valency, charge, self.multiplicity
-    # if valency is exceeded return lowest possible negative value
-    print 'this should be solved'
-    return max( PT.periodic_table[ self.name]['valency']) - occupied_valency - charge
 
     
 
@@ -847,11 +864,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def lift( self):
+    if self.selector:
+      self.paper.lift( self.selector)
     for m in self.marks.itervalues():
       if m:
         m.lift()
-    if self.selector:
-      self.paper.lift( self.selector)
     if self.ftext:
       self.ftext.lift()
     if self.item:
@@ -968,7 +985,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   def set_valency_from_name( self):
     if self.type == 'element':
-      self.valency = PT.periodic_table[ self.name]['valency'][0]
+      for val in PT.periodic_table[ self.name]['valency']:
+        self.valency = val
+        try:
+          fv = self.get_free_valency( strict=1)
+        except:
+          return  # this happens on read
+        if fv >= 0:
+          return
     elif self.type == 'group':
       self.valency = 0
     else:
@@ -1018,3 +1042,19 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     
     return x +dist*cos( angle), y +dist*sin( angle)
     
+
+  def bbox( self):
+    if self.item:
+      return self.paper.bbox( self.item)
+    else:
+      # we have to calculate it, the atoms was not drawn yet
+      if self.show:
+        length = self.font.measure( self.get_text())
+        if self.pos == 'center-first':
+          dx = self.font.measure( self.get_text()[0]) / 2
+          return (self.x + length - dx, self.y + 0.3*self.font_size, self.x - dx, self.y - 0.7*self.font_size) 
+        else:
+          dx = self.font.measure( self.get_text()[-1]) / 2
+          return (self.x + dx, self.y + 0.3*self.font_size, self.x - length + dx, self.y - 0.7*self.font_size) 
+      else:
+        return self.x, self.y, self.x, self.y

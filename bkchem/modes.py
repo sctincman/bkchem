@@ -49,6 +49,7 @@ class mode:
     self.app = app
     self.submodes = []
     self.submode = []
+    self.pulldown_menu_submodes = []
     self._key_sequences = {}
     self._recent_key_seq = ''
     self._specials_pressed = { 'C':0, 'A':0, 'M':0, 'S':0} # C-A-M-S
@@ -955,7 +956,7 @@ class template_mode( edit_mode):
     self.submode = [0]
     self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
-
+    self.template_manager = self.app.tm
     
   def mouse_click( self, event):
     self.app.paper.unselect_all()
@@ -1031,19 +1032,12 @@ class template_mode( edit_mode):
 
 
   def _get_transformed_template( self, name, coords, type='empty', paper=None):
-    if self.get_submode( 0) == 'userdefined':
-      n = self.app.utm.get_template_names().index( self._user_selected_template)
-      return self.app.utm.get_transformed_template( n, coords, type=type, paper=paper)
-    else:
-      return self.app.tm.get_transformed_template( self.submode[0], coords, type=type, paper=paper)
+    return self.template_manager.get_transformed_template( self.submode[0], coords, type=type, paper=paper)
 
 
 
   def _get_templates_valency( self):
-    if self.get_submode(0) == 'userdefined':
-      return self.app.utm.get_templates_valency( self.app.utm.get_template_names().index( self._user_selected_template))
-    else:
-      return self.app.tm.get_templates_valency( self.submode[0])
+    return self.template_manager.get_templates_valency( self.submode[0])
 
 
 
@@ -1689,6 +1683,38 @@ class reaction_mode( basic_mode):
     self.cleanup( old_paper)
     self.startup()
     self.on_submode_switch()
+
+
+
+
+
+## -------------------- USER TEMPLATE MODE --------------------
+
+class user_template_mode( template_mode):
+
+  def __init__( self, app):
+    edit_mode.__init__( self, app)
+    self.name = _('users templates')
+    self.submodes = [self.app.utm.get_template_names()]
+    self.submodes_names = [self.app.utm.get_template_names()]
+    self.submode = [0]
+    self.pulldown_menu_submodes = [0]
+    #self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
+    self.template_manager = self.app.utm
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

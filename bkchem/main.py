@@ -94,6 +94,10 @@ class BKchem( Tk):
       p.initialise()
     self.notebook.setnaturalsize()
 
+
+    # preferences
+    self.init_preferences()
+
     # init status bar
     self.init_status_bar()
 
@@ -122,21 +126,21 @@ class BKchem( Tk):
     # template and group managers
     self.init_managers()
 
-    # modes initialization
-    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
 
     # main drawing part packing
     self.notebook.pack( fill='both', expand=1)
     for p in self.papers:
       p.initialise()
-    self.notebook.setnaturalsize()
+    #self.notebook.setnaturalsize()
 
 
-    self.papers.append( self.paper)
+    #self.papers.append( self.paper)
 
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
+    # modes initialization
+    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
     
 
 
@@ -248,12 +252,6 @@ class BKchem( Tk):
                              state=self.pm.has_preference("inchi_program_path") and "normal" or "disabled")
     #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
-    # USER DEFINE TEMPLATES
-##     utm_button = Menubutton( menu, text=_('User templates'))
-##     utm_button.pack( side= 'left')
-##     self.utm_menu = Menu( utm_button, tearoff=0)
-##     utm_button['menu'] = self.utm_menu
-##     self.populate_utm_menu()
 
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
@@ -335,8 +333,8 @@ class BKchem( Tk):
     self.tm.add_template_from_CDML( "templates.cdml")
 
     # manager for user user defined templates
-##     self.utm = template_manager( self)
-##     self.read_user_templates()
+    self.utm = template_manager( self)
+    self.read_user_templates()
 
     # groups manager
     self.gm = template_manager( self)
@@ -346,6 +344,11 @@ class BKchem( Tk):
 
     # preference manager
     self.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
+
+
+  def init_preferences( self):
+    # save_dir must be set after the preference manager is initiated
+    self.save_dir = self.pm.get_preference( "default-dir")
 
 
   def init_modes( self):
@@ -360,8 +363,10 @@ class BKchem( Tk):
                    'vector': modes.vector_mode( self),
                    'mark': modes.mark_mode( self),
                    'atom': modes.atom_mode( self),
-                   'reaction': modes.reaction_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text', 'rotate', 'bondalign', 'vector']
+                   'reaction': modes.reaction_mode( self),
+                   'usertemplate': modes.user_template_mode( self)}
+    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
+                        'rotate', 'bondalign', 'vector', 'usertemplate']
 
 
 
@@ -434,29 +439,41 @@ class BKchem( Tk):
     self.subbuttons = []
     m = self.mode
     for i in range( len( m.submodes)):
-      self.subbuttons.append( Pmw.RadioSelect( self.subFrame,
-                                               buttontype = 'button',
-                                               selectmode = 'single',
-                                               orient = 'horizontal',
-                                               command = self.change_submode,
-                                               hull_borderwidth = 0,
-                                               padx = 0,
-                                               pady = 0,
-                                               hull_relief = 'ridge',
-                                               ))
-      if i % 2:
-        self.subbuttons[i].pack( side=LEFT, padx=10)
-      else:
-        self.subbuttons[i].pack( side=LEFT)
-      for sub in m.submodes[i]:
-        if sub in pixmaps.images:
-          recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=data.border_width)
-          self.balloon.bind( recent, m.submodes_names[i][m.submodes[i].index(sub)])
+      if i not in m.pulldown_menu_submodes:
+        # these are normal button like menus
+        self.subbuttons.append( Pmw.RadioSelect( self.subFrame,
+                                                 buttontype = 'button',
+                                                 selectmode = 'single',
+                                                 orient = 'horizontal',
+                                                 command = self.change_submode,
+                                                 hull_borderwidth = 0,
+                                                 padx = 0,
+                                                 pady = 0,
+                                                 hull_relief = 'ridge',
+                                                 ))
+        if i % 2:
+          self.subbuttons[i].pack( side=LEFT, padx=10)
         else:
-          self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=data.border_width)
-      # black magic???
-      j = m.submodes[i][ m.submode[i]]
-      self.subbuttons[i].invoke( j)
+          self.subbuttons[i].pack( side=LEFT)
+        for sub in m.submodes[i]:
+          if sub in pixmaps.images:
+            recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=data.border_width)
+            self.balloon.bind( recent, m.submodes_names[i][m.submodes[i].index(sub)])
+          else:
+            self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=data.border_width)
+        # black magic???
+        j = m.submodes[i][ m.submode[i]]
+        self.subbuttons[i].invoke( j)
+      else:
+        # these are pulldown menus, to save space for text-only items
+        self.subbuttons.append( Pmw.OptionMenu( self.subFrame,
+                                                items = m.submodes_names[i],
+                                                command = self.change_submode))
+        if i % 2:
+          self.subbuttons[i].pack( side=LEFT, padx=10)
+        else:
+          self.subbuttons[i].pack( side=LEFT)
+
     self.paper.mode = self.mode
     self.mode.startup()
     self.update_status( _('mode changed to ')+self.modes[ tag].name)
@@ -523,7 +540,10 @@ class BKchem( Tk):
     self.papers.append( paper)
     self.change_paper( _tab_name)
     self.notebook.selectpage( Pmw.END)
-    self.paper.focus_set()
+    if not self.paper:
+      self.paper = paper  # this is needed for the batch mode, normaly its done in change_paper
+    else:
+      self.paper.focus_set()
 
 
   def close_current_paper( self):
@@ -571,9 +591,9 @@ class BKchem( Tk):
         return
       else:
         a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
-        self._save_according_to_extension( a)
+        return self._save_according_to_extension( a)
     else:
-      self._save_according_to_extension( name)
+      return self._save_according_to_extension( name)
 
 
   def save_as_CDML( self):
@@ -801,6 +821,8 @@ class BKchem( Tk):
     while self.papers:
       if not self.close_current_paper():
         return
+    if self.svg_dir:
+      self.pm.add_preference( "default-dir", self.save_dir)
     self.save_configuration()
     self.quit()
 
@@ -1087,6 +1109,9 @@ Enter IChI:""")
     self.__last_tab += 1
     return "tab"+str(self.__last_tab)
 
+
+
+
   def get_paper_tab_name( self, paper):
     for k in self.__tab_name_2_paper:
       if self.__tab_name_2_paper[ k] == paper:
@@ -1094,80 +1119,10 @@ Enter IChI:""")
     return None
 
 
+
   def read_user_templates( self):
     [self.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
 
-
-
-  def populate_utm_menu( self):
-    for m in self.utm.get_template_names():
-      self.utm_menu.add_radiobutton( label=m, command = misc.lazy_apply( self.select_user_template,  (m,)))
-#    if self.utm.get_template_names():
-#      self.utm_menu.invoke( 0)
-
-
-  def select_user_template( self, name):
-    self.radiobuttons.invoke( "template")
-    self.subbuttons[0].invoke( "userdefined")
-    self.mode._user_selected_template = name
-
-
-
-  def process_batch( self, opts, files=None):
-    import time
-    
-    f = None
-    t = None
-    o = None
-    for opt in opts:
-      if opt[0] == '-f':
-        f = opt[1]
-      elif opt[0] == '-t':
-        t = opt[1]
-      elif opt[0] == '-o':
-        o = opt[1]
-      elif opt[0] == '-l':
-        if not files:
-          files = []
-          file_list = opt[1]
-          file_file = open( file_list, 'r')
-          for name in [l.strip() for l in file_file.xreadlines()]:
-            if os.path.isfile( name):
-              files.append( name)
-              sys.stderr.write( " * added file from list: %s\n" % name)
-        else:
-          print "-l option is ignored when input file is given"
-
-    # default values for input and output formats
-    f = f or 'cdml'
-    t = t or 'cd-svg'
-
-    # processing of the files
-    for file in files:
-      # choose the output filename
-      if not o:
-        out = file+'.'+t
-      else:
-        out = o
-
-      # read
-      if f == 'cdml':
-        sys.stderr.write( " * reading file: %s\n" % file)
-        ret = self.load_CDML( file, replace=1)
-        if not ret:
-          sys.stderr.write( " !! failed, will not proceed.")
-          return
-      elif f == 'gtml':
-        self.plugin_import( 'GTML', filename=file)
-
-      # write
-      start_time = time.time()
-      if t == 'svg':
-        self.save_SVG( out)
-      elif t == 'cd-svg':
-        self.save_CDML( o)
-        sys.stderr.write( " * writing CD-SVG file: %s\n" % o)
-        sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))
 
 
 
@@ -1224,3 +1179,77 @@ Enter IChI:""")
     self.pm.write_to_file( f)
     f.close()
 
+
+
+
+
+
+  ## ------------------------------ THE BATCH MODE ------------------------------
+
+
+  def process_batch( self, opts, files=None):
+    import time
+
+    # at first we parse the input options
+    input_format = None  # -f
+    output_format = None  # -t
+    output_to = None  # -o
+    output_dir = None  # -d
+    for opt in opts:
+      if opt[0] == '-f':
+        input_format = opt[1]
+      elif opt[0] == '-t':
+        output_format = opt[1]
+      elif opt[0] == '-o':
+        output_to = opt[1]
+      elif opt[0] == '-d':
+        output_dir = opt[1]
+      elif opt[0] == '-l':
+        if not files:
+          files = []
+          file_list = opt[1]
+          file_file = open( file_list, 'r')
+          for name in [l.strip() for l in file_file.xreadlines()]:
+            if os.path.isfile( name):
+              files.append( name)
+              sys.stderr.write( " * added file from list: %s\n" % name)
+        else:
+          print "-l option is ignored when input file is given"
+
+    # default values for input and output formats
+    input_format = input_format or 'cdml'
+    output_format = output_format or 'cd-svg'
+    output_dir = output_dir or ""
+
+    # processing of the files
+    for file in files:
+      start_time = time.time()
+      file_name = os.path.basename( file)
+      # choose the output filename
+      if not output_to:
+        out = os.path.join( output_dir, file_name+'.'+output_format)
+      else:
+        if output_dir:
+          print "-d ignored when -o is given"
+        out = output_to
+
+      # read
+      if input_format == 'cdml':
+        sys.stderr.write( " * reading file: %s\n" % file)
+        ret = self.load_CDML( file, replace=1)
+        if not ret:
+          sys.stderr.write( " !! failed, will not proceed.")
+          return
+      elif input_format == 'gtml':
+        self.plugin_import( 'GTML', filename=file)
+
+      # write
+      if output_format == 'svg':
+        self.save_SVG( out)
+      elif output_format == 'cd-svg':
+        result = self.save_CDML( out)
+        if not result:
+          sys.stderr.write( " * failed to write CD-SVG file: %s\n" % out)
+        else:
+          sys.stderr.write( " * writing CD-SVG file: %s\n" % out)
+          sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))

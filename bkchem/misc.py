@@ -124,6 +124,26 @@ def extend_bbox( bbox, pixels=1):
   return minx-pixels, miny-pixels, maxx+pixels, maxy+pixels
 
 
+def smallest_common_bbox( bboxes):
+  _x0, _y0, _x1, _y1 = None, None, None, None
+  for (x0, y0, x1, y1) in bboxes:
+    minx = min( x0, x1)
+    maxx = max( x0, x1)
+    miny = min( y0, y1)
+    maxy = max( y0, y1)
+    if not _x0 or minx < _x0:
+      _x0 = minx
+    if not _x1 or maxx > _x1:
+      _x1 = maxx
+    if not _y0 or miny < _y0:
+      _y0 = miny
+    if not _y1 or maxy > _y1:
+      _y1 = maxy
+  return _x1, _y1, _x0, _y0
+
+      
+    
+
 
 
 def has_one_value_only( iterable):
