@@ -199,7 +199,7 @@ class config_dialog:
                                          labelpos = 'nw',
                                          label_text = _('Hydrogens'),
                                          items = (_("off"),_("on"), u""),
-                                         initialitem = pos)
+                                         initialitem = show)
 
       self.atom_show_h.pack( anchor = 'nw')
 

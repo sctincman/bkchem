@@ -126,13 +126,24 @@ class CDML_transformer_10_11:
         b.removeAttribute( 'width')
 
 
+class CDML_transformer_11_12:
+
+  output_version = '0.12'
+  input_version = '0.11'
+
+  def tranform_dom( self, dom):
+    pass
+
+
+
 # LIST OF AVAILABLE TRANSFORMERS
 
 transformers = { '0.6': CDML_transformer_06_07,
                  '0.7': CDML_transformer_07_08,
                  '0.8': CDML_transformer_08_09,
                  '0.9': CDML_transformer_09_10,
-                 '0.10': CDML_transformer_10_11}
+                 '0.10': CDML_transformer_10_11,
+                 '0.11': CDML_transformer_11_12}
 
 
 # TRANSFORMING FUNCTION

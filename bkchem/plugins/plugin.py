@@ -31,6 +31,9 @@ import xml.dom.minidom as dom
 
 class importer:
 
+  gives_cdml = 1
+  gives_molecule = 0
+
   def __init__( self):
     pass
 
@@ -40,11 +43,15 @@ class importer:
 
   def get_cdml_dom( self, file_name):
     return None
+
+  def get_molecule( self, file_name):
+    return None
+  
   
 class exporter:
 
   def __init__( self, paper):
-    pass
+    self.paper = paper
 
   def on_begin( self):
     return 1

@@ -83,6 +83,7 @@ class editPool( Frame):
       #self.editPool.insert(0, self.text)
     else:
       self._setText( t)
+      self.text = re.sub( "\\\\n", "\n", self.text)
     self._quit()
 
   def _setButtonPressed( self, *e):

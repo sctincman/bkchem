@@ -167,7 +167,8 @@ class state_record:
       for a in o.meta__undo_simple:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = self.records[i][a]
-          changed = 1
+          if a != 'molecule':  # this jumps a little from the clean, meta-driven design, however saves much time
+            changed = 1
       for a in o.meta__undo_copy:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = copy.copy( self.records[i][a])

@@ -97,11 +97,13 @@ class bond( meta_enabled):
   def set_molecule( self, molecule):
     self.molecule = molecule
 
-  def draw( self):
-    """call the appropriate draw method"""
+  def draw( self, no_automatic=0):
+    """call the appropriate draw method, no_automatic is used on file read when no automatic decisions are needed"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
     method = "_draw_%s%d" % (self.type, self.order)
+    if not no_automatic and self.order == 2 and self._auto_bond_sign == 1:
+      self._decide_distance_and_center()
     self.__class__.__dict__[ method]( self)
 
   def _draw_n1( self):
@@ -487,6 +489,8 @@ class bond( meta_enabled):
       self.double_length_ratio = float( package.getAttribute( 'double_ratio'))
     if package.getAttribute( 'simple_double'):
       self.simple_double = int( package.getAttribute( 'simple_double'))
+    if package.getAttribute( 'auto_sign'):
+      self._auto_bond_sign = int( package.getAttribute( 'auto_sign'))
     # end of implied
     self.atom1 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'start'))
     self.atom2 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'end'))
@@ -513,6 +517,8 @@ class bond( meta_enabled):
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))
       if self.order == 2:
         bnd.setAttribute( 'center', b[ self.center])
+        if self._auto_bond_sign != 1:
+          bnd.setAttribute( 'auto_sign', str( self._auto_bond_sign))
     if self.type != 'n':
       bnd.setAttribute( 'wedge_width', str( self.wedge_width * self.paper.screen_to_real_ratio())) 
     if self.line_color != '#000':
@@ -564,7 +570,6 @@ class bond( meta_enabled):
         else:
           # we do just nothing
           pass
-          
     elif self.order == 2:
       # we will shift the position of the second bond
       if self.center:
@@ -600,8 +605,9 @@ class bond( meta_enabled):
     """according to molecular geometry decide what bond.center and bond.bond_width should be"""
     line = self.atom1.get_xy() + self.atom2.get_xy()
     if not self.bond_width:
-      length = sqrt((line[0]-line[2])**2  + (line[1]-line[3])**2)
-      self.bond_width = round( length / 5, 1)
+      self.bond_width = self.standard.bond_width
+      #length = sqrt((line[0]-line[2])**2  + (line[1]-line[3])**2)
+      #self.bond_width = round( length / 5, 1)
     # does not need to go further if the bond is not double
     if self.order != 2:
       return 
@@ -629,7 +635,6 @@ class bond( meta_enabled):
 
     if ( len( plus_side1) and len( plus_side2)) or ( len( minus_side1) and len( minus_side2)):
       # only when there are enough atoms in neighborhood we need to search for circles
-      import copy
       
       def accessible( a1, a2, d):
         """is a2 accessible from a1 through d?"""
@@ -709,9 +714,9 @@ class bond( meta_enabled):
     if self.selector:
       self.paper.lift( self.selector)
     if self.second:
-      self.paper.lift( self.second)
+      [self.paper.lift( o) for o in self.second]
     if self.third:
-      self.paper.lift( self.third)
+      [self.paper.lift( o) for o in self.third]
     if self.item:
       self.paper.lift( self.item)
 
@@ -721,7 +726,7 @@ class bond( meta_enabled):
       tr_coords = tr.transform_xy_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
     # we need to check if the sing of double bond width has not changed
-    # this happend during swaps (3d rotation)
+    # this happens during 3d rotation
     if self.order == 2 and not self.center:
       line = list( self.atom1.get_xy())
       line += self.atom2.get_xy()

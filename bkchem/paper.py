@@ -46,6 +46,8 @@ import types
 import os_support
 import copy
 import dialogs
+import CDML_versions
+
 
 class BKpaper( Canvas):
 
@@ -305,7 +307,7 @@ class BKpaper( Canvas):
     # REDRAW OF NECESSARY THINGS
     for m in self.molecules:
       for a in m.atoms_map:
-        if a.show and a.type == 'element':
+        if a.show and a.type == 'element' and len( a.name) > 1:
           a.decide_pos()
           a.redraw()
     # start new undo
@@ -313,6 +315,8 @@ class BKpaper( Canvas):
       self.start_new_undo_record()
     self.selected = []
     #return deleted
+
+
       
   def bonds_to_update2( self):
     a = map( lambda o: o.molecule.atoms_bonds( o), filter( lambda o: o.object_type == 'atom', self.selected))
@@ -359,7 +363,7 @@ class BKpaper( Canvas):
     self.app.update_status( signal, time=time)
 
   def read_package( self, CDML):
-    import CDML_versions
+    original_version = CDML.getAttribute( 'version')
     success = CDML_versions.transform_dom_to_version( CDML, data.current_CDML_version)
     if not success:
       if not tkMessageBox.askyesno( _('Proceed'),
@@ -397,7 +401,16 @@ class BKpaper( Canvas):
     for p in CDML.childNodes:
       if p.nodeName in data.loadable_types:
         o = self.add_object_from_package( p)
-        o.draw()
+        if o.object_type == 'molecule':
+          if float( original_version) < 0.12:
+            # we need to know if the bond is positioned according to the rules or the other way
+            # it is however very expensive for large molecules with many double bonds and therefore
+            # it was in version '0.12' of CDML moved to the saved package and does not have to be
+            # checked on start anymore
+            [b.post_read_analysis() for b in o.bonds]
+          o.draw( no_automatic=1)
+        else:
+          o.draw()
     # now check if the old standard differs
     if new_standard and old_standard != self.standard:
       if not tkMessageBox.askyesno( _('Replace standard values'),
@@ -405,6 +418,7 @@ class BKpaper( Canvas):
                                     default = 'yes'):
         self.standard = old_standard
     # finish
+    
     self.add_bindings()
     self.um.start_new_record()
 
@@ -455,6 +469,9 @@ class BKpaper( Canvas):
 
   def handle_overlap( self):
     "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
+    #import time
+    #ttt = time.time()
+
     overlap = []
     for a in self.find_withtag('atom'):
       x, y = self.id_to_object( a).get_xy()
@@ -467,6 +484,7 @@ class BKpaper( Canvas):
               overlap.append( [a1,a2])
     if overlap:
       mols = misc.filter_unique( map( lambda a: map( lambda b: b.molecule, a), overlap))
+      #print 3, time.time() - ttt
       a_eatenby_b1 = []
       a_eatenby_b2 = []
       for (mol, mol2) in mols:
@@ -482,10 +500,12 @@ class BKpaper( Canvas):
           self.stack.remove( mol2)
         else:
           mol.handle_overlap()
+      #print 4, time.time() - ttt
       deleted = reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], [])
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
       self.signal_to_app( _('concatenated overlaping atoms'))
+    #print 5, time.time() - ttt
       
   def set_name_to_selected( self, name, interpret=1):
     """sets name to all selected atoms and texts,
@@ -1241,15 +1261,19 @@ class BKpaper( Canvas):
 
   def add_new_container( self, o):
     if o.object_type == 'plus':
-      self.paper.pluses.append( o)
+      self.pluses.append( o)
     elif o.object_type == 'arrow':
-      self.paper.arrows.append( o)
+      self.arrows.append( o)
     elif o.object_type == 'text':
-      self.paper.texts.append( o)
+      self.texts.append( o)
     elif o.object_type == 'molecule':
-      self.paper.molecules.append( o)        
+      self.molecules.append( o)        
     elif o.object_type in data.vector_graphics_types:
-      self.paper.vectors.append( o)
+      self.vectors.append( o)
+    else:
+      # we do not want to put it on stack if it wasn't caught by previous code
+      return
+    self.stack.append( o)
 
   def flush_first_selected_mol_to_graph_file( self):
     mols, u = self.selected_to_unique_containers()

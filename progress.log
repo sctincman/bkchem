@@ -1,4 +1,51 @@
 ----------------------------------------
+RELEASE 0.7.0
+
+ * bugfixes - double bonds were wrongly positioned on stack, thus disappearing when a molecule was
+              placed over some other object with full backgroung
+
+ * enhancements - \n in text entry is translated to new-line
+                - undo of molecule division was optimized (leading to 10-100x shorter times for large molecules)
+                - reading of CDML files was optimized
+                - some redundant informations are saved into CDML files to speed the reading up
+                - template addition was optimized (speedup of 10-100x for large molecules)
+                - deletion of parts of molecules was optimized (up to 10x speedup for larger molecules)
+                - new bonds are always added transoid
+                - addition of/to triple bonds is always in PI angle (180 deg.)
+
+ * changes - None
+ 
+ * translations - updated - Czech
+
+
+
+----------------------------------------
+RELEASE 0.7.0-pre1
+
+ * bugfixes - the in the config dialog "Show hydrogens" had a wrong default value
+            - the ColorButton crashed (python 2.3 only?) when the config dialog was run on
+              objects with different colors
+            - the program sometimes did not quit after saying 'yes' to 'really quit?'
+              (a bug in Tkinter askyesno dialog?)
+
+ * enhancements - this is the first release featuring OASA - a free chemical library I have
+                  started to work on this year. It brings support for several chemical formats.
+                  At this time SMILES, Molfiles and IChI (only reading). To be able to use
+                  these features you have to have at least Python 2.3.
+                  - Molfiles - export, import
+                  - IChI - direct input (see the menu Chemistry)
+                  - SMILES - direct input, ouput (see the menu Chemistry) 
+
+ * changes - some of the commands were moved from 'Object' menu to 'Chemistry' menu
+
+ * translations	- added - French
+
+ * acknowledgments - Alex Thurgood (French translation)
+
+
+
+
+----------------------------------------
 RELEASE 0.6.0
 
 * bugfixes - hitting escape during text creation no longer produces "None" text
@@ -17,6 +64,7 @@ RELEASE 0.6.0
 * changes - hitting 'Space' when only single text (atom) is selected sets the default text for
             edit to this particular text, the last entered text (the old way) is used only when
             more items are selected
+
 
 
 

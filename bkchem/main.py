@@ -46,6 +46,10 @@ import types
 from temp_manager import template_manager
 import modes
 
+import oasa_bridge
+import plugins.plugin
+
+
 
 class BKchem( Tk):
 
@@ -179,10 +183,6 @@ class BKchem( Tk):
     scaleButton['menu'] = scaleMenu
     scaleMenu.add( 'command', label=_('Scale'), command = self.scale)
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Info'), command = self.paper.display_info_on_selected, accelerator='(C-o i)')
-    scaleMenu.add( 'command', label=_('Check chemistry'), command = self.paper.check_chemistry_of_selected, accelerator='(C-o c)')
-    scaleMenu.add( 'command', label=_('Expand groups'), command = self.paper.expand_groups, accelerator='(C-o e)')
-    scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Bring to front'), command = self.paper.lift_selected_to_top, accelerator='(C-o f)')
     scaleMenu.add( 'command', label=_('Send back'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o b)')
     scaleMenu.add( 'command', label=_('Swap on stack'), command = self.paper.swap_selected_on_stack, accelerator='(C-o s)')
@@ -192,7 +192,23 @@ class BKchem( Tk):
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Configure'), command = self.paper.config_selected, accelerator='Mouse-3')
     # for dev only
-    scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
+
+    # CHEMISTRY MENU
+    chemistry_button = Menubutton( menu, text=_('Chemistry'))
+    chemistry_button.pack( side= 'left')
+    chemistry_menu = Menu( chemistry_button, tearoff=0)
+    chemistry_button['menu'] = chemistry_menu
+    chemistry_menu.add( 'command', label=_('Info'), command = self.paper.display_info_on_selected, accelerator='(C-o i)')
+    chemistry_menu.add( 'command', label=_('Check chemistry'), command = self.paper.check_chemistry_of_selected, accelerator='(C-o c)')
+    chemistry_menu.add( 'command', label=_('Expand groups'), command = self.paper.expand_groups, accelerator='(C-o e)')
+    chemistry_menu.add( 'separator')
+    # oasa related stuff
+    oasa_state = oasa_bridge.oasa_available and 'normal' or 'disabled'
+    chemistry_menu.add( 'command', label=_('Read SMILES'), command = self.read_smiles, state=oasa_state)
+    chemistry_menu.add( 'command', label=_('Read IChI'), command = self.read_inchi, state=oasa_state)
+    chemistry_menu.add( 'separator')
+    chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
+    #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
@@ -606,7 +622,7 @@ class BKchem( Tk):
   def plugin_import( self, pl_id):
     plugin = self.plugins[ pl_id]
     if self.paper.changes_made:
-      if tkMessageBox.askyesno( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='yes', parent=self) == 0:
+      if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
         return 0
     types = []
     if 'extensions' in plugin.__dict__ and plugin.extensions:
@@ -619,21 +635,39 @@ class BKchem( Tk):
                          title = _("Load")+" "+plugin.name,
                          parent = self,
                          filetypes=types)
-    if a != '':
-      importer = plugin.importer()
+    if a:
+      if plugin.importer.gives_molecule:
+        # plugins returning molecule need paper instance for molecule initialization
+        importer = plugin.importer( self.paper)
+      else:
+        importer = plugin.importer()
       if importer.on_begin():
-        import plugins.plugin
-        try:
-          doc = importer.get_cdml_dom( a)
-        except plugins.plugin.import_exception, detail:
-          tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
-          return
-#        except:
-#          import sys
-#          tkMessageBox.showerror( "Import error", "Plugin crashed with error:\n %s" % sys.exc_info()[1])
-#          return
+        cdml = None
+        # some importers give back a cdml dom object
+        if importer.gives_cdml:
+          cdml = 1
+          try:
+            doc = importer.get_cdml_dom( a)
+          except plugins.plugin.import_exception, detail:
+            tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
+            return
+        # others give directly a molecule object
+        elif importer.gives_molecule:
+          cdml = 0
+          try:
+            doc = importer.get_molecule( a)
+          except plugins.plugin.import_exception, detail:
+            tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
         self.paper.clean_paper()
-        self.paper.read_package( doc)
+        if cdml == 0:
+          # doc is a molecule
+          self.paper.set_paper_properties()
+          self.paper.add_new_container( doc)
+          doc.draw()
+          self.paper.add_bindings()
+          self.paper.start_new_undo_record()
+        elif cdml:
+          self.paper.read_package( doc)
         self.update_status( _("loaded file: ")+a)
 
 
@@ -659,13 +693,9 @@ class BKchem( Tk):
     if a != '':
       try:
         doc = exporter.write_to_file( a)
-      except plugins.plugin.export_exception, detail:
-        tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % detail)
+      except:
+        tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
         return
-#      except:
-#        tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with an unknown error"))
-#        return
-
       self.update_status( _("exported file: ")+a)
   
 
@@ -707,4 +737,83 @@ class BKchem( Tk):
         else:
           return None
       return None
+    
+
+  def read_smiles( self):
+    if not oasa_bridge.oasa_available:
+      return 
+    lt = _("""Before you use this tool, be warned that not all features of SMILES are currently supported.
+There is no support for stereo-related information, for the square brackets [] and a few more things.
+
+Enter SMILES:""")
+    dial = Pmw.PromptDialog( self,
+                             title='Smiles',
+                             label_text=lt,
+                             entryfield_labelpos = 'n',
+                             buttons=(_('OK'),_('Cancel')))
+    res = dial.activate()
+    if res == _('OK'):
+      text = dial.get()
+      if text:
+        try:
+          mol = oasa_bridge.read_smiles( text, self.paper)
+        except :
+          tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
+                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
+          return
+        self.paper.add_new_container( mol)
+        mol.draw()
+        self.paper.add_bindings()
+        self.paper.start_new_undo_record()
+
+
+  def read_inchi( self):
+    if not oasa_bridge.oasa_available:
+      return 
+    lt = _("""Before you use his tool, be warned that not all features of IChI are currently supported.
+There is no support for stereo-related information, isotopes and a few more things.
+The IChI should be entered in the plain text form, e.g.- 1.0Beta/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
+
+Enter IChI:""")
+    dial = Pmw.PromptDialog( self,
+                             title='IChI',
+                             label_text=lt,
+                             entryfield_labelpos = 'n',
+                             buttons=(_('OK'),_('Cancel')))
+    res = dial.activate()
+    if res == _('OK'):
+      text = dial.get()
+      if text:
+        try:
+          mol = oasa_bridge.read_inchi( text, self.paper)
+        except:
+          tkMessageBox.showerror( _("Error processing %s") % 'IChI',
+                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
+          return
+
+        self.paper.add_new_container( mol)
+        mol.draw()
+        self.paper.add_bindings()
+        self.paper.start_new_undo_record()
+
+
+  def gen_smiles( self):
+    if not oasa_bridge.oasa_available:
+      return
+    u, i = self.paper.selected_to_unique_containers()
+    sms = []
+    for m in u:
+      if m.object_type == 'molecule':
+        try:
+          sms.append( oasa_bridge.mol_to_smiles( m))
+        except:
+          tkMessageBox.showerror( _("Error generating %s") % 'SMILES',
+                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
+          return
+    text = '\n\n'.join( sms)
+    dial = Pmw.TextDialog( self,
+                           title='Generated SMILES',
+                           buttons=(_('OK'),))
+    dial.insert( 'end', text)
+    dial.activate()
     

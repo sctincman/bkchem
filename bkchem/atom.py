@@ -61,6 +61,8 @@ class atom( meta_enabled):
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
+
+
   def __init__( self, paper, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, paper)
     # basic attrs
@@ -230,8 +232,8 @@ class atom( meta_enabled):
     self.molecule = molecule
 
   def set_xy( self, x, y):
-    self.x = x #round( x, 2)
-    self.y = y #round( y, 2)
+    self.x = self.paper.any_to_px( x) #round( x, 2)
+    self.y = self.paper.any_to_px( y) #round( y, 2)
 
   def decide_pos( self):
     as = self.molecule.atoms_bound_to( self)
@@ -262,8 +264,8 @@ class atom( meta_enabled):
       self.ftext.draw()
       x1, y1, x2, y2 = self.ftext.bbox()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
-      ## shrink the selector to improve appearance (y2-(y2-y1)//4+1)
-      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-(y2-y1)//4+1, fill=self.area_color, outline='',tags='helper_a')
+      ## shrink the selector to improve appearance (y2-2)
+      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
       self.ftext.lift()
       self.paper.lift( self.item)
     else:

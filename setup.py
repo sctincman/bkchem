@@ -11,7 +11,7 @@ if os.name != 'posix':
 
 set = setup(
   name = 'bkchem',
-  version = '0.6.0',
+  version = '0.7.0',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
@@ -20,7 +20,7 @@ set = setup(
   platforms = ["Unix", "Windows", "hopefully other OSes able to run Python"],
   long_description = "BKchem is a chemical drawing program written in Python",
   
-  packages=[ 'bkchem', 'bkchem/plugins'],
+  packages=[ 'bkchem', 'bkchem/plugins', 'bkchem/oasa', 'bkchem/oasa/oasa', 'bkchem/oasa/oasa/graph'],
 
   data_files=[ ('share/bkchem/templates', glob.glob( 'templates/*.cdml')+['templates/oo_manifest.xml']),
                ('share/bkchem/images', ['images/logo.ppm']),
@@ -31,7 +31,8 @@ set = setup(
                ('share/doc/bkchem/pdf', glob.glob( 'doc/pdf/*')),
                ('share/doc/bkchem/html', glob.glob( 'doc/html/*')),
                ('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo']),
-               ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo'])
+               ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo']),
+               ('share/locale/fr/LC_MESSAGES', ['locale/fr/LC_MESSAGES/BKchem.mo'])
                ]
   )
 

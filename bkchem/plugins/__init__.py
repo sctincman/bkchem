@@ -25,5 +25,6 @@ import CML, CML2
 #import povray
 import openoffice
 import postscript
+import molfile
 
-__all__ = ['CML','CML2','openoffice','postscript']
+__all__ = ['CML','CML2','openoffice','postscript','molfile']

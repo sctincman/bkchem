@@ -60,7 +60,8 @@ class molecule( simple_parent):
     self.atoms_map = []  # list of atoms
     self.bonds = []      # list of bonds
     self.connect = []    # matrix that shows conectivity of each atom
-    self.sign = -1
+    self.sign = 1
+    self._last_used_atom = None 
     self.name = ''
     self.id = ''
     self._iterator = 0
@@ -96,7 +97,7 @@ class molecule( simple_parent):
     for i in range( len( connect)):
       self.connect.append( l*[0])
       self.connect[l+i].extend( connect[i])
-    map( lambda o: o.set_molecule( self), self)
+    [o.set_molecule( self) for o in self]
       
   def eat_molecule( self, mol):
     "transfers everything from mol to self, now only calls feed_data"
@@ -108,7 +109,10 @@ class molecule( simple_parent):
     if pos != None:
       x, y = pos
     else:
-      x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
+      if bond_to_use:
+        x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length), added_order=bond_to_use.order)
+      else:
+        x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
     a2 = self.create_new_atom( x, y)
     b = bond_to_use or bond( self.paper, order=1, type='n')
     b.set_atoms( a1, a2)
@@ -123,23 +127,44 @@ class molecule( simple_parent):
     if not b.molecule:
       b.set_molecule( self)
 
-  def find_place( self, a, distance):
+  def find_place( self, a, distance, added_order=1):
     """tries to find accurate place for next atom around atom 'id',
     returns x,y and list of ids of 'items' found there for overlap, those atoms are not bound to id"""
     ids_bonds = self.atoms_bound_to( a)
     if len( ids_bonds) == 0:
-      x = a.get_x() + round( cos( pi/6) *distance)
-      y = a.get_y() - round( sin( pi/6) *distance)
+      x = a.get_x() + cos( pi/6) *distance
+      y = a.get_y() - sin( pi/6) *distance
     elif len( ids_bonds) == 1:
-      x = a.get_x() + round( cos( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance)
-      y = a.get_y() + round( sin( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance)
-      self.sign = -self.sign
+      neigh = ids_bonds[0]
+      if self.atoms_bonds( a)[0].order != 3 and added_order != 3:
+        # we add a normal bond to atom with one normal bond
+        if a == self._last_used_atom or len( self.atoms_bound_to( neigh)) != 2:
+          # the user has either deleted the last added bond and wants it to be on the other side
+          # or it is simply impossible to define a transoid configuration
+          self.sign = -self.sign
+          x = a.get_x() + cos( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
+          y = a.get_y() + sin( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
+        else:
+          # we would add the new bond transoid
+          neighs2 = self.atoms_bound_to( neigh)
+          neigh2 = (neighs2[0] == a) and neighs2[1] or neighs2[0]
+          x = a.get_x() + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+          y = a.get_y() + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+          side = geometry.on_which_side_is_point( (neigh.x,neigh.y,a.x,a.y), (x,y))
+          if side == geometry.on_which_side_is_point(  (neigh.x,neigh.y,a.x,a.y), (neigh2.x,neigh2.y)):
+            self.sign = -self.sign
+            x = a.get_x() + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+            y = a.get_y() + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
+          self._last_used_atom = a
+      else:
+        x = a.get_x() + cos( self.get_angle( a, ids_bonds[0]) + pi) *distance
+        y = a.get_y() + sin( self.get_angle( a, ids_bonds[0]) + pi) *distance
     else:
       x, y = self.find_least_crowded_place_around_atom( a, range=distance)
     return x, y
 
   def atoms_bonds( self, a):
-    return filter( lambda o: o,  self.connect[ self.atoms_map.index( a)])
+    return filter( None,  self.connect[ self.atoms_map.index( a)])
 
   def atoms_bound_to( self, a):
     "returns list of ids of atoms bound to atom with id = 'id'"
@@ -160,17 +185,32 @@ class molecule( simple_parent):
     """deletes items and also makes cleaning of orphan bonds and atoms"""
     if not items:
       return items, []     # quick way to avoid costly evaluation
-    deleted = []+items
-    map( self.delete_bond, filter( lambda o: o.object_type == 'bond', items))
-    map( self.delete_atom, filter( lambda o: o.object_type == 'atom', items))
+    deleted = copy.copy( items)
+    for o in items:
+      if o.object_type == 'atom':
+        self.delete_atom( o)
+      else:
+        self.delete_bond( o)
     if self.connect:
       # delete bonds that are not in connect anymore
-      bonds_in_connect = misc.filter_unique( reduce( lambda a,b: a+b, self.connect))
-      deleted += map( self.delete_bond, filter( lambda o: o not in bonds_in_connect, self.bonds))
+      bonds_in_connect = []
+      for i in range( len( self.connect)):
+        for j in range( i+1, len( self.connect)):
+          b = self.connect[i][j]
+          if b:
+            bonds_in_connect.append( b)
+      deleted += [self.delete_bond( o) for o in misc.difference( self.bonds, bonds_in_connect)]
       # delete also orphan atoms
-      deleted += map( self.delete_atom, filter( lambda o: not self.atoms_bonds( o), self.atoms_map))
-      # recalculation of second line of double bond position
-      [o.redraw( recalc_side=1) for o in self.bonds if o.order == 2 and o.item]
+      deleted += [self.delete_atom( o) for o in self.atoms_map if not self.atoms_bonds( o)]
+      # recalculation of second line of double bond position, optimized to do it only when realy
+      # necessary, because its pretty expensive
+      bonds_to_redraw = []
+      for b in deleted:
+        if b.object_type == 'bond':
+          for a in b.get_atoms():
+            if a in self.atoms_map:
+              bonds_to_redraw.extend( self.atoms_bonds( a))
+      [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
       # recalculate marks positions
       [o.reposition_marks() for o in self.atoms_map]
     else:
@@ -190,9 +230,10 @@ class molecule( simple_parent):
       
   def delete_atom( self, item):
     "remove links to atom from molecule records"
-    del self.connect[ self.atoms_map.index( item)]
+    index = self.atoms_map.index( item)
+    del self.connect[ index]
     for i in range( len( self.connect)):
-      del self.connect[i][ self.atoms_map.index( item)]
+      del self.connect[i][ index]
     self.atoms_map.remove( item)
     item.delete()
     if item == self.t_atom:
@@ -220,45 +261,65 @@ class molecule( simple_parent):
     self.atoms_map.append( at)
     at.set_molecule( self)
   
+
+  def get_connected_components( self):
+    """returns the connected components of graph in a form o list of lists of vertices"""
+    comps = [] # all components
+    comp = [] # just processed component 
+    con = []  # connectivity matrix copy for fusion
+    for line in self.connect:
+      con.append( [(e and 1) or 0 for e in line])
+    vs = copy.copy( self.atoms_map)
+    while vs:
+      if sum( con[0]) == 0:
+        comp.append( vs.pop(0))
+        comps.append( comp)
+        comp = []
+        del con[0]
+        for line in con:
+          del line[0]
+        continue
+      i = get_index_of_vertex_connected_to_first_vertex( con)
+      fuse_vertices( 0, i, con)
+      comp.append( vs.pop( i))
+    return comps
+
+
   def check_integrity( self):
     """after deleting atoms or bonds it is important to see if it's needed to divide molecule to fragments
     and return them in form of list of new molecules"""
     if self.connect == []:
       return []
-    old_map = self.atoms_map[:]
+    old_map = copy.copy( self.atoms_map)
     # first distribute atoms to new_maps
-    def walker( a):
-      mmap.append( a)
-      for i in self.atoms_bound_to( a):
-        if i not in mmap:
-          walker( i)
-    new_maps = []
-    while old_map:
-      mmap = []
-      walker( old_map[0])
-      new_maps.append( mmap)
-      old_map = misc.difference( old_map, mmap)
+    new_maps = self.get_connected_components()
     if len( new_maps) == 1:
       return []
     # reorder connectivity matrixes
-    new_cons = []
+    ret = []
     for mmap in new_maps:
       con = []
+      bonds = []
       for i in range( len( mmap)):
         con.append( len( mmap)*[0])
-      for i in range( len( mmap)):
-        for j in range( i+1, len( mmap)):
-          con[i][j] = self.connect[ self.atoms_map.index( mmap[i])][ self.atoms_map.index( mmap[j])]
-          con[j][i] = con[i][j]
-      new_cons.append( con)
-    # 
-    new_bonds = []
-    for mol in new_cons:
-      new_bonds.append( misc.filter_unique( filter( lambda o: o, reduce( lambda a,b: a+b, mol))))
-    ret = []
-    for i in range( len( new_cons)):
-      ret.append( molecule( self.paper))
-      ret[i].feed_data( new_maps[i], new_bonds[i], new_cons[i])
+      ## for bigger molecules it can be about 10x faster to iterate twice over the whole connect
+      ## then only over the mmap, because this way we can save the index in many cases, which is pretty expensive
+      for i in range( len( self.atoms_map)):
+        for j in range( i+1, len( self.atoms_map)):
+          bond = self.connect[i][j]
+          if bond:
+            try:
+              i2 = mmap.index( self.atoms_map[i])
+              j2 = mmap.index( self.atoms_map[j])
+            except ValueError:
+              continue
+            con[i2][j2] = bond
+            con[j2][i2] = bond
+            bonds.append( bond)
+      mol = molecule( self.paper)
+      mol.feed_data( mmap, bonds, con)
+      ret.append( mol)
+
     return ret
 
   def is_empty( self):
@@ -286,9 +347,6 @@ class molecule( simple_parent):
         self.t_bond_first = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_first'))
         self.t_bond_second = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_second'))
       self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
-    # we need to analyze the positioning of the double bond in order to be able
-    # to use the initial values later
-    [b.post_read_analysis() for b in self.bonds]
 
   def get_package( self, doc):
     mol = doc.createElement('molecule')
@@ -305,10 +363,10 @@ class molecule( simple_parent):
       mol.appendChild( i.get_package( doc))
     return mol
 
-  def draw( self):
-    # the molecule is an iterator
-    [a.draw() for a in self]
-
+  def draw( self, no_automatic=0):
+    [a.draw( no_automatic=no_automatic) for a in self.bonds]
+    [a.draw() for a in self.atoms_map]
+    
   def bond_between( self, a1, a2):
     "returns id of bond between atoms i1 and i2"
     return self.connect[ self.atoms_map.index( a1)][ self.atoms_map.index( a2)]
@@ -316,29 +374,37 @@ class molecule( simple_parent):
   def handle_overlap( self):
     "deletes one of overlaping atoms and updates the bonds"
     to_delete = []
-    for a in self.atoms_map:
-      for b in self.atoms_map:
-        if a != b:
-          x1, y1 = a.get_xy()
-          x2, y2 = b.get_xy()
-          if (abs( x1-x2) < 4) and (abs( y1-y2) <4):
-            if a not in to_delete:
-              map( lambda x: x.change_atoms( b, a), self.atoms_bonds( b))
-              to_delete.append( b)
+    bonds_to_check = [] # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
+    for i in range( len( self.atoms_map)):
+      for j in range( i+1, len( self.atoms_map)):
+        a = self.atoms_map[i]
+        b = self.atoms_map[j]
+        if (abs( a.x-b.x) < 4) and (abs( a.y-b.y) <4):
+          if a not in to_delete:
+            for x in self.atoms_bonds( b):
+              x.change_atoms( b, a)
+              bonds_to_check.append( x)
+            to_delete.append( b)
     deleted = misc.filter_unique( to_delete)
-    map( self.delete_atom, deleted)
+    [self.delete_atom( o) for o in deleted]
     # after all is done, find and delete orphan bonds and update the others
-    for b in self.bonds[:]:
+    to_redraw = []
+    for b in bonds_to_check:
+      if not b in self.bonds:
+        continue
       i1, i2 = map( self.atoms_map.index, b.get_atoms())
-      if self.connect[i1][i2] and self.connect[i1][i2] != b:
+      recent_b = self.connect[i1][i2]
+      if recent_b and recent_b != b:
         self.delete_bond( b)
         deleted.append( b)
-        #self.bonds.remove( b)
-      elif not self.connect[i1][i2]:
+        to_redraw.append( recent_b) # we redraw the once that remained
+      elif not recent_b:
         self.connect[i1][i2] = b
         self.connect[i2][i1] = b
-    for b in self.bonds:
+        to_redraw.append( b) # we redraw this also
+    for b in to_redraw:
       b.redraw()
+
     return deleted
 
   def move( self, dx, dy):
@@ -427,7 +493,8 @@ class molecule( simple_parent):
             self.connect[j][k] = 0
 
   def lift( self):
-    [o.lift() for o in self.bonds + self.atoms_map]
+    [o.lift() for o in self.bonds]
+    [o.lift() for o in self.atoms_map]
 
   def find_least_crowded_place_around_atom( self, a, range=10):
     atms = self.atoms_bound_to( a)
@@ -462,3 +529,25 @@ class molecule( simple_parent):
     for b in self.bonds:
       b.transform( tr)
 
+
+
+def get_index_of_vertex_connected_to_first_vertex( mat):
+  """returns an index of vertex that is connected to the vertex in first line
+  of the matrix"""
+  for i, x in enumerate( mat[0]):
+    if x:
+      return i
+
+def fuse_vertices( i1, i2, mat):
+  """fuses vertices with indexes i1, i2 to i1, works on the mat"""
+  # sum the lines
+  for i in range( len( mat)):
+    if i != i1:
+      mat[i1][i] = mat[i1][i] or mat[i2][i]
+  # remove i2
+  del mat[i2]
+  for line in mat:
+    del line[i2]
+  # copy row i1 to column i1
+  for i, x in enumerate( mat[i1]):
+    mat[i][i1] = x

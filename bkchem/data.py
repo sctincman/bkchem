@@ -93,9 +93,9 @@ standards_differ_text = _('''This CDML document was created using different stan
 
 cdml_namespace = 'http://www.freesoftware.fsf.org/bkchem/cdml'
 
-current_CDML_version = '0.11'
+current_CDML_version = '0.12'
 
-current_BKchem_version = '0.6.0'
+current_BKchem_version = '0.7.0'
 
 vector_graphics_types = ('oval', 'rect', 'polygon')
 

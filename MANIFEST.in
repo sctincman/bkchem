@@ -9,3 +9,4 @@ recursive-include doc *
 recursive-include dtd *.dtd *.xsd
 include locale/cs/LC_MESSAGES/BKchem.mo
 include locale/pl/LC_MESSAGES/BKchem.mo
+include locale/fr/LC_MESSAGES/BKchem.mo

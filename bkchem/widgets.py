@@ -50,7 +50,10 @@ class ColorButton( Tkinter.Button):
 
   def set_color( self, color):
     """sets the self.color and modifies self.foreground_color if needed for the text to be visible"""
-    self.color = str( color)
+    if color:
+      self.color = str( color)
+    else:
+      self.color = None
     if not self.color:
       self.foreground_color = "#000"
       return
