@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """this module provides extended methods for formating of text items (for canvas)
 ftext is XML based. Tags used for formating are:
@@ -28,11 +25,13 @@ sub - (sub)script, sup - (sup)erscript, b - bold, i - italic"""
 import tkFont
 import dom_extensions
 import xml.dom.minidom as dom
-import time
-import profile
+
 
 class ftext:
-  def __init__( self, canvas, xy = (), text=None, dom=None, font=None, pos="center-first", fill='#000'):
+
+
+  def __init__( self, canvas, xy = (), text=None, dom=None, font=None, pos="center-first", fill='#000', big_charges=True):
+    self.big_charges = big_charges  # should +- in <sup> be drawn in bigger font (not scaled down)?
     self.canvas = canvas
     self.items = []
     self.tags = ('ftext'),
@@ -52,6 +51,8 @@ class ftext:
     self._font_size = int( self.font.actual('size'))
     self.pos = pos
     self.fill = fill
+
+
     
   def draw( self):
     plain_text = dom_extensions.getAllTextFromElement( self.doc)
@@ -60,6 +61,8 @@ class ftext:
     self.items = []
     self.__current_x = self.x
     self.__draw_elements( self.doc)
+    self._last_attrs = ''
+    self._last_x = self.x
     #does not work when 1. character is not regular
     if self.pos == 'center-first':
       self.diff = self.font.measure( plain_text[0])/2.0
@@ -68,6 +71,8 @@ class ftext:
       self.diff = x2 -x1 -self.font.measure( plain_text[-1])/2.0 -2
     self.move( -self.diff, 0)
     return self.bbox()
+
+
 
   def __draw_elements( self, element, attrs=''):
     i = []
@@ -85,29 +90,53 @@ class ftext:
       for el in element.childNodes:
         self.__draw_elements( el, attrs=a)
     else:
-      weight = ''
-      x, y = self.__current_x, self.y
-      canvas = self.canvas
-      if 'b' in a:
-        weight = "bold"
-      if 'i' in a:
-        weight += " italic"
-      if not weight:
-        weight = "normal"
-      if 's' in a:
-        item = canvas.create_text( x, y, tags=self.tags, text=element.nodeValue,
-                                   font=(self._font_family, int( round( self._font_size*0.7)), weight),
-                                   anchor="nw", justify="right", fill=self.fill)
-      elif 'S' in a:
-        item = canvas.create_text( x, y, tags=self.tags, text=element.nodeValue,
-                                   font=(self._font_family, int( round( self._font_size*0.7)), weight),
-                                   anchor="sw", justify="right", fill=self.fill)
-      else:
-        item = canvas.create_text( x, y, tags=self.tags, text=element.nodeValue,
-                                   font=(self._font_family, self._font_size, weight), anchor="w", justify="right",
-                                   fill=self.fill)
-      self.items.append( item)
-      self.__current_x = canvas.bbox( item)[2]
+      scale = 1
+      if 's' in attrs or 'S' in attrs:
+        if not (element.nodeValue == "-" and self.big_charges):
+          scale = 0.7
+        if 's' in self._last_attrs or 'S' in self._last_attrs:
+          self.__current_x = self._last_x
+
+      self._draw_text( element.nodeValue, attrs, scale=scale)
+
+
+
+
+  def _draw_text( self, text, attributes, scale=1):
+    weight = ''
+    canvas = self.canvas
+    x = self.__current_x
+    y = self.y
+
+    if 'b' in attributes:
+      weight = "bold"
+    if 'i' in attributes:
+      weight += " italic"
+    if not weight:
+      weight = "normal"
+
+
+    if 's' in attributes:
+      item = canvas.create_text( x, y, tags=self.tags, text=text,
+                                 font=(self._font_family, int( round( self._font_size*scale)), weight),
+                                 anchor="nw", justify="right", fill=self.fill)
+    elif 'S' in attributes:
+      item = canvas.create_text( x, y, tags=self.tags, text=text,
+                                 font=(self._font_family, int( round( self._font_size*scale)), weight),
+                                 anchor="sw", justify="right", fill=self.fill)
+    else:
+      item = canvas.create_text( x, y, tags=self.tags, text=text,
+                                 font=(self._font_family, int( round( self._font_size*scale)), weight),
+                                 anchor="w",
+                                 justify="right",
+                                 fill=self.fill)
+    self.items.append( item)
+    self._last_attrs = attributes
+    self._last_x = self.__current_x
+    self.__current_x = canvas.bbox( item)[2]
+
+
+
     
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
@@ -133,34 +162,4 @@ class ftext:
 
       
 
-## TEST PROGRAM
 
-## from Tkinter import *
-
-## def main():
-##   root = Tk()
-##   root.title('pokus')
-##   frame = Frame( root, width=450, height=600, bd=1)
-##   frame.pack( fill = X)
-##   canvas = Canvas( frame, width=450, height=600)
-##   canvas.pack( fill=BOTH)
-
-##   t1 = time.clock()
-##   fnt = tkFont.Font( family="Helvetica", size=5)
-##   ff = ftext( canvas, xy = (50, 3), text="<ftext>Nazdar<sup>23</sup> vole: a<sup>2</sup>+b<sup>2</sup>=c<sub>A</sub><sup>2</sup></ftext>", font=fnt)
-##   for i in range( 29, 30):
-##     ff.y += i+3
-##     ff.font.configure( size=i)
-##     ff.draw()
-##   print time.clock()-t1
-
-##   root.mainloop()
-
-## main()
-#profile.run('main()')
-## text="<ftext>Nazdar<sup>23</sup> vole: a<sup>2</sup>+b<sup>2</sup>=c<sub>A</sub><sup>2</sup></ftext>"
-## a = dom.parseString( text)
-## b = ftext_dom_to_fstrings_list( a)
-## for i in b:
-##   print i, i.get_attrs()
-## print "ok"

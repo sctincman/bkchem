@@ -349,7 +349,9 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
       else:
         return GT.groups_table[ self.name.lower()]['textb']
     elif self.group_type in ("implicit","chain"):
-      return re.sub( "\d+", '<sub>\g<0></sub>', self.name)
+      x = re.sub( "\d+", '<sub>\g<0></sub>', self.name)
+      x = re.sub( "[+-]", '<sup>\g<0></sup>', x)
+      return x
 
 
 
