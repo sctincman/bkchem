@@ -30,7 +30,8 @@ class context_menu( Tkinter.Menu):
     self.selected = selected
     self.changes_made = 0
     already_there = []
-
+    
+    # object type related configuration
     obj_types = misc.filter_unique( [o.object_type for o in selected])
     obj_types.sort()
   
@@ -46,6 +47,11 @@ class context_menu( Tkinter.Menu):
             casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
           # to know what is already there
           already_there.append( attr)
+
+    # common commands
+    self.add_separator()
+    self.add_command( label=_("Properties"), command=self.app.paper.config_selected) 
+
 
   def callback( self, command, value):
     for o in self.selected:
@@ -75,10 +81,10 @@ class context_menu( Tkinter.Menu):
 
 
 
-config_values = { 'show':             ( _("show"),             ('yes','no')),
-                  'show_hydrogens':   ( _("hydrogens"),        ('on','off')),
-                  'font_size':        ( _("font size"),        (8,10,12,14,16,18)),
-                  'line_width':       ( _("line width"),       (1.0,1.5,2.0,2.5,3.0))
+config_values = { 'show':             ( _("Show"),             ('yes','no')),
+                  'show_hydrogens':   ( _("Hydrogens"),        ('on','off')),
+                  'font_size':        ( _("Font size"),        (8,10,12,14,16,18)),
+                  'line_width':       ( _("Line width"),       (1.0,1.5,2.0,2.5,3.0))
                   }
 
 

@@ -262,9 +262,10 @@ class BKchem( Tk):
     # oasa related stuff
     oasa_state = oasa_bridge.oasa_available and 'normal' or 'disabled'
     chemistry_menu.add( 'command', label=_('Read SMILES'), command = self.read_smiles, state=oasa_state)
-    chemistry_menu.add( 'command', label=_('Read IChI'), command = self.read_inchi, state=oasa_state)
+    chemistry_menu.add( 'command', label=_('Read INChI'), command = self.read_inchi, state=oasa_state)
     chemistry_menu.add( 'separator')
     chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
+    chemistry_menu.add( 'command', label=_('Generate INChI'), command = self.gen_inchi, state=oasa_state)
     #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
     # USER DEFINE TEMPLATES
@@ -962,6 +963,7 @@ There is no support for stereo-related information, isotopes and a few more thin
 The IChI should be entered in the plain text form, e.g.- 1.0Beta/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
 
 Enter IChI:""")
+    text = None
     if not inchi:
       dial = Pmw.PromptDialog( self,
                                title='IChI',
@@ -1142,3 +1144,40 @@ Enter IChI:""")
         self.save_CDML( o)
         sys.stderr.write( " * writing CD-SVG file: %s\n" % o)
         sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))
+
+
+
+  def gen_inchi( self):
+    program = "/home/beda/inchi/cINChI11b"
+    import tempfile
+    
+    if not oasa_bridge.oasa_available:
+      return
+    u, i = self.paper.selected_to_unique_top_levels()
+    sms = []
+    for m in u:
+      if m.object_type == 'molecule':
+        plugin = plugins.molfile
+        exporter = plugin.exporter( self.paper)
+        name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
+        file = open( name, 'w')
+        oasa_bridge.write_molfile( m, file)
+        file.close()
+
+        in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
+        #print program, name, in_name
+
+        os.spawnvp( os.P_WAIT, program, (program, name, in_name, "-AUXNONE"))
+
+        in_file = open( in_name, 'r')
+        [line for line in in_file.readlines()]
+        sms.append( line[6:].strip())
+        in_file.close()
+
+
+    text = '\n\n'.join( sms)
+    dial = Pmw.TextDialog( self,
+                           title='Generated INChIs',
+                           buttons=(_('OK'),))
+    dial.insert( 'end', text)
+    dial.activate()

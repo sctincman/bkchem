@@ -125,7 +125,7 @@ paper_types = { 'A4': [297,210],
                 'Legal': [355.7,215.9]}
 
 
-# border width for all components
+# border width for all components of interface
 border_width = 1
 
 

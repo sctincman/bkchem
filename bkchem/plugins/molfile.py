@@ -25,6 +25,7 @@
 
 import plugin
 import oasa_bridge
+import types
 
 class molfile_importer( plugin.importer):
 
@@ -68,7 +69,10 @@ class molfile_exporter( plugin.exporter):
       return 1
 
   def write_to_file( self, name):
-    file = open( name, 'w')
+    if type( name) == types.StringType:
+      file = open( name, 'w')
+    else:
+      file = name
     oasa_bridge.write_molfile( self.molecule, file)
     
 

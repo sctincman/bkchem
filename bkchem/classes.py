@@ -615,7 +615,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.read_package( package)
     self.focus_item = None
 
-    print self.font_size
 
   # public methods
 
