@@ -47,9 +47,11 @@ import os_support
 import copy
 import dialogs
 import CDML_versions
+import os
 
 
-class chem_paper( Canvas):
+
+class chem_paper( Canvas, object):
 
   object_type = 'paper'
 
@@ -494,7 +496,7 @@ class chem_paper( Canvas):
         cr = int( paper.getAttribute( 'crop_svg'))
       else:
         cr = 1
-      self.paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr)
+      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr)
     else:
       self.set_paper_properties( type='A4', orientation='portrait', crop_svg=1)
     # viewport
@@ -1674,3 +1676,33 @@ class chem_paper( Canvas):
 
   def get_base_name( self):
     return os.path.splitext( self.file_name['name'])[0]
+
+
+
+
+
+
+  def __get_full_path( self):
+    return os.path.abspath( os.path.join( self.file_name['dir'], self.file_name['name']))
+
+  full_path = property( __get_full_path)
+    
+
+
+
+
+  def __get_window_name( self):
+    return self.create_window_name( self.file_name)
+
+  window_name = property( __get_window_name)
+
+
+
+
+  def create_window_name( name_dict):
+    if name_dict['ord'] == 0:
+      return name_dict['name']
+    else:
+      return name_dict['name'] + '<%d>' % name_dict['ord']
+    
+  create_window_name = staticmethod( create_window_name)

@@ -220,8 +220,8 @@ class edit_mode( mode):
     self.register_key_sequence( 'C-s', self.app.save_CDML)
     self.register_key_sequence( 'C-c', lambda : self.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'C-v', self._paste_clipboard)
-    self.register_key_sequence( 'C-z', lambda : self.app.paper.undo())
-    self.register_key_sequence( 'C-S-z', lambda : self.app.paper.redo())
+    self.register_key_sequence( 'C-z', self.undo)
+    self.register_key_sequence( 'C-S-z', self.redo)
     # 'C-x' from windoze is in use - 'C-k' instead
     self.register_key_sequence( 'C-k', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
     # 'C-a' from windoze is in use - 'C-S-a' instead
@@ -494,6 +494,20 @@ class edit_mode( mode):
       self.app.paper.select( [a])
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
+
+  def undo( self):
+    self.app.paper.undo()
+    if self.focused and not self.app.paper.is_registered_object( self.focused):
+      # focused object was deleted
+      self.focused = None
+
+  def redo( self):
+    self.app.paper.redo()
+    if self.focused and not self.app.paper.is_registered_object( self.focused):
+      # focused object was deleted
+      self.focused = None
+
+
     
 
 ### -------------------- DRAW MODE --------------------

@@ -359,10 +359,17 @@ class BKchem( Tk):
 
 
   def add_new_paper( self, name=''):
+    # check if the same file is opened
+    p = self.check_if_the_file_is_opened( name)
+    if p:
+      tkMessageBox.showerror( _("File already opened!"),_("Sorry but I cannot open one file twice."))
+      return 0
     name_dic = self.get_name_dic( name=name)
-    page = self.notebook.add( name_dic['name'])
-    paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5,
-                     file_name=name_dic)
+    # check if a file with same name is opened
+    page = self.notebook.add( chem_paper.create_window_name( name_dic))
+        
+    paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
+                        background="grey", closeenough=5, file_name=name_dic)
     # the scrolling
     scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)
     scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview)
@@ -380,11 +387,15 @@ class BKchem( Tk):
     self.paper.focus_set()
 
 
-
-
   def close_current_paper( self):
-    if self.paper.changes_made:
-      name = self.paper.file_name['name']
+    return self.close_paper()
+
+
+  def close_paper( self, paper=None):
+    p = paper or self.paper
+
+    if p.changes_made:
+      name = p.file_name['name']
       dialog = Pmw.MessageDialog( self,
                                   title= _("Really close?"),
                                   message_text = _("There are unsaved changes in file %s, what should I do?") % name,
@@ -394,10 +405,10 @@ class BKchem( Tk):
       if result == _('Save'):
         self.save_CDML()
       elif result == _('Cancel'):
-        return # we skip away
-    self.papers.remove( self.paper)
-    self.notebook.delete( Pmw.SELECT)
-    
+        return 0 # we skip away
+    self.papers.remove( p)
+    self.notebook.delete( p.window_name or Pmw.SELECT)
+    return 1
 
 
 
@@ -431,7 +442,7 @@ class BKchem( Tk):
                                       (_("Gzipped CD-SVG file"),".svgz"),
                                       (_("CDML file"),".cdml"),
                                       (_("Gzipped CDML file"),".cdgz")))
-    if a != '':
+    if a != '' and a!=():
       if self._save_according_to_extension( a):
         return self.get_name_dic( a)
       else:
@@ -458,7 +469,7 @@ class BKchem( Tk):
       type = _('CD-SVG')
       success = export.export_CD_SVG( self.paper, filename, gzipped=0)
     if success:
-      self.update_status( _("saved to %s file: %s") % (type, save_file))
+      self.update_status( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( self.save_dir, save_file))))
       self.paper.changes_made = 0
       return 1
     else:
@@ -494,8 +505,10 @@ class BKchem( Tk):
                                       (_("All files"),"*")))
     else:
       a = file
-    if not replace:
-      self.add_new_paper( name=a)
+    if replace or (self.paper.file_name['auto'] and not self.paper.changes_made):
+      self.close_paper()
+    p = self.add_new_paper( name=a)
+    self.paper.mode = self.mode # somehow the raise event does not work here
     return self._load_CDML_file( a)
 
 
@@ -566,9 +579,7 @@ class BKchem( Tk):
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc)
-      self.paper.file_name = self.get_name_dic( a)
-      self.notebook.tab( Pmw.SELECT).configure( text = self.paper.file_name['name'])
-      self.update_status( _("loaded file: ")+a)
+      self.update_status( _("loaded file: ")+self.paper.full_path)
       return 1
 
 
@@ -609,20 +620,23 @@ class BKchem( Tk):
   def get_name_dic( self, name=''):
     if not name:
       name = 'untitled%d.svg' % self._untitled_counter
-      name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1}
+      name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1, 'ord': 0}
       self._untitled_counter += 1
     else:
       dir, name = os.path.split( name)
       if not dir:
         dir = self.save_dir
-      name_dic = {'name':name, 'dir':dir, 'auto': 0}
+      name_dic = {'name':name, 'dir':dir, 'auto': 0, 'ord': 0}
+      i = self.check_number_of_opened_same_names( name_dic)
+      name_dic['ord'] = i
     return name_dic
 
 
 
   def _quit( self):
     while self.papers:
-      self.close_current_paper()
+      if not self.close_current_paper():
+        return 
     self.quit()
 
 
@@ -837,12 +851,34 @@ Enter IChI:""")
     self._clipboard = xml
     self._clipboard_pos = pos
 
-
   def get_clipboard( self):
     return self._clipboard
 
   def get_clipboard_pos( self):
     return self._clipboard_pos
+
+
+##   def get_named_paper( self, name):
+##     for p in self.papers:
+##       if p.get_base_name() == name:
+##         return p
+##     return None
+
+
+  def check_if_the_file_is_opened( self, name):
+    for p in self.papers:
+      if p.full_path == os.path.abspath( name):
+        return p
+    return None
+      
+  def check_number_of_opened_same_names( self, name):
+    """checks if there are papers with same name and returns the highest value"""
+    ps = [p.file_name['ord'] for p in self.papers if p.file_name['name'] == name['name']]
+    if not ps:
+      return 0
+    else:
+      return max( ps)+1
+
 
 
   def start_server( self):
