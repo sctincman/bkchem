@@ -43,6 +43,7 @@ import types
 from temp_manager import template_manager
 import modes
 import interactors
+import os_support
 
 import oasa_bridge
 import plugins.plugin
@@ -99,10 +100,15 @@ class BKchem( Tk):
     # here are all the functions needed for multiple papers
     #
     # template_manager
-    self.tm = template_manager( self.paper)
+    self.tm = template_manager( self)
     self.tm.add_template_from_CDML( "templates.cdml")
+
+    # manager for user user defined templates
+    self.utm = template_manager( self)
+    self.read_user_templates()
+
     # groups manager
-    self.gm = template_manager( self.paper)
+    self.gm = template_manager( self)
     self.gm.add_template_from_CDML( "groups.cdml")
     self.gm.add_template_from_CDML( "groups2.cdml")
 
@@ -222,6 +228,13 @@ class BKchem( Tk):
     chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
     #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
+    # USER DEFINE TEMPLATES
+    utm_button = Menubutton( menu, text=_('User templates'))
+    utm_button.pack( side= 'left')
+    self.utm_menu = Menu( utm_button, tearoff=0)
+    utm_button['menu'] = self.utm_menu
+    self.populate_utm_menu()
+
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
     optionsButton.pack( side= 'left')
@@ -243,7 +256,7 @@ class BKchem( Tk):
     # mode selection panel     
     radioFrame = Frame( mainFrame)
     radioFrame.pack( fill=X)
-    radiobuttons = Pmw.RadioSelect(radioFrame,
+    self.radiobuttons = Pmw.RadioSelect(radioFrame,
                      buttontype = 'button',
                      selectmode = 'single',
                      orient = 'horizontal',
@@ -253,14 +266,14 @@ class BKchem( Tk):
                      pady = 0,
                      hull_relief = 'ridge',
              )
-    radiobuttons.pack( side=LEFT)
+    self.radiobuttons.pack( side=LEFT)
     # Add some buttons to the radiobutton RadioSelect.
     for m in self.modes_sort:
       if m in pixmaps.images:
-        recent = radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey')
+        recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey')
         self.balloon.bind( recent, self.modes[ m].name)
       else:
-        radiobuttons.add( m, text=self.modes[ m].name)
+        self.radiobuttons.add( m, text=self.modes[ m].name)
     # sub-mode support
     self.subFrame = Frame( mainFrame)
     self.subFrame.pack( fill=X)
@@ -278,13 +291,13 @@ class BKchem( Tk):
 
     status = Label( mainFrame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
-    radiobuttons.invoke( self.mode)
+    self.radiobuttons.invoke( self.mode)
 
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
-    #self.start_server()
+    self.start_server()
 
 
 
@@ -697,7 +710,7 @@ class BKchem( Tk):
         if cdml == 0:
           # doc is a molecule
           self.paper.set_paper_properties()
-          self.stack.append( doc)
+          self.paper.stack.append( doc)
           doc.draw()
           self.paper.add_bindings()
           self.paper.start_new_undo_record()
@@ -803,13 +816,13 @@ Enter SMILES:""")
 	  tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
 				  _("The oasa library ended with error:\n%s") % sys.exc_value)
 	return
-      self.stack.append( mol)
+      self.paper.stack.append( mol)
       mol.draw()
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
 
 
-  def read_inchi( self):
+  def read_inchi( self, inchi=None):
     if not oasa_bridge.oasa_available:
       return 
     lt = _("""Before you use his tool, be warned that not all features of IChI are currently supported.
@@ -817,26 +830,31 @@ There is no support for stereo-related information, isotopes and a few more thin
 The IChI should be entered in the plain text form, e.g.- 1.0Beta/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
 
 Enter IChI:""")
-    dial = Pmw.PromptDialog( self,
-                             title='IChI',
-                             label_text=lt,
-                             entryfield_labelpos = 'n',
-                             buttons=(_('OK'),_('Cancel')))
-    res = dial.activate()
-    if res == _('OK'):
-      text = dial.get()
-      if text:
-        try:
-          mol = oasa_bridge.read_inchi( text, self.paper)
-        except:
+    if not inchi:
+      dial = Pmw.PromptDialog( self,
+                               title='IChI',
+                               label_text=lt,
+                               entryfield_labelpos = 'n',
+                               buttons=(_('OK'),_('Cancel')))
+      res = dial.activate()
+      if res == _('OK'):
+        text = dial.get()
+    else:
+      text = inchi
+
+    if text:
+      try:
+        mol = oasa_bridge.read_inchi( text, self.paper)
+      except:
+        if not inchi:
           tkMessageBox.showerror( _("Error processing %s") % 'IChI',
                                   _("The oasa library ended with error:\n%s") % sys.exc_value)
-          return
+        return
 
-        self.stack.append( mol)
-        mol.draw()
-        self.paper.add_bindings()
-        self.paper.start_new_undo_record()
+      self.paper.stack.append( mol)
+      mol.draw()
+      self.paper.add_bindings()
+      self.paper.start_new_undo_record()
 
 
   def gen_smiles( self):
@@ -918,3 +936,21 @@ Enter IChI:""")
       if self.__tab_name_2_paper[ k] == paper:
         return k
     return None
+
+
+  def read_user_templates( self):
+    [self.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
+
+
+
+  def populate_utm_menu( self):
+    for m in self.utm.get_template_names():
+      self.utm_menu.add_radiobutton( label=m, command = misc.lazy_apply( self.select_user_template,  (m,)))
+#    if self.utm.get_template_names():
+#      self.utm_menu.invoke( 0)
+
+
+  def select_user_template( self, name):
+    self.radiobuttons.invoke( "template")
+    self.subbuttons[0].invoke( "userdefined")
+    self.mode._user_selected_template = name

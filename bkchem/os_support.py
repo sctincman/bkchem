@@ -90,7 +90,7 @@ def get_local_templates():
   if dir:
     dir = os.path.join( dir, '.bkchem/templates')
     if os.path.isdir( dir):
-      return [d for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')] 
+      return [os.path.join( dir, d) for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')] 
   return []
 
 

@@ -828,50 +828,56 @@ class plus_mode( edit_mode):
 
 
 
+## -------------------- TEMPLATE MODE --------------------
+
 class template_mode( edit_mode):
 
   def __init__( self, paper):
     edit_mode.__init__( self, paper)
     self.name = _('template')
-    self.submodes = [self.app.tm.get_template_names()]
-    self.submodes_names = self.submodes
+    self.submodes = [self.app.tm.get_template_names()+['userdefined']]
+    self.submodes_names = [self.app.tm.get_template_names()+[_('user defined')]]
     self.submode = [0]
     self.register_key_sequence( 'C-t 1', self._mark_focused_as_template_atom_or_bond)
+    self._user_selected_template = ''
+
     
   def mouse_click( self, event):
     self.app.paper.unselect_all()
     if not self.focused:
-      t = self.app.tm.get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=self.app.paper)
+      t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=self.app.paper)
     else:
       if self.focused.object_type == 'atom':
         if self.focused.z != 0:
           self.app.paper.signal_to_app( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."))
           return
-        if self.focused.get_free_valency() >= self.app.tm.get_templates_valency( self.submode[0]):
+        if self.focused.get_free_valency() >= self._get_templates_valency():
           x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
           x2, y2 = self.focused.get_xy()
-          t = self.app.tm.get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=self.app.paper)
+          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=self.app.paper)
         else:
           x1, y1 = self.focused.get_xy()
           x2, y2 = self.focused.molecule.find_place( self.focused, self.app.paper.any_to_px( self.app.paper.standard.bond_length))
-          t = self.app.tm.get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=self.app.paper)
+          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=self.app.paper)
       elif self.focused.object_type == 'bond':
         x1, y1 = self.focused.atom1.get_xy()
         x2, y2 = self.focused.atom2.get_xy()
         #find right side of bond to append template to
-        atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + self.focused.molecule.atoms_bound_to( self.focused.atom2)
+        atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + \
+               self.focused.molecule.atoms_bound_to( self.focused.atom2)
         atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
         coords = [a.get_xy() for a in atms]
         if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords]) > 0:
           x1, y1, x2, y2 = x2, y2, x1, y1
-        t = self.app.tm.get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=self.app.paper)
+        t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=self.app.paper)
         if not t:
           return # the template was not meant to be added to a bond
       else:
         return
     self.app.paper.stack.append( t)
     t.draw()
-    self.app.paper.signal_to_app( _("Added molecule from template: ")+self.app.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
+    #self.app.paper.signal_to_app( ("Added molecule from template: ")+\
+    #                              self.app.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
     self.app.paper.select( [o for o in t])
     self.app.paper.handle_overlap()
     # checking of valency
@@ -883,6 +889,10 @@ class template_mode( edit_mode):
 
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
+
+
+
+
 
   def _mark_focused_as_template_atom_or_bond( self):
     if self.focused and self.focused.object_type == 'atom':
@@ -900,6 +910,25 @@ class template_mode( edit_mode):
         self.focused.molecule.t_bond_first = self.focused.atom2
         self.focused.molecule.t_bond_second = self.focused.atom1
       self.app.paper.signal_to_app( _("focused bond marked as 'template bond'")) 
+
+
+
+
+
+  def _get_transformed_template( self, name, coords, type='empty', paper=None):
+    if self.get_submode( 0) == 'userdefined':
+      n = self.app.utm.get_template_names().index( self._user_selected_template)
+      return self.app.utm.get_transformed_template( n, coords, type=type, paper=paper)
+    else:
+      return self.app.tm.get_transformed_template( self.submode[0], coords, type=type, paper=paper)
+
+
+
+  def _get_templates_valency( self):
+    if self.get_submode(0) == 'userdefined':
+      return self.app.utm.get_templates_valency( self.app.utm.get_template_names().index( self._user_selected_template))
+    else:
+      return self.app.tm.get_templates_valency( self.submode[0])
 
 
 
