@@ -124,28 +124,47 @@ class OO_exporter( plugin.exporter):
                         stroke_width=self.paper.px_to_cm( b.line_width))
     style_name = self.get_appropriate_style_name( s)
     l_group = page
-    if b.type <= 3:
-      if not (b.type == 2 and b.center): 
-        coords = reduce( operator.add, [o.get_xy() for o in b.get_atoms()])
-        coords = map( self.paper.px_to_cm, coords)
-        self.create_oo_line( coords, page, style_name)
-      if b.second:
-        coords = map( self.paper.px_to_cm, self.paper.coords( b.second))
-        self.create_oo_line( coords, page, style_name)
-      if b.third:
-        coords = map( self.paper.px_to_cm, self.paper.coords( b.third))
-        self.create_oo_line( coords, page, style_name)
-    elif b.type == 4:
-      s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
-                          fill_color=self.paper.any_color_to_rgb_string( b.line_color))
-      style_name = self.get_appropriate_style_name( s)
-      x1, y1, x2, y2, x3, y3 = map( self.paper.px_to_cm, self.paper.coords( b.item))
-      point_array = [(x1,y1), (x2,y2), (x3,y3)]
-      self.create_oo_polygon( point_array, page, style_name)
-    elif b.type == 5:
-      for i in b.items:
+    # items to export
+    if b.type == 'h':
+      items = b.items
+    else:
+      if b.center:
+        if not b.order == 2:
+          print "shit!"
+        items = []
+      else:
+        items = [b.item]
+    items += b.second
+    items += b.third
+    # the export itself
+    if b.type in 'nbh':
+      for i in items:
         coords = map( self.paper.px_to_cm, self.paper.coords( i))
         self.create_oo_line( coords, page, style_name)
+    elif b.type == 'w':
+      s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
+                          fill_color=self.paper.any_color_to_rgb_string( b.line_color),
+                          stroke_width=self.paper.px_to_cm( b.line_width))
+      style_name = self.get_appropriate_style_name( s)
+      for i in items:
+        x1, y1, x2, y2, x3, y3 = map( self.paper.px_to_cm, self.paper.coords( i))
+        point_array = [(x1,y1), (x2,y2), (x3,y3)]
+        self.create_oo_polygon( point_array, page, style_name)
+    elif b.type == 'h':
+      for i in items:
+        for p in i:
+          coords = map( self.paper.px_to_cm, self.paper.coords( p))
+          self.create_oo_line( coords, page, style_name)
+    elif b.type == 'a':
+      s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
+                          stroke_width=self.paper.px_to_cm( b.line_width))
+      style_name = self.get_appropriate_style_name( s)
+      for i in items:
+        coords = self.paper.coords( i)
+        points = []
+        for j in range( 0, len( coords), 2):
+          points.append( ( self.paper.px_to_cm( coords[j]), self.paper.px_to_cm(coords[j+1])))
+        self.create_oo_polyline( points, page, style_name)
 
 
   def add_atom( self, a, page):
@@ -226,32 +245,8 @@ class OO_exporter( plugin.exporter):
                         marker_start=start_pin,
                         stroke_width=self.paper.px_to_cm( a.line_width))
     style_name = self.get_appropriate_style_name( s)
-    point_array = []
-    maxX, maxY, minX, minY = None,None,None,None
-    for p in a.points:
-      x,y = map( self.paper.px_to_cm, p.get_xy())
-      if not maxX or x > maxX:
-        maxX = x
-      if not minX or x < minX:
-        minX = x
-      if not maxY or y > maxY:
-        maxY = y
-      if not minY or y < minY:
-        minY = y
-      point_array.append( (x,y))
-    points = ""
-    for (x,y) in point_array:
-      points += "%d,%d " % ((x-minX)*1000, (y-minY)*1000)
-
-    line = dom_extensions.elementUnder( page, 'draw:polyline',
-                                        (( 'svg:x', '%fcm' % minX),
-                                         ( 'svg:y', '%fcm' % minY),
-                                         ( 'svg:width', '%fcm' % (maxX-minX)),
-                                         ( 'svg:height', '%fcm' % (maxY-minY)),
-                                         ( 'svg:viewBox', '0 0 %d %d' % ((maxX-minX)*1000,(maxY-minY)*1000)),
-                                         ( 'draw:points', points),
-                                         ( 'draw:layer', 'layout'),
-                                         ( 'draw:style-name', style_name)))
+    points = [map( self.paper.px_to_cm, p.get_xy()) for p in a.points]
+    self.create_oo_polyline( points, page, style_name)
 
 
   def add_polygon( self, o, page):
@@ -434,6 +429,33 @@ class OO_exporter( plugin.exporter):
                                   ( 'draw:points', points_txt),
                                   ( 'draw:layer', 'layout'),
                                   ( 'draw:style-name', gr_style_name)))
+
+
+  def create_oo_polyline( self, points, page, gr_style_name):
+    maxX, maxY, minX, minY = None,None,None,None
+    for (x,y) in points:
+      if not maxX or x > maxX:
+        maxX = x
+      if not minX or x < minX:
+        minX = x
+      if not maxY or y > maxY:
+        maxY = y
+      if not minY or y < minY:
+        minY = y
+    points_txt = ""
+    for (x,y) in points:
+      points_txt += "%d,%d " % ((x-minX)*1000, (y-minY)*1000)
+
+    line = dom_extensions.elementUnder( page, 'draw:polyline',
+                                        (( 'svg:x', '%fcm' % minX),
+                                         ( 'svg:y', '%fcm' % minY),
+                                         ( 'svg:width', '%fcm' % (maxX-minX)),
+                                         ( 'svg:height', '%fcm' % (maxY-minY)),
+                                         ( 'svg:viewBox', '0 0 %d %d' % ((maxX-minX)*1000,(maxY-minY)*1000)),
+                                         ( 'draw:points', points_txt),
+                                         ( 'draw:layer', 'layout'),
+                                         ( 'draw:style-name', gr_style_name)))
+
 
 
 
