@@ -147,6 +147,12 @@ class mode:
     """registers a function with its coresponding key sequence
     when use_warning is true (default) than issues warning about overriden
     or shadowed bindings. In most cases its good idea to let it check the bindings."""
+    # registering a range
+    if sequence.find( "##") >= 0:
+      prefix, end = sequence.split('##')
+      for c in end:
+        self.register_key_sequence( prefix+c, misc.lazy_apply( function, (prefix+c,)))
+    # check of already registered values
     if use_warning and sequence in self._key_sequences:
       warn( "binding of sequence %s to function %s overrides its binding to function %s" %
             (sequence, function.__name__, self._key_sequences[ sequence].__name__),
@@ -157,6 +163,7 @@ class mode:
           warn( "binding of sequence %s to function %s shadows %s (binded to %s)" %
                 (sequence, function.__name__, key, self._key_sequences[ key].__name__),
                 UserWarning, 2)
+    # the registration
     self._key_sequences[ sequence] = function
 
   def register_key_sequence_ending_with_number_range( self, sequence_base, function, numbers=[]):
@@ -186,24 +193,26 @@ class edit_mode( mode):
     self._last_click_time = 0
     self.focused = None
     # responses to key events
-    self.register_key_sequence( 'Delete', self._delete_selected)
     self.register_key_sequence( ' ', self._set_name_to_selected)
+    self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
+    self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
     self.register_key_sequence( 'Return', lambda : self.app.paper.set_name_to_selected( self.app.editPool.text)) 
+    self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
     # align
-    self.register_key_sequence( 'C-a t', lambda : self.app.paper.align_selected( 't'))
-    self.register_key_sequence( 'C-a b', lambda : self.app.paper.align_selected( 'b'))
-    self.register_key_sequence( 'C-a l', lambda : self.app.paper.align_selected( 'l'))
-    self.register_key_sequence( 'C-a r', lambda : self.app.paper.align_selected( 'r'))
-    self.register_key_sequence( 'C-a h', lambda : self.app.paper.align_selected( 'h'))
-    self.register_key_sequence( 'C-a v', lambda : self.app.paper.align_selected( 'v'))
+    self.register_key_sequence( 'C-a C-t', lambda : self.app.paper.align_selected( 't'))
+    self.register_key_sequence( 'C-a C-b', lambda : self.app.paper.align_selected( 'b'))
+    self.register_key_sequence( 'C-a C-l', lambda : self.app.paper.align_selected( 'l'))
+    self.register_key_sequence( 'C-a C-r', lambda : self.app.paper.align_selected( 'r'))
+    self.register_key_sequence( 'C-a C-h', lambda : self.app.paper.align_selected( 'h'))
+    self.register_key_sequence( 'C-a C-v', lambda : self.app.paper.align_selected( 'v'))
     # other
-    self.register_key_sequence( 'C-x c', lambda : self.app.paper.toggle_center_for_selected())
-    self.register_key_sequence( 'C-d w', lambda : self.app.paper.display_weight_of_selected())
-    self.register_key_sequence( 'C-d i', lambda : self.app.paper.display_info_on_selected())
+    self.register_key_sequence( 'C-d C-c', lambda : self.app.paper.toggle_center_for_selected())
+    self.register_key_sequence( 'C-d C-w', lambda : self.app.paper.display_weight_of_selected())
+    self.register_key_sequence( 'C-d C-i', lambda : self.app.paper.display_info_on_selected())
     # object related key bindings
-    self.register_key_sequence( 'C-o i', lambda : self.app.paper.display_info_on_selected())
-    self.register_key_sequence( 'C-o c', lambda : self.app.paper.check_chemistry_of_selected())
-    self.register_key_sequence( 'C-o e', self._expand_groups)
+    self.register_key_sequence( 'C-o C-i', lambda : self.app.paper.display_info_on_selected())
+    self.register_key_sequence( 'C-o C-c', lambda : self.app.paper.check_chemistry_of_selected())
+    self.register_key_sequence( 'C-o C-e', self._expand_groups)
     # emacs like key bindings
     self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
     self.register_key_sequence( 'C-x C-w', self.app.save_as_CDML)
@@ -235,9 +244,9 @@ class edit_mode( mode):
     self.register_key_sequence( 'Left', lambda : self._move_selected( -1, 0))
     self.register_key_sequence( 'Right', lambda : self._move_selected( 1, 0))
     # manipulation of the paper.stack
-    self.register_key_sequence( 'C-o f', lambda : self.app.paper.lift_selected_to_top())
-    self.register_key_sequence( 'C-o b', lambda : self.app.paper.lower_selected_to_bottom())
-    self.register_key_sequence( 'C-o s', lambda : self.app.paper.swap_selected_on_stack())
+    self.register_key_sequence( 'C-o C-f', lambda : self.app.paper.lift_selected_to_top())
+    self.register_key_sequence( 'C-o C-b', lambda : self.app.paper.lower_selected_to_bottom())
+    self.register_key_sequence( 'C-o C-s', lambda : self.app.paper.swap_selected_on_stack())
     # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
     
@@ -434,16 +443,24 @@ class edit_mode( mode):
     if xy[0] > 0 and xy[1] > 0:
       self.app.paper.paste_clipboard( xy)
 
-  def _set_name_to_selected( self):
+  def _set_name_to_selected( self, char=''):
     if self.app.paper.selected:
       # check if we should start with the last used text or edit the one of selected things
       text = ''
-      if len( self.app.paper.selected) == 1:
+      select = 1
+      # the initial value for editing
+      if char != '':
+        if char.startswith("S-"):
+          text = char[2:].upper()
+        else:
+          text = char
+        select = 0
+      elif len( self.app.paper.selected) == 1:
         item = self.app.paper.selected[0]
         if item.object_type in ('text','atom'):
           text = item.get_text()
       if text:
-	name = self.app.editPool.activate( text=text)
+	name = self.app.editPool.activate( text=text, select=select)
       else:
 	name = self.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
@@ -838,7 +855,7 @@ class template_mode( edit_mode):
     self.submodes = [self.app.tm.get_template_names()+['userdefined']]
     self.submodes_names = [self.app.tm.get_template_names()+[_('user defined')]]
     self.submode = [0]
-    self.register_key_sequence( 'C-t 1', self._mark_focused_as_template_atom_or_bond)
+    self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
 
     

@@ -152,7 +152,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     return self.__name
 
   def __set_name( self, name):
-    self.__name = name
+    self.__name = name #.decode('utf-8')
     self.dirty = 1
 
   name = property( __get_name, __set_name)
@@ -611,7 +611,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     self.y = y
     ft = package.getElementsByTagName('ftext')
     if ft:
-      self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], ''), check_valency=0, interpret=0)
+      self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'), check_valency=0, interpret=0)
     else:
       self.set_name( package.getAttribute( 'name'), check_valency=0)
     if package.getAttribute( 'hydrogens'):
@@ -658,7 +658,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     a.setAttribute( 'id', str( self.cdml_id))
     #show attribute is set only when non default
     if (self.show and self.name=='C') or (not self.show and self.name!='C'): 
-      a.setAttribute('show', y[ self.show])
+      a.setAttribute('show', [ self.show])
     if self.show:
       a.setAttribute( 'pos', self.pos)
     if self.font_size != 12 or self.font_family != 'helvetica' or self.line_color != '#000':

@@ -55,7 +55,9 @@ class BKchem( Tk):
 
   def __init__( self):
     Tk.__init__( self)
-
+    self.tk.call("tk", "useinputmethods", "1")
+    #self.tk.call( "encoding", "system", "iso8859-2")
+    #print self.tk.call( "encoding", "system")
 
 
   def initialize( self):
@@ -284,7 +286,8 @@ class BKchem( Tk):
     import pixmaps
     if os.name == 'posix':
       try:
-        self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-*-100-*-*-*-*-*-*"))
+        self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-12-*-*-*-p-*-iso10646-1"))
+        ##self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-*-100-*-*-*-*-*-*"))
       except:
         print "cannot init default font"
     else:
@@ -497,7 +500,7 @@ class BKchem( Tk):
     _tab_name = self.get_new_tab_name()
     page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
     paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'),
-                        background="grey", closeenough=5, file_name=name_dic)
+                        background="grey", closeenough=3, file_name=name_dic)
     self.__tab_name_2_paper[ _tab_name] = paper
     # the scrolling
     scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)

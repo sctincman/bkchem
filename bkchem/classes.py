@@ -731,8 +731,12 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     x, y, z = self.paper.read_xml_point( pos)
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
-    self.parsed_text = ft[0]
-    self.text = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
+    try:
+      self.parsed_text = ft[0].cloneNode( 1)
+      self.text = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
+    except IndexError:
+      self.text = "?"
+      self.parsed_text = dom.parseString( "<ftext>%s</ftext>" % self.text).childNodes[0]
     fnt = package.getElementsByTagName('font')
     if fnt:
       fnt = fnt[0]

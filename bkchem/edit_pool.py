@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002, 2003 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002, 2003, 2004 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """the 'edit pool' widget resides here"""
 
@@ -43,6 +40,8 @@ class editPool( Frame):
 
     self.editPool.bind( '<Return>', self._interpretButtonPressed)
     self.editPool.bind( '<Escape>', self._cancel)
+
+    self.editPool.bind("<KeyPress>", self._key)
 
     self.interpretButton = Button( self, text=_('Interpret'), command=self._interpretButtonPressed, state='disabled')
     self.interpretButton.pack( side='left')
@@ -133,7 +132,7 @@ class editPool( Frame):
     if self.text:
       self.editPool.insert(0, self.text)
 
-  def activate( self, text=None):
+  def activate( self, text=None, select=1):
     """activates edit_pool and returns inserted value (None if cancel occured),
     if parameter text is None it preserves the old one, use text='' to delete old text"""
     self.focus_set()
@@ -145,7 +144,8 @@ class editPool( Frame):
     if text != None:
       self._setText( text)
     self.editPool.focus_set()
-    self.editPool.selection_range( 0, 'end')
+    if select:
+      self.editPool.selection_range( 0, 'end')
     self.mainloop()
     if self._normaly_terminated:
       return self.text
@@ -160,3 +160,11 @@ class editPool( Frame):
       self.editPool.insert( Tkinter.INSERT, '<%s></%s>' % (tag, tag))
       self.editPool.icursor( self.editPool.index( Tkinter.INSERT) - len( tag) - 3)
       
+
+  def _key( self, event):
+    from keysymdef import keysyms
+    if len(event.keysym) > 1 and event.keysym in keysyms:
+      if self.editPool.selection_present():
+        self.editPool.delete( "anchor", "insert")
+      self.editPool.insert( 'insert', unicode( keysyms[ event.keysym]))
+      return "break"
