@@ -74,6 +74,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
     self.paper = paper
     self.sign = 1
+    self.user_data = []
+
     self._last_used_atom = None 
     self.name = ''
     self._iterator = 0
@@ -357,6 +359,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       f.read_package( fel)
       self.fragments.add( f)
 
+    ud = dom_extensions.getChildrenNamed( package, "user-data")
+    if ud:
+      self.user_data = [u.cloneNode( True) for u in ud]
+
     # final check of atoms valecies
     [a.raise_valency_to_senseful_value() for a in self.vertices if isinstance( a, atom)]
     
@@ -384,6 +390,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     if not items:
       # we do not save fragments if the molecule is not guaranteed to be saved whole
       [mol.appendChild( f.get_package( doc)) for f in self.fragments]
+
+    for ud in self.user_data:
+      mol.appendChild( ud)
+
     return mol
 
 
@@ -616,9 +626,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       nf = fragment( Store.id_manager.generate_id( "frag"), name=name, type=type)
       nf.edges = Set( edges)
       self.fragments.add( nf)
-      return True
+      return nf
     else:
-      return False
+      return None
 
 
   def check_fragments( self):
@@ -630,3 +640,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         todel.add( f)
     [self.fragments.remove( f) for f in todel]
     return todel
+
+
+  def get_fragment_by_id( self, id):
+    fs = [f for f in self.fragments if f.id == id]
+    if fs:
+      return fs[0]
+    else:
+      return None

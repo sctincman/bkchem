@@ -83,7 +83,7 @@ class chem_paper( Canvas, object):
     self.__in = 1
     self._id_2_object = {}
     self.stack = []
-    
+
     # bindings to input events
     self.set_bindings()
 
@@ -456,13 +456,7 @@ class chem_paper( Canvas, object):
 
 
   def bonds_to_update( self):
-    a = []
-    s_atoms = [o for o in self.selected if o.object_type == 'atom'] # selected atoms
-    for m in misc.filter_unique( [o.molecule for o in s_atoms]):
-      for b in m.bonds:
-        a1, a2 = b.atoms
-        if (a1 in s_atoms) or (a2 in s_atoms):
-          a.append( b)
+    a = reduce( operator.or_, map( Set, [v.get_neighbor_edges() for v in self.selected if v.object_type == "atom"]))
     # if bond is also selected then it moves with and should not be updated
     return [b for b in a if b not in self.selected]
 
@@ -622,6 +616,7 @@ class chem_paper( Canvas, object):
     edm_doc = self.edm.get_package( doc)
     if edm_doc:
       root.appendChild( edm_doc)
+
     return doc
     
 

@@ -132,8 +132,6 @@ class BKchem( Tk):
     #self.start_server()
 
 
-
-
   def initialize_batch( self):
     self.in_batch_mode = 1
     self.init_basics()
@@ -438,11 +436,22 @@ class BKchem( Tk):
                    'atom': modes.atom_mode(),
                    'reaction': modes.reaction_mode(),
                    'usertemplate': modes.user_template_mode(),
-                   'externaldata': modes.external_data_mode(),
-                   'rapiddraw': modes.rapid_draw_mode()
+                   #'externaldata': modes.external_data_mode(),
+                   #'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
-                        'rotate', 'bondalign', 'vector', 'usertemplate', 'externaldata', 'rapiddraw']
+                        'rotate', 'bondalign', 'vector', 'usertemplate'] #, 'externaldata', 'rapiddraw']
+
+    # import plugin modes
+    name = "nomenclature"
+    try:
+      module = __import__(name, globals(), locals(), [os.path.abspath("./")])
+    except ImportError:
+      return None
+    else:
+      self.modes[ name] = module.plugin_mode()
+      self.modes_sort.append( name)
+      
 
 
 

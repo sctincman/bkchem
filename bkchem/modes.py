@@ -553,7 +553,7 @@ class edit_mode( basic_mode):
 
   def reposition_bonds_around_atom( self, a):
     bs = a.molecule.atoms_bonds( a)
-    [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
+    [b.redraw( recalc_side = 1) for b in bs] # if b.order == 2]
     a.reposition_marks()
 
   def reposition_bonds_around_bond( self, b):
@@ -629,7 +629,10 @@ class edit_mode( basic_mode):
           return
       Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
       [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
+      [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
       Store.app.paper.add_bindings()
+
+
 
   def _move_selected( self, dx, dy):
     Store.app.paper.select( Store.app.paper.atoms_to_update())
