@@ -78,6 +78,12 @@ class mark( simple_parent):
   def get_svg_element( self, doc):
     pass
 
+  def transform( self, tr):
+    # do only move, the direction-using marks would need to override it and make real transform
+    x, y = tr.transform_xy( self.x, self.y)
+    self.move_to( x, y)
+
+
 class radical( mark):
 
   def draw( self):
@@ -148,6 +154,20 @@ class biradical( mark):
     return e
 
 
+  def transform( self, tr):
+    self.x, self.y = tr.transform_xy( self.x, self.y)
+    for i in self.items:
+      coords = self.paper.coords( i)
+      if self.paper.type( i) == 'oval':
+        x, y = (coords[0]+coords[2])/2.0, (coords[1]+coords[3])/2.0
+        d = abs(coords[2]-coords[0])/2.0
+        x, y = tr.transform_xy( x, y)
+        tr_coords = [x-d, y-d, x+d, y+d]
+      else:
+        tr_coords = tr.transform_flat_list( coords)
+      self.paper.coords( i, tuple( tr_coords))
+
+
 
 class electronpair( mark):
 
@@ -187,6 +207,12 @@ class electronpair( mark):
                                   ( 'stroke', self.atom.line_color)))
     return e
 
+  def transform( self, tr):
+    self.x, self.y = tr.transform_xy( self.x, self.y)
+    for i in self.items:
+      coords = self.paper.coords( i)
+      tr_coords = tr.transform_flat_list( coords)
+      self.paper.coords( i, tuple( tr_coords))
 
 
 class plus( mark):

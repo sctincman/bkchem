@@ -470,12 +470,7 @@ class molecule( simple_parent):
   def transform( self, tr):
     """applies given transformation to its children"""
     for a in self.atoms_map:
-      x, y = a.get_xy()
-      x, y = tr.transform_xy( x, y)
-      a.move_to( x, y)
-      # its no very time-optimal (it would be better to recalculate the position of marks using the
-      # rotation calculation) but it works and takes only 0.1 ms per turn step on 800 MHz
-      a.reposition_marks()
+      a.transform( tr)
     for b in self.bonds:
       b.transform( tr)
 
@@ -756,7 +751,7 @@ class atom( meta_enabled):
       self.selector = None
     self._selected = 0
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, dont_move_marks=0):
     """moves object with his selector (when present)"""
     self.x += dx
     self.y += dy
@@ -765,15 +760,16 @@ class atom( meta_enabled):
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
       self.ftext.move( dx, dy)
-    for m in self.marks:
-      if self.marks[m]:
-        self.marks[m].move( dx, dy)
+    if not dont_move_marks:
+      for m in self.marks:
+        if self.marks[m]:
+          self.marks[m].move( dx, dy)
 
-  def move_to( self, x, y):
+  def move_to( self, x, y, dont_move_marks=0):
     dx = x - self.x
     dy = y - self.y
     #self.set_xy( x, y)
-    self.move( dx, dy)
+    self.move( dx, dy, dont_move_marks=dont_move_marks)
 
   def get_x( self):
     return self.x
@@ -1034,7 +1030,14 @@ class atom( meta_enabled):
           dist = 5 + round( m.size / 2)
         x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
         m.move_to( x, y)
-        
+
+  def transform( self, tr):
+    x, y = tr.transform_xy( self.x, self.y)
+    self.move_to( x, y, dont_move_marks=1)
+    for m in self.marks.values():
+      if m:
+        m.transform( tr)
+
 
 # class BOND--------------------------------------------------
 class bond( meta_enabled):
@@ -1641,7 +1644,16 @@ class bond( meta_enabled):
       coords = self.paper.coords( i)
       tr_coords = tr.transform_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
-      
+    # we need to check if the sing of double bond width has not changed
+    if self.order == 2 and not self.center:
+      line = list( self.atom1.get_xy())
+      line += self.atom2.get_xy()
+      x, y = self.paper.coords( self.second[0])[0:2]
+      sign = geometry.on_which_side_is_point( line, (x,y))
+      if sign * self.bond_width < 0:
+        self.bond_width *= -1
+        print "reset"
+
 
 
 ##-------------------- STANDARD CLASS ------------------------------
