@@ -273,6 +273,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.name = name
       self.show_hydrogens = 0
       self.type = 'text'
+      self.show = 1
       return
     # try to interpret name
     if name.lower() != 'c':
