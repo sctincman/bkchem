@@ -247,6 +247,7 @@ class molecule( container, top_level, id_enabled):
     return deleted, self.check_integrity()
 
   def delete_bond( self, item):
+    # this could be rewritten by using the indexes of the bond atoms
     for i in range( len( self.connect)):
       if item in self.connect[i]:
         j = self.connect[i].index( item)

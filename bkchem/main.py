@@ -162,7 +162,7 @@ class BKchem( Tk):
     fileButton.pack( side = LEFT)
     fileMenu = Menu( fileButton, tearoff=0)
     fileButton['menu'] = fileMenu
-    fileMenu.add( 'command', label=_('New'), command = self.add_new_paper)
+    fileMenu.add( 'command', label=_('New'), command = self.add_new_paper, accelerator='(C-x C-n)')
     fileMenu.add( 'command', label=_('Save'), command = self.save_CDML, accelerator='(C-x C-s)')
     fileMenu.add( 'command', label=_('Save As...'), command = self.save_as_CDML, accelerator='(C-x C-w)')
     fileMenu.add( 'command', label=_('Load'), command = self.load_CDML, accelerator='(C-x C-f)')
@@ -253,6 +253,14 @@ class BKchem( Tk):
     #scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper))
     
+    # HACKS MENU
+    hacksButton = Menubutton( menu, text=_('Hacks'))
+    hacksButton.pack( side= 'right')
+    hacksMenu = Menu( hacksButton, tearoff=0)
+    hacksButton['menu'] = hacksMenu
+    hacksMenu.add( 'command', label=_('Molecules to separate tabs'), command=self.molecules_to_separate_tabs)
+
+
 
     # OPTIONS
     optionsButton = Menubutton( menu, text=_('Options'))
@@ -1180,6 +1188,22 @@ Enter IChI:""")
     self.pm.write_to_file( f)
     f.close()
 
+
+  # HACKS CALLBACKS
+
+  def molecules_to_separate_tabs( self):
+    name = self.get_paper_tab_name( self.paper)
+    file_name, ext = os.path.splitext( self.paper.file_name['name'])
+    i = 0
+    while self.paper.molecules:
+      i += 1
+      mol = self.paper.molecules[0]
+      self.paper.unselect_all()
+      self.paper.select( tuple( mol))
+      self.paper.selected_to_clipboard( delete_afterwards=1)
+      self.add_new_paper( name="%s-%d%s" % (file_name, i, ext))
+      self.paper.paste_clipboard( (200,200))
+      self.notebook.selectpage( name)
 
 
 

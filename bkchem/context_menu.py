@@ -34,10 +34,10 @@ class context_menu( Tkinter.Menu):
     already_there = []
     
     # object type related configuration
-    obj_types = misc.filter_unique( [o.object_type for o in selected])
-    obj_types.sort()
+    self.obj_types = misc.filter_unique( [o.object_type for o in selected])
+    self.obj_types.sort()
   
-    for obj_type in obj_types:
+    for obj_type in self.obj_types:
       if obj_type not in configurable:
         continue
       for attr in configurable[ obj_type]:
@@ -72,7 +72,9 @@ class context_menu( Tkinter.Menu):
           for v in PT.periodic_table[ name]['valency']:
             casc.add_command( label=v, command=misc.lazy_apply( self.callback, ('valency',v)))
           
-        
+    # commands
+    self.add_separator()        
+    self.register_command( _("Center bond"), ('bond',), center)
 
     # common commands
     self.add_separator()
@@ -104,6 +106,25 @@ class context_menu( Tkinter.Menu):
   def post( self, x, y):
     Tkinter.Menu.post( self, x, y)
     self.grab_set()
+    
+
+
+  def register_command( self, label, types, callback):
+    apply_to = []
+    for t in types:
+      apply_to.extend( [o for o in self.selected if o.object_type == t])
+    if not apply_to:
+      return
+    self.add_command( label=label,
+                      command=lambda : self.apply_command( callback, apply_to))
+
+
+
+  def apply_command( self, callback, apply_to):
+    callback( apply_to)
+    self.app.paper.start_new_undo_record()
+    self.app.paper.add_bindings()
+
 
 
 
@@ -132,3 +153,10 @@ configurable = {'atom':    ('show', 'font_size', 'show_hydrogens','pos'),
 
 I18N_NAME = 0
 VALUES = 1
+
+
+
+def center( bonds):
+  for b in bonds:
+    b.center = 1
+    b.redraw()

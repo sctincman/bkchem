@@ -279,6 +279,7 @@ class edit_mode( basic_mode):
     self.register_key_sequence( 'C-x C-f', self.app.load_CDML)
     self.register_key_sequence( 'C-x C-c', self.app._quit)
     self.register_key_sequence( 'C-x C-t', self.app.close_current_paper)
+    self.register_key_sequence( 'C-x C-n', self.app.add_new_paper)
     self.register_key_sequence( 'A-w', lambda : self.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'M-w', lambda : self.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
@@ -1199,7 +1200,7 @@ class bond_align_mode( edit_mode):
     self._rotated_mol = None
     self.first_atom_selected = None
     self.submodes = [['tohoriz','tovert','invertthrough','mirrorthrough','freerotation']]
-    self.submodes_names = [[_('horizontal align'),_('vertical align'),_('invert through a point'),_('mirror through a line'),_("free rotation around single bond")]]
+    self.submodes_names = [[_('horizontal align'),_('vertical align'),_('invert through a point'),_('mirror through a line'),_("free rotation around bond")]]
     self.submode = [0]
     self._needs_two_atoms = [1,1,0,1,-1]  #-1 is for those that accept only bonds
 
@@ -1250,17 +1251,23 @@ class bond_align_mode( edit_mode):
         self.first_atom_selected.unselect()
         self.first_atom_selected = None
     tr = self.__class__.__dict__['_transform_'+self.get_submode(0)]( self, coords)
-    self._rotated_mol.transform( tr)
+    if hasattr( self, '_apply_to_'+self.get_submode(0)):
+      apply_to = self.__class__.__dict__['_apply_to_'+self.get_submode(0)]( self)
+      if apply_to == None:
+        return 
+      [o.transform( tr) for o in apply_to]
+    else:
+      self._rotated_mol.transform( tr)
     self._rotated_mol = None
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
 
-    if self.focused:
-      self.focused.unfocus()
-      self.focused = None
+#    if self.focused:
+#      self.focused.unfocus()
+#      self.focused = None
 
 
-  def _transform_tohoriz( self, coords, objects=None):
+  def _transform_tohoriz( self, coords):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1282,7 +1289,7 @@ class bond_align_mode( edit_mode):
     return tr
       
 
-  def _transform_tovert( self, coords, objects=None):
+  def _transform_tovert( self, coords):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1301,7 +1308,7 @@ class bond_align_mode( edit_mode):
     tr.set_move(centerx, centery)
     return tr
 
-  def _transform_invertthrough( self, coords, objects=None):
+  def _transform_invertthrough( self, coords):
     if len( coords) == 4:
       x1, y1, x2, y2 = coords      
       x = ( x1 +x2) /2.0
@@ -1314,7 +1321,7 @@ class bond_align_mode( edit_mode):
     tr.set_move( x, y)
     return tr
 
-  def _transform_mirrorthrough( self, coords, objects=None):
+  def _transform_mirrorthrough( self, coords):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1329,8 +1336,25 @@ class bond_align_mode( edit_mode):
     tr.set_move(centerx, centery)
     return tr
 
-  def _transform_freerotation( self, coords, objects=None):
-    pass
+  def _transform_freerotation( self, coords):
+    return self._transform_mirrorthrough( coords)
+
+
+  def _apply_to_freerotation( self):
+    assert self.focused.object_type == 'bond'
+    b = self.focused
+    mol = b.molecule
+    mol.delete_bond( b)
+    cc = mol.get_connected_components()
+    mol.insert_bond( b)
+    b.draw()
+    b.focus()
+    if len( cc) == 1:
+      self.app.paper.signal_to_app( _("Bond is part of a ring, there is not possiblity for rotation!"))
+      return None
+    else:
+      to_use = len( cc[0]) < len( cc[1]) and cc[0] or cc[1]
+      return to_use + [b for b in mol.bonds if b.atom1 in to_use and b.atom2 in to_use]
 
 
   def cleanup( self):

@@ -339,6 +339,7 @@ class HTMLLikeInput( Tkinter.Frame, object):
 
     self.editPool.bind("<KeyPress>", self._key)
 
+    # subscript numbers
     pix = self.app.request( 'pixmap', name='subnum')
     if pix:
       self.numbersToSubButton = Tkinter.Button( self,
@@ -352,6 +353,21 @@ class HTMLLikeInput( Tkinter.Frame, object):
                                                command=self._numbersToSubButtonPressed,
                                                bd=data.border_width)
     self.numbersToSubButton.pack( side='left')
+
+    # superscript charges
+    pix = self.app.request( 'pixmap', name='supcharge')
+    if pix:
+      self.chargesToSupButton = Tkinter.Button( self,
+                                                image=pix,
+                                                command=self._chargesToSupButtonPressed,
+                                                bd=data.border_width)
+      self.app.balloon.bind( self.chargesToSupButton, _('Superscript charges'))
+    else:
+      self.chargesToSupButton = Tkinter.Button( self,
+                                                text=_('Sup charges'),
+                                                command=self._chargesToSupButtonPressed,
+                                                bd=data.border_width)
+    self.chargesToSupButton.pack( side='left')
 
     # text decoration
     for i in self.font_decorations:
@@ -382,6 +398,9 @@ class HTMLLikeInput( Tkinter.Frame, object):
 
   def _numbersToSubButtonPressed( self, *e):
     self.text = re.sub( "\d+", '<sub>\g<0></sub>', self.text)
+
+  def _chargesToSupButtonPressed( self, *e):
+    self.text = re.sub( "(\+|\.|-)+", '<sup>\g<0></sup>', self.text)
 
 
   def _tag_it( self, tag):
