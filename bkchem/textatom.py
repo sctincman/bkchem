@@ -37,6 +37,7 @@ from parents import meta_enabled, area_colored, point_drawable, text_like, child
 import data
 import re
 import debug
+import marks
 
 import oasa
 
@@ -64,8 +65,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
                           ( 'z', 'name', 'molecule', 'charge', 'pos')
-  meta__undo_copy = ('_neighbors',)
-
+  meta__undo_copy = ('_neighbors','marks')
+  meta__undo_children_to_record = ('marks',)
 
 
   def __init__( self, paper, xy = (), package = None, molecule = None):
@@ -88,6 +89,10 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
 
     self.pos = None
     self.focus_item = None
+    self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
+                  'plus': None, 'minus': None}
+
+    self.__reposition_on_redraw = 0
 
     # used only for monitoring when undo is necessary, it does not always correspond to the atom name
     self.text = ''
@@ -213,6 +218,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
   def _set_font_size( self, font_size):
     self.__font_size = font_size
     self.dirty = 1
+    self.__reposition_on_redraw = 1
 
   font_size = property( _get_font_size, _set_font_size)
 
@@ -330,11 +336,18 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
     self.ftext.lift()
     self.paper.lift( self.item)
-    self.paper.register_id( self.item, self)
+    # marks
+    [m.draw() for m in self.marks.itervalues() if m]
 
+    self.paper.register_id( self.item, self)
+    self.__reposition_on_redraw = 0
 
 
   def redraw( self, suppress_reposition=0):
+    if self.__reposition_on_redraw and not suppress_reposition:
+      self.reposition_marks()
+      self.__reposition_on_redraw = 0
+
     self.update_font()
     # at first we delete everything...
     self.paper.unregister_id( self.item)
@@ -344,6 +357,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
     if self.ftext:
       self.ftext.delete()
     self.item = None # to ensure that warning in draw() is not triggered when redrawing
+    [m.delete() for m in self.marks.itervalues() if m]
     # ...then we draw it again
     self.draw()
     if self._selected:
@@ -382,7 +396,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
 
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, dont_move_marks=0):
     """moves object with his selector (when present)"""
     # saving old dirty value
     # d = self.dirty
@@ -394,15 +408,19 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
         self.paper.move( self.selector, dx, dy)
       if self.ftext:
         self.ftext.move( dx, dy)
+      if not dont_move_marks:
+        for m in self.marks:
+          if self.marks[m]:
+            self.marks[m].move( dx, dy)
     # restoring dirty value because move does not dirty the atom
     # self.dirty = d
 
 
 
-  def move_to( self, x, y):
+  def move_to( self, x, y, dont_move_marks=0):
     dx = x - self.x
     dy = y - self.y
-    self.move( dx, dy)
+    self.move( dx, dy, dont_move_marks=dont_move_marks)
 
 
 
@@ -429,6 +447,10 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
 
 
   def delete( self):
+    for m in self.marks:
+      if self.marks[m]:
+        self.marks[m].delete()
+
     if self.focus_item:
       self.unfocus()
     if self.selector:
@@ -451,6 +473,16 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
     a = ['no','yes']
     on_off = ['off','on']
     self.id = package.getAttribute( 'id')
+    # marks
+    for m in package.getElementsByTagName( 'mark'):
+      auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
+      type = m.getAttribute( 'type')
+      x, y, z = self.paper.read_xml_point( m)
+      self.marks[ type] = marks.__dict__[ type]( self.paper,
+                                                 x, y,
+                                                 atom=self,
+                                                 auto= int(auto))
+    # position
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
@@ -506,6 +538,14 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
+    # marks
+    for m, o in self.marks.items():
+      if o:
+        x ,y = map( self.paper.px_to_text_with_unit, (o.x, o.y))
+        dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
+                                                            ('x', x),
+                                                            ('y', y),
+                                                            ('auto', str( int( o.auto)))))
 
     return a
 
@@ -565,6 +605,8 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
   def lift( self):
     if self.selector:
       self.paper.lift( self.selector)
+    # marks
+    [m.lift() for m in self.marks.itervalues() if m]
     if self.ftext:
       self.ftext.lift()
     if self.item:
@@ -572,9 +614,104 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oa
 
 
 
+
+  # marks related methods
+  
+  def set_mark( self, mark='radical', toggle=1, angle='auto'):
+    """sets the mark and takes care of toggling and charge and multiplicity changes"""
+    if mark in self.marks:
+      if toggle:
+        if self.marks[ mark]:
+          self.marks[ mark].delete()
+          self.marks[ mark] = None
+        else:
+          self.create_mark( mark=mark, angle=angle)
+          return self.marks[ mark]
+      else:
+        if not self.marks[ mark]:
+          self.create_mark( mark=mark, angle=angle)
+          return self.marks[ mark]
+
+
+
+  def create_mark( self, mark='radical', angle='auto', draw=1):
+    """creates the mark, does not care about the chemical meaning of this"""
+    # decide where to put the mark
+    if angle == 'auto':
+      x, y = self.find_place_for_mark( mark)
+    else:
+      x = self.x + round( cos( angle) *dist)
+      y = self.y + round( sin( angle) *dist)
+      #ang = angle
+
+    self.marks[ mark] = marks.__dict__[ mark]( self.paper, x, y,
+                                               atom = self,
+                                               auto=(angle=='auto'))
+    if draw:
+      self.marks[ mark].draw()
+
+
+
+
+  def reposition_marks( self):
+    for k,m in self.marks.iteritems():
+      if m and m.auto:
+        self.set_mark( k, toggle=1)
+        self.set_mark( k, toggle=1)
+
+
+
+  def find_place_for_mark( self, mark):
+    if not self.show:
+      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
+    else:
+      dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
+
+    atms = self.get_neighbors()
+    x, y = self.get_xy()
+
+    # special cases
+    if not atms:
+      # single atom molecule
+      if self.show_hydrogens and self.pos == "center-first":
+        return x -dist, y-3
+      else:
+        return x +dist, y-3
+
+    # normal case
+    coords = [(a.x,a.y) for a in atms]
+    # we have to take marks into account
+    [coords.append( (self.marks[m].x, self.marks[m].y)) for m in self.marks if self.marks[m]]
+    # hydrogen positioning is also important
+    if self.show_hydrogens and self.show:
+      if self.pos == 'center-last':
+        coords.append( (x-10,y))
+      else:
+        coords.append( (x+10,y))
+    # now we can compare the angles
+    angles = [geometry.clockwise_angle_from_east( x1-x, y1-y) for x1,y1 in coords]
+    angles.append( 2*pi + min( angles))
+    angles.sort()
+    angles.reverse()
+    diffs = misc.list_difference( angles)
+    i = diffs.index( max( diffs))
+    angle = (angles[i] +angles[i+1]) / 2
+
+    # in visible text x,y are not on the center, therefore we compensate for it
+    if self.show:
+      y -= 0.166 * self.font_size
+    
+    return x +dist*cos( angle), y +dist*sin( angle)
+
+
+  # // end of marks
+
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)
-    self.move_to( x, y)
+    self.move_to( x, y, dont_move_marks=1)
+    for m in self.marks.values():
+      if m:
+        m.transform( tr)
 
 
   def __str__( self):

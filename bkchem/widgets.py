@@ -277,6 +277,53 @@ class LengthChooser( ValueWithUnitParent):
 
 # a meta dialog for opening files
 
+class FileSelectionEntry( Tkinter.Frame):
+
+  def __init__( self, parent, prompt="", value="", filetypes=(), type="open"):
+    Tkinter.Frame.__init__( self, parent)
+    self.parent = parent
+    self.value = value
+    self.filetypes = filetypes
+    self.type = type
+    
+    Tkinter.Label( self, text=prompt).pack( side="left", padx=0)
+
+    self.entry = Tkinter.Entry( self, width=40)
+    self.entry.pack( side="left", padx=0)
+    self.update_entry()
+
+    self.button = Tkinter.Button( self,
+                                  text = _("Browse"),
+                                  command = self.browse)
+    self.button.pack( side="left", padx=0)
+
+
+  def browse( self):
+    if type == "open":
+      a = tkFileDialog.askopenfilename( defaultextension = "",
+                                        initialdir = os.path.dirname( self.value),
+                                        title = _("Select the file"),
+                                        parent = self.parent,
+                                        filetypes = self.filetypes)
+    else:
+      a = tkFileDialog.asksaveasfilename( defaultextension = "",
+                                          initialdir = os.path.dirname( self.value),
+                                          title = _("File to create"),
+                                          parent = self.parent,
+                                          filetypes = self.filetypes)
+    if a:
+      self.value = a
+      self.update_entry()
+
+
+  def update_entry( self):
+    self.entry.delete( 0, "end")
+    self.entry.insert( 0, self.value)
+
+
+
+  
+
 
 class FileSelectionWithText( Pmw.Dialog):
 
@@ -286,36 +333,11 @@ class FileSelectionWithText( Pmw.Dialog):
                          buttons = (_('OK'),_('Cancel')),
                          title = title)
 
-    self.parent = parent
-    self.value = value
-    self.filetypes = filetypes
-    
-    Tkinter.Label( self.interior(), text=prompt).pack( padx=10)
-
-    self.entry = Tkinter.Entry( self.interior(), width=40)
-    self.entry.pack( side="left", padx=10)
-    self.update_entry()
-
-    self.button = Tkinter.Button( self.interior(),
-                                  text = _("Browse"),
-                                  command = self.browse)
-    self.button.pack( side="left", padx=10)
-
-
-  def browse( self):
-    a = tkFileDialog.askopenfilename( defaultextension = "",
-                                      initialdir = os.path.dirname( self.value),
-                                      title = _("Select the file"),
-                                      parent = self.parent,
-                                      filetypes = self.filetypes)
-    if a:
-      self.value = a
-      self.update_entry()
-
-
-  def update_entry( self):
-    self.entry.delete( 0, "end")
-    self.entry.insert( 0, self.value)
+    self.entry = FileSelectionEntry( self.interior(),
+                                     prompt=prompt,
+                                     value=value,
+                                     filetypes=filetypes)
+    self.entry.pack()
 
 
 

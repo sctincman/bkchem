@@ -48,6 +48,8 @@ import Pmw, Tkinter
 from oasa import periodic_table as PT
 import external_data
 from sets import Set
+import interactors
+
 
 
 ## -------------------- PARENT MODES--------------------
@@ -271,6 +273,7 @@ class basic_mode( simple_mode):
     # object related key bindings
     self.register_key_sequence( 'C-o C-i', lambda : self.app.paper.display_info_on_selected())
     self.register_key_sequence( 'C-o C-c', lambda : self.app.paper.check_chemistry_of_selected())
+    self.register_key_sequence( 'C-o C-d', lambda : interactors.ask_display_form_for_selected( self.app.paper))
     # emacs like key bindings
     self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
     self.register_key_sequence( 'C-x C-w', self.app.save_as_CDML)
@@ -285,7 +288,7 @@ class basic_mode( simple_mode):
     self.register_key_sequence( 'C-z', self.undo)
     self.register_key_sequence( 'C-S-z', self.redo)
     # 'C-a' from windoze is in use - 'C-S-a' instead
-    self.register_key_sequence( 'C-S-a', lambda : self.app.paper.select_all)
+    self.register_key_sequence( 'C-S-a', lambda : self.app.paper.select_all())
     # arrow moving
     self.register_key_sequence( 'Up', lambda : self._move_selected( 0, -1))
     self.register_key_sequence( 'Down', lambda : self._move_selected( 0, 1))
@@ -1535,7 +1538,9 @@ class mark_mode( edit_mode):
   def mouse_click( self, event):
     a = ['radical','biradical','electronpair','plus','minus']
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
-      self.focused.set_mark( mark=a[ self.submode[0]])
+      m = self.focused.set_mark( mark=a[ self.submode[0]])
+      if m:
+        self._register_mark( m, self.app.paper)
       if self.focused.show_hydrogens and self.focused.show:
         self.focused.redraw()
       self.app.paper.start_new_undo_record()
@@ -1570,11 +1575,16 @@ class mark_mode( edit_mode):
 
 
   def _register_all_marks( self, paper):
-    [i.paper.register_id( i.items[0], i) for i in self._all_marks( paper)]
+    [self._register_mark( i, paper) for i in self._all_marks( paper)]
 
   def _unregister_all_marks( self, paper):
-    [i.paper.unregister_id( i.items[0]) for i in self._all_marks( paper)]    
+    [self._unregister_mark( i, paper) for i in self._all_marks( paper)]    
 
+  def _register_mark( self, mark, paper):
+    paper.register_id( mark.items[0], mark)
+
+  def _unregister_mark( self, mark, paper):
+    paper.unregister_id( mark.items[0])
 
   def _all_marks( self, paper):
     for m in paper.molecules:

@@ -642,8 +642,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     # marks (we read them here because they influence the charge)
     for m in package.getElementsByTagName( 'mark'):
       auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
-      if auto == True:
-        auto = 1
       type = m.getAttribute( 'type')
       x, y, z = self.paper.read_xml_point( m)
       self.marks[ type] = marks.__dict__[ type]( self.paper,
@@ -807,9 +805,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
   def lift( self):
     if self.selector:
       self.paper.lift( self.selector)
-    for m in self.marks.itervalues():
-      if m:
-        m.lift()
+    # marks
+    [m.lift() for m in self.marks.itervalues() if m]
     if self.ftext:
       self.ftext.lift()
     if self.item:
@@ -829,11 +826,12 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
         else:
           self.create_mark( mark=mark, angle=angle)
           self._set_mark_helper( mark, sign=1)
+          return self.marks[ mark]
       else:
         if not self.marks[ mark]:
           self.create_mark( mark=mark, angle=angle)
           self._set_mark_helper( mark, sign=1)
-
+          return self.marks[ mark]
 
 
   def _set_mark_helper( self, mark, sign=1):

@@ -261,7 +261,7 @@ class BKchem( Tk):
                              state=self.pm.has_preference("inchi_program_path") and "normal" or "disabled")
     if config.devel:
       self.chemistry_menu.add( 'command', label=_('Flush mol'), command = lambda : self.paper.flush_first_selected_mol_to_graph_file())
-    self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper))
+    self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper), accelerator="(C-o C-d)")
 
     self.chemistry_menu.add( 'separator')
     self.chemistry_menu.add( 'command', label=_('Create fragment'), command = lambda : interactors.create_fragment_from_selected( self.paper))
