@@ -495,9 +495,10 @@ class bond( meta_enabled):
     """this method is called by molecule after the *whole* molecule is
     read to perform a post-load analysis of double bond positioning"""
     # after read analysis
-    sign, center = self._compute_sing_and_center()
-    if self.bond_width and self.bond_width * sign < 0:
-      self._auto_bond_sign = -1
+    if self.order == 2:
+      sign, center = self._compute_sign_and_center()
+      if self.bond_width and self.bond_width * sign < 0:
+        self._auto_bond_sign = -1
       
   
   def get_package( self, doc):
@@ -596,14 +597,13 @@ class bond( meta_enabled):
       length = sqrt((line[0]-line[2])**2  + (line[1]-line[3])**2)
       self.bond_width = round( length / 5, 1)
     # does not need to go further if the bond is not double
-    # the str is to support the future notation for bond types
     if self.order != 2:
       return 
-    sign, center = self._compute_sing_and_center()
+    sign, center = self._compute_sign_and_center()
     self.bond_width = self._auto_bond_sign * sign * abs( self.bond_width)
     self.center = center
 
-  def _compute_sing_and_center( self):
+  def _compute_sign_and_center( self):
     """returns tuple of (sign, center) where sign is the default sign of the self.bond_width"""
     line = self.atom1.get_xy() + self.atom2.get_xy()
     atms = self.molecule.atoms_bound_to( self.atom1) + self.molecule.atoms_bound_to( self.atom2)

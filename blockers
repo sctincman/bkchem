@@ -5,6 +5,7 @@ remarks
   calls.
 - make use of get_submode() in modes
 - why does _decide_distance_and_center compute bond_width from length? It should take it from the standard
+- focus circle is positioned strangely on freestyle arrow drawing
 
 
 0.6.0
@@ -12,14 +13,17 @@ remarks
 
 - vertical and horizontal swap
   - not containers
-  - things should remain selected
-- remove the name mode and make it accessible through the menu
-- focus circle is positioned strangely on freestyle arrow drawing
-- add Menu/Configure as an alias for right click
+- template adding should think about orders of bonds also (addition of benzene to double bond
+  produces now chemical a non-sense)
+- export support for new bond types
+- never center the 'whab' double bonds?
+
+
 
 0.x.0
 =======
 
+- remove the name mode and make it accessible through the menu
 - bond drawing could be much simplified by e.g.- draw_order( order, line_drawing_method=draw_wedge)
 - it should be possible to make bond.item always an invisible line and put rest into one list
 

@@ -49,6 +49,7 @@ import graphics
 import types
 import os_support
 import copy
+import dialogs
 
 class BKpaper( Canvas):
 
@@ -1217,6 +1218,7 @@ class BKpaper( Canvas):
     horizontal x-axis"""
     # locate all selected containers, filter them to be unique
     to_align, unique = self.selected_to_unique_containers()
+    to_select_then = copy.copy( self.selected)
     self.unselect_all()
     # check if there is anything to align
     if len( to_align) < 1:
@@ -1229,28 +1231,30 @@ class BKpaper( Canvas):
       xs = [bboxes[i] for i in range( 0, len( bboxes), 2)]
       x0 = (max( xs) + min( xs)) / 2.0
       for o in to_align:
-        if o.meta__is_container:
+        if o.object_type == 'molecule':
           tr = transform()
           tr.set_move( -x0, 0)
           tr.set_scaling_xy( -1, 1)
           tr.set_move( x0, 0)
           o.transform( tr)
         else:
-          print "fuck"
+          pass
     # horizontal (rotate around x axis)
     if mode == 'horizontal':
       ys = [bboxes[i] for i in range( 1, len( bboxes), 2)]
       y0 = (max( ys) + min( ys)) / 2.0
       for o in to_align:
-        if o.meta__is_container:
+        if o.object_type == 'molecule':
           tr = transform()
           tr.set_move( 0, -y0)
           tr.set_scaling_xy( 1, -1)
           tr.set_move( 0, y0)
           o.transform( tr)
         else:
-          print "fuck"
+          pass
 
+    self.select( to_select_then)
+    self.add_bindings()
     self.start_new_undo_record()
 
   def add_new_container( self, o):
@@ -1272,3 +1276,10 @@ class BKpaper( Canvas):
         m.flush_graph_to_file()
         return
     
+  def config_selected( self):
+    if self.selected:
+      dialog = dialogs.config_dialog( self.app, self.selected[:])
+      if dialog.changes_made:
+        self.start_new_undo_record()
+      self.add_bindings()
+

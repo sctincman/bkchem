@@ -110,7 +110,7 @@ class molecule( simple_parent):
     else:
       x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
     a2 = self.create_new_atom( x, y)
-    b = bond_to_use or bond( order=1, type='n')
+    b = bond_to_use or bond( self.paper, order=1, type='n')
     b.set_atoms( a1, a2)
     self.insert_bond( b)
     b.draw()
@@ -446,13 +446,13 @@ class molecule( simple_parent):
     for i in self.atoms_map:
       yield i
 
-  def flush_graph_to_file( self, name="/tmp/mol.graph"):
+  def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
     f = file( name, 'w')
     for a in self.atoms_map:
-      f.write('v')
+      f.write('%s ' % a.name)
     f.write('\n')
     for b in self.bonds:
-      f.write('%d %d\n' % (self.atoms_map.index( b.atom1), self.atoms_map.index( b.atom2)))
+      f.write('%d %d %d\n' % (b.order, self.atoms_map.index( b.atom1), self.atoms_map.index( b.atom2)))
     f.close()
 
   def transform( self, tr):

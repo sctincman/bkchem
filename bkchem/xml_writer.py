@@ -123,9 +123,10 @@ class SVG_writer( XML_writer):
     
   def add_bond( self, b):
     """adds bond item to SVG document"""
-    if b.line_width != 1.0 or b.line_color != '#000':
+    if b.line_width != 1.0 or b.line_color != '#000' or b.type == 'b':
+      line_width = (b.type == 'b') and b.wedge_width or b.line_width
       l_group = dom_extensions.elementUnder( self.group, 'g',
-                                             (( 'stroke-width', str( b.line_width)),
+                                             (( 'stroke-width', str( line_width)),
                                               ( 'stroke', b.line_color)))
     else:
       l_group = self.group #dom_extensions.elementUnder( self.group, 'g')
@@ -139,11 +140,17 @@ class SVG_writer( XML_writer):
         items = []
       else:
         items = [b.item]
-    items += b.second
-    items += b.third
+    # simple doubles?
+    if b.type == 'n' or (not b.simple_double and not b.center):
+      items += b.second
+      items += b.third
+      line_items = []
+    else:
+      line_items = b.second + b.third
+    # the conversion function for coordinates
+    convert = str
     # export itself
     if b.type in 'nbh':
-      convert = lambda x: str( x)
       for i in items:
         x1, y1, x2, y2 = self.paper.coords( i)
         line = dom_extensions.elementUnder( l_group, 'line',
@@ -163,16 +170,27 @@ class SVG_writer( XML_writer):
         for p in i:
           x1, y1, x2, y2 = self.paper.coords( p)
           line = dom_extensions.elementUnder( l_group, 'line',
-                                              (( 'x1', str( x1)),
-                                               ( 'y1', str( y1)),
-                                               ( 'x2', str( x2)),
-                                               ( 'y2', str( y2))))
+                                              (( 'x1', convert( x1)),
+                                               ( 'y1', convert( y1)),
+                                               ( 'x2', convert( x2)),
+                                               ( 'y2', convert( y2))))
     elif b.type == 'a':
       for i in items:
         coords = self.paper.coords( i)
         points = ' '.join( map( str, coords))
         line = dom_extensions.elementUnder( l_group, 'polyline',
-                                            (( 'points', points),))
+                                            (( 'points', points),
+                                             ( 'fill', 'none')))
+    # the line items for simple_double
+    for i in line_items:
+      x1, y1, x2, y2 = self.paper.coords( i)
+      line = dom_extensions.elementUnder( l_group, 'line',
+                                          (( 'x1', convert( x1)),
+                                           ( 'y1', convert( y1)),
+                                           ( 'x2', convert( x2)),
+                                           ( 'y2', convert( y2)),
+                                           ( 'stroke-width', str( b.line_width))))
+
             
   def add_arrow( self, a):
     """adds arrow item to SVG document"""
