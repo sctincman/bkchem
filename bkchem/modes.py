@@ -1128,8 +1128,9 @@ class rotate_mode( edit_mode):
       self._dragging = 0
       self._moved_atom = None
       if self._rotated_mol:
-        [b.redraw( recalc_side=1) for b in self._rotated_mol.bonds]
-        [a.reposition_marks() for a in self._rotated_mol.atoms]
+        if self.get_submode( 0) == '3D':
+          [b.redraw( recalc_side=1) for b in self._rotated_mol.bonds]
+          [a.reposition_marks() for a in self._rotated_mol.atoms]
         self._rotated_mol = None
         self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()

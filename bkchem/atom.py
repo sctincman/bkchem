@@ -304,9 +304,12 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   ## // -------------------- END OF PROPERTIES --------------------------
 
-
-
   def set_name( self, name, interpret=1, check_valency=1):
+    self._set_name( name, interpret=interpret, check_valency=check_valency)
+    self.set_valency_from_name()
+
+
+  def _set_name( self, name, interpret=1, check_valency=1):
     # every time name is set the charge should be set to zero
     self.charge = self.get_charge_from_marks()
     self.dirty = 1
@@ -489,7 +492,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.selector = None
     [m.draw() for m in self.marks.itervalues() if m]
     self.paper.register_id( self.item, self)
-
+    # 
+    self.__reposition_on_redraw = 0
 
 
 
@@ -894,21 +898,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     if angle == 'auto' and self.show:
       # atoms with visible text
       x, y = self.find_place_for_mark()
-##       if len( self.molecule.atoms_bound_to( self)) == 0:
-##         if self.show_hydrogens and self.pos == "center-last":
-##           maxx = self.x + self.font.measure( self.name[0]) / 2
-##           x = maxx + 2 + marks.__dict__[ mark].standard_size / 2
-##           y = self.y - marks.__dict__[ mark].standard_size / 2
-##         else:
-##           minx = self.x - self.font.measure( self.name[0]) / 2
-##           x = minx - 2 - marks.__dict__[ mark].standard_size / 2
-##           y = self.y - marks.__dict__[ mark].standard_size / 2
-##       elif len( self.molecule.atoms_bound_to( self)) == 1:
-##         x = self.x
-##         y = self.y -2 - 3/4*self.font_size - marks.__dict__[ mark].standard_size / 2
-##       else:
-##         dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
-##         x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
     elif angle == 'auto':
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
       x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
@@ -993,17 +982,26 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def find_place_for_mark( self):
-    range = 15
+    range = 10
     atms = self.molecule.atoms_bound_to( self)
     x, y = self.get_xy()
     if not atms:
       # single atom molecule
-      if a.show_hydrogens and a.pos == "center-first":
-        return x -range, y
+      if self.show_hydrogens and self.pos == "center-first":
+        return x -range, y-3
       else:
-        return x +range, y
-    [atms.append( self.marks[m]) for m in self.marks if self.marks[m]]
-    angles = [geometry.clockwise_angle_from_east( at.x-x, at.y-y) for at in atms]
+        return x +range, y-3
+    coords = [(a.x,a.y) for a in atms]
+    # we have to take marks into account
+    [coords.append( (self.marks[m].x, self.marks[m].y)) for m in self.marks if self.marks[m]]
+    # hydrogen positioning is also important
+    if self.show_hydrogens and self.show:
+      if self.pos == 'center-last':
+        coords.append( (x-10,y))
+      else:
+        coords.append( (x+10,y))
+    # now we can compare the angles
+    angles = [geometry.clockwise_angle_from_east( x1-x, y1-y) for x1,y1 in coords]
     angles.append( 2*pi + min( angles))
     angles.sort()
     angles.reverse()

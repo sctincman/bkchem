@@ -205,15 +205,11 @@ class state_record:
     ## DELETED OBJECTS
     # deleted are known from the top of this def
     for o in deleted:
-      if o.object_type in data.vector_graphics_types:
-        self.paper.vectors.append( o)
-      if o.object_type != 'molecule':
+      if o.object_type not in ( 'molecule','mark'):
         o.draw()
     ## ADDED OBJECTS
     added = misc.difference( previous.objects, self.objects)
     for o in added:
-      if o.object_type in data.vector_graphics_types:
-        self.paper.vectors.remove( o)
       if o.object_type != 'molecule':
         o.delete()
 
