@@ -587,6 +587,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
         return v
 
 
+
+  # fragment support
+
   def create_fragment( self, name, edges):
     if self.defines_connected_subgraph_e( edges):
       nf = fragment( self.paper.id_manager.generate_id( "fragment"), name=name)
@@ -594,3 +597,14 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       return True
     else:
       return False
+
+
+  def check_fragments( self):
+    """checks if all the fragments of this molecule are consistent and
+    removes and returns the ones that are not"""
+    todel = Set()
+    for f in self.fragments:
+      if not f.is_consistent( self):
+        todel.add( f)
+    [self.fragments.remove( f) for f in todel]
+    return todel

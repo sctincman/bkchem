@@ -114,6 +114,12 @@ def lazy_apply( function, arguments):
   return lambda: apply( function, arguments)
 
 
+def lazy_apply_ignorant( function, arguments):
+  """similar to apply but returns a callable (lambda) that performs the apply when called.
+  the returned lambda can be called with any arguments which are ignored"""
+  return lambda *x: apply( function, arguments)
+
+
 
 
 def extend_bbox( bbox, pixels=1):

@@ -24,6 +24,8 @@ to CDML"""
 
 from atom import atom
 from bond import bond
+from textatom import textatom
+from group import group
 from molecule import molecule
 import types
 import dom_extensions as dom_ext
@@ -34,7 +36,7 @@ import os_support
 
 class external_data_manager( object):
 
-  types = {'atom': (atom,),
+  types = {'atom': (atom,group,textatom),
            'bond': (bond,),
            'molecule': (molecule,),
            'IntType': (types.IntType,)
@@ -210,6 +212,7 @@ class external_data_manager( object):
 
 
 from Tkinter import Entry
+import Pmw
 
 
 class ExternalDataEntry( Entry, object):
@@ -233,6 +236,33 @@ class ExternalDataEntry( Entry, object):
 
   value = property( _get_value, _set_value, None, "value of the Entry, str() is run on it when displaying")
 
+
+
+  def cleanup( self, paper):
+    if self.arrow:
+      paper.delete( self.arrow)
+      self.arrow = None
+    
+
+
+class ExternalDataList( Pmw.OptionMenu, object):
+
+  def __init__( self, parent, type, **kw):
+    Pmw.OptionMenu.__init__( self, parent, **kw)
+    self.type_class = "reference"
+    self.arrow = None
+    self.type = type
+
+  def _set_value( self, value):
+    if value:
+      self.setvalue( value)
+    else:
+      self.setvalue( "")
+
+  def _get_value( self):
+    return self.getvalue()
+
+  value = property( _get_value, _set_value, None, "value of the List")
 
 
   def cleanup( self, paper):

@@ -49,5 +49,10 @@ class fragment( object):
   id = property( _get_id, _set_id, None, "id of the fragment")
 
 
-  
+
+  def is_consistent( self, molecule):
+    for e in self.edges:
+      if e not in molecule.edges:
+        return False
+    return True
   
