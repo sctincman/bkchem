@@ -264,7 +264,7 @@ class SVG_writer( XML_writer):
                                   ( 'fill', t.area_color),
                                   ( 'stroke', t.area_color)))
     y1 += (y2-y)/4.0
-    text = svg_help.ftext_dom_to_svg_dom( t.parsed_text, self.document)
+    text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document)
     dom_extensions.setAttributes( text, (( "x", str( x)),
                                          ( "y", str( y1)),
                                          ( "font-family", t.font_family),

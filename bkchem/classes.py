@@ -596,7 +596,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   meta__undo_properties = point_drawable.meta__undo_properties +\
                           text_like.meta__undo_properties +\
                           area_colored.meta__undo_properties
-  meta__undo_simple = ('text',)
 
   def __init__( self, paper, xy=(), text='', package=None):
     text_like.__init__( self)
@@ -625,7 +624,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=self.parsed_text, font=self.font, fill=self.line_color)
+    self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=self.get_parsed_text(), font=self.font, fill=self.line_color)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text'))
@@ -733,11 +732,10 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
     try:
-      self.parsed_text = ft[0].cloneNode( 1)
-      self.text = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
+      self.xml_text = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
     except IndexError:
-      self.text = "?"
-      self.parsed_text = dom.parseString( "<ftext>%s</ftext>" % self.text).childNodes[0]
+      self.xml_text = "?"
+
     fnt = package.getElementsByTagName('font')
     if fnt:
       fnt = fnt[0]
@@ -760,7 +758,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
         font.setAttribute( 'color', self.line_color)
     x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( a, 'point', attributes=(('x', x),('y', y)))
-    a.appendChild( self.parsed_text)
+    a.appendChild( self.get_parsed_text())
     return a
 
 
@@ -770,13 +768,12 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       t = unicode( text)
     except UnicodeDecodeError:
       t = text.decode( 'utf-8')
-    self.text = t.encode('utf-8')
-    self.parsed_text = dom.parseString( '<ftext>'+self.text+'</ftext>').childNodes[0]
+    self.xml_text = t.encode('utf-8')
 
 
 
   def get_text( self):
-    return self.text
+    return self.xml_text
 
 
 
@@ -809,3 +806,5 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
 
+  def get_parsed_text( self):
+    return dom.parseString( "<ftext>%s</ftext>" % self.xml_text).childNodes[0]    
