@@ -26,6 +26,8 @@
 import types
 import atom
 import molecule
+import misc
+
 
 class validator:
 
@@ -57,8 +59,14 @@ class validator:
       if fval < 0:
         self.report.exceeded_valency.append( a)
 
+  def validate_bond( self, b):
+    if b.order == 0:
+      self.report.zero_order_bonds.append( b)
+
+
   def validate_molecule( self, mol):
-    [self.validate_atom( a) for a in mol.atoms]
+    map( self.validate_atom, mol.atoms)
+    map( self.validate_bond, mol.bonds)
 
   def validate_list( self, objs):
     [self.validate_object( o) for o in objs]
@@ -71,6 +79,7 @@ class validator_report:
     self.text_atoms = []
     self.group_atoms = []
     self.exceeded_valency = []
+    self.zero_order_bonds = []
 
   def get_text_report( self):
     pass
@@ -78,14 +87,17 @@ class validator_report:
   def get_summary( self):
     out = ""
     if self.text_atoms:
-      out += _("%d text only atom(s) (atoms without known chemical interpretation)") % len( self.text_atoms)
+      out += _("%d text only atom%s (chemical interpretation is unknown)") % misc.len_and_ending( self.text_atoms)
       out += "\n"
     if self.exceeded_valency:
-      out += _("%d atom(s) with exceeded valency") % len( self.exceeded_valency)
+      out += _("%d atom%s with exceeded valency") % misc.len_and_ending( self.exceeded_valency)
       out += "\n"
     if self.group_atoms:
-      out += _("%d group(s) (groups need to be expanded for some export formats)") % len( self.group_atoms)
+      out += _("%d group%s (groups need to be expanded for some export formats)") % misc.len_and_ending( self.group_atoms)
       out += "\n"
+    if self.zero_order_bonds:
+      out += _("%d zero order bond%s (such bonds will not be exported into chemical formats)") % misc.len_and_ending( self.zero_order_bonds)
     if not out:
       out = "OK"
     return out
+

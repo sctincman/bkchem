@@ -154,3 +154,16 @@ def has_one_value_only( iterable):
     if a != i:
       return 0
   return 1
+
+
+
+def plural_or_singular( iterable):
+  """useful for string construction such as 'you have %d apple%s' % (len(apples), plural_or_singular( apples)"""
+  if len( iterable) == 1:
+    return ''
+  else:
+    return 's'
+
+
+def len_and_ending( iterable):
+  return (len( iterable), plural_or_singular( iterable))
