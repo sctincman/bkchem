@@ -196,7 +196,7 @@ class SVG_writer( XML_writer):
       d1, d2, d3 = a.shape
       defs = dom_extensions.elementUnder( self.group, 'defs')
       arrow = dom_extensions.elementUnder( defs, 'marker', (('id','Arrow'+str(i)),('refX',str(d2)),('refY',str(d3)),
-                                                            ('markerUnits','strokeWidth'),
+                                                            ('markerUnits','userSpaceOnUse'),
                                                             ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
                                                             ('orient','auto'),
                                                             ('stroke', a.line_color),
@@ -206,7 +206,7 @@ class SVG_writer( XML_writer):
       d1, d2, d3 = a.shape
       defs = dom_extensions.elementUnder( self.group, 'defs')
       arrow = dom_extensions.elementUnder( defs, 'marker', (('id','ArrowBack'+str(i)),('refX','0'),('refY',str(d3)),
-                                                            ('markerUnits','strokeWidth'),
+                                                            ('markerUnits','userSpaceOnUse'),
                                                             ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
                                                             ('orient','auto'),
                                                             ('stroke', a.line_color),

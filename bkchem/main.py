@@ -755,7 +755,7 @@ class BKchem( Tk):
       exporter = SVG_writer( self.paper)
       exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
-      inp.write( exporter.document.toxml())
+      inp.write( unicode( exporter.document.toxml()).encode('utf-8'))
       inp.close()
       self.update_status( _("exported to SVG file: ")+svg_file)
 
