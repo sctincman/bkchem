@@ -54,7 +54,7 @@ class id_manager:
 
 
   def generate_and_register_id( self, obj, prefix='id'):
-    id = self.generate_id( self, prefix=prefix)
+    id = self.generate_id( prefix=prefix)
     self.register_id( obj, id)
     return id
 
@@ -72,4 +72,4 @@ class id_manager:
 
 
   def unregister_object( self, obj):
-    self.unregister_id( self.get_id_of_object( obj))
+    self.unregister_id( self.get_id_of_object( obj), obj)

@@ -22,29 +22,66 @@ specification, stores the references between objects and data and saves the data
 to CDML"""
 
 
+from atom import atom
+from bond import bond
+from molecule import molecule
+import types
+import dom_extensions as dom_ext
+import xml.dom.minidom as dom
+import os.path
+import os_support
+
+
 class external_data_manager( object):
+
+  types = {'atom': (atom,),
+           'bond': (bond,),
+           'molecule': (molecule,),
+           'IntType': (types.IntType,)
+           }
+           
 
 
   def __init__( self):
     self.records = {}
     self.definitions = {}
-    self.read_data_definition( 'ahoj')
+
+
+  def load_available_definitions( self):
+    dir = os_support.get_bkchem_private_dir()
+    dir = os.path.join( dir, 'definitions')
+    if not os.path.isdir( dir):
+      return []
+    for name in os.listdir( dir):
+      base, ext = os.path.splitext( name)
+      if ext == ".xml":
+        #try:
+        self.read_data_definition( os.path.join( dir, name))
+        #except:
+        #  debug.log( "could not load plugin file", name)
+
+    return self.definitions.keys()
+
 
 
   def read_data_definition( self, filename):
-    react = {'molecule': {'reactive_atom': { 'type':'atom',
-                                             'text':'Reactive atom',
-                                             'text-cs': 'Reaktivni atom'
-                                             },
-                          'reactive_bond': { 'type': 'bond',
-                                             'text': 'Reactive bond'
-                                             },
-                          'relative_reactivity': { 'type': 'IntType',
-                                                   'text': 'Relative reactivity'
-                                                   },
-                          }
-             }
-    self.definitions[ 'reactivity'] = react
+    doc = dom.parse( filename)
+    root = doc.childNodes[0]
+    for ecls in dom_ext.simpleXPathSearch( root, "class"):
+      cls = ecls.getAttribute( 'name')
+      self.definitions[ cls] = {}
+      for eobj in dom_ext.simpleXPathSearch( ecls, "object"):
+        obj = eobj.getAttribute( 'type')
+        self.definitions[ cls][ obj] = {}
+        for evalue in dom_ext.simpleXPathSearch( eobj, "value"):
+          vname = evalue.getAttribute( 'name')
+          vtype = evalue.getAttribute( 'type')
+          text = dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( evalue, "text"))
+          self.definitions[ cls][ obj][ vname] = {'type': vtype,
+                                                  'text': text }
+
+    self.records[ cls] = {}
+
 
 
   def get_definitions_for_class_and_type( self, def_class, item_type):
@@ -57,3 +94,134 @@ class external_data_manager( object):
 
   def get_definition_classes( self):
     return self.definitions.keys()
+
+
+
+  def set_data( self, dclass, obj, category, value):
+    """sets the data into the internal dictionary"""
+    if self.value_matches_definition( dclass, obj, category, value):
+      if not obj in self.records[ dclass]:
+        self.records[ dclass][ obj] = {}
+      # the type should be...
+      t = self.definitions[ dclass][ obj.object_type][ category]['type']
+      try:
+        self.records[ dclass][ obj][ category] = self.convert_to_type( value, t)
+      except ValueError:
+        raise "the value '%s' type does not match the definition." % str( value)
+    else:
+      raise "the value '%s' type does not match the definition." % str( value)
+    
+
+
+  def get_data( self, dclass, obj, category):
+    """gets data for an object from the internal dictionary,
+    returns None if such data are not available for that object"""
+    if dclass in self.records:
+      if obj in self.records[ dclass]:
+        if category in self.records[ dclass][ obj]:
+          return self.records[ dclass][ obj][ category]
+        elif category in self.definitions[dclass][obj.object_type]:
+          return None
+        else:
+          raise "wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass)
+      elif obj.object_type in self.definitions[dclass].keys():
+        return None
+      else:
+        raise "wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)        
+    raise "not registered dclass: %s" % dclass
+      
+
+
+  def value_matches_definition( self, dclass, obj, category, value):
+    """checks if the value is of the type provided in definition""" 
+    if not dclass in self.records.keys():
+      raise "not registered dclass: %s" % dclass
+    if not obj.object_type in self.definitions[dclass].keys():
+      raise "wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)
+    if not category in self.definitions[dclass][obj.object_type].keys():
+      raise "wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass)
+
+    t = self.definitions[ dclass][ obj.object_type][ category]['type']
+    if isinstance( value, self.expand_type( t)):
+      return True
+    else:
+      try:
+        self.convert_to_type( value, t)
+        return True
+      except ValueError:
+        return False
+    
+
+
+
+  def expand_type( self, t):
+    return self.types[ t]
+
+
+
+  def get_package( self, doc):
+    e = doc.createElement( 'external-data')
+    for dclass in self.records:
+      ecls = dom_ext.elementUnder( e, "class", (("name", dclass),))
+      for obj in self.records[ dclass]:
+        eobj = dom_ext.elementUnder( ecls, "object", (("ref", obj.id),))
+        for cat in self.records[ dclass][ obj]:
+          val = self.get_data( dclass, obj, cat)
+          if hasattr( val, 'id'):
+            val = val.id
+          ecat = dom_ext.elementUnder( eobj, "value", (("category", cat),
+                                                       ("value", str( val))))
+    return e
+
+
+  def read_package( self, root, id_manager):
+    """reads the data from xml (CDML) format. Is not intended for reading of definitions
+    files, use read_data_definition instead"""
+    for ecls in dom_ext.simpleXPathSearch( root, "class"):
+      cls = ecls.getAttribute( 'name')
+      if not cls in self.records.keys():
+        self.records[ cls] = {}
+      for eobj in dom_ext.simpleXPathSearch( ecls, "object"):
+        obj = id_manager.get_object_with_id( eobj.getAttribute( 'ref'))
+        for evalue in dom_ext.simpleXPathSearch( eobj, "value"):
+          vcat = evalue.getAttribute( 'category')
+          vvalue = evalue.getAttribute( 'value')
+          self.set_data( cls, obj, vcat, vvalue)
+
+
+
+
+  def convert_to_type( self, value, vtype):
+    if vtype in types.__dict__:
+      t = self.expand_type( vtype)[0]
+      return t( value)
+    else:
+      return value
+        
+
+
+
+
+from Tkinter import Entry
+
+
+class StrEntry( Entry, object):
+
+  def __init__( self, parent, **kw):
+    Entry.__init__( self, parent, kw)
+    #self.value = None
+
+
+  def _set_value( self, value):
+    if value != None:
+      self._value = value
+      self.delete( 0, last='end')
+      self.insert( 0, str( self._value))
+
+  def _get_value( self):
+    return self.get()
+
+  value = property( _get_value, _set_value, None, "value of the Entry, str() is run on it when displaying")
+
+
+    

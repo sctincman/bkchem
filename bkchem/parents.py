@@ -65,7 +65,7 @@ class id_enabled( simple_parent):
 
 
   def _generate_id( self):
-    return self.paper.id_manager.generate_id( prefix=self.object_type)
+    return self.paper.id_manager.generate_and_register_id( self, prefix=self.object_type)
 
   # id
   def _get_id( self):

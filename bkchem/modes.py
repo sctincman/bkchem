@@ -46,6 +46,8 @@ import parents
 import oasa
 import Pmw, Tkinter
 import periodic_table as PT
+import external_data
+from sets import Set
 
 
 ## -------------------- PARENT MODES--------------------
@@ -1822,18 +1824,63 @@ class external_data_mode( basic_mode):
     self.submode = [0,0]
     self.pulldown_menu_submodes = [1]
     self.focused = None
-    self._items = {}
+    self._items = Set()
+    self._entries = {}
     self._win = None
+    self._active_object = None
 
 
 
   def mouse_down( self, event):
     if self.focused:
-      self._populate_table_for_focused()
+      e = self._get_active_entry()
+      if e:
+        e.value = self.focused.id
+      else:
+        self._activate_object( self.focused)
+        self._populate_table_for_active_object()
 
 
-  def _populate_table_for_focused( self):
-    pass
+  def _get_active_entry( self):
+    e = self.app.focus_get()
+    if e in self._entries.values():
+      return e
+
+
+  def _activate_object( self, obj):
+    self._active_object = obj
+    rect = self.app.paper.create_rectangle( obj.bbox(), outline='green', width=2)
+    self._items.add( rect)
+    self._add_bindings_according_to_submode()
+
+
+  def _populate_table_for_active_object( self):
+    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    if defs:
+      for k,v in defs.iteritems():
+        val = self.app.paper.edm.get_data( self.get_submode( 1), self._active_object, k)
+        if hasattr( val, 'id'):
+          self._entries[ k].value = val.id
+        else:
+          self._entries[ k].value = val
+
+
+
+  def _set_data( self):
+    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    if defs:
+      for k,v in defs.iteritems():
+        val = self._entries[ k].value
+        if val != '':
+          if v['type'] in ('atom','molecule','bond'):
+            try:
+              val = self.app.paper.id_manager.get_object_with_id( val)
+            except KeyError:
+              self.app.log( "id %s is not valid (object with such id does not exist)" % val, message_type="error")
+              continue
+          self.app.paper.edm.set_data( self.get_submode( 1), self._active_object, k, val)
+
+    self.app.log( _("The data were set to the active item"), message_type="info")
 
 
   def _show_table_for_submode( self):
@@ -1842,12 +1889,13 @@ class external_data_mode( basic_mode):
       self._frame = Tkinter.Frame( self.app.paper)
       self._win = self.app.paper.create_window( 500, 100, window=self._frame)
       for k,v in defs.iteritems():
-        self._items[ k] = Pmw.EntryField( self._frame,
-                                          labelpos='w',
-                                          label_text=v['text'],
-                                          validate=None)
-        self._items[ k].pack()
-      Tkinter.Button( self._frame, text=_("Set"), command=self._set).pack()
+        label = Tkinter.Label( self._frame, text=v['text'])
+        entry = external_data.StrEntry( self._frame)
+        self._items.add( label)
+        self._entries[ k] = entry
+        label.pack()
+        entry.pack()
+      Tkinter.Button( self._frame, text=_("Set"), command=self._set_data).pack()
     
       
 
@@ -1866,7 +1914,13 @@ class external_data_mode( basic_mode):
   def on_submode_switch( self, submode_index, name=''):
     self.app.paper.remove_bindings()
     self._add_bindings_according_to_submode()
+    self._delete_table()
     self._show_table_for_submode()
+    for x in self.app.paper.stack:
+      if x.object_type == self.get_submode( 0):
+        self._activate_object( x)
+        break
+    self._populate_table_for_active_object()
 
 
   def startup( self):
@@ -1876,14 +1930,20 @@ class external_data_mode( basic_mode):
 
   def cleanup( self, paper=None):
     pap = paper or self.app.paper
+    self._delete_table( pap)
+    pap.add_bindings()
+
+
+
+  def _delete_table( self, paper=None):
+    pap = paper or self.app.paper
     if self._win:
-      #for item in self._items.values():
-      #  item.pack_forget()
-      self._items = {}
+      self._items = Set()
+      self._entries = {}
       self._frame = None
       pap.delete( self._win)
       self._win = None
-    pap.add_bindings()
+
 
 
   def on_paper_switch( self, old_paper, new_paper):
@@ -1892,8 +1952,6 @@ class external_data_mode( basic_mode):
     self.on_submode_switch()
 
 
-  def _set( self):
-    pass
 
 
 

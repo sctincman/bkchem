@@ -95,6 +95,7 @@ class chem_paper( Canvas, object):
 
     # external data management
     self.edm = external_data_manager()
+    print "loaded definitions for classes:", self.edm.load_available_definitions()
 
     # file name
     self.file_name = file_name
@@ -596,6 +597,11 @@ class chem_paper( Canvas, object):
 				       parent=self):
         self.standard = old_standard
 
+    # external data
+    ees = CDML.getElementsByTagName( "external-data")
+    if ees:
+      [self.edm.read_package( ee, self.id_manager) for ee in ees]
+
     # finish
     # we close the sandbox and generate new ids for everything
     self.onread_id_sandbox_finish()
@@ -644,6 +650,9 @@ class chem_paper( Canvas, object):
     for a in self.arrows:
       if not a.reaction.is_empty():
         root.appendChild( a.reaction.get_package( doc))
+
+    # external data
+    root.appendChild( self.edm.get_package( doc))
     return doc
     
 
