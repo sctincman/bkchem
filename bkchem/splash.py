@@ -36,11 +36,10 @@ class Splash( Tkinter.Toplevel):
 
     # splash image
     splash_image_path = 'logo.ppm'
-    #try:
-    self.splash_image = Tkinter.PhotoImage( file = os_support.get_path( splash_image_path, 'image'))
-
-    #except:
-    #splash_image = None
+    try:
+      self.splash_image = Tkinter.PhotoImage( file = os_support.get_path( splash_image_path, 'image'))
+    except:
+      self.splash_image = None
 
     text = Tkinter.Label( self,
                           font=('Helvetica', 12, 'normal'),

@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """BKpaper - the main drawing part for BKchem resides here"""
 
@@ -35,7 +32,6 @@ import misc
 from temp_manager import template_manager
 import string
 import data
-import modes
 import dom_extensions
 import xml.dom.minidom as dom
 import operator
@@ -53,7 +49,7 @@ import dialogs
 
 class BKpaper( Canvas):
 
-  def __init__( self, master = None, app = None, **kw):
+  def __init__( self, master = None, app = None, name='', **kw):
     Canvas.__init__( self, master, kw)
     
     self.app = app
@@ -89,29 +85,8 @@ class BKpaper( Canvas):
 
     self.set_viewport()
 
-    # template manager
-    self.tm = template_manager( self)
-    self.tm.add_template_from_CDML( "templates.cdml")
-    #self.tm.add_template_from_CDML( "../templates/groups.cdml")
-    
-    # groups manager (for group expansions)
-    self.gm = template_manager( self)
-    self.gm.add_template_from_CDML( "groups.cdml")
-    self.gm.add_template_from_CDML( "groups2.cdml")
-    
-    self.modes = { 'draw': modes.draw_mode( self),
-                   'edit': modes.edit_mode( self),
-                   'arrow': modes.arrow_mode( self),
-                   'plus': modes.plus_mode( self),
-                   'template': modes.template_mode( self),
-                   'text': modes.text_mode( self),
-                   'rotate': modes.rotate_mode( self),
-                   'bondalign': modes.bond_align_mode( self),
-                   'name': modes.name_mode( self),
-                   'vector': modes.vector_mode( self),
-                   'mark': modes.mark_mode( self)}
-    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
-    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
+
+    # undo manages
     self.um = undo.undo_manager( self)  # undo manager
 
     # paper sizes etc.
@@ -120,8 +95,16 @@ class BKpaper( Canvas):
 
     #
     self.changes_made = 0
+    #
+    self.name = name
 
-
+  def initialise( self):
+    # template manager
+    self.tm = self.app.tm
+    # groups manager (for group expansions)
+    self.gm = self.app.gm
+    # this is not needed but is purer to mention it here because it will be set by self.app
+    self.mode = None
 
   def add_bindings( self):
     self.lower( self.background)
@@ -533,16 +516,6 @@ class BKpaper( Canvas):
   def is_registered_object( self, o):
     """has this object a registered id?"""
     return o in self._id_2_object.values()
-
-  def switch_to_mode( self, name):
-    # this is necessary because at first the mode is a string
-    if type( self.mode) != types.StringType:
-      self.mode.cleanup()
-    self.mode = self.modes[ name]
-
-
-  def switch_to_submode( self, name):
-    self.mode.set_submode( name)
 
   def new_molecule( self):
     mol = molecule( self)

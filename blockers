@@ -11,10 +11,14 @@ remarks
 0.6.0
 =======
 
-- template adding should think about orders of bonds also (addition of benzene to double bond
-  produces now chemical a non-sense)
 - never center the 'whab' double bonds?
 
+
+FOR MULTIPLE PAPERS
+
+- remove the paper.mode ref, use only app.mode
+- saving should take care if untitled was set by user of automaticaly by the user
+- the saving is a mess
 
 
 0.x.0

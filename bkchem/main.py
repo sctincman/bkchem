@@ -42,6 +42,7 @@ import plugins
 import misc
 from edit_pool import editPool
 import pixmaps
+import types
 
 
 class BKchem( Tk):
@@ -71,19 +72,72 @@ class BKchem( Tk):
     self.png_file = ''
     self.pov_file = ''
 
+    self._untitled_counter = 0
+
     self._after = None
 
     self.balloon = Pmw.Balloon( self)
     mainFrame = Frame( self)
     mainFrame.pack( fill='both', expand=1)
 
+
     # main drawing part
-    paperFrame = Frame( mainFrame)
-    self.paper = BKpaper( paperFrame, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5)
-    self.scroll_y = Scrollbar( paperFrame, orient = VERTICAL, command = self.paper.yview)
-    self.scroll_x = Scrollbar( paperFrame, orient = HORIZONTAL, command = self.paper.xview)
+    self.papers = []
+    self.notebook = Pmw.NoteBook( mainFrame,
+                                  raisecommand=self.paper_change)
+
+    for i in range( 1):
+      name = 'untitled%d.svg' % self._untitled_counter
+      self._untitled_counter += 1
+      paperFrame = self.notebook.add( name)
+      paper = BKpaper( paperFrame, app=self,
+                       width=640, height=480,
+                       scrollregion=(0,0,'210m','297m'),
+                       background="grey", closeenough=5,
+                       name=name)
+      scroll_y = Scrollbar( paperFrame, orient = VERTICAL, command = paper.yview)
+      scroll_x = Scrollbar( paperFrame, orient = HORIZONTAL, command = paper.xview)
+      paper.grid( row=0, column=0, sticky="news")
+      paperFrame.grid_rowconfigure( 0, weight=1, minsize = 0)
+      paperFrame.grid_columnconfigure( 0, weight=1, minsize = 0)
+      scroll_x.grid( row=1, column=0, sticky='we')
+      scroll_y.grid( row=0, column=1, sticky='ns')
+      paper['yscrollcommand'] = scroll_y.set
+      paper['xscrollcommand'] = scroll_x.set
+      self.papers.append( paper)
+      
+    self.paper = self.papers[0]
     self.paper.focus_set()
-    
+
+    #
+    # here are all the functions needed for multiple papers
+    #
+    from temp_manager import template_manager
+    import modes
+
+    # template_manager
+    self.tm = template_manager( self.paper)
+    self.tm.add_template_from_CDML( "templates.cdml")
+    # groups manager
+    self.gm = template_manager( self.paper)
+    self.gm.add_template_from_CDML( "groups.cdml")
+    self.gm.add_template_from_CDML( "groups2.cdml")
+
+    self.modes = { 'draw': modes.draw_mode( self),
+                   'edit': modes.edit_mode( self),
+                   'arrow': modes.arrow_mode( self),
+                   'plus': modes.plus_mode( self),
+                   'template': modes.template_mode( self),
+                   'text': modes.text_mode( self),
+                   'rotate': modes.rotate_mode( self),
+                   'bondalign': modes.bond_align_mode( self),
+                   'name': modes.name_mode( self),
+                   'vector': modes.vector_mode( self),
+                   'mark': modes.mark_mode( self)}
+    self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
+    self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
+
+
     # defining menu
     menu = Frame( mainFrame, relief=RAISED, bd=2)
     menu.pack( fill = X)
@@ -210,12 +264,12 @@ class BKchem( Tk):
              )
     radiobuttons.pack( side=LEFT)
     # Add some buttons to the radiobutton RadioSelect.
-    for m in self.paper.modes_sort:
+    for m in self.modes_sort:
       if m in pixmaps.images:
-        recent = radiobuttons.add( m, image=pixmaps.images[m], text=self.paper.modes[ m].name, activebackground='grey')
-        self.balloon.bind( recent, self.paper.modes[ m].name)
+        recent = radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey')
+        self.balloon.bind( recent, self.modes[ m].name)
       else:
-        radiobuttons.add( m, text=self.paper.modes[ m].name)
+        radiobuttons.add( m, text=self.modes[ m].name)
     #sub-mode support
     self.subFrame = Frame( mainFrame)
     self.subFrame.pack( fill=X)
@@ -224,20 +278,16 @@ class BKchem( Tk):
     # atom name editing support
     self.editPool = editPool( self, mainFrame, width=60)
     self.editPool.pack( anchor=W)
-    
+
     # main drawing part packing
-    paperFrame.pack(fill='both', expand=1)
-    self.paper.grid( row=0, column=0, sticky="news")
-    paperFrame.grid_rowconfigure( 0, weight=1, minsize = 0)
-    paperFrame.grid_columnconfigure( 0, weight=1, minsize = 0)
-    self.scroll_x.grid( row=1, column=0, sticky='we')
-    self.scroll_y.grid( row=0, column=1, sticky='ns')
-    self.paper['yscrollcommand'] = self.scroll_y.set
-    self.paper['xscrollcommand'] = self.scroll_x.set
+    self.notebook.pack( fill='both', expand=1)
+    for p in self.papers:
+      p.initialise()
+    self.notebook.setnaturalsize()
 
     status = Label( mainFrame, relief=SUNKEN, bd=2, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
-    radiobuttons.invoke( self.paper.mode)
+    radiobuttons.invoke( self.mode)
 
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
@@ -253,13 +303,16 @@ class BKchem( Tk):
 
 
   def change_mode( self, tag):
-    self.paper.switch_to_mode( tag)
+    if type( self.mode) != types.StringType:
+      self.mode.cleanup()
+    self.mode = self.modes[ tag]
+
     if self.subbuttons:
       for butts in self.subbuttons:
         butts.deleteall()
         butts.destroy()
     self.subbuttons = []
-    m = self.paper.mode
+    m = self.mode
     for i in range( len( m.submodes)):
       self.subbuttons.append( Pmw.RadioSelect( self.subFrame,
                                                buttontype = 'button',
@@ -284,10 +337,11 @@ class BKchem( Tk):
       # black magic???
       j = m.submodes[i][ m.submode[i]]
       self.subbuttons[i].invoke( j)
-    self.update_status( _('mode changed to ')+self.paper.modes[ tag].name)
+    self.paper.mode = self.mode
+    self.update_status( _('mode changed to ')+self.modes[ tag].name)
 
   def change_submode( self, tag):
-    self.paper.switch_to_submode( tag)
+    self.mode.set_submode( tag)
 
   def update_status( self, signal, time=4):
     self.stat.set( signal)
@@ -295,14 +349,30 @@ class BKchem( Tk):
       self.after_cancel( self._after)
     self._after = self.after( time*1000, func=self.clear_status)
 
+  def paper_change( self, name):
+    if self.papers:
+      i = self.notebook.index( name)
+      self.paper = self.papers[i]
+      self.paper.mode = self.mode
+
+  def add_new_paper( self, name=''):
+    if not name:
+      name = 'untitled%d.svg' % self._untitled_counter
+      self._untitled_counter += 1
+    page = self.notebook.add( name)
+    paper = BKpaper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5, name=name)
+    paper.pack* 
+    self.papers.append( paper)
+    self.paper = paper
+
   def clear_status( self):
     self.stat.set( '')
 
   def save_CDML( self):
-    if not self.save_file:
+    if not self.paper.name:
       self.save_as_CDML()
     else:
-      a = os.path.join( self.save_dir, self.save_file)
+      a = os.path.join( self.save_dir, self.paper.name)
       self._save_according_to_extension( a)
 
   def save_as_CDML( self):

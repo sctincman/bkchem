@@ -69,10 +69,9 @@ class template_manager:
   def get_template_names( self):
     return [o.name for o in self._prepared_templates]
 
-  def get_transformed_template( self, n, coords, type='empty'):
+  def get_transformed_template( self, n, coords, type='empty', paper=None):
     """type is type of connection - 'bond', 'atom1'(for single atom), 'atom2'(for atom with more than 1 bond), 'empty'"""
-    current = self._prepared_templates[n]
-    self._prepared_templates[n] = molecule( self.paper, package=self.templates[n])
+    current = molecule( paper or self.paper, package=self.templates[n])
     current.name = ''
     current.id = ''
     self._scale_ratio = 1

@@ -91,10 +91,14 @@ myapp.update()
 myapp.initialize()
 if len( sys.argv) > 1:
   import os.path
-  if os.path.isfile( sys.argv[1]):
-    myapp.load_CDML( file=sys.argv[1])
-  else:
-    myapp.set_file_name( sys.argv[1], check_ext=1)
+  to_load = []
+  for i in range( 1, len( sys.argv)):
+    if i > 1:
+      myapp.add_new_paper()
+    if os.path.isfile( sys.argv[1]):
+      myapp.load_CDML( file=sys.argv[i])
+    else:
+      myapp.set_file_name( sys.argv[i], check_ext=1)
 
 # destroy splash
 splash.destroy()

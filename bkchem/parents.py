@@ -48,7 +48,8 @@ class meta_enabled( simple_parent):
 
   def __init__( self, paper):
     self.paper = paper
-    self.read_standard_values()
+    if self.paper:
+      self.read_standard_values()
 
   def read_standard_values( self, old_standard=None):
     """if old_standard is given the recent value is read from standard
