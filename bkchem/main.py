@@ -154,16 +154,16 @@ class BKchem( Tk):
     editButton.pack( side = LEFT)
     editMenu = Menu( editButton, tearoff=0)
     editButton['menu'] = editMenu
-    editMenu.add( 'command', label=_('Undo'), command = self.paper.undo, accelerator='(C-z)')
-    editMenu.add( 'command', label=_('Redo'), command = self.paper.redo, accelerator='(C-S-z)')
+    editMenu.add( 'command', label=_('Undo'), command = lambda : self.paper.undo(), accelerator='(C-z)')
+    editMenu.add( 'command', label=_('Redo'), command = lambda : self.paper.redo(), accelerator='(C-S-z)')
     editMenu.add( 'separator')
     editMenu.add( 'command', label=_('Cut'), command = lambda : self.paper.selected_to_clipboard( delete_afterwards=1), accelerator='(C-w)')
-    editMenu.add( 'command', label=_('Copy'), command = self.paper.selected_to_clipboard, accelerator='(A-w)')
-    editMenu.add( 'command', label=_('Paste'), command = lambda: self.paper.paste_clipboard( None), accelerator='(C-y)')
+    editMenu.add( 'command', label=_('Copy'), command = lambda : self.paper.selected_to_clipboard(), accelerator='(A-w)')
+    editMenu.add( 'command', label=_('Paste'), command = lambda : self.paper.paste_clipboard( None), accelerator='(C-y)')
     editMenu.add( 'separator')
-    editMenu.add( 'command', label=_('Selected to clipboard as SVG'), command = self.paper.selected_to_real_clipboard_as_SVG)
+    editMenu.add( 'command', label=_('Selected to clipboard as SVG'), command = lambda : self.paper.selected_to_real_clipboard_as_SVG())
     editMenu.add( 'separator')
-    editMenu.add( 'command', label=_('Select all'), command = self.paper.select_all, accelerator='(C-S-a)')
+    editMenu.add( 'command', label=_('Select all'), command = lambda : self.paper.select_all(), accelerator='(C-S-a)')
     
     alignButton = Menubutton( menu, text=_('Align'))
     alignButton.pack( side = LEFT)
@@ -184,14 +184,14 @@ class BKchem( Tk):
     scaleButton['menu'] = scaleMenu
     scaleMenu.add( 'command', label=_('Scale'), command = self.scale)
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Bring to front'), command = self.paper.lift_selected_to_top, accelerator='(C-o f)')
-    scaleMenu.add( 'command', label=_('Send back'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o b)')
-    scaleMenu.add( 'command', label=_('Swap on stack'), command = self.paper.swap_selected_on_stack, accelerator='(C-o s)')
+    scaleMenu.add( 'command', label=_('Bring to front'), command = lambda : self.paper.lift_selected_to_top(), accelerator='(C-o f)')
+    scaleMenu.add( 'command', label=_('Send back'), command = lambda : self.paper.lower_selected_to_bottom(), accelerator='(C-o b)')
+    scaleMenu.add( 'command', label=_('Swap on stack'), command = lambda : self.paper.swap_selected_on_stack(), accelerator='(C-o s)')
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Vertical mirror'), command = self.paper.swap_sides_of_selected)
-    scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda: self.paper.swap_sides_of_selected('horizontal') )
+    scaleMenu.add( 'command', label=_('Vertical mirror'), command = lambda : self.paper.swap_sides_of_selected())
+    scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda : self.paper.swap_sides_of_selected('horizontal') )
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Configure'), command = self.paper.config_selected, accelerator='Mouse-3')
+    scaleMenu.add( 'command', label=_('Configure'), command = lambda : self.paper.config_selected(), accelerator='Mouse-3')
     # for dev only
 
     # CHEMISTRY MENU
@@ -199,9 +199,9 @@ class BKchem( Tk):
     chemistry_button.pack( side= 'left')
     chemistry_menu = Menu( chemistry_button, tearoff=0)
     chemistry_button['menu'] = chemistry_menu
-    chemistry_menu.add( 'command', label=_('Info'), command = self.paper.display_info_on_selected, accelerator='(C-o i)')
-    chemistry_menu.add( 'command', label=_('Check chemistry'), command = self.paper.check_chemistry_of_selected, accelerator='(C-o c)')
-    chemistry_menu.add( 'command', label=_('Expand groups'), command = self.paper.expand_groups, accelerator='(C-o e)')
+    chemistry_menu.add( 'command', label=_('Info'), command = lambda : self.paper.display_info_on_selected(), accelerator='(C-o i)')
+    chemistry_menu.add( 'command', label=_('Check chemistry'), command = lambda : self.paper.check_chemistry_of_selected(), accelerator='(C-o c)')
+    chemistry_menu.add( 'command', label=_('Expand groups'), command = lambda : self.paper.expand_groups(), accelerator='(C-o e)')
     chemistry_menu.add( 'separator')
     # oasa related stuff
     oasa_state = oasa_bridge.oasa_available and 'normal' or 'disabled'
@@ -473,7 +473,7 @@ class BKchem( Tk):
   def load_CDML( self, file=None, replace=0):
     if not file:
       if self.paper.changes_made and replace:
-        if tkMessageBox.askyesno( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='yes') == 0:
+	if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
           return 0
       a = askopenfilename( defaultextension = "",
                            initialdir = self.save_dir,
@@ -545,9 +545,10 @@ class BKchem( Tk):
           docs = doc.getElementsByTagName( 'cdml')
           if docs:
             # ask if we should proceed with incorrect namespace
-            proceed = tkMessageBox.askyesno( _("Proceed?"),
-                                             _("CDML data seem present in SVG but have wrong namespace. Proceed?"),
-                                             default='yes')
+            proceed = tkMessageBox.askokcancel( _("Proceed?"),
+						_("CDML data seem present in SVG but have wrong namespace. Proceed?"),
+						default='ok',
+						parent=self)
             if proceed:
               doc = docs[0]
             else:

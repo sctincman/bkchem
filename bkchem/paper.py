@@ -154,7 +154,7 @@ class BKpaper( Canvas):
     
   def _drag1( self, event):
     # unfortunately we need to simulate "enter" and "leave" in this way because
-    # when B1 is down such events does not occur
+    # when B1 is down such events do not occur
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_drag( event) 
@@ -368,10 +368,11 @@ class BKpaper( Canvas):
     original_version = CDML.getAttribute( 'version')
     success = CDML_versions.transform_dom_to_version( CDML, data.current_CDML_version)
     if not success:
-      if not tkMessageBox.askyesno( _('Proceed'),
-                                    _('''This CDML document does not seem to have supported version.
-                                    \n Do you want to proceed reading this document?'''),
-                                    default = 'yes'):
+      if not tkMessageBox.askokcancel( _('Proceed'),
+				       _('''This CDML document does not seem to have supported version.
+				       \n Do you want to proceed reading this document?'''),
+				       default = 'ok',
+				       parent=self):
         return None
     # paper properties
     paper = [o for o in CDML.childNodes if (not o.nodeValue) and (o.localName == 'paper')]
@@ -415,10 +416,12 @@ class BKpaper( Canvas):
           o.draw()
     # now check if the old standard differs
     if new_standard and old_standard != self.standard:
-      if not tkMessageBox.askyesno( _('Replace standard values'),
-                                    data.standards_differ_text,
-                                    default = 'yes'):
+      if not tkMessageBox.askokcancel( _('Replace standard values'),
+				       data.standards_differ_text,
+				       default = 'ok',
+				       parent=self):
         self.standard = old_standard
+      print new_standard, old_standard, self.standard
     # finish
     
     self.add_bindings()
