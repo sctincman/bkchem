@@ -344,3 +344,14 @@ def set_atom_number( atoms):
     Store.log( _("Number %s was set to atom(s).") % dial.get(), message_type="info")
 
   
+
+
+def log_atom_type( vtype):
+  """according to vtype tells the user how an atom text was interpreted"""
+  if  vtype == "atom":
+    Store.log( _("BKchem interpreted the entered text as an atom"))
+  elif vtype == "group":
+    Store.log( _("BKchem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."))
+  elif vtype == "textatom":
+    Store.log( _("BKchem could not interpret the entered text as anything with chemical meaning"))
+

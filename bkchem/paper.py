@@ -740,6 +740,7 @@ class chem_paper( Canvas, object):
   def set_name_to_selected( self, name, interpret=1):
     """sets name to all selected atoms and texts,
     also records it in an undo !!!"""
+    vtype = None
     for item in self.selected[:]:
       if isinstance( item, oasa.graph.vertex):
         if name:
@@ -750,14 +751,14 @@ class chem_paper( Canvas, object):
           item.delete()
           v.draw()
           self.select( [v])
-          debug.log( type( v))
+          vtype = v.__class__.__name__
       if item.object_type == 'text':
         if name:
           item.set_text( name)
           item.redraw()
     if self.selected:
       self.start_new_undo_record()
-
+    return vtype
 
 
 

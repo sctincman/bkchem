@@ -600,13 +600,7 @@ class edit_mode( basic_mode):
 
   def _set_name_to_selected( self, char=''):
     if Store.app.paper.selected:
-      # at first we check if there is something to set text to...
-      text_items_are_inside = 0
-      for i in Store.app.paper.selected:
-        if isinstance( i, parents.text_like):
-          text_items_are_inside = 1
-          break
-      if not text_items_are_inside:
+      if not [i for i in Store.app.paper.selected if isinstance( i, parents.text_like)]:
         return # well, we do not want to set text to bonds and pluses anyway
       # check if we should start with the last used text or edit the one of selected things
       text = ''
@@ -642,7 +636,10 @@ class edit_mode( basic_mode):
           Store.app.paper.bell()
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
           return
-      Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
+      vtype = Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
+      # inform the user what was set
+      interactors.log_atom_type( vtype)
+      # cleanup
       [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
       [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
       Store.app.paper.add_bindings()
@@ -1701,6 +1698,7 @@ class atom_mode( edit_mode):
         a.y = event.y
         mol.insert_atom( a)
         a.draw()
+        interactors.log_atom_type( a.__class__.__name__)
         Store.app.paper.select( [a])
         Store.app.paper.add_bindings()
         Store.app.paper.start_new_undo_record()        
@@ -1716,8 +1714,8 @@ class atom_mode( edit_mode):
           a.molecule.replace_vertices( a, v)
           a.delete()
           v.draw()
-          #print v, type( v)
-
+          interactors.log_atom_type( v.__class__.__name__)
+          
           Store.app.paper.start_new_undo_record()        
           Store.app.paper.add_bindings()
 

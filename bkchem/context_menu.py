@@ -74,9 +74,9 @@ class context_menu( Tkinter.Menu):
     if already_there:
       self.add_separator()        
     i = False
-    i += self.register_command( _("Center bond"), ('bond',), center)
-    i += self.register_command( _("Expand group"), ('atom',), expand_groups)
-    i += self.register_command( _("Set atom number"), ('atom',), set_atom_number)
+    i += self.register_command_by_object_type( _("Center bond"), ('bond',), center)
+    i += self.register_command_by_class_name( _("Expand group"), ('group',), expand_groups)
+    i += self.register_command_by_object_type( _("Set atom number"), ('atom',), set_atom_number)
 
     # common commands
     if i:
@@ -125,10 +125,24 @@ class context_menu( Tkinter.Menu):
     
 
 
-  def register_command( self, label, types, callback):
+  def register_command_by_object_type( self, label, types, callback):
     apply_to = []
     for t in types:
       apply_to.extend( [o for o in self.selected if o.object_type == t])
+    return self._register_command( label, apply_to, callback)
+
+
+
+
+  def register_command_by_class_name( self, label, types, callback):
+    apply_to = []
+    for t in types:
+      apply_to.extend( [o for o in self.selected if o.__class__.__name__ == t])
+    return self._register_command( label, apply_to, callback)
+
+
+
+  def _register_command( self, label, apply_to, callback):
     if not apply_to:
       return False
     self.add_command( label=label,
@@ -180,7 +194,7 @@ def set_show( o, value):
   [b.redraw() for b in o.paper.bonds_to_update()]
   
   
-
+  
 
 
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
