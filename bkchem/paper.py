@@ -28,6 +28,7 @@ from __future__ import division
 from Tkinter import Canvas
 import tkFont, tkMessageBox
 import classes
+from molecule import molecule
 from transform import transform 
 from transform3d import transform3d
 import misc
@@ -537,7 +538,7 @@ class BKpaper( Canvas):
     self.mode.set_submode( name)
 
   def new_molecule( self):
-    mol = classes.molecule( self)
+    mol = molecule( self)
     self.molecules.append( mol)
     self.stack.append( mol)
     return mol
@@ -662,7 +663,7 @@ class BKpaper( Canvas):
       
   def add_object_from_package( self, package):
     if package.nodeName == 'molecule':
-      o = classes.molecule( self, package=package)
+      o = molecule( self, package=package)
       self.molecules.append( o)
     elif package.nodeName == 'arrow':
       o = classes.arrow( self, package=package)

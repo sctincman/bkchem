@@ -25,7 +25,7 @@
 
 import math
 from transform import transform
-from classes import molecule
+from molecule import molecule
 import xml.dom.minidom as dom
 from warnings import warn
 import data
