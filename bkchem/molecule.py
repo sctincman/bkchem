@@ -499,7 +499,7 @@ class molecule( container, top_level, id_enabled):
           x1, y1 = a2.get_xy()
           x2, y2 = a.get_xy()
           t = self.paper.app.gm.get_transformed_template( names.index( a.name), (x1,y1,x2,y2), type='atom1')
-          t.draw()
+          t.draw( no_automatic=1)
           self.eat_molecule( t)
           self.move_bonds_between_atoms( a, t.next_to_t_atom)
           self.delete_items( [a])

@@ -33,6 +33,7 @@ import operator
 import data
 import copy
 from parents import meta_enabled, line_colored, drawable, with_line, interactive, child
+import debug
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method

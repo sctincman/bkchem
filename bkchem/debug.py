@@ -20,16 +20,28 @@
 
 import config
 import sys
+import inspect
+
 
 def log( *args, **kw):
-  """it takes an optional keyword argument 'output'"""
+  """it takes an optional keyword arguments 'output' (output file-like)
+  and 'levels' (stack levels to report)"""
   if 'output' in kw:
     out = kw['output']
   else:
     out = None
+  if 'levels' in kw:
+    levels = kw['levels']
+  else:
+    levels = []
   if config.debug:
+    frames = inspect.getouterframes( inspect.currentframe())
+    for i in levels:
+      if i < len( frames):
+        print "  %s:%d -> %s()" % frames[i][1:4]
     for arg in args:
       print >> out, arg,
     print >> out
+
 
   

@@ -769,7 +769,7 @@ class chem_paper( Canvas, object):
     try:
       del self._id_2_object[ id]
     except KeyError:
-      warn( 'trying to unregister not registered id', UserWarning, 2)
+      warn( 'trying to unregister not registered id', UserWarning, 3)
 
 
 

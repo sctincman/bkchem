@@ -207,7 +207,7 @@ class state_record:
           if o.object_type == 'atom':
             o.redraw( suppress_reposition=1)
           elif o.object_type == 'bond':
-            [a.redraw( suppress_reposition=1) for a in o.get_atoms() if a.show]
+            [a.redraw( suppress_reposition=1) for a in o.get_atoms() if a.show and not a in deleted]
             o.redraw()
           else:
             o.redraw()
