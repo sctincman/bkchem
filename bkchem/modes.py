@@ -52,7 +52,7 @@ from sets import Set
 
 ## -------------------- PARENT MODES--------------------
 
-class mode:
+class mode( object):
   """abstract parent for all modes. No to be used for inheritation because the more specialized
   edit mode has all the methods for editing - just override what you need to change"""
   def __init__( self, app):
