@@ -717,8 +717,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     if package.getAttribute( 'auto_sign'):
       self.auto_bond_sign = int( package.getAttribute( 'auto_sign'))
     # end of implied
-    self.atom1 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'start'))
-    self.atom2 = self.molecule.get_atom_with_cdml_id( package.getAttribute( 'end'))
+    self.atom1 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'start'))
+    self.atom2 = self.paper.id_manager.get_object_with_id( package.getAttribute( 'end'))
 
 
 
@@ -741,8 +741,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     bnd = doc.createElement('bond')
     dom_extensions.setAttributes( bnd, (('type', "%s%d" % (self.type, self.order)),
                                         ('line_width', str( self.line_width)),
-                                        ('start', self.atom1.cdml_id),
-                                        ('end', self.atom2.cdml_id),
+                                        ('start', self.atom1.id),
+                                        ('end', self.atom2.id),
                                         ('double_ratio', str( self.double_length_ratio))))
     if self.order != 1:
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))

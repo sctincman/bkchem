@@ -288,7 +288,7 @@ class CML_atom:
   def read_atom( self, atom):
     self.x = atom.x
     self.y = atom.y
-    self.id = atom.cdml_id
+    self.id = atom.id
     self.name = atom.name
     self.charge = atom.charge
 
@@ -358,8 +358,8 @@ class CML_bond:
       
 
   def read_bond( self, bond):
-    self.atom1 = bond.atom1.cdml_id
-    self.atom2 = bond.atom2.cdml_id
+    self.atom1 = bond.atom1.id
+    self.atom2 = bond.atom2.id
     # stereo
     if bond.type in "wh":
       self.stereo = bond.type.upper()

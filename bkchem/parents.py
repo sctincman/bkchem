@@ -57,8 +57,11 @@ class id_enabled( simple_parent):
     simple_parent.__init__( self)
     self.paper = paper
 
-
   def generate_id( self):
+    self.id = self._generate_id()
+
+
+  def _generate_id( self):
     return self.paper.id_manager.generate_id( prefix=self.object_type)
 
   # id
@@ -66,14 +69,10 @@ class id_enabled( simple_parent):
     try:
       return self.__id
     except AttributeError:
-      self.__id = self.generate_id()
+      self.__id = self._generate_id()
     return self.__id
 
   def __set_id( self, id):
-    try:
-      self.paper.id_manager.unregister_id( self.__id)
-    except AttributeError:
-      pass
     self.paper.id_manager.register_id( self, id)
     self.__id = id
 

@@ -32,8 +32,10 @@ class id_manager:
     self.id_map[ id] = obj
 
 
-  def unregister_id( self, id):
+  def unregister_id( self, id, obj):
     try:
+      if self.id_map[ id] != obj:
+        raise "id and object do not correspond"
       del self.id_map[ id]
     except KeyError:
       raise "id %s is not registered" % id

@@ -116,21 +116,6 @@ def lazy_apply( function, arguments):
 
 
 
-
-class id_generator:
-  
-  i = 0
-
-  def generate_id( self, prefix="i"):
-    """static method generating and id with optional prefix"""
-    self.i += 1
-    return prefix + str( self.i)
-
-  generate_id = classmethod( generate_id)
-
-
-
-
 def extend_bbox( bbox, pixels=1):
   minx = min( (bbox[0], bbox[2]))
   maxx = max( (bbox[0], bbox[2]))

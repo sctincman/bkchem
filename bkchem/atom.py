@@ -237,21 +237,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-  # cdml_id
-  def __get_cdml_id( self):
-    if self.item:
-      self.__cdml_id = 'a'+str( self.item)
-      return self.__cdml_id
-    if self.__cdml_id:
-      return self.__cdml_id
-    return None
-
-  def __set_cdml_id( self, id):
-    self.__cdml_id = id
-
-  cdml_id = property( __get_cdml_id, __set_cdml_id)
-
-
   # valency
   def get_valency( self):
     return self.molecule.get_atoms_valency( self)
@@ -652,7 +637,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def read_package( self, package):
     a = ['no','yes']
     on_off = ['off','on']
-    self.cdml_id = package.getAttribute( 'id')
+    self.id = package.getAttribute( 'id')
     # charge
     self.charge = package.getAttribute('charge') or 0
     # marks (we read them here because they influence the charge)
@@ -712,7 +697,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     y = ['no','yes']
     on_off = ['off','on']
     a = doc.createElement('atom')
-    a.setAttribute( 'id', str( self.cdml_id))
+    a.setAttribute( 'id', str( self.id))
     # charge
     if self.charge:
       a.setAttribute( "charge", str( self.charge))
@@ -957,7 +942,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def __str__( self):
-    return self.cdml_id
+    return self.id
 
 
 

@@ -361,17 +361,18 @@ class molecule( container, top_level, id_enabled):
       self.id = package.getAttribute( 'id')
     for a in package.getElementsByTagName( 'atom'):
       self.insert_atom( atom( self.paper, package=a, molecule=self))
-    self._id_map = map( lambda a: a.cdml_id, self.atoms)
+    self._id_map = [a.id for a in self.atoms]
     for b in package.getElementsByTagName( 'bond'):
       self.insert_bond( bond( self.paper, package = b, molecule=self))
     temp = package.getElementsByTagName('template')
     if temp:
       temp = temp[0]
-      self.t_atom = self.get_atom_with_cdml_id( temp.getAttribute( 'atom'))
+      self.t_atom = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'atom'))
       if temp.getAttribute('bond_first') and temp.getAttribute('bond_second'):
-        self.t_bond_first = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_first'))
-        self.t_bond_second = self.get_atom_with_cdml_id( temp.getAttribute( 'bond_second'))
+        self.t_bond_first = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_first'))
+        self.t_bond_second = self.paper.id_manager.get_object_with_id( temp.getAttribute( 'bond_second'))
       self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
+
 
   def get_package( self, doc):
     mol = doc.createElement('molecule')
@@ -379,11 +380,11 @@ class molecule( container, top_level, id_enabled):
     mol.setAttribute( 'id', self.id)
     if self.t_atom:
       if self.t_bond_second and self.t_bond_first:
-        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.cdml_id)),
-                                                        ('bond_first', str( self.t_bond_first.cdml_id)),
-                                                        ('bond_second', str( self.t_bond_second.cdml_id))))
+        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),
+                                                        ('bond_first', str( self.t_bond_first.id)),
+                                                        ('bond_second', str( self.t_bond_second.id))))
       else:
-        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.cdml_id)),))
+        dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),))
     for i in self.children:
       mol.appendChild( i.get_package( doc))
     return mol
@@ -443,9 +444,6 @@ class molecule( container, top_level, id_enabled):
       items.append( a.item)
     return self.paper.list_bbox( items)
 
-  def get_atom_with_cdml_id( self, id):
-    return self.atoms[ self._id_map.index( id)]
-    
 
   def delete( self):
     [o.delete() for o in self.bonds+self.atoms]

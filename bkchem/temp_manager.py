@@ -56,9 +56,14 @@ class template_manager:
     # when loading old versions of CDML try to convert them, but do nothing when they cannot be converted
     import CDML_versions
     CDML_versions.transform_dom_to_version( doc, data.current_CDML_version)
+    self.app.paper.onread_id_sandbox_activate()
+    added = []
     for tmp in doc.getElementsByTagName('molecule'):
-      self.templates.append( tmp) 
-      self._prepared_templates.append( molecule( self.app.paper, package=tmp))
+      self.templates.append( tmp)
+      m = molecule( self.app.paper, package=tmp)
+      self._prepared_templates.append( m)
+      added.append( m)
+    self.app.paper.onread_id_sandbox_finish( apply_to=[]) # just switch the id_managers, no id mangling
 
   def get_template( self, n):
     return self.templates[n]
@@ -71,9 +76,11 @@ class template_manager:
 
   def get_transformed_template( self, n, coords, type='empty', paper=None):
     """type is type of connection - 'bond', 'atom1'(for single atom), 'atom2'(for atom with more than 1 bond), 'empty'"""
-    current = molecule( paper or self.app.paper, package=self.templates[n])
+    pap = paper or self.app.paper
+    pap.onread_id_sandbox_activate() # must be here to mangle the ids
+    current = molecule( pap, package=self.templates[n])
+    pap.onread_id_sandbox_finish( apply_to= [current]) # id mangling
     current.name = ''
-    current.id = current.generate_id() # generation of new id
     self._scale_ratio = 1
     trans = transform()
     # type empty - just draws the template - no conection

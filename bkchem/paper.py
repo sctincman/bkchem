@@ -49,6 +49,8 @@ import dialogs
 import CDML_versions
 import os
 from id_manager import id_manager
+import parents
+
 
 
 class chem_paper( Canvas, object):
@@ -513,6 +515,8 @@ class chem_paper( Canvas, object):
 
 
   def read_package( self, CDML):
+    self.onread_id_sandbox_activate() # to sandbox the ids 
+
     original_version = CDML.getAttribute( 'version')
     success = CDML_versions.transform_dom_to_version( CDML, data.current_CDML_version)
     if not success:
@@ -577,13 +581,33 @@ class chem_paper( Canvas, object):
        default = 'ok',
 				       parent=self):
         self.standard = old_standard
+
     # finish
+    # we close the sandbox and generate new ids for everything
+    self.onread_id_sandbox_finish()
     
     self.add_bindings()
     self.um.start_new_record()
 
 
+  def onread_id_sandbox_activate( self):
+    """For reading we provide a new, clean id_manager as a sandbox to prevent
+    clashes between ids that might be already on the paper and ids that are in the file.
+    This is especialy needed for copying and template addition (although this is done somewhere else)"""
+    self.__old_id_manager = self.id_manager
+    self.id_manager = id_manager()
+    
 
+  def onread_id_sandbox_finish( self, apply_to=None):
+    self.id_manager = self.__old_id_manager
+    if apply_to == None:
+      os = self.stack
+    else:
+      os = apply_to
+    for o in os:
+      o.generate_id()
+      if isinstance( o, parents.container):
+        [ch.generate_id() for ch in o.children]
 
 
   def get_package( self):
@@ -888,8 +912,13 @@ class chem_paper( Canvas, object):
         dy = xy[1] - clipboard_pos[1]
       else:
         dx, dy = 20, 20
+      # the same trick as in reading of files
+      self.onread_id_sandbox_activate()
+
+      os = []
       for p in clipboard.childNodes:
         o = self.add_object_from_package( p)
+        os.append( o)
         o.draw()
         o.move( dx, dy)
         if o.object_type == 'molecule':
@@ -899,8 +928,11 @@ class chem_paper( Canvas, object):
         else:
           self.select( [o])
       self.add_bindings()
-      #self.select( new)
       self.signal_to_app( _("pasted from clipboard"))
+
+      # put the id_manager back
+      self.onread_id_sandbox_finish( apply_to=os)
+      
       self.handle_overlap()
       self.start_new_undo_record()
       
