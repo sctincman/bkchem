@@ -9,7 +9,9 @@ remarks
 0.6.0
 =======
 
+
 new bond types - modes, saving, loading, back compatibility
+	- when a single bond is clicked with triple selected it should convert to triple
 
 - mode for ring creation
 

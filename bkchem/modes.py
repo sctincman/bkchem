@@ -601,12 +601,12 @@ class draw_mode( edit_mode):
     order = self.submode[1]+1
     type = self.submodes[2][ self.submode[2]][0]
     type = "%s%d" % (type, order) 
-    print type
-    if type == 'normal':
-      type = 1
-    else:
-      type = data.bond_types.index( type)
-    return type
+    #print type
+##     if type == 'normal':
+##       type = 1
+##     else:
+##      type = data.bond_types.index( type)
+    return order
 
 
 
