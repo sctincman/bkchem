@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002  Beda Kosata <kosatab@vscht.cz>
+#     Copyright (C) 2004  Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -16,19 +16,32 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-import CML, CML2
-#import povray
-import openoffice
-import postscript
-import molfile
-import gtml
-import pdf
-import bitmap
-import postscript2
 
-__all__ = ['CML','CML2','openoffice','postscript','molfile','gtml','pdf','bitmap', 'postscript2']
+import plugin
+import piddlePIL
+from tk2piddle import tk2piddle
+
+
+class bitmap_exporter( plugin.exporter):
+
+  def __init__( self, paper):
+    self.paper = paper
+
+
+  def on_begin( self):
+    dx = self.paper._paper_properties['size_x']
+    dy = self.paper._paper_properties['size_y']
+    self.canvas = piddlePIL.PILCanvas( size=(72*dx/25.4, 72*dy/25.4))
+    self.converter = tk2piddle()
+    return 1
+
+  def write_to_file( self, name):
+    self.converter.export_to_piddle_canvas( self.paper, self.canvas)
+    self.canvas.save( name, "png")
+
+
+# PLUGIN INTERFACE SPECIFICATION
+name = "PNG"
+extensions = [".png"]
+exporter = bitmap_exporter

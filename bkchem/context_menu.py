@@ -140,13 +140,14 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                   'pos':              ( _("Symbol positioning"), (("center-first",_("center first")),
                                                                   ("center-last", _("center last")))),
                   'auto_bond_sign':   ( _("Bond positioning"),   ((1, _("auto")),
-                                                                  (-1, _("anti-auto"))))
+                                                                  (-1, _("anti-auto")))),
+                  'order':            ( _("Bond order"),         (0,1,2,3))
                   }
 
 
 configurable = {'atom':    ('show', 'font_size', 'show_hydrogens','pos'),
                 'text':    ('font_size',),
-                'bond':    ('line_width','bond_width'),
+                'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',)
 

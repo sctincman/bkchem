@@ -367,7 +367,7 @@ class point( point_drawable, interactive, child):
       self.redraw()
     else:
       if self.type == 'invisible':
-        self.item = self.paper.create_line( self.x, self.y, self.x, self.y, tags='point')
+        self.item = self.paper.create_line( self.x, self.y, self.x, self.y, tags='point', fill='')
       elif self.type == 'circle':
         self.item = self.paper.create_oval( self.x-2, self.y-2, self.x+2, self.y+2, fill='grey', outline='grey', tags='point')
       else:

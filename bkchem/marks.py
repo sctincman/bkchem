@@ -230,9 +230,9 @@ class plus( mark):
     s = round( self.size / 2)
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
                                           outline=self.atom.line_color, tags='mark')]
-    self.items.append( self.paper.create_line( x-s+2, y, x+s-1, y,
+    self.items.append( self.paper.create_line( x-s+2, y, x+s-2, y,
                                                fill=self.atom.line_color, tags='mark'))
-    self.items.append( self.paper.create_line( x, y-s+2, x, y+s-1,
+    self.items.append( self.paper.create_line( x, y-s+2, x, y+s-2,
                                                fill=self.atom.line_color, tags='mark'))
 
 
@@ -278,7 +278,7 @@ class minus( mark):
     s = round( self.size / 2)
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
                                           outline=self.atom.line_color, tags='mark')]
-    self.items.append( self.paper.create_line( x-s+2, y, x+s-1, y,
+    self.items.append( self.paper.create_line( x-s+2, y, x+s-2, y,
                                                fill=self.atom.line_color, tags='mark'))
 
 

@@ -499,7 +499,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.ftext.lift()
       self.paper.lift( self.item)
     else:
-      self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'))
+      self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
       self.selector = None
     [m.draw() for m in self.marks.itervalues() if m]
     self.paper.register_id( self.item, self)

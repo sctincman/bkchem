@@ -275,7 +275,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     """call the appropriate draw method, no_automatic is used on file read when no automatic decisions are needed"""
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
-    method = "_draw_%s%d" % (self.type, self.order)
+    method = "_draw_%s%d" % (self.type, self.order or 1)
     if not no_automatic and self.order == 2 and self.auto_bond_sign == 1:
       self._decide_distance_and_center()
     self.__class__.__dict__[ method]( self)

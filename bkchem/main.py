@@ -48,7 +48,7 @@ import pref_manager
 
 import oasa_bridge
 import plugins.plugin
-
+import config
 
 
 class BKchem( Tk):
@@ -918,11 +918,14 @@ class BKchem( Tk):
                            parent = self,
                            filetypes=types)
     if a != '':
-      try:
+      if not config.debug:
+        try:
+          doc = exporter.write_to_file( a)
+        except:
+          tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
+          return
+      else:
         doc = exporter.write_to_file( a)
-      except:
-        tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
-        return
       self.update_status( _("exported file: ")+a)
   
 
@@ -1031,7 +1034,9 @@ Enter IChI:""")
         if not inchi:
           tkMessageBox.showerror( _("Error processing %s") % 'INChI',
                                   _("The oasa library ended with error:\n%s") % sys.exc_value)
-        return
+          return
+        else:
+          raise "the processing of inchi failed with following error %s" % sys.exc_value
 
       self.paper.stack.append( mol)
       mol.draw()

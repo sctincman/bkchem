@@ -20,6 +20,7 @@
 
 
 import os
+import sys
 
 env_vars = {'template': 'BKCHEM_TEMPLATE_PATH',
             'pixmap': 'BKCHEM_PIXMAP_PATH',
@@ -34,11 +35,16 @@ std_dirs = {'template': '../templates',
 def get_path( filename, file_category):
   dir = None
   if file_category in env_vars:
-    if os.name in ('posix', 'nt') and os.getenv( env_vars[ file_category]):
-      dir = os.getenv( env_vars[ file_category])
-      path = os.path.join( dir, filename)
-      if not os.path.isfile( path):
-        dir = std_dirs[ file_category]
+    if os.name in ('posix', 'nt'):
+      if os.getenv( env_vars[ file_category]):
+        dirs = [os.getenv( env_vars[ file_category])]
+      else:
+        dirs = []
+      dirs.extend( (std_dirs[ file_category], os.path.join( sys.path[0], std_dirs[ file_category])))
+      for dir in dirs:
+        path = os.path.join( dir, filename)
+        if os.path.isfile( path):
+          break
     else:
       dir = std_dirs[ file_category]
 
