@@ -123,7 +123,7 @@ class template_manager:
     return current 
   
   def transform_template( self, temp, trans):
-    for a in temp.atoms_map:
+    for a in temp.atoms:
       a.x, a.y = trans.transform_xy( a.x, a.y)
       a.scale_font( self._scale_ratio)
     for b in temp.bonds:

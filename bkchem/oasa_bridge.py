@@ -84,8 +84,8 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   for b in mol.edges:
     b2 = oasa_bond_to_bkchem_bond( b, paper)
     aa1, aa2 = b.vertices
-    b2.atom1 = m.atoms_map[ mol.vertices.index( aa1)]
-    b2.atom2 = m.atoms_map[ mol.vertices.index( aa2)]
+    b2.atom1 = m.atoms[ mol.vertices.index( aa1)]
+    b2.atom2 = m.atoms[ mol.vertices.index( aa2)]
     m.insert_bond( b2)
     bond_lengths.append( math.sqrt( (b2.atom1.x-b2.atom2.x)**2 + (b2.atom1.y-b2.atom2.y)**2))
   # rescale
@@ -93,7 +93,7 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   scale = paper.any_to_px( paper.standard.bond_length) / bl
   movex = 320 - scale*(maxx+minx)/2
   movey = 240 - scale*(maxy+miny)/2
-  for a in m.atoms_map:
+  for a in m.atoms:
     a.x = movex + scale*a.x
     a.y = movey + scale*a.y
   return m
@@ -119,13 +119,13 @@ def oasa_bond_to_bkchem_bond( b, paper):
 
 def bkchem_mol_to_oasa_mol( mol):
   m = oasa.molecule()
-  for a in mol.atoms_map:
+  for a in mol.atoms:
     m.add_vertex( bkchem_atom_to_oasa_atom( a))
   for b in mol.bonds:
     b2 = bkchem_bond_to_oasa_bond( b)
     aa1, aa2 = b.atoms
-    v1 = m.vertices[ mol.atoms_map.index( aa1)]
-    v2 = m.vertices[ mol.atoms_map.index( aa2)]
+    v1 = m.vertices[ mol.atoms.index( aa1)]
+    v2 = m.vertices[ mol.atoms.index( aa2)]
     b2.vertices = (v1, v2)
     m.add_edge( v1, v2, b2)
   return m

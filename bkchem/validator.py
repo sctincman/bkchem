@@ -58,7 +58,7 @@ class validator:
         self.report.exceeded_valency.append( a)
 
   def validate_molecule( self, mol):
-    [self.validate_atom( a) for a in mol.atoms_map]
+    [self.validate_atom( a) for a in mol.atoms]
 
   def validate_list( self, objs):
     [self.validate_object( o) for o in objs]

@@ -144,7 +144,7 @@ class chem_paper( Canvas, object):
 
   # top_levels
   def __get_top_levels( self):
-    print [o for o in self.stack if not isinstance( o, graphics.top_level)]
+    #print [o for o in self.stack if not isinstance( o, graphics.top_level)]
     return self.stack
     #return [o for o in self.stack if isinstance( o, graphics.top_level)]
 
@@ -421,7 +421,7 @@ class chem_paper( Canvas, object):
     [self.stack.remove( o) for o in empty_mols]
     # REDRAW OF NECESSARY THINGS
     for m in self.molecules:
-      for a in m.atoms_map:
+      for a in m.atoms:
         if a.show and a.type == 'element' and len( a.name) > 1:
           a.decide_pos()
           a.redraw()
@@ -1068,7 +1068,7 @@ class chem_paper( Canvas, object):
     tr.set_scaling_xy( ratio_x, ratio_y)
     for o in top_levels:
       if o.object_type == 'molecule':
-        for i in o.atoms_map:
+        for i in o.atoms:
           x, y = tr.transform_xy( i.x, i.y)
           i.move_to( x, y)
           if scale_font:
@@ -1281,7 +1281,7 @@ class chem_paper( Canvas, object):
       atoms = [o for o in self.selected if (o.object_type == 'atom' and o.type in ('group','chain'))]
       self.unselect_all()
       for mol in mols:
-        this_atoms = misc.intersection( atoms, mol.atoms_map)
+        this_atoms = misc.intersection( atoms, mol.atoms)
         mol.expand_groups( atoms = this_atoms)
     else:
       self.unselect_all()
@@ -1527,7 +1527,7 @@ class chem_paper( Canvas, object):
         for b in m.bonds:
           b.read_standard_values( old_standard=old_standard)
           to_redraw.append( b)
-        for a in m.atoms_map:
+        for a in m.atoms:
           a.read_standard_values( old_standard=old_standard)
           to_redraw.append( a)
       else:

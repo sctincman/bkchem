@@ -103,7 +103,7 @@ class SVG_writer( XML_writer):
       if o.object_type == 'molecule':
         for b in o.bonds:
           self.add_bond( b)
-        for a in o.atoms_map:
+        for a in o.atoms:
           self.add_atom( a)
       elif o.object_type == 'arrow':
         self.add_arrow( o)

@@ -19,7 +19,7 @@
 
 
 to_serialize = { 'paper': ('molecules',),
-                 'molecule': ('atoms_map','bonds'),
+                 'molecule': ('atoms','bonds'),
                  'atom': ('x','y','name','type'),
                  'bond': ('type','order','atom1','atom2')
                  }

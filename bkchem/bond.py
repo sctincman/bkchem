@@ -891,7 +891,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
         while len( side1):
           a1 = side1.pop(0)
           for a2 in side2:
-            atoms = copy.copy( self.molecule.atoms_map)
+            atoms = copy.copy( self.molecule.atoms)
             atoms.remove( self.atom1)
             atoms.remove( self.atom2)
             if accessible( a1, a2, atoms):

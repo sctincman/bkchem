@@ -993,7 +993,7 @@ class rotate_mode( edit_mode):
     self.app.paper.unselect_all()
     if self.focused and (self.focused.object_type == 'atom' or self.focused.object_type == 'bond'):
       self._rotated_mol = self.focused.molecule
-      x1, y1, x2, y2 = self.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms_map])
+      x1, y1, x2, y2 = self.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
       self._centerx = x1+(x2-x1)/2.0
       self._centery = y1+(y2-y1)/2.0
     if self.focused:
@@ -1008,7 +1008,7 @@ class rotate_mode( edit_mode):
       self._moved_atom = None
       if self._rotated_mol:
         [b.redraw( recalc_side=1) for b in self._rotated_mol.bonds]
-        [a.reposition_marks() for a in self._rotated_mol.atoms_map]
+        [a.reposition_marks() for a in self._rotated_mol.atoms]
         self._rotated_mol = None
         self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
@@ -1039,7 +1039,7 @@ class rotate_mode( edit_mode):
         tr.set_move( -self._centerx, -self._centery, 0)
         tr.set_rotation( angle2, angle1, 0)
         tr.set_move( self._centerx, self._centery, 0)
-        for a in self._rotated_mol.atoms_map:
+        for a in self._rotated_mol.atoms:
           x, y, z = a.x, a.y, a.z
           x, y, z = tr.transform_xyz( x, y, z)
           a.move_to( x, y)

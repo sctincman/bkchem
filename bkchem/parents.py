@@ -309,6 +309,21 @@ class container( simple_parent):
                                     "should give list of point_drawable instances")
 
 
+  # children
+  def __get_children( self):
+    return self.shape_defining_points
+
+  children = property( __get_children, None, None,
+                       "should give list of child instances, by default is alias for self.shape_defining_points")
+
+##   # iterator
+##   def __iter__( self):
+##     return self
+
+##   def next( self):
+
+  
+
 
 
 class child( simple_parent):

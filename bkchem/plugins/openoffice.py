@@ -77,7 +77,7 @@ class OO_exporter( plugin.exporter):
         group = dom_ext.elementUnder( page, 'draw:g')
         for b in o.bonds:
           self.add_bond( b, group)
-        for b in o.atoms_map:
+        for b in o.atoms:
           self.add_atom( b, group)
       elif o.object_type == 'arrow':
         self.add_arrow( o, page)

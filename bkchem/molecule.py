@@ -51,13 +51,13 @@ class molecule( container, top_level):
   meta__is_container = 1
   # undo meta infos
   meta__undo_simple = ('name','id')
-  meta__undo_copy = ('atoms_map', 'bonds')
+  meta__undo_copy = ('atoms', 'bonds')
   meta__undo_2d_copy = ('connect',)
-  meta__undo_children_to_record = ('atoms_map','bonds')
+  meta__undo_children_to_record = ('atoms','bonds')
   
   def __init__( self, paper, package = None):
     self.paper = paper
-    self.atoms_map = []  # list of atoms
+    self.atoms = []  # list of atoms
     self.bonds = []      # list of bonds
     self.connect = []    # matrix that shows conectivity of each atom
     self.sign = 1
@@ -79,30 +79,56 @@ class molecule( container, top_level):
     i = self._iterator
     self._iterator += 1
     try:
-      return self.atoms_map[ i]
+      return self.atoms[ i]
     except IndexError:
       try:
-        return self.bonds[ i - len( self.atoms_map)]
+        return self.bonds[ i - len( self.atoms)]
       except IndexError:
         self._iterator = 0
         raise StopIteration
 
-  def feed_data( self, atoms_map, bonds, connect):
+
+  ### PROPERTIES
+
+  # shape_defining_points
+  def __get_shape_defining_points( self):
+    return self.atoms
+
+  shape_defining_points = property( __get_shape_defining_points, None, None,
+                                    "returns list of atoms")
+
+
+  # children
+  def __get_children( self):
+    return self.atoms + self.bonds
+
+  children = property( __get_children, None, None,
+                       "returns list of atoms and bonds")
+
+
+
+  ### // PROPERTIES
+
+
+
+  def feed_data( self, atoms, bonds, connect):
     "feed data from another molecule"
     self.bonds += bonds
-    self.atoms_map += atoms_map
+    self.atoms += atoms
     for line in self.connect:
       line.extend( len(connect)*[0])
     l = len( self.connect)
     for i in range( len( connect)):
       self.connect.append( l*[0])
       self.connect[l+i].extend( connect[i])
-    for o in self:
+    for o in self.children:
       o.molecule = self
       
+
   def eat_molecule( self, mol):
     "transfers everything from mol to self, now only calls feed_data"
-    self.feed_data( mol.atoms_map, mol.bonds, mol.connect)
+    self.feed_data( mol.atoms, mol.bonds, mol.connect)
+
 
   def add_atom_to( self, a1, bond_to_use=None, pos=None):
     """adds new atom bound to atom id with bond, the position of new atom can be specified in pos or is
@@ -123,8 +149,8 @@ class molecule( container, top_level):
     return a2, b
 
   def insert_bond( self, b):
-    self.connect[ self.atoms_map.index( b.atom1)][ self.atoms_map.index( b.atom2)] = b
-    self.connect[ self.atoms_map.index( b.atom2)][ self.atoms_map.index( b.atom1)] = b
+    self.connect[ self.atoms.index( b.atom1)][ self.atoms.index( b.atom2)] = b
+    self.connect[ self.atoms.index( b.atom2)][ self.atoms.index( b.atom1)] = b
     self.bonds.append( b)
     if not b.molecule:
       b.molecule = self
@@ -166,15 +192,15 @@ class molecule( container, top_level):
     return x, y
 
   def atoms_bonds( self, a):
-    return filter( None,  self.connect[ self.atoms_map.index( a)])
+    return filter( None,  self.connect[ self.atoms.index( a)])
 
   def atoms_bound_to( self, a):
     "returns list of ids of atoms bound to atom with id = 'id'"
-    bonds = self.connect[ self.atoms_map.index( a)]
+    bonds = self.connect[ self.atoms.index( a)]
     ret = []
     for i in bonds:
       if i:
-        ret.append( self.atoms_map[ bonds.index( i)])
+        ret.append( self.atoms[ bonds.index( i)])
     return ret
 
   def get_angle( self, a1, a2):
@@ -203,18 +229,18 @@ class molecule( container, top_level):
             bonds_in_connect.append( b)
       deleted += [self.delete_bond( o) for o in misc.difference( self.bonds, bonds_in_connect)]
       # delete also orphan atoms
-      deleted += [self.delete_atom( o) for o in self.atoms_map if not self.atoms_bonds( o)]
+      deleted += [self.delete_atom( o) for o in self.atoms if not self.atoms_bonds( o)]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
       bonds_to_redraw = []
       for b in deleted:
         if b.object_type == 'bond':
           for a in b.atoms:
-            if a in self.atoms_map:
+            if a in self.atoms:
               bonds_to_redraw.extend( self.atoms_bonds( a))
       [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
       # recalculate marks positions
-      [o.reposition_marks() for o in self.atoms_map]
+      [o.reposition_marks() for o in self.atoms]
     else:
       deleted += map( self.delete_bond, self.bonds)
     return deleted, self.check_integrity()
@@ -232,11 +258,11 @@ class molecule( container, top_level):
       
   def delete_atom( self, item):
     "remove links to atom from molecule records"
-    index = self.atoms_map.index( item)
+    index = self.atoms.index( item)
     del self.connect[ index]
     for i in range( len( self.connect)):
       del self.connect[i][ index]
-    self.atoms_map.remove( item)
+    self.atoms.remove( item)
     item.delete()
     if item == self.t_atom:
       t_atom = None
@@ -260,7 +286,7 @@ class molecule( container, top_level):
       self.connect.append( (len( self.connect)+1) *[0])
     else:
       self.connect = [[0]]
-    self.atoms_map.append( at)
+    self.atoms.append( at)
     at.molecule = self
   
 
@@ -271,7 +297,7 @@ class molecule( container, top_level):
     con = []  # connectivity matrix copy for fusion
     for line in self.connect:
       con.append( [(e and 1) or 0 for e in line])
-    vs = copy.copy( self.atoms_map)
+    vs = copy.copy( self.atoms)
     while vs:
       if sum( con[0]) == 0:
         comp.append( vs.pop(0))
@@ -292,7 +318,7 @@ class molecule( container, top_level):
     and return them in form of list of new molecules"""
     if self.connect == []:
       return []
-    old_map = copy.copy( self.atoms_map)
+    old_map = copy.copy( self.atoms)
     # first distribute atoms to new_maps
     new_maps = self.get_connected_components()
     if len( new_maps) == 1:
@@ -306,13 +332,13 @@ class molecule( container, top_level):
         con.append( len( mmap)*[0])
       ## for bigger molecules it can be about 10x faster to iterate twice over the whole connect
       ## then only over the mmap, because this way we can save the index in many cases, which is pretty expensive
-      for i in range( len( self.atoms_map)):
-        for j in range( i+1, len( self.atoms_map)):
+      for i in range( len( self.atoms)):
+        for j in range( i+1, len( self.atoms)):
           bond = self.connect[i][j]
           if bond:
             try:
-              i2 = mmap.index( self.atoms_map[i])
-              j2 = mmap.index( self.atoms_map[j])
+              i2 = mmap.index( self.atoms[i])
+              j2 = mmap.index( self.atoms[j])
             except ValueError:
               continue
             con[i2][j2] = bond
@@ -333,7 +359,7 @@ class molecule( container, top_level):
     self.id = package.getAttribute( 'id')
     for a in package.getElementsByTagName( 'atom'):
       self.insert_atom( atom( self.paper, package=a, molecule=self))
-    self._id_map = map( lambda a: a.cdml_id, self.atoms_map)
+    self._id_map = map( lambda a: a.cdml_id, self.atoms)
     for b in package.getElementsByTagName( 'bond'):
       self.insert_bond( bond( self.paper, package = b, molecule=self))
     temp = package.getElementsByTagName('template')
@@ -356,26 +382,26 @@ class molecule( container, top_level):
                                                         ('bond_second', str( self.t_bond_second.cdml_id))))
       else:
         dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.cdml_id)),))
-    for i in self:
+    for i in self.children:
       mol.appendChild( i.get_package( doc))
     return mol
 
   def draw( self, no_automatic=0):
     [a.draw( no_automatic=no_automatic) for a in self.bonds]
-    [a.draw() for a in self.atoms_map]
+    [a.draw() for a in self.atoms]
     
   def bond_between( self, a1, a2):
     "returns id of bond between atoms i1 and i2"
-    return self.connect[ self.atoms_map.index( a1)][ self.atoms_map.index( a2)]
+    return self.connect[ self.atoms.index( a1)][ self.atoms.index( a2)]
 
   def handle_overlap( self):
     "deletes one of overlaping atoms and updates the bonds"
     to_delete = []
     bonds_to_check = [] # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
-    for i in range( len( self.atoms_map)):
-      for j in range( i+1, len( self.atoms_map)):
-        a = self.atoms_map[i]
-        b = self.atoms_map[j]
+    for i in range( len( self.atoms)):
+      for j in range( i+1, len( self.atoms)):
+        a = self.atoms[i]
+        b = self.atoms[j]
         if (abs( a.x-b.x) < 4) and (abs( a.y-b.y) <4):
           if a not in to_delete:
             for x in self.atoms_bonds( b):
@@ -389,7 +415,7 @@ class molecule( container, top_level):
     for b in bonds_to_check:
       if not b in self.bonds:
         continue
-      i1, i2 = map( self.atoms_map.index, b.atoms)
+      i1, i2 = map( self.atoms.index, b.atoms)
       recent_b = self.connect[i1][i2]
       if recent_b and recent_b != b:
         self.delete_bond( b)
@@ -406,21 +432,21 @@ class molecule( container, top_level):
 
   def move( self, dx, dy):
     """moves the whole molecule"""
-    for o in self.atoms_map +self.bonds:
+    for o in self.atoms +self.bonds:
       o.move( dx, dy)
 
   def bbox( self):
     items = []
-    for a in self.atoms_map:
+    for a in self.atoms:
       items.append( a.item)
     return self.paper.list_bbox( items)
 
   def get_atom_with_cdml_id( self, id):
-    return self.atoms_map[ self._id_map.index( id)]
+    return self.atoms[ self._id_map.index( id)]
     
 
   def delete( self):
-    [o.delete() for o in self.bonds+self.atoms_map]
+    [o.delete() for o in self.bonds+self.atoms]
 
   def redraw( self, reposition_double=0):
     for o in self.bonds:
@@ -428,7 +454,7 @@ class molecule( container, top_level):
         o.redraw( recalc_side=reposition_double)
       else:
         o.redraw()
-    [o.redraw() for o in self.atoms_map]  
+    [o.redraw() for o in self.atoms]  
 
     
   def get_atoms_valency( self, atom):
@@ -439,7 +465,7 @@ class molecule( container, top_level):
 
   def get_formula_dict( self):
     comp = PT.formula_dict()
-    for a in self.atoms_map:
+    for a in self.atoms:
       comp += a.get_formula_dict()
     return comp
 
@@ -447,7 +473,7 @@ class molecule( container, top_level):
     """expands all group atoms; optional atoms selects atoms to expand - all used if not present"""
     names = self.paper.gm.get_template_names()
     if not atoms:
-      map = copy.copy( self.atoms_map) # need to do that because the self.atoms_map gets changed during the cycle
+      map = copy.copy( self.atoms) # need to do that because the self.atoms gets changed during the cycle
     else:
       map = atoms # only selected atoms
     for a in map:
@@ -475,8 +501,8 @@ class molecule( container, top_level):
     """transfers all bonds from one atom to the other; both atoms must be in self"""
     for b in self.atoms_bonds( a1):
       b.change_atoms( a1, a2)
-    i = self.atoms_map.index( a1)
-    l = self.atoms_map.index( a2)
+    i = self.atoms.index( a1)
+    l = self.atoms.index( a2)
     for j in range( len( self.connect)):
       for k in range( len( self.connect)):
         if self.connect[j][k]:
@@ -489,7 +515,7 @@ class molecule( container, top_level):
 
   def lift( self):
     [o.lift() for o in self.bonds]
-    [o.lift() for o in self.atoms_map]
+    [o.lift() for o in self.atoms]
 
   def find_least_crowded_place_around_atom( self, a, range=10):
     atms = self.atoms_bound_to( a)
@@ -505,27 +531,20 @@ class molecule( container, top_level):
     
 
 
-  # shape_defining_points
-  def __get_shape_defining_points( self):
-    return self.atoms_map
-
-  shape_defining_points = property( __get_shape_defining_points, None, None,
-                                    "returns list of atoms")
-
 
 
   def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
     f = file( name, 'w')
-    for a in self.atoms_map:
+    for a in self.atoms:
       f.write('%s ' % a.name)
     f.write('\n')
     for b in self.bonds:
-      f.write('%d %d %d\n' % (b.order, self.atoms_map.index( b.atom1), self.atoms_map.index( b.atom2)))
+      f.write('%d %d %d\n' % (b.order, self.atoms.index( b.atom1), self.atoms.index( b.atom2)))
     f.close()
 
   def transform( self, tr):
     """applies given transformation to its children"""
-    for a in self.atoms_map:
+    for a in self.atoms:
       a.transform( tr)
     for b in self.bonds:
       b.transform( tr)

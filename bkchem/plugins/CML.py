@@ -214,7 +214,7 @@ class CML_exporter( plugin.exporter):
       if m.id:
         mol.setAttribute( 'id', m.id)
       atoms = dom_ext.elementUnder( mol, 'atomArray')
-      for a in m.atoms_map:
+      for a in m.atoms:
         atoms.appendChild( self.CML_atom( atom=a).get_CML_dom( out))
       bonds = dom_ext.elementUnder( mol, 'bondArray')
       for b in m.bonds:
