@@ -472,7 +472,10 @@ class point( point_drawable, interactive, child):
   def __get_parent( self):
     return self.molecule
 
-  parent = property( __get_parent, None, None,
+  def __set_parent( self, par):
+    self.molecule = par
+
+  parent = property( __get_parent, __set_parent, None,
                      "returns self.molecule")
 
 

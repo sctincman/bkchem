@@ -37,6 +37,9 @@ import helper_graphics as hg
 import dom_extensions
 import messages
 from bond import bond
+from atom import atom
+from group import group
+from textatom import textatom
 from context_menu import context_menu
 from reaction import reaction
 import parents
@@ -674,9 +677,9 @@ class draw_mode( edit_mode):
         if self._start_atom.get_free_valency() < 0:
           self.app.paper.signal_to_app( _("maximum valency exceeded!"))
         # adding more than one bond to group
-        if self._start_atom.type == "group":
-          self.app.paper.signal_to_app( _("groups could have valency of 1 only! Atom was transformed to text!"))
-          self._start_atom.type = "text"
+        if isinstance( self._start_atom, group):
+          #LOOK
+          print "here must be some checking"
         self.reposition_bonds_around_atom( self._start_atom)
       self._dragging = 0
       self._start_atom = None
@@ -710,9 +713,9 @@ class draw_mode( edit_mode):
         if self.focused.get_free_valency() < 0:
           self.app.paper.signal_to_app( _("maximum valency exceeded!"))
         # adding more than one bond to group
-        if self.focused.type == "group":
+        if isinstance( self.focused, group):
+          #LOOK
           self.app.paper.signal_to_app( _("groups could have valency of 1 only! Atom was transformed to text!"))
-          self.focused.type = "text"
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
         self.app.paper.select( [a])
@@ -1569,19 +1572,32 @@ class atom_mode( edit_mode):
 
       if name and not dom_extensions.isOnlyTags( name):
         mol = self.app.paper.new_molecule()
-        a = mol.create_new_atom( event.x, event.y)
-        a.set_name( name, interpret=self.app.editPool.interpret)
-        a.redraw()
+        a = mol.create_vertex_according_to_text( None, name, interpret=self.app.editPool.interpret)
+        a.x = event.x
+        a.y = event.y
+        mol.insert_atom( a)
+        a.draw()
         self.app.paper.select( [a])
         self.app.paper.add_bindings()
         self.app.paper.start_new_undo_record()        
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         self.app.paper.select( [self.focused])
-        name = self.app.editPool.activate( text = self.focused.get_text())
+        a = self.focused
+        name = self.app.editPool.activate( text = a.get_text())
         if name and not dom_extensions.isOnlyTags( name):
-          self.app.paper.set_name_to_selected( name, interpret=self.app.editPool.interpret)
+          # we need to change the class of the vertex
+          v = a.molecule.create_vertex_according_to_text( a, name, interpret=self.app.editPool.interpret)
+          a.copy_settings( v)
+          a.molecule.replace_vertices( a, v)
+          a.delete()
+          v.draw()
+          print v, type( v)
+
+          self.app.paper.start_new_undo_record()        
           self.app.paper.add_bindings()
+
+
 
   def leave_object( self, event):
     if self.focused:
@@ -1589,6 +1605,7 @@ class atom_mode( edit_mode):
       self.focused = None
     else:
       warn( "leaving NONE", UserWarning, 2)
+
 
 
 

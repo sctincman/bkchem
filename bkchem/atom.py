@@ -65,7 +65,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
-                            'pos', 'type', 'multiplicity', 'valency')
+                            'pos', 'multiplicity', 'valency')
   meta__undo_copy = ('marks','_neighbors')
   meta__undo_children_to_record = ('marks',)
 
@@ -231,17 +231,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
   pos = property( __get_pos, __set_pos)
 
 
-  # type
-  def __get_type( self):
-    return self.__type
-
-  def __set_type( self, type):
-    self.__type = type
-    self.dirty = 1
-
-  type = property( __get_type, __set_type)
-
-
 
   # valency
   def __get_valency( self):
@@ -287,7 +276,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
   def __get_parent( self):
     return self.molecule
 
-  parent = property( __get_parent, None, None,
+  def __set_parent( self, par):
+    self.molecule = par
+
+  parent = property( __get_parent, __set_parent, None,
                      "returns self.molecule")
 
 
@@ -317,22 +309,28 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
   ## // -------------------- END OF PROPERTIES --------------------------
 
-  def set_name( self, name, interpret=1, check_valency=1):
-    self._set_name( name, interpret=interpret, check_valency=check_valency)
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    meta_enabled.copy_settings( self, other)
+    area_colored.copy_settings( self, other)
+    point_drawable.copy_settings( self, other)
+    text_like.copy_settings( self, other)
+    child.copy_settings( self, other)
+    other.pos = self.pos
+
+
+
+
+  def set_name( self, name, interpret=1, check_valency=1, occupied_valency=None):
+    ret = self._set_name( name, interpret=interpret, check_valency=check_valency, occupied_valency=occupied_valency)
     self.set_valency_from_name()
+    return ret
 
 
-  def _set_name( self, name, interpret=1, check_valency=1):
+  def _set_name( self, name, interpret=1, check_valency=1, occupied_valency=None):
     # every time name is set the charge should be set to zero or the value specified by marks
     self.charge = self.get_charge_from_marks()
     self.dirty = 1
-    # name should not be interpreted
-    if not interpret:
-      self.name = name
-      self.show_hydrogens = 0
-      self.type = 'text'
-      self.show = 1
-      return
     # try to interpret name
     if name.lower() != 'c':
       self.show = 1
@@ -343,50 +341,34 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
       # name is element symbol + charge
       self.name = elch[0]
       self.show_hydrogens = 0
-      self.type = 'element'
       self.charge += elch[1]
-    elif (name.lower() in GT.groups_table) and ( not check_valency or self.get_occupied_valency() == 1):
-      # name is a known group
-      self.name = GT.groups_table[ name.lower()]['name']
-      self.show_hydrogens = 0
-      self.type = 'group'
+      return True
     else:
-      # try other possibilities such as alkyl chain or atom with hydrogens
       # try if name is hydrogenated form of an element
       form = PT.text_to_hydrogenated_atom( name)
       if form:
         # it is!
         a = form.keys()
         a.remove( 'H')
-        valency = self.get_occupied_valency()
+        if occupied_valency == None:
+          valency = self.get_occupied_valency()
+        else:
+          valency = occupied_valency
         if form['H'] in [i-valency+self.charge for i in PT.periodic_table[a[0]]['valency']]:
           self.name = a[0]
           self.show_hydrogens = 1
-          self.type = 'element'
           #self.show = 1
-          return
-      # try if the name is an alkyl chain such as c6h13
-      form = PT.formula_dict( name.upper())
-      if form.is_saturated_alkyl_chain() and self.get_occupied_valency() == 1:
-        self.name = str( form)
-        self.show_hydrogens = 1
-        self.type = 'chain'
-        return
-      # its nothing interesting - just text
-      self.name = name
-      self.show_hydrogens = 0
-      self.type = 'text'
-      debug.log( name, 'is text')
+          return True
+    return False
+
 
 
 
 
   def get_text( self):
-    if self.type in ('text', 'group'):
+    if not self.show:
       return self.name
-    elif self.type == 'element' and not self.show:
-      return self.name
-    elif self.type == 'element' and self.show:
+    elif self.show:
       ret = self.name
       # hydrogens
       if self.show_hydrogens:
@@ -416,52 +398,41 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
         return ch + ret
       else:
         return ret + ch
-    elif self.type == 'chain':
-      return PT.formula_dict( self.name).__str__( reverse=(self.pos=='center-last'))
 
 
 
 
   def get_ftext( self):
-    if self.type == 'text':
-      return self.name
-    elif self.type == 'group':
-      if self.pos == 'center-first':
-        return GT.groups_table[ self.name.lower()]['textf']
+    ret = self.name
+    # hydrogens
+    if self.show_hydrogens:
+      v = self.get_free_valency()
+      if v:
+        h = 'H'
       else:
-        return GT.groups_table[ self.name.lower()]['textb']
-    elif self.type == 'element':
-      ret = self.name
-      # hydrogens
-      if self.show_hydrogens:
-        v = self.get_free_valency()
-        if v:
-          h = 'H'
-        else:
-          h = ''
-        if v > 1:
-          h += '<sub>%d</sub>' % v
-        if self.pos == 'center-last':
-          ret = h + ret
-        else:
-          ret = ret + h
-      # charge
-      if self.charge -self.get_charge_from_marks():
-        ch = ''
-        if abs( self.charge) > 1:
-          ch += str( abs( self.charge -self.get_charge_from_marks()))
-        if self.charge -self.get_charge_from_marks() > 0:
-          ch = '<sup>%s+</sup>' % ch
-        else:
-          ch = '<sup>%s-</sup>' % ch
-      else:
-        ch = ''
+        h = ''
+      if v > 1:
+        h += '<sub>%d</sub>' % v
       if self.pos == 'center-last':
-        return ch + ret
+        ret = h + ret
       else:
-        return ret + ch
-    elif self.type == 'chain':
-      return PT.formula_dict( self.name).get_html_repr_as_string( reverse=(self.pos=='center-last'))
+        ret = ret + h
+    # charge
+    if self.charge -self.get_charge_from_marks():
+      ch = ''
+      if abs( self.charge) > 1:
+        ch += str( abs( self.charge -self.get_charge_from_marks()))
+      if self.charge -self.get_charge_from_marks() > 0:
+        ch = '<sup>%s+</sup>' % ch
+      else:
+        ch = '<sup>%s-</sup>' % ch
+    else:
+      ch = ''
+    if self.pos == 'center-last':
+      return ch + ret
+    else:
+      return ret + ch
+
 
 
 
@@ -501,7 +472,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
       x1, y1, x2, y2 = self.ftext.bbox()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
       ## shrink the selector to improve appearance (y2-2)
-      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='', outline='',tags='helper_a')
+      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='#ffffff', outline='',tags='helper_a')
       self.ftext.lift()
       self.paper.lift( self.item)
     else:
@@ -747,13 +718,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
       font = dom_extensions.elementUnder( a, 'font', attributes=(('size', str( self.font_size)), ('family', self.font_family)))
       if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
-    if self.type == 'text':
-      a.appendChild( dom.parseString( '<ftext>%s</ftext>' % self.name).childNodes[0])
-    else:
-      a.setAttribute( 'name', self.name)
-      if self.show_hydrogens:
-        a.setAttribute('hydrogens', on_off[self.show_hydrogens])
-    if self.area_color != "#ffffff":
+    a.setAttribute( 'name', self.name)
+    if self.show_hydrogens:
+      a.setAttribute('hydrogens', on_off[self.show_hydrogens])
+    if self.area_color != self.paper.standard.area_color:
       a.setAttribute( 'background-color', self.area_color)
     # needed to support transparent handling of molecular size
     x, y, z = map( self.paper.px_to_text_with_unit, self.get_xyz( real=1))
@@ -811,62 +779,16 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
 
 
-    ##LOOK
-##   def get_free_valency( self, strict=0):
-##     """returns free valency of atom."""
-##     if not strict:
-##       while not self.get_free_valency( strict=1) >= 0:
-##         vals = list( PT.periodic_table[ self.name]['valency'])
-##         if self.valency not in vals:
-##           self.valency = vals[0]
-##         elif self.valency == vals[-1]:
-##           return 0
-##         else:
-##           self.valency = vals[ vals.index( self.valency) + 1]
-##       return self.get_free_valency( strict = 1)
-##     else:
-##       if self.type != 'element':
-##         return 4
-##       occupied_valency = self.get_occupied_valency()
-
-##       v = self.valency
-##       # should we increase or decrease valency with charge ?
-##       if self.charge:
-##         if abs( self.charge) > 1:
-##           # charges higher than one should always decrease valency
-##           charge = abs( self.charge)
-##         elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
-##           # elements that can accept cations to increase their valency (NH4+)
-##           charge = -1
-##         elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
-##           # elements that can accept anions to increase their valency (BH4-)
-##           charge = -1
-##         else:
-##           # otherwise charge reduces valency 
-##           charge = abs( self.charge)
-##       else:
-##         charge = 0
-##       return v-occupied_valency-charge-self.multiplicity+1
-
-    
-
-
 
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
-    if self.type == 'text':
-      return PT.formula_dict()
-    elif self.type == 'group':
-      return PT.formula_dict( GT.groups_table[ self.name.lower()]['composition'])
-    elif self.type == 'element':
-      ret = PT.formula_dict( self.name)
-      free_val = self.get_free_valency()
-      if free_val > 0:
-        ret['H'] = free_val
-      return ret
-    elif self.type == 'chain':
-      return PT.formula_dict( self.name)
+    ret = PT.formula_dict( self.name)
+    free_val = self.get_free_valency()
+    if free_val > 0:
+      ret['H'] = free_val
+    return ret
+
 
 
 
@@ -962,7 +884,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
 
   def update_after_valency_change( self):
-    if self.type == 'element' and self.show_hydrogens:
+    if self.show_hydrogens:
       self.redraw()
 
 
@@ -999,19 +921,15 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
 
 
   def set_valency_from_name( self):
-    if self.type == 'element':
-      for val in PT.periodic_table[ self.name]['valency']:
-        self.valency = val
-        try:
-          fv = self.get_free_valency( strict=1)
-        except:
-          return  # this happens on read
-        if fv >= 0:
-          return
-    elif self.type == 'group':
-      self.valency = 0
-    else:
-      self.valency = 8  # any big value would do :)
+    for val in PT.periodic_table[ self.name]['valency']:
+      self.valency = val
+      try:
+        fv = self.get_free_valency( strict=1)
+      except:
+        return  # this happens on read
+      if fv >= 0:
+        return
+
 
 
 

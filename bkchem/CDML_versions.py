@@ -153,6 +153,27 @@ class CDML_transformer_12_13:
       
 
 
+class CDML_transformer_13_14:
+
+  output_version = '0.14'
+  input_version = '0.13'
+
+  def tranform_dom( self, dom):
+    for a in dom.getElementsByTagName( 'atom'):
+      name = a.getAttribute( "name")
+      if not name:
+        a.tagName = "text"
+      elif name in ('OCH3','NO2','COOH','COOCH3','Me','CN','SO3H','PPh3','OMe','Et','Ph','COCl','CH2OH'):
+        a.tagName = "group"
+        a.setAttribute( "group-type", "builtin")
+      else:
+        pass
+      
+
+
+
+
+
 # LIST OF AVAILABLE TRANSFORMERS
 
 transformers = { '0.6': CDML_transformer_06_07,
@@ -161,7 +182,8 @@ transformers = { '0.6': CDML_transformer_06_07,
                  '0.9': CDML_transformer_09_10,
                  '0.10': CDML_transformer_10_11,
                  '0.11': CDML_transformer_11_12,
-                 '0.12': CDML_transformer_12_13}
+                 '0.12': CDML_transformer_12_13,
+                 '0.13': CDML_transformer_13_14}
 
 
 # TRANSFORMING FUNCTION

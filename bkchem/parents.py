@@ -48,6 +48,9 @@ class simple_parent( object):
     pass
 
 
+  def copy_settings( self, other):
+    pass
+
 
 
 class id_enabled( simple_parent):
@@ -81,7 +84,12 @@ class id_enabled( simple_parent):
   id = property( __get_id, __set_id)
   
 
-  
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    other.id = self.id
+    other.paper = self.paper
+
+    
 
 
 class meta_enabled( id_enabled):
@@ -189,6 +197,12 @@ class point_drawable( drawable):
   y = property( __get_y, __set_y)
 
 
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    drawable.copy_settings( self, other)
+    other.x = self.x
+    other.y = self.y
+
 
 
 
@@ -207,6 +221,11 @@ class with_line( simple_parent):
 
   line_width = property( __get_line_width, __set_line_width)
   
+
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    simple_parent.copy_settings( self, other)
+    other.line_width = self.line_width
 
 
 
@@ -236,6 +255,10 @@ class line_colored( simple_parent):
   line_color = property( __get_line_color, __set_line_color)
 
 
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    simple_parent.copy_settings( self, other)
+    other.line_color = self.line_color
 
 
   
@@ -262,6 +285,11 @@ class area_colored( line_colored):
 
   area_color = property( __get_area_color, __set_area_color)
 
+
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    simple_parent.copy_settings( self, other)
+    other.area_color = self.area_color
 
 
 
@@ -299,6 +327,12 @@ class with_font( simple_parent):
 
   font_family = property( __get_font_family, __set_font_family)
 
+
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    simple_parent.copy_settings( self, other)
+    other.font_family = self.font_family
+    other.font_size = self.font_size
 
 
 
@@ -378,8 +412,17 @@ class child( simple_parent):
   def __get_parent( self):
     return None
 
-  parent = property( __get_parent, None, None,
+  def __set_parent( self, par):
+    pass
+
+  parent = property( __get_parent, __set_parent, None,
                      "should give a container")
+
+
+  def copy_settings( self, other):
+    """copies settings of self to other, does not check if other is capable of receiving it"""
+    simple_parent.copy_settings( self, other)
+    other.parent = self.parent
 
 
 

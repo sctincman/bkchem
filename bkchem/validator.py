@@ -24,7 +24,9 @@
 """provides validator class that checks chemistry"""
 
 import types
-import atom
+from atom import atom
+from group import group
+from textatom import textatom
 import molecule
 import misc
 
@@ -44,15 +46,15 @@ class validator:
   def validate_object( self, o):
     if type( o) == types.ListType:
       self.validate_list( o)
-    elif isinstance( o, atom.atom):
+    elif misc.isinstance_of_one( o, (atom,group,textatom)):
       self.validate_atom( o)
     elif isinstance( o, molecule.molecule):
       self.validate_molecule( o)
 
   def validate_atom( self, a):
-    if a.type == "text":
+    if isinstance( a, textatom):
       self.report.text_atoms.append( a)
-    elif a.type == "group":
+    elif isinstance( a, group):
       self.report.group_atoms.append( a)
     else:
       fval = a.get_free_valency()

@@ -255,7 +255,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
   def __get_parent( self):
     return self.molecule
 
-  parent = property( __get_parent, None, None,
+  def __set_parent( self, par):
+    self.molecule = par
+
+  parent = property( __get_parent, __set_parent, None,
                      "returns self.molecule")
 
 
@@ -306,10 +309,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
     x2, y2 = self.atom2.get_xy()
     # main item
     # calculation of what part of line to draw
-    if self.atom1.show:
-      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom1.bbox())
-    if self.atom2.show:
-      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom2.bbox())
+##     if self.atom1.show:
+##       x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom1.bbox())
+##     if self.atom2.show:
+##       x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom2.bbox())
 
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
@@ -535,6 +538,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
       _k = 0
     else:
       _k = (1-self.double_length_ratio)/2
+    # shift according to the angles arround
+    myang = geometry.clockwise_angle_from_east( dx, dy)
+    angs = [geometry.clockwise_angle_from_east( x-neigh.x, y-neigh.y) for neigh in self.atom1.neighbors]
+    if dx*dy > 0:
+      pass
+    
     return [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
 
 

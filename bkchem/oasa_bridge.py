@@ -28,6 +28,9 @@ import bond
 import atom
 
 import math
+import operator
+
+
 
 def read_smiles( text, paper):
   mol = oasa.smiles.text_to_mol( text)
@@ -62,6 +65,11 @@ def write_molfile( mol, file):
 
 def oasa_mol_to_bkchem_mol( mol, paper):
   m = molecule.molecule( paper)
+  if None in reduce( operator.add, [[a.x, a.y] for a in mol.atoms], []):
+    calc_position = 0
+  else:
+    calc_position = 1
+    
   minx = None
   maxx = None
   miny = None
@@ -70,15 +78,16 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   for a in mol.vertices:
     a2 = oasa_atom_to_bkchem_atom( a, paper, m)
     m.insert_atom( a2)
-    # data for rescaling
-    if not maxx or a2.x > maxx:
-      maxx = a2.x
-    if not minx or a2.x < minx:
-      minx = a2.x
-    if not miny or a2.y < miny:
-      miny = a2.y
-    if not maxy or a2.y > maxy:
-      maxy = a2.y
+    if calc_position:
+      # data for rescaling
+      if not maxx or a2.x > maxx:
+        maxx = a2.x
+      if not minx or a2.x < minx:
+        minx = a2.x
+      if not miny or a2.y < miny:
+        miny = a2.y
+      if not maxy or a2.y > maxy:
+        maxy = a2.y
   # bonds
   bond_lengths = []
   for b in mol.edges:
@@ -88,15 +97,17 @@ def oasa_mol_to_bkchem_mol( mol, paper):
     atom2 = m.atoms[ mol.vertices.index( aa2)]
     m.add_edge( atom1, atom2, b2)
     b2.molecule = m
-    bond_lengths.append( math.sqrt( (b2.atom1.x-b2.atom2.x)**2 + (b2.atom1.y-b2.atom2.y)**2))
+    if calc_position:
+      bond_lengths.append( math.sqrt( (b2.atom1.x-b2.atom2.x)**2 + (b2.atom1.y-b2.atom2.y)**2))
   # rescale
-  bl = sum( bond_lengths) / len( bond_lengths)
-  scale = paper.any_to_px( paper.standard.bond_length) / bl
-  movex = 320 - scale*(maxx+minx)/2
-  movey = 240 - scale*(maxy+miny)/2
-  for a in m.atoms:
-    a.x = movex + scale*a.x
-    a.y = movey + scale*a.y
+  if calc_position:
+    bl = sum( bond_lengths) / len( bond_lengths)
+    scale = paper.any_to_px( paper.standard.bond_length) / bl
+    movex = 320 - scale*(maxx+minx)/2
+    movey = 240 - scale*(maxy+miny)/2
+    for a in m.atoms:
+      a.x = movex + scale*a.x
+      a.y = movey + scale*a.y
   return m
 
 

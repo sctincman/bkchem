@@ -311,9 +311,9 @@ class SVG_writer( XML_writer):
       item = a.selector
       x1, y1 = a.get_xy()
       x, y, x2, y2 = self.paper.bbox( item)
-      if os.name == 'nt':
-        x += 2  #nasty hack to improve results on win machines (they have larger fonts?!?)
-        x2 -= 2 
+      #if os.name == 'nt':
+      #  x += 2  #nasty hack to improve results on win machines (they have larger fonts?!?)
+      #  x2 -= 2 
       dom_extensions.elementUnder( self.group, 'rect',
                                    (( 'x', str( x)),
                                     ( 'y', str( y)),
@@ -332,9 +332,14 @@ class SVG_writer( XML_writer):
                                            ( 'fill', a.line_color),
                                            ( 'textLength', "%dpx" % (x2-x))))
       self.group.appendChild( text)
-    for m in a.marks.itervalues():
-      if m:
-        self.group.appendChild( m.get_svg_element( self.document))
+
+    if hasattr( a, "marks"):
+      for m in a.marks.itervalues():
+        if m:
+          self.group.appendChild( m.get_svg_element( self.document))
+
+
+
 
   def add_rect( self, o):
     x1, y1, x2, y2 = o.coords

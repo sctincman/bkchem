@@ -56,6 +56,7 @@ from reaction import reaction
 import debug
 import oasa
 from external_data import external_data_manager
+from group import group
 
 
 class chem_paper( Canvas, object):
@@ -739,16 +740,20 @@ class chem_paper( Canvas, object):
     """sets name to all selected atoms and texts,
     also records it in an undo !!!"""
     for item in self.selected[:]:
-      if item.object_type == 'atom':
+      if isinstance( item, oasa.graph.vertex):
         if name:
-          item.set_name( name, interpret=interpret)
-          item.decide_pos()
-          item.redraw()
+          v = item.molecule.create_vertex_according_to_text( item, name, interpret=self.app.editPool.interpret)
+          item.copy_settings( v)
+          item.molecule.replace_vertices( item, v)
+          item.delete()
+          v.draw()
+          debug.log( type( v))
       if item.object_type == 'text':
         if name:
           item.set_text( name)
           item.redraw()
     if self.selected:
+      self.unselect_all()
       self.start_new_undo_record()
 
 
@@ -1369,7 +1374,7 @@ class chem_paper( Canvas, object):
     """expands groups, if selected==1 only for selected, otherwise for all"""
     if selected:
       mols = [o for o in self.selected_to_unique_top_levels()[0] if o.object_type == 'molecule']
-      atoms = [o for o in self.selected if (o.object_type == 'atom' and o.type in ('group','chain'))]
+      atoms = [o for o in self.selected if misc.isinstance( o, group)]
       self.unselect_all()
       for mol in mols:
         this_atoms = misc.intersection( atoms, mol.atoms)

@@ -18,7 +18,7 @@
 #--------------------------------------------------------------------------
 
 
-"""home for group - a vertex of a molecular graph"""
+"""home for the textatom - a vertex of a molecular graph"""
 
 from __future__ import division
 
@@ -39,7 +39,6 @@ import re
 import debug
 
 import oasa
-import oasa_bridge
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -47,8 +46,8 @@ import oasa_bridge
 ### not set in __init__ itself
 
 
-### Class GROUP --------------------------------------------------
-class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.graph.vertex):
+### Class TEXTATOM --------------------------------------------------
+class textatom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.graph.vertex):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -64,7 +63,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
   meta__undo_properties = area_colored.meta__undo_properties + \
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
-                          ( 'z', 'name', 'molecule', 'pos')
+                          ( 'z', 'name', 'molecule', 'charge', 'pos')
   meta__undo_copy = ('_neighbors',)
 
 
@@ -94,7 +93,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
     self.text = ''
 
     self.group_graph = None
-    self.group_type = None
     self.name = ''
 
     if package:
@@ -164,11 +162,10 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
   #LOOK charge
   def __get_charge( self):
-    return self.__charge
+    return 0
 
   def __set_charge( self, charge):
-    self.__charge = charge
-    self.dirty = 1
+    pass
 
   charge = property( __get_charge, __set_charge)
 
@@ -186,7 +183,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
 
 
-  #LOOK valency (setting)
+  #valency (setting)
   def __get_valency( self):
     return 1
 
@@ -243,8 +240,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
   drawn = property( __get_drawn, None, None, "tells if the atom is already drawn")
 
 
-
-
   ## JUST TO MIMICK ATOM
   # show
   def __get_show( self):
@@ -269,18 +264,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
   ## //
 
 
-  #group_type
-  def __get_group_type( self):
-    return self.__group_type
-
-  def __set_group_type( self, group_type):
-    if group_type not in (None,"builtin","explicit","implicit"):
-      raise "group_type must be one of None,'builtin','explicit','implicit', got %s" % group_type
-    self.__group_type = group_type
-
-  group_type = property( __get_group_type, __set_group_type)
-
-
 
 
   ## // -------------------- END OF PROPERTIES --------------------------
@@ -298,57 +281,17 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
 
   def set_name( self, name, interpret=1, occupied_valency=None):
-    if occupied_valency == None:
-      occupied_valency = self.get_occupied_valency()
-    if occupied_valency == 1 and (name.lower() in GT.groups_table):
-      # name is a known group
-      self.name = GT.groups_table[ name.lower()]['name']
-      self.group_type = "builtin"
-      return True
-    # try interpret the formula
-    lf = oasa.linear_formula.linear_formula( name, valency=occupied_valency)
-    if lf.molecule:
-      self.group_graph = oasa_bridge.oasa_mol_to_bkchem_mol( lf.molecule, self.paper)
-      self.name = name
-      self.group_type = "implicit"
-      return True
-    # try chain
-    form = PT.formula_dict( name.upper())
-    if occupied_valency == 1 and form.is_saturated_alkyl_chain():
-      self.name = str( form)
-      self.group_type = "implicit"
-      return True
-    return False
+    self.name = name
+    return True
 
 
-  def interpret_name( self, name):
-    lf = oasa.linear_formula.linear_formula( name, valency=self.valency)
-    return lf.molecule
-      
-
-  #interpret_name = staticmethod( interpret_name)
-
-
-##   def validate_name( self, name, valency=1):
-##     """tells if the name is interpretable as group"""
-##     lf = oasa.linear_formula.linear_formula( name, valency=valency)
-##     return lf.molecule and 1 or 0
-
-##   validate_name = staticmethod( validate_name)
-    
 
   def get_text( self):
     return self.name
 
 
   def get_ftext( self):
-    if self.group_type == "builtin":
-      if self.pos == 'center-first':
-        return GT.groups_table[ self.name.lower()]['textf']
-      else:
-        return GT.groups_table[ self.name.lower()]['textb']
-    elif self.group_type == "implicit":
-      return re.sub( "\d+", '<sub>\g<0></sub>', self.name)
+    return self.name
 
 
 
@@ -374,7 +317,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
       warn( "drawing atom that is probably drawn", UserWarning, 2)
     x, y = self.x, self.y
     self.update_font()
-
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
@@ -519,12 +461,11 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
     x, y = self.paper.real_to_screen_coords( (x, y))
     self.x = x
     self.y = y
-    self.group_type = package.getAttribute( "group-type")
-    if self.group_type in ("implicit","explicit"):
-      #read the graph once
-      pass
-    self.name = package.getAttribute( "name")
-
+    ft = package.getElementsByTagName('ftext')
+    if ft:
+      self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'))
+    else:
+      raise "not text atom"
     # font and fill color
     fnt = package.getElementsByTagName('font')
     if fnt:
@@ -545,23 +486,18 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
     (the returned element is not inserted into the document)"""
     y = ['no','yes']
     on_off = ['off','on']
-    a = doc.createElement('group')
+    a = doc.createElement('text')
     a.setAttribute( 'id', str( self.id))
-    # group type
-    if self.group_type:
-      a.setAttribute( 'group-type', self.group_type)
-    else:
-      raise "trying to save group without set group-type"
-
+    # font properties
     if self.font_size != self.paper.standard.font_size \
        or self.font_family != self.paper.standard.font_family \
        or self.line_color != self.paper.standard.line_color:
       font = dom_extensions.elementUnder( a, 'font', attributes=(('size', str( self.font_size)), ('family', self.font_family)))
       if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
-
-    a.setAttribute( 'name', self.name)
-
+    # the text
+    a.appendChild( dom.parseString( '<ftext>%s</ftext>' % self.name).childNodes[0])
+    # area color
     if self.area_color != self.paper.standard.area_color:
       a.setAttribute( 'background-color', self.area_color)
     # needed to support transparent handling of molecular size
@@ -615,18 +551,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
-    if self.group_type == "builtin":
-      return PT.formula_dict( GT.groups_table[ self.name.lower()]['composition'])
-    elif self.group_graph:
-      form = self.group_graph.get_formula_dict()
-      if form['H'] > self.get_occupied_valency():
-        form['H'] -= self.get_occupied_valency()
-      else:
-        del form['H']
-      return form
-    else:
-      return PT.formula_dict( self.name)
-      
+    return None
 
 
 

@@ -35,8 +35,11 @@ import groups_table as GT
 import copy
 import helper_graphics as hg
 from parents import container, top_level, id_enabled
-from atom import atom
 from bond import bond
+from atom import atom
+from group import group
+from textatom import textatom
+
 from sets import Set
 
 import oasa
@@ -115,8 +118,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
   def create_graph( self):
     return molecule( self.paper)
 
-  def create_vertex( self):
-    return atom( self.paper)
+  def create_vertex( self, vertex_class=None):
+    if not vertex_class:
+      vertex_class = self.vertex_class
+    return vertex_class( self.paper)
 
   def create_edge( self):
     return bond( self.paper)
@@ -241,7 +246,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
               if a in self.atoms:
                 bonds_to_redraw.extend( self.atoms_bonds( a))
         [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
-        [o.decide_pos() for o in self.atoms if o.type == "element"]
+        [o.decide_pos() for o in self.atoms if isinstance( o, atom)]
         [o.redraw() for o in self.atoms]
     else:
       deleted += map( self.delete_bond, self.bonds)
@@ -264,8 +269,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       t_bond_second = None
     return item
 
-  def create_new_atom( self, x, y, name=None):
-    a = atom( self.paper, xy=(x, y))
+  def create_new_atom( self, x, y, name=None, vertex_class=None):
+    a = self.create_vertex()
+    a.coords = (x, y)
     self.insert_atom( a)
     if name:
       a.set_name( name)
@@ -305,8 +311,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     self.name = package.getAttribute( 'name')
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
-    for a in package.getElementsByTagName( 'atom'):
-      self.insert_atom( atom( self.paper, package=a, molecule=self))
+    for name, cls in {'atom':atom, 'group':group, 'text': textatom}.iteritems():
+      for a in dom_extensions.simpleXPathSearch( package, name):
+        self.insert_atom( cls( self.paper, package=a, molecule=self))
+      
     self._id_map = [a.id for a in self.atoms]
     for b in package.getElementsByTagName( 'bond'):
       bnd = bond( self.paper, package = b, molecule=self)
@@ -465,7 +473,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     else:
       map = atoms # only selected atoms
     for a in map:
-      if a.type == "group":
+      if isinstance( a, group):
         if a.name in names:
           a2 = self.atoms_bound_to( a)[0]
           x1, y1 = a2.get_xy()
@@ -491,6 +499,14 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       a2.add_neighbor( v,e)
       v.add_neighbor( a2, e)
       e.change_atoms( a1, a2)
+
+
+  def replace_vertices( self, old, new):
+    """replaces the vertex old with the vertex new"""
+    self.add_vertex( new)
+    self.move_bonds_between_atoms( old, new)
+    self.delete_vertex( old)
+
 
 
   def lift( self):
@@ -559,3 +575,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
     return ((maxx,maxy,minx,miny),bl)
 
 
+
+  def create_vertex_according_to_text( self, old, text, interpret=1):
+    if not interpret:
+      return self.create_vertex( vertex_class=textatom)
+    val = old and old.get_occupied_valency() or 0
+    for cls in (atom, group, textatom):
+      v = self.create_vertex( vertex_class=cls)
+      if v.set_name( text, occupied_valency=val):
+        return v

@@ -23,6 +23,7 @@ import misc
 import types
 import periodic_table as PT
 import os
+from atom import atom
 
 
 class context_menu( Tkinter.Menu):
@@ -60,7 +61,7 @@ class context_menu( Tkinter.Menu):
         # we want only the real atoms
         elements_only = 1
         for a in atoms:
-          if not a.type == 'element':
+          if not isinstance( a, atom):
             elements_only = 0
             break
         if not elements_only:
