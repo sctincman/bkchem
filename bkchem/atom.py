@@ -61,7 +61,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
-                            'pos', 'type', 'multiplicity')
+                            'pos', 'type', 'multiplicity', 'valency')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
@@ -238,10 +238,17 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   # valency
-  def get_valency( self):
-    return self.molecule.get_atoms_valency( self)
+  def __get_valency( self):
+    try:
+      self.__valency
+    except AttributeError:
+      self.set_valency_from_name()
+    return self.__valency
 
-  valency = property( get_valency)
+  def __set_valency( self, val):
+    self.__valency = val
+
+  valency = property( __get_valency, __set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
 
 
 
@@ -320,7 +327,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.name = name.capitalize()
       self.show_hydrogens = 0
       self.type = 'element'
-    elif (name.lower() in GT.groups_table) and ( not check_valency or self.molecule.get_atoms_valency( self) == 1):
+    elif (name.lower() in GT.groups_table) and ( not check_valency or self.molecule.get_atoms_occupied_valency( self) == 1):
       # name is a known group
       self.name = GT.groups_table[ name.lower()]['name']
       self.show_hydrogens = 0
@@ -333,7 +340,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         # it is!
         a = form.keys()
         a.remove( 'H')
-        valency = self.molecule.get_atoms_valency( self)
+        valency = self.molecule.get_atoms_occupied_valency( self)
         if form['H'] in [i-valency+self.charge for i in PT.periodic_table[a[0]]['valency']]:
           self.name = a[0]
           self.show_hydrogens = 1
@@ -779,32 +786,32 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     """returns free valency of atom."""
     if self.type != 'element':
       return 0
-    valency = self.valency
-    if self.name in PT.periodic_table:
-      vals = PT.periodic_table[ self.name]['valency']
-      for v in vals:
-        # should we increase or decrease valency with charge ?
-        if self.charge:
-          if abs( self.charge) > 1:
-            # charges higher than one should always decrease valency
-            charge = abs( self.charge)
-          elif (self.name in PT.accept_cation) and (self.charge == 1) and (valency-1 <= PT.accept_cation[self.name]):
-            # elements that can accept cations to increase their valency (NH4+)
-            charge = -1
-          elif (self.name in PT.accept_anion) and (self.charge == -1) and (valency-1 <= PT.accept_anion[self.name]):
-            # elements that can accept anions to increase their valency (BH4-)
-            charge = -1
-          else:
-            # otherwise charge reduces valency 
-            charge = abs( self.charge)
-        else:
-          charge = 0
-        if valency+charge <= v:
-          return v-valency-charge-self.multiplicity+1
-      # if valency is exceeded return lowest possible negative value
-      return max( PT.periodic_table[ self.name]['valency']) - valency - charge
-    # if unsuccessful return 0
-    return 0
+    occupied_valency = self.get_occupied_valency()
+
+    v = self.valency
+    # should we increase or decrease valency with charge ?
+    if self.charge:
+      if abs( self.charge) > 1:
+        # charges higher than one should always decrease valency
+        charge = abs( self.charge)
+      elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
+        # elements that can accept cations to increase their valency (NH4+)
+        charge = -1
+      elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
+        # elements that can accept anions to increase their valency (BH4-)
+        charge = -1
+      else:
+        # otherwise charge reduces valency 
+        charge = abs( self.charge)
+    else:
+      charge = 0
+    if occupied_valency+charge <= v:
+      return v-occupied_valency-charge-self.multiplicity+1
+    print v, occupied_valency, charge, self.multiplicity
+    # if valency is exceeded return lowest possible negative value
+    print 'this should be solved'
+    return max( PT.periodic_table[ self.name]['valency']) - occupied_valency - charge
+
     
 
 
@@ -886,18 +893,22 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     # decide where to put the mark
     if angle == 'auto' and self.show:
       # atoms with visible text
-      if len( self.molecule.atoms_bound_to( self)) == 0:
-        if self.show_hydrogens and self.pos == "center-last":
-          maxx = self.x + self.font.measure( self.name[0]) / 2
-          x = maxx + 2 + marks.__dict__[ mark].standard_size / 2
-          y = self.y - marks.__dict__[ mark].standard_size / 2
-        else:
-          minx = self.x - self.font.measure( self.name[0]) / 2
-          x = minx - 2 - marks.__dict__[ mark].standard_size / 2
-          y = self.y - marks.__dict__[ mark].standard_size / 2
-      else:
-        x = self.x
-        y = self.y -2 - 3/4*self.font_size - marks.__dict__[ mark].standard_size / 2
+      x, y = self.find_place_for_mark()
+##       if len( self.molecule.atoms_bound_to( self)) == 0:
+##         if self.show_hydrogens and self.pos == "center-last":
+##           maxx = self.x + self.font.measure( self.name[0]) / 2
+##           x = maxx + 2 + marks.__dict__[ mark].standard_size / 2
+##           y = self.y - marks.__dict__[ mark].standard_size / 2
+##         else:
+##           minx = self.x - self.font.measure( self.name[0]) / 2
+##           x = minx - 2 - marks.__dict__[ mark].standard_size / 2
+##           y = self.y - marks.__dict__[ mark].standard_size / 2
+##       elif len( self.molecule.atoms_bound_to( self)) == 1:
+##         x = self.x
+##         y = self.y -2 - 3/4*self.font_size - marks.__dict__[ mark].standard_size / 2
+##       else:
+##         dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
+##         x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
     elif angle == 'auto':
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
       x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
@@ -962,3 +973,42 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     elif self.multiplicity == 3 and not self.marks[ 'biradical']:
       self.create_mark( 'biradical', draw=0)
   
+
+
+
+
+  def get_occupied_valency( self):
+    return self.molecule.get_atoms_occupied_valency( self)
+
+
+
+  def set_valency_from_name( self):
+    if self.type == 'element':
+      self.valency = PT.periodic_table[ self.name]['valency'][0]
+    elif self.type == 'group':
+      self.valency = 0
+    else:
+      self.valency = 8  # any big value would do :)
+
+
+
+  def find_place_for_mark( self):
+    range = 15
+    atms = self.molecule.atoms_bound_to( self)
+    x, y = self.get_xy()
+    if not atms:
+      # single atom molecule
+      if a.show_hydrogens and a.pos == "center-first":
+        return x -range, y
+      else:
+        return x +range, y
+    [atms.append( self.marks[m]) for m in self.marks if self.marks[m]]
+    angles = [geometry.clockwise_angle_from_east( at.x-x, at.y-y) for at in atms]
+    angles.append( 2*pi + min( angles))
+    angles.sort()
+    angles.reverse()
+    diffs = misc.list_difference( angles)
+    i = diffs.index( max( diffs))
+    angle = (angles[i] +angles[i+1]) / 2
+    return x +range*cos( angle), y +range*sin( angle)
+    

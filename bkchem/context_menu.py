@@ -21,6 +21,8 @@
 import Tkinter
 import misc
 import types
+import periodic_table as PT
+
 
 class context_menu( Tkinter.Menu):
 
@@ -50,6 +52,27 @@ class context_menu( Tkinter.Menu):
               casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
           # to know what is already there
           already_there.append( attr)
+      # special, not-so-easily-done-by-meta-infos things
+      # atom valency
+      if obj_type == 'atom':
+        atoms = [o for o in self.selected if o.object_type == 'atom']
+        # we want only the real atoms
+        elements_only = 1
+        for a in atoms:
+          if not a.type == 'element':
+            elements_only = 0
+            break
+        if not elements_only:
+          continue
+        # the names must be the same
+        if misc.has_one_value_only( [a.name for a in atoms]):
+          name = atoms[0].name
+          casc = Tkinter.Menu( self, tearoff=0)
+          self.add_cascade( label=_('Atom valency'), menu=casc)
+          for v in PT.periodic_table[ name]['valency']:
+            casc.add_command( label=v, command=misc.lazy_apply( self.callback, ('valency',v)))
+          
+        
 
     # common commands
     self.add_separator()

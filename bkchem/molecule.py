@@ -457,7 +457,7 @@ class molecule( container, top_level, id_enabled):
     [o.redraw() for o in self.atoms]  
 
     
-  def get_atoms_valency( self, atom):
+  def get_atoms_occupied_valency( self, atom):
     val = 0
     for b in self.atoms_bonds( atom):
         val += b.order

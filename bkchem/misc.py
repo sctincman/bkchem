@@ -122,3 +122,15 @@ def extend_bbox( bbox, pixels=1):
   miny = min( (bbox[1], bbox[3]))
   maxy = max( (bbox[1], bbox[3]))
   return minx-pixels, miny-pixels, maxx+pixels, maxy+pixels
+
+
+
+
+def has_one_value_only( iterable):
+  if not iterable:
+    return 0
+  a = iterable[0]
+  for i in iterable:
+    if a != i:
+      return 0
+  return 1

@@ -191,10 +191,14 @@ class mode:
     """called when switching to this mode"""
     pass
 
-  def on_submode_switch( self, name):
+  def on_submode_switch( self, name=''):
     """called when submode is switched"""
     pass
 
+
+  def on_paper_switch( self, old_paper, new_paper):
+    """called when paper is switched"""
+    pass
 
 
 
@@ -1547,6 +1551,9 @@ class reaction_mode( basic_mode):
     self.focused = None
     self._items = []
     self.arrow = None
+    # just the saving bindings
+    self.register_key_sequence( 'C-s', self.app.save_CDML)
+    self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
 
 
   def mouse_down( self, event):
@@ -1565,7 +1572,7 @@ class reaction_mode( basic_mode):
           self.arrow.reaction.reactants.remove( m)
       elif sm == 'product':
         m = self.focused.molecule
-        if m not in self.arrow.reaction.reactants:
+        if m not in self.arrow.reaction.products:
           self.arrow.reaction.products.append( m)
         else:
           self.arrow.reaction.products.remove( m)
@@ -1613,16 +1620,16 @@ class reaction_mode( basic_mode):
     name = self.get_submode(0)
     if name == 'reactant' or name == 'product':
       self.app.paper.add_bindings( active_names=('atom','bond'))
-    elif name == 'arrow':
+    elif name == 'rarrow':
       self.app.paper.add_bindings( active_names=('arrow','point'))
-    elif name == 'plus':
+    elif name == 'rplus':
       self.app.paper.add_bindings( active_names=('plus',))
     elif name == 'condition':
       self.app.paper.add_bindings( active_names=('text',))
     
 
 
-  def on_submode_switch( self, name):
+  def on_submode_switch( self, name=''):
     self.app.paper.remove_bindings()
     self._add_bindings_according_to_submode()
 
@@ -1638,14 +1645,18 @@ class reaction_mode( basic_mode):
       self._mark_reaction()
 
 
-  def cleanup( self):
+  def cleanup( self, paper=None):
+    pap = paper or self.app.paper
     for i in self._items:
-      self.app.paper.delete( i)
+      pap.delete( i)
     self._items = []
-    self.app.paper.add_bindings()
+    pap.add_bindings()
 
 
-
+  def on_paper_switch( self, old_paper, new_paper):
+    self.cleanup( old_paper)
+    self.startup()
+    self.on_submode_switch()
 
 
 

@@ -34,7 +34,7 @@ periodic_table = {
   "Li": {"weight": 6.94  , "valency": (1,)},
   "Be": {"weight": 9.01  , "valency": (2,)},
   "B":  {"weight": 10.81 , "valency": (3,)},
-  "C":  {"weight": 12.011, "valency": (4,)},
+  "C":  {"weight": 12.011, "valency": (4,2)},
   "N":  {"weight": 14.007, "valency": (3,5)},
   "O":  {"weight": 15.999, "valency": (2,)},
   "F":  {"weight": 18.998, "valency": (1,)},

@@ -117,8 +117,8 @@ else:
   for i in range( 0, len( files)):
     if i > 0:
       myapp.add_new_paper()
-    if os.path.isfile( files[0]):
-      myapp.load_CDML( file=files[0], replace=1)
+    if os.path.isfile( files[i]):
+      myapp.load_CDML( file=files[i], replace=1)
     else:
       myapp.set_file_name( files[i], check_ext=1)
 

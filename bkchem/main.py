@@ -327,7 +327,7 @@ class BKchem( Tk):
         plugin = plugins.__dict__[ name]
         self.plugins[ plugin.name] = plugin
 
-
+    self.paper = None
 
 
 
@@ -498,11 +498,12 @@ class BKchem( Tk):
 
 
   def change_paper( self, name):
+    old_paper = self.paper
     if self.papers:
       i = self.notebook.index( name)
       self.paper = self.papers[i]
       self.paper.mode = self.mode
-
+      self.mode.on_paper_switch( old_paper, self.paper)
 
 
 
