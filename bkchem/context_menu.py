@@ -27,13 +27,13 @@ from atom import atom
 from group import group
 from sets import Set
 
+from singleton_store import Store
 
 
 class context_menu( Tkinter.Menu):
 
-  def __init__( self, app, selected, **kw):
-    Tkinter.Menu.__init__( self, app, tearoff=0, **kw)
-    self.app = app
+  def __init__( self, selected, **kw):
+    Tkinter.Menu.__init__( self, Store.app, tearoff=0, **kw)
     self.selected = selected
     self.changes_made = 0
     already_there = []
@@ -84,7 +84,7 @@ class context_menu( Tkinter.Menu):
 
     # common commands
     self.add_separator()
-    self.add_command( label=_("Properties"), command=self.app.paper.config_selected) 
+    self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
 
 
   def callback( self, command, value):
@@ -106,8 +106,8 @@ class context_menu( Tkinter.Menu):
   def finish( self):
     """finishes one callback session"""
     if self.changes_made:
-      self.app.paper.start_new_undo_record()
-      self.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
+      Store.app.paper.add_bindings()
 
 
 
@@ -136,14 +136,14 @@ class context_menu( Tkinter.Menu):
 
   def apply_command( self, callback, apply_to):
     callback( apply_to)
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
 
   # specialized, private methods
 
   def _set_valency( self, value):
-    for a in self.app.paper.selected:
+    for a in Store.app.paper.selected:
       if a.object_type == 'atom':
         a.valency = value
         a.redraw()

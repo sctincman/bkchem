@@ -36,6 +36,8 @@ import tkFileDialog
 import os.path
 from keysymdef import keysyms
 
+from singleton_store import Store
+
 
 
 class ColorButton( Tkinter.Button):
@@ -351,22 +353,21 @@ class HTMLLikeInput( Tkinter.Frame, object):
   font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
 
 
-  def __init__( self, master, app, **kw):
+  def __init__( self, master, **kw):
     Tkinter.Frame.__init__( self, master, **kw)
-    self.app = app
     self.editPool = Tkinter.Entry( self, width=60)
     self.editPool.pack( side='left')
 
     self.editPool.bind("<KeyPress>", self._key)
 
     # subscript numbers
-    pix = self.app.request( 'pixmap', name='subnum')
+    pix = Store.app.request( 'pixmap', name='subnum')
     if pix:
       self.numbersToSubButton = Tkinter.Button( self,
                                                 image=pix,
                                                 command=self._numbersToSubButtonPressed,
                                                 bd=config.border_width)
-      self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
+      Store.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
     else:
       self.numbersToSubButton = Tkinter.Button( self,
                                                text=_('Sub numbers'),
@@ -375,13 +376,13 @@ class HTMLLikeInput( Tkinter.Frame, object):
     self.numbersToSubButton.pack( side='left')
 
     # superscript charges
-    pix = self.app.request( 'pixmap', name='supcharge')
+    pix = Store.app.request( 'pixmap', name='supcharge')
     if pix:
       self.chargesToSupButton = Tkinter.Button( self,
                                                 image=pix,
                                                 command=self._chargesToSupButtonPressed,
                                                 bd=config.border_width)
-      self.app.balloon.bind( self.chargesToSupButton, _('Superscript charges'))
+      Store.app.balloon.bind( self.chargesToSupButton, _('Superscript charges'))
     else:
       self.chargesToSupButton = Tkinter.Button( self,
                                                 text=_('Sup charges'),
@@ -391,13 +392,13 @@ class HTMLLikeInput( Tkinter.Frame, object):
 
     # text decoration
     for i in self.font_decorations:
-      pix = self.app.request( 'pixmap', name=i)
+      pix = Store.app.request( 'pixmap', name=i)
       if pix:
         self.__dict__[ i] = Tkinter.Button( self,
                                     image=pix,
                                     command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
                                     bd=config.border_width)
-        self.app.balloon.bind( self.__dict__[i], i)
+        Store.app.balloon.bind( self.__dict__[i], i)
       else:
         self.__dict__[ i] = Tkinter.Button( self,
                                     text=i,

@@ -29,6 +29,9 @@ import xml.dom.minidom as dom
 import time
 import os.path
 
+from singleton_store import Store
+
+
 
 class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -62,7 +65,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     self.end_headers()
 
     doc = dom.Document()
-    xml_serializer.serialize( self.server.app.paper, doc, doc)
+    xml_serializer.serialize( Store.app.paper, doc, doc)
     self.wfile.write( doc.toxml())
     print "%.2f ms" % (1000*(time.time() - t))
 
@@ -71,8 +74,8 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     self.send_header("Content-Type", "image/svg+xml")
     self.end_headers()
 
-    exporter = xml_writer.SVG_writer( self.server.app.paper)
-    exporter.construct_dom_tree( self.server.app.paper.top_levels)
+    exporter = xml_writer.SVG_writer( Store.app.paper)
+    exporter.construct_dom_tree( Store.app.paper.top_levels)
     self.wfile.write( exporter.document.toxml())
 
 
@@ -80,22 +83,22 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     if not len( path_list) == 1:
       self.return_error()
     else:
-      self.server.app.paper.clean_paper()
-      self.server.app.paper.create_rectangle()
-      self.server.app.read_smiles( path_list[0])
+      Store.app.paper.clean_paper()
+      Store.app.paper.create_rectangle()
+      Store.app.read_smiles( path_list[0])
       self.serve__content_svg()
 
   def servedir_inchi( self, path_list):
-    self.server.app.paper.clean_paper()
-    self.server.app.paper.create_background()
-    self.server.app.read_inchi( '/'.join( path_list))
+    Store.app.paper.clean_paper()
+    Store.app.paper.create_background()
+    Store.app.read_inchi( '/'.join( path_list))
     self.serve__content_svg()
 
 
   def servedir_gtml( self, path_list):
-    self.server.app.paper.clean_paper()
-    self.server.app.paper.create_background()
-    self.server.app.plugin_import( 'GTML', '/'.join( path_list))
+    Store.app.paper.clean_paper()
+    Store.app.paper.create_background()
+    Store.app.plugin_import( 'GTML', '/'.join( path_list))
     self.serve__content_svg()
     
 
@@ -125,7 +128,6 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
 class bkchem_http_server( BaseHTTPServer.HTTPServer):
 
-  def __init__( self, app, *args):
+  def __init__( self, *args):
     BaseHTTPServer.HTTPServer.__init__( self, *args)
-    self.app = app
 

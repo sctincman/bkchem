@@ -27,6 +27,7 @@ from groups_table import groups_table
 import misc
 from keysymdef import keysyms
 
+from singleton_store import Store
 
 
 font_decorations = ('italic', 'bold', 'subscript', 'superscript')
@@ -37,9 +38,8 @@ font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'supers
 
 class editPool( Frame):
 
-  def __init__( self, app, master, buttons=('interpret','asis'), **kw):
+  def __init__( self, master, buttons=('interpret','asis'), **kw):
     Frame.__init__( self, master, **kw)
-    self.app = app
     self.text = ''
     self.interpret = 1
     self.editPool = Entry( self, width=50, state='disabled', font="Helvetica 12")
@@ -52,54 +52,54 @@ class editPool( Frame):
 
 
     if 'interpret' in buttons:
-      pix = self.app.request( 'pixmap', name='interpret')
+      pix = Store.app.request( 'pixmap', name='interpret')
       self.interpretButton = Button( self,
                                      text=_('Interpret'),
                                      image=pix,
                                      command=self._interpretButtonPressed,
                                      state='disabled',
                                      bd=config.border_width)
-      self.app.balloon.bind( self.interpretButton, _('Interpret text (where applicable)'))
+      Store.app.balloon.bind( self.interpretButton, _('Interpret text (where applicable)'))
       self.interpretButton.pack( side='left')
     else:
       self.interpretButton = None
 
     if 'asis' in buttons:
-      pix = self.app.request( 'pixmap', name='asis')      
+      pix = Store.app.request( 'pixmap', name='asis')      
       self.setButton = Button( self,
                                image=pix,
                                text=_('As is'),
                                command=self._setButtonPressed,
                                state='disabled',
                                bd=config.border_width)
-      self.app.balloon.bind( self.setButton, _('Leave text as is - do not interpret'))
+      Store.app.balloon.bind( self.setButton, _('Leave text as is - do not interpret'))
       self.setButton.pack( side='left')
     else:
       self.setButton = None
 
 
-    pix = self.app.request( 'pixmap', name='subnum')
+    pix = Store.app.request( 'pixmap', name='subnum')
     self.numbersToSubButton = Button( self,
                                       image=pix,
                                       text=_('Sub numbers'),
                                       command=self._numbersToSubButtonPressed,
                                       state='disabled',
                                       bd=config.border_width)
-    self.app.balloon.bind( self.numbersToSubButton, _('Convert numbers to subscript'))
+    Store.app.balloon.bind( self.numbersToSubButton, _('Convert numbers to subscript'))
     self.numbersToSubButton.pack( side='left')
 
     # text decoration
     decorFrame = Frame( self)
     decorFrame.pack( padx=5, side="left")
     for i in font_decorations:
-      pix = self.app.request( 'pixmap', name=i)
+      pix = Store.app.request( 'pixmap', name=i)
       self.__dict__[ i] = Button( self,
                                   image=pix,
                                   command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
                                   state='disabled',
                                   text=i,
                                   bd=config.border_width)
-      self.app.balloon.bind( self.__dict__[i], i)
+      Store.app.balloon.bind( self.__dict__[i], i)
       self.__dict__[ i].pack( side="left")
 
       

@@ -61,7 +61,7 @@ import oasa
 import geometry
 from sets import Set
       
-
+from singleton_store import Store
 
 
 class chem_paper( Canvas, object):
@@ -70,10 +70,9 @@ class chem_paper( Canvas, object):
   all_names_to_bind = ('atom','bond','arrow','point','plus','text','vector','helper_rect')
 
 
-  def __init__( self, master = None, app = None, file_name={}, **kw):
+  def __init__( self, master = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)
     
-    self.app = app
     self.clipboard = None
     self.id_manager = id_manager()
 
@@ -109,7 +108,7 @@ class chem_paper( Canvas, object):
 
 
   def set_bindings( self):
-    if not self.app.in_batch_mode:
+    if not Store.app.in_batch_mode:
       self.bind( "<B1-Motion>", self._drag1)
       self.bind( "<ButtonRelease-1>", self._release1)
       self.bind( "<Button-1>", self._n_pressed1)
@@ -183,20 +182,10 @@ class chem_paper( Canvas, object):
 
 
 
-  def initialise( self):
-    # template manager
-    self.tm = self.app.tm
-    # groups manager (for group expansions)
-    self.gm = self.app.gm
-
-
-
-
-
   def add_bindings( self, active_names=()):
     self.lower( self.background)
     [o.lift() for o in self.stack]
-    if not self.app.in_batch_mode:
+    if not Store.app.in_batch_mode:
       if not active_names:
         names = self.all_names_to_bind
       else:
@@ -221,7 +210,7 @@ class chem_paper( Canvas, object):
     "button 1 with shift"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.mode.mouse_down( event, modifiers=['shift'])
+    Store.app.mode.mouse_down( event, modifiers=['shift'])
 
 
 
@@ -231,7 +220,7 @@ class chem_paper( Canvas, object):
     "button 1 without anything"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.mode.mouse_down( event)
+    Store.app.mode.mouse_down( event)
 
 
 
@@ -240,7 +229,7 @@ class chem_paper( Canvas, object):
   def _release1( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.mode.mouse_up( event)
+    Store.app.mode.mouse_up( event)
     
 
 
@@ -251,8 +240,8 @@ class chem_paper( Canvas, object):
     # when B1 is down such events do not occur
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.update_cursor_position( event.x, event.y)
-    self.app.mode.mouse_drag( event) 
+    Store.app.update_cursor_position( event.x, event.y)
+    Store.app.mode.mouse_drag( event) 
     b = self.find_enclosed( event.x-2, event.y-2, event.x+2, event.y+2)
     if b:
       a = self.id_to_object( b[0])
@@ -261,15 +250,15 @@ class chem_paper( Canvas, object):
     if a:
       if not self.__in:
         self.__in = a
-        self.app.mode.enter_object( self.__in, event)
+        Store.app.mode.enter_object( self.__in, event)
       elif a != self.__in:
         self.__in = a
-        self.app.mode.leave_object( event)
-        self.app.mode.enter_object( self.__in, event)
+        Store.app.mode.leave_object( event)
+        Store.app.mode.enter_object( self.__in, event)
     else:
       if self.__in:
         self.__in = None
-        self.app.mode.leave_object( event)
+        Store.app.mode.leave_object( event)
 
 
 
@@ -278,14 +267,14 @@ class chem_paper( Canvas, object):
   def _n_pressed3( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.mode.mouse_down3( event, modifiers=[])
+    Store.app.mode.mouse_down3( event, modifiers=[])
 
 
 
   def _n_pressed2( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.mode.mouse_down2( event, modifiers=[])
+    Store.app.mode.mouse_down2( event, modifiers=[])
 
 
 
@@ -294,22 +283,22 @@ class chem_paper( Canvas, object):
   def _move( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    self.app.update_cursor_position( event.x, event.y)
-    self.app.mode.mouse_move( event)
+    Store.app.update_cursor_position( event.x, event.y)
+    Store.app.mode.mouse_move( event)
 
 
 
 
 
   def _enter( self, event):
-    self.app.mode.clean_key_query()
+    Store.app.mode.clean_key_query()
 
 
 
 
 
   def _leave( self, event):
-    self.app.mode.clean_key_query()
+    Store.app.mode.clean_key_query()
 
   # item bound methods
 
@@ -326,7 +315,7 @@ class chem_paper( Canvas, object):
       a = None
     if a and a != self.__in:
       self.__in = a
-      self.app.mode.enter_object( self.__in, event)
+      Store.app.mode.enter_object( self.__in, event)
 
 
 
@@ -337,21 +326,21 @@ class chem_paper( Canvas, object):
     event.y = self.canvasy( event.y)
     if self.__in:
       self.__in = None
-      self.app.mode.leave_object( event)
+      Store.app.mode.leave_object( event)
 
 
 
 
 
   def key_pressed( self, event):
-    self.app.mode.key_pressed( event)
+    Store.app.mode.key_pressed( event)
 
 
 
 
 
   def key_released( self, event):
-    self.app.mode.key_released( event)
+    Store.app.mode.key_released( event)
 
   ## end of event bound methods
 
@@ -564,7 +553,7 @@ class chem_paper( Canvas, object):
         else:
           o.draw()
     # now check if the old standard differs
-    if new_standard and old_standard != self.standard and not self.app.in_batch_mode:
+    if new_standard and old_standard != self.standard and not Store.app.in_batch_mode:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
 				       messages.standards_differ_text,
                                        default = 'ok',
@@ -648,14 +637,11 @@ class chem_paper( Canvas, object):
     self.clean_paper()
     self.um.mrproper()
 
-    del self.app
     del self.clipboard
     del self.id_manager
     del self.standard
     del self.submode
     self.mode = None
-    self.gm = None
-    self.tm = None
     del self.selected
     del self._id_2_object
     del self.um
@@ -724,7 +710,7 @@ class chem_paper( Canvas, object):
       deleted.extend( reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], []))
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
-      self.app.log( _('concatenated overlaping atoms'))
+      Store.log( _('concatenated overlaping atoms'))
     #print 5, time.time() - ttt
       
 
@@ -738,7 +724,7 @@ class chem_paper( Canvas, object):
       if isinstance( item, oasa.graph.vertex):
         if name:
           self.unselect( [item])
-          v = item.molecule.create_vertex_according_to_text( item, name, interpret=self.app.editPool.interpret)
+          v = item.molecule.create_vertex_according_to_text( item, name, interpret=Store.app.editPool.interpret)
           item.copy_settings( v)
           item.molecule.replace_vertices( item, v)
           item.delete()
@@ -930,13 +916,13 @@ class chem_paper( Canvas, object):
           clipboard.appendChild( o.get_package( clipboard_doc, items=misc.intersection( o.children, self.selected)))
         else:
           clipboard.appendChild( o.get_package( clipboard_doc))
-      self.app.put_to_clipboard( clipboard, xy)
+      Store.app.put_to_clipboard( clipboard, xy)
       if delete_afterwards:
         [self.del_container(o) for o in cp]
-        self.app.log( _("killed %s object(s) to clipboard") % str( len( cp)))
+        Store.log( _("killed %s object(s) to clipboard") % str( len( cp)))
 	self.start_new_undo_record()
       else:
-        self.app.log( _("copied %s object(s) to clipboard") % str( len( cp)))
+        Store.log( _("copied %s object(s) to clipboard") % str( len( cp)))
       return [xmin, ymin, xmax, ymax]
 
 
@@ -946,8 +932,8 @@ class chem_paper( Canvas, object):
 
   def paste_clipboard( self, xy):
     """pastes items from clipboard to position xy"""
-    clipboard = self.app.get_clipboard()
-    clipboard_pos = self.app.get_clipboard_pos()
+    clipboard = Store.app.get_clipboard()
+    clipboard_pos = Store.app.get_clipboard_pos()
     if clipboard:
       new = []
       self.unselect_all()
@@ -972,7 +958,7 @@ class chem_paper( Canvas, object):
         else:
           self.select( [o])
       self.add_bindings()
-      self.app.log( _("pasted from clipboard"))
+      Store.log( _("pasted from clipboard"))
 
       # put the id_manager back
       self.onread_id_sandbox_finish( apply_to=os)
@@ -1132,9 +1118,9 @@ class chem_paper( Canvas, object):
     i = self.um.undo()
     self.changes_made = 1
     if i > 0:
-      self.app.log( _("undo (%d further undos available)") % i)
+      Store.log( _("undo (%d further undos available)") % i)
     else:
-      self.app.log( _("no further undo"))
+      Store.log( _("no further undo"))
     
 
 
@@ -1145,9 +1131,9 @@ class chem_paper( Canvas, object):
     i = self.um.redo()
     self.changes_made = 1
     if i > 0:
-      self.app.log( _("redo (%d further redos available)") % i)
+      Store.log( _("redo (%d further redos available)") % i)
     else:
-      self.app.log( _("no further redo"))
+      Store.log( _("no further redo"))
     
 
 
@@ -1224,7 +1210,7 @@ class chem_paper( Canvas, object):
     exporter.construct_dom_tree( cont)
     self.clipboard_clear()
     self.clipboard_append( exporter.get_nicely_formated_document())
-    self.app.log( _("selected top_levels were exported to clipboard in SVG"))
+    Store.log( _("selected top_levels were exported to clipboard in SVG"))
 
 
 
@@ -1244,7 +1230,7 @@ class chem_paper( Canvas, object):
     w = 0
     for m in s_mols:
       w += m.get_formula_dict().get_molecular_weight()
-    self.app.update_status( str( w))
+    Store.app.update_status( str( w))
 
 
 
@@ -1405,7 +1391,7 @@ class chem_paper( Canvas, object):
     for o in os:
       self.stack.remove( o)
       self.stack.append( o)
-    self.app.log( _("selected items were lifted"))
+    Store.log( _("selected items were lifted"))
     self.add_bindings()
     self.start_new_undo_record()
 
@@ -1418,7 +1404,7 @@ class chem_paper( Canvas, object):
     for o in os:
       self.stack.remove( o)
       self.stack.insert( 0, o)
-    self.app.log( _("selected items were put back"))
+    Store.log( _("selected items were put back"))
     self.add_bindings()
     self.start_new_undo_record()
 
@@ -1432,7 +1418,7 @@ class chem_paper( Canvas, object):
     indxs.sort()
     for i in range( len( indxs) // 2):
       self.stack[ indxs[i]], self.stack[ indxs[-1-i]] =  self.stack[ indxs[-1-i]], self.stack[ indxs[i]]
-    self.app.log( _("selected items were swapped"))
+    Store.log( _("selected items were swapped"))
     self.add_bindings()
     self.start_new_undo_record()
 
@@ -1441,7 +1427,7 @@ class chem_paper( Canvas, object):
 
 
   def _open_debug_console( self):
-    m = self.app.mode
+    m = Store.app.mode
     for i in m.__dict__:
       print i, ' : ', m.__dict__[i]
 
@@ -1783,7 +1769,7 @@ class chem_paper( Canvas, object):
 
   def config_selected( self):
     if self.selected:
-      dialog = dialogs.config_dialog( self.app, self.selected[:])
+      dialog = dialogs.config_dialog( Store.app, self.selected[:])
       if dialog.changes_made:
         self.start_new_undo_record()
       self.add_bindings()

@@ -53,12 +53,16 @@ import plugins.plugin
 import config
 from logger import logger
 
+from singleton_store import Store
+
+
 
 class BKchem( Tk):
 
 
   def __init__( self):
     Tk.__init__( self)
+    Store.app = self
     self.tk.call("tk", "useinputmethods", "1")
     #self.tk.call( "encoding", "system", "iso8859-2")
     #print self.tk.call( "encoding", "system")
@@ -81,7 +85,7 @@ class BKchem( Tk):
     self.add_new_paper()
 
     # template and group managers
-    self.init_managers()
+    self.init_singletons()
 
     # menu initialization
     self.init_menu()
@@ -93,13 +97,11 @@ class BKchem( Tk):
     self.init_mode_buttons()
 
     # edit pool
-    self.editPool = editPool( self, self.main_frame, width=60)
+    self.editPool = editPool( self.main_frame, width=60)
     self.editPool.grid( row=3, sticky="wens")
 
     # main drawing part packing
     self.notebook.grid( row=4, sticky="wens")
-    for p in self.papers:
-      p.initialise()
     self.notebook.setnaturalsize()
 
 
@@ -132,13 +134,11 @@ class BKchem( Tk):
     self.add_new_paper()
 
     # template and group managers
-    self.init_managers()
+    self.init_singletons()
 
 
     # main drawing part packing
     self.notebook.grid( row=4, sticky="wens")
-    for p in self.papers:
-      p.initialise()
     #self.notebook.setnaturalsize()
 
 
@@ -258,7 +258,7 @@ class BKchem( Tk):
     self.chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
     self.chemistry_menu.add( 'command', label=_('Generate INChI'),
                              command = self.gen_inchi,
-                             state=self.pm.has_preference("inchi_program_path") and "normal" or "disabled")
+                             state=Store.pm.has_preference("inchi_program_path") and "normal" or "disabled")
     if config.devel:
       self.chemistry_menu.add( 'command', label=_('Flush mol'), command = lambda : self.paper.flush_first_selected_mol_to_graph_file())
     self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper), accelerator="(C-o C-d)")
@@ -302,7 +302,7 @@ class BKchem( Tk):
     optionsMenu = Menu( optionsButton, tearoff=0)
     optionsButton['menu'] = optionsMenu
     optionsMenu.add( 'command', label=_('Standard'), command=self.standard_values)
-    optionsMenu.add( 'command', label=_('INChI program path'), command=lambda : interactors.ask_inchi_program_path( self))
+    optionsMenu.add( 'command', label=_('INChI program path'), command=interactors.ask_inchi_program_path)
 
 
 
@@ -376,26 +376,26 @@ class BKchem( Tk):
 
 
 
-  def init_managers( self):
+  def init_singletons( self):
     # template_manager
-    self.tm = template_manager( self)
-    self.tm.add_template_from_CDML( "templates.cdml")
+    Store.tm = template_manager()
+    Store.tm.add_template_from_CDML( "templates.cdml")
 
     # manager for user user defined templates
-    self.utm = template_manager( self)
+    Store.utm = template_manager()
     self.read_user_templates()
 
     # groups manager
-    self.gm = template_manager( self)
-    self.gm.add_template_from_CDML( "groups.cdml")
-    self.gm.add_template_from_CDML( "groups2.cdml")
+    Store.gm = template_manager()
+    Store.gm.add_template_from_CDML( "groups.cdml")
+    Store.gm.add_template_from_CDML( "groups2.cdml")
 
     # preference manager
-    self.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
+    Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
 
     # logger
-    self.logger = logger( self)
-    self.log = self.logger.log
+    Store.logger = logger()
+    Store.log = Store.logger.log
 
 
     from plugin_support import plugin_manager
@@ -406,25 +406,25 @@ class BKchem( Tk):
 
   def init_preferences( self):
     # save_dir must be set after the preference manager is initiated
-    #self.save_dir = self.pm.get_preference( "default-dir")
+    #self.save_dir = Store.pm.get_preference( "default-dir")
     pass
 
   def init_modes( self):
-    self.modes = { 'draw': modes.draw_mode( self),
-                   'edit': modes.edit_mode( self),
-                   'arrow': modes.arrow_mode( self),
-                   'plus': modes.plus_mode( self),
-                   'template': modes.template_mode( self),
-                   'text': modes.text_mode( self),
-                   'rotate': modes.rotate_mode( self),
-                   'bondalign': modes.bond_align_mode( self),
-                   'vector': modes.vector_mode( self),
-                   'mark': modes.mark_mode( self),
-                   'atom': modes.atom_mode( self),
-                   'reaction': modes.reaction_mode( self),
-                   'usertemplate': modes.user_template_mode( self),
-                   'externaldata': modes.external_data_mode( self),
-                   'rapiddraw': modes.rapid_draw_mode( self)
+    self.modes = { 'draw': modes.draw_mode(),
+                   'edit': modes.edit_mode(),
+                   'arrow': modes.arrow_mode(),
+                   'plus': modes.plus_mode(),
+                   'template': modes.template_mode(),
+                   'text': modes.text_mode(),
+                   'rotate': modes.rotate_mode(),
+                   'bondalign': modes.bond_align_mode(),
+                   'vector': modes.vector_mode(),
+                   'mark': modes.mark_mode(),
+                   'atom': modes.atom_mode(),
+                   'reaction': modes.reaction_mode(),
+                   'usertemplate': modes.user_template_mode(),
+                   'externaldata': modes.external_data_mode(),
+                   'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
                         'rotate', 'bondalign', 'vector', 'usertemplate', 'externaldata', 'rapiddraw']
@@ -594,7 +594,6 @@ class BKchem( Tk):
     _tab_name = self.get_new_tab_name()
     page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
     paper = chem_paper( page,
-                        app=self,
                         scrollregion=(0,0,'210m','297m'),
                         background="grey",
                         closeenough=3,
@@ -915,7 +914,7 @@ class BKchem( Tk):
       if not self.close_current_paper():
         return
     if self.svg_dir:
-      self.pm.add_preference( "default-dir", self.save_dir)
+      Store.pm.add_preference( "default-dir", self.save_dir)
     self.save_configuration()
     self.quit()
 
@@ -1136,7 +1135,7 @@ Enter IChI:""")
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
-    if not interactors.check_validity( self, u):
+    if not interactors.check_validity( u):
       return
     sms = []
     for m in u:
@@ -1198,7 +1197,7 @@ Enter IChI:""")
     import http_server
     
     server_address = ('', 8008)
-    httpd = http_server.bkchem_http_server( self, server_address, http_server.bkchem_http_handler)
+    httpd = http_server.bkchem_http_server( server_address, http_server.bkchem_http_handler)
 
     import threading
 
@@ -1228,7 +1227,7 @@ Enter IChI:""")
 
 
   def gen_inchi_for_molecule( self, m):
-    program = self.pm.get_preference( "inchi_program_path")
+    program = Store.pm.get_preference( "inchi_program_path")
     if not program:
       return
     
@@ -1237,7 +1236,7 @@ Enter IChI:""")
     if not oasa_bridge.oasa_available:
       return
 
-    if not interactors.check_validity( self, [m]):
+    if not interactors.check_validity( [m]):
       return
 
     if m.object_type == 'molecule':
@@ -1276,14 +1275,14 @@ Enter IChI:""")
 
 
   def gen_inchi( self):
-    program = self.pm.get_preference( "inchi_program_path")
+    program = Store.pm.get_preference( "inchi_program_path")
     import tempfile
     
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
     sms = []
-    if not interactors.check_validity( self, u):
+    if not interactors.check_validity( u):
       return
     for m in u:
       if m.object_type == 'molecule':
@@ -1323,15 +1322,15 @@ Enter IChI:""")
 
 
   def save_configuration( self):
-    self.pm.add_preference( 'geometry', self.winfo_geometry())
+    Store.pm.add_preference( 'geometry', self.winfo_geometry())
     f = os_support.get_opened_config_file( "prefs.xml", level="personal", mode="w")
     if f:
-      self.pm.write_to_file( f)
+      Store.pm.write_to_file( f)
       f.close()
 
 
   def run_plugin( self, name):
-    self.plug_man.run_plugin( name, self)
+    self.plug_man.run_plugin( name)
     self.paper.add_bindings()
     self.paper.start_new_undo_record()
 

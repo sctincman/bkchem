@@ -31,6 +31,9 @@ import os_support
 import os
 import dialogs
 
+from singleton_store import Store
+
+
 
 def ask_name_for_selected( paper):
   """opens dialog for input of molecule name and sets it"""
@@ -58,7 +61,7 @@ def ask_name_for_selected( paper):
 
   for m in ms:
     m.name = name
-  paper.app.log( _('Name %s was set to molecule(s)') % name)
+  Store.log( _('Name %s was set to molecule(s)') % name)
   paper.start_new_undo_record()
 
 
@@ -108,14 +111,14 @@ def ask_id_for_selected( paper):
       break
 
   m.id = id
-  paper.app.log( _('ID %s was set to molecule') % id)
+  Store.log( _('ID %s was set to molecule') % id)
   paper.start_new_undo_record()
 
 
 
 
 
-def check_validity( app, mols):
+def check_validity( mols):
   val = validator.validator()
   val.validate( mols)
   if val.report.text_atoms:
@@ -137,7 +140,7 @@ def check_validity( app, mols):
                                     _("These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards.") + "\n\n"+
                                     _("Proceed with expansion?"))
     if yes:
-      app.paper.expand_groups( selected=0)
+      Store.app.paper.expand_groups( selected=0)
       return 1
     else:
       return 0
@@ -147,17 +150,18 @@ def check_validity( app, mols):
 
 
 
-def ask_inchi_program_path( app):
-  path = app.pm.get_preference( "inchi_program_path") or ""
-  dial = widgets.FileSelectionWithText( app, title=_("The INChI program path"),
+def ask_inchi_program_path():
+  path = Store.pm.get_preference( "inchi_program_path") or ""
+  dial = widgets.FileSelectionWithText( app,
+                                        title=_("The INChI program path"),
                                         prompt =_("Select the INChI program executable: "),
                                         value = path,
                                         filetypes=((_("Executable files"), ("*",)),)
                                         )
   a = dial.activate()
   if a == _("OK"):
-    app.pm.add_preference( "inchi_program_path", dial.entry.get())
-    app.chemistry_menu.entryconfigure( _("Generate INChI"), state="normal")
+    Store.pm.add_preference( "inchi_program_path", dial.entry.get())
+    Store.app.chemistry_menu.entryconfigure( _("Generate INChI"), state="normal")
     return 1
   return 0
 
@@ -176,7 +180,7 @@ def ask_display_form_for_selected( paper):
                      title=_('Display Form'),
                      #defaultbutton = _('OK'),
                      buttons=(_('OK'),_('Cancel')))
-  input = widgets.HTMLLikeInput( dial.interior(), paper.app)
+  input = widgets.HTMLLikeInput( dial.interior())
   input.pack()
   input.editPool.focus_set()
                                  
@@ -198,14 +202,14 @@ def ask_display_form_for_selected( paper):
         xml.sax.parseString( "<a>%s</a>" % df, xml.sax.ContentHandler())
       except xml.sax.SAXParseException:        
         tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-        self.app.paper.bell()
+        Store.app.paper.bell()
         return
   else:
     return
 
   for m in ms:
     m.display_form = df
-  paper.app.log( _('Display form %s was set to molecule(s)') % df)
+  Store.log( _('Display form %s was set to molecule(s)') % df)
   paper.start_new_undo_record()
 
 
@@ -298,7 +302,7 @@ def save_as_template( paper):
 def create_fragment_from_selected( paper):
   top_levels, unique = paper.selected_to_unique_top_levels()
   if len( top_levels) != 1:
-    paper.app.log( _("The selected items must be part of exactly one molecule."), message_type="error")
+    Store.log( _("The selected items must be part of exactly one molecule."), message_type="error")
     return
 
   mol = top_levels[0]
@@ -313,9 +317,9 @@ def create_fragment_from_selected( paper):
   res = dial.activate()
   if res == _('OK'):
     if mol.create_fragment( dial.get(), es):
-      paper.app.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
+      Store.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
     else:
-      paper.app.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
+      Store.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
 
 
 

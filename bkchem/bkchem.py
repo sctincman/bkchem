@@ -77,6 +77,7 @@ if not config.debug:
 #import Tkinter
 from main import BKchem
 from splash import Splash
+from singleton_store import Store
 
 myapp = BKchem()
 myapp.withdraw()
@@ -151,7 +152,7 @@ if __name__ == '__main__':
     del splash
 
   # start the application
-  g = myapp.pm.get_preference( 'geometry')
+  g = Store.pm.get_preference( 'geometry')
   if g:
     geometry = g
   else:
@@ -170,7 +171,7 @@ else:
   # application initialization
   myapp.initialize()
   # start the application
-  g = myapp.pm.get_preference( 'geometry')
+  g = Store.pm.get_preference( 'geometry')
   if g:
     geometry = g
   else:

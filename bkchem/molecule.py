@@ -45,6 +45,8 @@ from sets import Set
 
 import oasa
 
+from singleton_store import Store
+
 
 
 class molecule( container, top_level, id_enabled, oasa.molecule):
@@ -491,7 +493,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   def expand_groups( self, atoms=[]):
     """expands all group atoms; optional atoms selects atoms to expand - all used if not present"""
-    names = self.paper.app.gm.get_template_names()
+    names = Store.gm.get_template_names()
     if not atoms:
       map = copy.copy( self.atoms) # need to do that because the self.atoms gets changed during the cycle
     else:

@@ -20,6 +20,7 @@
 
 
 import tkMessageBox
+from singleton_store import Store
 
 
 
@@ -41,8 +42,7 @@ class logger:
 
 
 
-  def __init__( self, app):
-    self.app = app
+  def __init__( self):
     self.handling = {'info': 'status_bar',
                      'warning': 'dialog',
                      'error': 'dialog',
@@ -65,7 +65,7 @@ class logger:
 
 
   def log_to_status_bar( self, message, message_type="info", delay=4):
-    self.app.update_status( message, time=delay)
+    Store.app.update_status( message, time=delay)
 
 
   def log_to_console( self, message, message_type="info", delay=4):

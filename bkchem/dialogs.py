@@ -30,6 +30,8 @@ import widgets
 import classes
 from sets import Set
 
+from singleton_store import Store
+
 
 ## SCALE DIALOG
 
@@ -1011,10 +1013,9 @@ class preferences_dialog:
 class fragment_dialog( Pmw.Dialog):
 
   def __init__( self, paper):
-    self.app = paper.app
     self.paper = paper
     Pmw.Dialog.__init__( self,
-                         self.app,
+                         Store.app,
                          buttons=(_('OK'), _('Cancel')),
                          defaultbutton=_('OK'),
                          title=_('Fragment overview'),
@@ -1084,9 +1085,8 @@ class fragment_dialog( Pmw.Dialog):
 class logging_dialog( Pmw.Dialog):
 
   def __init__( self, paper):
-    self.app = paper.app
     Pmw.Dialog.__init__( self,
-                         self.app,
+                         Store.app,
                          buttons=(_('OK'), _('Cancel')),
                          defaultbutton=_('OK'),
                          title=_('Logging'),

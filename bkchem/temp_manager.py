@@ -34,13 +34,16 @@ import os_support
 import xml.sax
 import misc
 
+from singleton_store import Store
+
+
 class template_manager:
   templates = []
 
-  def __init__( self, app):
+  def __init__( self):
     self.templates = []
     self._prepared_templates = []
-    self.app = app
+
 
   def add_template_from_CDML( self, file):
     if not os.path.isfile( file):
@@ -56,14 +59,14 @@ class template_manager:
     # when loading old versions of CDML try to convert them, but do nothing when they cannot be converted
     import CDML_versions
     CDML_versions.transform_dom_to_version( doc, config.current_CDML_version)
-    self.app.paper.onread_id_sandbox_activate()
+    Store.app.paper.onread_id_sandbox_activate()
     added = []
     for tmp in doc.getElementsByTagName('molecule'):
       self.templates.append( tmp)
-      m = molecule( self.app.paper, package=tmp)
+      m = molecule( Store.app.paper, package=tmp)
       self._prepared_templates.append( m)
       added.append( m)
-    self.app.paper.onread_id_sandbox_finish( apply_to=[]) # just switch the id_managers, no id mangling
+    Store.app.paper.onread_id_sandbox_finish( apply_to=[]) # just switch the id_managers, no id mangling
 
   def get_template( self, n):
     return self.templates[n]
@@ -76,7 +79,7 @@ class template_manager:
 
   def get_transformed_template( self, n, coords, type='empty', paper=None):
     """type is type of connection - 'bond', 'atom1'(for single atom), 'atom2'(for atom with more than 1 bond), 'empty'"""
-    pap = paper or self.app.paper
+    pap = paper or Store.app.paper
     pap.onread_id_sandbox_activate() # must be here to mangle the ids
     current = molecule( pap, package=self.templates[n])
     pap.onread_id_sandbox_finish( apply_to= [current]) # id mangling
@@ -88,7 +91,7 @@ class template_manager:
       xt1, yt1 = current.t_atom.get_xy()
       xt2, yt2 = current.next_to_t_atom.get_xy()
       x1, y1 = coords
-      bond_length = self.app.paper.any_to_px( self.app.paper.standard.bond_length)
+      bond_length = Store.app.paper.any_to_px( Store.app.paper.standard.bond_length)
       current.delete_items( [current.t_atom], redraw=0, delete_single_atom=0)
       trans.set_move( -xt2, -yt2)
       trans.set_scaling( bond_length / math.sqrt( (xt1-xt2)**2 + (yt1-yt2)**2))
@@ -137,7 +140,7 @@ class template_manager:
       if b.order != 1:
         b.bond_width *= self._scale_ratio
     # update template according to current default values
-    self.app.paper.apply_current_standard( [temp], template_mode=1)
+    Store.app.paper.apply_current_standard( [temp], template_mode=1)
     # return the ready template
     return temp
 

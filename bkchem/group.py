@@ -41,6 +41,8 @@ import debug
 import oasa
 import oasa_bridge
 
+from singleton_store import Store
+
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
@@ -691,12 +693,12 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
   def expand( self):
     """expands the group and returns list of atoms that new drawing afterwords"""
     if self.group_type == "builtin":
-      names = self.paper.app.gm.get_template_names()
+      names = Store.gm.get_template_names()
       if self.name in names:
         a2 = self.neighbors[0]
         x1, y1 = a2.get_xy()
         x2, y2 = self.get_xy()
-        self.group_graph = self.paper.app.gm.get_transformed_template( names.index( self.name), (x1,y1,x2,y2), type='atom1')
+        self.group_graph = Store.gm.get_transformed_template( names.index( self.name), (x1,y1,x2,y2), type='atom1')
         replacement = self.group_graph.next_to_t_atom
       else:
         print "unknown group %s" % a.name

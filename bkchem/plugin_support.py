@@ -1,9 +1,30 @@
+#--------------------------------------------------------------------------
+#     This file is part of BKchem - a chemical drawing program
+#     Copyright (C) 2004 Beda Kosata <beda@zirael.org>
+
+#     This program is free software; you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation; either version 2 of the License, or
+#     (at your option) any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     Complete text of GNU GPL can be found in the file gpl.txt in the
+#     main directory of the program
+
+#--------------------------------------------------------------------------
 
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import os_support
 import os
 import debug
+
+from singleton_store import Store
+
 
 
 class plugin_manager( object):
@@ -48,10 +69,10 @@ class plugin_manager( object):
 
 
 
-  def run_plugin( self, name, app):
+  def run_plugin( self, name):
     filename = self.plugins[ name]
 
-    globals = {'app':app}
+    globals = {'app': Store.app}
     execfile( filename, globals)
 
     if 'exc' in globals:

@@ -50,6 +50,8 @@ import external_data
 from sets import Set
 import interactors
 
+from singleton_store import Store
+
 
 
 ## -------------------- PARENT MODES--------------------
@@ -57,9 +59,8 @@ import interactors
 class mode( object):
   """abstract parent for all modes. No to be used for inheritation because the more specialized
   edit mode has all the methods for editing - just override what you need to change"""
-  def __init__( self, app):
+  def __init__( self):
     self.name = 'mode'
-    self.app = app
     self.submodes = []
     self.submode = []
     self.pulldown_menu_submodes = []
@@ -118,14 +119,14 @@ class mode( object):
         self._recent_key_seq = key
       # look if the keysequence is registered
       if self._recent_key_seq in self._key_sequences:
-        self.app.update_status( self._recent_key_seq)
+        Store.app.update_status( self._recent_key_seq)
         self._key_sequences[ self._recent_key_seq]()
         self._recent_key_seq = ''
       else:
         # or its a prefix of some registered sequence
         for key in self._key_sequences.keys():
           if not string.find( key, self._recent_key_seq):
-            self.app.update_status( self._recent_key_seq)
+            Store.app.update_status( self._recent_key_seq)
             return None
         # if we get here it means that the key is neither used nor a prefix
         self._recent_key_seq = ''
@@ -158,7 +159,7 @@ class mode( object):
         self.submode[i] = sms.index( name)
         txt_name = self.__class__.__name__+'_'+name
         try:
-          self.app.log( messages.__dict__[txt_name], delay=20, message_type="hint")
+          Store.log( messages.__dict__[txt_name], delay=20, message_type="hint")
         except KeyError:
           pass
         self.on_submode_switch( i, name)
@@ -225,8 +226,8 @@ class simple_mode( mode):
   """little more sophisticated parent mode""" 
 
 
-  def __init__( self, app):
-    mode.__init__( self, app)
+  def __init__( self):
+    mode.__init__( self)
     self.focused = None
 
 
@@ -256,60 +257,60 @@ class simple_mode( mode):
 
 class basic_mode( simple_mode):
 
-  def __init__( self, app):
-    simple_mode.__init__( self, app)
+  def __init__( self):
+    simple_mode.__init__( self)
     self.name = "simple"
     # align
-    self.register_key_sequence( 'C-a C-t', lambda : self.app.paper.align_selected( 't'))
-    self.register_key_sequence( 'C-a C-b', lambda : self.app.paper.align_selected( 'b'))
-    self.register_key_sequence( 'C-a C-l', lambda : self.app.paper.align_selected( 'l'))
-    self.register_key_sequence( 'C-a C-r', lambda : self.app.paper.align_selected( 'r'))
-    self.register_key_sequence( 'C-a C-h', lambda : self.app.paper.align_selected( 'h'))
-    self.register_key_sequence( 'C-a C-v', lambda : self.app.paper.align_selected( 'v'))
+    self.register_key_sequence( 'C-a C-t', lambda : Store.app.paper.align_selected( 't'))
+    self.register_key_sequence( 'C-a C-b', lambda : Store.app.paper.align_selected( 'b'))
+    self.register_key_sequence( 'C-a C-l', lambda : Store.app.paper.align_selected( 'l'))
+    self.register_key_sequence( 'C-a C-r', lambda : Store.app.paper.align_selected( 'r'))
+    self.register_key_sequence( 'C-a C-h', lambda : Store.app.paper.align_selected( 'h'))
+    self.register_key_sequence( 'C-a C-v', lambda : Store.app.paper.align_selected( 'v'))
     # other
-    self.register_key_sequence( 'C-d C-c', lambda : self.app.paper.toggle_center_for_selected())
-    self.register_key_sequence( 'C-d C-w', lambda : self.app.paper.display_weight_of_selected())
-    self.register_key_sequence( 'C-d C-i', lambda : self.app.paper.display_info_on_selected())
+    self.register_key_sequence( 'C-d C-c', lambda : Store.app.paper.toggle_center_for_selected())
+    self.register_key_sequence( 'C-d C-w', lambda : Store.app.paper.display_weight_of_selected())
+    self.register_key_sequence( 'C-d C-i', lambda : Store.app.paper.display_info_on_selected())
     # object related key bindings
-    self.register_key_sequence( 'C-o C-i', lambda : self.app.paper.display_info_on_selected())
-    self.register_key_sequence( 'C-o C-c', lambda : self.app.paper.check_chemistry_of_selected())
-    self.register_key_sequence( 'C-o C-d', lambda : interactors.ask_display_form_for_selected( self.app.paper))
+    self.register_key_sequence( 'C-o C-i', lambda : Store.app.paper.display_info_on_selected())
+    self.register_key_sequence( 'C-o C-c', lambda : Store.app.paper.check_chemistry_of_selected())
+    self.register_key_sequence( 'C-o C-d', lambda : interactors.ask_display_form_for_selected( Store.app.paper))
     # emacs like key bindings
-    self.register_key_sequence( 'C-x C-s', self.app.save_CDML)
-    self.register_key_sequence( 'C-x C-w', self.app.save_as_CDML)
-    self.register_key_sequence( 'C-x C-f', self.app.load_CDML)
-    self.register_key_sequence( 'C-x C-c', self.app._quit)
-    self.register_key_sequence( 'C-x C-t', self.app.close_current_paper)
-    self.register_key_sequence( 'C-x C-n', self.app.add_new_paper)
-    self.register_key_sequence( 'C-/', lambda : self.app.paper.undo())
-    self.register_key_sequence( 'C-S-?', lambda : self.app.paper.redo()) #note that 'S-/' => 'S-?'  !!!
+    self.register_key_sequence( 'C-x C-s', Store.app.save_CDML)
+    self.register_key_sequence( 'C-x C-w', Store.app.save_as_CDML)
+    self.register_key_sequence( 'C-x C-f', Store.app.load_CDML)
+    self.register_key_sequence( 'C-x C-c', Store.app._quit)
+    self.register_key_sequence( 'C-x C-t', Store.app.close_current_paper)
+    self.register_key_sequence( 'C-x C-n', Store.app.add_new_paper)
+    self.register_key_sequence( 'C-/', lambda : Store.app.paper.undo())
+    self.register_key_sequence( 'C-S-?', lambda : Store.app.paper.redo()) #note that 'S-/' => 'S-?'  !!!
     # windows style key bindings
-    self.register_key_sequence( 'C-s', self.app.save_CDML)
+    self.register_key_sequence( 'C-s', Store.app.save_CDML)
     self.register_key_sequence( 'C-z', self.undo)
     self.register_key_sequence( 'C-S-z', self.redo)
     # 'C-a' from windoze is in use - 'C-S-a' instead
-    self.register_key_sequence( 'C-S-a', lambda : self.app.paper.select_all())
+    self.register_key_sequence( 'C-S-a', lambda : Store.app.paper.select_all())
     # arrow moving
     self.register_key_sequence( 'Up', lambda : self._move_selected( 0, -1))
     self.register_key_sequence( 'Down', lambda : self._move_selected( 0, 1))
     self.register_key_sequence( 'Left', lambda : self._move_selected( -1, 0))
     self.register_key_sequence( 'Right', lambda : self._move_selected( 1, 0))
     # manipulation of the paper.stack
-    self.register_key_sequence( 'C-o C-f', lambda : self.app.paper.lift_selected_to_top())
-    self.register_key_sequence( 'C-o C-b', lambda : self.app.paper.lower_selected_to_bottom())
-    self.register_key_sequence( 'C-o C-s', lambda : self.app.paper.swap_selected_on_stack())
+    self.register_key_sequence( 'C-o C-f', lambda : Store.app.paper.lift_selected_to_top())
+    self.register_key_sequence( 'C-o C-b', lambda : Store.app.paper.lower_selected_to_bottom())
+    self.register_key_sequence( 'C-o C-s', lambda : Store.app.paper.swap_selected_on_stack())
     # chains (C-d as draw)
 
 
   def undo( self):
-    self.app.paper.undo()
-    if self.focused and not self.app.paper.is_registered_object( self.focused):
+    Store.app.paper.undo()
+    if self.focused and not Store.app.paper.is_registered_object( self.focused):
       # focused object was deleted
       self.focused = None
 
   def redo( self):
-    self.app.paper.redo()
-    if self.focused and not self.app.paper.is_registered_object( self.focused):
+    Store.app.paper.redo()
+    if self.focused and not Store.app.paper.is_registered_object( self.focused):
       # focused object was deleted
       self.focused = None
   
@@ -324,8 +325,8 @@ class basic_mode( simple_mode):
 
 class edit_mode( basic_mode):
   """basic editing mode, also good as parent for more specialized modes"""
-  def __init__( self, app):
-    basic_mode.__init__( self, app)
+  def __init__( self):
+    basic_mode.__init__( self)
     self.name = _('edit')
     self._dragging = 0
     self._dragged_molecule = None
@@ -337,20 +338,20 @@ class edit_mode( basic_mode):
     self.register_key_sequence( ' ', self._set_name_to_selected)
     self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
     self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
-    self.register_key_sequence( 'Return', lambda : self.app.paper.set_name_to_selected( self.app.editPool.text)) 
+    self.register_key_sequence( 'Return', lambda : Store.app.paper.set_name_to_selected( Store.app.editPool.text)) 
     self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
     # object related key bindings
     self.register_key_sequence( 'C-o C-e', self._expand_groups)
     # emacs like key bindings
-    self.register_key_sequence( 'A-w', lambda : self.app.paper.selected_to_clipboard())
-    self.register_key_sequence( 'M-w', lambda : self.app.paper.selected_to_clipboard())
-    self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
+    self.register_key_sequence( 'A-w', lambda : Store.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'M-w', lambda : Store.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'C-w', lambda : Store.app.paper.selected_to_clipboard( delete_afterwards=1))
     self.register_key_sequence( 'C-y', self._paste_clipboard)
     # windows style key bindings
-    self.register_key_sequence( 'C-c', lambda : self.app.paper.selected_to_clipboard())
+    self.register_key_sequence( 'C-c', lambda : Store.app.paper.selected_to_clipboard())
     self.register_key_sequence( 'C-v', self._paste_clipboard)
     # 'C-x' from windoze is in use - 'C-k' instead
-    self.register_key_sequence( 'C-k', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))
+    self.register_key_sequence( 'C-k', lambda : Store.app.paper.selected_to_clipboard( delete_afterwards=1))
     # 'C-a' from windoze is in use - 'C-S-a' instead
     # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
@@ -367,9 +368,9 @@ class edit_mode( basic_mode):
     self._alt = 'alt' in modifiers
     # we focus what is under cursor if its not focused already
     if not self.focused:
-      ids = self.app.paper.find_overlapping( event.x, event.y, event.x, event.y)
-      if ids and self.app.paper.is_registered_id( ids[-1]):
-        self.focused = self.app.paper.id_to_object( ids[-1])
+      ids = Store.app.paper.find_overlapping( event.x, event.y, event.x, event.y)
+      if ids and Store.app.paper.is_registered_id( ids[-1]):
+        self.focused = Store.app.paper.id_to_object( ids[-1])
         self.focused.focus()
     if self.focused and isinstance( self.focused, hg.selection_square):
       # we will need that later to fix the right corner of the selection_square
@@ -384,10 +385,10 @@ class edit_mode( basic_mode):
 
   def mouse_down3( self, event, modifiers = []):
     if self.focused:
-      if self.focused not in self.app.paper.selected:
-        self.app.paper.unselect_all()
-        self.app.paper.select( [self.focused])
-      dialog = context_menu( self.app, self.app.paper.selected[:])
+      if self.focused not in Store.app.paper.selected:
+        Store.app.paper.unselect_all()
+        Store.app.paper.select( [self.focused])
+      dialog = context_menu( Store.app.paper.selected[:])
       dialog.post( event.x_root, event.y_root)
 
 
@@ -395,12 +396,12 @@ class edit_mode( basic_mode):
 
   def mouse_down2( self, event, modifiers = []):
     if self.focused:
-      if self.focused not in self.app.paper.selected:
-        self.app.paper.select( [self.focused])
-      dialog = dialogs.config_dialog( self.app, self.app.paper.selected[:])
+      if self.focused not in Store.app.paper.selected:
+        Store.app.paper.select( [self.focused])
+      dialog = dialogs.config_dialog( Store.app, Store.app.paper.selected[:])
       if dialog.changes_made:
-        self.app.paper.start_new_undo_record()
-      self.app.paper.add_bindings()
+        Store.app.paper.start_new_undo_record()
+      Store.app.paper.add_bindings()
       
 
 
@@ -409,57 +410,57 @@ class edit_mode( basic_mode):
   def mouse_up( self, event):
     self._block_leave_event = 0
     # this strange thing makes the moving of selected arrows and polygons possible - the problem is
-    # that these objects are not in self.app.paper.selected (only their points) and thus ...
+    # that these objects are not in Store.app.paper.selected (only their points) and thus ...
     if self._moving_selected_arrow:
-      self.app.paper.select( [self._moving_selected_arrow])
+      Store.app.paper.select( [self._moving_selected_arrow])
       self._moving_selected_arrow = None
     if not self._dragging:
       self.mouse_click( event)
     else:
       if self._dragging == 3:
-        self.app.paper.select( filter( lambda o: o,\
-                               map( self.app.paper.id_to_object,\
-                                    self.app.paper.find_enclosed( self._startx, self._starty, event.x, event.y))))
-        self.app.paper.delete( self._selection_rect)
+        Store.app.paper.select( filter( lambda o: o,\
+                               map( Store.app.paper.id_to_object,\
+                                    Store.app.paper.find_enclosed( self._startx, self._starty, event.x, event.y))))
+        Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
-        atoms = reduce( operator.add, [o.molecule.atoms_bound_to( o) for o in self.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
-        atoms = misc.filter_unique( [o for o in self.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
+        atoms = reduce( operator.add, [o.molecule.atoms_bound_to( o) for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
+        atoms = misc.filter_unique( [o for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]
         [self.reposition_bonds_around_bond( o) for o in self._bonds_to_update]
-        self.app.paper.handle_overlap()
-        self.app.paper.start_new_undo_record()
+        Store.app.paper.handle_overlap()
+        Store.app.paper.start_new_undo_record()
       elif self._dragging == 2:
-        self.app.paper.handle_overlap()
-        self.app.paper.start_new_undo_record()
+        Store.app.paper.handle_overlap()
+        Store.app.paper.start_new_undo_record()
       elif self._dragging == 4:
         if self.focused:
           # the unfocus will otherwise not happen and cursor won't be restored
           self.focused.unfocus()
           self.focused = None
-        self.app.paper.start_new_undo_record()
+        Store.app.paper.start_new_undo_record()
       self._dragging = 0
-      self.app.paper.add_bindings()
+      Store.app.paper.add_bindings()
 
 
     
   def mouse_click( self, event):
     if not self._shift:
-      self.app.paper.unselect_all()
+      Store.app.paper.unselect_all()
     if self.focused:
 #      if self.focused.object_type == 'arrow':
-#        self.app.paper.select( self.focused.points)
+#        Store.app.paper.select( self.focused.points)
 #      else:
-        if self.focused in self.app.paper.selected:
-          self.app.paper.unselect( [self.focused])
-        elif (self.focused.object_type == 'selection_rect') and (self.focused.object in self.app.paper.selected):
-          self.app.paper.unselect( [self.focused.object])
+        if self.focused in Store.app.paper.selected:
+          Store.app.paper.unselect( [self.focused])
+        elif (self.focused.object_type == 'selection_rect') and (self.focused.object in Store.app.paper.selected):
+          Store.app.paper.unselect( [self.focused.object])
         else:
           if self.focused.object_type == 'selection_rect':
-            self.app.paper.select( [self.focused.object])
+            Store.app.paper.select( [self.focused.object])
           else:
-            self.app.paper.select( [self.focused])
+            Store.app.paper.select( [self.focused])
         # double click?
         t = time.time()
         if t - self._last_click_time < 0.3:
@@ -467,32 +468,32 @@ class edit_mode( basic_mode):
           self.double_click( event)
         else:
           self._last_click_time = t
-    self.app.paper.add_bindings()
+    Store.app.paper.add_bindings()
 
   def double_click( self, event):
     if self.focused:
       if misc.isinstance_of_one( self.focused, (oasa.graph.vertex, bond)):
-        self.app.paper.select( tuple( self.focused.molecule)) # molecule is iterator
+        Store.app.paper.select( tuple( self.focused.molecule)) # molecule is iterator
 
 
   def mouse_drag( self, event):
     if not self._dragging:
       if self.focused and (self.focused.object_type == 'arrow' or self.focused.object_type == 'polygon'):
         for p in self.focused.points:
-          if p in self.app.paper.selected:
+          if p in Store.app.paper.selected:
             self._moving_selected_arrow = self.focused
-            self.app.paper.unselect( self.focused.points)
+            Store.app.paper.unselect( self.focused.points)
             break
       if self.focused and self.focused.object_type == 'selection_rect':
         # resizing of vector graphics
         self._dragging = 4
         self._dragged_molecule = self.focused
-      elif self.focused and (self.focused in self.app.paper.selected) or self._moving_selected_arrow:
+      elif self.focused and (self.focused in Store.app.paper.selected) or self._moving_selected_arrow:
         ### move all selected
         self._dragging = 1
-        self.app.paper.select( self.app.paper.atoms_to_update())
-        self._bonds_to_update = self.app.paper.bonds_to_update()
-        self._arrows_to_update = self.app.paper.arrows_to_update()
+        Store.app.paper.select( Store.app.paper.atoms_to_update())
+        self._bonds_to_update = Store.app.paper.bonds_to_update()
+        self._arrows_to_update = Store.app.paper.arrows_to_update()
         self.focused.unfocus()
         self.focused = None
       elif self.focused:
@@ -507,16 +508,16 @@ class edit_mode( basic_mode):
       elif self.rectangle_selection:
         ### select everything in selection rectangle
         if not self._shift:
-          self.app.paper.unselect_all()
+          Store.app.paper.unselect_all()
         self._dragging = 3
-        self._selection_rect = self.app.paper.create_rectangle( self._startx, self._starty, event.x, event.y)
+        self._selection_rect = Store.app.paper.create_rectangle( self._startx, self._starty, event.x, event.y)
       else:
         ### don't do anything
         self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
       dx = event.x-self._startx
       dy = event.y-self._starty
-      [o.move( dx, dy) for o in self.app.paper.selected]
+      [o.move( dx, dy) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
         self._moving_selected_arrow.move( dx, dy)
       [o.redraw() for o in self._bonds_to_update]
@@ -526,10 +527,10 @@ class edit_mode( basic_mode):
       self._dragged_molecule.move( event.x-self._startx, event.y-self._starty)
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 3:
-      self.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
+      Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
       self._dragged_molecule.drag( event.x, event.y, fix=(self._startx, self._starty))
-      self.app.update_status( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
+      Store.app.update_status( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
       
   def enter_object( self, object, event):
     if not self._dragging:
@@ -537,7 +538,7 @@ class edit_mode( basic_mode):
         self.focused.unfocus()
       self.focused = object
       if self.focused.object_type == 'selection_rect':
-        self.focused.focus( item= self.app.paper.find_withtag( 'current')[0])
+        self.focused.focus( item= Store.app.paper.find_withtag( 'current')[0])
       else:
         self.focused.focus()
 
@@ -565,27 +566,27 @@ class edit_mode( basic_mode):
   ## METHODS FOR KEY EVENTS RESPONSES
 
   def _delete_selected( self):
-    if self.focused and self.focused.object_type == 'selection_rect' and self.focused.object in self.app.paper.selected:
+    if self.focused and self.focused.object_type == 'selection_rect' and self.focused.object in Store.app.paper.selected:
       self.focused.unfocus()
       self.focused = None
-    self.app.paper.delete_selected()
-    if self.focused and not self.app.paper.is_registered_object( self.focused):
+    Store.app.paper.delete_selected()
+    if self.focused and not Store.app.paper.is_registered_object( self.focused):
       # focused object was deleted
       self.focused = None
-    self.app.paper.add_bindings()
+    Store.app.paper.add_bindings()
 
   def _paste_clipboard( self):
-    self.app.paper.unselect_all()
-    xy = (self.app.paper.canvasx( self.app.paper.winfo_pointerx() -self.app.paper.winfo_rootx()),
-          self.app.paper.canvasy( self.app.paper.winfo_pointery() -self.app.paper.winfo_rooty()))
+    Store.app.paper.unselect_all()
+    xy = (Store.app.paper.canvasx( Store.app.paper.winfo_pointerx() -Store.app.paper.winfo_rootx()),
+          Store.app.paper.canvasy( Store.app.paper.winfo_pointery() -Store.app.paper.winfo_rooty()))
     if xy[0] > 0 and xy[1] > 0:
-      self.app.paper.paste_clipboard( xy)
+      Store.app.paper.paste_clipboard( xy)
 
   def _set_name_to_selected( self, char=''):
-    if self.app.paper.selected:
+    if Store.app.paper.selected:
       # at first we check if there is something to set text to...
       text_items_are_inside = 0
-      for i in self.app.paper.selected:
+      for i in Store.app.paper.selected:
         if isinstance( i, parents.text_like):
           text_items_are_inside = 1
           break
@@ -601,14 +602,14 @@ class edit_mode( basic_mode):
         else:
           text = char
         select = 0
-      elif len( self.app.paper.selected) == 1:
-        item = self.app.paper.selected[0]
+      elif len( Store.app.paper.selected) == 1:
+        item = Store.app.paper.selected[0]
         if isinstance( item, parents.text_like):
           text = item.get_text()
       if text:
-	name = self.app.editPool.activate( text=text, select=select)
+	name = Store.app.editPool.activate( text=text, select=select)
       else:
-	name = self.app.editPool.activate()
+	name = Store.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
       # i really don't know if I should call the unicode first
@@ -622,31 +623,31 @@ class edit_mode( basic_mode):
         try:
           xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
         except xml.sax.SAXParseException:        
-          self.app.paper.bell()
+          Store.app.paper.bell()
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
           return
-      self.app.paper.set_name_to_selected( name, interpret=self.app.editPool.interpret)
-      [self.reposition_bonds_around_bond( o) for o in self.app.paper.bonds_to_update()]
-      self.app.paper.add_bindings()
+      Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
+      [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
+      Store.app.paper.add_bindings()
 
   def _move_selected( self, dx, dy):
-    self.app.paper.select( self.app.paper.atoms_to_update())
-    _bonds_to_update = self.app.paper.bonds_to_update()
-    _arrows_to_update = self.app.paper.arrows_to_update()
+    Store.app.paper.select( Store.app.paper.atoms_to_update())
+    _bonds_to_update = Store.app.paper.bonds_to_update()
+    _arrows_to_update = Store.app.paper.arrows_to_update()
 
-    [o.move( dx, dy) for o in self.app.paper.selected]
+    [o.move( dx, dy) for o in Store.app.paper.selected]
     [o.redraw() for o in _bonds_to_update]
     [o.redraw() for o in _arrows_to_update]
-    if self.app.paper.um.get_last_record_name() == "arrow-key-move":
-      self.app.paper.um.delete_last_record()
-    self.app.paper.add_bindings()
-    self.app.paper.start_new_undo_record( name="arrow-key-move")
+    if Store.app.paper.um.get_last_record_name() == "arrow-key-move":
+      Store.app.paper.um.delete_last_record()
+    Store.app.paper.add_bindings()
+    Store.app.paper.start_new_undo_record( name="arrow-key-move")
 
   def _expand_groups( self):
     if self.focused:
       self.focused.unfocus()
       self.focused = None
-    self.app.paper.expand_groups()
+    Store.app.paper.expand_groups()
 
   def add_chain( self, n):
     if not self.focused:
@@ -655,9 +656,9 @@ class edit_mode( basic_mode):
     mol = a.molecule
     for i in range( n):
       a, b = mol.add_atom_to( a)
-      self.app.paper.select( [a])
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+      Store.app.paper.select( [a])
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
 
 
@@ -667,8 +668,8 @@ class edit_mode( basic_mode):
 
 class draw_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('draw')
     self._moved_atom = None
     self._start_atom = None
@@ -686,28 +687,28 @@ class draw_mode( edit_mode):
     
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
     if not self.focused:
-      mol = self.app.paper.new_molecule()
+      mol = Store.app.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       a.focus()
       self.focused = a
-    #self.app.paper.add_bindings()
+    #Store.app.paper.add_bindings()
     
   def mouse_up( self, event):
     if not self._dragging:
       self.mouse_click( event)
     else:
       if self._moved_atom:
-        self.app.paper.select( [self._moved_atom])
-      self.app.paper.handle_overlap() # should be done before repositioning for ring closure to take effect
+        Store.app.paper.select( [self._moved_atom])
+      Store.app.paper.handle_overlap() # should be done before repositioning for ring closure to take effect
       # repositioning of double bonds
       if self._start_atom:
         # at first atom text
         self._start_atom.update_after_valency_change()
         # warn when valency is exceeded
         if self._start_atom.get_free_valency() < 0:
-          self.app.log( _("maximum valency exceeded!"), message_type="warning")
+          Store.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self._start_atom, group):
           #LOOK
@@ -716,24 +717,24 @@ class draw_mode( edit_mode):
       self._dragging = 0
       self._start_atom = None
       self._moved_atom = None
-      self.app.paper.add_bindings()
-      self.app.paper.start_new_undo_record()
+      Store.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
 
   def mouse_click( self, event):
     if not self.focused:
       #print "it should not get here!!!"
-      mol = self.app.paper.new_molecule()
+      mol = Store.app.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
-      self.app.paper.add_bindings()
-      b = bond( self.app.paper,
+      Store.app.paper.add_bindings()
+      b = bond( Store.app.paper,
                 type=self.__mode_to_bond_type(),
                 order=self.__mode_to_bond_order(),
                 simple_double=self.submode[4])
-      self.app.paper.select( [mol.add_atom_to( a, bond_to_use=b)[0]])
+      Store.app.paper.select( [mol.add_atom_to( a, bond_to_use=b)[0]])
       self.focused = a
     else:
       if isinstance( self.focused, oasa.graph.vertex):
-        b = bond( self.app.paper,
+        b = bond( Store.app.paper,
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
@@ -743,14 +744,14 @@ class draw_mode( edit_mode):
           self.focused.update_after_valency_change()
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
-          self.app.log( _("maximum valency exceeded!"), message_type="warning")
+          Store.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self.focused, group):
           #LOOK
-          self.app.log( _("groups could have valency of 1 only! Atom was transformed to text!"), message_type="warning")
+          Store.log( _("groups could have valency of 1 only! Atom was transformed to text!"), message_type="warning")
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
-        self.app.paper.select( [a])
+        Store.app.paper.select( [a])
       elif isinstance( self.focused, bond):
         if self._shift:
           self.focused.toggle_type( only_shift = 1, to_type=self.__mode_to_bond_type(),
@@ -765,19 +766,19 @@ class draw_mode( edit_mode):
           [a.redraw() for a in self.focused.atoms]
           # warn when valency is exceeded
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
-            self.app.log( _("maximum valency exceeded!"), message_type="warning")
+            Store.log( _("maximum valency exceeded!"), message_type="warning")
           self.focused.focus() # refocus
 
-    self.app.paper.handle_overlap()
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+    Store.app.paper.handle_overlap()
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
   def mouse_drag( self, event):
     if not self._dragging:
       self._dragging = 1
       if self.focused and isinstance( self.focused, oasa.graph.vertex):
         self._start_atom = self.focused
-        b = bond( self.app.paper,
+        b = bond( Store.app.paper,
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
@@ -788,7 +789,7 @@ class draw_mode( edit_mode):
         else:
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b)
-        #self.app.paper.add_bindings( active_names=('atom',))
+        #Store.app.paper.add_bindings( active_names=('atom',))
 
     if self._start_atom:
       if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
@@ -799,7 +800,7 @@ class draw_mode( edit_mode):
         dx = event.x - self._startx
         dy = event.y - self._starty
         x0, y0 = self._start_atom.get_xy()
-        x,y = geometry.point_on_circle( x0, y0, self.app.paper.any_to_px( self.app.paper.standard.bond_length),
+        x,y = geometry.point_on_circle( x0, y0, Store.app.paper.any_to_px( Store.app.paper.standard.bond_length),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_atom.move_to( x, y)
@@ -835,8 +836,8 @@ class draw_mode( edit_mode):
 
 class arrow_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('arrow')
     self._start_point = None
     self._moved_point = None
@@ -849,10 +850,10 @@ class arrow_mode( edit_mode):
 
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
     if not self.focused:
       spline = (self.get_submode( 2) == 'spline')
-      arr = self.app.paper.new_arrow( spline=spline)
+      arr = Store.app.paper.new_arrow( spline=spline)
       self._start_point = arr.create_new_point( event.x, event.y)
       self._start_point.focus()
       self.focused = self._start_point
@@ -867,7 +868,7 @@ class arrow_mode( edit_mode):
     else:
       self.__nothing_special = 1
     self._block_leave_event = 0
-    self.app.paper.add_bindings()
+    Store.app.paper.add_bindings()
 
   def mouse_drag( self, event):
     if self._start_point:
@@ -889,7 +890,7 @@ class arrow_mode( edit_mode):
         dy = event.y - self._starty
         x0, y0 = self._start_point.get_xy()
         x,y = geometry.point_on_circle( x0, y0,
-                                        self.app.paper.any_to_px( self.app.paper.standard.arrow_length),
+                                        Store.app.paper.any_to_px( Store.app.paper.standard.arrow_length),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_point.move_to( x, y)
@@ -912,14 +913,14 @@ class arrow_mode( edit_mode):
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        pnt = self._arrow_to_update.create_new_point( x0+self.app.paper.any_to_px( self.app.paper.standard.arrow_length),
+        pnt = self._arrow_to_update.create_new_point( x0+Store.app.paper.any_to_px( Store.app.paper.standard.arrow_length),
                                                       y0, position=pos)
-        self.app.paper.select( [pnt])
+        Store.app.paper.select( [pnt])
         self._arrow_to_update.redraw()
       #self.mouse_click( event)
     else:
       if self._moved_point:
-        self.app.paper.select( [self._moved_point])
+        Store.app.paper.select( [self._moved_point])
       self._dragging = 0
     self._start_point = None
     self._moved_point = None
@@ -927,8 +928,8 @@ class arrow_mode( edit_mode):
     if self.__nothing_special:
       self.__nothing_special = 0
     else:
-      self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
   def mouse_click( self, event):
     pass
@@ -938,7 +939,7 @@ class arrow_mode( edit_mode):
       self.focused.unfocus()
     self.focused = object
     if self.focused.object_type == 'selection_rect':
-      self.focused.focus( item= self.app.paper.find_withtag( 'current')[0])
+      self.focused.focus( item= Store.app.paper.find_withtag( 'current')[0])
     else:
       self.focused.focus()
 
@@ -954,15 +955,15 @@ class arrow_mode( edit_mode):
 
 class plus_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('plus')
     self._start_point = None
     self._moved_point = None
 
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -975,12 +976,12 @@ class plus_mode( edit_mode):
 
   def mouse_click( self, event):
     if not self.focused:
-      pl = self.app.paper.new_plus( event.x, event.y)
-      self.app.paper.select( [pl])
+      pl = Store.app.paper.new_plus( event.x, event.y)
+      Store.app.paper.select( [pl])
     else:
       pass
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
   def leave_object( self, event):
     if self.focused:
@@ -995,37 +996,37 @@ class plus_mode( edit_mode):
 
 class template_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('template')
-    self.submodes = [self.app.tm.get_template_names()]
-    self.submodes_names = [self.app.tm.get_template_names()]
+    self.submodes = [Store.tm.get_template_names()]
+    self.submodes_names = [Store.tm.get_template_names()]
     self.submode = [0]
     self.register_key_sequence( 'C-t', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
-    self.template_manager = self.app.tm
+    self.template_manager = Store.tm
     
   def mouse_click( self, event):
     if self.submodes == [[]]:
-      self.app.update_status( _("No template is available"))
+      Store.app.update_status( _("No template is available"))
       return 
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
     if not self.focused:
-      t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=self.app.paper)
+      t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=Store.app.paper)
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         if self.focused.z != 0:
-          self.app.log( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."),
+          Store.log( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."),
                         message_type="hint")
           return
         if self.focused.get_free_valency() >= self._get_templates_valency():
           x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
           x2, y2 = self.focused.get_xy()
-          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=self.app.paper)
+          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=Store.app.paper)
         else:
           x1, y1 = self.focused.get_xy()
-          x2, y2 = self.focused.molecule.find_place( self.focused, self.app.paper.any_to_px( self.app.paper.standard.bond_length))
-          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=self.app.paper)
+          x2, y2 = self.focused.molecule.find_place( self.focused, Store.app.paper.any_to_px( Store.app.paper.standard.bond_length))
+          t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=Store.app.paper)
       elif isinstance( self.focused, bond):
         x1, y1 = self.focused.atom1.get_xy()
         x2, y2 = self.focused.atom2.get_xy()
@@ -1036,26 +1037,26 @@ class template_mode( edit_mode):
         coords = [a.get_xy() for a in atms]
         if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords]) > 0:
           x1, y1, x2, y2 = x2, y2, x1, y1
-        t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=self.app.paper)
+        t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=Store.app.paper)
         if not t:
           return # the template was not meant to be added to a bond
       else:
         return
-    self.app.paper.stack.append( t)
+    Store.app.paper.stack.append( t)
     t.draw()
-    #self.app.paper.signal_to_app( ("Added molecule from template: ")+\
-    #                              self.app.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
-    self.app.paper.select( [o for o in t])
-    self.app.paper.handle_overlap()
+    #Store.app.paper.signal_to_app( ("Added molecule from template: ")+\
+    #                              Store.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
+    Store.app.paper.select( [o for o in t])
+    Store.app.paper.handle_overlap()
     # checking of valency
     if self.focused:
       if isinstance( self.focused, bond) and (self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0):
-        self.app.log( _("maximum valency exceeded!"), message_type="warning")
+        Store.log( _("maximum valency exceeded!"), message_type="warning")
       elif isinstance( self.focused, oasa.graph.vertex) and self.focused.get_free_valency() < 0:
-        self.app.log( _("maximum valency exceeded!"), message_type="warning")
+        Store.log( _("maximum valency exceeded!"), message_type="warning")
 
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
 
 
@@ -1064,7 +1065,7 @@ class template_mode( edit_mode):
   def _mark_focused_as_template_atom_or_bond( self):
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
       self.focused.molecule.t_atom = self.focused
-      self.app.log( _("focused atom marked as 'template atom'")) 
+      Store.log( _("focused atom marked as 'template atom'")) 
     elif self.focused and isinstance( self.focused, bond):
       atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + self.focused.molecule.atoms_bound_to( self.focused.atom2)
       atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
@@ -1076,7 +1077,7 @@ class template_mode( edit_mode):
       else:
         self.focused.molecule.t_bond_first = self.focused.atom2
         self.focused.molecule.t_bond_second = self.focused.atom1
-      self.app.log( _("focused bond marked as 'template bond'")) 
+      Store.log( _("focused bond marked as 'template bond'")) 
 
 
 
@@ -1096,15 +1097,15 @@ class template_mode( edit_mode):
 
 class text_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('text')
     self._start_point = None
     self._moved_point = None
 
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -1117,7 +1118,7 @@ class text_mode( edit_mode):
 
   def mouse_click( self, event):
     if not self.focused:
-      name = self.app.editPool.activate()
+      name = Store.app.editPool.activate()
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
@@ -1132,25 +1133,25 @@ class text_mode( edit_mode):
           xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
         except xml.sax.SAXParseException:        
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-          self.app.paper.bell()
+          Store.app.paper.bell()
           return
-      self.app.paper.set_name_to_selected( name)
+      Store.app.paper.set_name_to_selected( name)
 
       if name and not dom_extensions.isOnlyTags( name):
-        txt = self.app.paper.new_text( event.x, event.y, text=name)
+        txt = Store.app.paper.new_text( event.x, event.y, text=name)
         txt.draw()
-        self.app.paper.select( [txt])
-        self.app.paper.add_bindings()
-        self.app.paper.start_new_undo_record()        
+        Store.app.paper.select( [txt])
+        Store.app.paper.add_bindings()
+        Store.app.paper.start_new_undo_record()        
     else:
       if self.focused.object_type == 'text':
-        self.app.paper.select( [self.focused])
-        name = self.app.editPool.activate( text = self.focused.get_text())
+        Store.app.paper.select( [self.focused])
+        name = Store.app.editPool.activate( text = self.focused.get_text())
         if name and not dom_extensions.isOnlyTags( name):
-          self.app.paper.set_name_to_selected( name)
-          self.app.paper.add_bindings()
+          Store.app.paper.set_name_to_selected( name)
+          Store.app.paper.add_bindings()
       elif isinstance( self.focused, oasa.graph.vertex):
-        self.app.log( _("The text mode can no longer be used to edit atoms, use atom mode."),
+        Store.log( _("The text mode can no longer be used to edit atoms, use atom mode."),
                       message_type="warning")
 
 
@@ -1168,8 +1169,8 @@ class text_mode( edit_mode):
 
 class rotate_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('rotate')
     self._rotated_mol = None
     self.submodes = [['2D','3D']]
@@ -1181,10 +1182,10 @@ class rotate_mode( edit_mode):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
     # blocking is not necessary in rotate mode
     self._block_leave_event = 0
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
     if self.focused and (isinstance( self.focused, oasa.graph.vertex) or isinstance(self.focused, bond)):
       self._rotated_mol = self.focused.molecule
-      x1, y1, x2, y2 = self.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
+      x1, y1, x2, y2 = Store.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
       self._centerx = x1+(x2-x1)/2.0
       self._centery = y1+(y2-y1)/2.0
     if self.focused:
@@ -1202,8 +1203,8 @@ class rotate_mode( edit_mode):
           [b.redraw( recalc_side=1) for b in self._rotated_mol.bonds]
           [a.reposition_marks() for a in self._rotated_mol.atoms]
         self._rotated_mol = None
-        self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+        Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -1245,8 +1246,8 @@ class rotate_mode( edit_mode):
 
 class bond_align_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('transformation mode')
     self._rotated_mol = None
     self.first_atom_selected = None
@@ -1265,11 +1266,11 @@ class bond_align_mode( edit_mode):
     # edit_mode.mouse_down( self, event, modifiers = modifiers)
     self._block_leave_event = 0
     if not self.first_atom_selected:
-      self.app.paper.unselect_all()
+      Store.app.paper.unselect_all()
     if isinstance(self.focused, bond):
       if self.first_atom_selected:
         # waiting for second atom selection, clicking bond does nothing
-        self.app.log( _("select the second atom, please."), message_type="hint")
+        Store.log( _("select the second atom, please."), message_type="hint")
         return
       self._rotated_mol = self.focused.molecule
       x1, y1 = self.focused.atom1.get_xy()
@@ -1281,7 +1282,7 @@ class bond_align_mode( edit_mode):
         if self._needs_two_atoms[ self.submode[0]] > 0:
           self.first_atom_selected = self.focused
           self.first_atom_selected.select()
-          self.app.paper.add_bindings()
+          Store.app.paper.add_bindings()
           self._rotated_mol = self.focused.molecule
           return
         else:
@@ -1290,10 +1291,10 @@ class bond_align_mode( edit_mode):
           objects = [self.focused]
       else: # second atom picked
         if self.focused.molecule != self.first_atom_selected.molecule:
-          self.app.log( _("atoms must be in the same molecule!"), message_type="hint")
+          Store.log( _("atoms must be in the same molecule!"), message_type="hint")
           return
         if self.focused == self.first_atom_selected:
-          self.app.log( _("atoms must be different!"), message_type="hint")
+          Store.log( _("atoms must be different!"), message_type="hint")
           return
         x1, y1 = self.first_atom_selected.get_xy()
         x2, y2 = self.focused.get_xy()
@@ -1310,8 +1311,8 @@ class bond_align_mode( edit_mode):
     else:
       self._rotated_mol.transform( tr)
     self._rotated_mol = None
-    self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+    Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
 #    if self.focused:
 #      self.focused.unfocus()
@@ -1401,7 +1402,7 @@ class bond_align_mode( edit_mode):
     b.draw()
     b.focus()
     if len( cc) == 1:
-      self.app.log( _("Bond is part of a ring, there is no possiblity for rotation!"),
+      Store.log( _("Bond is part of a ring, there is no possiblity for rotation!"),
                     message_type="hint")
       return None
     else:
@@ -1430,8 +1431,8 @@ class bond_align_mode( edit_mode):
 
 class vector_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('vector graphics')
     self.submodes = [['rectangle','square','oval', 'circle', 'polygon']]
     self.submodes_names = [[_('rectangle'),_('square'),_('oval'),_('circle'),_('polygon')]]
@@ -1443,7 +1444,7 @@ class vector_mode( edit_mode):
   def mouse_down( self, event):
     edit_mode.mouse_down( self, event)
     if self.submode[0] == 4:
-      self.app.paper.unselect_all()
+      Store.app.paper.unselect_all()
       self._block_leave_event = 0
       self._polygon_points += [event.x, event.y]
 
@@ -1453,38 +1454,38 @@ class vector_mode( edit_mode):
       return
     if not self.focused and not self._dragging:
       self._dragging = 5
-      self.app.paper.unselect_all()
+      Store.app.paper.unselect_all()
       if self.submode[0] == 0:
-        self._current_obj = self.app.paper.new_rect( (self._startx, self._starty, event.x, event.y))
+        self._current_obj = Store.app.paper.new_rect( (self._startx, self._starty, event.x, event.y))
       elif self.submode[0] == 1:
-        self._current_obj = self.app.paper.new_square( (self._startx, self._starty, event.x, event.y))
+        self._current_obj = Store.app.paper.new_square( (self._startx, self._starty, event.x, event.y))
       elif self.submode[0] == 2:
-        self._current_obj = self.app.paper.new_oval( (self._startx, self._starty, event.x, event.y))
+        self._current_obj = Store.app.paper.new_oval( (self._startx, self._starty, event.x, event.y))
       elif self.submode[0] == 3:
-        self._current_obj = self.app.paper.new_circle( (self._startx, self._starty, event.x, event.y))
+        self._current_obj = Store.app.paper.new_circle( (self._startx, self._starty, event.x, event.y))
       self._current_obj.draw()
     elif not self.focused and self._dragging and self._current_obj:
       self._current_obj.resize( (self._startx, self._starty, event.x, event.y), fix=( self._startx, self._starty))
-      self.app.update_status( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
+      Store.app.update_status( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
     elif self.focused or self._dragging in (1,2):
       edit_mode.mouse_drag( self, event)
 
   def mouse_up( self, event):
     if self.submode[0] == 4:
       if not self._polygon_line:
-        self._polygon_line = self.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
+        self._polygon_line = Store.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
       else:
-        self.app.paper.coords( self._polygon_line, tuple( self._polygon_points + [event.x, event.y]))
+        Store.app.paper.coords( self._polygon_line, tuple( self._polygon_points + [event.x, event.y]))
       return
     self._block_leave_event = 0
     if self._dragging == 5:
       self._dragging = 0
       if self._current_obj:
         if self._current_obj.object_type != 'selection_rect':
-          self.app.paper.select( [self._current_obj])
+          Store.app.paper.select( [self._current_obj])
         self._current_obj = None
-      self.app.paper.start_new_undo_record()
-      self.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
+      Store.app.paper.add_bindings()
     elif self._dragging:
       edit_mode.mouse_up( self, event)
     else:
@@ -1492,24 +1493,24 @@ class vector_mode( edit_mode):
 
   def mouse_down3( self, event, modifiers = []):
     if self.submode[0] == 4 and self._polygon_line:
-      self.app.paper.delete( self._polygon_line)
+      Store.app.paper.delete( self._polygon_line)
       if len( self._polygon_points) > 2:
-        poly = self.app.paper.new_polygon( tuple( self._polygon_points + [event.x, event.y]))
+        poly = Store.app.paper.new_polygon( tuple( self._polygon_points + [event.x, event.y]))
         poly.draw()
-        self.app.paper.select( [poly])
+        Store.app.paper.select( [poly])
       self._polygon_points = []
       self._polygon_line = None
-      self.app.paper.start_new_undo_record()
-      self.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
+      Store.app.paper.add_bindings()
     else:
       edit_mode.mouse_down3( self, event, modifiers=modifiers)
 
   def mouse_move( self, event):
     if self.submode[0] == 4 and self._polygon_points:
       if not self._polygon_line:
-        self._polygon_line = self.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
+        self._polygon_line = Store.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
       else:
-        self.app.paper.coords( self._polygon_line, tuple( self._polygon_points + [event.x, event.y]))
+        Store.app.paper.coords( self._polygon_line, tuple( self._polygon_points + [event.x, event.y]))
 
 
 
@@ -1519,8 +1520,8 @@ class vector_mode( edit_mode):
 
 class mark_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('mark')
     self.submodes = [['radical','biradical','electronpair','plusincircle','minusincircle']]
     self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'),
@@ -1540,35 +1541,35 @@ class mark_mode( edit_mode):
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
       m = self.focused.set_mark( mark=a[ self.submode[0]])
       if m:
-        self._register_mark( m, self.app.paper)
+        self._register_mark( m, Store.app.paper)
       if self.focused.show_hydrogens and self.focused.show:
         self.focused.redraw()
-      self.app.paper.start_new_undo_record()
-    self.app.paper.add_bindings()
+      Store.app.paper.start_new_undo_record()
+    Store.app.paper.add_bindings()
 
 
   def _move_mark_for_selected( self, dx, dy):
-    to_move = [a for a in self.app.paper.selected if isinstance( a, oasa.graph.vertex)]
+    to_move = [a for a in Store.app.paper.selected if isinstance( a, oasa.graph.vertex)]
     
     for a in to_move:
       for k,v in a.marks.iteritems():
         if v:
           v.move( dx, dy)
 
-    if self.app.paper.um.get_last_record_name() == "arrow-key-move":
-      self.app.paper.um.delete_last_record()
-    self.app.paper.start_new_undo_record( name="arrow-key-move")
+    if Store.app.paper.um.get_last_record_name() == "arrow-key-move":
+      Store.app.paper.um.delete_last_record()
+    Store.app.paper.start_new_undo_record( name="arrow-key-move")
 
 
   def startup( self):
-    self._register_all_marks( self.app.paper)
-    self.app.paper.remove_bindings()
-    self.app.paper.add_bindings( active_names=("mark","atom"))
+    self._register_all_marks( Store.app.paper)
+    Store.app.paper.remove_bindings()
+    Store.app.paper.add_bindings( active_names=("mark","atom"))
 
 
 
   def cleanup( self, paper=None):
-    pap = paper or self.app.paper
+    pap = paper or Store.app.paper
     self._unregister_all_marks( pap)
     pap.remove_bindings()
     pap.add_bindings()
@@ -1599,15 +1600,15 @@ class mark_mode( edit_mode):
 
 class atom_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('atom')
     self._start_point = None
     self._moved_point = None
 
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -1620,7 +1621,7 @@ class atom_mode( edit_mode):
 
   def mouse_click( self, event):
     if not self.focused:
-      name = self.app.editPool.activate()
+      name = Store.app.editPool.activate()
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
@@ -1635,35 +1636,35 @@ class atom_mode( edit_mode):
           xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
         except xml.sax.SAXParseException:        
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-          self.app.paper.bell()
+          Store.app.paper.bell()
           return
 
       if name and not dom_extensions.isOnlyTags( name):
-        mol = self.app.paper.new_molecule()
-        a = mol.create_vertex_according_to_text( None, name, interpret=self.app.editPool.interpret)
+        mol = Store.app.paper.new_molecule()
+        a = mol.create_vertex_according_to_text( None, name, interpret=Store.app.editPool.interpret)
         a.x = event.x
         a.y = event.y
         mol.insert_atom( a)
         a.draw()
-        self.app.paper.select( [a])
-        self.app.paper.add_bindings()
-        self.app.paper.start_new_undo_record()        
+        Store.app.paper.select( [a])
+        Store.app.paper.add_bindings()
+        Store.app.paper.start_new_undo_record()        
     else:
       if isinstance( self.focused, oasa.graph.vertex):
-        self.app.paper.select( [self.focused])
+        Store.app.paper.select( [self.focused])
         a = self.focused
-        name = self.app.editPool.activate( text = a.get_text())
+        name = Store.app.editPool.activate( text = a.get_text())
         if name and not dom_extensions.isOnlyTags( name):
           # we need to change the class of the vertex
-          v = a.molecule.create_vertex_according_to_text( a, name, interpret=self.app.editPool.interpret)
+          v = a.molecule.create_vertex_according_to_text( a, name, interpret=Store.app.editPool.interpret)
           a.copy_settings( v)
           a.molecule.replace_vertices( a, v)
           a.delete()
           v.draw()
           print v, type( v)
 
-          self.app.paper.start_new_undo_record()        
-          self.app.paper.add_bindings()
+          Store.app.paper.start_new_undo_record()        
+          Store.app.paper.add_bindings()
 
 
 
@@ -1682,8 +1683,8 @@ class atom_mode( edit_mode):
 
 class reaction_mode( basic_mode):
 
-  def __init__( self, app):
-    basic_mode.__init__( self, app)
+  def __init__( self):
+    basic_mode.__init__( self)
     self.name = _('reaction')
     self.submodes = [['reactant','rplus','rarrow','condition','product']]
     self.submodes_names = [[_('reactant'),_('plus'),_('arrow'),_('condition'),_('product')]]
@@ -1741,20 +1742,20 @@ class reaction_mode( basic_mode):
 
   def _mark_reaction( self):
     for i in self._items:
-      self.app.paper.delete( i)
+      Store.app.paper.delete( i)
     self._items = []
     width = 3
     
-    self._items.append( self.app.paper.create_rectangle( self.arrow.bbox(), fill='', outline='blue', width=width))
+    self._items.append( Store.app.paper.create_rectangle( self.arrow.bbox(), fill='', outline='blue', width=width))
     
     for m in self.arrow.reaction.reactants:
-      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='green', width=width))
+      self._items.append( Store.app.paper.create_rectangle( m.bbox(), outline='green', width=width))
     for m in self.arrow.reaction.products:
-      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='red', width=width))
+      self._items.append( Store.app.paper.create_rectangle( m.bbox(), outline='red', width=width))
     for m in self.arrow.reaction.conditions:
-      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='cyan', width=width))
+      self._items.append( Store.app.paper.create_rectangle( m.bbox(), outline='cyan', width=width))
     for m in self.arrow.reaction.pluses:
-      self._items.append( self.app.paper.create_rectangle( m.bbox(), outline='orange', width=width))
+      self._items.append( Store.app.paper.create_rectangle( m.bbox(), outline='orange', width=width))
 
     #self._add_bindings_according_to_submode()
 
@@ -1762,24 +1763,24 @@ class reaction_mode( basic_mode):
   def _add_bindings_according_to_submode( self):
     name = self.get_submode(0)
     if name == 'reactant' or name == 'product':
-      self.app.paper.add_bindings( active_names=('atom','bond'))
+      Store.app.paper.add_bindings( active_names=('atom','bond'))
     elif name == 'rarrow':
-      self.app.paper.add_bindings( active_names=('arrow','point'))
+      Store.app.paper.add_bindings( active_names=('arrow','point'))
     elif name == 'rplus':
-      self.app.paper.add_bindings( active_names=('plus',))
+      Store.app.paper.add_bindings( active_names=('plus',))
     elif name == 'condition':
-      self.app.paper.add_bindings( active_names=('text',))
+      Store.app.paper.add_bindings( active_names=('text',))
     
 
 
   def on_submode_switch( self, submode_index, name=''):
-    self.app.paper.remove_bindings()
+    Store.app.paper.remove_bindings()
     self._add_bindings_according_to_submode()
 
 
   def startup( self):
-    self.app.paper.unselect_all()
-    arrows = self.app.paper.arrows
+    Store.app.paper.unselect_all()
+    arrows = Store.app.paper.arrows
     if arrows:
       self.arrow = arrows[0]
     else:
@@ -1789,7 +1790,7 @@ class reaction_mode( basic_mode):
 
 
   def cleanup( self, paper=None):
-    pap = paper or self.app.paper
+    pap = paper or Store.app.paper
     for i in self._items:
       pap.delete( i)
     self._items = []
@@ -1809,15 +1810,15 @@ class reaction_mode( basic_mode):
 
 class user_template_mode( template_mode):
 
-  def __init__( self, app):
-    template_mode.__init__( self, app)
+  def __init__( self):
+    template_mode.__init__( self)
     self.name = _('users templates')
-    self.submodes = [self.app.utm.get_template_names()]
-    self.submodes_names = [self.app.utm.get_template_names()]
+    self.submodes = [Store.utm.get_template_names()]
+    self.submodes_names = [Store.utm.get_template_names()]
     self.submode = [0]
     self.pulldown_menu_submodes = [0]
     #self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
-    self.template_manager = self.app.utm
+    self.template_manager = Store.utm
     
 
 
@@ -1826,8 +1827,8 @@ class user_template_mode( template_mode):
 
 class external_data_mode( basic_mode):
 
-  def __init__( self, app):
-    basic_mode.__init__( self, app)
+  def __init__( self):
+    basic_mode.__init__( self)
     self.name = _('External data management')
     self.submodes = [['molecule','atom','bond'],['reactivity']]
     self.submodes_names = [[_('molecule'),_('atom'),_('bond')],[_('reactivity')]]
@@ -1858,7 +1859,7 @@ class external_data_mode( basic_mode):
 
 
   def _get_active_entry( self):
-    e = self.app.focus_get()
+    e = Store.app.focus_get()
     if e in self._entries.values() and e.type_class == "reference":
       return e
 
@@ -1866,16 +1867,16 @@ class external_data_mode( basic_mode):
   def _activate_object( self, obj):
     self._active_object = obj
     if self._object_selector:
-      self.app.paper.delete( self._object_selector)
-    self._object_selector = self.app.paper.create_rectangle( obj.bbox(), outline='red', width=2)
+      Store.app.paper.delete( self._object_selector)
+    self._object_selector = Store.app.paper.create_rectangle( obj.bbox(), outline='red', width=2)
     self._add_bindings_according_to_submode()
 
 
   def _populate_table_for_active_object( self):
-    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    defs = Store.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
     if defs:
       for k,v in defs.iteritems():
-        val = self.app.paper.edm.get_data( self.get_submode( 1), self._active_object, k)
+        val = Store.app.paper.edm.get_data( self.get_submode( 1), self._active_object, k)
         if hasattr( val, 'id'):
           self._entries[ k].value = val.id
         else:
@@ -1884,45 +1885,45 @@ class external_data_mode( basic_mode):
 
 
   def _entry_entered( self, e):
-    obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
+    obj = Store.app.paper.id_manager.get_object_with_id_or_none( e.value)
     if obj:
-      self._focus_selector = self.app.paper.create_rectangle( obj.bbox(), outline="orange", width=2)
+      self._focus_selector = Store.app.paper.create_rectangle( obj.bbox(), outline="orange", width=2)
     self._add_bindings_according_to_active_name( e.type)
 
 
   def _entry_left( self):
     if self._focus_selector:
-      self.app.paper.delete( self._focus_selector)
+      Store.app.paper.delete( self._focus_selector)
     self._add_bindings_according_to_submode()
 
 
   def _set_data( self):
-    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    defs = Store.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
     if defs:
       for k,v in defs.iteritems():
         val = self._entries[ k].value
         if val != '':
-          if v['type'] in self.app.paper.edm.reference_types:
+          if v['type'] in Store.app.paper.edm.reference_types:
             # can be passed to edm.set_data now
             try:
-              val = self.app.paper.id_manager.get_object_with_id( val)
+              val = Store.app.paper.id_manager.get_object_with_id( val)
             except KeyError:
-              self.app.log( "id %s is not valid (object with such id does not exist)" % val, message_type="error")
+              Store.log( "id %s is not valid (object with such id does not exist)" % val, message_type="error")
               continue
-          self.app.paper.edm.set_data( self.get_submode( 1), self._active_object, k, val)
+          Store.app.paper.edm.set_data( self.get_submode( 1), self._active_object, k, val)
 
     self._draw_the_arrows()
-    self.app.log( _("The data were set to the active item"), message_type="info")
+    Store.log( _("The data were set to the active item"), message_type="info")
 
 
   def _show_table_for_submode( self):
-    defs = self.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
+    defs = Store.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
     if defs:
-      self._frame = Tkinter.Frame( self.app.paper)
-      self._win = self.app.paper.create_window( 500, 100, window=self._frame)
+      self._frame = Tkinter.Frame( Store.app.paper)
+      self._win = Store.app.paper.create_window( 500, 100, window=self._frame)
       for k,v in defs.iteritems():
         label = Tkinter.Label( self._frame, text=v['text'])
-        if v['type'] in self.app.paper.edm.reference_types:
+        if v['type'] in Store.app.paper.edm.reference_types:
           entry = external_data.ExternalDataEntry( self._frame, v['type'], "reference")
           entry.bind( "<FocusIn>", lambda e: self._entry_entered( e.widget))
           entry.bind( "<FocusOut>", lambda e: self._entry_left())
@@ -1938,8 +1939,8 @@ class external_data_mode( basic_mode):
   def _draw_the_arrows( self):
     for e in self._entries.values():
       if e.type_class == "reference":
-        e.cleanup( self.app.paper)
-        obj = self.app.paper.id_manager.get_object_with_id_or_none( e.value)
+        e.cleanup( Store.app.paper)
+        obj = Store.app.paper.id_manager.get_object_with_id_or_none( e.value)
         if obj:
           e.arrow = self._draw_arrow_from_to( e, obj)
     self._add_bindings_according_to_submode()
@@ -1947,13 +1948,13 @@ class external_data_mode( basic_mode):
 
   def _draw_arrow_from_to( self, e, obj):
     e.update()
-    x0, y0 = self.app.paper.bbox( self._win)[0:2]
+    x0, y0 = Store.app.paper.bbox( self._win)[0:2]
     x1 = x0
     y1 = y0 + e.winfo_y() + e.winfo_height()/2
     bbox = obj.bbox()
     x2 = (bbox[0]+bbox[2])/2
     y2 = (bbox[1]+bbox[3])/2
-    arrow = self.app.paper.create_line( x1, y1, x2, y2, arrow="last", fill="blue", width=1)
+    arrow = Store.app.paper.create_line( x1, y1, x2, y2, arrow="last", fill="blue", width=1)
     return arrow
 
 
@@ -1963,24 +1964,24 @@ class external_data_mode( basic_mode):
     
 
   def _add_bindings_according_to_active_name( self, name):
-    self.app.paper.remove_bindings()
+    Store.app.paper.remove_bindings()
     if name == 'molecule':
-      self.app.paper.add_bindings( active_names=('atom','bond'))
+      Store.app.paper.add_bindings( active_names=('atom','bond'))
     elif name == 'atom':
-      self.app.paper.add_bindings( active_names=('atom',))
+      Store.app.paper.add_bindings( active_names=('atom',))
     elif name == 'bond':
-      self.app.paper.add_bindings( active_names=('bond',))
+      Store.app.paper.add_bindings( active_names=('bond',))
 
 
     
 
 
   def on_submode_switch( self, submode_index, name=''):
-    self.app.paper.remove_bindings()
+    Store.app.paper.remove_bindings()
     self._add_bindings_according_to_submode()
     self._delete_table()
     self._show_table_for_submode()
-    for x in self.app.paper.stack:
+    for x in Store.app.paper.stack:
       if x.object_type == self.get_submode( 0):
         self._activate_object( x)
         break
@@ -1988,19 +1989,19 @@ class external_data_mode( basic_mode):
 
 
   def startup( self):
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
 
 
 
   def cleanup( self, paper=None):
-    pap = paper or self.app.paper
+    pap = paper or Store.app.paper
     self._delete_table( pap)
     pap.add_bindings()
 
 
 
   def _delete_table( self, paper=None):
-    pap = paper or self.app.paper
+    pap = paper or Store.app.paper
     if self._win:
       self._items = Set()
       [e.cleanup( pap) for e in self._entries.values()]
@@ -2030,8 +2031,8 @@ class external_data_mode( basic_mode):
 
 class rapid_draw_mode( edit_mode):
 
-  def __init__( self, app):
-    edit_mode.__init__( self, app)
+  def __init__( self):
+    edit_mode.__init__( self)
     self.name = _('Rapid drawing')
     self._moved_line = None
     self._start_atom = None
@@ -2051,14 +2052,14 @@ class rapid_draw_mode( edit_mode):
     
   def mouse_down( self, event, modifiers = []):
     #edit_mode.mouse_down( self, event, modifiers = modifiers)
-    self.app.paper.unselect_all()
+    Store.app.paper.unselect_all()
     self.handle_click( event, modifiers=modifiers, button=1)
 
 
   def handle_click( self, event, modifiers=[], button=1):
     if not self.focused:
       if not self.molecule:
-        self.molecule = self.app.paper.new_molecule()
+        self.molecule = Store.app.paper.new_molecule()
         self._start_atom = self.molecule.create_new_atom( event.x, event.y)
       else:
         x, y = self._get_xy_according_to_submodes( event)
@@ -2075,7 +2076,7 @@ class rapid_draw_mode( edit_mode):
         else:
           mol = self.focused.molecule
           self.molecule.eat_molecule( self.focused.molecule)
-          self.app.paper.stack.remove( mol)
+          Store.app.paper.stack.remove( mol)
           e = self.molecule.add_edge( self.focused, self._start_atom, e=self.get_edge( self.molecule, modifiers))
           e.draw()
           self._start_atom = self.focused
@@ -2087,13 +2088,13 @@ class rapid_draw_mode( edit_mode):
       return 
 
     if self._moved_line:
-      self.app.paper.delete( self._moved_line)
+      Store.app.paper.delete( self._moved_line)
 
     # create the _moved_line according to set submodes
     x, y = self._get_xy_according_to_submodes( event)
-    self._moved_line = self.app.paper.create_line( self._start_atom.x, self._start_atom.y, x, y)
+    self._moved_line = Store.app.paper.create_line( self._start_atom.x, self._start_atom.y, x, y)
 
-    self.app.paper.add_bindings()
+    Store.app.paper.add_bindings()
     
 
 
@@ -2110,23 +2111,23 @@ class rapid_draw_mode( edit_mode):
   def mouse_move( self, event):
     if self._moved_line:
       x, y = self._get_xy_according_to_submodes( event)
-      self.app.paper.coords( self._moved_line, (self._start_atom.x, self._start_atom.y, x, y))
+      Store.app.paper.coords( self._moved_line, (self._start_atom.x, self._start_atom.y, x, y))
 
 
 
   def mouse_down3( self, event, modifiers = []):
     if self._moved_line:
-      self.app.paper.delete( self._moved_line)
+      Store.app.paper.delete( self._moved_line)
 
-    self.app.paper.start_new_undo_record()
+    Store.app.paper.start_new_undo_record()
 
     if self.get_submode( 2) == 'autoclean':
       if self._bond_to_fix:
-        self.app.paper.select( [self._bond_to_fix])
+        Store.app.paper.select( [self._bond_to_fix])
         self._bond_to_fix = None
       else:
-        self.app.paper.select( [self._start_atom.get_neighbor_edges()[0]])
-      self.app.clean()
+        Store.app.paper.select( [self._start_atom.get_neighbor_edges()[0]])
+      Store.app.clean()
 
     self._start_atom = None
     self.molecule = None
@@ -2181,7 +2182,7 @@ class rapid_draw_mode( edit_mode):
         dy = event.y - self._start_atom.y
         x,y = geometry.point_on_circle( self._start_atom.x,
                                         self._start_atom.y,
-                                        self.app.paper.any_to_px( self.app.paper.standard.bond_length),
+                                        Store.app.paper.any_to_px( Store.app.paper.standard.bond_length),
                                         direction = (dx, dy),
                                         resolution = int( self.get_submode( 0)))
         return x, y
