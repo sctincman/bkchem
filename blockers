@@ -11,19 +11,18 @@ remarks
 =======
 
 - update povray export or get rid of it! The same for PNG export
-
-- think about how to make selecting of the whole molecule by means of a rectange
-
-- make some profiling on misc.difference, or switch to sets? I would need to use python 2.3
-
-new bond types -
-	- update exports and imports
-
 - vertical and horizontal swap
   - not containers
   - things should remain selected
+- write some autosearch code for pixmaps
 
-- mode for ring creation
+
+0.x.0
+=======
+
+- think about how to make selecting of the whole molecule by means of a rectange
+
+- mode for ring creation?
 
 - meta infos - is_container
 	- distinguish between container as molecule and containers as all top level classes
@@ -32,25 +31,18 @@ new bond types -
 - 60, 120 etc. fixed rotation
 - keybindings customization?
 
-- could be even possible to make a new parent for those who have a line_width property,
-  they have a common read_standard_values()
-
-
 - code cleanup!
   - yes|no in get_package
   - widgets for paper properties selection
 - do something with pixmaps and their fucked behaviour of not working when imported on the top of the file
   - needs some proper module initiation?
 - translate italic, bold etc. in editPool
-- implement the method swapping?
 - spline - svg, exports - HOW? the SVG does not know b-splines
 - marks and the real coords, plus and real coords - drop real coords and make importers scale the drawing? what about CML output?
   (what about to map A=cm?!?)
 ?- widths and px->cm
 - prepare a way to reuse the same group drawing for different names (CH3, Me)
 - edit_pool should be able to come in a mode that disables the B,I etc. (for naming)
-- find a way to box related button groups together
-- when the doc is propagating through as a method argument why not use it for something else?
 - hatch step size
 ?- min and max values on change of unit
 ?- somehow hide the visible points of arrow
@@ -59,56 +51,27 @@ new bond types -
 - bold, unbold with C-t b
 ?- rename colors in xml?
 - no repositioning on template add
-- make standard child of object and use the properties for access to its attrs in order to make the str->int transform?
 
 0.6.0
 
 - scaling by means of dragging of the corner? - vector mode?
 - dialogs on separate tab?
 - pasting text directly from clipboard to a text object
-- styles? at least as default values
 - metainformation on class level
 - always appended new atoms transoid at first
-- code to round coordinates after rotation, template tranform etc. - classes.py:742
-	- is it realy good for something?
-- use the same background color on every platform
 ?- make Cn (C6 etc.) also a valid group such as C6H13?
-- template groups
 - split paper to several layers
-- split classes to several files (and layers?)
 - split data and text (data.py)
 
-
-0.x.0
-
-BUGS - config dialog could be forgotten by the user under the main window, should be 'real modal'
-
-- separate stereo flags from s,d,t (in both CDML and drawing)
 - concatenation should prefer to save show-atoms
--rework CDML (split chemistry, graphics, data), create styles?
- - distance in bond could be a problem - is it always set?, what if i set it to a single bond and then reload the file?!!?
- -is "bond width" the right name for the second line distance?!?
- -switch all coords info to points?
- -CDML reading associated with each class is no longer sustainable?
- - data are put directly to their owners
 - new molecules made from old are put to the top of the stack
-- should resizing of molecules (and arrows etc.) be possible in vector mode?
 - using paper.selected together with arrows and polygons could be painful - try to rewrite the selection code
   to select the whole parent if all children are selected (and unselect the children). This could be also useful for molecule selection.
-- preferences?
 - unescape text when going to edit it
 
-
-0.6.0
 
 - adding data to individual items according to SelfML? Could be cool!
 - rotated rect and oval - how?!!
 ?- the positioning of charges could be adjustable together with yes|no
-?- standard bond length should be adjusted according to mean bond length of imported molecule
 ?- circle searching could count atoms and prefer six membered rings
 
-
-0.7.0
-
-- reaction description - no mapping
-- atom mapping
