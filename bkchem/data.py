@@ -62,39 +62,11 @@ align_modes = { 't': 'Top',
                 'h': 'Horizontal center'}
 
 
-about_text = _("""BKchem was concieved and written by BK
-and is performed by Python, Pmw & (optionaly :) PIL.
-
-BKchem is free software and is distributed under GNU GPL.
-BKchem is provided as is without warranty of any kind.
-- see the file 'gpl.txt' in distribution directory for more info.
-
-Among other things GNU GPL allows you to study, modify
-and redistribute BKchem as long as you do it under GNU GPL.""")
-
-
-no_pmw_text = _("""UNABLE TO IMPORT PMW
-
-Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.
-(for more info on Pmw see documentation)""")
-
-
-splash_text = _("""BKchem is starting.
-
-Unfortunatelly,
-the splash image was not found :(""")
-
-
-standards_differ_text = _('''This CDML document was created using different standard values than you are currently using. To retain the same drawing style it could be more convenient to use these new values for this file. Your global preferences will be unaffected. \n\nDo you want set these new standard values?''')
-
-
 
 cdml_namespace = 'http://www.freesoftware.fsf.org/bkchem/cdml'
 
-current_CDML_version = '0.13'
 
-current_BKchem_version = '0.8.1'
-
+# types of vector graphics
 vector_graphics_types = ('oval', 'rect', 'polygon')
 
 # types that have fonts
@@ -124,9 +96,6 @@ paper_types = { 'A4': [297,210],
                 'Letter': [279.4,215.9],
                 'Legal': [355.7,215.9]}
 
-
-# border width for all components of interface
-border_width = 1
 
 
 # index codes for meta__configurable

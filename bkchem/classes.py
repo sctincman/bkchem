@@ -34,7 +34,7 @@ import operator
 import tkFont
 from parents import meta_enabled, container, with_line, text_like, line_colored
 from parents import area_colored, point_drawable, interactive, drawable, top_level
-from parents import child
+from parents import child, with_font
 from reaction import reaction
 
 
@@ -79,6 +79,9 @@ class standard:
 
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     ret = doc.createElement( 'standard')
     dom_extensions.setAttributes( ret, (('line_width', str( self.line_width)),
                                         ('font_size', str( self.font_size)),
@@ -265,6 +268,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.redraw()
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     a = ['no', 'yes']
@@ -286,6 +290,9 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       self.points.append( point( self.paper, arrow=self, package=p))
   
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     a = ['no', 'yes']
     arr = doc.createElement('arrow')
     arr.setAttribute( 'id', self.id)
@@ -311,6 +318,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.redraw()
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.paper.bbox( self.item)
 
   def set_pins( self, start=None, end=None):
@@ -434,11 +442,15 @@ class point( point_drawable, interactive, child):
       self.item = None
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     x, y, z = self.paper.read_xml_point( package)
     self.x, self.y = self.paper.real_to_screen_coords( (x,y))
     #self.z = int( package.getAttribute( 'z') )
   
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pnt = doc.createElement('point')
     x, y = map( self.paper.px_to_text_with_unit, self.paper.screen_to_real_coords( (self.x, self.y)))
     dom_extensions.setAttributes( pnt, (('x', x),
@@ -472,7 +484,7 @@ class point( point_drawable, interactive, child):
 
 ##-------------------- PLUS CLASS ------------------------------
 
-class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, top_level):
+class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -482,13 +494,13 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   meta__used_standard_values = ['line_color','area_color','font_family']
   # undo related metas
   meta__undo_properties = point_drawable.meta__undo_properties +\
-                          text_like.meta__undo_properties +\
+                          with_font.meta__undo_properties +\
                           area_colored.meta__undo_properties
 
   def __init__( self, paper, xy=(), package=None):
     meta_enabled.__init__( self, paper)
     point_drawable.__init__( self)
-    text_like.__init__( self)
+    with_font.__init__( self)
     area_colored.__init__( self)
 
     self.x = self.y = None
@@ -553,6 +565,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.move( dx, dy)
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     pnt = package.getElementsByTagName( 'point')[0]
@@ -565,6 +578,9 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.area_color = package.getAttribute( 'background-color')
   
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pls = doc.createElement('plus')
     pls.setAttribute( 'id', self.id)
     x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
@@ -586,6 +602,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return self.x, self.y
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     if hasattr( self, 'item') and self.item:
       return self.paper.bbox( self.item)
     else:
@@ -751,6 +768,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     pos = package.getElementsByTagName( 'point')[0]
@@ -775,6 +793,9 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     a = doc.createElement('text')
     a.setAttribute( 'id', self.id)
     if self.area_color != '#ffffff':
@@ -807,6 +828,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.ftext.bbox()
 
 

@@ -96,12 +96,17 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
       self.selector.move( dx, dy)
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pass
                            
   def read_package( self, pack):
+    """reads the dom element pack and sets internal state according to it"""
     pass
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.coords
 
   def lift( self):
@@ -135,6 +140,9 @@ class rect( vector_graphics_item):
       self.paper.itemconfig( self.item, width=self.line_width, fill=self.area_color, outline=self.line_color)
     
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'rect')
     x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
@@ -147,6 +155,7 @@ class rect( vector_graphics_item):
     return pack
                            
   def read_package( self, pack):
+    """reads the dom element pack and sets internal state according to it"""
     self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
     self.area_color = pack.getAttribute( 'area_color') or self.area_color
@@ -162,6 +171,9 @@ class rect( vector_graphics_item):
 class square( rect):
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'square')
     x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
@@ -216,6 +228,9 @@ class oval( vector_graphics_item):
       self.paper.itemconfig( self.item, width=self.line_width, fill=self.area_color, outline=self.line_color)
       
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'oval')
     x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
@@ -228,6 +243,7 @@ class oval( vector_graphics_item):
     return pack
                            
   def read_package( self, pack):
+    """reads the dom element pack and sets internal state according to it"""
     self.coords = self.paper.real_to_screen_coords( map( self.paper.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
 
@@ -245,6 +261,9 @@ class oval( vector_graphics_item):
 class circle( oval):
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'circle')
     x1, y1, x2, y2 = self.paper.px_to_text_with_unit( self.paper.screen_to_real_coords( self.coords))
     dom_extensions.setAttributes( pack, (('x1', x1),
@@ -330,9 +349,13 @@ class polygon( vector_graphics_item, container):
     [o.unselect() for o in self.points]
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.paper.bbox( self.item)
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'polygon')
     dom_extensions.setAttributes( pack, (('area_color', self.area_color),
                                          ('line_color', self.line_color),
@@ -342,6 +365,7 @@ class polygon( vector_graphics_item, container):
     return pack
 
   def read_package( self, pack):
+    """reads the dom element pack and sets internal state according to it"""
     self.points = []
     for p in pack.getElementsByTagName( 'point'):
       self.points.append( classes.point( self.paper, arrow=self, package=p))

@@ -167,3 +167,22 @@ def plural_or_singular( iterable):
 
 def len_and_ending( iterable):
   return (len( iterable), plural_or_singular( iterable))
+
+
+
+# some helper, higher order functions
+
+map_functions = lambda funcs, value: zip( apply, funcs, len(funcs)*[value])
+
+something_true = lambda vals: len( filter( None, vals))
+
+some_apply = lambda func, vals: something_true( map( func, vals))
+
+
+
+# some results
+
+isinstance_of_one = lambda obj, parents: some_apply( lambda x: isinstance( obj, x), parents)
+
+
+  

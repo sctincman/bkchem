@@ -29,6 +29,7 @@ import os
 import tkMessageBox
 import xml.dom.minidom as dom
 import data
+import messages
 import dom_extensions
 import non_xml_writer
 import import_checker
@@ -45,6 +46,7 @@ import modes
 import interactors
 import os_support
 import pref_manager
+import popen2
 
 import oasa_bridge
 import plugins.plugin
@@ -69,7 +71,7 @@ class BKchem( Tk):
     self.papers = []
     self.notebook = Pmw.NoteBook( self.main_frame,
                                   raisecommand=self.change_paper,
-                                  borderwidth=data.border_width)
+                                  borderwidth=config.border_width)
     self.add_new_paper()
 
     # template and group managers
@@ -147,7 +149,7 @@ class BKchem( Tk):
 
   def init_menu( self):
     # defining menu
-    menu = Frame( self.main_frame, relief=RAISED, bd=data.border_width)
+    menu = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
     menu.pack( fill = X)
 
     helpButton = Menubutton( menu, text=_('Help'))
@@ -253,12 +255,32 @@ class BKchem( Tk):
     self.chemistry_menu.add( 'command', label=_('Flush mol'), command = lambda : self.paper.flush_first_selected_mol_to_graph_file())
     self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper))
     
+
+
+
+
     # HACKS MENU
     hacksButton = Menubutton( menu, text=_('Hacks'))
     hacksButton.pack( side= 'right')
     hacksMenu = Menu( hacksButton, tearoff=0)
     hacksButton['menu'] = hacksMenu
     hacksMenu.add( 'command', label=_('Molecules to separate tabs'), command=self.molecules_to_separate_tabs)
+    hacksMenu.add( 'command', label=_('Rings to separate tabs'), command=self.rings_to_separate_tabs)
+    hacksMenu.add( 'command', label=_('Normalize aromatic double bonds'), command=self.normalize_aromatic_double_bonds)
+    hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
+
+
+    # PLUGIN MENU
+    pluginButton = Menubutton( menu, text=_('Plugins'))
+    pluginButton.pack( side= 'right')
+    pluginMenu = Menu( pluginButton, tearoff=0)
+    pluginButton['menu'] = pluginMenu
+    for name in self.plug_man.get_names():
+      recent = pluginMenu.add_command( label=name, command=misc.lazy_apply( self.run_plugin, (name,)))
+      tooltip = self.plug_man.get_description( name)
+      if tooltip and recent:
+        print "adding tooltip:", tooltip
+        self.balloon.bind( recent, tooltip)
 
 
 
@@ -285,7 +307,7 @@ class BKchem( Tk):
       self.option_add( "*font", ("Helvetica",10,"normal"))
     # colors
     #self.option_add( "*background", "#d0d0d0")
-    #self.option_add( "*borderwidth", data.border_width)
+    #self.option_add( "*borderwidth", config.border_width)
     self.title( "BKchem")
     self.stat= StringVar()
     self.stat.set( "Idle")
@@ -350,9 +372,13 @@ class BKchem( Tk):
     self.gm.add_template_from_CDML( "groups.cdml")
     self.gm.add_template_from_CDML( "groups2.cdml")
 
-
     # preference manager
     self.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
+
+    from plugin_support import plugin_manager
+    self.plug_man = plugin_manager()
+    plugs = self.plug_man.get_available_plugins()
+    print "loaded plugins:", plugs
 
 
   def init_preferences( self):
@@ -401,10 +427,10 @@ class BKchem( Tk):
     for m in self.modes_sort:
       if m in pixmaps.images:
         recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey',
-                                        relief='flat', borderwidth=data.border_width)
+                                        relief='flat', borderwidth=config.border_width)
         self.balloon.bind( recent, self.modes[ m].name)
       else:
-        self.radiobuttons.add( m, text=self.modes[ m].name, borderwidth=data.border_width)
+        self.radiobuttons.add( m, text=self.modes[ m].name, borderwidth=config.border_width)
     # sub-mode support
     self.subFrame = Frame( self.main_frame)
     self.subFrame.pack( fill=X)
@@ -416,7 +442,7 @@ class BKchem( Tk):
 
 
   def init_status_bar( self):
-    status = Label( self.main_frame, relief=SUNKEN, bd=data.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
+    status = Label( self.main_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
     status.pack( fill=X, side='bottom')
 
 
@@ -427,7 +453,7 @@ class BKchem( Tk):
     dialog = Pmw.MessageDialog(self,
                                title = _('About BKchem'),
                                defaultbutton = 0,
-                               message_text = data.about_text)
+                               message_text = messages.about_text)
     dialog.iconname('BKchem')
     dialog.activate()
 
@@ -467,10 +493,10 @@ class BKchem( Tk):
           self.subbuttons[i].pack( side=LEFT)
         for sub in m.submodes[i]:
           if sub in pixmaps.images:
-            recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=data.border_width)
+            recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=config.border_width)
             self.balloon.bind( recent, m.submodes_names[i][m.submodes[i].index(sub)])
           else:
-            self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=data.border_width)
+            self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=config.border_width)
         # black magic???
         j = m.submodes[i][ m.submode[i]]
         self.subbuttons[i].invoke( j)
@@ -537,8 +563,8 @@ class BKchem( Tk):
                         file_name=name_dic)
     self.__tab_name_2_paper[ _tab_name] = paper
     # the scrolling
-    scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview, bd=data.border_width)
-    scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview, bd=data.border_width)
+    scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview, bd=config.border_width)
+    scroll_x = Scrollbar( page, orient = HORIZONTAL, command = paper.xview, bd=config.border_width)
     paper.grid( row=0, column=0, sticky="news")
     page.grid_rowconfigure( 0, weight=1, minsize = 0)
     page.grid_columnconfigure( 0, weight=1, minsize = 0)
@@ -566,7 +592,7 @@ class BKchem( Tk):
   def close_paper( self, paper=None):
     p = paper or self.paper
 
-    if p.changes_made:
+    if p.changes_made and not self.in_batch_mode:
       name = p.file_name['name']
       dialog = Pmw.MessageDialog( self,
                                   title= _("Really close?"),
@@ -751,7 +777,11 @@ class BKchem( Tk):
       ## check if its CD-SVG or CDML
       if doc.nodeName == 'svg':
         ## first try if there is the right namespace
-        docs = doc.getElementsByTagNameNS( data.cdml_namespace, 'cdml')
+        if hasattr( doc, 'getElementsByTagNameNS'):
+          docs = doc.getElementsByTagNameNS( data.cdml_namespace, 'cdml')
+        else:
+          self.update_status(_("file not loaded"))
+          return None  # I don't know why this happens, but we simply ignore the document
         if docs:
           doc = docs[0]
         else:
@@ -1149,6 +1179,52 @@ Enter IChI:""")
     [self.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
 
 
+  def gen_inchi_for_molecule( self, m):
+    program = self.pm.get_preference( "inchi_program_path")
+    if not program:
+      return
+    
+    import tempfile
+    
+    if not oasa_bridge.oasa_available:
+      return
+
+    if not interactors.check_validity( self, [m]):
+      return
+
+    if m.object_type == 'molecule':
+      plugin = plugins.molfile
+      exporter = plugin.exporter( self.paper)
+      try:
+        name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
+        file = open( name, 'w')
+        oasa_bridge.write_molfile( m, file)
+        file.close()
+      except:
+        file.close()
+        return "could not write to temporary file %s" % name
+
+      in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
+
+      if os.name == 'nt':
+        options = "/AUXNONE"
+      else:
+        options = "-AUXNONE"
+
+      command = ' '.join( (program, name, in_name, options))
+      popen = popen2.Popen4( command)
+      exit_code = popen.wait()
+
+      if exit_code == 0:
+        in_file = open( in_name, 'r')
+        [line for line in in_file.readlines()]
+        out = line[6:].strip()
+        in_file.close()
+        return out
+      else:
+        return "Inchi program returned exit code %d" % exit_code
+
+
 
 
   def gen_inchi( self):
@@ -1205,6 +1281,13 @@ Enter IChI:""")
     f.close()
 
 
+  def run_plugin( self, name):
+    self.plug_man.run_plugin( name, self)
+    self.paper.add_bindings()
+    self.paper.start_new_undo_record()
+
+
+
   # HACKS CALLBACKS
 
   def molecules_to_separate_tabs( self):
@@ -1222,6 +1305,99 @@ Enter IChI:""")
       self.notebook.selectpage( name)
 
 
+  def rings_to_separate_tabs( self):
+    name = self.get_paper_tab_name( self.paper)
+    file_name, ext = os.path.splitext( self.paper.file_name['name'])
+    i = 0
+    for mol in self.paper.molecules:
+      for edges in mol.get_all_cycles_e():
+        i += 1
+        ring = mol.edge_subgraph_to_vertex_subgraph( edges)
+        self.paper.unselect_all()
+        self.paper.select( tuple( ring | edges))
+        self.paper.selected_to_clipboard( delete_afterwards=0, strict=1)
+        self.add_new_paper( name="%s-%d%s" % (file_name, i, ext))
+        self.paper.paste_clipboard( (200,200))
+        self.paper.unselect_all()
+        self.notebook.selectpage( name)
+
+
+  def normalize_aromatic_double_bonds( self):
+    for mol in self.paper.molecules:
+      mol.mark_aromatic_bonds()
+      for b in mol.bonds:
+        if b.aromatic == 1:
+          b.order = 4
+      mol.localize_aromatic_bonds()
+      mol.redraw()
+      self.paper.start_new_undo_record()
+
+
+
+  def clean( self):
+    import oasa
+    import operator
+    import math
+    from transform import transform
+
+    for mol in self.paper.molecules:
+      mean = lambda xs: sum( xs) / len( xs)
+      wmean = lambda xs, ws: sum( map( operator.mul, xs, ws)) / sum( ws)
+      rmse = lambda xs: math.sqrt( mean( [(x-mean(xs))**2 for x in xs]))
+      rse = lambda xs: map( math.sqrt, [(x-mean(xs))**2 for x in xs])
+
+      fis1, x1, y1 = self.fi_x_y( mol)
+      ws = [math.sqrt( (x-x1)**2 + (y-y1)**2) for (x,y) in [a.get_xy() for a in mol.atoms]]
+      fi1 = wmean( fis1, ws)
+      print fi1
+
+      oasa.coords_generator.calculate_coords( mol, force=1, bond_length=self.paper.any_to_px( self.paper.standard.bond_length))
+
+      fis2, x2, y2 = self.fi_x_y( mol)
+      ws = [math.sqrt( (x-x2)**2 + (y-y2)**2) for (x,y) in [a.get_xy() for a in mol.atoms]]
+      fi2 = wmean( fis2, ws)
+      print fi2
+      
+##       diffs = map( operator.add, fis1, map( operator.neg, fis2))
+
+##       print rmse( diffs), diffs
+
+##       if rmse( diffs) > 1:
+##         # invert it
+##         tr = transform()
+##         tr.set_move( -x2, -y2)
+##         tr.set_rotation( -mean( fis2))
+##         tr.set_scaling_xy( 1, -1)
+##         tr.set_rotation( mean( fis2))
+##         tr.set_move( x2, y2)
+##         mol.transform( tr)
+##         fis2, x2, y2 = self.fi_x_y( mol)      
+##         diffs = map( operator.add, fis1, map( operator.neg, fis2))
+
+##       print rmse( diffs)
+      
+      tr = transform()
+      tr.set_move( -x2, -y2)
+      tr.set_rotation( fi2-fi1)
+      tr.set_move( x1, y1)
+      mol.transform( tr)
+      mol.redraw( reposition_double=1)
+    self.paper.start_new_undo_record()
+      
+
+  def fi_x_y( self, mol):
+    import geometry
+    coords = [a.get_xy() for a in mol.atoms]
+    bbox, x = mol.get_geometry()
+    x = (bbox[0] + bbox[2]) / 2
+    y = (bbox[1] + bbox[3]) / 2
+    #x = mol.atoms[0].x
+    #y = mol.atoms[0].y
+    fis = [geometry.clockwise_angle_from_east( x0-x, y0-y) for (x0,y0) in coords]
+    return fis, x, y
+
+
+    
 
 
   ## ------------------------------ THE BATCH MODE ------------------------------

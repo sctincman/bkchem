@@ -35,10 +35,18 @@ def log( *args, **kw):
   else:
     levels = []
   if config.debug:
-    frames = inspect.getouterframes( inspect.currentframe())
-    for i in levels:
-      if i < len( frames):
-        print "  %s:%d -> %s()" % frames[i][1:4]
+    frames = inspect.getouterframes( inspect.currentframe(), 1)
+    try:
+      for i in levels:
+        if i < len( frames):
+          frame = frames[i][0]
+          print "  %s:%d -> %s()" % (frame.f_globals.get('__file__'), frame.f_lineno, frame.f_code.co_name)
+    finally:
+      del frames
+      try:
+        del frame
+      except:
+        pass
     for arg in args:
       print >> out, arg,
     print >> out

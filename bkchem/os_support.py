@@ -106,3 +106,11 @@ def get_opened_config_file( name, level="global", mode="r"):
   fname = get_config_filename( name, level=level, mode=mode)
   f = file( fname, mode=mode)
   return f
+
+
+
+def get_bkchem_private_dir():
+  dir = os.getenv( 'HOME') or '../'
+  dir = os.path.join( dir, ".bkchem/")
+  return dir
+  

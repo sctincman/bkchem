@@ -39,13 +39,16 @@ import data
 import re
 import debug
 
+import oasa
+
+
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
 ### not set in __init__ itself
 
 
 ### Class ATOM --------------------------------------------------
-class atom( meta_enabled, area_colored, point_drawable, text_like, child):
+class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.atom):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -63,7 +66,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
                           text_like.meta__undo_properties + \
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
                             'pos', 'type', 'multiplicity', 'valency')
-  meta__undo_copy = ('marks',)
+  meta__undo_copy = ('marks','_neighbors')
   meta__undo_children_to_record = ('marks',)
 
 
@@ -76,6 +79,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def __init__( self, paper, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, paper)
     point_drawable.__init__( self)
+    if xy:
+      oasa.atom.__init__( self, coords=(xy[0],xy[1],0))
+    else:
+      oasa.atom.__init__( self)
     # hidden
     self.__reposition_on_redraw = 0
 
@@ -87,9 +94,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     self._selected = 0 #with ftext self.selector can no longer be used to determine if atom is selected
     self.item = None
     self.ftext = None
-    if xy:
-      self.x, self.y = xy
-    self.z = 0
+
     self.pos = None
     self.focus_item = None
     self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
@@ -100,7 +105,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     #   self.show_number = 0
     self.show_hydrogens = 0
     self.show = 0
-    self.charge = 0
+
     self.multiplicity = 1
     # used only for monitoring when undo is necessary, it does not always correspond to the atom name
     # only in case of self.show == 1
@@ -148,7 +153,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   # z
   def __get_z( self):
-    return self.__z
+    return self.__z or 0
 
   def __set_z( self, z):
     self.__z = z
@@ -158,14 +163,14 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
   # name
   def __get_name( self):
-    return self.__name
+    return self.symbol
 
   def __set_name( self, name):
     try:
       t = unicode( name)
     except UnicodeDecodeError:
       t = name.decode( 'utf-8')
-    self.__name = t.encode('utf-8')
+    self.symbol = t.encode('utf-8')
     self.dirty = 1
     #self.show = int( self.__name != 'C')
 
@@ -340,7 +345,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.show_hydrogens = 0
       self.type = 'element'
       self.charge += elch[1]
-    elif (name.lower() in GT.groups_table) and ( not check_valency or self.molecule.get_atoms_occupied_valency( self) == 1):
+    elif (name.lower() in GT.groups_table) and ( not check_valency or self.get_occupied_valency() == 1):
       # name is a known group
       self.name = GT.groups_table[ name.lower()]['name']
       self.show_hydrogens = 0
@@ -353,7 +358,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         # it is!
         a = form.keys()
         a.remove( 'H')
-        valency = self.molecule.get_atoms_occupied_valency( self)
+        valency = self.get_occupied_valency()
         if form['H'] in [i-valency+self.charge for i in PT.periodic_table[a[0]]['valency']]:
           self.name = a[0]
           self.show_hydrogens = 1
@@ -464,7 +469,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def decide_pos( self):
-    as = self.molecule.atoms_bound_to( self)
+    as = self.get_neighbors()
     p = 0
     for a in as:
       if a.x < self.x:
@@ -660,6 +665,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     a = ['no','yes']
     on_off = ['off','on']
     self.id = package.getAttribute( 'id')
@@ -720,6 +726,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     y = ['no','yes']
     on_off = ['off','on']
     a = doc.createElement('atom')
@@ -802,42 +811,42 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
+    ##LOOK
+##   def get_free_valency( self, strict=0):
+##     """returns free valency of atom."""
+##     if not strict:
+##       while not self.get_free_valency( strict=1) >= 0:
+##         vals = list( PT.periodic_table[ self.name]['valency'])
+##         if self.valency not in vals:
+##           self.valency = vals[0]
+##         elif self.valency == vals[-1]:
+##           return 0
+##         else:
+##           self.valency = vals[ vals.index( self.valency) + 1]
+##       return self.get_free_valency( strict = 1)
+##     else:
+##       if self.type != 'element':
+##         return 4
+##       occupied_valency = self.get_occupied_valency()
 
-  def get_free_valency( self, strict=0):
-    """returns free valency of atom."""
-    if not strict:
-      while not self.get_free_valency( strict=1) >= 0:
-        vals = list( PT.periodic_table[ self.name]['valency'])
-        if self.valency not in vals:
-          self.valency = vals[0]
-        elif self.valency == vals[-1]:
-          return 0
-        else:
-          self.valency = vals[ vals.index( self.valency) + 1]
-      return self.get_free_valency( strict = 1)
-    else:
-      if self.type != 'element':
-        return 4
-      occupied_valency = self.get_occupied_valency()
-
-      v = self.valency
-      # should we increase or decrease valency with charge ?
-      if self.charge:
-        if abs( self.charge) > 1:
-          # charges higher than one should always decrease valency
-          charge = abs( self.charge)
-        elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
-          # elements that can accept cations to increase their valency (NH4+)
-          charge = -1
-        elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
-          # elements that can accept anions to increase their valency (BH4-)
-          charge = -1
-        else:
-          # otherwise charge reduces valency 
-          charge = abs( self.charge)
-      else:
-        charge = 0
-      return v-occupied_valency-charge-self.multiplicity+1
+##       v = self.valency
+##       # should we increase or decrease valency with charge ?
+##       if self.charge:
+##         if abs( self.charge) > 1:
+##           # charges higher than one should always decrease valency
+##           charge = abs( self.charge)
+##         elif (self.name in PT.accept_cation) and (self.charge == 1) and (occupied_valency-1 <= PT.accept_cation[self.name]):
+##           # elements that can accept cations to increase their valency (NH4+)
+##           charge = -1
+##         elif (self.name in PT.accept_anion) and (self.charge == -1) and (occupied_valency-1 <= PT.accept_anion[self.name]):
+##           # elements that can accept anions to increase their valency (BH4-)
+##           charge = -1
+##         else:
+##           # otherwise charge reduces valency 
+##           charge = abs( self.charge)
+##       else:
+##         charge = 0
+##       return v-occupied_valency-charge-self.multiplicity+1
 
     
 
@@ -862,9 +871,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
+  ##LOOK
   def atoms_bound_to( self):
-    """just link to molecule.atoms_bound_to()"""
-    return self.molecule.atoms_bound_to( self)
+    return self.get_neighbors()
 
 
 
@@ -983,9 +992,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
 
 
 
-
+  ##LOOK
   def get_occupied_valency( self):
-    return self.molecule.get_atoms_occupied_valency( self)
+    return self.occupied_valency
 
 
 
@@ -1012,7 +1021,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else:
       dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
 
-    atms = self.molecule.atoms_bound_to( self)
+    atms = self.get_neighbors()
     x, y = self.get_xy()
 
     # special cases
@@ -1050,6 +1059,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     if self.item:
       return self.paper.bbox( self.item)
     else:
@@ -1066,7 +1076,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         return self.x, self.y, self.x, self.y
 
 
-
+  ##LOOK  (make static)
   def split_element_and_charge( self, txt):
     """returns tuple of (element, charge) or None if the text does not match this pattern"""
     ### this could be a static method

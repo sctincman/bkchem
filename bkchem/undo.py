@@ -27,8 +27,9 @@ exported in __all__."""
 
 import misc
 import copy
-import data
 from types import *  #should be safe
+import sets
+import inspect
 
 __all__= ['undo_manager']
 
@@ -151,7 +152,7 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = o.__dict__[a]
-      if type( obj) == ListType:
+      if type( obj) == ListType or type( obj) == sets.Set:
         [self.record_object( i) for i in obj]
       elif type( obj) == DictType:
         [self.record_object( i) for i in obj.itervalues() if i]
@@ -218,7 +219,11 @@ class state_record:
     # deleted are known from the top of this def
     for o in deleted:
       if o.object_type not in ( 'molecule','mark'):
-        o.draw()
+        # no_automatic where possible
+        if 'no_automatic' in inspect.getargspec( o.draw)[0]:
+          o.draw( no_automatic = 1)
+        else:
+          o.draw()
     ## ADDED OBJECTS
     added = misc.difference( previous.objects, self.objects)
     for o in added:

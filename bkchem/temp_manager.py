@@ -28,7 +28,7 @@ from transform import transform
 from molecule import molecule
 import xml.dom.minidom as dom
 from warnings import warn
-import data
+import config
 import os.path
 import os_support
 import xml.sax
@@ -55,7 +55,7 @@ class template_manager:
       return
     # when loading old versions of CDML try to convert them, but do nothing when they cannot be converted
     import CDML_versions
-    CDML_versions.transform_dom_to_version( doc, data.current_CDML_version)
+    CDML_versions.transform_dom_to_version( doc, config.current_CDML_version)
     self.app.paper.onread_id_sandbox_activate()
     added = []
     for tmp in doc.getElementsByTagName('molecule'):

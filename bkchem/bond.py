@@ -30,11 +30,11 @@ from ftext import ftext
 import dom_extensions
 import xml.dom.minidom as dom
 import operator
-import data
 import copy
 from parents import meta_enabled, line_colored, drawable, with_line, interactive, child
 import debug
 
+import oasa
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
@@ -42,7 +42,7 @@ import debug
 
 
 # class BOND--------------------------------------------------
-class bond( meta_enabled, line_colored, drawable, with_line, interactive, child):
+class bond( meta_enabled, line_colored, drawable, with_line, interactive, child, oasa.bond):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -65,6 +65,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
   def __init__( self, paper, atoms=(), package=None, molecule=None, type='n', order=1,
                 simple_double=1):
     # initiation
+    oasa.bond.__init__( self, order=order, vs=atoms, type=type)
     meta_enabled.__init__( self, paper)
     line_colored.__init__( self)
     drawable.__init__( self)
@@ -140,10 +141,16 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   # atom1
   def __get_atom1( self):
-    return self.__atom1
+    try:
+      return self._vertices[0]
+    except IndexError:
+      return None
 
   def __set_atom1( self, mol):
-    self.__atom1 = mol
+    try:
+      self._vertices[0] = mol
+    except IndexError:
+      self._vertices = [mol, None]
     self.__dirty = 1
 
   atom1 = property( __get_atom1, __set_atom1)
@@ -151,10 +158,16 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   # atom2
   def __get_atom2( self):
-    return self.__atom2
+    try:
+      return self._vertices[1]
+    except IndexError:
+      return None
 
   def __set_atom2( self, mol):
-    self.__atom2 = mol
+    try:
+      self._vertices[1] = mol
+    except IndexError:
+      self._vertices = [None, mol]
     self.__dirty = 1
 
   atom2 = property( __get_atom2, __set_atom2)
@@ -162,10 +175,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
   # atoms
   def __get_atoms( self):
-    return self.atom1, self.atom2
+    return self._vertices
 
   def __set_atoms( self, mol):
-    self.atom1, self.atom2 = mol
+    self._vertices = mol
     self.__dirty = 1
 
   atoms = property( __get_atoms, __set_atoms)
@@ -842,6 +855,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     b = ['no', 'yes']
     type = package.getAttribute( 'type')
     if type:
@@ -896,6 +910,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     b = ['no', 'yes']
     bnd = doc.createElement('bond')
     dom_extensions.setAttributes( bnd, (('type', "%s%d" % (self.type, self.order)),
@@ -1039,52 +1056,18 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
   def _compute_sign_and_center( self):
     """returns tuple of (sign, center) where sign is the default sign of the self.bond_width"""
     line = self.atom1.get_xy() + self.atom2.get_xy()
-    atms = self.molecule.atoms_bound_to( self.atom1) + self.molecule.atoms_bound_to( self.atom2)
+    atms = self.atom1.get_neighbors() + self.atom2.get_neighbors()
     atms = misc.difference( atms, [self.atom1, self.atom2])
     coords = [a.get_xy() for a in atms]
 
     # searching for circles
 
-    plus_side1 = [a for a in self.atom1.atoms_bound_to() if geometry.on_which_side_is_point( line, a.get_xy()) == 1 and a!=self.atom2]
-    plus_side2 = [a for a in self.atom2.atoms_bound_to() if geometry.on_which_side_is_point( line, a.get_xy()) == 1 and a!=self.atom1]
-    minus_side1 = [a for a in self.atom1.atoms_bound_to() if geometry.on_which_side_is_point( line, a.get_xy()) == -1 and a!=self.atom2]
-    minus_side2 = [a for a in self.atom2.atoms_bound_to() if geometry.on_which_side_is_point( line, a.get_xy()) == -1 and a!=self.atom1]
-    plus_side = ( plus_side1, plus_side2)
-    minus_side = ( minus_side1, minus_side2)
-
     circles = 0
 
-    if ( len( plus_side1) and len( plus_side2)) or ( len( minus_side1) and len( minus_side2)):
-      # only when there are enough atoms in neighborhood we need to search for circles
-      
-      def accessible( a1, a2, d):
-        """is a2 accessible from a1 through d?"""
-        if a1 == a2:
-          return 1
-        d.remove( a1)
-        if a2 in a1.molecule.atoms_bound_to( a1):
-          return 1
-        else:
-          for a in a1.molecule.atoms_bound_to( a1):
-            if a in d and accessible( a, a2, d):
-              return 1
-        return 0
-
-      def get_circles_for_side( side):
-        res = 0
-        side1, side2 = side
-        while len( side1):
-          a1 = side1.pop(0)
-          for a2 in side2:
-            atoms = copy.copy( self.molecule.atoms)
-            atoms.remove( self.atom1)
-            atoms.remove( self.atom2)
-            if accessible( a1, a2, atoms):
-              res += 1
-        return res
-
-      circles = get_circles_for_side( plus_side) - get_circles_for_side( minus_side)
-    # end of circles search
+    for ring in self.molecule.get_smallest_independent_cycles():
+      if self.atom1 in ring and self.atom2 in ring:
+        on_which_side = lambda xy: geometry.on_which_side_is_point( line, xy)
+        circles += reduce( operator.add, map( on_which_side, [a.get_xy() for a in ring if a not in self.atoms]))
 
     if circles:
       side = circles
@@ -1092,8 +1075,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
       sides = [geometry.on_which_side_is_point( line, xy) for xy in coords]
       side = reduce( operator.add, sides, 0)
     # on which side to put the second line
-    if side == 0 and (len( self.molecule.atoms_bound_to( self.atom1)) == 1 or
-                      len( self.molecule.atoms_bound_to( self.atom2)) == 1):
+    if side == 0 and (len( self.atom1.get_neighbors()) == 1 or
+                      len( self.atom2.get_neighbors()) == 1):
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
       return (1 ,1)
     else:
@@ -1115,7 +1098,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
   def get_atoms( self):
-    return self.atom1, self.atom2
+    return self.get_vertices()
 
 
 
@@ -1134,6 +1117,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.paper.bbox( self.item)
 
 

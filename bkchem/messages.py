@@ -19,6 +19,8 @@
 
 """messages for use throughout the program"""
 
+# -------------------- HELP MESSAGES FOR MODES --------------------
+
 # DRAW
 
 draw_mode_single = _("click on atom to add a new single bond, click on bond to change its order (or change direction)\nShift+click on a double bond to move the position of the second line")
@@ -64,4 +66,48 @@ bond_align_mode_tovert = _("click a bond or two atoms to align the specified lin
 bond_align_mode_tohoriz = _("click a bond or two atoms to align the specified line into horizontal position")
 bond_align_mode_invertthrough = _("click an atom or bond to perform an inversion of the molecule through this atom (center of the bond)")
 bond_align_mode_mirrorthrough = _("click a bond or two atoms to mirror the molecule through the specified line")
+
+
+
+
+# -------------------- OTHER MESSAGES --------------------
+
+
+about_text = _("""BKchem was concieved and written by BK
+and is performed by Python, Pmw & (optionaly :) PIL.
+
+BKchem is free software and is distributed under GNU GPL.
+BKchem is provided as is without warranty of any kind.
+- see the file 'gpl.txt' in distribution directory for more info.
+
+Among other things GNU GPL allows you to study, modify
+and redistribute BKchem as long as you do it under GNU GPL.""")
+
+
+no_pmw_text = _("""UNABLE TO IMPORT PMW
+
+Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.
+(for more info on Pmw see documentation)""")
+
+
+no_oasa_text = _("""UNABLE TO IMPORT OASA
+
+Sorry, but from version 0.10 BKchem uses the OASA library internally and therefor cannot run without it.""")
+
+
+low_python_version_text = _("""Python version too low!
+
+From version 0.10 BKchem needs Python 2.3 or higher to run properly. You only have Python version %s.
+Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem.""")
+
+
+
+splash_text = _("""BKchem is starting.
+
+Unfortunatelly,
+the splash image was not found :(""")
+
+
+standards_differ_text = _('''This CDML document was created using different standard values than you are currently using. To retain the same drawing style it could be more convenient to use these new values for this file. Your global preferences will be unaffected. \n\nDo you want set these new standard values?''')
+
 

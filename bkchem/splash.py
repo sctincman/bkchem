@@ -24,7 +24,7 @@
 """the Splash class resides here"""
 
 import Tkinter
-import data
+import messages
 import os_support
 
 class Splash( Tkinter.Toplevel):
@@ -47,7 +47,7 @@ class Splash( Tkinter.Toplevel):
                           borderwidth = 2,
                           padx=50, pady=50,
                           image = self.splash_image,
-                          text = data.splash_text
+                          text = messages.splash_text
                           )
     text.pack(fill = 'both', expand = 1)
 

@@ -295,10 +295,10 @@ class config_dialog:
     # PLUS
 
     # FONT
-    if ('atom' in types) or ('text' in types) or ('plus' in types):
+    font_items = filter( lambda x: hasattr( x, 'font_family'), items)
+    if font_items:
       self.font_page = self.pages.add(_('Font'))
 
-      font_items = [o for o in items if o.object_type == 'atom' or o.object_type == 'text' or o.object_type == 'plus']
       sizes = misc.filter_unique( [o.font_size for o in font_items])
       if len( sizes) == 1:
         size = sizes[0]
@@ -318,13 +318,8 @@ class config_dialog:
 
     # COMMON
     self.common_page = self.pages.add(_('Common'))
-    there_are_lines = 0
-    for line_type in data.line_types:
-      if line_type in types:
-        there_are_lines = 1
-        break
-    if there_are_lines:
-      line_items = [o for o in items if o.object_type in data.line_types]
+    line_items = filter( lambda x: hasattr( x, 'line_width'), items)
+    if line_items:
       widths = misc.filter_unique( [o.line_width for o in line_items])
       if len( widths) == 1:
         width = widths[0]
@@ -335,23 +330,25 @@ class config_dialog:
       self.line_width = widgets.WidthChooser( self.common_page, width, label=_('Line width'))
       self.line_width.pack( anchor='nw', padx=10, pady=5)
 
-    line_color_items = [o for o in items if o.object_type in data.line_color_types]
-    lines = misc.filter_unique( [o.line_color for o in line_color_items])
-    if len( lines) == 1:
-      line = lines[0]
-    else:
-      line = None
-    self.line_color = widgets.ColorButton( self.common_page, color=line, text=_("Line color"))
-    self.line_color.pack( anchor='nw', padx=10, pady=5)
+    line_color_items = filter( lambda x: hasattr( x, 'line_color'), items)
+    if line_color_items:
+      lines = misc.filter_unique( [o.line_color for o in line_color_items])
+      if len( lines) == 1:
+        line = lines[0]
+      else:
+        line = None
+      self.line_color = widgets.ColorButton( self.common_page, color=line, text=_("Line color"))
+      self.line_color.pack( anchor='nw', padx=10, pady=5)
 
-    area_color_items = [o for o in items if o.object_type in data.area_color_types]
-    areas = misc.filter_unique( [o.area_color for o in area_color_items])
-    if len( areas) == 1:
-      area = areas[0]
-    else:
-      area = None
-    self.area_color = widgets.ColorButton( self.common_page, color=area, text=_("Area color"))
-    self.area_color.pack( anchor='nw', padx=10, pady=5)
+    area_color_items = filter( lambda x: hasattr( x, 'area_color'), items)
+    if area_color_items:
+      areas = misc.filter_unique( [o.area_color for o in area_color_items])
+      if len( areas) == 1:
+        area = areas[0]
+      else:
+        area = None
+      self.area_color = widgets.ColorButton( self.common_page, color=area, text=_("Area color"))
+      self.area_color.pack( anchor='nw', padx=10, pady=5)
 
 
     # RUN IT ALL
@@ -432,26 +429,26 @@ class config_dialog:
 
         # COMMON PROPERTIES
         # LINE COLOR
-        if o.object_type in data.line_color_types:
+        if hasattr( o, 'line_color'):
           if self.line_color.color:
             if self.line_color.color != o.line_color:
               o.line_color = self.line_color.color
               change = 1
         # AREA COLOR
-        if o.object_type in data.area_color_types:
+        if hasattr( o, 'area_color'):
           if self.area_color.color:
             if self.area_color.color != o.area_color:
               o.area_color = self.area_color.color
               change = 1
         # LINE WIDTH
-        if o.object_type in data.line_types:
+        if hasattr( o, 'line_width'):
           w = self.parent.paper.any_to_px( self.line_width.getvalue())
           if w:
             if w != o.line_width:
               o.line_width = w
               change = 1
         # FONT
-        if o.object_type in data.font_types:
+        if hasattr( o, 'font_family'):
           if self.font_size.get():
             a = int( self.font_size.get())
             o.font_size = a

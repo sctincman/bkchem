@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """set of specialized widgets, such as color-selection-buttons etc."""
 
@@ -32,6 +29,7 @@ import math
 import geometry
 import Pmw
 import data
+import config
 import re
 import misc
 import tkFileDialog
@@ -345,13 +343,13 @@ class HTMLLikeInput( Tkinter.Frame, object):
       self.numbersToSubButton = Tkinter.Button( self,
                                                 image=pix,
                                                 command=self._numbersToSubButtonPressed,
-                                                bd=data.border_width)
+                                                bd=config.border_width)
       self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
     else:
       self.numbersToSubButton = Tkinter.Button( self,
                                                text=_('Sub numbers'),
                                                command=self._numbersToSubButtonPressed,
-                                               bd=data.border_width)
+                                               bd=config.border_width)
     self.numbersToSubButton.pack( side='left')
 
     # superscript charges
@@ -360,13 +358,13 @@ class HTMLLikeInput( Tkinter.Frame, object):
       self.chargesToSupButton = Tkinter.Button( self,
                                                 image=pix,
                                                 command=self._chargesToSupButtonPressed,
-                                                bd=data.border_width)
+                                                bd=config.border_width)
       self.app.balloon.bind( self.chargesToSupButton, _('Superscript charges'))
     else:
       self.chargesToSupButton = Tkinter.Button( self,
                                                 text=_('Sup charges'),
                                                 command=self._chargesToSupButtonPressed,
-                                                bd=data.border_width)
+                                                bd=config.border_width)
     self.chargesToSupButton.pack( side='left')
 
     # text decoration
@@ -376,13 +374,13 @@ class HTMLLikeInput( Tkinter.Frame, object):
         self.__dict__[ i] = Tkinter.Button( self,
                                     image=pix,
                                     command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
-                                    bd=data.border_width)
+                                    bd=config.border_width)
         self.app.balloon.bind( self.__dict__[i], i)
       else:
         self.__dict__[ i] = Tkinter.Button( self,
                                     text=i,
                                     command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
-                                    bd=data.border_width)
+                                    bd=config.border_width)
       self.__dict__[i].pack( side='left')
 
 

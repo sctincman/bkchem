@@ -52,14 +52,29 @@ else:
     import __builtin__
     __builtin__.__dict__['_'] = lambda m: m
 
-# import modules
-import import_checker
-# can't do without Pmw
-if not import_checker.Pmw_available:
-  import data
-  print data.no_pmw_text.encode( 'utf-8')
-  import sys
-  sys.exit()
+import config
+
+if not config.debug:
+  # checking of important modules availability
+  # import modules
+  import import_checker
+  import messages
+
+  # we need sets from the 2.3 version
+  if not import_checker.python_version_ok:
+    print (messages.low_python_version_text % import_checker.python_version).encode('utf-8')
+    sys.exit()
+
+  # can't do without Pmw
+  if not import_checker.Pmw_available:
+    print messages.no_pmw_text.encode( 'utf-8')
+    sys.exit()
+
+  # oasa is the core now, we need it
+  if not import_checker.oasa_available:
+    print messages.no_oasa_text.encode( 'utf-8')
+    sys.exit()
+
   
 #import Tkinter
 from main import BKchem

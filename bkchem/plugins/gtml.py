@@ -114,7 +114,8 @@ class gtml_importer:
       bond_lengths = []
     for b in xpath.Evaluate("edge", el):
       b2 = self._read_bond( b)
-      m.insert_bond( b2)
+      b2.molecule = m
+      m.add_edge( b2.atom1, b2.atom2, b2)
 
     self._mol_ids[ el.getAttribute( 'id')] = m
     return m

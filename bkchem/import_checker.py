@@ -16,14 +16,12 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """checks whether all important imports are available"""
 
-__all__ = ['PIL_available','Pmw_available','PIL_state','PIL_prefix']
+__all__ = ['PIL_available','Pmw_available','PIL_state','PIL_prefix',
+           'oasa_available','python_version_ok','python_version']
 
 
 Pmw_available = 1
@@ -44,3 +42,18 @@ except ImportError:
   except ImportError:
     PIL_available = 0
     PIL_state = 'disabled'
+
+
+oasa_available = 1
+try:
+  import oasa
+except ImportError:
+  oasa_available = 0
+
+
+python_version_ok = 1
+import sys
+if not (sys.version_info[0] > 2 or (sys.version_info[0] == 2 and sys.version_info[1] >= 3)):
+  python_version_ok = 0
+
+python_version = "%d.%d.%d" % sys.version_info[0:3]

@@ -22,7 +22,7 @@
 
 from Tkinter import Frame, Button, Entry
 import Tkinter
-import data, re, string
+import config, re, string
 from groups_table import groups_table
 import misc
 from keysymdef import keysyms
@@ -55,7 +55,7 @@ class editPool( Frame):
                                      text=_('Interpret'),
                                      command=self._interpretButtonPressed,
                                      state='disabled',
-                                     bd=data.border_width)
+                                     bd=config.border_width)
       self.interpretButton.pack( side='left')
     else:
       self.interpretButton = None
@@ -65,7 +65,7 @@ class editPool( Frame):
                                text=_('As is'),
                                command=self._setButtonPressed,
                                state='disabled',
-                               bd=data.border_width)
+                               bd=config.border_width)
       self.setButton.pack( side='left')
     else:
       self.setButton = None
@@ -76,14 +76,14 @@ class editPool( Frame):
                                         image=pix,
                                         command=self._numbersToSubButtonPressed,
                                         state='disabled',
-                                        bd=data.border_width)
+                                        bd=config.border_width)
       self.app.balloon.bind( self.numbersToSubButton, _('Subscript numbers'))
     else:
       self.numbersToSubButton = Button( self,
                                         text=_('Sub numbers'),
                                         command=self._numbersToSubButtonPressed,
                                         state='disabled',
-                                        bd=data.border_width)
+                                        bd=config.border_width)
     self.numbersToSubButton.pack( side='left')
 
     # text decoration
@@ -94,14 +94,14 @@ class editPool( Frame):
                                     image=pix,
                                     command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
                                     state='disabled',
-                                    bd=data.border_width)
+                                    bd=config.border_width)
         self.app.balloon.bind( self.__dict__[i], i)
       else:
         self.__dict__[ i] = Button( self,
                                     text=i,
                                     command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
                                     state='disabled',
-                                    bd=data.border_width)
+                                    bd=config.border_width)
       self.__dict__[i].pack( side='left')
 
 

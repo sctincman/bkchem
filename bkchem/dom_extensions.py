@@ -128,3 +128,25 @@ def isOnlyTags( text):
   return 1
   
 
+def simpleXPathSearch( element, path):
+  atomic_paths = path.split( "/")
+  out = [element]
+  for atomic_path in atomic_paths:
+    search_with_path = lambda x: _atomicXPathSearch( x, atomic_path)
+    out =  reduce( operator.add, map( search_with_path, out), [])
+  return out
+
+
+
+def _atomicXPathSearch( element, path):
+  if path == "":
+    if element.DOCUMENT_NODE == element.nodeType:
+      return [element]
+    else:
+      return [element.ownerDocument]
+  if path == "*":
+    return element.childNodes
+  else:
+    return element.getElementsByTagName( path)
+
+

@@ -44,6 +44,9 @@ class reaction( object):
     
 
   def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
     e = doc.createElement( 'reaction')
     for i in range( len( singulars)):
       for m in self.__dict__[ plurals[i]]:

@@ -37,11 +37,19 @@ import helper_graphics as hg
 from parents import container, top_level, id_enabled
 from atom import atom
 from bond import bond
+from sets import Set
 
-class molecule( container, top_level, id_enabled):
+import oasa
+
+
+
+class molecule( container, top_level, id_enabled, oasa.molecule):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
+  
+  vertex_class = atom
+  edge_class = bond
   
   object_type = 'molecule'
   # other meta infos
@@ -50,16 +58,14 @@ class molecule( container, top_level, id_enabled):
   meta__undo_simple = ('name',)
   meta__undo_properties = ('id',)
   meta__undo_copy = ('atoms', 'bonds')
-  meta__undo_2d_copy = ('connect',)
+  meta__undo_2d_copy = ()
   meta__undo_children_to_record = ('atoms','bonds')
   
   def __init__( self, paper, package = None):
+    oasa.molecule.__init__( self)
     id_enabled.__init__( self, paper)
     container.__init__( self)
 
-    self.atoms = []  # list of atoms
-    self.bonds = []      # list of bonds
-    self.connect = []    # matrix that shows conectivity of each atom
     self.sign = 1
     self._last_used_atom = None 
     self.name = ''
@@ -67,25 +73,19 @@ class molecule( container, top_level, id_enabled):
     self.t_bond_first = None  # template
     self.t_bond_second = None
     self.t_atom = None
-    self.focus_item = None
     self.display_form = ''  # this is a (html like) text that defines how to present the molecule in linear form
     if package:
-      self.read_package( package) 
+      self.read_package( package)
+
 
   def __iter__( self):
-    return self
+    return self.children_generator()
 
-  def next( self):
-    i = self._iterator
-    self._iterator += 1
-    try:
-      return self.atoms[ i]
-    except IndexError:
-      try:
-        return self.bonds[ i - len( self.atoms)]
-      except IndexError:
-        self._iterator = 0
-        raise StopIteration
+  def children_generator( self):
+    for a in self.atoms:
+      yield a
+    for a in self.bonds:
+      yield a
 
 
   ### PROPERTIES
@@ -100,7 +100,7 @@ class molecule( container, top_level, id_enabled):
 
   # children
   def __get_children( self):
-    return self.atoms + self.bonds
+    return self.atoms + list( self.bonds)
 
   children = property( __get_children, None, None,
                        "returns list of atoms and bonds")
@@ -110,24 +110,33 @@ class molecule( container, top_level, id_enabled):
   ### // PROPERTIES
 
 
+  ## OVERRIDES THE OASA.GRAPH METHODS
 
-  def feed_data( self, atoms, bonds, connect):
-    "feed data from another molecule"
-    self.bonds += bonds
-    self.atoms += atoms
-    for line in self.connect:
-      line.extend( len(connect)*[0])
-    l = len( self.connect)
-    for i in range( len( connect)):
-      self.connect.append( l*[0])
-      self.connect[l+i].extend( connect[i])
-    for o in self.children:
-      o.molecule = self
-      
+  def create_graph( self):
+    return molecule( self.paper)
 
+  def create_vertex( self):
+    return atom( self.paper)
+
+  def create_edge( self):
+    return bond( self.paper)
+
+  def add_vertex( self, v=None):
+    x = oasa.molecule.add_vertex( self, v=v)
+    x.molecule = self
+
+  def add_edge( self, v1, v2, e=None):
+    x = oasa.molecule.add_edge( self, v1, v2, e=e)
+    x.molecule = self
+
+
+
+  ## LOOK
   def eat_molecule( self, mol):
     "transfers everything from mol to self, now only calls feed_data"
-    self.feed_data( mol.atoms, mol.bonds, mol.connect)
+    self.insert_a_graph( mol)
+    for v in mol.children:
+      v.molecule = self
 
 
   def add_atom_to( self, a1, bond_to_use=None, pos=None):
@@ -144,16 +153,11 @@ class molecule( container, top_level, id_enabled):
     b = bond_to_use or bond( self.paper, order=1, type='n')
     b.atom1 = a1
     b.atom2 = a2
-    self.insert_bond( b)
+    self.add_edge( a1, a2, e=b)
+    b.molecule = self
     b.draw()
     return a2, b
 
-  def insert_bond( self, b):
-    self.connect[ self.atoms.index( b.atom1)][ self.atoms.index( b.atom2)] = b
-    self.connect[ self.atoms.index( b.atom2)][ self.atoms.index( b.atom1)] = b
-    self.bonds.append( b)
-    if not b.molecule:
-      b.molecule = self
 
   def find_place( self, a, distance, added_order=1):
     """tries to find accurate place for next atom around atom 'id',
@@ -191,17 +195,14 @@ class molecule( container, top_level, id_enabled):
       x, y = self.find_least_crowded_place_around_atom( a, range=distance)
     return x, y
 
+  ##LOOK
   def atoms_bonds( self, a):
-    return filter( None,  self.connect[ self.atoms.index( a)])
+    return a.get_neighbor_edges()
 
+  ##LOOK
   def atoms_bound_to( self, a):
     "returns list of ids of atoms bound to atom with id = 'id'"
-    bonds = self.connect[ self.atoms.index( a)]
-    ret = []
-    for i in bonds:
-      if i:
-        ret.append( self.atoms[ bonds.index( i)])
-    return ret
+    return a.get_neighbors()
 
   def get_angle( self, a1, a2):
     "what is the angle between horizontal line through i1 and i1-i2 line"
@@ -219,18 +220,17 @@ class molecule( container, top_level, id_enabled):
         self.delete_atom( o)
       else:
         self.delete_bond( o)
-    if self.connect:
+    if self.atoms:
       # delete bonds that are not in connect anymore
-      bonds_in_connect = []
-      for i in range( len( self.connect)):
-        for j in range( i+1, len( self.connect)):
-          b = self.connect[i][j]
-          if b:
-            bonds_in_connect.append( b)
-      deleted += [self.delete_bond( o) for o in misc.difference( self.bonds, bonds_in_connect)]
+      bonds_in_connect = Set()
+      for a in self.atoms:
+        for (e,v) in a.get_neighbor_edge_pairs():
+          if v in self.atoms:
+            bonds_in_connect.add( e)
+      deleted += [self.delete_bond( o) for o in (self.bonds - bonds_in_connect)]
       # delete also orphan atoms
       if delete_single_atom:
-        deleted += [self.delete_atom( o) for o in self.atoms if not self.atoms_bonds( o)]
+        deleted += [self.delete_atom( o) for o in self.atoms if len(o.neighbors) == 0]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
       if redraw:
@@ -248,23 +248,12 @@ class molecule( container, top_level, id_enabled):
     return deleted, self.check_integrity()
 
   def delete_bond( self, item):
-    # this could be rewritten by using the indexes of the bond atoms
-    for i in range( len( self.connect)):
-      if item in self.connect[i]:
-        j = self.connect[i].index( item)
-        self.connect[i][j] = 0
-        self.connect[j][i] = 0
-        break
     item.delete()
-    self.bonds.remove( item)
+    self.disconnect_edge( item)
     return item
       
   def delete_atom( self, item):
     "remove links to atom from molecule records"
-    index = self.atoms.index( item)
-    del self.connect[ index]
-    for i in range( len( self.connect)):
-      del self.connect[i][ index]
     self.atoms.remove( item)
     item.delete()
     if item == self.t_atom:
@@ -285,81 +274,34 @@ class molecule( container, top_level, id_enabled):
 
   def insert_atom( self, at):
     "inserts atom to molecule without any connections"
-    if len( self.connect):
-      for i in range( len( self.connect)):
-        self.connect[i].append( 0)
-      self.connect.append( (len( self.connect)+1) *[0])
-    else:
-      self.connect = [[0]]
     self.atoms.append( at)
     at.molecule = self
   
 
+  ##LOOK  (how is it with the generator?)
   def get_connected_components( self):
-    """returns the connected components of graph in a form o list of lists of vertices"""
-    comps = [] # all components
-    comp = [] # just processed component 
-    con = []  # connectivity matrix copy for fusion
-    for line in self.connect:
-      con.append( [(e and 1) or 0 for e in line])
-    vs = copy.copy( self.atoms)
-    while vs:
-      if sum( con[0]) == 0:
-        comp.append( vs.pop(0))
-        comps.append( comp)
-        comp = []
-        del con[0]
-        for line in con:
-          del line[0]
-        continue
-      i = get_index_of_vertex_connected_to_first_vertex( con)
-      fuse_vertices( 0, i, con)
-      comp.append( vs.pop( i))
-    return comps
+    """returns the connected components of graph in a form o list of sets of vertices"""
+    return list( oasa.molecule.get_connected_components( self))
 
 
   def check_integrity( self):
     """after deleting atoms or bonds it is important to see if it's needed to divide molecule to fragments
     and return them in form of list of new molecules"""
-    if self.connect == []:
+    if not self.atoms:
       return []
-    old_map = copy.copy( self.atoms)
     # first distribute atoms to new_maps
     new_maps = self.get_connected_components()
     if len( new_maps) == 1:
       return []
-    # reorder connectivity matrixes
-    ret = []
-    for mmap in new_maps:
-      con = []
-      bonds = []
-      for i in range( len( mmap)):
-        con.append( len( mmap)*[0])
-      ## for bigger molecules it can be about 10x faster to iterate twice over the whole connect
-      ## then only over the mmap, because this way we can save the index in many cases, which is pretty expensive
-      for i in range( len( self.atoms)):
-        for j in range( i+1, len( self.atoms)):
-          bond = self.connect[i][j]
-          if bond:
-            try:
-              i2 = mmap.index( self.atoms[i])
-              j2 = mmap.index( self.atoms[j])
-            except ValueError:
-              continue
-            con[i2][j2] = bond
-            con[j2][i2] = bond
-            bonds.append( bond)
-      mol = molecule( self.paper)
-      mol.feed_data( mmap, bonds, con)
-      ret.append( mol)
+    return [self.get_induced_subgraph_from_vertices( vs) for vs in new_maps]
 
-    return ret
 
   def is_empty( self):
-    return (self.connect == [])
+    return not len( self.atoms)
 
 
   def read_package( self, package):
+    """reads the dom element package and sets internal state according to it"""
     self.name = package.getAttribute( 'name')
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
@@ -367,7 +309,8 @@ class molecule( container, top_level, id_enabled):
       self.insert_atom( atom( self.paper, package=a, molecule=self))
     self._id_map = [a.id for a in self.atoms]
     for b in package.getElementsByTagName( 'bond'):
-      self.insert_bond( bond( self.paper, package = b, molecule=self))
+      bnd = bond( self.paper, package = b, molecule=self)
+      self.add_edge( bnd.atom1, bnd.atom2, bnd)
     # template related attributes
     temp = package.getElementsByTagName('template')
     if temp:
@@ -384,7 +327,11 @@ class molecule( container, top_level, id_enabled):
       self.display_form = ''.join( [e.toxml() for e in df.childNodes]).encode('utf-8')
 
 
-  def get_package( self, doc):
+  def get_package( self, doc, items=None):
+    if not items:
+      to_export = self.children
+    else:
+      to_export = items
     mol = doc.createElement('molecule')
     mol.setAttribute( 'name', self.name)
     mol.setAttribute( 'id', self.id)
@@ -397,60 +344,84 @@ class molecule( container, top_level, id_enabled):
                                                         ('bond_second', str( self.t_bond_second.id))))
       else:
         dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),))
-    for i in self.children:
+    for i in to_export:
       mol.appendChild( i.get_package( doc))
     return mol
 
+
   def draw( self, no_automatic=0):
+    """draw the molecule, optional argument no_automatic is passed to bonds
+    to toggle on/off the automatic positioning of double bonds"""
     [a.draw( no_automatic=no_automatic) for a in self.bonds]
     [a.draw() for a in self.atoms]
     
+
+  ##LOOK
   def bond_between( self, a1, a2):
-    "returns id of bond between atoms i1 and i2"
-    return self.connect[ self.atoms.index( a1)][ self.atoms.index( a2)]
+    "returns id of bond between atoms a1 and a2"
+    return self.get_edge_between( a1, a2)
+
+
+  def gen_bonds_between( self, a1, a2):
+    "yields all bonds between atoms a1 and a2"
+    for e in a1.get_neighbor_edges():
+      if e in a2.get_neighbor_edges():
+        yield e
+
 
   def handle_overlap( self):
     "deletes one of overlaping atoms and updates the bonds"
     to_delete = []
-    bonds_to_check = [] # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
+    bonds_to_check = Set() # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
     for i in range( len( self.atoms)):
       for j in range( i+1, len( self.atoms)):
         a = self.atoms[i]
         b = self.atoms[j]
         if (abs( a.x-b.x) < 4) and (abs( a.y-b.y) <4):
           if a not in to_delete:
-            for x in self.atoms_bonds( b):
-              x.change_atoms( b, a)
-              bonds_to_check.append( x)
+            for e,v in b.get_neighbor_edge_pairs():
+              e.change_atoms( b, a)
+              a.add_neighbor( v, e)
+              v.add_neighbor( a, e)
+              bonds_to_check.add( e)
             to_delete.append( b)
     deleted = misc.filter_unique( to_delete)
     [self.delete_atom( o) for o in deleted]
     # after all is done, find and delete orphan bonds and update the others
     to_redraw = []
+    bonds = Set( self.bonds)
     for b in bonds_to_check:
       if not b in self.bonds:
+        #print b, "not in self.bonds"
         continue
-      i1, i2 = map( self.atoms.index, b.atoms)
-      recent_b = self.connect[i1][i2]
+      recent_b = None
+      for recent_b in self.gen_bonds_between( b.atom1, b.atom2):
+        if recent_b != b:
+          break
       if recent_b and recent_b != b:
         self.delete_bond( b)
         deleted.append( b)
-        to_redraw.append( recent_b) # we redraw the once that remained
+        to_redraw.append( recent_b) # we redraw the ones that remained
       elif not recent_b:
-        self.connect[i1][i2] = b
-        self.connect[i2][i1] = b
+        b.atom1.add_neighbor( b.atom2, b)
+        b.atom2.add_neighbor( b.atom1, b)
         to_redraw.append( b) # we redraw this also
     for b in to_redraw:
       b.redraw()
 
     return deleted
 
+
   def move( self, dx, dy):
     """moves the whole molecule"""
-    for o in self.atoms +self.bonds:
+    for o in self.atoms:
+      o.move( dx, dy)
+    for o in self.bonds:
       o.move( dx, dy)
 
+
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     items = []
     for a in self.atoms:
       items.append( a.item)
@@ -463,7 +434,10 @@ class molecule( container, top_level, id_enabled):
 
 
   def delete( self):
+    """deletes the molecule from canvas by calling delete for its children"""
     [o.delete() for o in self.bonds+self.atoms]
+
+
 
   def redraw( self, reposition_double=0):
     for o in self.bonds:
@@ -474,17 +448,14 @@ class molecule( container, top_level, id_enabled):
     [o.redraw() for o in self.atoms]  
 
     
-  def get_atoms_occupied_valency( self, atom):
-    val = 0
-    for b in self.atoms_bonds( atom):
-        val += b.order
-    return val
-
   def get_formula_dict( self):
+    """returns a formula dict as defined in the periodic_table.py::formula_dict"""
     comp = PT.formula_dict()
     for a in self.atoms:
       comp += a.get_formula_dict()
     return comp
+
+
 
   def expand_groups( self, atoms=[]):
     """expands all group atoms; optional atoms selects atoms to expand - all used if not present"""
@@ -516,19 +487,11 @@ class molecule( container, top_level, id_enabled):
 
   def move_bonds_between_atoms( self, a1, a2):
     """transfers all bonds from one atom to the other; both atoms must be in self"""
-    for b in self.atoms_bonds( a1):
-      b.change_atoms( a1, a2)
-    i = self.atoms.index( a1)
-    l = self.atoms.index( a2)
-    for j in range( len( self.connect)):
-      for k in range( len( self.connect)):
-        if self.connect[j][k]:
-          if j == i:
-            self.connect[l][k] = self.connect[j][k]
-            self.connect[j][k] = 0
-          elif k == i:
-            self.connect[j][l] = self.connect[j][k]
-            self.connect[j][k] = 0
+    for (e,v) in a1.get_neighbor_edge_pairs():
+      a2.add_neighbor( v,e)
+      v.add_neighbor( a2, e)
+      e.change_atoms( a1, a2)
+
 
   def lift( self):
     [o.lift() for o in self.bonds]
@@ -596,25 +559,3 @@ class molecule( container, top_level, id_enabled):
     return ((maxx,maxy,minx,miny),bl)
 
 
-
-
-def get_index_of_vertex_connected_to_first_vertex( mat):
-  """returns an index of vertex that is connected to the vertex in first line
-  of the matrix"""
-  for i, x in enumerate( mat[0]):
-    if x:
-      return i
-
-def fuse_vertices( i1, i2, mat):
-  """fuses vertices with indexes i1, i2 to i1, works on the mat"""
-  # sum the lines
-  for i in range( len( mat)):
-    if i != i1:
-      mat[i1][i] = mat[i1][i] or mat[i2][i]
-  # remove i2
-  del mat[i2]
-  for line in mat:
-    del line[i2]
-  # copy row i1 to column i1
-  for i, x in enumerate( mat[i1]):
-    mat[i][i1] = x

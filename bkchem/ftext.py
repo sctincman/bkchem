@@ -110,6 +110,7 @@ class ftext:
       self.__current_x = canvas.bbox( item)[2]
     
   def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.canvas.list_bbox( self.items)
 
   def move( self, dx, dy):

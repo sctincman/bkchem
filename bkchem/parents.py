@@ -266,18 +266,14 @@ class area_colored( line_colored):
 
 
 
+class with_font( simple_parent):
+  """for text like objects needing font_size and font_family properties, however not variable text"""
 
-
-
-class text_like( simple_parent):
-  """for text like objects needing font_size and font_family properties"""
-
-  meta__undo_properties = ("font_size", "font_family", "xml_text")
+  meta__undo_properties = ("font_size", "font_family")
 
 
   def __init__( self):
     simple_parent.__init__( self)
-    self.xml_text = ''
     self.font_size = 10
     self.font_family = 'helvetica'
 
@@ -303,6 +299,19 @@ class text_like( simple_parent):
 
   font_family = property( __get_font_family, __set_font_family)
 
+
+
+
+
+class text_like( with_font):
+  """for text like objects needing font_size and font_family properties and variable xml_text"""
+
+  meta__undo_properties = with_font.meta__undo_properties +  ("xml_text",)
+
+
+  def __init__( self):
+    with_font.__init__( self)
+    self.xml_text = ''
 
   # xml_text
   def __get_xml_text( self):

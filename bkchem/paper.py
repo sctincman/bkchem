@@ -32,6 +32,8 @@ import misc
 from temp_manager import template_manager
 import string
 import data
+import config
+import messages
 import dom_extensions
 import xml.dom.minidom as dom
 import operator
@@ -51,6 +53,8 @@ import os
 from id_manager import id_manager
 import parents
 from reaction import reaction
+import debug
+import oasa
 
 
 
@@ -519,7 +523,7 @@ class chem_paper( Canvas, object):
     self.onread_id_sandbox_activate() # to sandbox the ids 
 
     original_version = CDML.getAttribute( 'version')
-    success = CDML_versions.transform_dom_to_version( CDML, data.current_CDML_version)
+    success = CDML_versions.transform_dom_to_version( CDML, config.current_CDML_version)
     if not success:
       if not tkMessageBox.askokcancel( _('Proceed'),
 				       _('''This CDML document does not seem to have supported version.
@@ -576,7 +580,7 @@ class chem_paper( Canvas, object):
     # now check if the old standard differs
     if new_standard and old_standard != self.standard and not self.app.in_batch_mode:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
-				       data.standards_differ_text,
+				       messages.standards_differ_text,
                                        default = 'ok',
 				       parent=self):
         self.standard = old_standard
@@ -612,10 +616,10 @@ class chem_paper( Canvas, object):
 
   def get_package( self):
     doc = dom.Document()
-    root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', data.current_CDML_version),
+    root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', config.current_CDML_version),
                                                                    ( 'xmlns', data.cdml_namespace)))
     info = dom_extensions.elementUnder( root, 'info')
-    dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',data.current_BKchem_version),))
+    dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',config.current_BKchem_version),))
     paper = dom_extensions.elementUnder( root, 'paper', attributes = (('type', self._paper_properties['type']),
                                                                       ('orientation', self._paper_properties['orientation']),
                                                                       ('crop_svg', '%d' % self._paper_properties['crop_svg'])))
@@ -688,7 +692,6 @@ class chem_paper( Canvas, object):
     "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
     #import time
     #ttt = time.time()
-
     overlap = []
     for a in self.find_withtag('atom'):
       x, y = self.id_to_object( a).get_xy()
@@ -898,7 +901,8 @@ class chem_paper( Canvas, object):
 
 
 
-  def selected_to_clipboard( self, delete_afterwards=0):
+  def selected_to_clipboard( self, delete_afterwards=0, strict=0):
+    """strict means that only what is selected is copied, not the whole molecule"""
     if self.selected:
       cp, unique = self.selected_to_unique_top_levels()
       # now find center of bbox of all objects in cp
@@ -918,7 +922,10 @@ class chem_paper( Canvas, object):
       clipboard_doc = dom.Document()
       clipboard = dom_extensions.elementUnder( clipboard_doc, 'clipboard')
       for o in cp:
-        clipboard.appendChild( o.get_package( clipboard_doc))
+        if strict and isinstance( o, oasa.graph.graph):
+          clipboard.appendChild( o.get_package( clipboard_doc, items=misc.intersection( o.children, self.selected)))
+        else:
+          clipboard.appendChild( o.get_package( clipboard_doc))
       self.app.put_to_clipboard( clipboard, xy)
       if delete_afterwards:
         [self.del_container(o) for o in cp]
@@ -926,6 +933,7 @@ class chem_paper( Canvas, object):
 	self.start_new_undo_record()
       else:
         self.signal_to_app( _("copied %s object(s) to clipboard") % str( len( cp)))
+      return [xmin, ymin, xmax, ymax]
 
 
 
@@ -1637,10 +1645,10 @@ class chem_paper( Canvas, object):
     name = os_support.get_config_filename( 'standard.cdml', level="personal", mode="w")
     if name:
       doc = dom.Document()
-      root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', data.current_CDML_version),
+      root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', config.current_CDML_version),
                                                                      ( 'xmlns', data.cdml_namespace)))
       info = dom_extensions.elementUnder( root, 'info')
-      dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',data.current_BKchem_version),))
+      dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',config.current_BKchem_version),))
       root.appendChild( st.get_package( doc))
       dom_extensions.safe_indent( root)
       try:

@@ -20,4 +20,11 @@
 
 debug = 1
 
+current_CDML_version = '0.13'
+
+current_BKchem_version = '0.8.1'
+
+# border width for all components of interface
+border_width = 1
+
 

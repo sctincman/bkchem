@@ -1,0 +1,58 @@
+
+<element name="plugin" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    
+    <optional>
+      <element name="meta">
+	
+	<optional>
+	  <element name="author">
+	    <optional>
+	      <attribute name="email">
+		<text/>
+	      </attribute>
+	    </optional>
+	    <text/>
+	  </element>
+	</optional>
+
+	<optional>
+	  <element name="url">
+	    <attribute name="href">
+	      <text/>
+	    </attribute>
+	  </element>
+	</optional>
+
+	<optional>
+	  <element name="description">
+	    <text/>
+	  </element>
+	</optional>
+
+      </element>
+    </optional>
+
+
+    <element name="source">
+
+      <element name="file">
+	<text/>
+      </element>
+
+      <oneOrMore>
+	<element name="menu-text">
+	  <optional>
+	    <attribute name="lang">
+	      <text/>
+	    </attribute>
+	  </optional>
+	  <text/>
+	</element>
+      </oneOrMore>
+
+    </element>
+
+
+</element>
+
+

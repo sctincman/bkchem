@@ -28,6 +28,7 @@ import math
 import transform, transform3d
 import time
 import data
+import config
 import string
 import dialogs
 import xml.sax, xml.sax.saxutils
@@ -39,6 +40,7 @@ from bond import bond
 from context_menu import context_menu
 from reaction import reaction
 import parents
+import oasa
 
 
 class mode:
@@ -378,8 +380,8 @@ class edit_mode( basic_mode):
         self.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
-        atoms = reduce( operator.add, [o.molecule.atoms_bound_to( o) for o in self.app.paper.selected if o.object_type == 'atom'], [])
-        atoms = misc.filter_unique( [o for o in self.app.paper.selected if o.object_type == 'atom'] + atoms)
+        atoms = reduce( operator.add, [o.molecule.atoms_bound_to( o) for o in self.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
+        atoms = misc.filter_unique( [o for o in self.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]
         [self.reposition_bonds_around_bond( o) for o in self._bonds_to_update]
@@ -424,8 +426,9 @@ class edit_mode( basic_mode):
 
   def double_click( self, event):
     if self.focused:
-      if self.focused.object_type in ('atom', 'bond'):
+      if misc.isinstance_of_one( self.focused, (oasa.graph.vertex, bond)):
         self.app.paper.select( tuple( self.focused.molecule)) # molecule is iterator
+
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -450,10 +453,8 @@ class edit_mode( basic_mode):
       elif self.focused:
         ### move container of focused item
         self._dragging = 2
-        if self.focused.object_type == 'point':
-          self._dragged_molecule = self.focused.arrow
-        elif self.focused.object_type in ('atom', 'bond'):
-          self._dragged_molecule = self.focused.molecule
+        if isinstance( self.focused, parents.child):
+          self._dragged_molecule = self.focused.parent
         else:
           self._dragged_molecule = self.focused
         self.focused.unfocus()
@@ -537,7 +538,7 @@ class edit_mode( basic_mode):
       # at first we check if there is something to set text to...
       text_items_are_inside = 0
       for i in self.app.paper.selected:
-        if isinstance( i, parents.text_like) and i.object_type != 'plus':
+        if isinstance( i, parents.text_like):
           text_items_are_inside = 1
           break
       if not text_items_are_inside:
@@ -554,7 +555,7 @@ class edit_mode( basic_mode):
         select = 0
       elif len( self.app.paper.selected) == 1:
         item = self.app.paper.selected[0]
-        if item.object_type in ('text','atom'):
+        if isinstance( item, parents.text_like):
           text = item.get_text()
       if text:
 	name = self.app.editPool.activate( text=text, select=select)
@@ -694,14 +695,15 @@ class draw_mode( edit_mode):
       self.app.paper.select( [mol.add_atom_to( a, bond_to_use=b)[0]])
       self.focused = a
     else:
-      if self.focused.object_type == 'atom':
+      if isinstance( self.focused, oasa.graph.vertex):
         b = bond( self.app.paper,
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
         a, b = self.focused.molecule.add_atom_to( self.focused, bond_to_use=b)
         # update atom text
-        self.focused.update_after_valency_change()
+        if hasattr( self.focused, 'update_after_valency_change'):
+          self.focused.update_after_valency_change()
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
           self.app.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -712,7 +714,7 @@ class draw_mode( edit_mode):
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
         self.app.paper.select( [a])
-      elif self.focused.object_type == 'bond':
+      elif isinstance( self.focused, bond):
         if self._shift:
           self.focused.toggle_type( only_shift = 1, to_type=self.__mode_to_bond_type(),
                                     to_order=self.__mode_to_bond_order(),
@@ -736,7 +738,7 @@ class draw_mode( edit_mode):
   def mouse_drag( self, event):
     if not self._dragging:
       self._dragging = 1
-      if self.focused and self.focused.object_type == "atom":
+      if self.focused and isinstance( self.focused, oasa.graph.vertex):
         self._start_atom = self.focused
         b = bond( self.app.paper,
                   type=self.__mode_to_bond_type(),
@@ -752,7 +754,7 @@ class draw_mode( edit_mode):
         #self.app.paper.add_bindings( active_names=('atom',))
 
     if self._start_atom:
-      if self.focused and self.focused != self._start_atom and self.focused.object_type == 'atom':
+      if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
         x, y = self.focused.get_xy()
       elif self.submode[3] == 1:
         x, y = event.x, event.y
@@ -971,7 +973,7 @@ class template_mode( edit_mode):
     if not self.focused:
       t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=self.app.paper)
     else:
-      if self.focused.object_type == 'atom':
+      if isinstance( self.focused, oasa.graph.vertex):
         if self.focused.z != 0:
           self.app.paper.signal_to_app( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."))
           return
@@ -983,7 +985,7 @@ class template_mode( edit_mode):
           x1, y1 = self.focused.get_xy()
           x2, y2 = self.focused.molecule.find_place( self.focused, self.app.paper.any_to_px( self.app.paper.standard.bond_length))
           t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom2', paper=self.app.paper)
-      elif self.focused.object_type == 'bond':
+      elif isinstance( self.focused, bond):
         x1, y1 = self.focused.atom1.get_xy()
         x2, y2 = self.focused.atom2.get_xy()
         #find right side of bond to append template to
@@ -1006,9 +1008,9 @@ class template_mode( edit_mode):
     self.app.paper.handle_overlap()
     # checking of valency
     if self.focused:
-      if (self.focused.object_type == "bond") and (self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0):
+      if isinstance( self.focused, bond) and (self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0):
         self.app.paper.signal_to_app( _("maximum valency exceeded!"))
-      elif (self.focused.object_type == "atom") and self.focused.get_free_valency() < 0:
+      elif isinstance( self.focused, oasa.graph.vertex) and self.focused.get_free_valency() < 0:
         self.app.paper.signal_to_app( _("maximum valency exceeded!"))
 
     self.app.paper.start_new_undo_record()
@@ -1019,10 +1021,10 @@ class template_mode( edit_mode):
 
 
   def _mark_focused_as_template_atom_or_bond( self):
-    if self.focused and self.focused.object_type == 'atom':
+    if self.focused and isinstance( self.focused, oasa.graph.vertex):
       self.focused.molecule.t_atom = self.focused
       self.app.paper.signal_to_app( _("focused atom marked as 'template atom'")) 
-    elif self.focused and self.focused.object_type == 'bond':
+    elif self.focused and isinstance( self.focused, bond):
       atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + self.focused.molecule.atoms_bound_to( self.focused.atom2)
       atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
       coords = [a.get_xy() for a in atms]
@@ -1106,7 +1108,7 @@ class text_mode( edit_mode):
         if name and not dom_extensions.isOnlyTags( name):
           self.app.paper.set_name_to_selected( name)
           self.app.paper.add_bindings()
-      elif self.focused.object_type == 'atom':
+      elif isinstance( self.focused, oasa.graph.vertex):
         self.app.paper.signal_to_app( _("The text mode can no longer be used to edit atoms, use atom mode."))
 
 
@@ -1138,7 +1140,7 @@ class rotate_mode( edit_mode):
     # blocking is not necessary in rotate mode
     self._block_leave_event = 0
     self.app.paper.unselect_all()
-    if self.focused and (self.focused.object_type == 'atom' or self.focused.object_type == 'bond'):
+    if self.focused and (isinstance( self.focused, oasa.graph.vertex) or isinstance(self.focused, bond)):
       self._rotated_mol = self.focused.molecule
       x1, y1, x2, y2 = self.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
       self._centerx = x1+(x2-x1)/2.0
@@ -1214,15 +1216,15 @@ class bond_align_mode( edit_mode):
   def mouse_down( self, event, modifiers = []):
     if not self.focused:
       return
-    if self.focused.object_type not in ['atom', 'bond']:
+    if not misc.isinstance_of_one( self.focused, (oasa.graph.vertex, bond)):
       return
-    if self._needs_two_atoms[ self.submode[0]] == -1 and self.focused.object_type == 'atom':
+    if self._needs_two_atoms[ self.submode[0]] == -1 and isinstance( self.focused, oasa.graph.vertex):
       return
     # edit_mode.mouse_down( self, event, modifiers = modifiers)
     self._block_leave_event = 0
     if not self.first_atom_selected:
       self.app.paper.unselect_all()
-    if self.focused.object_type == 'bond':
+    if isinstance(self.focused, bond):
       if self.first_atom_selected:
         # waiting for second atom selection, clicking bond does nothing
         self.app.paper.signal_to_app( _("select the second atom, please."))
@@ -1232,7 +1234,7 @@ class bond_align_mode( edit_mode):
       x2, y2 = self.focused.atom2.get_xy()
       coords = (x1,y1,x2,y2)
       objects = [self.focused]
-    elif self.focused.object_type == 'atom':
+    elif isinstance( self.focused, oasa.graph.vertex):
       if not self.first_atom_selected: # first atom picked
         if self._needs_two_atoms[ self.submode[0]] > 0:
           self.first_atom_selected = self.focused
@@ -1348,19 +1350,19 @@ class bond_align_mode( edit_mode):
 
 
   def _apply_to_freerotation( self):
-    assert self.focused.object_type == 'bond'
+    assert isinstance( self.focused, bond)
     b = self.focused
     mol = b.molecule
     mol.delete_bond( b)
     cc = mol.get_connected_components()
-    mol.insert_bond( b)
+    mol.add_edge( b.atom1, b.atom2, b)
     b.draw()
     b.focus()
     if len( cc) == 1:
       self.app.paper.signal_to_app( _("Bond is part of a ring, there is not possiblity for rotation!"))
       return None
     else:
-      to_use = len( cc[0]) < len( cc[1]) and cc[0] or cc[1]
+      to_use = list( len( cc[0]) < len( cc[1]) and cc[0] or cc[1])
       return to_use + [b for b in mol.bonds if b.atom1 in to_use and b.atom2 in to_use]
 
 
@@ -1497,7 +1499,7 @@ class mark_mode( edit_mode):
 
   def mouse_click( self, event):
     a = ['radical','biradical','electronpair','plus','minus']
-    if self.focused and self.focused.object_type == 'atom':
+    if self.focused and isinstance( self.focused, oasa.graph.vertex):
       self.focused.set_mark( mark=a[ self.submode[0]])
       if self.focused.show_hydrogens and self.focused.show:
         self.focused.redraw()
@@ -1506,7 +1508,7 @@ class mark_mode( edit_mode):
 
 
   def _move_mark_for_selected( self, dx, dy):
-    to_move = [a for a in self.app.paper.selected if a.object_type == 'atom']
+    to_move = [a for a in self.app.paper.selected if isinstance( a, oasa.graph.vertex)]
     
     for a in to_move:
       for k,v in a.marks.iteritems():
@@ -1572,7 +1574,7 @@ class atom_mode( edit_mode):
         self.app.paper.add_bindings()
         self.app.paper.start_new_undo_record()        
     else:
-      if self.focused.object_type == 'atom':
+      if isinstance( self.focused, oasa.graph.vertex):
         self.app.paper.select( [self.focused])
         name = self.app.editPool.activate( text = self.focused.get_text())
         if name and not dom_extensions.isOnlyTags( name):
