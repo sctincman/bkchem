@@ -160,8 +160,8 @@ class OO_exporter( plugin.exporter):
                           stroke_width=self.paper.px_to_cm( b.line_width))
       style_name = self.get_appropriate_style_name( s)
       for i in items:
-        x1, y1, x2, y2, x3, y3 = map( self.paper.px_to_cm, self.paper.coords( i))
-        point_array = [(x1,y1), (x2,y2), (x3,y3)]
+        x1, y1, x2, y2, x3, y3, x4, y4 = map( self.paper.px_to_cm, self.paper.coords( i))
+        point_array = [(x1,y1), (x2,y2), (x3,y3), (x4, y4)]
         self.create_oo_polygon( point_array, page, style_name)
     elif b.type == 'h':
       for i in items:
