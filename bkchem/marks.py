@@ -26,6 +26,9 @@ import xml.dom.minidom as dom
 import dom_extensions
 import warnings
 from parents import simple_parent
+from singleton_store import Screen
+import data
+
 
 class mark( simple_parent):
   # note that all children of simple_parent have default meta infos set
@@ -35,7 +38,7 @@ class mark( simple_parent):
   object_type = 'mark'
   standard_size = 4
   # undo related metas
-  meta__undo_simple = ('x', 'y', 'auto')
+  meta__undo_simple = ('x', 'y', 'auto','size')
 
   def __init__( self, paper, x, y, atom=None, size=4, auto=1):
     """size is a diameter of the mark"""
@@ -69,8 +72,14 @@ class mark( simple_parent):
     [self.paper.lift( i) for i in self.items]
 
   def redraw( self):
+    registered = self.paper.is_registered_object( self)
+    if registered:
+      self.unregister()
     self.delete()
     self.draw()
+    if registered:
+      self.register()
+      
 
   def get_svg_element( self, doc):
     pass
@@ -91,6 +100,48 @@ class mark( simple_parent):
     [self.paper.itemconfig( i, outline=color, fill=color) for i in self.items if self.paper.type( i) in ("oval",)]
     [self.paper.itemconfig( i, fill=color) for i in self.items if self.paper.type( i) in ("line",)]
     
+
+  def register( self):
+    [self.paper.register_id( i, self) for i in self.items]
+
+  def unregister( self):
+    [self.paper.unregister_id( i) for i in self.items]
+
+
+
+  def get_package( self, doc):
+    a = doc.createElement('mark')
+    x ,y = map( Screen.px_to_text_with_unit, (self.x, self.y))
+    dom_extensions.setAttributes( a, (('type', self.__class__.__name__),
+                                      ('x', x),
+                                      ('y', y),
+                                      ('auto', str( int( self.auto))),
+                                      ('size', str( self.size))))
+    if hasattr( self, "draw_circle"):
+      a.setAttribute( "draw_circle", data.booleans[ int( self.draw_circle)])
+    return a
+
+
+
+  def read_package( self, package, atom):
+    typ = package.getAttribute( 'type')
+    cls = globals().get( typ, None)
+    if cls:
+      auto = (package.getAttribute( 'auto') != None and package.getAttribute( 'auto')) or 0
+      x, y, z = Screen.read_xml_point( package)
+      size = package.getAttribute( 'size') and int( package.getAttribute( 'size')) or None
+      if size:
+        m = cls( atom.paper, x, y, atom=atom, size=size, auto=int(auto))
+      else:
+        m = cls( atom.paper, x, y, atom=atom, auto=int(auto))
+      if hasattr( m, "draw_circle"):
+        circle = package.getAttribute( "draw_circle")
+        m.draw_circle = bool( data.booleans.index( circle))
+      return m
+    else:
+      raise ValueError, "no such mark type %s" % typ
+
+  read_package = classmethod( read_package)
 
 
 
@@ -234,6 +285,9 @@ class electronpair( mark):
 class plus( mark):
 
   standard_size = 10
+  meta__undo_simple = mark.meta__undo_simple + \
+                      ('draw_circle',)
+
 
   def __init__( self, paper, x, y, atom=None, size=10, auto=1):
     mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
@@ -246,12 +300,14 @@ class plus( mark):
       self.delete()
     x, y = self.x, self.y
     s = round( self.size / 2)
-    self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                          outline=self.atom.line_color, tags='mark')]
-    self.items.append( self.paper.create_line( x-s+2, y, x+s-2, y,
-                                               fill=self.atom.line_color, tags='mark'))
+
+    self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
+                                          fill=self.atom.line_color, tags='mark')]
     self.items.append( self.paper.create_line( x, y-s+2, x, y+s-2,
                                                fill=self.atom.line_color, tags='mark'))
+    if self.draw_circle:
+      self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
+                                                 outline=self.atom.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):
@@ -290,6 +346,8 @@ class plus( mark):
 class minus( mark):
 
   standard_size = 10
+  meta__undo_simple = mark.meta__undo_simple + \
+                      ('draw_circle',)
 
   def __init__( self, paper, x, y, atom=None, size=10, auto=1):
     mark.__init__( self, paper, x, y, atom=atom, size=size, auto=auto)
@@ -303,8 +361,9 @@ class minus( mark):
     s = round( self.size / 2)
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
                                           fill=self.atom.line_color, tags='mark')]
-    self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                               outline=self.atom.line_color, tags='mark'))
+    if self.draw_circle:
+      self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
+                                                 outline=self.atom.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):

@@ -649,13 +649,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     self.id = package.getAttribute( 'id')
     # marks (we read them here because they influence the charge)
     for m in package.getElementsByTagName( 'mark'):
-      auto = (m.getAttribute( 'auto') != None and m.getAttribute( 'auto')) or 0
-      type = m.getAttribute( 'type')
-      x, y, z = Screen.read_xml_point( m)
-      self.marks[ type] = marks.__dict__[ type]( self.paper,
-                                                 x, y,
-                                                 atom=self,
-                                                 auto= int(auto))
+      mrk = marks.mark.read_package( m, self)
+      self.marks[ mrk.__class__.__name__] = mrk
     #self.show_number = a.index( package.getAttribute( 'show_number'))
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
@@ -709,7 +704,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
     (the returned element is not inserted into the document)"""
-    y = ['no','yes']
+    yes_no = ['no','yes']
     on_off = ['off','on']
     a = doc.createElement('atom')
     a.setAttribute( 'id', str( self.id))
@@ -718,7 +713,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       a.setAttribute( "charge", str( self.charge))
     #show attribute is set only when non default
     if (self.show and self.name=='C') or (not self.show and self.name!='C'): 
-      a.setAttribute('show', y[ self.show])
+      a.setAttribute('show', yes_no[ self.show])
     if self.show:
       a.setAttribute( 'pos', self.pos)
     if self.font_size != self.paper.standard.font_size \
@@ -741,11 +736,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     # marks
     for m, o in self.marks.items():
       if o:
-        x ,y = map( Screen.px_to_text_with_unit, (o.x, o.y))
-        dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
-                                                            ('x', x),
-                                                            ('y', y),
-                                                            ('auto', str( int( o.auto)))))
+        a.appendChild( o.get_package( doc))
     # multiplicity
     if self.multiplicity != 1:
       a.setAttribute( 'multiplicity', str( self.multiplicity))

@@ -26,6 +26,9 @@ import os
 from atom import atom
 from group import group
 from sets import Set
+import types
+
+
 
 from singleton_store import Store
 
@@ -37,6 +40,7 @@ class context_menu( Tkinter.Menu):
     self.selected = selected
     self.changes_made = 0
     already_there = []
+    self.configurable = {} # this is similar to configurable but is prepared on init to take dynamic things into account
     
     # object type related configuration
     self.obj_types = misc.filter_unique( [o.object_type for o in selected])
@@ -46,10 +50,17 @@ class context_menu( Tkinter.Menu):
       if obj_type not in configurable:
         continue
       for attr in configurable[ obj_type]:
-        vals = config_values[ attr]
+        if type( attr) == types.StringType:
+          # attr can be either a string (key of config_values)
+          vals = config_values[ attr]
+        if type( attr) == types.FunctionType:
+          # or it can be a callable that takes list of objects and returns the desired tuple
+          attr, vals = attr( [o for o in self.selected if o.object_type == obj_type])
+
         if vals and attr not in already_there:
           casc = Tkinter.Menu( self, tearoff=0)
           self.add_cascade( label=vals[ I18N_NAME], menu=casc)
+          self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [ attr] 
           for v in vals[ VALUES]:
             if type( v) == types.TupleType:
               casc.add_command( label=v[1], command=misc.lazy_apply( self.callback, (attr,v[0])))
@@ -89,9 +100,9 @@ class context_menu( Tkinter.Menu):
 
   def callback( self, command, value):
     for o in self.selected:
-      if o.object_type not in configurable:
+      if o.object_type not in self.configurable:
         continue
-      if command in configurable[ o.object_type]:
+      if command in self.configurable[ o.object_type]:
         self.set_value( o, command, value)
     self.finish()
 
@@ -152,6 +163,17 @@ class context_menu( Tkinter.Menu):
 
 
 
+# functions used in configurable 
+
+def draw_mark_circle( objs):
+  """used in configurable for marks to choose if there is any mark that ability to have circle around""" 
+  circled = [o for o in objs if hasattr( o, "draw_circle")]
+  if not circled:
+    return "draw_circle", None
+  else:
+    return "draw_circle", (_("Circle around mark"), ((True, _("yes")), (False, _("no"))))
+
+
 
 
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
@@ -165,7 +187,8 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   ("center-last", _("center last")))),
                   'auto_bond_sign':   ( _("Bond positioning"),   ((1, _("auto")),
                                                                   (-1, _("anti-auto")))),
-                  'order':            ( _("Bond order"),         (0,1,2,3))
+                  'order':            ( _("Bond order"),         (0,1,2,3)),
+                  'size':             ( _("Mark size"),          (2,4,6,8,10,12,14,16,18)),
                   }
 
 
@@ -173,7 +196,8 @@ configurable = {'atom':    ('show', 'font_size', 'show_hydrogens','pos'),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),
-                'arrow':   ('line_width',)
+                'arrow':   ('line_width',),
+                'mark':    ('size', draw_mark_circle)
 
                 }
 
@@ -195,3 +219,4 @@ def expand_groups( groups):
     gs = Set( mol.vertices) & Set( all_gs)
     mol.expand_groups( atoms=gs)
     
+

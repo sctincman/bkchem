@@ -49,6 +49,7 @@ from oasa import periodic_table as PT
 import external_data
 from sets import Set
 import interactors
+import marks
 
 from singleton_store import Store, Screen
 
@@ -1538,14 +1539,23 @@ class mark_mode( edit_mode):
 
   def mouse_click( self, event):
     a = ['radical','biradical','electronpair','plus','minus']
-    if self.focused and isinstance( self.focused, oasa.graph.vertex):
+    if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):
       m = self.focused.set_mark( mark=a[ self.submode[0]])
       if m:
-        self._register_mark( m, Store.app.paper)
+        m.register()
       if self.focused.show_hydrogens and self.focused.show:
         self.focused.redraw()
       Store.app.paper.start_new_undo_record()
     Store.app.paper.add_bindings()
+
+
+
+  def mouse_down3( self, event, modifiers = []):
+    if self.focused and isinstance( self.focused, marks.mark):
+      dialog = context_menu( [self.focused])
+      dialog.post( event.x_root, event.y_root)
+      if dialog.changes_made:
+        Store.app.paper.start_new_undo_record()
 
 
   def _move_mark_for_selected( self, dx, dy):
@@ -1576,16 +1586,10 @@ class mark_mode( edit_mode):
 
 
   def _register_all_marks( self, paper):
-    [self._register_mark( i, paper) for i in self._all_marks( paper)]
+    [i.register() for i in self._all_marks( paper)]
 
   def _unregister_all_marks( self, paper):
-    [self._unregister_mark( i, paper) for i in self._all_marks( paper)]    
-
-  def _register_mark( self, mark, paper):
-    [paper.register_id( i, mark) for i in mark.items]
-
-  def _unregister_mark( self, mark, paper):
-    [paper.unregister_id( i) for i in mark.items]
+    [i.unregister() for i in self._all_marks( paper)]    
 
   def _all_marks( self, paper):
     for m in paper.molecules:
