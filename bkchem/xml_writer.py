@@ -65,6 +65,14 @@ class SVG_writer( XML_writer):
 
   def construct_dom_tree( self, top_levels):
     """constructs the SVG dom from all top_levels"""
+    # the constants
+    border_size = 10
+
+    # converter
+    px_to_cm_txt = lambda x: self.paper.px_to_text_with_unit( x, unit="cm", round_to=5)
+    px_to_mm_txt = lambda x: self.paper.px_to_text_with_unit( x, unit="mm", round_to=5)
+
+    # the code
     self._id = 0
     doc = self.document
     self.top = dom_extensions.elementUnder( doc, "svg", attributes=(("xmlns", "http://www.w3.org/2000/svg"),
@@ -79,17 +87,18 @@ class SVG_writer( XML_writer):
       items = list( self.paper.find_all())
       items.remove( self.paper.background)
       x1, y1, x2, y2 = self.paper.list_bbox( items)
-      dom_extensions.setAttributes( self.top, (("width", str(x2-x1+20)),
-                                               ("height", str(y2-y1+20)))) #,
-                                               #("viewBox",'%d %d %d %d' % ( x1, y1, x2-x1+10, y2-y1+10))))
+      w = px_to_mm_txt( x2 -x1 +2*border_size)
+      h = px_to_mm_txt( y2 -y1 +2*border_size)
+      bx2, by2 = x2-x1+2*border_size, y2-y1+2*border_size
+      dom_extensions.setAttributes( self.top, (("width", w),
+                                               ("height", h),
+                                               ("viewBox",'0 0 %d %d' % ( bx2, by2))))
     self.group = dom_extensions.elementUnder( self.top, 'g',
-                                              (('style', 'stroke:#000'),
-                                               ('font-size', '12pt'),
+                                              (('font-size', '12pt'),
                                                ('font-family', 'Helvetica'),
-                                               ('stroke-width', '1pt'),
                                                ('stroke-linecap', 'round')))
     if not self.full_size:
-      self.group.setAttribute( 'transform', 'translate('+str(-x1+10)+', '+str(-y1+10)+')')
+      self.group.setAttribute( 'transform', 'translate(%d,%d)' % (-x1+border_size, -y1+border_size))
       
     # sort the top_levels according to paper.stack
     cs = []
@@ -120,13 +129,10 @@ class SVG_writer( XML_writer):
     
   def add_bond( self, b):
     """adds bond item to SVG document"""
-    if b.line_width != 1.0 or b.line_color != '#000' or b.type == 'b':
-      line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
-      l_group = dom_extensions.elementUnder( self.group, 'g',
-                                             (( 'stroke-width', str( line_width)),
-                                              ( 'stroke', b.line_color)))
-    else:
-      l_group = self.group #dom_extensions.elementUnder( self.group, 'g')
+    line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
+    l_group = dom_extensions.elementUnder( self.group, 'g',
+                                           (( 'stroke-width', str( line_width)),
+                                            ( 'stroke', b.line_color)))
     # items to be exported
     if b.type == 'd':
       # d is a little bit twisted
@@ -279,7 +285,6 @@ class SVG_writer( XML_writer):
                                          ( "y", str( y1)),
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
-                                         ( 'stroke', t.line_color),
                                          ( 'fill', t.line_color),
                                          ( 'textLength', "%dpx" % (x2-x))))
     self.group.appendChild( text)
@@ -328,7 +333,6 @@ class SVG_writer( XML_writer):
                                            ( "y", str( y1)),
                                            ( "font-family", a.font_family),
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
-                                           ( 'stroke', a.line_color),
                                            ( 'fill', a.line_color),
                                            ( 'textLength', "%dpx" % (x2-x))))
       self.group.appendChild( text)
