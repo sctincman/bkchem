@@ -1513,6 +1513,8 @@ class chem_paper( Canvas, object):
     else:
       return None
 
+
+
     
 ## def coords( self, item, *args, **keyargs):
 ##     if 'unit' in keyargs:
@@ -1554,13 +1556,13 @@ class chem_paper( Canvas, object):
     for m in objs:
       if m.object_type == 'molecule':
         for b in m.bonds:
-          b.read_standard_values( old_standard=old_standard)
+          b.read_standard_values( self.standard, old_standard=old_standard)
           to_redraw.append( b)
         for a in m.atoms:
-          a.read_standard_values( old_standard=old_standard)
+          a.read_standard_values( self.standard, old_standard=old_standard)
           to_redraw.append( a)
       else:
-        m.read_standard_values( old_standard=old_standard)
+        m.read_standard_values( self.standard, old_standard=old_standard)
         to_redraw.append( m)
     return to_redraw
           
