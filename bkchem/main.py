@@ -44,6 +44,7 @@ from temp_manager import template_manager
 import modes
 import interactors
 import os_support
+import pref_manager
 
 import oasa_bridge
 import plugins.plugin
@@ -103,8 +104,7 @@ class BKchem( Tk):
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
-    self.start_server()
-
+    #self.start_server()
 
 
 
@@ -360,8 +360,8 @@ class BKchem( Tk):
     self.gm.add_template_from_CDML( "groups2.cdml")
 
 
-
-
+    # preference manager
+    self.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
 
 
   def init_modes( self):
@@ -795,7 +795,8 @@ class BKchem( Tk):
   def _quit( self):
     while self.papers:
       if not self.close_current_paper():
-        return 
+        return
+    self.save_configuration()
     self.quit()
 
 
@@ -1155,7 +1156,7 @@ Enter IChI:""")
       return
     u, i = self.paper.selected_to_unique_top_levels()
     sms = []
-    if not interactors.check_validity( u):
+    if not interactors.check_validity( self, u):
       return
     for m in u:
       if m.object_type == 'molecule':
@@ -1184,4 +1185,10 @@ Enter IChI:""")
     dial.insert( 'end', text)
     dial.activate()
 
+
+  def save_configuration( self):
+    self.pm.add_preference( 'geometry', self.winfo_geometry())
+    f = os_support.get_opened_config_file( "prefs.xml", level="personal", mode="w")
+    self.pm.write_to_file( f)
+    f.close()
 

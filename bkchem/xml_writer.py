@@ -121,7 +121,7 @@ class SVG_writer( XML_writer):
   def add_bond( self, b):
     """adds bond item to SVG document"""
     if b.line_width != 1.0 or b.line_color != '#000' or b.type == 'b':
-      line_width = (b.type == 'b') and b.wedge_width or b.line_width
+      line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
       l_group = dom_extensions.elementUnder( self.group, 'g',
                                              (( 'stroke-width', str( line_width)),
                                               ( 'stroke', b.line_color)))
@@ -133,7 +133,7 @@ class SVG_writer( XML_writer):
     else:
       if b.center:
         if not b.order == 2:
-          print "shit!"
+          print b.order, b.center, b.type
         items = []
       else:
         items = [b.item]

@@ -404,6 +404,22 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     x2, y2 = self.atom2.get_xy()
     #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
     # main item
+    # we check if there is a bold bond attached to the wider end of wedge
+
+##     bbonds = [b for b in self.molecule.atoms_bonds( self.atom2) if b.type == 'b']
+##     if len( bbonds):
+##       # we draw the wedge so that it fits the bold bond
+##       b = bbonds[0]
+##       xx1, yy1 = self.atom2.x, self.atom2.y
+##       aa2 = (b.atom1 == self.atom2) and b.atom2 or b.atom1
+##       xx2, yy2 = aa2.x, aa2.y
+##       x, y, x0, y0 = geometry.find_parallel( xx1, yy1, xx2, yy2, b.wedge_width/2.0)
+##       coords = [self.atom1.x, self.atom1.y, x, y]
+##       x, y, x0, y0 = geometry.find_parallel( xx1, yy1, xx2, yy2, -b.wedge_width/2.0)
+##       coords.extend( [x,y])
+##       self.item = self.paper.create_polygon( tuple( coords), outline=self.line_color, fill=self.line_color, joinstyle="miter")
+##     else:
+
     self.item = self._draw_wedge( (x1,y1,x2,y2))[0]
     self.paper.addtag_withtag( "bond", self.item)
     # draw helper items

@@ -134,7 +134,11 @@ else:
   del splash
 
 # start the application
-geometry = "+10+10"
+g = myapp.pm.get_preference( 'geometry')
+if g:
+  geometry = g
+else:
+  geometry = "+10+10"
 myapp.geometry(geometry)
 myapp.update_idletasks()
 myapp.deiconify()

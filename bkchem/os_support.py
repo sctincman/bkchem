@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 
 import os
@@ -99,4 +96,7 @@ def get_module_path():
   return dir
 
 
-
+def get_opened_config_file( name, level="global", mode="r"):
+  fname = get_config_filename( name, level=level, mode=mode)
+  f = file( fname, mode=mode)
+  return f

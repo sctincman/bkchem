@@ -1127,15 +1127,17 @@ class bond_align_mode( edit_mode):
     self.name = _('transformation mode')
     self._rotated_mol = None
     self.first_atom_selected = None
-    self.submodes = [['tohoriz','tovert','invertthrough','mirrorthrough']]
-    self.submodes_names = [[_('horizontal align'),_('vertical align'),_('invert through a point'),_('mirror through a line')]]
+    self.submodes = [['tohoriz','tovert','invertthrough','mirrorthrough','freerotation']]
+    self.submodes_names = [[_('horizontal align'),_('vertical align'),_('invert through a point'),_('mirror through a line'),_("free rotation around single bond")]]
     self.submode = [0]
-    self._needs_two_atoms = [1,1,0,1]
+    self._needs_two_atoms = [1,1,0,1,-1]  #-1 is for those that accept only bonds
 
   def mouse_down( self, event, modifiers = []):
     if not self.focused:
       return
     if self.focused.object_type not in ['atom', 'bond']:
+      return
+    if self._needs_two_atoms[ self.submode[0]] == -1 and self.focused.object_type == 'atom':
       return
     # edit_mode.mouse_down( self, event, modifiers = modifiers)
     self._block_leave_event = 0
@@ -1150,9 +1152,10 @@ class bond_align_mode( edit_mode):
       x1, y1 = self.focused.atom1.get_xy()
       x2, y2 = self.focused.atom2.get_xy()
       coords = (x1,y1,x2,y2)
+      objects = [self.focused]
     elif self.focused.object_type == 'atom':
       if not self.first_atom_selected: # first atom picked
-        if self._needs_two_atoms[ self.submode[0]]:
+        if self._needs_two_atoms[ self.submode[0]] > 0:
           self.first_atom_selected = self.focused
           self.first_atom_selected.select()
           self.app.paper.add_bindings()
@@ -1161,6 +1164,7 @@ class bond_align_mode( edit_mode):
         else:
           self._rotated_mol = self.focused.molecule
           coords = self.focused.get_xy()
+          objects = [self.focused]
       else: # second atom picked
         if self.focused.molecule != self.first_atom_selected.molecule:
           self.app.paper.signal_to_app( _("atoms must be in the same molecule!"))
@@ -1171,6 +1175,7 @@ class bond_align_mode( edit_mode):
         x1, y1 = self.first_atom_selected.get_xy()
         x2, y2 = self.focused.get_xy()
         coords = (x1,y1,x2,y2)
+        objects = [self.focused, self.first_atom_selected]
         self.first_atom_selected.unselect()
         self.first_atom_selected = None
     tr = self.__class__.__dict__['_transform_'+self.get_submode(0)]( self, coords)
@@ -1184,7 +1189,7 @@ class bond_align_mode( edit_mode):
       self.focused = None
 
 
-  def _transform_tohoriz( self, coords):
+  def _transform_tohoriz( self, coords, objects=None):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1206,7 +1211,7 @@ class bond_align_mode( edit_mode):
     return tr
       
 
-  def _transform_tovert( self, coords):
+  def _transform_tovert( self, coords, objects=None):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1225,7 +1230,7 @@ class bond_align_mode( edit_mode):
     tr.set_move(centerx, centery)
     return tr
 
-  def _transform_invertthrough( self, coords):
+  def _transform_invertthrough( self, coords, objects=None):
     if len( coords) == 4:
       x1, y1, x2, y2 = coords      
       x = ( x1 +x2) /2.0
@@ -1238,7 +1243,7 @@ class bond_align_mode( edit_mode):
     tr.set_move( x, y)
     return tr
 
-  def _transform_mirrorthrough( self, coords):
+  def _transform_mirrorthrough( self, coords, objects=None):
     x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
@@ -1252,6 +1257,10 @@ class bond_align_mode( edit_mode):
     tr.set_rotation( angle0)
     tr.set_move(centerx, centery)
     return tr
+
+  def _transform_freerotation( self, coords, objects=None):
+    pass
+
 
   def cleanup( self):
     if self.first_atom_selected:

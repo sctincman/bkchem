@@ -20,7 +20,7 @@
 
 import Tkinter
 import misc
-
+import types
 
 class context_menu( Tkinter.Menu):
 
@@ -44,7 +44,10 @@ class context_menu( Tkinter.Menu):
           casc = Tkinter.Menu( self, tearoff=0)
           self.add_cascade( label=vals[ I18N_NAME], menu=casc)
           for v in vals[ VALUES]:
-            casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
+            if type( v) == types.TupleType:
+              casc.add_command( label=v[1], command=misc.lazy_apply( self.callback, (attr,v[0])))
+            else:
+              casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
           # to know what is already there
           already_there.append( attr)
 
@@ -81,16 +84,23 @@ class context_menu( Tkinter.Menu):
 
 
 
-config_values = { 'show':             ( _("Show"),             ('yes','no')),
-                  'show_hydrogens':   ( _("Hydrogens"),        ('on','off')),
-                  'font_size':        ( _("Font size"),        (8,10,12,14,16,18)),
-                  'line_width':       ( _("Line width"),       (1.0,1.5,2.0,2.5,3.0))
+config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
+                                                                  ('no', _("no")))),
+                  'show_hydrogens':   ( _("Hydrogens"),          (('on',_("on")),
+                                                                  ('off', _("off")))),
+                  'font_size':        ( _("Font size"),          (8,10,12,14,16,18)),
+                  'line_width':       ( _("Line width"),         (1.0,1.5,2.0,2.5,3.0)),
+                  'bond_width':       ( _("Bond width"),         (3,4,5,6,7,8,9,10)),
+                  'pos':              ( _("Symbol positioning"), (("center-first",_("center first")),
+                                                                  ("center-last", _("center last")))),
+                  'auto_bond_sign':   ( _("Bond positioning"),   ((1, _("auto")),
+                                                                  (-1, _("anti-auto"))))
                   }
 
 
-configurable = {'atom':    ('show', 'font_size', 'show_hydrogens'),
+configurable = {'atom':    ('show', 'font_size', 'show_hydrogens','pos'),
                 'text':    ('font_size',),
-                'bond':    ('line_width',),
+                'bond':    ('line_width','bond_width'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',)
 
