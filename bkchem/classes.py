@@ -34,10 +34,6 @@ import operator
 import tkFont
 from parents import meta_enabled, simple_parent
 
-# the classes that used to be here
-
-from molecule import molecule
-
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
 ### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
