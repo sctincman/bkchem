@@ -40,7 +40,6 @@ from special_parents import vertex_common
 import data
 import re
 import debug
-from sets import Set
 import types
 
 import oasa
@@ -70,10 +69,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
   meta__undo_properties = area_colored.meta__undo_properties + \
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
+                          vertex_common.meta__undo_properties + \
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
                             'pos', 'multiplicity', 'valency')
-  meta__undo_copy = ('marks','_neighbors')
-  meta__undo_children_to_record = ('marks',)
+  meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
+  meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
 
 
   meta__configurable = {'show': (None, str),
@@ -84,6 +84,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
   def __init__( self, standard=None, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, standard=standard)
+    vertex_common.__init__( self)
     self.molecule = molecule
     if xy:
       oasa.atom.__init__( self, coords=(xy[0],xy[1],0))
@@ -101,11 +102,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
     self.pos = None
     self.focus_item = None
-    self.marks = Set()
 
     # chemistry attrs
-    self.show_number = True
-    self.number = None
     self.show_hydrogens = 0
     self.show = 0
 

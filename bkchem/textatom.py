@@ -39,7 +39,6 @@ import data
 import re
 import debug
 import marks
-from sets import Set
 import types
 
 import oasa
@@ -70,13 +69,15 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
   meta__undo_properties = area_colored.meta__undo_properties + \
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
+                          vertex_common.meta__undo_properties + \
                           ( 'z', 'name', 'molecule', 'charge', 'pos')
-  meta__undo_copy = ('_neighbors','marks')
-  meta__undo_children_to_record = ('marks',)
+  meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
+  meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
 
 
   def __init__( self, standard=None, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, standard=standard)
+    vertex_common.__init__( self)
     self.molecule = molecule
     point_drawable.__init__( self)
     oasa.graph.vertex.__init__( self)
@@ -93,16 +94,11 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
 
     self.pos = None
     self.focus_item = None
-    self.marks = Set()
 
     self.__reposition_on_redraw = 0
 
     # used only for monitoring when undo is necessary, it does not always correspond to the atom name
     self.text = ''
-
-    # numbering
-    self.show_number = True
-    self.number = None
 
     self.group_graph = None
     self.name = ''

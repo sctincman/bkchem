@@ -164,7 +164,7 @@ class config_dialog:
     if 'atom' in types:
       self.atom_page = self.pages.add(_('Atom'))
       # charge
-      charges = misc.filter_unique( [o.charge for o in items if o.object_type == 'atom'])
+      charges = misc.filter_unique( [o.charge for o in items if hasattr( o, 'charge')])
       if len( charges) == 1:
         charge = charges[0]
       else:
@@ -179,7 +179,7 @@ class config_dialog:
                                       datatype = 'integer')
       self.atom_charge.pack( anchor='nw', padx=10, pady=5)
       # show?
-      shows = misc.filter_unique( [o.show for o in items if o.object_type == 'atom'])
+      shows = misc.filter_unique( [o.show for o in items if hasattr( o, 'show')])
       if len( shows) == 1:
         show = int( shows[0])
       else:

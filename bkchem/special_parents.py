@@ -32,11 +32,24 @@ class vertex_common( object):
   """implements some properties and methods common for all vertices
   (atoms, groups and textatoms), such as numbering and mark support"""
 
+  meta__undo_properties = ('number', 'show_number')
+  meta__undo_copy = ('marks',)
+  meta__undo_children_to_record = ('marks',)
+
+
+  def __init__( self):
+    self.marks = Set()
+    # numbering
+    self.show_number = True
+    self.number = None
+
+
+
   # number
   def _set_number( self, number):
     self._number = number
     if self._number != None and self.show_number:
-      numbers = [m for m in self.marks if m.__class__.__name__ == "atom_number"]
+      numbers = self.get_marks_by_type( "atom_number")
       if not numbers:
         self.create_mark( "atom_number", draw=self.drawn)
 
@@ -54,11 +67,11 @@ class vertex_common( object):
   def _set_show_number( self, show_number):
     self._show_number = show_number
     if self._show_number and self.number:
-      numbers = [m for m in self.marks if m.__class__.__name__ == "atom_number"]
+      numbers = self.get_marks_by_type( "atom_number")
       if not numbers:
         self.create_mark( "atom_number", draw=self.drawn)
     elif not self._show_number and self.number:
-      numbers = [m for m in self.marks if m.__class__.__name__ == "atom_number"]
+      numbers = self.get_marks_by_type( "atom_number")
       if numbers:
         self.remove_mark( numbers[0])
         
@@ -78,7 +91,7 @@ class vertex_common( object):
 
 
 
-  def remove_mark( self, mark=None):
+  def remove_mark( self, mark):
     """mark is either mark instance of type, in case of instance, the instance is removed,
     in case of type a random mark of this type (if present is removed).
     Returns the removed mark or None"""

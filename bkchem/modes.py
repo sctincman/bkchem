@@ -554,7 +554,8 @@ class edit_mode( basic_mode):
   def reposition_bonds_around_atom( self, a):
     bs = a.molecule.atoms_bonds( a)
     [b.redraw( recalc_side = 1) for b in bs] # if b.order == 2]
-    a.reposition_marks()
+    if isinstance( a, textatom) or isinstance( a, atom):
+      a.reposition_marks()
 
   def reposition_bonds_around_bond( self, b):
     bs = misc.filter_unique( b.molecule.atoms_bonds( b.atom1) +  b.molecule.atoms_bonds( b.atom2))
