@@ -80,9 +80,10 @@ def get_parallel_signum( l1, l2):
   else:
     return signum( -x2a+x2b)
 
-def on_which_side_is_point( line, point):
+def on_which_side_is_point( line, point, threshold=0):
   """tells whether a point is on one side of a line or on the other (1,0,-1) - 0 is for point on line.
-  line is given as sequence of four coordinates, point as sequence of two coords"""
+  line is given as sequence of four coordinates, point as sequence of two coords,
+  threshold means what smallest angle is considered to still be on the line"""
   x1, y1, x2, y2 = line
   x, y = point
   a = atan2( y-y1, x-x1)
@@ -92,10 +93,10 @@ def on_which_side_is_point( line, point):
       a += 2*pi
     else:
       b += 2*pi
-  if a-b < 0:
+  if abs( a-b) <= threshold or abs( abs( a-b) -pi) <= threshold:
+    return 0    
+  elif a-b < 0:
     return 1
-  elif a-b == 0:
-    return 0
   else:
     return -1
 

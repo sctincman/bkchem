@@ -1106,7 +1106,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if circles:
       side = circles
     else:
-      sides = [geometry.on_which_side_is_point( line, xy) for xy in coords]
+      sides = [geometry.on_which_side_is_point( line, xy, threshold=0.1) for xy in coords]
       side = reduce( operator.add, sides, 0)
     # on which side to put the second line
     if side == 0 and (len( self.atom1.get_neighbors()) == 1 or
