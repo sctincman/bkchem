@@ -176,6 +176,7 @@ class edit_mode( mode):
     self._dragged_molecule = None
     self._block_leave_event = 0
     self._moving_selected_arrow = None
+    self._last_click_time = 0
     self.focused = None
     # responses to key events
     self.register_key_sequence( 'Delete', self._delete_selected)
@@ -308,7 +309,19 @@ class edit_mode( mode):
             self.paper.select( [self.focused.object])
           else:
             self.paper.select( [self.focused])
+        # double click?
+        t = time.time()
+        if t - self._last_click_time < 0.3:
+          self._last_click_time = 0
+          self.double_click( event)
+        else:
+          self._last_click_time = t
     self.paper.add_bindings()
+
+  def double_click( self, event):
+    if self.focused:
+      if self.focused.object_type in ('atom', 'bond'):
+        self.paper.select( tuple( self.focused.molecule)) # molecule is iterator
 
   def mouse_drag( self, event):
     if not self._dragging:
