@@ -219,14 +219,26 @@ class config_dialog:
       if not misc.split_number_and_unit( dist)[1]:
         dist = str( dist) + 'px'
       self.bond_dist = widgets.WidthChooser( self.bond_page, dist, label=_('Bond width'))
-      self.bond_dist.pack( anchor='nw', padx=10, pady=5)
+      self.bond_dist.pack( anchor='ne', padx=10, pady=5)
 
+      # wedge_widths
+      dists = misc.filter_unique( map( abs, [o.wedge_width for o in items if o.object_type == 'bond']))
+      if len( dists) == 1:
+        dist = dists[0]
+      else:
+        dist = ''
+      if not misc.split_number_and_unit( dist)[1]:
+        dist = str( dist) + 'px'
+      self.wedge_width = widgets.WidthChooser( self.bond_page, dist, label=_('Wedge/Hatch width'))
+      self.wedge_width.pack( anchor='ne', padx=10, pady=5)
+
+
+      # double bond length ratio
       ratios = misc.filter_unique( [o.double_length_ratio for o in items if o.object_type == 'bond'])
       if len( ratios) == 1:
         ratio = ratios[0]
       else:
         ratio = ''
-      # double bond length ratio
       self.double_length_ratio = widgets.RatioCounter( self.bond_page,
                                                        ratio,
                                                        label=_('Double-bond length ratio'))
@@ -386,12 +398,19 @@ class config_dialog:
         # BOND
         elif o.object_type == 'bond':
           # width is in common now
-          # distance
+          # bond_width
           d = self.parent.paper.any_to_px( self.bond_dist.getvalue())
           if d:
             if d != abs( o.bond_width):
               o.bond_width = d * misc.signum( o.bond_width)
               change = 1
+          # wedge_width
+          d = self.parent.paper.any_to_px( self.wedge_width.getvalue())
+          if d:
+            if d != o.wedge_width:
+              o.wedge_width = d
+              change = 1
+          # ratio
           ratio = self.double_length_ratio.getvalue()
           if ratio:
             ratio = float( self.double_length_ratio.getvalue())

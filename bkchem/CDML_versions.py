@@ -93,6 +93,7 @@ class CDML_transformer_10_11:
 
   def tranform_dom( self, dom):
     for b in dom.getElementsByTagName("bond"):
+      # bond remap
       type = b.getAttribute( 'type')
       if not type:
         continue
@@ -107,8 +108,22 @@ class CDML_transformer_10_11:
           continue
       type = self.bond_type_remap[ type]
       b.setAttribute('type', type)
-      
-
+      # other remaps
+      # distance
+      d = b.getAttribute( 'distance')
+      if d:
+        if type[0] == 'n':
+          b.setAttribute( 'bond_width', d)
+        else:
+          d = float( d)
+          # the drawing code was changed and divides by 2 now
+          b.setAttribute( 'wedge_width', str(2*d))
+        b.removeAttribute( 'distance')
+      # line_width
+      w = b.getAttribute( 'width')
+      if w:
+        b.setAttribute( 'line_width', w)
+        b.removeAttribute( 'width')
 
 
 # LIST OF AVAILABLE TRANSFORMERS
