@@ -1325,53 +1325,53 @@ class bond( meta_enabled):
       bnd.setAttribute( 'color', self.line_color)
     return bnd
 
-  def toggle_type( self, only_shift = 0, to_type='normal'):
-    if to_type == 'wedge':
-      if self.type == 4:
-        # if already wedge - change the start and end
-        self.atom1, self.atom2 = self.atom2, self.atom1
+  def toggle_type( self, only_shift = 0, to_type='n', to_order=1):
+    if not only_shift:
+      if to_type != self.type:
+        # if type was changed simply apply the change
+        self.switch_to_type( to_type)
+        self.switch_to_order( to_order)
+      elif to_order != self.order and to_order != 1:
+        # if order was changed we do the same
+        # we want to treat order=1 as special in order to support the s=>d d=>t t=>s behaviour
+        self.switch_to_order( to_order)
       else:
-        # toggle to up
-        if self.type != 5:
-          self.bond_width = self.paper.any_to_px( self.paper.standard.wedge_width)
-        self.type = 4
-    elif to_type == 'hatch':
-      if self.type == 5:
-        # if already hatch - change the start and end
-        self.atom1, self.atom2 = self.atom2, self.atom1
-      else:
-        # toggle to back
-        if self.type != 4:
-          self.bond_width = self.paper.any_to_px( self.paper.standard.wedge_width)
-        self.type = 5
-    else:
-      if self.type not in (1,2,3):
-        self.type = 1
-        self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
-      else:
-        if only_shift:
-          # should be called only for double bonds
-          if self.center:
-            self.bond_width = -self.bond_width
-            self._auto_bond_sign = -self._auto_bond_sign
-            self.center = 0
-          elif self.bond_width > 0:
-            self.bond_width = -self.bond_width
-            self._auto_bond_sign = -self._auto_bond_sign
-          else:
-            self.center = 1
+        # here comes the interesting stuff
+        if to_type in "wah":
+          # the types for which side matters
+          self.atom1, self.atom2 = self.atom2, self.atom1
         else:
-          if self.type == 3:
-            # was type 3
-            self.type = 1
-          elif self.type == 1:
-            # was type 1
-            self.type += 1
-            self._decide_distance_and_center()
-          else:
-            # was type 2
-            self.type = self.type +1
+          self.switch_to_order( (self.order % 3) + 1)
+    elif self.order == 2:
+      # we will shift the position of the second bond
+      if self.center:
+        self.bond_width = -self.bond_width
+        self._auto_bond_sign = -self._auto_bond_sign
+        self.center = 0
+      elif self.bond_width > 0:
+        self.bond_width = -self.bond_width
+        self._auto_bond_sign = -self._auto_bond_sign
+      else:
+        self.center = 1
+    else:
+      # we ignore it when shift only appears for non-double bonds
+      pass
     self.redraw()
+
+  def switch_to_type( self, type):
+    if type in "wha" and self.type not in "wha":
+      # get the standard width only if the changes is not within the "wha" group
+      self.bond_width = self.paper.any_to_px( self.paper.standard.wedge_width)
+    elif type not in "wha" and self.type in "wha":
+      # when both are outside the 'wha' do the similar
+      self.bond_width = self.paper.any_to_px( self.paper.standard.bond_width)
+    self.type = type
+
+  def switch_to_order( self, order):
+    self.order = order
+    if self.order > 1:
+      self._decide_distance_and_center()
+    
 
   def _decide_distance_and_center( self):
     """according to molecular geometry decide what bond.center and bond.bond_width should be"""

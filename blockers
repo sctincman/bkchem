@@ -4,6 +4,7 @@ remarks
   method to arrow mode to get rid of the annoying warnings which are caused by unsymmetrical enter-leave
   calls.
 - make use of get_submode() in modes
+- why does _decide_distance_and_center compute bond_width from length? It should take it from the standard
 
 
 0.6.0
@@ -11,8 +12,6 @@ remarks
 
 
 new bond types -
-	- when a single bond is clicked with triple selected it should convert to triple
-	- remake toggle_type
 	- select and focus must be updated as new types are added
 	- for multiple wedge or hatch - use line_width = wedge_width and bond_width = bond_width?
 

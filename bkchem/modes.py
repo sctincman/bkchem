@@ -543,10 +543,11 @@ class draw_mode( edit_mode):
         self.paper.select( [a])
       elif self.focused.object_type == 'bond':
         if self._shift:
-          self.focused.toggle_type( only_shift = 1, to_type=self.submodes[1][ self.submode[1]])
+          self.focused.toggle_type( only_shift = 1, to_type=self.__mode_to_bond_type(),
+                                    to_order=self.__mode_to_bond_order())
           self.focused.focus() # refocus
         else:
-          self.focused.toggle_type( to_type=self.submodes[1][ self.submode[1]])
+          self.focused.toggle_type( to_type=self.__mode_to_bond_type(), to_order=self.__mode_to_bond_order())
           # warn when valency is exceeded
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
             self.paper.signal_to_app( _("maximum valency exceeded!"))
