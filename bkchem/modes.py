@@ -278,9 +278,6 @@ class edit_mode( mode):
         self.app.paper.select( [self.focused])
       dialog = context_menu( self.app, self.app.paper.selected[:])
       dialog.post( event.x_root, event.y_root)
-      if dialog.changes_made:
-        self.app.paper.start_new_undo_record()
-      self.app.paper.add_bindings()
 
 
 
