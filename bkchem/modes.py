@@ -17,7 +17,7 @@
 
 #--------------------------------------------------------------------------
 #
-# Last edited: $Date: 2004/02/10 21:31:53 $
+# Last edited: $Date$
 #
 #--------------------------------------------------------------------------
 
@@ -477,9 +477,12 @@ class draw_mode( edit_mode):
     self.name = _('draw')
     self._moved_atom = None
     self._start_atom = None
-    self.submodes = [['30','18','6','1'],['normal', 'wedge', 'hatch'],['fixed','freestyle']]
-    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')], [_('normal'),_('wedge'),_('hatch')],[_('fixed length'),_('freestyle')]]
-    self.submode = [0, 0, 0]
+    self.submodes = [['30','18','6','1'],['simple','double','triple'],
+                     ['normal','wedge','hatch','adder','bbold'],['fixed','freestyle']]
+    self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],[_('simple'),_('double'),_('triple')],
+                           [_('normal'),_('wedge'),_('hatch'),_('adder'),_('bold')],
+                           [_('fixed length'),_('freestyle')]]
+    self.submode = [0, 0, 0, 0]
     
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
@@ -595,7 +598,10 @@ class draw_mode( edit_mode):
 
   def __mode_to_bond_type( self):
     """maps bond type submode to bond_type number"""
-    type = self.submodes[1][ self.submode[1]]
+    order = self.submode[1]+1
+    type = self.submodes[2][ self.submode[2]][0]
+    type = "%s%d" % (type, order) 
+    print type
     if type == 'normal':
       type = 1
     else:

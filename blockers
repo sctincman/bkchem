@@ -1,4 +1,3 @@
-
 remarks
 
 - why is in fact in modes:369 "if not self._dragging"? then we need to add a different enter_object
@@ -8,8 +7,12 @@ remarks
 
 
 0.6.0
+=======
 
 new bond types - modes, saving, loading, back compatibility
+
+- mode for ring creation
+
 
 - vertical and horizontal swap
   - double bonds
