@@ -845,6 +845,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       y = self.y + round( sin( angle) *dist)
       #ang = angle
 
+    # quick fix for marks above an atom
+    if self.show and abs(x - self.x) < 1 and (y - self.y) < 0:
+      y -= self.font_size/4
+
     self.marks[ mark] = marks.__dict__[ mark]( self.paper, x, y,
                                                atom = self,
                                                auto=(angle=='auto'))
@@ -861,6 +865,11 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
         else:
           dist = 5 + round( m.size / 2)
         x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
+
+        # quick fix for marks above an atom
+        if self.show and abs(x - self.x) < 1 and (y - self.y) < 0:
+          y -= self.font_size/4
+
         m.move_to( x, y)
 
 
