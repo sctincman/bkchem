@@ -6,35 +6,30 @@ remarks
 - make use of get_submode() in modes
 - why does _decide_distance_and_center compute bond_width from length? It should take it from the standard
 - focus circle is positioned strangely on freestyle arrow drawing
+- cleanup - all things that have to be updated after bond deletion, addition etc. should be 
+	put to one place. Where?
+- what about the dpi problem on windows?
 
 
-0.6.0
+0.7.0
 =======
 
 - never center the 'whab' double bonds?
-- what about the dpi problem on windows?
 
 - move using arrows is not finished by concatenation of molecules
   (- pri konectu pomoci sipek (konekt byl vyvolanej kreslenim pote) se vazba neexportovala do OO
 	(reload a reexport pomoh))
 
-- cleanup - all things that have to be updated after bond deletion, addition etc. should be 
-	put to one place. Where?
-
 - check permission denied on plugin output
-
-
+- michal reported something with colors and OH?
+- should I use the C-x c ?  self.register_key_sequence( 'C-x c', self.app.paper.toggle_center_for_selected)
 
 FOR MULTIPLE PAPERS
 
-- remove the paper.mode ref, use only app.mode
-- saving should take care if untitled was set by user of automaticaly by the user
 - the saving is a mess
 - standard should be read on paper creation, the sizes should not be given by app
 - move load_file to paper?
-- check the saving and loading
-- add methods to close tabs
-- make sure copying works between papers
+- name should be set directly to the filename - not untitled
 - do not open files twice
 - copying between files, clipboard is persistent
 

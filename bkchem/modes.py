@@ -209,6 +209,7 @@ class edit_mode( mode):
     self.register_key_sequence( 'C-x C-w', self.app.save_as_CDML)
     self.register_key_sequence( 'C-x C-f', self.app.load_CDML)
     self.register_key_sequence( 'C-x C-c', self.app._quit)
+    self.register_key_sequence( 'C-x C-t', self.app.close_current_paper)
     self.register_key_sequence( 'A-w', self.app.paper.selected_to_clipboard)
     self.register_key_sequence( 'M-w', self.app.paper.selected_to_clipboard)
     self.register_key_sequence( 'C-w', lambda : self.app.paper.selected_to_clipboard( delete_afterwards=1))

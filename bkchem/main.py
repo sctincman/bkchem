@@ -78,12 +78,10 @@ class BKchem( Tk):
     mainFrame = Frame( self)
     mainFrame.pack( fill='both', expand=1)
 
-
     # main drawing part
     self.papers = []
     self.notebook = Pmw.NoteBook( mainFrame,
                                   raisecommand=self.change_paper)
-
     self.add_new_paper()
 
     #
@@ -111,7 +109,6 @@ class BKchem( Tk):
     self.modes_sort = [ 'edit', 'draw', 'template', 'text', 'arrow', 'plus', 'rotate', 'bondalign', 'name', 'vector', 'mark']
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
 
-
     # defining menu
     menu = Frame( mainFrame, relief=RAISED, bd=2)
     menu.pack( fill = X)
@@ -128,7 +125,7 @@ class BKchem( Tk):
     fileButton.pack( side = LEFT)
     fileMenu = Menu( fileButton, tearoff=0)
     fileButton['menu'] = fileMenu
-    fileMenu.add( 'command', label=_('New'), command = self._new_file)
+    fileMenu.add( 'command', label=_('New'), command = self.add_new_paper)
     fileMenu.add( 'command', label=_('Save'), command = self.save_CDML, accelerator='(C-x C-s)')
     fileMenu.add( 'command', label=_('Save As...'), command = self.save_as_CDML, accelerator='(C-x C-w)')
     fileMenu.add( 'command', label=_('Load'), command = self.load_CDML, accelerator='(C-x C-f)')
@@ -144,6 +141,7 @@ class BKchem( Tk):
     fileMenu.add( 'separator')
     fileMenu.add( 'command', label=_('File properties'), command=self.change_properties)
     fileMenu.add( 'separator')
+    fileMenu.add( 'command', label=_('Close tab'), command = self.close_current_paper, accelerator='(C-x C-t)')
     fileMenu.add( 'command', label=_('Exit'), command = self._quit, accelerator='(C-x C-c)')
 
     # edit menu
@@ -188,13 +186,12 @@ class BKchem( Tk):
     scaleMenu.add( 'command', label=_('Bring to front'), command = self.paper.lift_selected_to_top, accelerator='(C-o f)')
     scaleMenu.add( 'command', label=_('Send back'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o b)')
     scaleMenu.add( 'command', label=_('Swap on stack'), command = self.paper.swap_selected_on_stack, accelerator='(C-o s)')
-    # not done yet
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Vertical mirror'), command = self.paper.swap_sides_of_selected)
     scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda: self.paper.swap_sides_of_selected('horizontal') )
-# for dev only
     scaleMenu.add( 'separator')
     scaleMenu.add( 'command', label=_('Configure'), command = self.paper.config_selected, accelerator='Mouse-3')
+    # for dev only
     scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)
     
     # OPTIONS
@@ -259,6 +256,8 @@ class BKchem( Tk):
     self.protocol("WM_DELETE_WINDOW", self._quit)
 
 
+
+
   def about( self):
     dialog = Pmw.MessageDialog(self,
                                title = _('About BKchem'),
@@ -266,6 +265,9 @@ class BKchem( Tk):
                                message_text = data.about_text)
     dialog.iconname('BKchem')
     dialog.activate()
+
+
+
 
 
   def change_mode( self, tag):
@@ -306,8 +308,14 @@ class BKchem( Tk):
     self.paper.mode = self.mode
     self.update_status( _('mode changed to ')+self.modes[ tag].name)
 
+
+
+
   def change_submode( self, tag):
     self.mode.set_submode( tag)
+
+
+
 
   def update_status( self, signal, time=4):
     self.stat.set( signal)
@@ -315,11 +323,17 @@ class BKchem( Tk):
       self.after_cancel( self._after)
     self._after = self.after( time*1000, func=self.clear_status)
 
+
+
+
   def change_paper( self, name):
     if self.papers:
       i = self.notebook.index( name)
       self.paper = self.papers[i]
       self.paper.mode = self.mode
+
+
+
 
   def add_new_paper( self, name=''):
     name_dic = self.get_name_dic( name=name)
@@ -342,8 +356,32 @@ class BKchem( Tk):
     self.notebook.selectpage( Pmw.END)
     self.paper.focus_set()
 
+
+
+
+  def close_current_paper( self):
+    if self.paper.changes_made:
+      name = self.paper.file_name['name']
+      dialog = Pmw.MessageDialog( self,
+                                  title= _("Really close?"),
+                                  message_text = _("There are unsaved changes in file %s, what should I do?") % name,
+                                  buttons = (_('Close'),_('Save'),_('Cancel')),
+                                  defaultbutton = _('Close'))
+      result = dialog.activate()
+      if result == _('Save'):
+        self.save_CDML()
+      elif result == _('Cancel'):
+        return # we skip away
+    self.papers.remove( self.paper)
+    self.notebook.delete( Pmw.SELECT)
+    
+
+
+
   def clear_status( self):
     self.stat.set( '')
+
+
 
   def save_CDML( self):
     """saves content of self.paper (recent paper) under its filename,
@@ -356,6 +394,8 @@ class BKchem( Tk):
     else:
       a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
       self._save_according_to_extension( a)
+
+
 
   def save_as_CDML( self):
     """asks the user the name for a file and saves the current paper there,
@@ -375,6 +415,8 @@ class BKchem( Tk):
         return None
     else:
       return None
+
+
 
   def _save_according_to_extension( self, filename):
     """decides the format from the file extension and saves self.paper in it"""
@@ -400,6 +442,8 @@ class BKchem( Tk):
       self.update_status( _("failed to save to %s file: %s") % (type, save_file))
       return 0
 
+
+
   def set_file_name( self, name, check_ext=0):
     """if check_ext is true append a .svg extension if no is present"""
     if check_ext and not os.path.splitext( name)[1]:
@@ -407,9 +451,11 @@ class BKchem( Tk):
     else:
       self.paper.file_name = self.get_name_dic( name)
 
+
+
   def load_CDML( self, file=None, replace=0):
     if not file:
-      if self.paper.changes_made:
+      if self.paper.changes_made and replace:
         if tkMessageBox.askyesno( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='yes') == 0:
           return 0
       a = askopenfilename( defaultextension = "",
@@ -428,6 +474,8 @@ class BKchem( Tk):
     if not replace:
       self.add_new_paper()
     return self._load_CDML_file( a)
+
+
 
   def _load_CDML_file( self, a):
     if a != '':
@@ -499,6 +547,8 @@ class BKchem( Tk):
       self.update_status( _("loaded file: ")+a)
       return 1
 
+
+
   def save_SVG( self):
     svg_file = self.paper.get_base_name()+".svg"
     a = asksaveasfilename( defaultextension = ".svg", initialdir = self.svg_dir, initialfile = svg_file,
@@ -517,14 +567,20 @@ class BKchem( Tk):
       self.update_status( _("exported to SVG file: ")+svg_file)
 
 
+
+
   def _update_geometry( self, e):
     pass
+
+
 
   def scale( self):
     dialog = dialogs.scale_dialog( self)
     if dialog.result:
       x, y = dialog.result
       self.paper.scale_selected( x/100, y/100)
+
+
     
   def get_name_dic( self, name=''):
     if not name:
@@ -538,13 +594,14 @@ class BKchem( Tk):
       name_dic = {'name':name, 'dir':dir, 'auto': 0}
     return name_dic
 
+
+
   def _quit( self):
-    if self.paper.changes_made:
-      if tkMessageBox.askyesno( _("Really quit?"), _("There are unsaved changes, do you really want to quit?"),
-                                parent=self, default='yes'):
-        self.quit()
-    else:
-      self.quit()
+    while self.papers:
+      self.close_current_paper()
+    self.quit()
+
+
       
   def plugin_import( self, pl_id):
     plugin = self.plugins[ pl_id]
@@ -579,6 +636,8 @@ class BKchem( Tk):
         self.paper.read_package( doc)
         self.update_status( _("loaded file: ")+a)
 
+
+
   def plugin_export( self, pl_id):
     plugin = self.plugins[ pl_id]
     exporter = plugin.exporter( self.paper)
@@ -609,17 +668,13 @@ class BKchem( Tk):
 
       self.update_status( _("exported file: ")+a)
   
-  def _new_file( self):
-    if self.paper.changes_made:
-      if tkMessageBox.askyesno( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='yes', parent=self) == 0:
-        return 0
-    self.paper.clean_paper()
-    self.paper.set_paper_properties( type='A4', orientation='portrait')
-    self.save_file = None
+
 
 
   def change_properties( self):
     dial = dialogs.file_properties_dialog( self, self.paper)
+
+
 
   def standard_values( self):
     dial = dialogs.standard_values_dialog( self, self.paper.standard)
@@ -638,6 +693,8 @@ class BKchem( Tk):
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
   
+
+
 
   def request( self, type, **options):
     """used by submodules etc. for requests of application wide resources such as pixmaps etc."""
