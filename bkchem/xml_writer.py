@@ -321,13 +321,13 @@ class SVG_writer( XML_writer):
       #if os.name == 'nt':
       #  x += 2  #nasty hack to improve results on win machines (they have larger fonts?!?)
       #  x2 -= 2 
-      dom_extensions.elementUnder( self.group, 'rect',
-                                   (( 'x', str( x)),
-                                    ( 'y', str( y)),
-                                    ( 'width', str( x2-x)),
-                                    ( 'height', str( y2-y)),
-                                    ( 'fill', a.area_color),
-                                    ( 'stroke', a.area_color)))
+##       dom_extensions.elementUnder( self.group, 'rect',
+##                                    (( 'x', str( x)),
+##                                     ( 'y', str( y)),
+##                                     ( 'width', str( x2-x)),
+##                                     ( 'height', str( y2-y)),
+##                                     ( 'fill', a.area_color),
+##                                     ( 'stroke', a.area_color)))
       y1 += (y2-y)/4.0
       x += 2 ## hack to compensate for the wrong measuring of text
       text = svg_help.ftext_to_svg_dom( a.get_ftext())

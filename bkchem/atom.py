@@ -322,7 +322,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     area_colored.copy_settings( self, other)
     point_drawable.copy_settings( self, other)
     text_like.copy_settings( self, other)
-    child.copy_settings( self, other)
+    child_with_paper.copy_settings( self, other)
     other.pos = self.pos
 
 
@@ -478,7 +478,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       x1, y1, x2, y2 = self.ftext.draw()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
       ## shrink the selector to improve appearance (y2-2)
-      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='#ffffff', outline='',tags='helper_a')
+      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='', outline='',tags='helper_a')
       self.ftext.lift()
       self.paper.lift( self.item)
     else:
@@ -533,7 +533,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
   def unfocus( self):
     if self.show:
-      self.paper.itemconfig( self.selector, fill=self.area_color)
+      self.paper.itemconfig( self.selector, fill='') #self.area_color)
     if self.focus_item:
       self.paper.delete( self.focus_item)
       self.focus_item = None

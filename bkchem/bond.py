@@ -308,19 +308,26 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   # THE DRAW HELPER METHODS
 
+  def _where_to_draw_from_and_to( self):
+    x1, y1 = self.atom1.get_xy()
+    x2, y2 = self.atom2.get_xy()
+    bbox1 = list( self.atom1.bbox())
+    bbox2 = list( self.atom2.bbox())
+    # nasty hacks
+    bbox1 = map( operator.add, bbox1, (-1,-1,1,1))
+    bbox2 = map( operator.add, bbox2, (-1,-1,1,1))
+    # // nasty hacks
+    if self.atom1.show:
+      x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1)
+    if self.atom2.show:
+      x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2)
+    return (x1, y1, x2, y2)
+
 
   # normal bond
 
   def _draw_n1( self):
-    x1, y1 = self.atom1.get_xy()
-    x2, y2 = self.atom2.get_xy()
-    # main item
-    # calculation of what part of line to draw
-##     if self.atom1.show:
-##       x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom1.bbox())
-##     if self.atom2.show:
-##       x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), self.atom2.bbox())
-
+    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
     self.second = self.third = []
@@ -557,8 +564,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   # wedge bonds
 
   def _draw_w1( self):
-    x1, y1 = self.atom1.get_xy()
-    x2, y2 = self.atom2.get_xy()
+    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
     #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
     # main item
     # we check if there is a bold bond attached to the wider end of wedge
@@ -624,9 +630,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_a1( self):
-    x1, y1 = self.atom1.get_xy()
-    x2, y2 = self.atom2.get_xy()
-    #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
+    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
     # main item
     self.item = self._draw_adder( (x1,y1,x2,y2))[0]
     self.paper.addtag_withtag( "bond", self.item)

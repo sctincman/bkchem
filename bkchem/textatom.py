@@ -281,7 +281,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     area_colored.copy_settings( self, other)
     point_drawable.copy_settings( self, other)
     text_like.copy_settings( self, other)
-    child.copy_settings( self, other)
+    child_with_paper.copy_settings( self, other)
     other.pos = self.pos
 
 

@@ -123,6 +123,12 @@ def intersection_of_line_and_rect( line, rect):
   both are given as lists of len == 4"""
   lx0, ly0, lx1, ly1 = line
   rx0, ry0, rx1, ry1 = normalize_coords( rect)
+
+  # find which end of line is in the rect and reverse the line if needed
+  if (lx0 > rx0) and (lx0 < rx1) and (ly0 > ry0) and (ly0 < ry1):
+    lx0, lx1 = lx1, lx0
+    ly0, ly1 = ly1, ly0
+
   ldx = lx1 - lx0
   ldy = ly1 - ly0
   if abs( ldx) > abs( ldy):
