@@ -1,30 +1,18 @@
 #! /bin/bash
 
-rm blockers
-rm TODO
-rm BUGS
-
-find -name "*.pyc" -exec rm -f \{} \;
-find -name "*~" -exec rm -f \{} \;
-find -name ".xvpics" -exec rm -rf \{} \;
-find -name "CVS" -exec rm -rf \{} \;
-
-cd bkchem
-rm -fr *.svg
-rm -fr *.cml
-rm -fr *.cdml
-rm -fr *.zip
-rm -fr *.sxd
-
-cd ../locale/cs
-rm BKchem.mo
-
-cd ../../pixmaps
-rm -f *.png
-
-cd ../images
-rm -f logo.xcf
-
+cd doc
+mkdir html
+docbook2html doc.xml -o html 2>/dev/null
+docbook2pdf doc.xml 2>/dev/null
+docbook2ps doc.xml 2>/dev/null
 cd ..
-rm -fr cdml
-rm binary-howto.txt
+
+echo "convert the logo to ppm"
+echo "release number in:"
+echo "setup.py"
+echo "bkchem/data.py"
+echo "RELEASE"
+
+
+
+

@@ -1,3 +1,15 @@
+RELEASE 0.5.1
+
+ * bugfixes - invalid files are no longer created under Python 2.3 when marks are used 
+              (bug was due to the introduction of boolean type in this version of python)
+
+ * enhancements - None
+
+ * changes - the progress.log format was changed and will contain only summary for
+             each release
+
+
+
 -- release of 0.5.1-pre1
 
 2004-02-10  Beda Kosata	<beda@zirael.org> (sav4)
