@@ -1083,7 +1083,7 @@ class bond( meta_enabled):
     type = data.bond_type_remap[ self.type]
     self.__class__.__dict__[ '_draw_'+type]( self)
 
-  def _draw_1s( self):
+  def _draw_s1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     # main item
@@ -1093,8 +1093,8 @@ class bond( meta_enabled):
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
 
-  def _draw_2s( self):
-    x1,y1,x2,y2 = self._draw_1s()
+  def _draw_s2( self):
+    x1,y1,x2,y2 = self._draw_s1()
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -1114,8 +1114,8 @@ class bond( meta_enabled):
     if self.center:
       self.third = self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)
 
-  def _draw_3s( self):
-    x1,y1,x2,y2 = self._draw_1s()
+  def _draw_s3( self):
+    x1,y1,x2,y2 = self._draw_s1()
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -1127,8 +1127,8 @@ class bond( meta_enabled):
     self.third = self.paper.create_line( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy, width=self.line_width, fill=self.line_color)
     
 
-  def _draw_1h( self):
-    x1,y1,x2,y2 = self._draw_1s()    
+  def _draw_h1( self):
+    x1,y1,x2,y2 = self._draw_s1()    
     # main item
     self.paper.itemconfig( self.item, fill='')
     # the small lines
@@ -1149,7 +1149,7 @@ class bond( meta_enabled):
           coords[1] += 1
       self.items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
 
-  def _draw_1w( self):
+  def _draw_w1( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])

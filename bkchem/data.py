@@ -33,7 +33,7 @@ numbered_bond_types = ['no','1', '2','3','W','H']
 
 # support for plugable draw methods
 # the remaping to new style of bond type names
-bond_type_remap = ['','1s','2s','3s','1w','1h']
+bond_type_remap = ['','s1','s2','s3','w1','h1']
 
 
 special_key_symbols = { 'Control_L':'C',
