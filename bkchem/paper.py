@@ -18,7 +18,7 @@
 #--------------------------------------------------------------------------
 
 
-"""BKpaper - the main drawing part for BKchem resides here"""
+"""chem_paper - the main drawing part for BKchem resides here"""
 
 from __future__ import division
 
@@ -49,7 +49,7 @@ import dialogs
 import CDML_versions
 
 
-class BKpaper( Canvas):
+class chem_paper( Canvas):
 
   def __init__( self, master = None, app = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)

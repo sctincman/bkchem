@@ -24,7 +24,7 @@
 """the main application class resides here"""
 
 from Tkinter import *
-from paper import BKpaper
+from paper import chem_paper
 import Pmw
 from xml_writer import SVG_writer, KIL_writer
 from tkFileDialog import asksaveasfilename, askopenfilename
@@ -358,7 +358,7 @@ class BKchem( Tk):
   def add_new_paper( self, name=''):
     name_dic = self.get_name_dic( name=name)
     page = self.notebook.add( name_dic['name'])
-    paper = BKpaper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5,
+    paper = chem_paper( page, app=self, width=640, height=480, scrollregion=(0,0,'210m','297m'), background="grey", closeenough=5,
                      file_name=name_dic)
     # the scrolling
     scroll_y = Scrollbar( page, orient = VERTICAL, command = paper.yview)
