@@ -339,7 +339,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
       self.show_hydrogens = 0
       self.type = 'element'
       self.charge += elch[1]
-      debug.log( name, self.charge, self.get_ftext())
     elif (name.lower() in GT.groups_table) and ( not check_valency or self.molecule.get_atoms_occupied_valency( self) == 1):
       # name is a known group
       self.name = GT.groups_table[ name.lower()]['name']
@@ -1070,7 +1069,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   def split_element_and_charge( self, txt):
     """returns tuple of (element, charge) or None if the text does not match this pattern"""
     ### this could be a static method
-    splitter = re.compile("([a-z]+)([0-9]*)([+-]?)")
+    splitter = re.compile("^([a-z]+)([0-9]*)([+-]?)$")
     match = splitter.match( txt.lower())
     if match:
       if match.group(1).capitalize() not in PT.periodic_table:
