@@ -367,8 +367,6 @@ class point( point_drawable, interactive, child):
     if package:
       self.read_package( package)
 
-  def set_arrow( self, arrow):
-    self.arrow = arrow
 
   def draw( self):
     if self.item:
@@ -473,7 +471,7 @@ class point( point_drawable, interactive, child):
     return self.arrow
 
   def _set_parent( self, par):
-    self.molecule = par
+    self.arrow = par
 
   parent = property( _get_parent, _set_parent, None,
                      "returns self.molecule")

@@ -1147,49 +1147,64 @@ class chem_paper( Canvas, object):
 
 
 
-  def scale_selected( self, ratio_x, ratio_y, scale_font=1):
+  def scale_selected( self, ratio_x, ratio_y, scale_font=1, fix_centers=0):
     top_levels, unique = self.selected_to_unique_top_levels()
     ratio = math.sqrt( ratio_x*ratio_y) # ratio for operations where x and y can't be distinguished (font size etc.)
-    tr = transform()
-    tr.set_scaling_xy( ratio_x, ratio_y)
-    for o in top_levels:
-      if o.object_type == 'molecule':
-        for i in o.atoms:
-          x, y = tr.transform_xy( i.x, i.y)
-          i.move_to( x, y)
-          if scale_font:
-            i.scale_font( ratio)
-          if i.show:
-            i.redraw()
-        for i in o.bonds:
-          i.bond_width *= ratio
-          i.redraw()
-      if o.object_type == 'arrow' or o.object_type == 'polygon':
-        for i in o.points:
-          x, y = tr.transform_xy( i.x, i.y)
-          i.move_to( x, y)
-        o.redraw()
-      if o.object_type == 'text':
-        x, y = tr.transform_xy( o.x, o.y)
-        o.move_to( x, y)
-        if scale_font:
-          o.scale_font( ratio)
-        o.redraw()
-      if o.object_type == 'plus':
-        x, y = tr.transform_xy( o.x, o.y)
-        o.move_to( x, y)
-        if scale_font:
-          o.scale_font( ratio)
-        o.redraw()
-      elif o.object_type in ('rect', 'oval'):
-        coords = tr.transform_4( o.coords)
-        o.resize( coords)
-        o.redraw()
-        o.unselect()
-        o.select()
+
+    if not fix_centers:
+      # we can use one transformation for all objects
+      tr = transform()
+      tr.set_scaling_xy( ratio_x, ratio_y)
+      for o in top_levels:
+        self.scale_object( o, tr, ratio, scale_font=scale_font)
+    else:
+      # we have to recalculate the transformation for every object
+      for o in top_levels:
+        bbox = o.bbox()
+        x0 = (bbox[0] + bbox[2])/2
+        y0 = (bbox[1] + bbox[3])/2
+        tr = transform()
+        tr.set_move( -x0, -y0)
+        tr.set_scaling_xy( ratio_x, ratio_y)
+        tr.set_move( x0, y0)
+        self.scale_object( o, tr, ratio, scale_font=scale_font)
+
+    # the final things
     if top_levels:
       self.add_bindings()
       self.start_new_undo_record()
+
+
+
+  def scale_object( self, o, tr, ratio, scale_font=1):
+    if o.object_type == 'molecule':
+      o.transform( tr)
+      if scale_font:
+        [i.scale_font( ratio) for i in o.atoms]
+        [i.redraw() for i in o.atoms if i.show]
+    if o.object_type == 'arrow' or o.object_type == 'polygon':
+      for i in o.points:
+        x, y = tr.transform_xy( i.x, i.y)
+        i.move_to( x, y)
+      o.redraw()
+    if o.object_type == 'text':
+      x, y = tr.transform_xy( o.x, o.y)
+      o.move_to( x, y)
+      if scale_font:
+        o.scale_font( ratio)
+      o.redraw()
+    if o.object_type == 'plus':
+      x, y = tr.transform_xy( o.x, o.y)
+      o.move_to( x, y)
+      if scale_font:
+        o.scale_font( ratio)
+      o.redraw()
+    elif o.object_type in ('rect', 'oval'):
+      coords = tr.transform_4( o.coords)
+      o.resize( coords)
+      o.redraw()
+      o.unselect()
+      o.select()
 
 
 

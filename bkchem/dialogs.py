@@ -44,7 +44,7 @@ class scale_dialog:
                                labelpos = 'w',
                                label_text=_("Scale X (in %):"),
                                entryfield_value = 100,
-                               entryfield_validate={ 'validator':'integer', 'min':1, 'max':1000},
+                               entryfield_validate={ 'validator':'integer', 'min':0, 'max':100000},
                                entry_width = 5,
                                entryfield_modifiedcommand = self._scalex_changed,
                                increment = 10,
@@ -55,7 +55,7 @@ class scale_dialog:
                                labelpos = 'w',
                                label_text=_("Scale Y (in %):"),
                                entryfield_value = 100,
-                               entryfield_validate={ 'validator':'integer', 'min':1, 'max':1000},
+                               entryfield_validate={ 'validator':'integer', 'min':0, 'max':100000},
                                entry_width = 5,
                                entryfield_modifiedcommand = self._scaley_changed,
                                increment = 10,
@@ -67,9 +67,25 @@ class scale_dialog:
                                                      text=_('Preserve aspect ratio?'),
                                                      variable = self.preserve_ratio,
                                                      command = self._preserve_ratio_changed)
-    self.preserve_ratio_entry.pack()
+    self.preserve_ratio_entry.pack( anchor="w")
+    self.preserve_ratio.set( 1)
+
+    self.preserve_centers = Tkinter.IntVar()
+    self.preserve_centers_entry = Tkinter.Checkbutton( self.dialog.interior(),
+                                                       text=_('Fix position of centers of objects?'),
+                                                       variable = self.preserve_centers)
+    self.preserve_centers_entry.pack( anchor="w")
+
+    self.scale_fonts = Tkinter.IntVar()
+    self.scale_fonts_entry = Tkinter.Checkbutton( self.dialog.interior(),
+                                                       text=_('Scale font sizes?'),
+                                                       variable = self.scale_fonts)
+    self.scale_fonts_entry.pack( anchor="w")
+    self.scale_fonts.set( 1)
+    
 
     self.dialog.activate()
+
 
   def done( self, button):
     """called on dialog exit"""

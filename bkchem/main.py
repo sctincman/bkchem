@@ -564,12 +564,12 @@ class BKchem( Tk):
       # de-highlighting of current tab
       try:
         i = self.papers.index( old_paper)
-        self.notebook.tab( i).configure( background=config.background_color)
+        self.notebook.tab( i).configure( background=config.background_color, fg="black")
       except:
         pass
       i = self.notebook.index( name)
       # highlighting of current tab
-      self.notebook.tab( i).configure( background="white")
+      self.notebook.tab( i).configure( background="#777777", fg="white")
       # the rest
       self.paper = self.papers[i]
       if hasattr( self, 'mode') and old_paper in self.papers:
@@ -876,7 +876,10 @@ class BKchem( Tk):
     dialog = dialogs.scale_dialog( self)
     if dialog.result:
       x, y = dialog.result
-      self.paper.scale_selected( x/100, y/100)
+      self.paper.scale_selected( x/100,
+                                 y/100,
+                                 fix_centers=dialog.preserve_centers.get(),
+                                 scale_font=dialog.scale_fonts.get())
 
 
     

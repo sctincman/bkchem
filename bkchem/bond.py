@@ -1165,6 +1165,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child,
       coords = self.paper.coords( i)
       tr_coords = tr.transform_xy_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
+    if self.selector:
+      self.unselect()
+      self.select()
     # we need to check if the sing of double bond width has not changed
     # this happens during 3d rotation
     if self.order == 2 and not self.center:
