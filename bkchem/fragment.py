@@ -31,6 +31,8 @@ class fragment( object):
     self.properties = {}  # this is the place for information about an particular fragment
     
 
+  # properties
+
   def _get_name( self):
     return self._name
 
@@ -56,3 +58,11 @@ class fragment( object):
         return False
     return True
   
+
+  def get_all_vertices( self):
+    vs = Set()
+    for e in self.edges:
+      vs |= Set( e.vertices)
+    return vs
+
+  vertices = property( get_all_vertices, None, None, "the vertices associated with fragment bonds")

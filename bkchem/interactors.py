@@ -303,10 +303,20 @@ def create_fragment_from_selected( paper):
 
   mol = top_levels[0]
   es = [e for e in paper.selected if e in mol.edges]
-  if mol.create_fragment( "fragment", es):
-    paper.app.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
-  else:
-    paper.app.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
+
+  # ask for name
+  dial = Pmw.PromptDialog( paper,
+                           title=_('Fragment name'),
+                           label_text=_('Enter fragment name:'),
+                           entryfield_labelpos = 'w',
+                           buttons=(_('OK'),_('Cancel')))
+  res = dial.activate()
+  if res == _('OK'):
+    if mol.create_fragment( dial.get(), es):
+      paper.app.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
+    else:
+      paper.app.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
+
 
 
 

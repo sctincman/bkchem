@@ -592,7 +592,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
 
   def create_fragment( self, name, edges):
     if self.defines_connected_subgraph_e( edges):
-      nf = fragment( self.paper.id_manager.generate_id( "fragment"), name=name)
+      nf = fragment( self.paper.id_manager.generate_id( "frag"), name=name)
       nf.edges = Set( edges)
       self.fragments.add( nf)
       return True
