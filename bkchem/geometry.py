@@ -30,9 +30,9 @@ def find_parallel( x1, y1, x2, y2, d):
   "returns tuple of coordinates for parallel abscissa in distance d"
   # following is here to ensure that signum of "d" clearly determines
   # the side of line on whitch the parallel is drawn  
-  if y2 < y1:
-    d = -d 
   if round( y2, 3) -round( y1, 3) != 0:
+    if y2 < y1:
+      d = -d 
     k = -(x2-x1)/(y2-y1)
     x = ( d + sqrt( k**2 +1)*x1)/ sqrt( k**2 +1)
     y = y1 + k*( x -x1)
