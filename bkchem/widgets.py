@@ -301,7 +301,7 @@ class FileSelectionEntry( Tkinter.Frame):
 
 
   def browse( self):
-    if type == "open":
+    if self.type == "open":
       a = tkFileDialog.askopenfilename( defaultextension = "",
                                         initialdir = os.path.dirname( self.value),
                                         title = _("Select the file"),
@@ -322,6 +322,9 @@ class FileSelectionEntry( Tkinter.Frame):
     self.entry.delete( 0, "end")
     self.entry.insert( 0, self.value)
 
+
+  def get( self):
+    return self.entry.get()
 
 
   

@@ -152,7 +152,7 @@ def check_validity( mols):
 
 def ask_inchi_program_path():
   path = Store.pm.get_preference( "inchi_program_path") or ""
-  dial = widgets.FileSelectionWithText( app,
+  dial = widgets.FileSelectionWithText( Store.app,
                                         title=_("The INChI program path"),
                                         prompt =_("Select the INChI program executable: "),
                                         value = path,

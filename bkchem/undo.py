@@ -38,7 +38,7 @@ __all__= ['undo_manager']
 class undo_manager:
   """class to process requests for undo tracking and undoing"""
 
-  MAX_RECORDS = 20
+  MAX_RECORDS = 50
   
   def __init__( self, paper):
     """well, init"""
@@ -79,7 +79,10 @@ class undo_manager:
   def clean( self):
     """removes all undo informations, does not start new undo record"""
     self._pos = -1
-    del self._records[:]
+    for record in self._records:
+      record.clean()
+    del self._records
+    self._records = []
 
 
   def mrproper( self):
@@ -122,6 +125,15 @@ class state_record:
     self.name = name
     self.stack = []
     self.record_state()
+
+
+  def clean( self):
+    del self.stack
+    del self.paper
+    del self.objects
+    del self.records
+    del self.name
+
 
   def record_state( self):
     """stores all necessary information about the system, so that its than able to

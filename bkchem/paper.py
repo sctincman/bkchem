@@ -56,6 +56,8 @@ import debug
 import oasa
 from external_data import external_data_manager
 from group import group
+from atom import atom
+from textatom import textatom
 import oasa
 import geometry
 from sets import Set
@@ -625,12 +627,43 @@ class chem_paper( Canvas, object):
 
   def mrproper( self):
     self.unselect_all()
-    
-    import parents
+
     for a in self.stack:
-      a.paper = None
+      if isinstance( a, parents.container):
+        for ch in a.children:
+          if hasattr( ch, 'id'):
+            Store.id_manager.unregister_id( ch.id, ch)
+
+          if hasattr( ch, "paper"):
+            try:
+              ch.paper = None
+            except:
+              pass
+          if hasattr( ch, "canvas"):
+            try:
+              ch.canvas = None
+            except:
+              pass
+          if hasattr( ch, "ftext") and ch.ftext:
+            ch.ftext.canvas = None
+            for i in ch.ftext.items:
+              i.paper = None
+
+      if isinstance( a, molecule):
+        for ch in a.children:
+          ch.molecule = None
+          if hasattr( ch, "group_graph"):
+            ch.group_graph = None
+
+          if isinstance( ch, atom) or isinstance( ch, textatom):
+            for m in ch.marks.values():
+              if m:
+                m.paper = None
+                m.atom = None
+
 
     self.clean_paper()
+    
     self.um.mrproper()
 
     del self.clipboard
@@ -647,12 +680,19 @@ class chem_paper( Canvas, object):
 
   def clean_paper( self):
     "removes all items from paper and deletes them from molecules and items"
+    self.unselect_all()
     self.delete( 'all')
     self.background = None
-    self.unselect_all()
     del self._id_2_object
     self._id_2_object = {}
-    del self.stack[:]
+
+    for obj in self.stack:
+      obj.paper = None
+      if hasattr( obj, 'id'):
+        Store.id_manager.unregister_id( obj.id, obj)
+        
+    del self.stack
+    self.stack = []
     self.um.clean()
     self.changes_made = 0
     

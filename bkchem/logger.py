@@ -21,6 +21,7 @@
 
 import tkMessageBox
 from singleton_store import Store
+import sys
 
 
 
@@ -69,7 +70,7 @@ class logger:
 
 
   def log_to_console( self, message, message_type="info", delay=4):
-    print self.type_to_text[ message_type]+":", message
+    print >> sys.stderr, self.type_to_text[ message_type]+":", message
 
 
     

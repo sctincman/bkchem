@@ -288,7 +288,7 @@ class BKchem( Tk):
     hacksMenu.add( 'command', label=_('Rings to separate tabs'), command=self.rings_to_separate_tabs)
     hacksMenu.add( 'command', label=_('Normalize aromatic double bonds'), command=self.normalize_aromatic_double_bonds)
     hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
-    hacksMenu.add( 'command', label=_('Update SVGs'), command=self.update_svgs_in_path)
+
 
 
     # PLUGIN MENU
@@ -411,7 +411,7 @@ class BKchem( Tk):
 
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
-    print "loaded plugins:", plugs
+    print >> sys.stderr, "loaded plugins:", plugs
 
 
 
@@ -588,7 +588,7 @@ class BKchem( Tk):
       self.notebook.tab( i).configure( background="#777777", fg="white")
       # the rest
       self.paper = self.papers[i]
-      if hasattr( self, 'mode') and old_paper in self.papers:
+      if hasattr( self, 'mode') and not type( self.mode) == StringType and old_paper in self.papers:
         # this is not true on startup and tab closing
         self.mode.on_paper_switch( old_paper, self.paper)
 
@@ -924,9 +924,12 @@ class BKchem( Tk):
     while self.papers:
       if not self.close_current_paper():
         return
-    if self.svg_dir:
-      Store.pm.add_preference( "default-dir", self.save_dir)
-    self.save_configuration()
+    if not self.in_batch_mode:
+      # we dont save configuration if we are in batch mode
+      # this leads to window having size 0x0 and similar problems
+      if self.svg_dir:
+        Store.pm.add_preference( "default-dir", self.save_dir)
+      self.save_configuration()
     self.quit()
 
 
@@ -1420,8 +1423,9 @@ Enter IChI:""")
     if opts[0][0] == "-b":
       plugin = opts[0][1]
 
-      the_globals = {'app': Store.app,
-                     'attrs': files}
+      the_globals = {'App': Store.app,
+                     'Args': files}
+
       execfile( plugin, the_globals)
 
 
