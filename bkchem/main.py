@@ -651,11 +651,15 @@ class BKchem( Tk):
                                       (_("All files"),"*")))
     else:
       a = file
+    if not a:
+      return None
     if replace or (self.paper.file_name['auto'] and not self.paper.changes_made):
       self.close_paper()
     p = self.add_new_paper( name=a)
-    self.paper.mode = self.mode # somehow the raise event does not work here
-    return self._load_CDML_file( a)
+    if p != 0:
+      self.paper.mode = self.mode # somehow the raise event does not work here
+      return self._load_CDML_file( a)
+    return 0
 
 
 
