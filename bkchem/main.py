@@ -26,7 +26,7 @@
 from Tkinter import *
 from paper import chem_paper
 import Pmw
-from xml_writer import SVG_writer, KIL_writer
+from xml_writer import SVG_writer
 from tkFileDialog import asksaveasfilename, askopenfilename
 import os
 import tkMessageBox
@@ -53,8 +53,11 @@ import plugins.plugin
 
 class BKchem( Tk):
 
+
   def __init__( self):
     Tk.__init__( self)
+
+
 
   def initialize( self):
     Pmw.initialise( self)
@@ -136,6 +139,7 @@ class BKchem( Tk):
     fileMenu.add( 'command', label=_('Save'), command = self.save_CDML, accelerator='(C-x C-s)')
     fileMenu.add( 'command', label=_('Save As...'), command = self.save_as_CDML, accelerator='(C-x C-w)')
     fileMenu.add( 'command', label=_('Load'), command = self.load_CDML, accelerator='(C-x C-f)')
+    fileMenu.add( 'command', label=_('Load to the same tab'), command = lambda : self.load_CDML( replace=1))
     fileMenu.add( 'separator')
     # export cascade
     export_menu = Menu( fileButton, tearoff=0)

@@ -51,6 +51,8 @@ class atom( meta_enabled):
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
 
+
+
   object_type = 'atom'
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color','font_size','font_family']
@@ -60,6 +62,8 @@ class atom( meta_enabled):
                        'font_size', 'charge', 'show_hydrogens', 'type', 'line_color', 'area_color')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
+
+
 
 
 
@@ -95,6 +99,9 @@ class atom( meta_enabled):
       self.read_package( package)
     else:
       self.set_name( 'C')
+
+
+
 
   def set_name( self, name, interpret=1, check_valency=1):
     # every time name is set the charge should be set to zero
@@ -146,6 +153,9 @@ class atom( meta_enabled):
       self.show_hydrogens = 0
       self.type = 'text'
 
+
+
+
   def get_text( self):
     if self.type in ('text', 'group'):
       return self.name
@@ -183,6 +193,9 @@ class atom( meta_enabled):
         return ret + ch
     elif self.type == 'chain':
       return PT.formula_dict( self.name).__str__( reverse=(self.pos=='center-last'))
+
+
+
 
   def get_ftext( self):
     if self.type == 'text':
@@ -228,12 +241,21 @@ class atom( meta_enabled):
   # properties
   #name = property( get_name, set_name)
 
+
+
+
   def set_molecule( self, molecule):
     self.molecule = molecule
+
+
+
 
   def set_xy( self, x, y):
     self.x = self.paper.any_to_px( x) #round( x, 2)
     self.y = self.paper.any_to_px( y) #round( y, 2)
+
+
+
 
   def decide_pos( self):
     as = self.molecule.atoms_bound_to( self)
@@ -247,6 +269,9 @@ class atom( meta_enabled):
       self.pos = 'center-last'
     else:
       self.pos = 'center-first'
+
+
+
 
   def draw( self):
     "draws atom with respect to its properties"
@@ -274,6 +299,9 @@ class atom( meta_enabled):
     [m.draw() for m in self.marks.itervalues() if m]
     self.paper.register_id( self.item, self)
 
+
+
+
   def redraw( self):
     self.update_font()
     # at first we delete everything...
@@ -292,6 +320,9 @@ class atom( meta_enabled):
     else:
       self.unselect()
       
+
+
+
   def focus( self):
     if self.show:
       self.paper.itemconfig( self.selector, fill='grey')
@@ -300,12 +331,18 @@ class atom( meta_enabled):
       self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags='helper_f')
       self.paper.lift( self.item)
 
+
+
+
   def unfocus( self):
     if self.show:
       self.paper.itemconfig( self.selector, fill=self.area_color)
     if self.focus_item:
       self.paper.delete( self.focus_item)
       self.focus_item = None
+
+
+
 
   def select( self):
     if self.show:
@@ -319,6 +356,9 @@ class atom( meta_enabled):
       self.paper.lower( self.selector)
     self._selected = 1
 
+
+
+
   def unselect( self):
     if self.show:
       self.paper.itemconfig( self.selector, outline='')
@@ -327,6 +367,9 @@ class atom( meta_enabled):
       self.paper.delete( self.selector)
       self.selector = None
     self._selected = 0
+
+
+
 
   def move( self, dx, dy, dont_move_marks=0):
     """moves object with his selector (when present)"""
@@ -342,20 +385,35 @@ class atom( meta_enabled):
         if self.marks[m]:
           self.marks[m].move( dx, dy)
 
+
+
+
   def move_to( self, x, y, dont_move_marks=0):
     dx = x - self.x
     dy = y - self.y
     #self.set_xy( x, y)
     self.move( dx, dy, dont_move_marks=dont_move_marks)
 
+
+
+
   def get_x( self):
     return self.x
+
+
+
 
   def get_y( self):
     return self.y
 
+
+
+
   def get_xy( self):
     return self.x, self.y
+
+
+
 
   def get_xyz( self, real=0):
     """returns atoms coordinates, default are screen coordinates, real!=0
@@ -367,9 +425,15 @@ class atom( meta_enabled):
     else:
       return self.x, self.y, self.z
 
+
+
+
   def round_coords( self, precision=0):
     self.x = round( self.x, precision)
     self.y = round( self.y, precision)
+
+
+
 
   def delete( self):
     for m in self.marks:
@@ -390,6 +454,9 @@ class atom( meta_enabled):
     if self.ftext:
       self.ftext.delete()
     return self
+
+
+
 
   def read_package( self, package):
     a = ['no','yes']
@@ -444,6 +511,9 @@ class atom( meta_enabled):
                           
 
 
+
+
+
   def get_package( self, doc):
     y = ['no','yes']
     on_off = ['off','on']
@@ -481,10 +551,16 @@ class atom( meta_enabled):
                                                             ('auto', str( int( o.auto)))))
     return a
 
+
+
+
   def get_cdml_id( self):
     if self.item:
       self._cdml_id = 'a'+str( self.item)
     return self._cdml_id
+
+
+
 
   def toggle_center( self, mode = 0):
     """toggles the centering of text between 'center-first' and 'center-last'(mode=0)
@@ -500,16 +576,28 @@ class atom( meta_enabled):
       self.pos = 'center-last'
     self.redraw()
 
+
+
+
   def update_font( self):
     self.font = tkFont.Font( family=self.font_family, size=self.font_size)
         
+
+
+
   def scale_font( self, ratio):
     """scales font of atom. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
 
+
+
+
   def get_valency( self):
     return self.molecule.get_atoms_valency( self)
+
+
+
 
   def get_free_valency( self):
     """returns free valency of atom."""
@@ -542,6 +630,9 @@ class atom( meta_enabled):
     # if unsuccessful return 0
     return 0
     
+
+
+
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
@@ -558,9 +649,15 @@ class atom( meta_enabled):
     elif self.type == 'chain':
       return PT.formula_dict( self.name)
 
+
+
+
   def atoms_bound_to( self):
     """just link to molecule.atoms_bound_to()"""
     return self.molecule.atoms_bound_to( self)
+
+
+
 
   def lift( self):
     for m in self.marks.itervalues():
@@ -573,6 +670,9 @@ class atom( meta_enabled):
     if self.item:
       self.paper.lift( self.item)
 
+
+
+
   def set_mark( self, mark='radical', toggle=1, angle='auto'):
     if mark in self.marks:
       if toggle:
@@ -584,6 +684,9 @@ class atom( meta_enabled):
       else:
         if not self.marks[ mark]:
           self.create_mark( mark=mark, angle=angle)
+
+
+
 
   def create_mark( self, mark='radical', angle='auto'):
     if self.show:
@@ -603,6 +706,9 @@ class atom( meta_enabled):
                                                auto=(angle=='auto'))
     self.marks[ mark].draw()
 
+
+
+
   def reposition_marks( self):
     for m in self.marks.itervalues():
       if m and m.auto:
@@ -613,12 +719,18 @@ class atom( meta_enabled):
         x, y = self.molecule.find_least_crowded_place_around_atom( self, range=dist)
         m.move_to( x, y)
 
+
+
+
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)
     self.move_to( x, y, dont_move_marks=1)
     for m in self.marks.values():
       if m:
         m.transform( tr)
+
+
+
 
   def update_after_valency_change( self):
     if self.type == 'element' and self.show_hydrogens:

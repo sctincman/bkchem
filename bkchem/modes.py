@@ -242,9 +242,6 @@ class edit_mode( mode):
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
     
     
-  def _debug_info_for_focused( self):
-    print self.focused
-    print self.focused.__dict__
     
   def mouse_down( self, event, modifiers = []):
     self._shift = 'shift' in modifiers

@@ -51,6 +51,10 @@ import CDML_versions
 
 class chem_paper( Canvas):
 
+
+
+
+
   def __init__( self, master = None, app = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)
     
@@ -103,6 +107,10 @@ class chem_paper( Canvas):
 
 
 
+
+
+
+
   def initialise( self):
     # template manager
     self.tm = self.app.tm
@@ -110,6 +118,10 @@ class chem_paper( Canvas):
     self.gm = self.app.gm
     # this is not needed but is purer to mention it here because it will be set by self.app
     self.mode = None
+
+
+
+
 
   def add_bindings( self):
     self.lower( self.background)
@@ -135,11 +147,19 @@ class chem_paper( Canvas):
 
   ## overall
   
+
+
+
+
   def _s_pressed1( self, event):
     "button 1 with shift"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_down( event, modifiers=['shift'])
+
+
+
+
 
   def _n_pressed1( self, event):
     "button 1 without anything"
@@ -147,11 +167,19 @@ class chem_paper( Canvas):
     event.y = self.canvasy( event.y)
     self.mode.mouse_down( event)
 
+
+
+
+
   def _release1( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_up( event)
     
+
+
+
+
   def _drag1( self, event):
     # unfortunately we need to simulate "enter" and "leave" in this way because
     # when B1 is down such events do not occur
@@ -176,23 +204,43 @@ class chem_paper( Canvas):
         self.__in = None
         self.mode.leave_object( event)
 
+
+
+
+
   def _n_pressed3( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_down3( event, modifiers=[])
+
+
+
+
 
   def _move( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     self.mode.mouse_move( event)
 
+
+
+
+
   def _enter( self, event):
     self.mode.clean_key_query()
+
+
+
+
 
   def _leave( self, event):
     self.mode.clean_key_query()
 
   # item bound methods
+
+
+
+
 
   def enter_item( self, event):
     event.x = self.canvasx( event.x)
@@ -205,6 +253,10 @@ class chem_paper( Canvas):
       self.__in = a
       self.mode.enter_object( self.__in, event)
 
+
+
+
+
   def leave_item( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
@@ -212,13 +264,25 @@ class chem_paper( Canvas):
       self.__in = None
       self.mode.leave_object( event)
 
+
+
+
+
   def key_pressed( self, event):
     self.mode.key_pressed( event)
+
+
+
+
 
   def key_released( self, event):
     self.mode.key_released( event)
 
   ## end of event bound methods
+
+
+
+
 
   def select( self, items):
     "adds an object to the list of other selected objects and calls their select() method"
@@ -233,6 +297,10 @@ class chem_paper( Canvas):
         self.selected.append( o)
         o.select()
 
+
+
+
+
   def unselect( self, items):
     "reverse of select()"
     for item in items:
@@ -242,9 +310,17 @@ class chem_paper( Canvas):
       except ValueError:
         pass #warn( 'trying to unselect not selected object '+id( item))
 
+
+
+
+
   def unselect_all( self):
     map( lambda o: o.unselect(), self.selected)
     self.selected = []
+
+
+
+
 
   def delete_selected( self):
     # ARROW
@@ -320,6 +396,10 @@ class chem_paper( Canvas):
 
 
       
+
+
+
+
   def bonds_to_update2( self):
     a = map( lambda o: o.molecule.atoms_bonds( o), filter( lambda o: o.object_type == 'atom', self.selected))
     if a:
@@ -327,6 +407,10 @@ class chem_paper( Canvas):
     else:
       return []
     
+
+
+
+
   def bonds_to_update3( self):
     a = []
     for o in self.selected:
@@ -335,6 +419,10 @@ class chem_paper( Canvas):
           if (b not in a):
             a.append( b)
     return a
+
+
+
+
 
   def bonds_to_update( self):
     a = []
@@ -347,6 +435,10 @@ class chem_paper( Canvas):
     # if bond is also selected then it moves with and should not be updated
     return [b for b in a if b not in self.selected]
 
+
+
+
+
   def atoms_to_update( self):
     a = []
     for o in self.selected:
@@ -357,12 +449,24 @@ class chem_paper( Canvas):
     else:
       return []
 
+
+
+
+
   def arrows_to_update( self):
     a = map( lambda o: o.arrow, filter( lambda p: p.object_type == 'point', self.selected))
     return misc.filter_unique( a)
 
+
+
+
+
   def signal_to_app( self, signal, time=4):
     self.app.update_status( signal, time=time)
+
+
+
+
 
   def read_package( self, CDML):
     original_version = CDML.getAttribute( 'version')
@@ -371,7 +475,11 @@ class chem_paper( Canvas):
       if not tkMessageBox.askokcancel( _('Proceed'),
 				       _('''This CDML document does not seem to have supported version.
 				       \n Do you want to proceed reading this document?'''),
-				       default = 'ok',
+				
+
+
+
+       default = 'ok',
 				       parent=self):
         return None
     # paper properties
@@ -418,14 +526,21 @@ class chem_paper( Canvas):
     if new_standard and old_standard != self.standard:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
 				       data.standards_differ_text,
-				       default = 'ok',
+				
+
+
+
+       default = 'ok',
 				       parent=self):
         self.standard = old_standard
-      print new_standard, old_standard, self.standard
     # finish
     
     self.add_bindings()
     self.um.start_new_record()
+
+
+
+
 
   def get_package( self):
     doc = dom.Document()
@@ -445,6 +560,10 @@ class chem_paper( Canvas):
       root.appendChild( o.get_package( doc))
     return doc
     
+
+
+
+
   def clean_paper( self):
     "removes all items from paper and deletes them from molecules and items"
     self.delete( 'all')
@@ -461,6 +580,10 @@ class chem_paper( Canvas):
     self.um.clean()
     self.changes_made = 0
     
+
+
+
+
   def del_container( self, container):
     container.delete()
     if container.object_type == 'molecule':
@@ -471,6 +594,10 @@ class chem_paper( Canvas):
       self.pluses.remove( container)
     elif container.object_type == 'text':
       self.texts.remove( container)
+
+
+
+
 
   def handle_overlap( self):
     "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
@@ -512,6 +639,10 @@ class chem_paper( Canvas):
       self.signal_to_app( _('concatenated overlaping atoms'))
     #print 5, time.time() - ttt
       
+
+
+
+
   def set_name_to_selected( self, name, interpret=1):
     """sets name to all selected atoms and texts,
     also records it in an undo !!!"""
@@ -528,11 +659,23 @@ class chem_paper( Canvas):
     if self.selected:
       self.start_new_undo_record()
 
+
+
+
+
   def take_focus( self, event):
     self.focus_set()
 
+
+
+
+
   def register_id( self, id, object):
     self._id_2_object[ id] = object
+
+
+
+
 
   def unregister_id( self, id):
     try:
@@ -540,15 +683,27 @@ class chem_paper( Canvas):
     except KeyError:
       warn( 'trying to unregister not registered id', UserWarning, 2)
 
+
+
+
+
   def id_to_object( self, id):
     try:
       return self._id_2_object[ id]
     except KeyError:
       return None
 
+
+
+
+
   def is_registered_object( self, o):
     """has this object a registered id?"""
     return o in self._id_2_object.values()
+
+
+
+
 
   def new_molecule( self):
     mol = molecule( self)
@@ -556,9 +711,17 @@ class chem_paper( Canvas):
     self.stack.append( mol)
     return mol
 
+
+
+
+
   def add_molecule( self, mol):
     self.molecules.append( mol)
     self.stack.append( mol)
+
+
+
+
 
   def new_arrow( self, points=[], spline=0):
     arr = classes.arrow( self, points=points, spline=spline)
@@ -567,6 +730,10 @@ class chem_paper( Canvas):
     arr.draw()
     return arr
 
+
+
+
+
   def new_plus( self, x, y):
     pl = classes.plus( self, xy = (x,y))
     self.pluses.append( pl)
@@ -574,11 +741,19 @@ class chem_paper( Canvas):
     pl.draw()
     return pl
 
+
+
+
+
   def new_text( self, x, y, text=''):
     txt = classes.text( self, xy=(x,y), text=text)
     self.texts.append( txt)
     self.stack.append( txt)
     return txt
+
+
+
+
 
   def new_rect( self, coords):
     rec = graphics.rect( self, coords=coords)
@@ -586,11 +761,19 @@ class chem_paper( Canvas):
     self.stack.append( rec)
     return rec
 
+
+
+
+
   def new_oval( self, coords):
     ovl = graphics.oval( self, coords=coords)
     self.vectors.append( ovl)
     self.stack.append( ovl)
     return ovl
+
+
+
+
 
   def new_square( self, coords):
     rec = graphics.square( self, coords=coords)
@@ -598,17 +781,29 @@ class chem_paper( Canvas):
     self.stack.append( rec)
     return rec
 
+
+
+
+
   def new_circle( self, coords):
     ovl = graphics.circle( self, coords=coords)
     self.vectors.append( ovl)
     self.stack.append( ovl)
     return ovl
 
+
+
+
+
   def new_polygon( self, coords):
     p = graphics.polygon( self, coords=coords)
     self.stack.append( p)
     self.vectors.append( p)
     return p
+
+
+
+
 
   def list_bbox( self, items):
     """extension of Canvas.bbox to provide support for lists of items"""
@@ -618,6 +813,10 @@ class chem_paper( Canvas):
     ret = self.bbox( 'bbox')
     self.dtag( 'bbox', 'bbox')
     return ret
+
+
+
+
 
   def selected_to_clipboard( self, delete_afterwards=0):
     if self.selected:
@@ -649,6 +848,10 @@ class chem_paper( Canvas):
         self.signal_to_app( _("copied %s object(s) to clipboard") % str( len( cp)))
 
 
+
+
+
+
   def paste_clipboard( self, xy):
     """pastes items from clipboard to position xy"""
     clipboard = self.app.get_clipboard()
@@ -677,6 +880,10 @@ class chem_paper( Canvas):
       self.handle_overlap()
       self.start_new_undo_record()
       
+
+
+
+
   def add_object_from_package( self, package):
     if package.nodeName == 'molecule':
       o = molecule( self, package=package)
@@ -711,6 +918,10 @@ class chem_paper( Canvas):
       self.stack.append( o)
     return o
     
+
+
+
+
   def align_selected( self, mode):
     """aligns selected items according to mode - t=top, b=bottom,
     l=left, r=right, h=horizontal center, v=vertical center"""
@@ -778,10 +989,18 @@ class chem_paper( Canvas):
         to_align[i].move( 0, y-ys[i])
     self.start_new_undo_record()
 
+
+
+
+
   def toggle_center_for_selected( self):
     for o in self.selected:
       if o.object_type == 'atom' and o.show:
         o.toggle_center()
+
+
+
+
 
   def selected_to_unique_containers( self):
     """maps all items in self.selected to their containers (atoms->molecule etc.),
@@ -807,6 +1026,10 @@ class chem_paper( Canvas):
           unique = 0
     return (filtrate, unique)
           
+
+
+
+
   def undo( self):
     self.unselect_all()
     i = self.um.undo()
@@ -816,6 +1039,10 @@ class chem_paper( Canvas):
     else:
       self.signal_to_app( _("no further undo"))
     
+
+
+
+
   def redo( self):
     self.unselect_all()
     i = self.um.redo()
@@ -825,6 +1052,10 @@ class chem_paper( Canvas):
     else:
       self.signal_to_app( _("no further redo"))
     
+
+
+
+
   def scale_selected( self, ratio_x, ratio_y, scale_font=1):
     containers, unique = self.selected_to_unique_containers()
     ratio = math.sqrt( ratio_x*ratio_y) # ratio for operations where x and y can't be distinguished (font size etc.)
@@ -869,8 +1100,16 @@ class chem_paper( Canvas):
       self.add_bindings()
       self.start_new_undo_record()
 
+
+
+
+
   def get_all_containers( self):
     return self.molecules + self.arrows + self.pluses + self.texts + self.vectors
+
+
+
+
 
   def selected_to_real_clipboard_as_SVG( self):
     """exports selected containers as SVG to system clipboard"""
@@ -881,10 +1120,18 @@ class chem_paper( Canvas):
     self.clipboard_append( exporter.get_nicely_formated_document())
     self.signal_to_app( _("selected containers were exported to clipboard in SVG"))
 
+
+
+
+
   def start_new_undo_record( self, name=''):
     if not self.changes_made:
       self.changes_made = 1
     self.um.start_new_record( name=name)
+
+
+
+
 
   def display_weight_of_selected( self):
     s_mols = [m for m in self.selected_to_unique_containers()[0] if m.object_type == 'molecule']
@@ -892,6 +1139,10 @@ class chem_paper( Canvas):
     for m in s_mols:
       w += m.get_formula_dict().get_molecular_weight()
     self.app.update_status( str( w))
+
+
+
+
 
   def display_info_on_selected( self):
     s_mols = [m for m in self.selected_to_unique_containers()[0] if m.object_type == 'molecule']
@@ -932,6 +1183,10 @@ class chem_paper( Canvas):
     dialog.activate()
 
 
+
+
+
+
   def check_chemistry_of_selected( self):
     import validator
     val = validator.validator()
@@ -948,11 +1203,19 @@ class chem_paper( Canvas):
     dialog.activate()
 
 
+
+
+
+
   def select_all( self):
     self.unselect_all()
     self.select( [o for o in map( self.id_to_object, self.find_all()) if o and o.object_type != 'arrow']) 
     self.add_bindings()
     
+
+
+
+
   def set_viewport( self, view=(0,0,640,480)):
     x1, y1, x2, y2 = view
     self._view = tuple( view)
@@ -968,6 +1231,10 @@ class chem_paper( Canvas):
     self._screen2real.set_scaling_xy( ratiox, ratioy)
     self._screen2real.set_move( x1, y1)
   
+
+
+
+
   def screen_to_real_coords( self, coords):
     """transforms set of x,y coordinates to real coordinates, input list must have even length"""
     if len( coords) % 2:
@@ -976,6 +1243,10 @@ class chem_paper( Canvas):
     for i in range( 0, len( coords), 2):
       out.extend( self._screen2real.transform_xy( coords[i], coords[i+1]))
     return out
+
+
+
+
 
   def real_to_screen_coords( self, coords):
     """transforms set of x,y coordinates to screen coordinates, input list must have even length"""
@@ -986,11 +1257,23 @@ class chem_paper( Canvas):
       out.extend( self._real2screen.transform_xy( coords[i], coords[i+1]))
     return out
 
+
+
+
+
   def screen_to_real_ratio( self):
     return 1.0/self._ratio
 
+
+
+
+
   def real_to_screen_ratio( self):
     return self._ratio
+
+
+
+
 
   def expand_groups( self, selected=1):
     """expands groups, if selected==1 only for selected, otherwise for all"""
@@ -1007,6 +1290,10 @@ class chem_paper( Canvas):
     self.add_bindings()
     self.start_new_undo_record()
 
+
+
+
+
   def lift_selected_to_top( self):
     os = self.selected_to_unique_containers()[0]
     for o in os:
@@ -1016,6 +1303,10 @@ class chem_paper( Canvas):
     self.add_bindings()
     self.start_new_undo_record()
 
+
+
+
+
   def lower_selected_to_bottom( self):
     os = self.selected_to_unique_containers()[0]
     for o in os:
@@ -1024,6 +1315,10 @@ class chem_paper( Canvas):
     self.signal_to_app( _("selected items were put back"))
     self.add_bindings()
     self.start_new_undo_record()
+
+
+
+
 
   def swap_selected_on_stack( self):
     os = self.selected_to_unique_containers()[0]
@@ -1035,16 +1330,28 @@ class chem_paper( Canvas):
     self.add_bindings()
     self.start_new_undo_record()
 
+
+
+
+
   def _open_debug_console( self):
     m = self.mode
     for i in m.__dict__:
       print i, ' : ', m.__dict__[i]
 
 
+
+
+
+
   def any_color_to_rgb_string( self, color):
     r, g, b = map( lambda x: (x < 256 and x) or (x >= 256 and x//256),  self.winfo_rgb( color))
     return "#%02x%02x%02x" % (r,g,b)
   
+
+
+
+
 
   def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None):
     if all:
@@ -1075,6 +1382,10 @@ class chem_paper( Canvas):
     self._paper_properties['crop_svg'] = crop_svg or self.standard.paper_crop_svg
 
 
+
+
+
+
   def get_paper_property( self, name):
     if name in self._paper_properties:
       return self._paper_properties[ name]
@@ -1082,7 +1393,7 @@ class chem_paper( Canvas):
       return None
 
     
-##   def coords( self, item, *args, **keyargs):
+## def coords( self, item, *args, **keyargs):
 ##     if 'unit' in keyargs:
 ##       u = keyargs['unit']
 ##       if u == 'cm':
@@ -1095,17 +1406,33 @@ class chem_paper( Canvas):
 ##     else:
 ##       return Canvas.coords( self, item)
 
+
+
+
+
   def px_to_cm( self, px):
     """transforms coord from px to cm"""
     return self.px_to_unit( px, unit='cm')
+
+
+
+
 
   def cm_to_px( self, cm):
     """transforms coord from cm to px"""
     return self.winfo_fpixels( '%fm' % (cm*10))
 
+
+
+
+
   def mm_to_px( self, mm):
     """transforms coord from mm to px"""
     return self.winfo_fpixels( '%fm' % mm)
+
+
+
+
 
   def read_xml_point( self, point):
     x = point.getAttribute( 'x')
@@ -1113,6 +1440,10 @@ class chem_paper( Canvas):
     z = point.getAttribute( 'z')
     return map( self.any_to_px, (x,y,z))
     
+
+
+
+
   def any_to_px( self, xyz):
     if type( xyz) == types.TupleType or type( xyz) == types.ListType:
       return [self.any_to_px( i) for i in xyz]
@@ -1125,6 +1456,10 @@ class chem_paper( Canvas):
       if au == 'px':
         return a
     return a
+
+
+
+
 
   def px_to_unit( self, xyz, unit='cm', round_to=3):
     # handle sets of values
@@ -1150,6 +1485,10 @@ class chem_paper( Canvas):
       return round( xyz/dots_per_unit, round_to)
   
     
+
+
+
+
   def px_to_text_with_unit( self, xyz, unit='cm', round_to=3):
     # handle sets of values
     if type( xyz) == types.TupleType or type( xyz) == types.ListType:    
@@ -1160,6 +1499,10 @@ class chem_paper( Canvas):
     else:
       return ('%.'+str( round_to)+'f%s') % (self.px_to_unit( xyz, unit=unit, round_to=round_to), unit)
     
+
+
+
+
   def read_standard_from_dom( self, d):
     std = dom_extensions.getFirstChildNamed( d, 'standard')
     if std:
@@ -1167,6 +1510,10 @@ class chem_paper( Canvas):
       st.read_package( std)
       return st
     return None
+
+
+
+
 
   def apply_current_standard( self, objects=[], old_standard=None, template_mode=0):
     """if no objects are given all are used, if old_standard is given only the values
@@ -1189,6 +1536,10 @@ class chem_paper( Canvas):
         to_redraw.append( m)
     return to_redraw
           
+
+
+
+
   def get_personal_standard( self):
     name = os_support.get_config_filename( 'standard.cdml', level="personal", mode="r")
     if name:
@@ -1198,6 +1549,10 @@ class chem_paper( Canvas):
         return classes.standard()
       return self.read_standard_from_dom( cdml)
     return classes.standard()
+
+
+
+
 
   def save_personal_standard( self, st):
     name = os_support.get_config_filename( 'standard.cdml', level="personal", mode="w")
@@ -1221,6 +1576,10 @@ class chem_paper( Canvas):
       f.close()
       return name
     return 0
+
+
+
+
 
 
   def swap_sides_of_selected( self, mode="vertical"):
@@ -1267,6 +1626,10 @@ class chem_paper( Canvas):
     self.add_bindings()
     self.start_new_undo_record()
 
+
+
+
+
   def add_new_container( self, o):
     if o.object_type == 'plus':
       self.pluses.append( o)
@@ -1283,6 +1646,10 @@ class chem_paper( Canvas):
       return
     self.stack.append( o)
 
+
+
+
+
   def flush_first_selected_mol_to_graph_file( self):
     mols, u = self.selected_to_unique_containers()
     for m in mols:
@@ -1290,12 +1657,20 @@ class chem_paper( Canvas):
         m.flush_graph_to_file()
         return
     
+
+
+
+
   def config_selected( self):
     if self.selected:
       dialog = dialogs.config_dialog( self.app, self.selected[:])
       if dialog.changes_made:
         self.start_new_undo_record()
       self.add_bindings()
+
+
+
+
 
   def get_base_name( self):
     return os.path.splitext( self.file_name['name'])[0]
