@@ -4,6 +4,7 @@ from distutils.core import setup
 import glob
 import os
 import sys
+import operator
 try:
   import py2exe
 except:
@@ -17,9 +18,12 @@ if os.name != 'posix':
   sys.path.insert( 0, 'bkchem')
 
 
+apidocs = [(path, map( os.path.join, len( filenames)*[path], filenames)) for (path, dirnames, filenames) in os.walk( 'doc/api')]
+
+
 set = setup(
   name = 'bkchem',
-  version = '0.9.0-pre1',
+  version = '0.9.0-pre2',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
@@ -34,14 +38,16 @@ set = setup(
                ('share/bkchem/images', ['images/logo.ppm']),
                ('share/bkchem/pixmaps', glob.glob( 'pixmaps/*.gif')),
                ('share/bkchem/dtd', glob.glob( 'dtd/*.dtd') + glob.glob( 'dtd/*.xsd')),
-               ('share/doc/bkchem', glob.glob( 'doc/*.xml') + ['README', 'RELEASE', 'INSTALL', 'INSTALL.binary', 'progress.log']),
+               ('share/doc/bkchem', glob.glob( 'doc/*.xml') + glob.glob( 'doc/*.html') + ['README', 'RELEASE', 'INSTALL', 'INSTALL.binary', 'progress.log']),
                ('share/doc/bkchem/ps', glob.glob( 'doc/ps/*')),
                ('share/doc/bkchem/pdf', glob.glob( 'doc/pdf/*')),
                ('share/doc/bkchem/html', glob.glob( 'doc/html/*')),
+               ('share/doc/bkchem/scripts', glob.glob( 'doc/scripts/*')),
+               ('share/doc/bkchem/img', glob.glob( 'doc/img/*')),
                ('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo']),
                ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo']),
                ('share/locale/fr/LC_MESSAGES', ['locale/fr/LC_MESSAGES/BKchem.mo'])
-               ],
+               ] + apidocs,
   windows=['bkchem/bkchem.py','win_inst.py'],
   options = {"py2exe": {"packages": ["encodings"]}}
   )
@@ -83,7 +89,7 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
 ##   file.write( "export BKCHEM_PIXMAP_PATH=%s\n" % os.path.join( data_dir, "share/bkchem/pixmaps"))
 ##   file.write( "export BKCHEM_IMAGE_PATH=%s\n" % os.path.join( data_dir, "share/bkchem/images"))
 ##   file.write( "export BKCHEM_PLUGIN_PATH=%s\n" % os.path.join( py_dir, "bkchem/plugins"))
-  file.write( "python %s $1\n" % os.path.join( py_dir, "bkchem", "bkchem.py"))
+  file.write( 'python %s "$@"\n' % os.path.join( py_dir, "bkchem", "bkchem.py"))
   file.close()
   print "file %s created" % exec_name
   try:

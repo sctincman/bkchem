@@ -56,7 +56,7 @@ class standard:
     self.line_color = "#000"
     self.area_color = '#ffffff'
     # bond
-    self.bond_length = '1cm'
+    self.bond_length = '0.7cm'
     self.bond_width = '6px'
     self.wedge_width = '5px'
     self.double_length_ratio = 0.75
@@ -827,6 +827,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def get_text( self):
     return self.xml_text
+
+  text = property( get_text, set_text, None, "alias for xml_text")
 
 
 

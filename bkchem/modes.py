@@ -967,14 +967,17 @@ class template_mode( edit_mode):
   def __init__( self, app):
     edit_mode.__init__( self, app)
     self.name = _('template')
-    self.submodes = [self.app.tm.get_template_names()] #+['userdefined']]
-    self.submodes_names = [self.app.tm.get_template_names()] #+[_('user defined')]]
+    self.submodes = [self.app.tm.get_template_names()]
+    self.submodes_names = [self.app.tm.get_template_names()]
     self.submode = [0]
-    self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
+    self.register_key_sequence( 'C-t', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
     self.template_manager = self.app.tm
     
   def mouse_click( self, event):
+    if self.submodes == [[]]:
+      self.app.update_status( _("No template is available"))
+      return 
     self.app.paper.unselect_all()
     if not self.focused:
       t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=self.app.paper)
@@ -1035,7 +1038,7 @@ class template_mode( edit_mode):
       atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
       coords = [a.get_xy() for a in atms]
       line = self.focused.atom1.get_xy() + self.focused.atom2.get_xy()
-      if reduce( operator.add, [geometry.on_which_side_is_point( line, xy) for xy in coords]) > 0:
+      if reduce( operator.add, [geometry.on_which_side_is_point( line, xy) for xy in coords], 0) > 0:
         self.focused.molecule.t_bond_first = self.focused.atom1
         self.focused.molecule.t_bond_second = self.focused.atom2
       else:
@@ -1746,7 +1749,7 @@ class reaction_mode( basic_mode):
 class user_template_mode( template_mode):
 
   def __init__( self, app):
-    edit_mode.__init__( self, app)
+    template_mode.__init__( self, app)
     self.name = _('users templates')
     self.submodes = [self.app.utm.get_template_names()]
     self.submodes_names = [self.app.utm.get_template_names()]

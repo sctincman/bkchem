@@ -87,7 +87,7 @@ def get_config_filename( name, level="global", mode="r"):
       if os.access( dir, os.W_OK):
         return os.path.join( dir, name)
       else:
-        return os.path.join( dir, name)
+        return None
     elif mode == "r":
       path = os.path.join( dir, name)
       if os.access( path, os.R_OK):
@@ -98,12 +98,43 @@ def get_config_filename( name, level="global", mode="r"):
 
 
 def get_local_templates():
-  dir = os.getenv( 'HOME') or None
-  if dir:
-    dir = os.path.join( dir, '.bkchem/templates')
-    if os.path.isdir( dir):
-      return [os.path.join( dir, d) for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')] 
+  dir = get_local_templates_path()
+  if os.path.isdir( dir):
+    return [os.path.join( dir, d) for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')] 
   return []
+
+
+def get_personal_config_directory():
+  dir = os.getenv( 'HOME') or '../'
+  dir = os.path.join( dir, '.bkchem')
+  return dir
+  
+
+
+def create_personal_config_directory( path=""):
+  if not path:
+    dir = get_personal_config_directory()
+  else:
+    dir = os.path.join( get_personal_config_directory(), path)
+  if dir:
+    if not os.path.isdir( dir):
+      try:
+        os.mkdir( dir)
+      except:
+        return None
+    if os.access( dir, os.W_OK):
+      return dir
+    else:
+      return None
+  return None
+
+
+
+
+def get_local_templates_path():
+  return os.path.join( get_personal_config_directory(), 'templates')
+  
+
 
 
 def get_module_path():
@@ -113,8 +144,9 @@ def get_module_path():
 
 def get_opened_config_file( name, level="global", mode="r"):
   fname = get_config_filename( name, level=level, mode=mode)
-  f = file( fname, mode=mode)
-  return f
+  if fname:
+    f = file( fname, mode=mode)
+    return f
 
 
 

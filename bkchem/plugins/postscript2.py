@@ -32,6 +32,6 @@ class ps_exporter( piddle_exporter):
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PostScript"
+name = "PostScript (new)"
 extensions = [".ps"]
 exporter = ps_exporter

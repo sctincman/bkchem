@@ -93,10 +93,10 @@ class BKchem( Tk):
 
     # edit pool
     self.editPool = editPool( self, self.main_frame, width=60)
-    self.editPool.pack( anchor=W)
+    self.editPool.grid( row=1, sticky="wens")
 
     # main drawing part packing
-    self.notebook.pack( fill='both', expand=1)
+    self.notebook.grid( row=4, sticky="wens")
     for p in self.papers:
       p.initialise()
     self.notebook.setnaturalsize()
@@ -135,7 +135,7 @@ class BKchem( Tk):
 
 
     # main drawing part packing
-    self.notebook.pack( fill='both', expand=1)
+    self.notebook.grid( row=4, sticky="wens")
     for p in self.papers:
       p.initialise()
     #self.notebook.setnaturalsize()
@@ -155,7 +155,7 @@ class BKchem( Tk):
   def init_menu( self):
     # defining menu
     menu = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
-    menu.pack( fill = X)
+    menu.grid( row=0, sticky="we")
 
     helpButton = Menubutton( menu, text=_('Help'))
     helpButton.pack( side = RIGHT)
@@ -172,6 +172,7 @@ class BKchem( Tk):
     fileMenu.add( 'command', label=_('New'), command = self.add_new_paper, accelerator='(C-x C-n)')
     fileMenu.add( 'command', label=_('Save'), command = self.save_CDML, accelerator='(C-x C-s)')
     fileMenu.add( 'command', label=_('Save As...'), command = self.save_as_CDML, accelerator='(C-x C-w)')
+    fileMenu.add( 'command', label=_('Save As Template'), command = self.save_as_template)
     fileMenu.add( 'command', label=_('Load'), command = self.load_CDML, accelerator='(C-x C-f)')
     fileMenu.add( 'command', label=_('Load to the same tab'), command = lambda : self.load_CDML( replace=1))
     fileMenu.add( 'separator')
@@ -334,6 +335,8 @@ class BKchem( Tk):
     self.balloon = Pmw.Balloon( self)
     self.main_frame = Frame( self)
     self.main_frame.pack( fill='both', expand=1)
+    self.main_frame.rowconfigure( 4, weight=1)
+    self.main_frame.columnconfigure( 0, weight=1)
 
     self.plugins = {}
     if plugins.__all__:
@@ -349,7 +352,10 @@ class BKchem( Tk):
 
   def init_plugins_menu( self):
     # PLUGINS
-    for plugin in self.plugins.itervalues():
+    names = self.plugins.keys()
+    names.sort()
+    for name in names:
+      plugin = self.plugins[ name]
       if ('importer' in  plugin.__dict__) and plugin.importer:
         self.import_menu.add( 'command',
                               label=plugin.name,
@@ -418,7 +424,7 @@ class BKchem( Tk):
   def init_mode_buttons( self):
     # mode selection panel     
     radioFrame = Frame( self.main_frame)
-    radioFrame.pack( fill=X)
+    radioFrame.grid( row=2, sticky='we')
     self.radiobuttons = Pmw.RadioSelect(radioFrame,
                                         buttontype = 'button',
                                         selectmode = 'single',
@@ -441,7 +447,7 @@ class BKchem( Tk):
         self.radiobuttons.add( m, text=self.modes[ m].name, borderwidth=config.border_width)
     # sub-mode support
     self.subFrame = Frame( self.main_frame)
-    self.subFrame.pack( fill=X)
+    self.subFrame.grid( row=3, sticky='we')
     self.subbuttons = []
     # the remaining of sub modes support is now in self.change_mode
 
@@ -451,7 +457,7 @@ class BKchem( Tk):
 
   def init_status_bar( self):
     status = Label( self.main_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.stat, anchor='w', height=2, justify='l')
-    status.pack( fill=X, side='bottom')
+    status.grid( row=5, sticky="we")
 
 
 
@@ -563,8 +569,6 @@ class BKchem( Tk):
     page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
     paper = chem_paper( page,
                         app=self,
-                        width=640,
-                        height=480,
                         scrollregion=(0,0,'210m','297m'),
                         background="grey",
                         closeenough=3,
@@ -629,7 +633,7 @@ class BKchem( Tk):
 
 
 
-  def save_CDML( self, name=None):
+  def save_CDML( self, name=None, update_default_dir=1):
     """saves content of self.paper (recent paper) under its filename,
     if the filename was automaticaly given by bkchem it will call save_as_CDML
     in order to ask for the name"""
@@ -639,9 +643,9 @@ class BKchem( Tk):
         return
       else:
         a = os.path.join( self.paper.file_name['dir'], self.paper.file_name['name'])
-        return self._save_according_to_extension( a)
+        return self._save_according_to_extension( a, update_default_dir=update_default_dir)
     else:
-      return self._save_according_to_extension( name)
+      return self._save_according_to_extension( name, update_default_dir=update_default_dir)
 
 
   def save_as_CDML( self):
@@ -672,9 +676,11 @@ class BKchem( Tk):
     
 
 
-  def _save_according_to_extension( self, filename):
+  def _save_according_to_extension( self, filename, update_default_dir=1):
     """decides the format from the file extension and saves self.paper in it"""
-    self.save_dir, save_file = os.path.split( filename)
+    save_dir, save_file = os.path.split( filename)
+    if update_default_dir:
+      self.save_dir = save_dir
     ext = os.path.splitext( filename)[1]
     if ext == '.cdgz':
       type = _('gzipped CDML')
@@ -689,7 +695,7 @@ class BKchem( Tk):
       type = _('CD-SVG')
       success = export.export_CD_SVG( self.paper, filename, gzipped=0)
     if success:
-      self.update_status( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( self.save_dir, save_file))))
+      self.update_status( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( save_dir, save_file))))
       self.paper.changes_made = 0
       return 1
     else:
@@ -941,28 +947,33 @@ class BKchem( Tk):
         self.paper.start_new_undo_record()
       elif cdml:
         self.paper.read_package( doc)
+
       self.update_status( _("loaded file: ")+filename)
 
 
 
-  def plugin_export( self, pl_id):
+  def plugin_export( self, pl_id, filename=None):
     plugin = self.plugins[ pl_id]
     exporter = plugin.exporter( self.paper)
     if not exporter.on_begin():
       return
-    file_name = self.paper.get_base_name()
-    types = []
-    if 'extensions' in plugin.__dict__ and plugin.extensions:
-      file_name += plugin.extensions[0]
-      for e in plugin.extensions:
-        types.append( (plugin.name+" "+_("file"), e))
-    types.append( (_("All files"),"*"))
-    a = asksaveasfilename( defaultextension = types[0][1],
-                           initialdir = self.save_dir,
-                           initialfile = file_name,
-                           title = _("Export")+" "+plugin.name,
-                           parent = self,
-                           filetypes=types)
+    if not filename:
+      file_name = self.paper.get_base_name()
+      types = []
+      if 'extensions' in plugin.__dict__ and plugin.extensions:
+        file_name += plugin.extensions[0]
+        for e in plugin.extensions:
+          types.append( (plugin.name+" "+_("file"), e))
+      types.append( (_("All files"),"*"))
+
+      a = asksaveasfilename( defaultextension = types[0][1],
+                             initialdir = self.save_dir,
+                             initialfile = file_name,
+                             title = _("Export")+" "+plugin.name,
+                             parent = self,
+                             filetypes=types)
+    else:
+      a = filename
     if a != '':
       if not config.debug:
         try:
@@ -1285,8 +1296,9 @@ Enter IChI:""")
   def save_configuration( self):
     self.pm.add_preference( 'geometry', self.winfo_geometry())
     f = os_support.get_opened_config_file( "prefs.xml", level="personal", mode="w")
-    self.pm.write_to_file( f)
-    f.close()
+    if f:
+      self.pm.write_to_file( f)
+      f.close()
 
 
   def run_plugin( self, name):
@@ -1294,6 +1306,13 @@ Enter IChI:""")
     self.paper.add_bindings()
     self.paper.start_new_undo_record()
 
+
+
+  def save_as_template( self):
+    name = interactors.save_as_template( self.paper)
+    if name:
+      self.save_CDML( name=name, update_default_dir=0)
+      self.update_status( _("The file was saved as a template %s") % name)
 
 
   # HACKS CALLBACKS

@@ -25,7 +25,7 @@ import os_support
 import Tkinter
 
 
-__all__ = ['images', 'splash_image']
+__all__ = ['images']
 
 
 class images_dict( dict):

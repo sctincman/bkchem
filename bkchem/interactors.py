@@ -27,6 +27,8 @@ import tkMessageBox
 import validator
 import widgets
 import xml
+import os_support
+import os
 
 
 def ask_name_for_selected( paper):
@@ -204,3 +206,88 @@ def ask_display_form_for_selected( paper):
     m.display_form = df
   paper.signal_to_app( _('Display form %s was set to molecule(s)') % df)
   paper.start_new_undo_record()
+
+
+
+
+
+def save_as_template( paper):
+  missing = {}
+  for mol in paper.molecules:
+    if not mol.t_atom:
+      missing[ 'atom'] = missing.get( 'atom', 0) + 1
+    if not mol.t_bond_first:
+      missing[ 'bond'] = missing.get( 'bond', 0) + 1
+    if not mol.name:
+      missing[ 'name'] = missing.get( 'name', 0) + 1
+
+  errors = missing.has_key( 'atom') or missing.has_key('name')
+
+  if missing:
+    dialog = Pmw.TextDialog( paper, title=_("Template summary"))
+    dialog.withdraw()
+
+    if errors:
+      dialog.insert( 'end', _("Errors"), 'headline')
+      dialog.insert( 'end', "\n")
+    if missing.has_key( 'atom'):
+      dialog.insert( 'end', _("%d molecules have no template atom specified") % missing['atom'])
+      dialog.insert( 'end', "\n")
+    if missing.has_key('name'):
+      dialog.insert( 'end', _("%d molecules have no name specified") % missing['name'])
+      dialog.insert( 'end', "\n")
+    if missing.has_key( 'bond'):
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Warnings"), 'headline')
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("%d molecules have no template bond specified") % missing['bond'])
+      dialog.insert( 'end', "\n")
+
+    if errors:
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Please correct the above errors first"), 'headline')
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("A tutorial on how to prepare a template can be found in the file doc/custom_templates_en.html"))
+      dialog.insert( 'end', "\n")
+
+    dialog.tag_config( 'headline', underline=1)
+    dialog.activate()
+
+  if not errors:
+    # check the template directory
+    path = os_support.get_local_templates_path()
+    if not os.path.isdir( path):
+      path = os_support.create_personal_config_directory()
+      if path:
+        path = os_support.create_personal_config_directory( "templates")
+      if not path:
+        tkMessageBox.showerror( _("Directory creation failed."),
+                                _("It was not possible to create the personal directory %s.") % os_support.get_personal_config_directory())
+        return
+
+    # ask for the name
+    name = ''
+    while not name:
+      dial = Pmw.PromptDialog( paper,
+                               title=_('Template file name'),
+                               label_text=_('File name for the template:'),
+                               entryfield_labelpos = 'n',
+                               buttons=(_('OK'),_('Cancel')))
+      res = dial.activate()
+      if res == _('OK'):
+        name = dial.get()
+      else:
+        return
+
+      name = os.path.join( path ,name) + '.svg'
+
+      if os.path.exists( name):
+        q = tkMessageBox.askokcancel( _("The file already exists."),
+                                      _("Template with this name already exists (path %s).\nShould I rewrite it?") % name)
+        if q:
+          return name
+        else:
+          name = ''
+
+      else:
+        return name

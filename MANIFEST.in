@@ -6,7 +6,7 @@ include templates/*.cdml
 include templates/oo_manifest.xml
 include pixmaps/*.gif
 include images/logo.ppm
-recursive-include doc *
+recursive-include doc *.xml *.html *.py *.png
 recursive-include dtd *.dtd *.xsd
 include locale/cs/LC_MESSAGES/BKchem.mo
 include locale/pl/LC_MESSAGES/BKchem.mo

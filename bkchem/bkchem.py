@@ -155,7 +155,7 @@ if __name__ == '__main__':
   if g:
     geometry = g
   else:
-    geometry = "+10+10"
+    geometry = "640x480+10+10"
   myapp.geometry(geometry)
   myapp.update_idletasks()
   myapp.deiconify()
@@ -174,7 +174,7 @@ else:
   if g:
     geometry = g
   else:
-    geometry = "+10+10"
+    geometry = "640x480+10+10"
   myapp.geometry(geometry)
   myapp.update_idletasks()
   myapp.deiconify()

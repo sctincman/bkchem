@@ -36,6 +36,7 @@ class piddle_exporter( plugin.exporter):
 
 
   def on_begin( self):
+    self.paper.unselect_all()
     scale = 720.0/self.paper.winfo_fpixels( '254m')
     if self.paper.get_paper_property( 'crop_svg'):
       items = list( self.paper.find_all())

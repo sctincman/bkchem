@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """Openoffice Draw export plugin"""
 
@@ -245,7 +242,7 @@ class OO_exporter( plugin.exporter):
     txt_style_name = self.get_appropriate_style_name( txt_style)
 
     coords = map( self.paper.px_to_cm, self.paper.coords( a.selector))
-    self.create_oo_text( '<ftext>%s</ftext>' % a.text, coords, page, para_style_name, txt_style_name, gr_style_name)
+    self.create_oo_text( '<ftext>%s</ftext>' % a.xml_text, coords, page, para_style_name, txt_style_name, gr_style_name)
 
 
   def add_plus( self, a, page):

@@ -1,3 +1,16 @@
+RELEASE 0.9.0-pre2
+----------------------------------------
+
+ * bugfixes - user template mode does not crash when clicking
+               on paper without any template available
+
+
+ * changes - PDF and PostScript (new) export do not output the squares that mark selected
+              bonds and atoms
+           - mark template atom (bond) accelerate key changed to C-t (was C-t C-1)
+
+
+
 RELEASE 0.9.0-pre1
 ----------------------------------------
 
@@ -11,12 +24,12 @@ RELEASE 0.9.0-pre1
             - export of wedges to openoffice was fixed (thanks to Alex Thurgood for bugreport)
             - Expand groups failed on "Me"
             - Expand groups had problems with positioning of double bonds (for COOH and similar)
+            - the paper properties setting did not have any effect in most cases
 
 
  * enhancements - user template mode added - it is now possible for the user to create
                    her own templates (more in doc/custom_templates_en.html or on the homepage)
-                - Chemistry/Set display form enables you to set a string representation
-                   of a molecule (usefull only for external tools for now)
+                - File/Save As Template menu entry added
                 - rotation around bond added to the "transformation mode"
                    (it enables rapid changes of conformation of molecules)
                 - dash bond added
@@ -24,15 +37,23 @@ RELEASE 0.9.0-pre1
                    (does not work with atoms bearing a hydrogen such as ch2+ - it is ambiguous)
                 - bond order can be set from the context menu
                 - bond order can be explicitly set to 0 to allow describing of hydrogen bonds etc.
-                - PDF and Postscript(2) export plugins added based on Piddle (arrows export is not complete)
+                - PDF and Postscript export plugins added based on Piddle (arrows export is not complete)
+                - PDF and Postscript export plugins can export cropped files (depending on the
+                   File/ File properties/ Crop SVG? setting)
                 - bkchem can now be started and scripted from outside
-                   (see doc/external_import.html or homepage)
+                   (see doc/external_import_en.html or homepage)
+                - Chemistry/Set display form enables you to set a string representation
+                   of a molecule (usefull only for external tools for now)
 
 
  * changes - marks are now positioned above atoms, so it is no more possible for
               a mark to be hidden under an atom
+           - standard bond length is now 0.7 cm instead of 1 cm
            - svg export of text was hacked to compensate for wrong calculation of
               text size in Tkinter
+           - on source code install on linux systems the path to the various parts
+              of the program is no longer set via env variables but put into a file
+              XXX/lib/pythonX.Y/site-packages/bkchem/site-config.py
 
 
 
