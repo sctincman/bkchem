@@ -34,11 +34,11 @@ import periodic_table as PT
 import groups_table as GT
 import copy
 import helper_graphics as hg
-from parents import container, top_level
+from parents import container, top_level, id_enabled
 from atom import atom
 from bond import bond
 
-class molecule( container, top_level):
+class molecule( container, top_level, id_enabled):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -54,14 +54,15 @@ class molecule( container, top_level):
   meta__undo_children_to_record = ('atoms','bonds')
   
   def __init__( self, paper, package = None):
-    self.paper = paper
+    id_enabled.__init__( self, paper)
+    container.__init__( self)
+
     self.atoms = []  # list of atoms
     self.bonds = []      # list of bonds
     self.connect = []    # matrix that shows conectivity of each atom
     self.sign = 1
     self._last_used_atom = None 
     self.name = ''
-    self.id = self.generate_id()
     self._iterator = 0
     self.t_bond_first = None  # template
     self.t_bond_second = None

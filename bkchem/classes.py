@@ -143,7 +143,6 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     with_line.__init__( self)
     line_colored.__init__( self)
 
-    self.id = self.generate_id()
     self.points = []
     self.spline = spline
     self.paper = paper
@@ -489,7 +488,6 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     text_like.__init__( self)
     area_colored.__init__( self)
 
-    self.id = self.generate_id()
     self.x = self.y = None
     self.focus_item = None
     self.selector = None
@@ -618,7 +616,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     area_colored.__init__( self)
     meta_enabled.__init__( self, paper)
 
-    self.id = self.generate_id()    
     self.selector = None
     self._selected = 0
     self.ftext = None

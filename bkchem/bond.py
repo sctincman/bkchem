@@ -69,7 +69,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     drawable.__init__( self)
     with_line.__init__( self)
     # 
-    self.id = self.generate_id()
     self.type = type
     self.order = order
     self.item = None

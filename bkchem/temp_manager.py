@@ -73,7 +73,7 @@ class template_manager:
     """type is type of connection - 'bond', 'atom1'(for single atom), 'atom2'(for atom with more than 1 bond), 'empty'"""
     current = molecule( paper or self.app.paper, package=self.templates[n])
     current.name = ''
-    current.id = ''
+    current.id = current.generate_id() # generation of new id
     self._scale_ratio = 1
     trans = transform()
     # type empty - just draws the template - no conection

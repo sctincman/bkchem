@@ -48,33 +48,48 @@ class simple_parent( object):
     pass
 
 
+
+
+class id_enabled( simple_parent):
+  """the basic parent that has something to do with the paper, it provides id support"""
+
+  def __init__( self, paper):
+    simple_parent.__init__( self)
+    self.paper = paper
+
+
   def generate_id( self):
-    return misc.id_generator.generate_id( prefix=self.object_type)
-
-  generate_id = classmethod( generate_id)
-
+    return self.paper.id_manager.generate_id( prefix=self.object_type)
 
   # id
   def __get_id( self):
+    try:
+      return self.__id
+    except AttributeError:
+      self.__id = self.generate_id()
     return self.__id
 
   def __set_id( self, id):
+    try:
+      self.paper.id_manager.unregister_id( self.__id)
+    except AttributeError:
+      pass
+    self.paper.id_manager.register_id( self, id)
     self.__id = id
 
   id = property( __get_id, __set_id)
-
+  
 
   
 
 
-class meta_enabled( simple_parent):
+class meta_enabled( id_enabled):
   """class that has usefull behaviour implemented according to meta infomation"""
 
   meta__used_standard_values = []
 
   def __init__( self, paper):
-    simple_parent.__init__( self)
-    self.paper = paper
+    id_enabled.__init__( self, paper)
     if self.paper:
       self.read_standard_values()
 
@@ -95,6 +110,8 @@ class meta_enabled( simple_parent):
             break
         if not is_prop:
           self.__dict__[i] = self.paper.standard.__dict__[i]
+
+
 
 
 

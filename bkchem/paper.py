@@ -48,7 +48,7 @@ import copy
 import dialogs
 import CDML_versions
 import os
-
+from id_manager import id_manager
 
 
 class chem_paper( Canvas, object):
@@ -62,6 +62,7 @@ class chem_paper( Canvas, object):
     
     self.app = app
     self.clipboard = None
+    self.id_manager = id_manager()
 
     self.standard = self.get_personal_standard()
     self.submode = None
