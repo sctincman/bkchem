@@ -112,9 +112,11 @@ class chem_paper( Canvas, object):
     if not Store.app.in_batch_mode:
       self.bind( "<B1-Motion>", self._drag1)
       self.bind( "<ButtonRelease-1>", self._release1)
-      self.bind( "<Button-1>", self._n_pressed1)
-      self.bind( "<Shift-Button-1>", self._s_pressed1)
       self.bind( "<Shift-B1-Motion>", self._drag1)
+      self.bind( "<Button-1>", lambda e: self._pressed1( e, mod=[]))
+      self.bind( "<Shift-Button-1>", lambda e: self._pressed1( e, mod=['shift']))
+      self.bind( "<Control-Button-1>", lambda e: self._pressed1( e, mod=['ctrl']))
+      self.bind( "<Control-B1-Motion>", self._drag1)
       self.bind( "<Delete>", self.key_pressed)
       self.bind( "<Key>", self.key_pressed)
       self.bind( "<KeyRelease>", self.key_released)
@@ -207,21 +209,11 @@ class chem_paper( Canvas, object):
   ## overall
 
 
-  def _s_pressed1( self, event):
-    "button 1 with shift"
+  def _pressed1( self, event, mod=None):
+    "button 1"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    Store.app.mode.mouse_down( event, modifiers=['shift'])
-
-
-
-
-
-  def _n_pressed1( self, event):
-    "button 1 without anything"
-    event.x = self.canvasx( event.x)
-    event.y = self.canvasy( event.y)
-    Store.app.mode.mouse_down( event)
+    Store.app.mode.mouse_down( event, modifiers=mod)
 
 
 
