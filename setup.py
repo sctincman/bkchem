@@ -9,6 +9,7 @@ try:
   import py2exe
 except:
   pass
+from bkchem import config
 
 ## if os.name != 'posix':
 ##   print "Sorry, but install is not available for non-posix OSes, yet"
@@ -23,7 +24,7 @@ apidocs = [(path, map( os.path.join, len( filenames)*[path], filenames)) for (pa
 
 set = setup(
   name = 'bkchem',
-  version = '0.9.0',
+  version = config.current_BKchem_version,
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",

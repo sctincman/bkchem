@@ -112,14 +112,14 @@ class mode:
         self._recent_key_seq = key
       # look if the keysequence is registered
       if self._recent_key_seq in self._key_sequences:
-        self.app.paper.signal_to_app( self._recent_key_seq)
+        self.app.update_status( self._recent_key_seq)
         self._key_sequences[ self._recent_key_seq]()
         self._recent_key_seq = ''
       else:
         # or its a prefix of some registered sequence
         for key in self._key_sequences.keys():
           if not string.find( key, self._recent_key_seq):
-            self.app.paper.signal_to_app( self._recent_key_seq)
+            self.app.update_status( self._recent_key_seq)
             return None
         # if we get here it means that the key is neither used nor a prefix
         self._recent_key_seq = ''
@@ -152,7 +152,7 @@ class mode:
         self.submode[i] = sms.index( name)
         txt_name = self.__class__.__name__+'_'+name
         try:
-          self.app.paper.signal_to_app( messages.__dict__[txt_name], time=20)
+          self.app.log( messages.__dict__[txt_name], delay=20, message_type="hint")
         except KeyError:
           pass
         self.on_submode_switch( i, name)
@@ -487,7 +487,7 @@ class edit_mode( basic_mode):
       self.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
       self._dragged_molecule.drag( event.x, event.y, fix=(self._startx, self._starty))
-      self.app.paper.signal_to_app( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
+      self.app.update_status( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
       
   def enter_object( self, object, event):
     if not self._dragging:
@@ -676,7 +676,7 @@ class draw_mode( edit_mode):
         self._start_atom.update_after_valency_change()
         # warn when valency is exceeded
         if self._start_atom.get_free_valency() < 0:
-          self.app.paper.signal_to_app( _("maximum valency exceeded!"))
+          self.app.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self._start_atom, group):
           #LOOK
@@ -712,11 +712,11 @@ class draw_mode( edit_mode):
           self.focused.update_after_valency_change()
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
-          self.app.paper.signal_to_app( _("maximum valency exceeded!"))
+          self.app.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self.focused, group):
           #LOOK
-          self.app.paper.signal_to_app( _("groups could have valency of 1 only! Atom was transformed to text!"))
+          self.app.log( _("groups could have valency of 1 only! Atom was transformed to text!"), message_type="warning")
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
         self.app.paper.select( [a])
@@ -734,7 +734,7 @@ class draw_mode( edit_mode):
           [a.redraw() for a in self.focused.atoms]
           # warn when valency is exceeded
           if self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0:
-            self.app.paper.signal_to_app( _("maximum valency exceeded!"))
+            self.app.log( _("maximum valency exceeded!"), message_type="warning")
           self.focused.focus() # refocus
 
     self.app.paper.handle_overlap()
@@ -984,7 +984,8 @@ class template_mode( edit_mode):
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         if self.focused.z != 0:
-          self.app.paper.signal_to_app( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."))
+          self.app.log( _("Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."),
+                        message_type="hint")
           return
         if self.focused.get_free_valency() >= self._get_templates_valency():
           x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
@@ -1018,9 +1019,9 @@ class template_mode( edit_mode):
     # checking of valency
     if self.focused:
       if isinstance( self.focused, bond) and (self.focused.atom1.get_free_valency() < 0 or self.focused.atom2.get_free_valency() < 0):
-        self.app.paper.signal_to_app( _("maximum valency exceeded!"))
+        self.app.log( _("maximum valency exceeded!"), message_type="warning")
       elif isinstance( self.focused, oasa.graph.vertex) and self.focused.get_free_valency() < 0:
-        self.app.paper.signal_to_app( _("maximum valency exceeded!"))
+        self.app.log( _("maximum valency exceeded!"), message_type="warning")
 
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
@@ -1032,7 +1033,7 @@ class template_mode( edit_mode):
   def _mark_focused_as_template_atom_or_bond( self):
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
       self.focused.molecule.t_atom = self.focused
-      self.app.paper.signal_to_app( _("focused atom marked as 'template atom'")) 
+      self.app.log( _("focused atom marked as 'template atom'")) 
     elif self.focused and isinstance( self.focused, bond):
       atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + self.focused.molecule.atoms_bound_to( self.focused.atom2)
       atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
@@ -1044,7 +1045,7 @@ class template_mode( edit_mode):
       else:
         self.focused.molecule.t_bond_first = self.focused.atom2
         self.focused.molecule.t_bond_second = self.focused.atom1
-      self.app.paper.signal_to_app( _("focused bond marked as 'template bond'")) 
+      self.app.log( _("focused bond marked as 'template bond'")) 
 
 
 
@@ -1118,7 +1119,8 @@ class text_mode( edit_mode):
           self.app.paper.set_name_to_selected( name)
           self.app.paper.add_bindings()
       elif isinstance( self.focused, oasa.graph.vertex):
-        self.app.paper.signal_to_app( _("The text mode can no longer be used to edit atoms, use atom mode."))
+        self.app.log( _("The text mode can no longer be used to edit atoms, use atom mode."),
+                      message_type="warning")
 
 
   def leave_object( self, event):
@@ -1236,7 +1238,7 @@ class bond_align_mode( edit_mode):
     if isinstance(self.focused, bond):
       if self.first_atom_selected:
         # waiting for second atom selection, clicking bond does nothing
-        self.app.paper.signal_to_app( _("select the second atom, please."))
+        self.app.log( _("select the second atom, please."), message_type="hint")
         return
       self._rotated_mol = self.focused.molecule
       x1, y1 = self.focused.atom1.get_xy()
@@ -1257,10 +1259,10 @@ class bond_align_mode( edit_mode):
           objects = [self.focused]
       else: # second atom picked
         if self.focused.molecule != self.first_atom_selected.molecule:
-          self.app.paper.signal_to_app( _("atoms must be in the same molecule!"))
+          self.app.log( _("atoms must be in the same molecule!"), message_type="hint")
           return
         if self.focused == self.first_atom_selected:
-          self.app.paper.signal_to_app( _("atoms must be different!"))
+          self.app.log( _("atoms must be different!"), message_type="hint")
           return
         x1, y1 = self.first_atom_selected.get_xy()
         x2, y2 = self.focused.get_xy()
@@ -1368,7 +1370,8 @@ class bond_align_mode( edit_mode):
     b.draw()
     b.focus()
     if len( cc) == 1:
-      self.app.paper.signal_to_app( _("Bond is part of a ring, there is not possiblity for rotation!"))
+      self.app.log( _("Bond is part of a ring, there is no possiblity for rotation!"),
+                    message_type="hint")
       return None
     else:
       to_use = list( len( cc[0]) < len( cc[1]) and cc[0] or cc[1])
@@ -1405,7 +1408,6 @@ class vector_mode( edit_mode):
     self._polygon_points = []
     self._polygon_line = None
     self._current_obj = None
-##1    self._x_label = None
 
   def mouse_down( self, event):
     edit_mode.mouse_down( self, event)
@@ -1432,10 +1434,7 @@ class vector_mode( edit_mode):
       self._current_obj.draw()
     elif not self.focused and self._dragging and self._current_obj:
       self._current_obj.resize( (self._startx, self._starty, event.x, event.y), fix=( self._startx, self._starty))
-      self.app.paper.signal_to_app( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
-##1       if self._x_label:
-##1         self.app.paper.delete( self._x_label)
-##1       self._x_label = self.app.paper.create_text( self._startx, self._starty+10, text='%i' % (dx*(self._startx-event.x)))
+      self.app.update_status( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
     elif self.focused or self._dragging in (1,2):
       edit_mode.mouse_drag( self, event)
 
@@ -1455,8 +1454,6 @@ class vector_mode( edit_mode):
         self._current_obj = None
       self.app.paper.start_new_undo_record()
       self.app.paper.add_bindings()
-##1      if self._x_label:
-##1        self.app.paper.delete( self._x_label)
     elif self._dragging:
       edit_mode.mouse_up( self, event)
     else:

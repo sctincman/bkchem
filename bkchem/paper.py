@@ -734,7 +734,7 @@ class chem_paper( Canvas, object):
       deleted.extend( reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], []))
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
-      self.signal_to_app( _('concatenated overlaping atoms'))
+      self.app.log( _('concatenated overlaping atoms'))
     #print 5, time.time() - ttt
       
 
@@ -943,10 +943,10 @@ class chem_paper( Canvas, object):
       self.app.put_to_clipboard( clipboard, xy)
       if delete_afterwards:
         [self.del_container(o) for o in cp]
-        self.signal_to_app( _("killed %s object(s) to clipboard") % str( len( cp)))
+        self.app.log( _("killed %s object(s) to clipboard") % str( len( cp)))
 	self.start_new_undo_record()
       else:
-        self.signal_to_app( _("copied %s object(s) to clipboard") % str( len( cp)))
+        self.app.log( _("copied %s object(s) to clipboard") % str( len( cp)))
       return [xmin, ymin, xmax, ymax]
 
 
@@ -982,7 +982,7 @@ class chem_paper( Canvas, object):
         else:
           self.select( [o])
       self.add_bindings()
-      self.signal_to_app( _("pasted from clipboard"))
+      self.app.log( _("pasted from clipboard"))
 
       # put the id_manager back
       self.onread_id_sandbox_finish( apply_to=os)
@@ -1142,9 +1142,9 @@ class chem_paper( Canvas, object):
     i = self.um.undo()
     self.changes_made = 1
     if i > 0:
-      self.signal_to_app( _("undo (%d further undos available)") % i)
+      self.app.log( _("undo (%d further undos available)") % i)
     else:
-      self.signal_to_app( _("no further undo"))
+      self.app.log( _("no further undo"))
     
 
 
@@ -1155,9 +1155,9 @@ class chem_paper( Canvas, object):
     i = self.um.redo()
     self.changes_made = 1
     if i > 0:
-      self.signal_to_app( _("redo (%d further redos available)") % i)
+      self.app.log( _("redo (%d further redos available)") % i)
     else:
-      self.signal_to_app( _("no further redo"))
+      self.app.log( _("no further redo"))
     
 
 
@@ -1219,7 +1219,7 @@ class chem_paper( Canvas, object):
     exporter.construct_dom_tree( cont)
     self.clipboard_clear()
     self.clipboard_append( exporter.get_nicely_formated_document())
-    self.signal_to_app( _("selected top_levels were exported to clipboard in SVG"))
+    self.app.log( _("selected top_levels were exported to clipboard in SVG"))
 
 
 
@@ -1400,7 +1400,7 @@ class chem_paper( Canvas, object):
     for o in os:
       self.stack.remove( o)
       self.stack.append( o)
-    self.signal_to_app( _("selected items were lifted"))
+    self.app.log( _("selected items were lifted"))
     self.add_bindings()
     self.start_new_undo_record()
 
@@ -1413,7 +1413,7 @@ class chem_paper( Canvas, object):
     for o in os:
       self.stack.remove( o)
       self.stack.insert( 0, o)
-    self.signal_to_app( _("selected items were put back"))
+    self.app.log( _("selected items were put back"))
     self.add_bindings()
     self.start_new_undo_record()
 
@@ -1427,7 +1427,7 @@ class chem_paper( Canvas, object):
     indxs.sort()
     for i in range( len( indxs) // 2):
       self.stack[ indxs[i]], self.stack[ indxs[-1-i]] =  self.stack[ indxs[-1-i]], self.stack[ indxs[i]]
-    self.signal_to_app( _("selected items were swapped"))
+    self.app.log( _("selected items were swapped"))
     self.add_bindings()
     self.start_new_undo_record()
 

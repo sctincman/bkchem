@@ -57,7 +57,7 @@ def ask_name_for_selected( paper):
 
   for m in ms:
     m.name = name
-  paper.signal_to_app( _('Name %s was set to molecule(s)') % name)
+  paper.app.log( _('Name %s was set to molecule(s)') % name)
   paper.start_new_undo_record()
 
 
@@ -107,7 +107,7 @@ def ask_id_for_selected( paper):
       break
 
   m.id = id
-  paper.signal_to_app( _('ID %s was set to molecule') % id)
+  paper.app.log( _('ID %s was set to molecule') % id)
   paper.start_new_undo_record()
 
 
@@ -204,7 +204,7 @@ def ask_display_form_for_selected( paper):
 
   for m in ms:
     m.display_form = df
-  paper.signal_to_app( _('Display form %s was set to molecule(s)') % df)
+  paper.app.log( _('Display form %s was set to molecule(s)') % df)
   paper.start_new_undo_record()
 
 

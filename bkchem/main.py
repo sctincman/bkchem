@@ -51,6 +51,7 @@ import popen2
 import oasa_bridge
 import plugins.plugin
 import config
+from logger import logger
 
 
 class BKchem( Tk):
@@ -386,6 +387,11 @@ class BKchem( Tk):
     # preference manager
     self.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
 
+    # logger
+    self.logger = logger( self)
+    self.log = self.logger.log
+
+
     from plugin_support import plugin_manager
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
@@ -542,6 +548,7 @@ class BKchem( Tk):
     if self._after:
       self.after_cancel( self._after)
     self._after = self.after( time*1000, func=self.clear_status)
+
 
 
 

@@ -721,7 +721,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
     elif self.group_type == "implicit":
       if not self.group_graph:
-        self.set_name( self.name, valency=self.valency)
+        self.set_name( self.name, occupied_valency=self.valency)
       replacement = self.group_graph.vertices[0]
       replacement.x = self.x
       replacement.y = self.y

@@ -40,7 +40,7 @@ class plugin_manager( object):
       if files and names:
         file = dom_ext.getAllTextFromElement( files[0])
         if not os.path.isabs( file):
-          file = os.path.join( dir, file)
+          file = os.path.normpath( os.path.join( dir, file))
         name = dom_ext.getAllTextFromElement( names[0])
 
         self.plugins[ name] = file
