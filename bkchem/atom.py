@@ -707,7 +707,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child):
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     for m, o in self.marks.items():
-      if self.marks[m]:
+      if o:
         x ,y = map( self.paper.px_to_text_with_unit, (o.x, o.y))
         dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
                                                             ('x', x),

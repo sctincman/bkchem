@@ -1373,7 +1373,12 @@ class vector_mode( edit_mode):
         self._polygon_line = self.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
       else:
         self.app.paper.coords( self._polygon_line, tuple( self._polygon_points + [event.x, event.y]))
-    
+
+
+
+
+
+## -------------------- MARK MODE --------------------    
 
 class mark_mode( edit_mode):
 
@@ -1385,6 +1390,13 @@ class mark_mode( edit_mode):
                             _('plus'), _('minus')]]
     self.submode = [0]
 
+    self.register_key_sequence( 'Up', lambda : self._move_mark_for_selected( 0, -1), use_warning=0)
+    self.register_key_sequence( 'Down', lambda : self._move_mark_for_selected( 0, 1), use_warning=0)
+    self.register_key_sequence( 'Left', lambda : self._move_mark_for_selected( -1, 0), use_warning=0)
+    self.register_key_sequence( 'Right', lambda : self._move_mark_for_selected( 1, 0), use_warning=0)
+
+
+
   def mouse_click( self, event):
     a = ['radical','biradical','electronpair','plus','minus']
     if self.focused and self.focused.object_type == 'atom':
@@ -1393,6 +1405,17 @@ class mark_mode( edit_mode):
     self.app.paper.add_bindings()
 
 
+  def _move_mark_for_selected( self, dx, dy):
+    to_move = [a for a in self.app.paper.selected if a.object_type == 'atom']
+    
+    for a in to_move:
+      for k,v in a.marks.iteritems():
+        if v:
+          v.move( dx, dy)
+
+    if self.app.paper.um.get_last_record_name() == "arrow-key-move":
+      self.app.paper.um.delete_last_record()
+    self.app.paper.start_new_undo_record( name="arrow-key-move")
 
 
 
