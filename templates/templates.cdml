@@ -1,427 +1,427 @@
 <?xml version="1.0" ?>
 <cdml version="0.11" xmlns="http://www.freesoftware.fsf.org/bkchem/cdml">
   <info>
-    <author_program version="0.6.0-dev">BKchem</author_program>
+    <author_program version="0.6.0-pre1">BKchem</author_program>
   </info>
   <paper crop_svg="0" orientation="portrait" type="A4"/>
   <viewport viewport="0.000000 0.000000 640.000000 480.000000"/>
-  <standard area_color="#ffffff" font_family="helvetica" font_size="12" line_color="#000" line_width="1.0px" paper_crop_svg="0" paper_orientation="portrait" paper_type="A4">
+  <standard area_color="#ffffff" font_family="helvetica" font_size="14" line_color="#000" line_width="2.0px" paper_crop_svg="0" paper_orientation="portrait" paper_type="A4">
     <bond double-ratio="0.75" length="1.0cm" wedge-width="5.0px" width="6.0px"/>
     <arrow length="1.6cm"/>
   </standard>
   <molecule id="benzene" name="benzene">
-    <template atom="a9" bond_first="a3" bond_second="a7"/>
-    <atom id="a3" name="C">
+    <template atom="a174" bond_first="a168" bond_second="a172"/>
+    <atom id="a168" name="C">
       <point x="1.186cm" y="1.864cm"/>
     </atom>
-    <atom id="a4" name="C">
+    <atom id="a169" name="C">
       <point x="2.067cm" y="1.355cm"/>
     </atom>
-    <atom id="a5" name="C">
+    <atom id="a170" name="C">
       <point x="2.948cm" y="1.864cm"/>
     </atom>
-    <atom id="a6" name="C">
+    <atom id="a171" name="C">
       <point x="2.948cm" y="2.880cm"/>
     </atom>
-    <atom id="a7" name="C">
+    <atom id="a172" name="C">
       <point x="1.186cm" y="2.880cm"/>
     </atom>
-    <atom id="a8" name="C">
+    <atom id="a173" name="C">
       <point x="2.067cm" y="3.389cm"/>
     </atom>
-    <atom id="a9" name="C">
+    <atom id="a174" name="C">
       <point x="3.829cm" y="1.355cm"/>
     </atom>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a8" line_width="1.0" start="a6" type="n2"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a5" line_width="1.0" start="a4" type="n2"/>
-    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a7" line_width="1.0" start="a3" type="n2"/>
-    <bond double_ratio="0.75" end="a4" line_width="1.0" start="a3" type="n1"/>
-    <bond double_ratio="0.75" end="a6" line_width="1.0" start="a5" type="n1"/>
-    <bond double_ratio="0.75" end="a8" line_width="1.0" start="a7" type="n1"/>
-    <bond double_ratio="0.75" end="a9" line_width="1.0" start="a5" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a173" line_width="1.0" start="a171" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a170" line_width="1.0" start="a169" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a172" line_width="1.0" start="a168" type="n2"/>
+    <bond double_ratio="0.75" end="a169" line_width="1.0" start="a168" type="n1"/>
+    <bond double_ratio="0.75" end="a171" line_width="1.0" start="a170" type="n1"/>
+    <bond double_ratio="0.75" end="a173" line_width="1.0" start="a172" type="n1"/>
+    <bond double_ratio="0.75" end="a174" line_width="1.0" start="a170" type="n1"/>
   </molecule>
   <molecule id="cyclopentadiene2" name="cyclopentadiene2">
-    <template atom="a226" bond_first="a225" bond_second="a224"/>
-    <atom id="a221" name="C">
+    <template atom="a190" bond_first="a188" bond_second="a189"/>
+    <atom id="a185" name="C">
       <point x="6.709cm" y="4.700cm"/>
     </atom>
-    <atom id="a222" name="C">
+    <atom id="a186" name="C">
       <point x="7.518cm" y="4.112cm"/>
     </atom>
-    <atom id="a223" name="C">
+    <atom id="a187" name="C">
       <point x="7.209cm" y="3.161cm"/>
     </atom>
-    <atom id="a224" name="C">
+    <atom id="a188" name="C">
       <point x="6.209cm" y="3.161cm"/>
     </atom>
-    <atom id="a225" name="C">
+    <atom id="a189" name="C">
       <point x="5.900cm" y="4.112cm"/>
     </atom>
-    <atom id="a226" name="C">
+    <atom id="a190" name="C">
       <point x="8.469cm" y="4.421cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a222" line_width="1.0" start="a221" type="n1"/>
-    <bond bond_width="5.9" center="no" double_ratio="0.75" end="a223" line_width="1.0" start="a222" type="n2"/>
-    <bond double_ratio="0.75" end="a224" line_width="1.0" start="a223" type="n1"/>
-    <bond bond_width="5.9" center="no" double_ratio="0.75" end="a225" line_width="1.0" start="a224" type="n2"/>
-    <bond double_ratio="0.75" end="a221" line_width="1.0" start="a225" type="n1"/>
-    <bond double_ratio="0.75" end="a226" line_width="1.0" start="a222" type="n1"/>
+    <bond double_ratio="0.75" end="a186" line_width="1.0" start="a185" type="n1"/>
+    <bond bond_width="5.9" center="no" double_ratio="0.75" end="a187" line_width="1.0" start="a186" type="n2"/>
+    <bond double_ratio="0.75" end="a188" line_width="1.0" start="a187" type="n1"/>
+    <bond bond_width="5.9" center="no" double_ratio="0.75" end="a189" line_width="1.0" start="a188" type="n2"/>
+    <bond double_ratio="0.75" end="a185" line_width="1.0" start="a189" type="n1"/>
+    <bond double_ratio="0.75" end="a190" line_width="1.0" start="a186" type="n1"/>
   </molecule>
   <molecule id="cyclopentadiene" name="cyclopentadiene">
-    <template atom="a25" bond_first="a24" bond_second="a23"/>
-    <atom id="a20" name="C">
+    <template atom="a204" bond_first="a203" bond_second="a202"/>
+    <atom id="a199" name="C">
       <point x="6.709cm" y="0.847cm"/>
     </atom>
-    <atom id="a21" name="C">
+    <atom id="a200" name="C">
       <point x="7.518cm" y="1.435cm"/>
     </atom>
-    <atom id="a22" name="C">
+    <atom id="a201" name="C">
       <point x="7.209cm" y="2.386cm"/>
     </atom>
-    <atom id="a23" name="C">
+    <atom id="a202" name="C">
       <point x="6.209cm" y="2.386cm"/>
     </atom>
-    <atom id="a24" name="C">
+    <atom id="a203" name="C">
       <point x="5.900cm" y="1.435cm"/>
     </atom>
-    <atom id="a25" name="C">
+    <atom id="a204" name="C">
       <point x="8.469cm" y="1.126cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a21" line_width="1.0" start="a20" type="n1"/>
-    <bond bond_width="-5.9" center="no" double_ratio="0.75" end="a22" line_width="1.0" start="a21" type="n2"/>
-    <bond double_ratio="0.75" end="a23" line_width="1.0" start="a22" type="n1"/>
-    <bond bond_width="-5.9" center="no" double_ratio="0.75" end="a24" line_width="1.0" start="a23" type="n2"/>
-    <bond double_ratio="0.75" end="a20" line_width="1.0" start="a24" type="n1"/>
-    <bond double_ratio="0.75" end="a25" line_width="1.0" start="a21" type="n1"/>
+    <bond double_ratio="0.75" end="a200" line_width="1.0" start="a199" type="n1"/>
+    <bond bond_width="-5.9" center="no" double_ratio="0.75" end="a201" line_width="1.0" start="a200" type="n2"/>
+    <bond double_ratio="0.75" end="a202" line_width="1.0" start="a201" type="n1"/>
+    <bond bond_width="-5.9" center="no" double_ratio="0.75" end="a203" line_width="1.0" start="a202" type="n2"/>
+    <bond double_ratio="0.75" end="a199" line_width="1.0" start="a203" type="n1"/>
+    <bond double_ratio="0.75" end="a204" line_width="1.0" start="a200" type="n1"/>
   </molecule>
   <molecule id="cyklopentane" name="cyklopentane">
-    <template atom="a39" bond_first="a35" bond_second="a34"/>
-    <atom id="a34" name="C">
+    <template atom="a218" bond_first="a214" bond_second="a213"/>
+    <atom id="a213" name="C">
       <point x="8.558cm" y="6.914cm"/>
     </atom>
-    <atom id="a35" name="C">
+    <atom id="a214" name="C">
       <point x="9.509cm" y="7.605cm"/>
     </atom>
-    <atom id="a36" name="C">
+    <atom id="a215" name="C">
       <point x="9.146cm" y="8.723cm"/>
     </atom>
-    <atom id="a37" name="C">
+    <atom id="a216" name="C">
       <point x="7.970cm" y="8.723cm"/>
     </atom>
-    <atom id="a38" name="C">
+    <atom id="a217" name="C">
       <point x="7.607cm" y="7.605cm"/>
     </atom>
-    <atom id="a39" name="C">
+    <atom id="a218" name="C">
       <point x="8.558cm" y="5.739cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a35" line_width="1.0" start="a34" type="n1"/>
-    <bond double_ratio="0.75" end="a36" line_width="1.0" start="a35" type="n1"/>
-    <bond double_ratio="0.75" end="a37" line_width="1.0" start="a36" type="n1"/>
-    <bond double_ratio="0.75" end="a38" line_width="1.0" start="a37" type="n1"/>
-    <bond double_ratio="0.75" end="a34" line_width="1.0" start="a38" type="n1"/>
-    <bond double_ratio="0.75" end="a39" line_width="1.0" start="a34" type="n1"/>
+    <bond double_ratio="0.75" end="a214" line_width="1.0" start="a213" type="n1"/>
+    <bond double_ratio="0.75" end="a215" line_width="1.0" start="a214" type="n1"/>
+    <bond double_ratio="0.75" end="a216" line_width="1.0" start="a215" type="n1"/>
+    <bond double_ratio="0.75" end="a217" line_width="1.0" start="a216" type="n1"/>
+    <bond double_ratio="0.75" end="a213" line_width="1.0" start="a217" type="n1"/>
+    <bond double_ratio="0.75" end="a218" line_width="1.0" start="a213" type="n1"/>
   </molecule>
   <molecule id="cycloheptane" name="cycloheptane">
-    <template atom="a46" bond_first="a48" bond_second="a47"/>
-    <atom id="a46" name="C">
+    <template atom="a225" bond_first="a227" bond_second="a226"/>
+    <atom id="a225" name="C">
       <point x="12.591cm" y="1.168cm"/>
     </atom>
-    <atom id="a47" name="C">
+    <atom id="a226" name="C">
       <point x="12.591cm" y="2.035cm"/>
     </atom>
-    <atom id="a48" name="C">
+    <atom id="a227" name="C">
       <point x="13.373cm" y="2.412cm"/>
     </atom>
-    <atom id="a49" name="C">
+    <atom id="a228" name="C">
       <point x="13.566cm" y="3.258cm"/>
     </atom>
-    <atom id="a50" name="C">
+    <atom id="a229" name="C">
       <point x="13.025cm" y="3.936cm"/>
     </atom>
-    <atom id="a51" name="C">
+    <atom id="a230" name="C">
       <point x="12.157cm" y="3.936cm"/>
     </atom>
-    <atom id="a52" name="C">
+    <atom id="a231" name="C">
       <point x="11.616cm" y="3.258cm"/>
     </atom>
-    <atom id="a53" name="C">
+    <atom id="a232" name="C">
       <point x="11.809cm" y="2.412cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a48" line_width="1.0" start="a47" type="n1"/>
-    <bond double_ratio="0.75" end="a49" line_width="1.0" start="a48" type="n1"/>
-    <bond double_ratio="0.75" end="a50" line_width="1.0" start="a49" type="n1"/>
-    <bond double_ratio="0.75" end="a51" line_width="1.0" start="a50" type="n1"/>
-    <bond double_ratio="0.75" end="a52" line_width="1.0" start="a51" type="n1"/>
-    <bond double_ratio="0.75" end="a53" line_width="1.0" start="a52" type="n1"/>
-    <bond double_ratio="0.75" end="a47" line_width="1.0" start="a53" type="n1"/>
-    <bond double_ratio="0.75" end="a46" line_width="1.0" start="a47" type="n1"/>
+    <bond double_ratio="0.75" end="a227" line_width="1.0" start="a226" type="n1"/>
+    <bond double_ratio="0.75" end="a228" line_width="1.0" start="a227" type="n1"/>
+    <bond double_ratio="0.75" end="a229" line_width="1.0" start="a228" type="n1"/>
+    <bond double_ratio="0.75" end="a230" line_width="1.0" start="a229" type="n1"/>
+    <bond double_ratio="0.75" end="a231" line_width="1.0" start="a230" type="n1"/>
+    <bond double_ratio="0.75" end="a232" line_width="1.0" start="a231" type="n1"/>
+    <bond double_ratio="0.75" end="a226" line_width="1.0" start="a232" type="n1"/>
+    <bond double_ratio="0.75" end="a225" line_width="1.0" start="a226" type="n1"/>
   </molecule>
   <molecule id="cyclooctane" name="cyclooctane">
-    <template atom="a70" bond_first="a63" bond_second="a62"/>
-    <atom id="a62" name="C">
+    <template atom="a249" bond_first="a242" bond_second="a241"/>
+    <atom id="a241" name="C">
       <point x="4.009cm" y="5.996cm"/>
     </atom>
-    <atom id="a63" name="C">
+    <atom id="a242" name="C">
       <point x="4.716cm" y="6.703cm"/>
     </atom>
-    <atom id="a64" name="C">
+    <atom id="a243" name="C">
       <point x="4.716cm" y="7.703cm"/>
     </atom>
-    <atom id="a65" name="C">
+    <atom id="a244" name="C">
       <point x="4.009cm" y="8.410cm"/>
     </atom>
-    <atom id="a66" name="C">
+    <atom id="a245" name="C">
       <point x="3.009cm" y="8.410cm"/>
     </atom>
-    <atom id="a67" name="C">
+    <atom id="a246" name="C">
       <point x="2.302cm" y="7.703cm"/>
     </atom>
-    <atom id="a68" name="C">
+    <atom id="a247" name="C">
       <point x="2.302cm" y="6.703cm"/>
     </atom>
-    <atom id="a69" name="C">
+    <atom id="a248" name="C">
       <point x="3.009cm" y="5.996cm"/>
     </atom>
-    <atom id="a70" name="C">
+    <atom id="a249" name="C">
       <point x="4.392cm" y="5.072cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a63" line_width="1.0" start="a62" type="n1"/>
-    <bond double_ratio="0.75" end="a64" line_width="1.0" start="a63" type="n1"/>
-    <bond double_ratio="0.75" end="a65" line_width="1.0" start="a64" type="n1"/>
-    <bond double_ratio="0.75" end="a66" line_width="1.0" start="a65" type="n1"/>
-    <bond double_ratio="0.75" end="a67" line_width="1.0" start="a66" type="n1"/>
-    <bond double_ratio="0.75" end="a68" line_width="1.0" start="a67" type="n1"/>
-    <bond double_ratio="0.75" end="a69" line_width="1.0" start="a68" type="n1"/>
-    <bond double_ratio="0.75" end="a62" line_width="1.0" start="a69" type="n1"/>
-    <bond double_ratio="0.75" end="a70" line_width="1.0" start="a62" type="n1"/>
+    <bond double_ratio="0.75" end="a242" line_width="1.0" start="a241" type="n1"/>
+    <bond double_ratio="0.75" end="a243" line_width="1.0" start="a242" type="n1"/>
+    <bond double_ratio="0.75" end="a244" line_width="1.0" start="a243" type="n1"/>
+    <bond double_ratio="0.75" end="a245" line_width="1.0" start="a244" type="n1"/>
+    <bond double_ratio="0.75" end="a246" line_width="1.0" start="a245" type="n1"/>
+    <bond double_ratio="0.75" end="a247" line_width="1.0" start="a246" type="n1"/>
+    <bond double_ratio="0.75" end="a248" line_width="1.0" start="a247" type="n1"/>
+    <bond double_ratio="0.75" end="a241" line_width="1.0" start="a248" type="n1"/>
+    <bond double_ratio="0.75" end="a249" line_width="1.0" start="a241" type="n1"/>
   </molecule>
   <molecule id="cyklohexane" name="cyklohexane">
-    <template atom="a86" bond_first="a84" bond_second="a85"/>
-    <atom id="a80" name="C">
+    <template atom="a265" bond_first="a263" bond_second="a264"/>
+    <atom id="a259" name="C">
       <point x="16.571cm" y="3.524cm"/>
     </atom>
-    <atom id="a81" name="C">
+    <atom id="a260" name="C">
       <point x="17.452cm" y="3.016cm"/>
     </atom>
-    <atom id="a82" name="C">
+    <atom id="a261" name="C">
       <point x="17.452cm" y="1.999cm"/>
     </atom>
-    <atom id="a83" name="C">
+    <atom id="a262" name="C">
       <point x="16.571cm" y="1.491cm"/>
     </atom>
-    <atom id="a84" name="C">
+    <atom id="a263" name="C">
       <point x="15.690cm" y="1.999cm"/>
     </atom>
-    <atom id="a85" name="C">
+    <atom id="a264" name="C">
       <point x="15.690cm" y="3.016cm"/>
     </atom>
-    <atom id="a86" name="C">
+    <atom id="a265" name="C">
       <point x="18.333cm" y="1.491cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a81" line_width="1.0" start="a80" type="n1"/>
-    <bond double_ratio="0.75" end="a82" line_width="1.0" start="a81" type="n1"/>
-    <bond double_ratio="0.75" end="a83" line_width="1.0" start="a82" type="n1"/>
-    <bond double_ratio="0.75" end="a84" line_width="1.0" start="a83" type="n1"/>
-    <bond double_ratio="0.75" end="a85" line_width="1.0" start="a84" type="n1"/>
-    <bond double_ratio="0.75" end="a80" line_width="1.0" start="a85" type="n1"/>
-    <bond double_ratio="0.75" end="a86" line_width="1.0" start="a82" type="n1"/>
+    <bond double_ratio="0.75" end="a260" line_width="1.0" start="a259" type="n1"/>
+    <bond double_ratio="0.75" end="a261" line_width="1.0" start="a260" type="n1"/>
+    <bond double_ratio="0.75" end="a262" line_width="1.0" start="a261" type="n1"/>
+    <bond double_ratio="0.75" end="a263" line_width="1.0" start="a262" type="n1"/>
+    <bond double_ratio="0.75" end="a264" line_width="1.0" start="a263" type="n1"/>
+    <bond double_ratio="0.75" end="a259" line_width="1.0" start="a264" type="n1"/>
+    <bond double_ratio="0.75" end="a265" line_width="1.0" start="a261" type="n1"/>
   </molecule>
   <molecule id="cyklopropane" name="cyklopropane">
-    <template atom="a97" bond_first="a95" bond_second="a94"/>
-    <atom id="a94" name="C">
+    <template atom="a276" bond_first="a274" bond_second="a273"/>
+    <atom id="a273" name="C">
       <point x="12.606cm" y="8.031cm"/>
     </atom>
-    <atom id="a95" name="C">
+    <atom id="a274" name="C">
       <point x="11.589cm" y="8.031cm"/>
     </atom>
-    <atom id="a96" name="C">
+    <atom id="a275" name="C">
       <point x="12.098cm" y="7.150cm"/>
     </atom>
-    <atom id="a97" name="C">
+    <atom id="a276" name="C">
       <point x="12.098cm" y="6.133cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a95" line_width="1.0" start="a94" type="n1"/>
-    <bond double_ratio="0.75" end="a96" line_width="1.0" start="a95" type="n1"/>
-    <bond double_ratio="0.75" end="a96" line_width="1.0" start="a94" type="n1"/>
-    <bond double_ratio="0.75" end="a97" line_width="1.0" start="a96" type="n1"/>
+    <bond double_ratio="0.75" end="a274" line_width="1.0" start="a273" type="n1"/>
+    <bond double_ratio="0.75" end="a275" line_width="1.0" start="a274" type="n1"/>
+    <bond double_ratio="0.75" end="a275" line_width="1.0" start="a273" type="n1"/>
+    <bond double_ratio="0.75" end="a276" line_width="1.0" start="a275" type="n1"/>
   </molecule>
   <molecule id="cyklobutane" name="cyklobutane">
-    <template atom="a106" bond_first="a103" bond_second="a104"/>
-    <atom id="a102" name="C">
+    <template atom="a285" bond_first="a282" bond_second="a283"/>
+    <atom id="a281" name="C">
       <point x="15.418cm" y="7.015cm"/>
     </atom>
-    <atom id="a103" name="C">
+    <atom id="a282" name="C">
       <point x="15.418cm" y="8.031cm"/>
     </atom>
-    <atom id="a104" name="C">
+    <atom id="a283" name="C">
       <point x="16.435cm" y="8.031cm"/>
     </atom>
-    <atom id="a105" name="C">
+    <atom id="a284" name="C">
       <point x="16.435cm" y="7.015cm"/>
     </atom>
-    <atom id="a106" name="C">
+    <atom id="a285" name="C">
       <point x="17.147cm" y="6.303cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a103" line_width="1.0" start="a102" type="n1"/>
-    <bond double_ratio="0.75" end="a104" line_width="1.0" start="a103" type="n1"/>
-    <bond double_ratio="0.75" end="a105" line_width="1.0" start="a104" type="n1"/>
-    <bond double_ratio="0.75" end="a102" line_width="1.0" start="a105" type="n1"/>
-    <bond double_ratio="0.75" end="a106" line_width="1.0" start="a105" type="n1"/>
+    <bond double_ratio="0.75" end="a282" line_width="1.0" start="a281" type="n1"/>
+    <bond double_ratio="0.75" end="a283" line_width="1.0" start="a282" type="n1"/>
+    <bond double_ratio="0.75" end="a284" line_width="1.0" start="a283" type="n1"/>
+    <bond double_ratio="0.75" end="a281" line_width="1.0" start="a284" type="n1"/>
+    <bond double_ratio="0.75" end="a285" line_width="1.0" start="a284" type="n1"/>
   </molecule>
   <molecule id="thiophene" name="thiophene">
-    <template atom="a119" bond_first="a112" bond_second="a115"/>
-    <atom id="a112" name="C">
+    <template atom="a298" bond_first="a291" bond_second="a294"/>
+    <atom id="a291" name="C">
       <point x="4.168cm" y="11.013cm"/>
     </atom>
-    <atom id="a113" name="C">
+    <atom id="a292" name="C">
       <point x="5.185cm" y="11.013cm"/>
     </atom>
-    <atom id="a114" name="C">
+    <atom id="a293" name="C">
       <point x="5.490cm" y="11.996cm"/>
     </atom>
-    <atom id="a115" name="C">
+    <atom id="a294" name="C">
       <point x="3.863cm" y="11.996cm"/>
     </atom>
-    <atom id="a117" name="S" pos="center-first">
+    <atom id="a296" name="S" pos="center-first">
       <point x="4.676cm" y="12.572cm"/>
     </atom>
-    <atom id="a119" name="C">
+    <atom id="a298" name="C">
       <point x="6.472cm" y="12.301cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a113" line_width="1.0" start="a112" type="n1"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a114" line_width="1.0" start="a113" type="n2"/>
-    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a115" line_width="1.0" start="a112" type="n2"/>
-    <bond double_ratio="0.75" end="a117" line_width="1.0" start="a115" type="n1"/>
-    <bond double_ratio="0.75" end="a117" line_width="1.0" start="a114" type="n1"/>
-    <bond double_ratio="0.75" end="a119" line_width="1.0" start="a114" type="n1"/>
+    <bond double_ratio="0.75" end="a292" line_width="1.0" start="a291" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a293" line_width="1.0" start="a292" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a294" line_width="1.0" start="a291" type="n2"/>
+    <bond double_ratio="0.75" end="a296" line_width="1.0" start="a294" type="n1"/>
+    <bond double_ratio="0.75" end="a296" line_width="1.0" start="a293" type="n1"/>
+    <bond double_ratio="0.75" end="a298" line_width="1.0" start="a293" type="n1"/>
   </molecule>
   <molecule id="furane" name="furane">
-    <template atom="a135" bond_first="a128" bond_second="a131"/>
-    <atom id="a128" name="C">
+    <template atom="a314" bond_first="a307" bond_second="a310"/>
+    <atom id="a307" name="C">
       <point x="9.082cm" y="11.352cm"/>
     </atom>
-    <atom id="a129" name="C">
+    <atom id="a308" name="C">
       <point x="10.098cm" y="11.352cm"/>
     </atom>
-    <atom id="a130" name="C">
+    <atom id="a309" name="C">
       <point x="10.403cm" y="12.335cm"/>
     </atom>
-    <atom id="a131" name="C">
+    <atom id="a310" name="C">
       <point x="8.777cm" y="12.335cm"/>
     </atom>
-    <atom id="a133" name="O" pos="center-first">
+    <atom id="a312" name="O" pos="center-first">
       <point x="9.590cm" y="12.911cm"/>
     </atom>
-    <atom id="a135" name="C">
+    <atom id="a314" name="C">
       <point x="11.386cm" y="12.640cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a129" line_width="1.0" start="a128" type="n1"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a130" line_width="1.0" start="a129" type="n2"/>
-    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a131" line_width="1.0" start="a128" type="n2"/>
-    <bond double_ratio="0.75" end="a133" line_width="1.0" start="a131" type="n1"/>
-    <bond double_ratio="0.75" end="a133" line_width="1.0" start="a130" type="n1"/>
-    <bond double_ratio="0.75" end="a135" line_width="1.0" start="a130" type="n1"/>
+    <bond double_ratio="0.75" end="a308" line_width="1.0" start="a307" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a309" line_width="1.0" start="a308" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a310" line_width="1.0" start="a307" type="n2"/>
+    <bond double_ratio="0.75" end="a312" line_width="1.0" start="a310" type="n1"/>
+    <bond double_ratio="0.75" end="a312" line_width="1.0" start="a309" type="n1"/>
+    <bond double_ratio="0.75" end="a314" line_width="1.0" start="a309" type="n1"/>
   </molecule>
   <molecule id="pyrrole" name="pyrrole">
-    <template atom="a151" bond_first="a144" bond_second="a147"/>
-    <atom id="a144" name="C">
+    <template atom="a330" bond_first="a323" bond_second="a326"/>
+    <atom id="a323" name="C">
       <point x="14.334cm" y="11.183cm"/>
     </atom>
-    <atom id="a145" name="C">
+    <atom id="a324" name="C">
       <point x="15.351cm" y="11.183cm"/>
     </atom>
-    <atom id="a146" name="C">
+    <atom id="a325" name="C">
       <point x="15.656cm" y="12.165cm"/>
     </atom>
-    <atom id="a147" name="C">
+    <atom id="a326" name="C">
       <point x="14.029cm" y="12.165cm"/>
     </atom>
-    <atom id="a149" name="N" pos="center-first">
+    <atom id="a328" name="N" pos="center-first">
       <point x="14.842cm" y="12.741cm"/>
     </atom>
-    <atom id="a151" name="C">
+    <atom id="a330" name="C">
       <point x="16.638cm" y="12.470cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a145" line_width="1.0" start="a144" type="n1"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a146" line_width="1.0" start="a145" type="n2"/>
-    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a147" line_width="1.0" start="a144" type="n2"/>
-    <bond double_ratio="0.75" end="a149" line_width="1.0" start="a147" type="n1"/>
-    <bond double_ratio="0.75" end="a149" line_width="1.0" start="a146" type="n1"/>
-    <bond double_ratio="0.75" end="a151" line_width="1.0" start="a146" type="n1"/>
+    <bond double_ratio="0.75" end="a324" line_width="1.0" start="a323" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a325" line_width="1.0" start="a324" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a326" line_width="1.0" start="a323" type="n2"/>
+    <bond double_ratio="0.75" end="a328" line_width="1.0" start="a326" type="n1"/>
+    <bond double_ratio="0.75" end="a328" line_width="1.0" start="a325" type="n1"/>
+    <bond double_ratio="0.75" end="a330" line_width="1.0" start="a325" type="n1"/>
   </molecule>
   <molecule id="purine" name="purine">
-    <template atom="a177" bond_first="a161" bond_second="a166"/>
-    <atom id="a161" name="N" pos="center-last">
+    <template atom="a356" bond_first="a340" bond_second="a345"/>
+    <atom id="a340" name="N" pos="center-last">
       <point x="2.814cm" y="15.656cm"/>
     </atom>
-    <atom id="a163" name="C">
+    <atom id="a342" name="C">
       <point x="3.694cm" y="15.148cm"/>
     </atom>
-    <atom id="a164" name="C">
+    <atom id="a343" name="C">
       <point x="4.575cm" y="15.656cm"/>
     </atom>
-    <atom id="a165" name="C">
+    <atom id="a344" name="C">
       <point x="4.575cm" y="16.672cm"/>
     </atom>
-    <atom id="a166" name="C">
+    <atom id="a345" name="C">
       <point x="2.814cm" y="16.672cm"/>
     </atom>
-    <atom id="a168" name="N" pos="center-first">
+    <atom id="a347" name="N" pos="center-first">
       <point x="3.694cm" y="17.180cm"/>
     </atom>
-    <atom id="a171" name="N" pos="center-first">
+    <atom id="a350" name="N" pos="center-first">
       <point x="5.533cm" y="15.358cm"/>
     </atom>
-    <atom id="a173" name="C">
+    <atom id="a352" name="C">
       <point x="6.109cm" y="16.196cm"/>
     </atom>
-    <atom id="a175" name="N" pos="center-first">
+    <atom id="a354" name="N" pos="center-first">
       <point x="5.510cm" y="16.977cm"/>
     </atom>
-    <atom id="a177" name="C">
+    <atom id="a356" name="C">
       <point x="5.812cm" y="17.948cm"/>
     </atom>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a168" line_width="1.0" start="a165" type="n2"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a164" line_width="1.0" start="a163" type="n2"/>
-    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a166" line_width="1.0" start="a161" type="n2"/>
-    <bond double_ratio="0.75" end="a163" line_width="1.0" start="a161" type="n1"/>
-    <bond double_ratio="0.75" end="a165" line_width="1.0" start="a164" type="n1"/>
-    <bond double_ratio="0.75" end="a168" line_width="1.0" start="a166" type="n1"/>
-    <bond double_ratio="0.75" end="a171" line_width="1.0" start="a164" type="n1"/>
-    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a173" line_width="1.0" start="a171" type="n2"/>
-    <bond double_ratio="0.75" end="a175" line_width="1.0" start="a165" type="n1"/>
-    <bond double_ratio="0.75" end="a175" line_width="1.0" start="a173" type="n1"/>
-    <bond double_ratio="0.75" end="a177" line_width="1.0" start="a175" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a347" line_width="1.0" start="a344" type="n2"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a343" line_width="1.0" start="a342" type="n2"/>
+    <bond bond_width="6.0" center="no" double_ratio="0.75" end="a345" line_width="1.0" start="a340" type="n2"/>
+    <bond double_ratio="0.75" end="a342" line_width="1.0" start="a340" type="n1"/>
+    <bond double_ratio="0.75" end="a344" line_width="1.0" start="a343" type="n1"/>
+    <bond double_ratio="0.75" end="a347" line_width="1.0" start="a345" type="n1"/>
+    <bond double_ratio="0.75" end="a350" line_width="1.0" start="a343" type="n1"/>
+    <bond bond_width="-6.0" center="no" double_ratio="0.75" end="a352" line_width="1.0" start="a350" type="n2"/>
+    <bond double_ratio="0.75" end="a354" line_width="1.0" start="a344" type="n1"/>
+    <bond double_ratio="0.75" end="a354" line_width="1.0" start="a352" type="n1"/>
+    <bond double_ratio="0.75" end="a356" line_width="1.0" start="a354" type="n1"/>
   </molecule>
   <molecule id="chair" name="chair">
-    <template atom="a199" bond_first="a194" bond_second="a193"/>
-    <atom id="a193" name="C">
+    <template atom="a378" bond_first="a373" bond_second="a372"/>
+    <atom id="a372" name="C">
       <point x="10.064cm" y="17.282cm"/>
     </atom>
-    <atom id="a194" name="C">
+    <atom id="a373" name="C">
       <point x="10.744cm" y="16.290cm"/>
     </atom>
-    <atom id="a195" name="C">
+    <atom id="a374" name="C">
       <point x="10.993cm" y="16.869cm"/>
     </atom>
-    <atom id="a196" name="C">
+    <atom id="a375" name="C">
       <point x="11.922cm" y="17.282cm"/>
     </atom>
-    <atom id="a197" name="C">
+    <atom id="a376" name="C">
       <point x="11.673cm" y="16.703cm"/>
     </atom>
-    <atom id="a198" name="C">
+    <atom id="a377" name="C">
       <point x="12.602cm" y="16.290cm"/>
     </atom>
-    <atom id="a199" name="C">
+    <atom id="a378" name="C">
       <point x="13.619cm" y="16.290cm"/>
     </atom>
-    <bond double_ratio="0.75" end="a194" line_width="1.0" start="a193" type="n1"/>
-    <bond double_ratio="0.75" end="a195" line_width="1.0" start="a193" type="n1"/>
-    <bond double_ratio="0.75" end="a196" line_width="1.0" start="a195" type="n1"/>
-    <bond double_ratio="0.75" end="a197" line_width="1.0" start="a194" type="n1"/>
-    <bond double_ratio="0.75" end="a198" line_width="1.0" start="a197" type="n1"/>
-    <bond double_ratio="0.75" end="a198" line_width="1.0" start="a196" type="n1"/>
-    <bond double_ratio="0.75" end="a199" line_width="1.0" start="a198" type="n1"/>
+    <bond double_ratio="0.75" end="a373" line_width="1.0" start="a372" type="n1"/>
+    <bond double_ratio="0.75" end="a374" line_width="1.0" start="a372" type="n1"/>
+    <bond double_ratio="0.75" end="a375" line_width="1.0" start="a374" type="n1"/>
+    <bond double_ratio="0.75" end="a376" line_width="1.0" start="a373" type="n1"/>
+    <bond double_ratio="0.75" end="a377" line_width="1.0" start="a376" type="n1"/>
+    <bond double_ratio="0.75" end="a377" line_width="1.0" start="a375" type="n1"/>
+    <bond double_ratio="0.75" end="a378" line_width="1.0" start="a377" type="n1"/>
   </molecule>
 </cdml>

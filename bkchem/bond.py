@@ -532,7 +532,13 @@ class bond( meta_enabled):
       elif to_order == 1 and to_type == 'n':
         # we want to treat order=1, type='n' as special in order to support the s=>d d=>t t=>s behaviour
         # but only in case the type is 'n'
-        self.switch_to_order( (self.order % 3) + 1)
+        v1 = self.atom1.get_free_valency()
+        v2 = self.atom2.get_free_valency()
+        if not v1 or not v2:
+          # it is not possible to increase the order
+          self.switch_to_order( 1)
+        else:
+          self.switch_to_order( (self.order % 3) + 1)
       elif to_order != self.order:
         # if order was changed we do the same
         self.switch_to_order( to_order)

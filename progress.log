@@ -1,3 +1,75 @@
+----------------------------------------
+RELEASE 0.6.0
+
+* bugfixes - hitting escape during text creation no longer produces "None" text
+           - addition of a molecule no longer resets the paper properties to standard values
+           - crash on save for files with colored texts was fixed
+           - backgroud color of plus in exported correctry to openoffice
+           - font size of a plus is saved properly
+           - one of the cyclopentadiene templates appeared always on the wrong side of a molecule
+             it was added to (by means of bond)
+           - permissions fixed so that templates.cdml is readable for everybody
+
+* enhancements - bond order is cycled only within limits of free valency of neighbor atoms
+               - OH and similar groups ("protonated atoms") change the number of Hs on bond
+		 addition, deletion and undo
+
+* changes - hitting 'Space' when only single text (atom) is selected sets the default text for
+            edit to this particular text, the last entered text (the old way) is used only when
+            more items are selected
+
+
+
+----------------------------------------
+RELEASE 0.6.0-pre1
+
+ * bugfixes - non-ascii text support fixed (for some reason works only on some platforms :(
+              - any suggestions welcome
+            - menu 'Object/Swap on stack' called "sent to front" instead (typo)
+            - bkchem window resized sometimes itself on mode change, should be fixed
+            - template addition now takes atoms valency into account
+
+ * enhancements - bond order and type were separaded
+                  - it is possible to draw wedge/hatch double bonds
+                  - adder (unspecified stereo) and bold bond was added
+                  - double stereo bond may be drawn in two different ways
+                    (second bond is also stereo or line-only)
+                - transform mode was introduced
+                  - aling selected bond to horizontal or vertical position
+                  - perform inversion or mirror transformation
+                - horizontal and vertical mirror transforms were added
+                - hints on usage appear now in status bar when you change a mode
+                - double click in edit_mode selects the whole molecule
+                - cyclopentadiene template was updated to be really symmetric
+                - OpenOffice.org export - the output of atoms was tuned to minimize
+                                          the size of the background of the text
+
+ * changes - unmaintained PNG and Povray exports were removed
+           - in menu Object/Configure command was added as alternative to right click
+           - empty space between submodes for easier orientation
+           - icons are now loaded on demand - slightly faster start-up
+
+ * translations - updated - Czech
+                - added - Polish
+
+ * acknowledgments - Michal Bozon (the original transform mode)
+                   - Nikodem Kuznik (Polish translation)
+
+
+
+----------------------------------------
+RELEASE 0.5.2
+
+ * bugfixes - the bugfixes that was announced for 0.5.1 was not present there.
+              Sorry for that, but it is for sure included in 0.5.2
+            - fix was added to be able to read the corrupted files from 0.5.1 and earlier
+
+ * enhancements - None
+
+ * changes - None
+  
+
+----------------------------------------
 RELEASE 0.5.1
 
  * bugfixes - invalid files are no longer created under Python 2.3 when marks are used 

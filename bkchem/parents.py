@@ -35,6 +35,7 @@ class simple_parent:
   # if non zero then specifies the number of coordinate pairs
   meta__has_simple_coords = 1
   # undo related
+  meta__undo_fake = () # fakes serve only to force redraw in some cases however do not perform any undo
   meta__undo_simple = ()
   meta__undo_copy = ()
   meta__undo_2d_copy = ()

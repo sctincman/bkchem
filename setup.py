@@ -11,7 +11,7 @@ if os.name != 'posix':
 
 set = setup(
   name = 'bkchem',
-  version = '0.6.0-dev',
+  version = '0.6.0',
   description = "BKchem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
@@ -29,8 +29,9 @@ set = setup(
                ('share/doc/bkchem', glob.glob( 'doc/*.xml') + ['README', 'RELEASE', 'INSTALL', 'INSTALL.binary', 'progress.log']),
                ('share/doc/bkchem/ps', glob.glob( 'doc/ps/*')),
                ('share/doc/bkchem/pdf', glob.glob( 'doc/pdf/*')),
-               ('share/doc/bkchem/html', glob.glob( 'doc/html/*'))
-               #('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo'])
+               ('share/doc/bkchem/html', glob.glob( 'doc/html/*')),
+               ('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo']),
+               ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo'])
                ]
   )
 

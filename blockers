@@ -12,6 +12,17 @@ remarks
 =======
 
 - never center the 'whab' double bonds?
+- what about the dpi problem on windows?
+
+- move using arrows is not finished by concatenation of molecules
+  (- pri konectu pomoci sipek (konekt byl vyvolanej kreslenim pote) se vazba neexportovala do OO
+	(reload a reexport pomoh))
+
+- cleanup - all things that have to be updated after bond deletion, addition etc. should be 
+	put to one place. Where?
+
+- check permission denied on plugin output
+
 
 
 FOR MULTIPLE PAPERS
@@ -24,6 +35,8 @@ FOR MULTIPLE PAPERS
 - check the saving and loading
 - add methods to close tabs
 - make sure copying works between papers
+- do not open files twice
+- copying between files, clipboard is persistent
 
 
 0.x.0

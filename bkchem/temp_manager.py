@@ -131,7 +131,7 @@ class template_manager:
       if b.order != 1:
         b.bond_width *= self._scale_ratio
     # update template according to current default values
-    self.paper.apply_current_standard( [temp])
+    self.paper.apply_current_standard( [temp], template_mode=1)
     # return the ready template
     return temp
 

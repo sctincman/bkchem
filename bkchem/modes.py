@@ -437,7 +437,16 @@ class edit_mode( mode):
 
   def _set_name_to_selected( self):
     if self.app.paper.selected:
-      name = self.app.editPool.activate()
+      # check if we should start with the last used text or edit the one of selected things
+      text = ''
+      if len( self.app.paper.selected) == 1:
+        item = self.app.paper.selected[0]
+        if item.object_type in ('text','atom'):
+          text = item.get_text()
+        if text:
+          name = self.app.editPool.activate( text=text)
+        else:
+          name = self.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
       # i really don't know if I should call the unicode first
@@ -529,6 +538,8 @@ class draw_mode( edit_mode):
       self.app.paper.handle_overlap() # should be done before repositioning for ring closure to take effect
       # repositioning of double bonds
       if self._start_atom:
+        # at first atom text
+        self._start_atom.update_after_valency_change()
         # warn when valency is exceeded
         if self._start_atom.get_free_valency() < 0:
           self.app.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -556,6 +567,8 @@ class draw_mode( edit_mode):
       if self.focused.object_type == 'atom':
         b = bond( self.app.paper, type=self.__mode_to_bond_type(), order=self.__mode_to_bond_order(), simple_double=self.submode[4])
         a, b = self.focused.molecule.add_atom_to( self.focused, bond_to_use=b)
+        # update atom text
+        self.focused.update_after_valency_change()
         # warn when valency is exceeded
         if self.focused.get_free_valency() < 0:
           self.app.paper.signal_to_app( _("maximum valency exceeded!"))
@@ -903,6 +916,8 @@ class text_mode( edit_mode):
   def mouse_click( self, event):
     if not self.focused:
       name = self.app.editPool.activate()
+      if not name:
+        return
       name = unicode( name).encode( 'utf-8')
       ## catch not well-formed text
       try:

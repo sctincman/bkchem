@@ -51,11 +51,11 @@ vector_mode_polygon = _("each left-button click creates one point of the polygon
 
 # MARKS
 
-mark_mode_radical = _("click an atom to add a radical mark to it, it will be romoved in case it is already present")
-mark_mode_biradical = _("click an atom to add a biradical mark to it, it will be romoved in case it is already present")
-mark_mode_electronpair = _("click an atom to add a free electron pair mark to it, it will be romoved in case it is already present")
-mark_mode_plusincircle = _("click an atom to add a plus mark to it, it will be romoved in case it is already present")
-mark_mode_minusincircle = _("click an atom to add a minus mark to it, it will be romoved in case it is already present")
+mark_mode_radical = _("click an atom to add a radical mark to it, it will be removed in case it is already present")
+mark_mode_biradical = _("click an atom to add a biradical mark to it, it will be removed in case it is already present")
+mark_mode_electronpair = _("click an atom to add a free electron pair mark to it, it will be removed in case it is already present")
+mark_mode_plusincircle = _("click an atom to add a plus mark to it, it will be removed in case it is already present")
+mark_mode_minusincircle = _("click an atom to add a minus mark to it, it will be removed in case it is already present")
 
 
 # BOND ALIGN

@@ -27,11 +27,11 @@ install: $(DOMAIN).mo
 $(DOMAIN).mo: $(DOMAIN).po
 	msgfmt.py $(DOMAIN).po
 
-#$(DOMAIN).po: $(DOMAIN).iso.po
-#	$(RECODEBACK) $(DOMAIN).iso.po $(DOMAIN).po
+$(DOMAIN).po: $(DOMAIN).iso.po
+	$(RECODEBACK) $(DOMAIN).iso.po $(DOMAIN).po
 
 update: prepare
-#$(RECODE) $(DOMAIN).po $(DOMAIN).iso.po
+	$(RECODE) $(DOMAIN).po $(DOMAIN).iso.po
 	echo created $(DOMAIN).po - edit it
 	rm $(DOMAIN).pot
 

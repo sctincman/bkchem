@@ -55,6 +55,7 @@ class atom( meta_enabled):
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color','font_size','font_family']
   # undo meta infos
+  meta__undo_fake = ('text',)
   meta__undo_simple = ('x', 'y', 'z', 'pos', 'show', 'name', 'molecule', 'font_family',
                        'font_size', 'charge', 'show_hydrogens', 'type', 'line_color', 'area_color')
   meta__undo_copy = ('marks',)
@@ -84,6 +85,9 @@ class atom( meta_enabled):
     self.charge = 0
     self.marks = {'radical': None, 'biradical': None, 'electronpair': None,
                   'plus': None, 'minus': None}
+    # used only for monitoring when undo is necessary, it does not always correspond to the atom name
+    # only in case of self.show == 1
+    self.text = ''
 
     if package:
       self.read_package( package)
@@ -251,7 +255,9 @@ class atom( meta_enabled):
       self.update_font()
       if not self.pos:
         self.decide_pos()
-      parsed_name = dom.parseString( '<ftext>%s</ftext>' % self.get_ftext()).childNodes[0]
+      # we use self.text to force undo whet it is changed (e.g. when atom is added to OH so it changes to O)
+      self.text = self.get_ftext()
+      parsed_name = dom.parseString( '<ftext>%s</ftext>' % self.text).childNodes[0]
       self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=parsed_name, font=self.font, pos=self.pos, fill=self.line_color)
       self.ftext.draw()
       x1, y1, x2, y2 = self.ftext.bbox()
@@ -612,3 +618,6 @@ class atom( meta_enabled):
       if m:
         m.transform( tr)
 
+  def update_after_valency_change( self):
+    if self.type == 'element' and self.show_hydrogens:
+      self.redraw()

@@ -302,6 +302,13 @@ class BKpaper( Canvas):
     empty_mols = filter( lambda o: o.is_empty(), self.molecules)
     [self.stack.remove( o) for o in empty_mols]
     [self.molecules.remove( o) for o in empty_mols]
+    # REDRAW OF NECESSARY THINGS
+    for m in self.molecules:
+      for a in m.atoms_map:
+        if a.show and a.type == 'element':
+          a.decide_pos()
+          a.redraw()
+    # start new undo
     if self.selected:
       self.start_new_undo_record()
     self.selected = []
@@ -1133,10 +1140,11 @@ class BKpaper( Canvas):
       return st
     return None
 
-  def apply_current_standard( self, objects=[], old_standard=None):
+  def apply_current_standard( self, objects=[], old_standard=None, template_mode=0):
     """if no objects are given all are used, if old_standard is given only the values
-    that have changed are applied"""
-    self.set_paper_properties()
+    that have changed are applied; in template mode no changes of paper format are made"""
+    if not template_mode:
+      self.set_paper_properties()
     objs = objects or self.get_all_containers()
     to_redraw = []
     st = self.standard

@@ -435,12 +435,12 @@ class plus( meta_enabled):
     self.focus_item = None
     self.selector = None
     self._selected = 0
-    if package:
-      self.read_package( package)
+    self.font_size = 20
     if xy:
       self.x, self.y = xy
+    if package:
+      self.read_package( package)
     # standard values
-    self.font_size = 20
     self.update_font()
     
   def draw( self):
@@ -494,6 +494,8 @@ class plus( meta_enabled):
   def read_package( self, package):
     pnt = package.getElementsByTagName( 'point')[0]
     self.x, self.y, z = self.paper.read_xml_point( pnt)
+    if package.getAttribute( 'font_size'):
+      self.font_size = int( package.getAttribute( 'font_size')) 
     if package.getAttribute( 'color'):
       self.line_color = package.getAttribute( 'color')
     if package.getAttribute( 'background-color'):
@@ -504,6 +506,7 @@ class plus( meta_enabled):
     x, y = self.paper.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( pls, 'point', (('x', x),
                                                 ('y', y)))
+    pls.setAttribute('font_size', str( self.font_size))
     if self.line_color != '#000':
       pls.setAttribute( 'color', self.line_color)
     if self.area_color != '#ffffff':

@@ -124,6 +124,8 @@ class state_record:
 
   def record_object( self, o):
     rec = {}
+    for a in o.meta__undo_fake:
+      rec[a] = o.__dict__[a]
     for a in o.meta__undo_simple:
       rec[a] = o.__dict__[a]
     for a in o.meta__undo_copy:
@@ -158,6 +160,10 @@ class state_record:
     i = 0
     for o in self.objects:
       changed = 0
+      for a in o.meta__undo_fake:
+        # fakes serve only to force redraw in some cases however do not perform any undo
+        if self.records[i][a] != o.__dict__[a]:
+          changed = 1
       for a in o.meta__undo_simple:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = self.records[i][a]

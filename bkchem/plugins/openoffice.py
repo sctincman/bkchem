@@ -248,7 +248,8 @@ class OO_exporter( plugin.exporter):
 
   def add_plus( self, a, page):
     """adds text object to document"""
-    gr_style = graphics_style()
+    gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
+                                 fill_color=self.paper.any_color_to_rgb_string( a.area_color))
     gr_style_name = self.get_appropriate_style_name( gr_style)
     para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family, color=a.line_color)
     para_style_name = self.get_appropriate_style_name( para_style)
