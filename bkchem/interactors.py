@@ -29,6 +29,7 @@ import widgets
 import xml
 import os_support
 import os
+import dialogs
 
 
 def ask_name_for_selected( paper):
@@ -306,3 +307,10 @@ def create_fragment_from_selected( paper):
     paper.app.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
   else:
     paper.app.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
+
+
+
+
+def view_fragments( paper):
+  a = dialogs.fragment_dialog( paper)
+  a.activate()

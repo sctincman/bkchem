@@ -28,6 +28,8 @@ import data
 import re
 import widgets
 import classes
+from sets import Set
+
 
 ## SCALE DIALOG
 
@@ -942,3 +944,68 @@ class preferences_dialog:
       self.apply_button2.configure( Button_state = 'disabled')
 
 
+
+
+## -------------------- fragment overwiev --------------------
+
+class fragment_dialog( Pmw.Dialog):
+
+  def __init__( self, paper):
+    self.app = paper.app
+    self.paper = paper
+    Pmw.Dialog.__init__( self,
+                         self.app,
+                         buttons=(_('OK'), _('Cancel')),
+                         defaultbutton=_('OK'),
+                         title=_('Fragment overview'),
+                         command=self.done,
+                         master='parent')
+
+    self._items = Set()
+    self.init_list()
+
+
+  def init_list( self):
+    self.list = Pmw.ScrolledListBox( self.interior(),
+                                     selectioncommand=self.highlight,
+                                     labelpos = "n",
+                                     label_text=_("Fragments"),
+                                     listbox_selectmode="single",
+                                     items=self.get_all_fragments())
+    self.list.pack()
+
+
+  def get_all_fragments( self):
+    frags = Set()
+    for m in self.paper.molecules:
+      frags |= m.fragments
+    self._frags = frags
+    return [f.id for f in frags]
+
+
+  def highlight( self):
+    self.clean()
+    for frag in self._frags:
+      if frag.id == self.list.getvalue()[0]:
+        self._highlight( frag)
+
+
+
+  def _highlight( self, frag, size=4):
+    for b in frag.edges:
+      x1, y1 = b.atom1.get_xy()
+      x2, y2 = b.atom2.get_xy()
+      x = (x1 + x2) / 2
+      y = (y1 + y2) / 2
+      self._items.add( self.paper.create_oval( x-size, y-size, x+size, y+size, fill="orange", outline="red"))
+
+
+
+  def clean( self):
+    map( self.paper.delete, self._items)
+    self._items = Set()
+
+
+  def done( self, button):
+    self.clean()
+    self.deactivate()
