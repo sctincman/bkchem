@@ -41,6 +41,7 @@ import warnings
 import plugins
 import misc
 from edit_pool import editPool
+import pixmaps
 
 
 class BKchem( Tk):
@@ -255,29 +256,30 @@ class BKchem( Tk):
     dialog.iconname('BKchem')
     dialog.activate()
 
+
   def change_mode( self, tag):
-    import pixmaps
     self.paper.switch_to_mode( tag)
     if self.subbuttons:
       for butts in self.subbuttons:
         butts.deleteall()
+        butts.destroy()
+    self.subbuttons = []
     m = self.paper.mode
     for i in range( len( m.submodes)):
-      if i >= len( self.subbuttons):
-        self.subbuttons.append( Pmw.RadioSelect( self.subFrame,
-                                                 buttontype = 'button',
-                                                 selectmode = 'single',
-                                                 orient = 'horizontal',
-                                                 command = self.change_submode,
-                                                 hull_borderwidth = 0,
-                                                 padx = 0,
-                                                 pady = 0,
-                                                 hull_relief = 'ridge',
-                                                 ))
-        if i % 2:
-          self.subbuttons[i].pack( side=LEFT, padx=10)
-        else:
-          self.subbuttons[i].pack( side=LEFT)
+      self.subbuttons.append( Pmw.RadioSelect( self.subFrame,
+                                               buttontype = 'button',
+                                               selectmode = 'single',
+                                               orient = 'horizontal',
+                                               command = self.change_submode,
+                                               hull_borderwidth = 0,
+                                               padx = 0,
+                                               pady = 0,
+                                               hull_relief = 'ridge',
+                                               ))
+      if i % 2:
+        self.subbuttons[i].pack( side=LEFT, padx=10)
+      else:
+        self.subbuttons[i].pack( side=LEFT)
       for sub in m.submodes[i]:
         if sub in pixmaps.images:
           recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey')
