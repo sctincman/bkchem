@@ -439,8 +439,8 @@ class BKchem( Tk):
                    #'externaldata': modes.external_data_mode(),
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
-    self.modes_sort = [ 'edit', 'draw', 'template', 'atom', 'mark', 'arrow', 'plus', 'reaction', 'text',
-                        'rotate', 'bondalign', 'vector', 'usertemplate'] #, 'externaldata', 'rapiddraw']
+    self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
+                        'plus', 'text', 'rotate', 'bondalign', 'vector', 'reaction'] #, 'externaldata', 'rapiddraw']
 
     # import plugin modes
     name = "nomenclature"

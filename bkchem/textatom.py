@@ -34,6 +34,7 @@ import tkFont
 from oasa import periodic_table as PT
 import groups_table as GT
 from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
+from special_parents import vertex_common
 import data
 import re
 import debug
@@ -52,7 +53,8 @@ from singleton_store import Screen
 
 
 ### Class TEXTATOM --------------------------------------------------
-class textatom( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.graph.vertex):
+class textatom( meta_enabled, area_colored, point_drawable, text_like,
+                child_with_paper, vertex_common, oasa.graph.vertex):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -97,6 +99,10 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
     # used only for monitoring when undo is necessary, it does not always correspond to the atom name
     self.text = ''
+
+    # numbering
+    self.show_number = True
+    self.number = None
 
     self.group_graph = None
     self.name = ''
@@ -505,6 +511,12 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     # background color
     if package.getAttribute( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
+    # number
+    if package.getAttribute( 'show_number'):
+      self.show_number = bool( data.booleans.index( package.getAttribute( 'show_number')))
+    if package.getAttribute( 'number'):
+      self.number = package.getAttribute( 'number')
+
 
 
 
@@ -538,6 +550,10 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     # marks
     for o in self.marks:
       a.appendChild( o.get_package( doc))
+    # number
+    if self.number:
+      a.setAttribute( 'number', self.number)
+      a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
 
     return a
 
@@ -606,115 +622,6 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
 
 
 
-
-  # marks related methods
-
-  def set_mark( self, mark='radical', angle='auto'):
-    """sets the mark and takes care of charge and multiplicity changes"""
-    m = self.create_mark( mark=mark, angle=angle)
-    return m
-
-
-
-  def remove_mark( self, mark=None):
-    """mark is either mark instance of type, in case of instance, the instance is removed,
-    in case of type a random mark of this type (if present is removed).
-    Returns the removed mark or None"""
-    if type( mark) == types.StringType:
-      ms = [m for m in self.marks if m.__class__.__name__ == mark]
-      if ms:
-        m = ms[0]
-      else:
-        return None
-    elif isinstance( mark, marks.mark):
-      if mark in self.marks:
-        m = mark
-      else:
-        raise ValueError, "trying to remove a mark that does not belong to this atom"
-    else:
-      raise TypeError, "mark is on unknown type " + str( mark)
-
-    m.delete()
-    self.marks.remove( m)
-    return m
-
-
-
-
-
-  def create_mark( self, mark='radical', angle='auto', draw=1):
-    """creates the mark, does not care about the chemical meaning of this"""
-    # decide where to put the mark
-    if angle == 'auto':
-      x, y = self.find_place_for_mark( mark)
-    else:
-      x = self.x + round( cos( angle) *dist)
-      y = self.y + round( sin( angle) *dist)
-      #ang = angle
-
-    m = marks.__dict__[ mark]( self, x, y, auto=(angle=='auto'))
-    if draw:
-      m.draw()
-    self.marks.add( m)
-    return m
-
-
-
-
-  def reposition_marks( self):
-    ms = Set( [m for m in self.marks if m.auto])
-    self.marks -= ms
-    for m in ms:
-      x, y = self.find_place_for_mark( m.__class__.__name__)
-      m.move_to( x, y)
-      self.marks.add( m)
-
-
-
-  def find_place_for_mark( self, mark):
-    if not self.show:
-      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
-    else:
-      dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
-
-    atms = self.get_neighbors()
-    x, y = self.get_xy()
-
-    # special cases
-    if not atms:
-      # single atom molecule
-      if self.show_hydrogens and self.pos == "center-first":
-        return x -dist, y-3
-      else:
-        return x +dist, y-3
-
-    # normal case
-    coords = [(a.x,a.y) for a in atms]
-    # we have to take marks into account
-    [coords.append( (m.x, m.y)) for m in self.marks]
-    # hydrogen positioning is also important
-    if self.show_hydrogens and self.show:
-      if self.pos == 'center-last':
-        coords.append( (x-10,y))
-      else:
-        coords.append( (x+10,y))
-    # now we can compare the angles
-    angles = [geometry.clockwise_angle_from_east( x1-x, y1-y) for x1,y1 in coords]
-    angles.append( 2*pi + min( angles))
-    angles.sort()
-    angles.reverse()
-    diffs = misc.list_difference( angles)
-    i = diffs.index( max( diffs))
-    angle = (angles[i] +angles[i+1]) / 2
-
-    # in visible text x,y are not on the center, therefore we compensate for it
-    if self.show:
-      y -= 0.166 * self.font_size
-    
-    return x +dist*cos( angle), y +dist*sin( angle)
-
-
-  # // end of marks
 
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)

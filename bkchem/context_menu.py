@@ -176,6 +176,14 @@ def draw_mark_circle( objs):
     return "draw_circle", (_("Circle around mark"), ((True, _("yes")), (False, _("no"))))
 
 
+def show_number( objs):
+  with_number = [o for o in objs if o.object_type == "atom" and hasattr( o, "number") and o.number != None]
+  if not with_number:
+    return "show_number", None
+  else:
+    return "show_number", (_("Show number"), ((True, _("yes")), (False, _("no"))))
+
+
 
 
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
@@ -191,11 +199,11 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   (-1, _("anti-auto")))),
                   'order':            ( _("Bond order"),         (0,1,2,3)),
                   'size':             ( _("Mark size"),          (2,4,6,8,10,12,14,16,18)),
-                  'number':           ( _("Atom number"),        ('1','2','3','4','5','6','7','8','9','10','11','12'))
+                  'number':           ( _("Atom number"),        ('1','2','3','4','5','6','7','8','9','10','11','12')),
                   }
 
 
-configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number'),
+configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',show_number),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),

@@ -475,6 +475,7 @@ class text_mark( mark):
     x, y = self.x, self.y
     font = tkFont.Font( family=self.atom.font_family, size=self.size)
     dx = font.measure( self.text) / 2
+    y += font.metrics('descent')
 
     text = dom_extensions.textOnlyElementUnder( e, 'text', self.text,
                                                 (('font-size', "%dpt" % self.size),

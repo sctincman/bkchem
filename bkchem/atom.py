@@ -34,7 +34,9 @@ import tkFont
 from oasa import periodic_table as PT
 import groups_table as GT
 import marks
-from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
+from parents import meta_enabled, area_colored, point_drawable
+from parents import text_like, child_with_paper
+from special_parents import vertex_common
 import data
 import re
 import debug
@@ -51,7 +53,8 @@ from singleton_store import Screen
 
 
 ### Class ATOM --------------------------------------------------
-class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.atom):
+class atom( meta_enabled, area_colored, point_drawable, text_like,
+            child_with_paper, vertex_common, oasa.atom):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -306,19 +309,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
   drawn = property( _get_drawn, None, None, "tells if the atom is already drawn")
 
 
-  # number
-  def _set_number( self, number):
-    self._number = number
-    if self._number != None and self.show_number:
-      numbers = [m for m in self.marks if m.__class__.__name__ == "atom_number"]
-      if not numbers:
-        self.create_mark( "atom_number", draw=self.drawn)
-
-
-  def _get_number( self):
-    return self._number
-
-  number = property( _get_number, _set_number, None, "the number associated with the atom")
 
 
 
@@ -659,7 +649,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     for m in package.getElementsByTagName( 'mark'):
       mrk = marks.mark.read_package( m, self)
       self.marks.add( mrk)
-    #self.show_number = a.index( package.getAttribute( 'show_number'))
     self.pos = package.getAttribute( 'pos')
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
@@ -705,6 +694,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     if package.getAttribute( 'valency'):
       self.valency = int( package.getAttribute( 'valency'))
     # number
+    if package.getAttribute( 'show_number'):
+      self.show_number = bool( data.booleans.index( package.getAttribute( 'show_number')))
     if package.getAttribute( 'number'):
       self.number = package.getAttribute( 'number')
 
@@ -825,40 +816,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
 
 
-
-  def set_mark( self, mark='radical', angle='auto'):
-    """sets the mark and takes care of charge and multiplicity changes"""
-    m = self.create_mark( mark=mark, angle=angle)
-    self._set_mark_helper( mark, sign=1)
-    return m
-
-
-
-  def remove_mark( self, mark=None):
-    """mark is either mark instance of type, in case of instance, the instance is removed,
-    in case of type a random mark of this type (if present is removed).
-    Returns the removed mark or None"""
-    if type( mark) == types.StringType:
-      ms = [m for m in self.marks if m.__class__.__name__ == mark]
-      if ms:
-        m = ms[0]
-      else:
-        return None
-    elif isinstance( mark, marks.mark):
-      if mark in self.marks:
-        m = mark
-      else:
-        raise ValueError, "trying to remove a mark that does not belong to this atom"
-    else:
-      raise TypeError, "mark is on unknown type " + str( mark)
-
-    m.delete()
-    self.marks.remove( m)
-    self._set_mark_helper( m.__class__.__name__, sign=-1)
-    return m
-
-
-
+  # overrides parents.vertex_common method
   def _set_mark_helper( self, mark, sign=1):
     if mark == 'plus':
       self.charge += 1*sign
@@ -870,35 +828,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       self.multiplicity += 2*sign
 
     
-
-
-
-  def create_mark( self, mark='radical', angle='auto', draw=1):
-    """creates the mark, does not care about the chemical meaning of this"""
-    # decide where to put the mark
-    if angle == 'auto':
-      x, y = self.find_place_for_mark( mark)
-    else:
-      x = self.x + round( cos( angle) *dist)
-      y = self.y + round( sin( angle) *dist)
-      #ang = angle
-
-    m = marks.__dict__[ mark]( self, x, y, auto=(angle=='auto'))
-    if draw:
-      m.draw()
-    self.marks.add( m)
-    return m
-
-
-
-
-  def reposition_marks( self):
-    ms = Set( [m for m in self.marks if m.auto])
-    self.marks -= ms
-    for m in ms:
-      x, y = self.find_place_for_mark( m.__class__.__name__)
-      m.move_to( x, y)
-      self.marks.add( m)
 
 
 
@@ -934,9 +863,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
 
 
 
-  def get_marks_by_type( self, mark_type):
-    return [m for m in self.marks in m.__class__.__name__ == mark_type]
-
 
 
   def generate_marks_from_cheminfo( self):
@@ -968,50 +894,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       if fv >= 0:
         return
 
-
-
-
-  def find_place_for_mark( self, mark):
-    if not self.show:
-      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
-    else:
-      dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
-
-    atms = self.get_neighbors()
-    x, y = self.get_xy()
-
-    # special cases
-    if not atms:
-      # single atom molecule
-      if self.show_hydrogens and self.pos == "center-first":
-        return x -dist, y-3
-      else:
-        return x +dist, y-3
-
-    # normal case
-    coords = [(a.x,a.y) for a in atms]
-    # we have to take marks into account
-    [coords.append( (m.x, m.y)) for m in self.marks]
-    # hydrogen positioning is also important
-    if self.show_hydrogens and self.show:
-      if self.pos == 'center-last':
-        coords.append( (x-10,y))
-      else:
-        coords.append( (x+10,y))
-    # now we can compare the angles
-    angles = [geometry.clockwise_angle_from_east( x1-x, y1-y) for x1,y1 in coords]
-    angles.append( 2*pi + min( angles))
-    angles.sort()
-    angles.reverse()
-    diffs = misc.list_difference( angles)
-    i = diffs.index( max( diffs))
-    angle = (angles[i] +angles[i+1]) / 2
-
-    # in visible text x,y are not on the center, therefore we compensate for it
-    if self.show:
-      y -= 0.166 * self.font_size
-    
-    return x +dist*cos( angle), y +dist*sin( angle)
     
 
   def bbox( self):
