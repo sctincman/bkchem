@@ -875,7 +875,7 @@ class BKchem( Tk):
       try:
         inp = open( a, "w")
       except IOError, x:
-        raise "unable to open to file ", x
+        raise ValueError, "unable to open to file ", x
       exporter = SVG_writer( self.paper)
       exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
@@ -1139,7 +1139,7 @@ Enter IChI:""")
                                   _("The oasa library ended with error:\n%s") % sys.exc_value)
           return
         else:
-          raise "the processing of inchi failed with following error %s" % sys.exc_value
+          raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
 
       self.paper.stack.append( mol)
       mol.draw()

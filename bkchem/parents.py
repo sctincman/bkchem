@@ -452,7 +452,7 @@ class child_with_paper( child, with_paper):
       return None
 
   def _set_paper( self, paper):
-    raise "trying to set paper in a child - set it in parent instead"
+    raise KeyError, "trying to set paper in a child - set it in parent instead"
 
   paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
 

@@ -1363,7 +1363,7 @@ class chem_paper( Canvas, object):
   def screen_to_real_coords( self, coords):
     """transforms set of x,y coordinates to real coordinates, input list must have even length"""
     if len( coords) % 2:
-      raise "only even number of coordinates could be transformed"
+      raise ValueError, "only even number of coordinates could be transformed"
     out = []
     for i in range( 0, len( coords), 2):
       out.extend( self._screen2real.transform_xy( coords[i], coords[i+1]))
@@ -1376,7 +1376,7 @@ class chem_paper( Canvas, object):
   def real_to_screen_coords( self, coords):
     """transforms set of x,y coordinates to screen coordinates, input list must have even length"""
     if len( coords) % 2:
-      raise "only even number of coordinates could be transformed"
+      raise ValueError, "only even number of coordinates could be transformed"
     out = []
     for i in range( 0, len( coords), 2):
       out.extend( self._real2screen.transform_xy( coords[i], coords[i+1]))

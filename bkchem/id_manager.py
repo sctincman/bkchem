@@ -28,17 +28,17 @@ class id_manager:
 
   def register_id( self, obj, id):
     if self.is_registered_object( obj):
-      raise "object is already registered "+str(obj)
+      raise ValueError, "object is already registered "+str(obj)
     self.id_map[ id] = obj
 
 
   def unregister_id( self, id, obj):
     try:
       if self.id_map[ id] != obj:
-        raise "id and object do not correspond"
+        raise ValueError, "id and object do not correspond"
       del self.id_map[ id]
     except KeyError:
-      raise "id %s is not registered" % id
+      raise ValueError, "id %s is not registered" % id
 
 
   def get_object_with_id( self, id):

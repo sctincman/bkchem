@@ -151,7 +151,7 @@ class mode( object):
   def get_submode( self, i):
     if i < len( self.submodes):
       return self.submodes[i][ self.submode[i]]
-    raise "invalid submode index"
+    raise ValueError, "invalid submode index"
 
   def set_submode( self, name):
     for sms in self.submodes:

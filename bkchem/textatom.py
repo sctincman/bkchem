@@ -493,7 +493,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
     if ft:
       self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'))
     else:
-      raise "not text atom"
+      raise TypeError, "not text atom"
     # font and fill color
     fnt = package.getElementsByTagName('font')
     if fnt:
