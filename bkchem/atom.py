@@ -515,6 +515,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like):
 
   def move( self, dx, dy, dont_move_marks=0):
     """moves object with his selector (when present)"""
+    # saving old dirty value
+    # d = self.dirty
     self.x += dx
     self.y += dy
     self.paper.move( self.item, dx, dy)
@@ -526,7 +528,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like):
       for m in self.marks:
         if self.marks[m]:
           self.marks[m].move( dx, dy)
-
+    # restoring dirty value because move does not dirty the atom
+    # self.dirty = d
 
 
 
@@ -675,9 +678,6 @@ class atom( meta_enabled, area_colored, point_drawable, text_like):
                                                             ('y', y),
                                                             ('auto', str( int( o.auto)))))
     return a
-
-
-
 
 
 
@@ -852,6 +852,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like):
   def update_after_valency_change( self):
     if self.type == 'element' and self.show_hydrogens:
       self.redraw()
+
+
 
 
   def __str__( self):

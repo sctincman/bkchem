@@ -429,7 +429,7 @@ class chem_paper( Canvas):
     s_atoms = [o for o in self.selected if o.object_type == 'atom'] # selected atoms
     for m in misc.filter_unique( [o.molecule for o in s_atoms]):
       for b in m.bonds:
-        a1, a2 = b.get_atoms()
+        a1, a2 = b.atoms
         if (a1 in s_atoms) or (a2 in s_atoms):
           a.append( b)
     # if bond is also selected then it moves with and should not be updated
@@ -443,7 +443,7 @@ class chem_paper( Canvas):
     a = []
     for o in self.selected:
       if o.object_type == 'bond':
-        a.extend( o.get_atoms())
+        a.extend( o.atoms)
     if a:
       return misc.difference( misc.filter_unique( a), self.selected)
     else:

@@ -123,7 +123,7 @@ def bkchem_mol_to_oasa_mol( mol):
     m.add_vertex( bkchem_atom_to_oasa_atom( a))
   for b in mol.bonds:
     b2 = bkchem_bond_to_oasa_bond( b)
-    aa1, aa2 = b.get_atoms()
+    aa1, aa2 = b.atoms
     v1 = m.vertices[ mol.atoms_map.index( aa1)]
     v2 = m.vertices[ mol.atoms_map.index( aa2)]
     b2.vertices = (v1, v2)

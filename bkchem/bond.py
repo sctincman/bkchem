@@ -94,6 +94,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
   ## ------------------------------ PROPERTIES ------------------------------
 
 
+  # dirty
+  # override of drawable.dirty
+  def __get_dirty( self):
+    return self.__dirty # or self.atom1.dirty or self.atom2.dirty
+
+  def __set_dirty( self, dirty):
+    self.__dirty = dirty
+
+  dirty = property( __get_dirty, __set_dirty)
+
+
   # molecule
   def __get_molecule( self):
     return self.__molecule
@@ -146,6 +157,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
     self.__dirty = 1
 
   atom2 = property( __get_atom2, __set_atom2)
+
+
+  # atoms
+  def __get_atoms( self):
+    return self.atom1, self.atom2
+
+  def __set_atoms( self, mol):
+    self.atom1, self.atom2 = mol
+    self.__dirty = 1
+
+  atoms = property( __get_atoms, __set_atom2)
 
 
   # center
@@ -248,6 +270,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
     self.__class__.__dict__[ method]( self)
 
 
+
+  # THE DRAW HELPER METHODS
 
   def _draw_n1( self):
     x1, y1 = self.atom1.get_xy()
@@ -501,6 +525,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
     else:
       items = [self.item] + self.second + self.third
     [self.paper.itemconfigure( item, width = self.wedge_width) for item in items]
+
+
+  ## // DRAW HELPER METHODS
+
 
 
   def redraw( self, recalc_side=0):
@@ -868,7 +896,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
       sides = [geometry.on_which_side_is_point( line, xy) for xy in coords]
       side = reduce( operator.add, sides, 0)
     # on which side to put the second line
-    if side == 0 and (len( self.molecule.atoms_bound_to( self.atom1)) == 1 or len( self.molecule.atoms_bound_to( self.atom2)) == 1):
+    if side == 0 and (len( self.molecule.atoms_bound_to( self.atom1)) == 1 or
+                      len( self.molecule.atoms_bound_to( self.atom2)) == 1):
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
       return (1 ,1)
     else:
@@ -891,14 +920,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
 
   def get_atoms( self):
     return self.atom1, self.atom2
-
-
-
-
-  def set_atoms( self, a1, a2):
-    self.atom1 = a1
-    self.atom2 = a2
-
 
 
 

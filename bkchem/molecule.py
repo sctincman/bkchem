@@ -37,11 +37,11 @@ import periodic_table as PT
 import groups_table as GT
 import copy
 import helper_graphics as hg
-from parents import simple_parent
+from parents import container
 from atom import atom
 from bond import bond
 
-class molecule( simple_parent):
+class molecule( container):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -116,7 +116,8 @@ class molecule( simple_parent):
         x, y = self.find_place( a1, self.paper.any_to_px( self.paper.standard.bond_length))
     a2 = self.create_new_atom( x, y)
     b = bond_to_use or bond( self.paper, order=1, type='n')
-    b.set_atoms( a1, a2)
+    b.atom1 = a1
+    b.atom2 = a2
     self.insert_bond( b)
     b.draw()
     return a2, b
@@ -208,7 +209,7 @@ class molecule( simple_parent):
       bonds_to_redraw = []
       for b in deleted:
         if b.object_type == 'bond':
-          for a in b.get_atoms():
+          for a in b.atoms:
             if a in self.atoms_map:
               bonds_to_redraw.extend( self.atoms_bonds( a))
       [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
@@ -326,11 +327,6 @@ class molecule( simple_parent):
   def is_empty( self):
     return (self.connect == [])
 
-  def get_atoms( self):
-    return self.atoms_map
-
-  def get_bonds( self):
-    return self.bonds
 
   def read_package( self, package):
     self.name = package.getAttribute( 'name')
@@ -393,7 +389,7 @@ class molecule( simple_parent):
     for b in bonds_to_check:
       if not b in self.bonds:
         continue
-      i1, i2 = map( self.atoms_map.index, b.get_atoms())
+      i1, i2 = map( self.atoms_map.index, b.atoms)
       recent_b = self.connect[i1][i2]
       if recent_b and recent_b != b:
         self.delete_bond( b)
@@ -422,8 +418,6 @@ class molecule( simple_parent):
   def get_atom_with_cdml_id( self, id):
     return self.atoms_map[ self._id_map.index( id)]
     
-  def set_atom_cdml_id( self, id, atom):
-    pass
 
   def delete( self):
     [o.delete() for o in self.bonds+self.atoms_map]
@@ -510,9 +504,15 @@ class molecule( simple_parent):
     return x +range*cos( angle), y +range*sin( angle)
     
 
-  def get_shape_defining_children( self):
-    for i in self.atoms_map:
-      yield i
+
+  # shape_defining_points
+  def __get_shape_defining_points( self):
+    return self.atoms_map
+
+  shape_defining_points = property( __get_shape_defining_points, None, None,
+                                    "returns list of atoms")
+
+
 
   def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
     f = file( name, 'w')

@@ -313,10 +313,6 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       self.paper.lift( self.item)
     [o.lift() for o in self.points]
 
-  def get_shape_defining_children( self):
-    for i in self.points:
-      yield i
-
 
 
 ## -------------------- POINT CLASS ------------------------------

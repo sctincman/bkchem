@@ -82,8 +82,6 @@ class meta_enabled( simple_parent):
 
 
 
-
-
 class drawable( simple_parent):
   """basic class for all drawable type - sets the dirty property and the
   move, draw and redraw methods"""
