@@ -869,7 +869,7 @@ class template_mode( edit_mode):
           return # the template was not meant to be added to a bond
       else:
         return
-    self.app.paper.add_molecule( t)
+    self.app.paper.stack.append( t)
     t.draw()
     self.app.paper.signal_to_app( _("Added molecule from template: ")+self.app.tm.get_template_names()[ self.submode[0]].encode('utf-8'))
     self.app.paper.select( [o for o in t])

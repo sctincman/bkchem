@@ -64,14 +64,9 @@ class chem_paper( Canvas, object):
     self.clipboard = None
 
     self.standard = self.get_personal_standard()
-    self.molecules = []     # list of molecules present in the drawing
     self.submode = None
     self.selected = []    # selected item
     self.__in = 1
-    self.arrows = []
-    self.pluses = []
-    self.texts = []
-    self.vectors = []
     self._id_2_object = {}
     self.stack = []
 
@@ -334,24 +329,20 @@ class chem_paper( Canvas, object):
           to_delete += [a]
       else:
         a.redraw()
-    map( self.arrows.remove, to_delete)
     map( self.stack.remove, to_delete)
     [o.delete() for o in to_delete]
     # PLUS
     to_delete = filter( lambda o: o.object_type == 'plus', self.selected)
     map( lambda o: o.delete(), to_delete)
-    map( self.pluses.remove, to_delete)
     map( self.stack.remove, to_delete)
     # TEXT
     to_delete = filter( lambda o: o.object_type == 'text', self.selected)
     for t in to_delete:
       t.delete()
-      self.texts.remove( t)
       self.stack.remove( t)
     # VECTOR GRAPHICS
     for o in [obj for obj in self.selected if obj.object_type == 'rect' or obj.object_type == 'oval']:
       o.delete()
-      self.vectors.remove( o)
       self.stack.remove( o)
     # polygon is special (points were removed on begining together with arrow points)
     to_delete = [o for o in self.selected if o.object_type == 'polygon']
@@ -362,7 +353,6 @@ class chem_paper( Canvas, object):
             to_delete += [a]
         else:
           a.redraw()
-    map( self.vectors.remove, to_delete)
     map( self.stack.remove, to_delete)
     [o.delete() for o in to_delete]
     # BOND AND ATOM
@@ -377,13 +367,10 @@ class chem_paper( Canvas, object):
       if new_mols:
         mols_to_delete.append( mol)
     if new:
-      map( self.molecules.remove, mols_to_delete)
       map( self.stack.remove, mols_to_delete)
-      self.molecules.extend( new)
       self.stack.extend( new)
     empty_mols = filter( lambda o: o.is_empty(), self.molecules)
     [self.stack.remove( o) for o in empty_mols]
-    [self.molecules.remove( o) for o in empty_mols]
     # REDRAW OF NECESSARY THINGS
     for m in self.molecules:
       for a in m.atoms_map:
@@ -571,13 +558,8 @@ class chem_paper( Canvas, object):
     self.delete( 'all')
     self.background = None
     self.unselect_all()
-    del self.arrows[:]
-    del self.pluses[:]
     del self._id_2_object
     self._id_2_object = {}
-    del self.molecules[:]
-    del self.texts[:]
-    del self.vectors[:]
     del self.stack[:]
     self.um.clean()
     self.changes_made = 0
@@ -588,14 +570,7 @@ class chem_paper( Canvas, object):
 
   def del_container( self, container):
     container.delete()
-    if container.object_type == 'molecule':
-      self.molecules.remove( container)
-    elif container.object_type == 'arrow':
-      self.arrows.remove( container)
-    elif container.object_type == 'plus':
-      self.pluses.remove( container)
-    elif container.object_type == 'text':
-      self.texts.remove( container)
+    self.stack.remove( container)
 
 
 
@@ -630,7 +605,6 @@ class chem_paper( Canvas, object):
           mol.eat_molecule( mol2)
           a_eatenby_b1.append( mol2)
           a_eatenby_b2.append( mol)
-          self.molecules.remove( mol2)
           self.stack.remove( mol2)
         else:
           mol.handle_overlap()
@@ -709,7 +683,6 @@ class chem_paper( Canvas, object):
 
   def new_molecule( self):
     mol = molecule( self)
-    self.molecules.append( mol)
     self.stack.append( mol)
     return mol
 
@@ -718,7 +691,6 @@ class chem_paper( Canvas, object):
 
 
   def add_molecule( self, mol):
-    self.molecules.append( mol)
     self.stack.append( mol)
 
 
@@ -727,7 +699,6 @@ class chem_paper( Canvas, object):
 
   def new_arrow( self, points=[], spline=0):
     arr = classes.arrow( self, points=points, spline=spline)
-    self.arrows.append( arr)
     self.stack.append( arr)
     arr.draw()
     return arr
@@ -738,7 +709,6 @@ class chem_paper( Canvas, object):
 
   def new_plus( self, x, y):
     pl = classes.plus( self, xy = (x,y))
-    self.pluses.append( pl)
     self.stack.append( pl)
     pl.draw()
     return pl
@@ -749,7 +719,6 @@ class chem_paper( Canvas, object):
 
   def new_text( self, x, y, text=''):
     txt = classes.text( self, xy=(x,y), text=text)
-    self.texts.append( txt)
     self.stack.append( txt)
     return txt
 
@@ -759,7 +728,6 @@ class chem_paper( Canvas, object):
 
   def new_rect( self, coords):
     rec = graphics.rect( self, coords=coords)
-    self.vectors.append( rec)
     self.stack.append( rec)
     return rec
 
@@ -769,7 +737,6 @@ class chem_paper( Canvas, object):
 
   def new_oval( self, coords):
     ovl = graphics.oval( self, coords=coords)
-    self.vectors.append( ovl)
     self.stack.append( ovl)
     return ovl
 
@@ -779,7 +746,6 @@ class chem_paper( Canvas, object):
 
   def new_square( self, coords):
     rec = graphics.square( self, coords=coords)
-    self.vectors.append( rec)
     self.stack.append( rec)
     return rec
 
@@ -789,7 +755,6 @@ class chem_paper( Canvas, object):
 
   def new_circle( self, coords):
     ovl = graphics.circle( self, coords=coords)
-    self.vectors.append( ovl)
     self.stack.append( ovl)
     return ovl
 
@@ -800,7 +765,6 @@ class chem_paper( Canvas, object):
   def new_polygon( self, coords):
     p = graphics.polygon( self, coords=coords)
     self.stack.append( p)
-    self.vectors.append( p)
     return p
 
 
@@ -889,31 +853,22 @@ class chem_paper( Canvas, object):
   def add_object_from_package( self, package):
     if package.nodeName == 'molecule':
       o = molecule( self, package=package)
-      self.molecules.append( o)
     elif package.nodeName == 'arrow':
       o = classes.arrow( self, package=package)
-      self.arrows.append( o)
     elif package.nodeName == 'plus':
       o = classes.plus( self, package=package)
-      self.pluses.append( o)
     elif package.nodeName == 'text':
       o = classes.text( self, package=package)
-      self.texts.append( o)
     elif package.nodeName == 'rect':
       o = graphics.rect( self, package=package)
-      self.vectors.append( o)
     elif package.nodeName == 'oval':
       o = graphics.oval( self, package=package)
-      self.vectors.append( o)
     elif package.nodeName == 'square':
       o = graphics.square( self, package=package)
-      self.vectors.append( o)
     elif package.nodeName == 'circle':
       o = graphics.circle( self, package=package)
-      self.vectors.append( o)
     elif package.nodeName == 'polygon':
       o = graphics.polygon( self, package=package)
-      self.vectors.append( o)
     else:
       o = None
     if o:
@@ -1102,12 +1057,6 @@ class chem_paper( Canvas, object):
       self.add_bindings()
       self.start_new_undo_record()
 
-
-
-
-
-  def get_all_containers( self):
-    return self.molecules + self.arrows + self.pluses + self.texts + self.vectors
 
 
 
@@ -1522,7 +1471,7 @@ class chem_paper( Canvas, object):
     that have changed are applied; in template mode no changes of paper format are made"""
     if not template_mode:
       self.set_paper_properties()
-    objs = objects or self.get_all_containers()
+    objs = objects or self.top_levels
     to_redraw = []
     st = self.standard
     for m in objs:
@@ -1632,25 +1581,6 @@ class chem_paper( Canvas, object):
 
 
 
-  def add_new_container( self, o):
-    if o.object_type == 'plus':
-      self.pluses.append( o)
-    elif o.object_type == 'arrow':
-      self.arrows.append( o)
-    elif o.object_type == 'text':
-      self.texts.append( o)
-    elif o.object_type == 'molecule':
-      self.molecules.append( o)        
-    elif o.object_type in data.vector_graphics_types:
-      self.vectors.append( o)
-    else:
-      # we do not want to put it on stack if it wasn't caught by previous code
-      return
-    self.stack.append( o)
-
-
-
-
 
   def flush_first_selected_mol_to_graph_file( self):
     mols, u = self.selected_to_unique_containers()
@@ -1706,3 +1636,49 @@ class chem_paper( Canvas, object):
       return name_dict['name'] + '<%d>' % name_dict['ord']
     
   create_window_name = staticmethod( create_window_name)
+
+
+  # molecules
+  def __get_molecules( self):
+    return [o for o in self.stack if isinstance( o, molecule)]
+
+  molecules = property( __get_molecules)
+
+
+  # arrows
+  def __get_arrows( self):
+    return [o for o in self.stack if isinstance( o, classes.arrow)]
+
+  arrows = property( __get_arrows)
+
+
+  # pluses
+  def __get_pluses( self):
+    return [o for o in self.stack if isinstance( o, classes.plus)]
+
+  pluses = property( __get_pluses)
+
+
+
+  # texts
+  def __get_texts( self):
+    return [o for o in self.stack if isinstance( o, classes.text)]
+
+  texts = property( __get_texts)
+
+
+  # vectors
+  def __get_vectors( self):
+    return [o for o in self.stack if isinstance( o, graphics.vector_graphics_item)]
+
+  vectors = property( __get_vectors)
+
+
+  # top_levels
+  def __get_top_levels( self):
+    print [o for o in self.stack if not isinstance( o, graphics.top_level)]
+    return self.stack
+    #return [o for o in self.stack if isinstance( o, graphics.top_level)]
+
+  top_levels = property( __get_top_levels)
+

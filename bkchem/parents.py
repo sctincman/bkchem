@@ -309,3 +309,20 @@ class container( simple_parent):
                                     "should give list of point_drawable instances")
 
 
+
+
+class child( simple_parent):
+
+  # parent
+  def __get_parent( self):
+    return None
+
+  parent = property( __get_parent, None, None,
+                     "should give a container")
+
+
+
+class top_level:
+
+  pass
+

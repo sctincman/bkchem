@@ -33,7 +33,8 @@ import xml.dom.minidom as dom
 import operator
 import tkFont
 from parents import meta_enabled, container, with_line, text_like, line_colored
-from parents import area_colored, point_drawable, interactive, drawable
+from parents import area_colored, point_drawable, interactive, drawable, top_level
+from parents import child
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -115,7 +116,7 @@ class standard:
 
 ##-------------------- ARROW CLASS ------------------------------
 
-class arrow( meta_enabled, drawable, with_line, line_colored, container, interactive):
+class arrow( meta_enabled, drawable, with_line, line_colored, container, interactive, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -317,7 +318,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 ## -------------------- POINT CLASS ------------------------------
 
-class point( point_drawable, interactive):
+class point( point_drawable, interactive, child):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -439,9 +440,23 @@ class point( point_drawable, interactive):
     self.redraw()
 
 
+  # parent
+  def __get_parent( self):
+    return self.molecule
+
+  parent = property( __get_parent, None, None,
+                     "returns self.molecule")
+
+
+
+
+
+
+
+
 ##-------------------- PLUS CLASS ------------------------------
 
-class plus( meta_enabled, interactive, point_drawable, text_like, area_colored):
+class plus( meta_enabled, interactive, point_drawable, text_like, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -569,7 +584,7 @@ class plus( meta_enabled, interactive, point_drawable, text_like, area_colored):
 
 ##--------------------TEXT CLASS--------------------
 
-class text( meta_enabled, interactive, point_drawable, text_like, area_colored):
+class text( meta_enabled, interactive, point_drawable, text_like, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)

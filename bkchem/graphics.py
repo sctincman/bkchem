@@ -25,11 +25,11 @@ import dom_extensions
 import misc
 import classes
 import operator
-from parents import meta_enabled, drawable, interactive, area_colored, container, with_line
+from parents import meta_enabled, drawable, interactive, area_colored, container, with_line, top_level
 
 
 
-class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, with_line):
+class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, with_line, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)

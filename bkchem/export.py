@@ -38,7 +38,7 @@ def export_CD_SVG( paper, filename, gzipped=0):
   except IOError, x:
     return 0
   exporter = xml_writer.SVG_writer( paper)
-  exporter.construct_dom_tree( paper.get_all_containers())
+  exporter.construct_dom_tree( paper.top_levels)
   doc = exporter.document
   cdml = paper.get_package().childNodes[0]
   doc.childNodes[0].appendChild( cdml)

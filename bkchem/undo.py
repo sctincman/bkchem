@@ -119,7 +119,7 @@ class state_record:
     fully recover that state."""
     self.stack = copy.copy( self.paper.stack)
 
-    for o in self.paper.get_all_containers():
+    for o in self.paper.top_levels:
       self.record_object( o)
 
   def record_object( self, o):
@@ -205,30 +205,14 @@ class state_record:
     ## DELETED OBJECTS
     # deleted are known from the top of this def
     for o in deleted:
-      if o.object_type == 'plus':
-        self.paper.pluses.append( o)
-      elif o.object_type == 'arrow':
-        self.paper.arrows.append( o)
-      elif o.object_type == 'text':
-        self.paper.texts.append( o)
-      elif o.object_type == 'molecule':
-        self.paper.molecules.append( o)        
-      elif o.object_type in data.vector_graphics_types:
+      if o.object_type in data.vector_graphics_types:
         self.paper.vectors.append( o)
       if o.object_type != 'molecule':
         o.draw()
     ## ADDED OBJECTS
     added = misc.difference( previous.objects, self.objects)
     for o in added:
-      if o.object_type == 'plus':
-        self.paper.pluses.remove( o)
-      elif o.object_type == 'arrow':
-        self.paper.arrows.remove( o)
-      elif o.object_type == 'text':
-        self.paper.texts.remove( o)
-      elif o.object_type == 'molecule':
-        self.paper.molecules.remove( o)
-      elif o.object_type in data.vector_graphics_types:
+      if o.object_type in data.vector_graphics_types:
         self.paper.vectors.remove( o)
       if o.object_type != 'molecule':
         o.delete()

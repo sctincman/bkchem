@@ -595,7 +595,7 @@ class BKchem( Tk):
       except IOError, x:
         raise "unable to open to file ", x
       exporter = SVG_writer( self.paper)
-      exporter.construct_dom_tree( self.paper.get_all_containers())
+      exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
       inp.write( exporter.document.toxml())
       inp.close()
@@ -684,7 +684,7 @@ class BKchem( Tk):
         if cdml == 0:
           # doc is a molecule
           self.paper.set_paper_properties()
-          self.paper.add_new_container( doc)
+          self.stack.append( doc)
           doc.draw()
           self.paper.add_bindings()
           self.paper.start_new_undo_record()
@@ -790,7 +790,7 @@ Enter SMILES:""")
 	  tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
 				  _("The oasa library ended with error:\n%s") % sys.exc_value)
 	return
-      self.paper.add_new_container( mol)
+      self.stack.append( mol)
       mol.draw()
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
@@ -820,7 +820,7 @@ Enter IChI:""")
                                   _("The oasa library ended with error:\n%s") % sys.exc_value)
           return
 
-        self.paper.add_new_container( mol)
+        self.stack.append( mol)
         mol.draw()
         self.paper.add_bindings()
         self.paper.start_new_undo_record()

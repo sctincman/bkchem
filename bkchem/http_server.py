@@ -72,7 +72,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     self.end_headers()
 
     exporter = xml_writer.SVG_writer( self.server.paper)
-    exporter.construct_dom_tree( self.server.paper.get_all_containers())
+    exporter.construct_dom_tree( self.server.paper.top_levels)
     self.wfile.write( exporter.document.toxml())
 
 

@@ -37,7 +37,7 @@ import tkFont
 import periodic_table as PT
 import groups_table as GT
 import marks
-from parents import meta_enabled, area_colored, point_drawable, text_like
+from parents import meta_enabled, area_colored, point_drawable, text_like, child
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -46,7 +46,7 @@ from parents import meta_enabled, area_colored, point_drawable, text_like
 
 
 ### Class ATOM --------------------------------------------------
-class atom( meta_enabled, area_colored, point_drawable, text_like):
+class atom( meta_enabled, area_colored, point_drawable, text_like, child):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -246,6 +246,15 @@ class atom( meta_enabled, area_colored, point_drawable, text_like):
     self.set_name( xml_text)
 
   xml_text = property( __get_xml_text, __set_xml_text)
+
+
+  # parent
+  def __get_parent( self):
+    return self.molecule
+
+  parent = property( __get_parent, None, None,
+                     "returns self.molecule")
+
 
 
 

@@ -32,7 +32,7 @@ import xml.dom.minidom as dom
 import operator
 import data
 import copy
-from parents import meta_enabled, line_colored, drawable, with_line, interactive
+from parents import meta_enabled, line_colored, drawable, with_line, interactive, child
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -41,7 +41,7 @@ from parents import meta_enabled, line_colored, drawable, with_line, interactive
 
 
 # class BOND--------------------------------------------------
-class bond( meta_enabled, line_colored, drawable, with_line, interactive):
+class bond( meta_enabled, line_colored, drawable, with_line, interactive, child):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -234,6 +234,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive):
     self.__dirty = 1
 
   auto_bond_sign = property( __get_auto_bond_sign, __set_auto_bond_sign)
+
+
+
+  # parent
+  def __get_parent( self):
+    return self.molecule
+
+  parent = property( __get_parent, None, None,
+                     "returns self.molecule")
+
+
 
 
   ## // ------------------------------ END OF PROPERTIES --------------------

@@ -37,11 +37,11 @@ import periodic_table as PT
 import groups_table as GT
 import copy
 import helper_graphics as hg
-from parents import container
+from parents import container, top_level
 from atom import atom
 from bond import bond
 
-class molecule( container):
+class molecule( container, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
