@@ -164,7 +164,7 @@ class biradical( mark):
         x, y = tr.transform_xy( x, y)
         tr_coords = [x-d, y-d, x+d, y+d]
       else:
-        tr_coords = tr.transform_flat_list( coords)
+        tr_coords = tr.transform_xy_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
 
 
@@ -211,7 +211,7 @@ class electronpair( mark):
     self.x, self.y = tr.transform_xy( self.x, self.y)
     for i in self.items:
       coords = self.paper.coords( i)
-      tr_coords = tr.transform_flat_list( coords)
+      tr_coords = tr.transform_xy_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
 
 

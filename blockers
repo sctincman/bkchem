@@ -11,9 +11,6 @@ remarks
 0.6.0
 =======
 
-- the fucked booleans corrupt saving of str( boolean) - was 1 or 0 now is 'True' or 'False'
-- undo not working well with double bond positioning (the bond should recalculate the sign after transformation)
-
 
 new bond types -
 	- update exports and imports
@@ -21,7 +18,6 @@ new bond types -
 - vertical and horizontal swap
   - not containers
   - things should remain selected
-  - shit - i found a case where recalc_side does not work right, needs some work!
 
 - mode for ring creation
 

@@ -163,8 +163,8 @@ class BKchem( Tk):
     scaleMenu.add( 'command', label=_('Swap'), command = self.paper.lower_selected_to_bottom, accelerator='(C-o s)')
     # not done yet
     scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Vertical'), command = self.paper.swap_sides_of_selected)
-    scaleMenu.add( 'command', label=_('Horizontal'), command = lambda: self.paper.swap_sides_of_selected('horizontal') )
+    scaleMenu.add( 'command', label=_('Vertical mirror'), command = self.paper.swap_sides_of_selected)
+    scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda: self.paper.swap_sides_of_selected('horizontal') )
 # for dev only
 #    scaleMenu.add( 'separator')
 #    scaleMenu.add( 'command', label=_('Flush mol'), command = self.paper.flush_first_selected_mol_to_graph_file)

@@ -37,6 +37,25 @@ class transform3d:
     x1, y1, z1, one = self.mat.get_multiplied2( [[x],[y],[z],[1]])
     return x1[0], y1[0], z1[0]
 
+  def transform_xy( self, x, y):
+    """is used only for compatibility with 2D transform, assumes z=0,
+    should be used only in cases where it is sure that starting and
+    result positions have z0 (pi rotation around one axis etc.)"""
+    x0, y0, z0 = self.transform_xyz( x, y, 0)
+    return x0, y0
+
+  def transform_xy_flat_list( self, coords):
+    """ONLY X,Y TRANSFORM, for compatibility with 2D transform!!!,
+    transforms a list that cointains alternating x,y values (not list of pairs
+    as self.transform_list)"""
+    ret = []
+    for j in range( 0, len( coords), 2):
+      x, y = self.transform_xy( coords[j], coords[j+1])
+      ret.append( x)
+      ret.append( y)
+    return ret
+
+
   def transform_list( self, l):
     ret = []
     for line in l:

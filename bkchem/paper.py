@@ -29,6 +29,7 @@ from Tkinter import Canvas
 import tkFont, tkMessageBox
 import classes
 from transform import transform 
+from transform3d import transform3d
 import misc
 from temp_manager import template_manager
 import string
@@ -1231,31 +1232,27 @@ class BKpaper( Canvas):
     # vertical (rotate around y axis)
     if mode == 'vertical':
       xs = [bboxes[i] for i in range( 0, len( bboxes), 2)]
-      x0_2 = (max( xs) + min( xs)) # i need to multiply the x0 value by 2 so I don't divide it here :)
+      x0 = (max( xs) + min( xs)) / 2.0
       for o in to_align:
         if o.meta__is_container:
-          for i in o.get_shape_defining_children():
-            x, y = i.get_xy()
-            i.move_to( x0_2 - x, y)
-          if o.object_type == 'molecule':
-            o.redraw( reposition_double=1)
-          else:
-            o.redraw()
+          tr = transform3d()
+          tr.set_move( -x0, 0, 0)
+          tr.set_rotation_y( math.pi)
+          tr.set_move( x0, 0, 0)
+          o.transform( tr)
         else:
           print "fuck"
     # horizontal (rotate around x axis)
     if mode == 'horizontal':
       ys = [bboxes[i] for i in range( 1, len( bboxes), 2)]
-      y0_2 = (max( ys) + min( ys)) # i need to multiply the y0 value by 2 so I don't divide it here :)
+      y0 = (max( ys) + min( ys)) / 2.0
       for o in to_align:
         if o.meta__is_container:
-          for i in o.get_shape_defining_children():
-            x, y = i.get_xy()
-            i.move_to( x, y0_2 -y)
-          if o.object_type == 'molecule':
-            o.redraw( reposition_double=1)
-          else:
-            o.redraw()
+          tr = transform3d()
+          tr.set_move( 0, -y0, 0)
+          tr.set_rotation_x( math.pi)
+          tr.set_move( 0, y0, 0)
+          o.transform( tr)
         else:
           print "fuck"
 

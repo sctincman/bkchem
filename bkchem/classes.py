@@ -1642,9 +1642,10 @@ class bond( meta_enabled):
   def transform( self, tr):
     for i in [self.item] + self.second + self.third + self.items:
       coords = self.paper.coords( i)
-      tr_coords = tr.transform_flat_list( coords)
+      tr_coords = tr.transform_xy_flat_list( coords)
       self.paper.coords( i, tuple( tr_coords))
     # we need to check if the sing of double bond width has not changed
+    # this happend during swaps (3d rotation)
     if self.order == 2 and not self.center:
       line = list( self.atom1.get_xy())
       line += self.atom2.get_xy()
@@ -1652,7 +1653,6 @@ class bond( meta_enabled):
       sign = geometry.on_which_side_is_point( line, (x,y))
       if sign * self.bond_width < 0:
         self.bond_width *= -1
-        print "reset"
 
 
 

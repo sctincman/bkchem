@@ -49,7 +49,7 @@ class transform:
       ret.append( self.transform_xy( line[0], line[1]))
     return ret
 
-  def transform_flat_list( self, coords):
+  def transform_xy_flat_list( self, coords):
     """transforms a list that cointains alternating x,y values (not list of pairs
     as self.transform_list)"""
     ret = []
