@@ -41,7 +41,7 @@ from warnings import warn
 import undo
 import math
 import xml_writer
-import periodic_table as PT
+from oasa import periodic_table as PT
 import Pmw
 import graphics
 import types
@@ -742,18 +742,19 @@ class chem_paper( Canvas, object):
     for item in self.selected[:]:
       if isinstance( item, oasa.graph.vertex):
         if name:
+          self.unselect( [item])
           v = item.molecule.create_vertex_according_to_text( item, name, interpret=self.app.editPool.interpret)
           item.copy_settings( v)
           item.molecule.replace_vertices( item, v)
           item.delete()
           v.draw()
+          self.select( [v])
           debug.log( type( v))
       if item.object_type == 'text':
         if name:
           item.set_text( name)
           item.redraw()
     if self.selected:
-      self.unselect_all()
       self.start_new_undo_record()
 
 
@@ -1374,7 +1375,7 @@ class chem_paper( Canvas, object):
     """expands groups, if selected==1 only for selected, otherwise for all"""
     if selected:
       mols = [o for o in self.selected_to_unique_top_levels()[0] if o.object_type == 'molecule']
-      atoms = [o for o in self.selected if misc.isinstance( o, group)]
+      atoms = [o for o in self.selected if isinstance( o, group)]
       self.unselect_all()
       for mol in mols:
         this_atoms = misc.intersection( atoms, mol.atoms)

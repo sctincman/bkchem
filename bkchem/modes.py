@@ -516,7 +516,7 @@ class edit_mode( basic_mode):
     [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     # all atoms to update
     as = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
-    [a.reposition_marks() for a in as]
+    [a.reposition_marks() for a in as if isinstance( a, atom)]
 
 
   ## METHODS FOR KEY EVENTS RESPONSES

@@ -30,7 +30,7 @@ import geometry
 from warnings import warn
 import dom_extensions
 import xml.dom.minidom as dom
-import periodic_table as PT
+from oasa import periodic_table as PT
 import groups_table as GT
 import copy
 import helper_graphics as hg
@@ -129,11 +129,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
   def add_vertex( self, v=None):
     x = oasa.molecule.add_vertex( self, v=v)
     x.molecule = self
+    return x
 
   def add_edge( self, v1, v2, e=None):
     x = oasa.molecule.add_edge( self, v1, v2, e=e)
     x.molecule = self
-
+    return x
 
 
   ## LOOK
@@ -474,24 +475,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       map = atoms # only selected atoms
     for a in map:
       if isinstance( a, group):
-        if a.name in names:
-          a2 = self.atoms_bound_to( a)[0]
-          x1, y1 = a2.get_xy()
-          x2, y2 = a.get_xy()
-          t = self.paper.app.gm.get_transformed_template( names.index( a.name), (x1,y1,x2,y2), type='atom1')
-          t.draw( no_automatic=1)
-          self.eat_molecule( t)
-          self.move_bonds_between_atoms( a, t.next_to_t_atom)
-          self.delete_items( [a])
-        else:
-          print "unknown group %s" % a.name
-      elif a.type == "chain":
-        p = PT.formula_dict( a.name)
-        n = p['C']
-        a.set_name( 'C')
-        a.redraw()
-        for i in range( n-1):
-          a,b = self.add_atom_to( a)
+        to_draw = a.expand() or []
+        [o.draw() for o in to_draw]
+        a.delete()
+    self.redraw()
+    
 
   def move_bonds_between_atoms( self, a1, a2):
     """transfers all bonds from one atom to the other; both atoms must be in self"""

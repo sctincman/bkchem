@@ -31,7 +31,7 @@ import dom_extensions
 import xml.dom.minidom as dom
 import operator
 import tkFont
-import periodic_table as PT
+from oasa import periodic_table as PT
 import groups_table as GT
 import marks
 from parents import meta_enabled, area_colored, point_drawable, text_like, child

@@ -31,7 +31,7 @@ import dom_extensions
 import xml.dom.minidom as dom
 import operator
 import tkFont
-import periodic_table as PT
+from oasa import periodic_table as PT
 import groups_table as GT
 from parents import meta_enabled, area_colored, point_drawable, text_like, child
 import data
@@ -274,8 +274,9 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
     return self.__group_type
 
   def __set_group_type( self, group_type):
-    if group_type not in (None,"builtin","explicit","implicit"):
-      raise "group_type must be one of None,'builtin','explicit','implicit', got %s" % group_type
+    allowed_types = (None,"builtin","explicit","implicit","chain","general")
+    if group_type not in allowed_types:
+      raise "group_type must be one of "+ str( allowed_types) + "got %s" % group_type
     self.__group_type = group_type
 
   group_type = property( __get_group_type, __set_group_type)
@@ -316,7 +317,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
     form = PT.formula_dict( name.upper())
     if occupied_valency == 1 and form.is_saturated_alkyl_chain():
       self.name = str( form)
-      self.group_type = "implicit"
+      self.group_type = "chain"
       return True
     return False
 
@@ -347,7 +348,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
         return GT.groups_table[ self.name.lower()]['textf']
       else:
         return GT.groups_table[ self.name.lower()]['textb']
-    elif self.group_type == "implicit":
+    elif self.group_type in ("implicit","chain"):
       return re.sub( "\d+", '<sub>\g<0></sub>', self.name)
 
 
@@ -685,5 +686,46 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
 
 
+  def expand( self):
+    """expands the group and returns list of atoms that new drawing afterwords"""
+    if self.group_type == "builtin":
+      names = self.paper.app.gm.get_template_names()
+      if self.name in names:
+        a2 = self.neighbors[0]
+        x1, y1 = a2.get_xy()
+        x2, y2 = self.get_xy()
+        self.group_graph = self.paper.app.gm.get_transformed_template( names.index( self.name), (x1,y1,x2,y2), type='atom1')
+        replacement = self.group_graph.next_to_t_atom
+      else:
+        print "unknown group %s" % a.name
+        return None
 
+    elif self.group_type == "chain":
+      self.group_graph = self.molecule.create_graph()
+      p = PT.formula_dict( self.name)
+      n = p['C']
+      last = None
+      for i in range( n):
+        v = self.group_graph.add_vertex()
+        print str( last)
+        print str( v)
+        if last:
+          self.group_graph.add_edge( last, v)
+        last = v
+      replacement = self.group_graph.vertices[0]
+      replacement.x = self.x
+      replacement.y = self.y
+      print self.group_graph.vertices, self.group_graph.edges, self.group_graph.is_connected()
 
+    elif self.group_type == "implicit":
+      if not self.group_graph:
+        self.set_name( self.name, valency=self.valency)
+      replacement = self.group_graph.vertices[0]
+      replacement.x = self.x
+      replacement.y = self.y
+      
+    self.molecule.eat_molecule( self.group_graph)
+    self.molecule.move_bonds_between_atoms( self, replacement)
+    self.molecule.delete_vertex( self)
+    oasa.coords_generator.calculate_coords( self.molecule, bond_length=-1)
+    return self.group_graph.vertices

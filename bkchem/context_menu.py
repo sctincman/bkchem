@@ -21,7 +21,7 @@
 import Tkinter
 import misc
 import types
-import periodic_table as PT
+from oasa import periodic_table as PT
 import os
 from atom import atom
 
