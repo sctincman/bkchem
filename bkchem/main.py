@@ -1343,66 +1343,45 @@ Enter IChI:""")
 
   def clean( self):
     import oasa
-    import operator
-    import math
-    from transform import transform
-
-    for mol in self.paper.molecules:
-      mean = lambda xs: sum( xs) / len( xs)
-      wmean = lambda xs, ws: sum( map( operator.mul, xs, ws)) / sum( ws)
-      rmse = lambda xs: math.sqrt( mean( [(x-mean(xs))**2 for x in xs]))
-      rse = lambda xs: map( math.sqrt, [(x-mean(xs))**2 for x in xs])
-
-      fis1, x1, y1 = self.fi_x_y( mol)
-      ws = [math.sqrt( (x-x1)**2 + (y-y1)**2) for (x,y) in [a.get_xy() for a in mol.atoms]]
-      fi1 = wmean( fis1, ws)
-      print fi1
-
-      oasa.coords_generator.calculate_coords( mol, force=1, bond_length=self.paper.any_to_px( self.paper.standard.bond_length))
-
-      fis2, x2, y2 = self.fi_x_y( mol)
-      ws = [math.sqrt( (x-x2)**2 + (y-y2)**2) for (x,y) in [a.get_xy() for a in mol.atoms]]
-      fi2 = wmean( fis2, ws)
-      print fi2
+    import geometry, transform, math
       
-##       diffs = map( operator.add, fis1, map( operator.neg, fis2))
 
-##       print rmse( diffs), diffs
 
-##       if rmse( diffs) > 1:
-##         # invert it
-##         tr = transform()
-##         tr.set_move( -x2, -y2)
-##         tr.set_rotation( -mean( fis2))
-##         tr.set_scaling_xy( 1, -1)
-##         tr.set_rotation( mean( fis2))
-##         tr.set_move( x2, y2)
-##         mol.transform( tr)
-##         fis2, x2, y2 = self.fi_x_y( mol)      
-##         diffs = map( operator.add, fis1, map( operator.neg, fis2))
+    if len( self.paper.selected) == 1 and self.paper.selected[0].object_type == "bond":
+      b = self.paper.selected[0]
+      mol = b.molecule
+      for a in mol.atoms:
+        if a != b.atom1 and a!=b.atom2:
+          aaa = a
+          side = geometry.on_which_side_is_point( (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y), (aaa.x,aaa.y))
+          a.x = None
+          a.y = None
 
-##       print rmse( diffs)
-      
-      tr = transform()
-      tr.set_move( -x2, -y2)
-      tr.set_rotation( fi2-fi1)
-      tr.set_move( x1, y1)
-      mol.transform( tr)
+
+      oasa.coords_generator.calculate_coords( mol, force=0, bond_length=-1)
+
+      side2 = geometry.on_which_side_is_point( (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y), (aaa.x,aaa.y))
+
+      if side != side2:
+        x1, y1, x2, y2 = (b.atom1.x, b.atom1.y, b.atom2.x, b.atom2.y)
+        centerx = ( x1 + x2) / 2
+        centery = ( y1 + y2) / 2
+        angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+        if angle0 >= math.pi :
+          angle0 = angle0 - math.pi
+        tr = transform.transform()
+        tr.set_move( -centerx, -centery)
+        tr.set_rotation( -angle0)
+        tr.set_scaling_xy( 1, -1)
+        tr.set_rotation( angle0)
+        tr.set_move(centerx, centery)
+
+        mol.transform( tr)
+
       mol.redraw( reposition_double=1)
-    self.paper.start_new_undo_record()
-      
+      self.paper.start_new_undo_record()
 
-  def fi_x_y( self, mol):
-    import geometry
-    coords = [a.get_xy() for a in mol.atoms]
-    bbox, x = mol.get_geometry()
-    x = (bbox[0] + bbox[2]) / 2
-    y = (bbox[1] + bbox[3]) / 2
-    #x = mol.atoms[0].x
-    #y = mol.atoms[0].y
-    fis = [geometry.clockwise_angle_from_east( x0-x, y0-y) for (x0,y0) in coords]
-    return fis, x, y
-
+    
 
     
 

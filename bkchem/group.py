@@ -393,7 +393,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child, oasa.
 
 
 
-  def redraw( self):
+  def redraw( self, suppress_reposition=0):
     self.update_font()
     # at first we delete everything...
     self.paper.unregister_id( self.item)
