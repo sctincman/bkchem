@@ -899,7 +899,7 @@ class atom( meta_enabled):
         dom_extensions.elementUnder( a, 'mark', attributes=(('type', m),
                                                             ('x', x),
                                                             ('y', y),
-                                                            ('auto', str( o.auto))))
+                                                            ('auto', str( int( o.auto)))))
     return a
 
   def get_cdml_id( self):
