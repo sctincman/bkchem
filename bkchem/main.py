@@ -1118,6 +1118,7 @@ Enter IChI:""")
     f = f or 'cdml'
     t = t or 'cd-svg'
 
+    # processing of the files
     for file in files:
       # choose the output filename
       if not o:
@@ -1128,10 +1129,10 @@ Enter IChI:""")
       # read
       if f == 'cdml':
         sys.stderr.write( " * reading file: %s\n" % file)
-        #try:
-        self.load_CDML( file, replace=1)
-        #except e:
-        #  sys.stderr.write( " !! failed with error: %s\n" % e)
+        ret = self.load_CDML( file, replace=1)
+        if not ret:
+          sys.stderr.write( " !! failed, will not proceed.")
+          return 
 
       # write
       start_time = time.time()
