@@ -1011,13 +1011,13 @@ class bond_align_mode( edit_mode):
 
   def __init__( self, paper):
     edit_mode.__init__( self, paper)
-    self.name = _('bond align')
+    self.name = _('transformation mode')
     self._rotated_mol = None
     self.first_atom_selected = None
-    self.submodes = [['tohoriz','tovert']]
-    self.submodes_names = [[_('horizontal align'),_('vertical align')]]
+    self.submodes = [['tohoriz','tovert','invertthrough','mirrorthrough']]
+    self.submodes_names = [[_('horizontal align'),_('vertical align'),_('invert through a point'),_('mirror through a line')]]
     self.submode = [0]
-    self._one_atom_is_enough_for_this_submode = [0,0]
+    self._needs_two_atoms = [1,1,0,1]
 
   def mouse_down( self, event, modifiers = []):
     if not self.focused:
@@ -1036,14 +1036,19 @@ class bond_align_mode( edit_mode):
       self._rotated_mol = self.focused.molecule
       x1, y1 = self.focused.atom1.get_xy()
       x2, y2 = self.focused.atom2.get_xy()
+      coords = (x1,y1,x2,y2)
     elif self.focused.object_type == 'atom':
       if not self.first_atom_selected: # first atom picked
-        self.first_atom_selected = self.focused
-        self.first_atom_selected.select()
-        # bez tohodle ta selekce neni videt:
-        self.paper.lower(self.paper.background)
-        self._rotated_mol = self.focused.molecule
-        return
+        if self._needs_two_atoms[ self.submode[0]]:
+          self.first_atom_selected = self.focused
+          self.first_atom_selected.select()
+          # bez tohodle ta selekce neni videt:
+          self.paper.lower(self.paper.background)
+          self._rotated_mol = self.focused.molecule
+          return
+        else:
+          self._rotated_mol = self.focused.molecule
+          coords = self.focused.get_xy()
       else: # second atom picked
         if self.focused.molecule != self.first_atom_selected.molecule:
           self.paper.signal_to_app( _("atoms must be in the same molecule!"))
@@ -1053,9 +1058,10 @@ class bond_align_mode( edit_mode):
           return
         x1, y1 = self.first_atom_selected.get_xy()
         x2, y2 = self.focused.get_xy()
+        coords = (x1,y1,x2,y2)
         self.first_atom_selected.unselect()
         self.first_atom_selected = None
-    tr = self.__class__.__dict__['_transform_'+self.get_submode(0)]( self, x1, y1, x2, y2)
+    tr = self.__class__.__dict__['_transform_'+self.get_submode(0)]( self, coords)
     self._rotated_mol.transform( tr)
     self._rotated_mol = None
     self.paper.start_new_undo_record()
@@ -1066,7 +1072,8 @@ class bond_align_mode( edit_mode):
       self.focused = None
 
 
-  def _transform_tohoriz( self, x1, y1, x2, y2):
+  def _transform_tohoriz( self, coords):
+    x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
     angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
@@ -1087,7 +1094,8 @@ class bond_align_mode( edit_mode):
     return tr
       
 
-  def _transform_tovert( self, x1, y1, x2, y2):
+  def _transform_tovert( self, coords):
+    x1, y1, x2, y2 = coords
     centerx = ( x1 + x2) / 2
     centery = ( y1 + y2) / 2
     angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
@@ -1104,6 +1112,36 @@ class bond_align_mode( edit_mode):
     tr.set_rotation( angle)
     tr.set_move(centerx, centery)
     return tr
+
+  def _transform_invertthrough( self, coords):
+    if len( coords) == 4:
+      x1, y1, x2, y2 = coords      
+      x = ( x1 +x2) /2.0
+      y = ( y1 +y2) /2.0
+    else:
+      x, y = coords
+    tr = transform.transform()
+    tr.set_move( -x, -y)
+    tr.set_scaling_xy( -1, -1)
+    tr.set_move( x, y)
+    return tr
+
+  def _transform_mirrorthrough( self, coords):
+    x1, y1, x2, y2 = coords
+    centerx = ( x1 + x2) / 2
+    centery = ( y1 + y2) / 2
+    angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
+    if angle0 >= math.pi :
+      angle0 = angle0 - math.pi
+    tr = transform.transform()
+    tr.set_move( -centerx, -centery)
+    tr.set_rotation( -angle0)
+    tr.set_scaling_xy( 1, -1)
+    tr.set_rotation( angle0)
+    tr.set_move(centerx, centery)
+    return tr
+
+
 
   def mouse_click( self, event):
     pass
