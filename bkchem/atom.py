@@ -135,10 +135,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     return self.__x
 
   def _set_x( self, x):
-    if self.paper:
-      self.__x = Screen.any_to_px( x)
-    else:
-      self.__x = x
+    self.__x = Screen.any_to_px( x)
 
   x = property( _get_x, _set_x)
 
@@ -148,10 +145,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     return self.__y
 
   def _set_y( self, y):
-    if self.paper:
-      self.__y = Screen.any_to_px( y)
-    else:
-      self.__y = y
+    self.__y = Screen.any_to_px( y)
 
   y = property( _get_y, _set_y)
 
@@ -177,7 +171,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
       t = name.decode( 'utf-8')
     self.symbol = t.encode('utf-8')
     self.dirty = 1
-    #self.show = int( self.__name != 'C')
+    #self.show = int( self.symbol != 'C')
 
   name = property( _get_name, _set_name)
 
@@ -788,7 +782,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     ret = PT.formula_dict( self.name)
     if self.free_valency > 0:
       ret['H'] = self.free_valency
-    return re
+    return ret
 
 
 
@@ -916,7 +910,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child_with_pa
     for m in self.marks:
       if m.__class__.__name__ == 'plus':
         res += 1
-      elif self.__class__.__name__ == "minus":
+      elif m.__class__.__name__ == "minus":
         res -= 1
     return res
 

@@ -83,8 +83,6 @@ class mark( simple_parent):
     registered = self.paper.is_registered_object( self)
     if registered:
       self.unregister()
-    else:
-      warnings.warn( "sdsddsd", UserWarning, 2)
     self.delete()
     self.draw()
     if registered:
@@ -146,7 +144,8 @@ class mark( simple_parent):
         m = cls( atom, x, y, auto=int(auto))
       if hasattr( m, "draw_circle"):
         circle = package.getAttribute( "draw_circle")
-        m.draw_circle = bool( data.booleans.index( circle))
+        if circle != '':
+          m.draw_circle = bool( data.booleans.index( circle))
       return m
     else:
       raise ValueError, "no such mark type %s" % typ
@@ -334,14 +333,15 @@ class plus( mark):
     e = doc.createElement( 'g')
     x, y = self.x, self.y
     s = round( self.size / 2)
-    dom_extensions.elementUnder( e, 'ellipse',
-                                 (( 'cx', str( x)),
-                                  ( 'cy', str( y)),
-                                  ( 'rx', str( s)),
-                                  ( 'ry', str( s)),
-                                  ( 'fill', 'none'),
-                                  ( 'stroke', self.atom.line_color),
-                                  ( 'stroke-width', '1')))
+    if self.draw_circle:
+      dom_extensions.elementUnder( e, 'ellipse',
+                                   (( 'cx', str( x)),
+                                    ( 'cy', str( y)),
+                                    ( 'rx', str( s)),
+                                    ( 'ry', str( s)),
+                                    ( 'fill', 'none'),
+                                    ( 'stroke', self.atom.line_color),
+                                    ( 'stroke-width', '1')))
     for x1, y1, x2, y2 in [(x-s+2, y, x+s-2, y), (x, y-s+2, x, y+s-2)]:
       dom_extensions.elementUnder( e, 'line',
                                     (( 'x1', str( x1)),
@@ -390,14 +390,15 @@ class minus( mark):
     e = doc.createElement( 'g')
     x, y = self.x, self.y
     s = round( self.size / 2)
-    dom_extensions.elementUnder( e, 'ellipse',
-                                 (( 'cx', str( x)),
-                                  ( 'cy', str( y)),
-                                  ( 'rx', str( s)),
-                                  ( 'ry', str( s)),
-                                  ( 'fill', 'none'),
-                                  ( 'stroke', self.atom.line_color),
-                                  ( 'stroke-width', '1')))
+    if self.draw_circle:
+      dom_extensions.elementUnder( e, 'ellipse',
+                                   (( 'cx', str( x)),
+                                    ( 'cy', str( y)),
+                                    ( 'rx', str( s)),
+                                    ( 'ry', str( s)),
+                                    ( 'fill', 'none'),
+                                    ( 'stroke', self.atom.line_color),
+                                    ( 'stroke-width', '1')))
     for x1, y1, x2, y2 in [(x-s+2, y, x+s-2, y)]:
       dom_extensions.elementUnder( e, 'line',
                                     (( 'x1', str( x1)),

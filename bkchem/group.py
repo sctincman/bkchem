@@ -39,7 +39,6 @@ import re
 import debug
 
 import oasa
-import oasa_bridge
 
 from singleton_store import Store, Screen
 
@@ -308,9 +307,10 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     # try interpret the formula
     lf = oasa.linear_formula.linear_formula( name, valency=occupied_valency)
     if lf.molecule:
-      self.group_graph = oasa_bridge.oasa_mol_to_bkchem_mol( lf.molecule, self.paper)
+      self.group_graph = lf.molecule
       self.name = name
       self.group_type = "implicit"
+      self.group_graph.paper = self.paper
       return True
     # try chain
     form = PT.formula_dict( name.upper())
@@ -709,8 +709,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       last = None
       for i in range( n):
         v = self.group_graph.add_vertex()
-        print str( last)
-        print str( v)
         if last:
           self.group_graph.add_edge( last, v)
         last = v
@@ -722,6 +720,9 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     elif self.group_type == "implicit":
       if not self.group_graph:
         self.set_name( self.name, occupied_valency=self.valency)
+      for v in self.group_graph.vertices:
+        v.x, v.y = None, None
+        v.show = v.symbol != 'C'
       replacement = self.group_graph.vertices[0]
       replacement.x = self.x
       replacement.y = self.y

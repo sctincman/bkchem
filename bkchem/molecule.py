@@ -120,17 +120,14 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   ## OVERRIDES THE OASA.GRAPH METHODS
 
-  def create_graph( self):
-    return molecule( self.paper)
-
   def create_vertex( self, vertex_class=None):
     if not vertex_class:
       vertex_class = self.vertex_class
-    std = self.paper and self.paper.standard or None
+    std = self.paper and self.paper.standard or Store.app.paper.standard
     return vertex_class( standard=std)
 
   def create_edge( self):
-    std = self.paper and self.paper.standard or None
+    std = self.paper and self.paper.standard or Store.app.paper.standard
     return bond( standard=std)
 
   def add_vertex( self, v=None):

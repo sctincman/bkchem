@@ -78,6 +78,10 @@ class BKchem( Tk):
     self.option_add( "*Entry*Foreground", "#000000")
     self.tk_setPalette( "background", config.background_color,
                         "insertBackground","#ffffff")
+
+    import oasa
+    import molecule
+    oasa.config.Config.molecule_class = molecule.molecule
     
 
   def initialize( self):

@@ -583,7 +583,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like, child_wit
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
-    return None
+    return PT.formula_dict()
 
 
 
