@@ -1401,6 +1401,8 @@ class mark_mode( edit_mode):
     a = ['radical','biradical','electronpair','plus','minus']
     if self.focused and self.focused.object_type == 'atom':
       self.focused.set_mark( mark=a[ self.submode[0]])
+      if self.focused.show_hydrogens and self.focused.show:
+        self.focused.redraw()
       self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
 

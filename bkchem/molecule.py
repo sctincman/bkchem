@@ -271,9 +271,9 @@ class molecule( container, top_level):
 
   def create_new_atom( self, x, y, name=None):
     a = atom( self.paper, xy=(x, y))
+    self.insert_atom( a)
     if name:
       a.set_name( name)
-    self.insert_atom( a)
     a.draw()
     return a
 
