@@ -1196,7 +1196,11 @@ Enter IChI:""")
 
         in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
 
-        exit_code = os.spawnv( os.P_WAIT, program, (program, name, in_name, "-AUXNONE"))
+        if os.name == 'nt':
+          options = "/AUXNONE"
+        else:
+          options = "-AUXNONE"
+        exit_code = os.spawnv( os.P_WAIT, program, (program, name, in_name, options))
 
         if exit_code == 0:
           in_file = open( in_name, 'r')
