@@ -403,7 +403,9 @@ class bond( meta_enabled):
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
-    items = [self.item] + self.second + self.third + self.items + [self.selector]
+    items = [self.item] + self.second + self.third + self.items
+    if self.selector:
+      items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
       
   def delete( self):

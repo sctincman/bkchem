@@ -10,8 +10,6 @@ remarks
 0.6.0
 =======
 
-- moving of whole molecule does not work!
-
 - think about how to make selecting of the whole molecule by means of a rectange
 
 - make some profiling on misc.difference, or switch to sets? I would need to use python 2.3
