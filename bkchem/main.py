@@ -454,7 +454,7 @@ class BKchem( Tk):
       if self._save_according_to_extension( a):
         self.paper.file_name = self.get_name_dic( a)
         self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
-        return new_name
+        return self.paper.file_name
       else:
         return None
     else:
