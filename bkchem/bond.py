@@ -403,8 +403,7 @@ class bond( meta_enabled):
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
-    #self.redraw()  # changed for speed, reduces time needed to move objects to 1/2 
-    items = [self.item] + self.second + self.third + self.items
+    items = [self.item] + self.second + self.third + self.items + [self.selector]
     [self.paper.move( o, dx, dy) for o in items]
       
   def delete( self):

@@ -346,8 +346,9 @@ class BKpaper( Canvas):
       for b in m.bonds:
         a1, a2 = b.get_atoms()
         if (a1 in s_atoms) or (a2 in s_atoms):
-          a.append( b) 
-    return a
+          a.append( b)
+    # if bond is also selected then it moves with and should not be updated
+    return [b for b in a if b not in self.selected]
 
   def atoms_to_update( self):
     a = []

@@ -5,12 +5,14 @@ remarks
   calls.
 - make use of get_submode() in modes
 - why does _decide_distance_and_center compute bond_width from length? It should take it from the standard
-- recalc_side needs to be really perfect, which isn't
 
 
 0.6.0
 =======
 
+- think about how to make selecting of the whole molecule by means of a rectange
+
+- make some profiling on misc.difference, or switch to sets? I would need to use python 2.3
 
 new bond types -
 	- update exports and imports
@@ -34,7 +36,6 @@ new bond types -
 
 - code cleanup!
   - yes|no in get_package
-  - distance, bond_width etc. in xml
   - widgets for paper properties selection
 - do something with pixmaps and their fucked behaviour of not working when imported on the top of the file
   - needs some proper module initiation?
