@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """few functions focused on SVG"""
 
@@ -30,6 +27,7 @@ def ftext_to_svg_dom( ftext):
   fd = dom.parseString( '<ftext>%s</ftext>' % ftext).childNodes[0]
   svg = dom.Document()
   return ftext_dom_to_svg_dom( fd, svg)
+
 
 def ftext_dom_to_svg_dom( ftext, doc):
   if not ftext.nodeValue:
@@ -55,3 +53,5 @@ def ftext_dom_to_svg_dom( ftext, doc):
       return my_svg
   else:
     return doc.createTextNode( ftext.nodeValue)
+
+

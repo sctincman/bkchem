@@ -668,7 +668,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=self.get_parsed_text(), font=self.font, fill=self.line_color)
+    name = '<ftext>%s</ftext>' % self.xml_text
+    self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, fill=self.line_color)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text'))

@@ -466,10 +466,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
         self.decide_pos()
       # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
       self.text = self.get_ftext()
-      parsed_name = dom.parseString( '<ftext>%s</ftext>' % self.text).childNodes[0]
-      self.ftext = ftext( self.paper, xy=(self.x, self.y), dom=parsed_name, font=self.font, pos=self.pos, fill=self.line_color)
-      self.ftext.draw()
-      x1, y1, x2, y2 = self.ftext.bbox()
+      name = '<ftext>%s</ftext>' % self.text
+      self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, pos=self.pos, fill=self.line_color)
+      x1, y1, x2, y2 = self.ftext.draw()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
       ## shrink the selector to improve appearance (y2-2)
       self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='#ffffff', outline='',tags='helper_a')

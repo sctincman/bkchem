@@ -24,13 +24,17 @@ sub - (sub)script, sup - (sup)erscript, b - bold, i - italic"""
 
 import tkFont
 import dom_extensions
-import xml.dom.minidom as dom
+import xml.sax
+import copy
+from sets import Set
+
+
 
 
 class ftext:
 
 
-  def __init__( self, canvas, xy = (), text=None, dom=None, font=None, pos="center-first", fill='#000', big_charges=True):
+  def __init__( self, canvas, xy, text, font=None, pos="center-first", fill='#000', big_charges=True):
     self.big_charges = big_charges  # should +- in <sup> be drawn in bigger font (not scaled down)?
     self.canvas = canvas
     self.items = []
@@ -38,11 +42,7 @@ class ftext:
     if xy:
       self.x, self.y = xy
     if text:
-      #self.text = text
-      self.doc = dom.parseString( text)
-    if dom:
-      self.doc = dom
-      #self.text = self.dom.toxml()
+      self.text = text
     if font:
       self.font = font
     else:
@@ -55,111 +55,137 @@ class ftext:
 
     
   def draw( self):
-    plain_text = dom_extensions.getAllTextFromElement( self.doc)
-    if not plain_text:
+    chs = self.get_chunks()
+    if not chs:
       return None
+
     self.items = []
-    self.__current_x = self.x
-    self.__draw_elements( self.doc)
-    self._last_attrs = ''
-    self._last_x = self.x
+    self._current_x = self.x
+
+    self.items = chs
+    last_attrs = Set()
+    last_x = self._current_x
+    
+    for ch in self.items:
+      scale = 1
+      if Set(('sub','sup')) & ch.attrs:
+        if not (ch.text in "-" and self.big_charges):
+          scale = 0.7
+        else:
+          scale = 1
+        if Set(('sub','sup')) & last_attrs:
+          self._current_x = last_x
+      last_x = self._current_x
+      last_attrs = ch.attrs
+      self._draw_chunk( ch, scale=scale)
+
     #does not work when 1. character is not regular
     if self.pos == 'center-first':
-      self.diff = self.font.measure( plain_text[0])/2.0
+      self.diff = self.font.measure( self.items[0].text[0])/2.0
     elif self.pos == 'center-last':
       x1, y1, x2, y2 = self.bbox()
-      self.diff = x2 -x1 -self.font.measure( plain_text[-1])/2.0 -2
+      self.diff = x2 -x1 -self.font.measure( self.items[0].text[-1])/2.0 -2
     self.move( -self.diff, 0)
     return self.bbox()
 
 
 
-  def __draw_elements( self, element, attrs=''):
-    i = []
-    a = attrs
-    if not element.nodeValue:
-      name = element.nodeName
-      if name == 'b':
-        a += 'b'
-      elif name == 'i':
-        a += 'i'
-      elif name == 'sub':
-        a += 's'
-      elif name == 'sup':
-        a += 'S'
-      for el in element.childNodes:
-        self.__draw_elements( el, attrs=a)
-    else:
-      scale = 1
-      if 's' in attrs or 'S' in attrs:
-        if not (element.nodeValue == "-" and self.big_charges):
-          scale = 0.7
-        if 's' in self._last_attrs or 'S' in self._last_attrs:
-          self.__current_x = self._last_x
-
-      self._draw_text( element.nodeValue, attrs, scale=scale)
 
 
-
-
-  def _draw_text( self, text, attributes, scale=1):
+  def _draw_chunk( self, chunk, scale=1):
     weight = ''
     canvas = self.canvas
-    x = self.__current_x
+    x = self._current_x
     y = self.y
 
-    if 'b' in attributes:
+    if 'b' in chunk.attrs:
       weight = "bold"
-    if 'i' in attributes:
+    if 'i' in chunk.attrs:
       weight += " italic"
     if not weight:
       weight = "normal"
 
 
-    if 's' in attributes:
-      item = canvas.create_text( x, y, tags=self.tags, text=text,
+    if 'sub' in chunk.attrs:
+      item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="nw", justify="right", fill=self.fill)
-    elif 'S' in attributes:
-      item = canvas.create_text( x, y, tags=self.tags, text=text,
+    elif 'sup' in chunk.attrs:
+      item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="sw", justify="right", fill=self.fill)
     else:
-      item = canvas.create_text( x, y, tags=self.tags, text=text,
+      item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="w",
                                  justify="right",
                                  fill=self.fill)
-    self.items.append( item)
-    self._last_attrs = attributes
-    self._last_x = self.__current_x
-    self.__current_x = canvas.bbox( item)[2]
+    bbox = canvas.bbox( item)
+    chunk.item = item
+    chunk.dx = abs( bbox[0] - bbox[2])
+    self._current_x = bbox[2]
 
+
+
+  def get_chunks( self):
+    handler = FtextHandler()
+    xml.sax.parseString( self.text, handler)
+    return handler.chunks
 
 
     
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
-    return self.canvas.list_bbox( self.items)
+    return self.canvas.list_bbox( [i.item for i in self.items])
 
   def move( self, dx, dy):
     for i in self.items:
-      self.canvas.move( i, dx, dy)
+      self.canvas.move( i.item, dx, dy)
 
   def move_to( self, x, y):
     dx = self.x - x - self.diff
     dy = self.y - y
     for i in self.items:
-      self.canvas.move( i, dx, dy)
+      self.canvas.move( i.item, dx, dy)
 
   def lift( self):
     for i in self.items:
-      self.canvas.lift( i)
+      self.canvas.lift( i.item)
 
   def delete( self):
     for i in self.items:
-      self.canvas.delete( i)
+      self.canvas.delete( i.item)
 
       
+
+
+class text_chunk:
+
+  def __init__( self, text, attrs=None):
+    self.text = text
+    self.attrs = attrs or Set()
+    self.item = None
+    self.dx = 0
+
+
+
+class FtextHandler ( xml.sax.ContentHandler):
+
+  def __init__( self):
+    xml.sax.ContentHandler.__init__( self)
+    self._above = []
+    self.chunks = []
+
+  def startElement( self, name, attrs):
+    self._above.append( name)
+
+
+  def endElement( self, name):
+    self._above.pop( -1)
+
+
+  def characters( self, data):
+    self.chunks.append( text_chunk( data, attrs = Set( self._above)))
+
 
 
