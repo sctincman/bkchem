@@ -1272,7 +1272,7 @@ class bond( meta_enabled):
       self.type = type[0]
       self.order = int( type[1])
     else:
-      self.type = 1
+      self.type = 'n'
       self.order = 1
     # implied
     if package.getAttribute( 'distance'):
@@ -1310,7 +1310,7 @@ class bond( meta_enabled):
                                         ('start', self.atom1.get_cdml_id()),
                                         ('end', self.atom2.get_cdml_id()),
                                         ('double_ratio', str( self.double_length_ratio))))
-    if self.order != 1:
+    if self.order != 1 or self.type in 'wha':
       bnd.setAttribute( 'distance', str( self.bond_width  * self.paper.screen_to_real_ratio()))
       if self.order == 2:
         bnd.setAttribute( 'center', b[ self.center])
