@@ -279,6 +279,7 @@ class BKchem( Tk):
     hacksMenu.add( 'command', label=_('Rings to separate tabs'), command=self.rings_to_separate_tabs)
     hacksMenu.add( 'command', label=_('Normalize aromatic double bonds'), command=self.normalize_aromatic_double_bonds)
     hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
+    hacksMenu.add( 'command', label=_('Update SVGs'), command=self.update_svgs_in_path)
 
 
     # PLUGIN MENU
@@ -1470,3 +1471,42 @@ Enter IChI:""")
         else:
           sys.stderr.write( " * writing CD-SVG file: %s\n" % out)
           sys.stderr.write( " -- processing time: %.2fms\n" % (1000*(time.time()-start_time)))
+
+
+
+
+
+
+  # just testing
+
+  def update_svgs_in_path( self, dir="/home/beda/python/gold-svg/svgs"):
+
+    self.in_batch_mode = 1
+    made = 0
+    ignored = 0
+
+    if os.path.isfile( dir):
+      self.update_svg( dir)
+    elif os.path.isdir( dir):
+      for f in os.listdir( dir):
+        i = self.update_svg( os.path.join( dir, f))
+        if i:
+          made += 1
+        else:
+          ignored += 1
+
+    self.log( "resaved %d files, ignored %d" % (made, ignored))
+    self.in_batch_mode = 0
+
+
+  def update_svg( self, f):
+    print f, "...",
+    if self.load_CDML( f, replace=1):
+      print "OK"
+      self.save_CDML()
+      return 1
+    else:
+      print "ignoring"
+      return 0
+
+

@@ -351,6 +351,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule):
       f = fragment()
       f.read_package( fel, self.paper.id_manager)
       self.fragments.add( f)
+
+    # final check of atoms valecies
+    [a.raise_valency_to_senseful_value() for a in self.vertices if isinstance( a, atom)]
     
 
 

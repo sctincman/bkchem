@@ -164,6 +164,8 @@ class external_data_manager( object):
 
 
   def get_package( self, doc):
+    if not self.records:
+      return None
     e = doc.createElement( 'external-data')
     for dclass in self.records:
       ecls = dom_ext.elementUnder( e, "class", (("name", dclass),))

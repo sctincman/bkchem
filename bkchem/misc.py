@@ -176,6 +176,20 @@ def len_and_ending( iterable):
 
 
 
+def set_attr_or_property( obj, name, value):
+  """sets value of attribute or property of object name to value"""
+  if name in obj.__dict__:
+    obj.__dict__[name] = value
+    return True
+  else:
+    for c in obj.__class__.mro():
+      if name in c.__dict__:
+        c.__dict__[ name].fset( obj, value)
+        return True
+  return False
+
+
+
 # some helper, higher order functions
 
 map_functions = lambda funcs, value: zip( apply, funcs, len(funcs)*[value])

@@ -692,6 +692,10 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     # multiplicity
     if package.getAttribute( 'multiplicity'):
       self.multiplicity = int( package.getAttribute( 'multiplicity'))
+    # valency
+    if package.getAttribute( 'valency'):
+      self.valency = int( package.getAttribute( 'valency'))
+      
 
 
 
@@ -739,6 +743,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like, child, oasa.a
     # multiplicity
     if self.multiplicity != 1:
       a.setAttribute( 'multiplicity', str( self.multiplicity))
+    # valency
+    a.setAttribute( 'valency', str( self.valency))
 
     return a
 

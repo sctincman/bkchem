@@ -24,6 +24,9 @@ import types
 from oasa import periodic_table as PT
 import os
 from atom import atom
+from group import group
+from sets import Set
+
 
 
 class context_menu( Tkinter.Menu):
@@ -72,11 +75,12 @@ class context_menu( Tkinter.Menu):
           casc = Tkinter.Menu( self, tearoff=0)
           self.add_cascade( label=_('Atom valency'), menu=casc)
           for v in PT.periodic_table[ name]['valency']:
-            casc.add_command( label=v, command=misc.lazy_apply( self.callback, ('valency',v)))
+            casc.add_command( label=v, command=misc.lazy_apply( self._set_valency, (v,)))
           
     # commands
     self.add_separator()        
     self.register_command( _("Center bond"), ('bond',), center)
+    self.register_command( _("Expand group"), ('atom',), expand_groups)
 
     # common commands
     self.add_separator()
@@ -88,12 +92,19 @@ class context_menu( Tkinter.Menu):
       if o.object_type not in configurable:
         continue
       if command in configurable[ o.object_type]:
-        for c in o.__class__.mro():
-          if command in c.__dict__:
-            c.__dict__[ command].fset( o, value)
-            o.redraw()
-            self.changes_made = 1
-            break
+        self.set_value( o, command, value)
+    self.finish()
+
+
+  def set_value( self, o, name, value):
+    """little more enhanced version of misc.set_attr_or_property"""
+    if misc.set_attr_or_property( o, name, value):
+      o.redraw()
+      self.changes_made = 1    
+
+
+  def finish( self):
+    """finishes one callback session"""
     if self.changes_made:
       self.app.paper.start_new_undo_record()
       self.app.paper.add_bindings()
@@ -127,6 +138,18 @@ class context_menu( Tkinter.Menu):
     callback( apply_to)
     self.app.paper.start_new_undo_record()
     self.app.paper.add_bindings()
+
+
+  # specialized, private methods
+
+  def _set_valency( self, value):
+    for a in self.app.paper.selected:
+      if a.object_type == 'atom':
+        a.valency = value
+        a.redraw()
+    self.changes_made = 1
+    self.finish()
+
 
 
 
@@ -164,3 +187,11 @@ def center( bonds):
   for b in bonds:
     b.center = 1
     b.redraw()
+
+def expand_groups( groups):
+  all_gs = Set( [g for g in groups if isinstance( g, group)])
+  mols = Set( [g.molecule for g in all_gs])
+  for mol in mols:
+    gs = Set( mol.vertices) & Set( all_gs)
+    mol.expand_groups( atoms=gs)
+    

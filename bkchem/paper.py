@@ -95,7 +95,7 @@ class chem_paper( Canvas, object):
 
     # external data management
     self.edm = external_data_manager()
-    print "loaded definitions for classes:", self.edm.load_available_definitions()
+    #print "loaded definitions for classes:", self.edm.load_available_definitions()
 
     # file name
     self.file_name = file_name
@@ -625,7 +625,9 @@ class chem_paper( Canvas, object):
         root.appendChild( a.reaction.get_package( doc))
 
     # external data
-    root.appendChild( self.edm.get_package( doc))
+    edm_doc = self.edm.get_package( doc)
+    if edm_doc:
+      root.appendChild( edm_doc)
     return doc
     
 
@@ -1548,8 +1550,7 @@ class chem_paper( Canvas, object):
 
   def cm_to_px( self, cm):
     """transforms coord from cm to px"""
-    return self.winfo_fpixels( '%fm' % (cm*10))
-
+    return self.winfo_fpixels( str( cm)+'c')
 
 
 
