@@ -61,7 +61,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
 
 
 
-  def __init__( self, paper, atoms=(), package=None, molecule=None, type='s', order=1,
+  def __init__( self, paper, atoms=(), package=None, molecule=None, type='n', order=1,
                 simple_double=1):
     # initiation
     meta_enabled.__init__( self, paper)
@@ -167,7 +167,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child)
     self.atom1, self.atom2 = mol
     self.__dirty = 1
 
-  atoms = property( __get_atoms, __set_atom2)
+  atoms = property( __get_atoms, __set_atoms)
 
 
   # center

@@ -57,7 +57,7 @@ class XML_writer:
 
 # Tkinter states that it takes font sizes in pt. However this is not true (as for python 2.2.2)
 # therefor there is this variable to quickly change the settings and control the SVG output
-pt_or_px="px"
+pt_or_px="pt"
 
 
 class SVG_writer( XML_writer):
@@ -320,7 +320,8 @@ class SVG_writer( XML_writer):
                                            ( "font-family", a.font_family),
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
                                            ( 'stroke', a.line_color),
-                                           ( 'fill', a.line_color)))
+                                           ( 'fill', a.line_color),
+                                           ( 'textLength', "%dpx" % (x2-x-2))))  # -2 is a nasty hack
       self.group.appendChild( text)
     for m in a.marks.itervalues():
       if m:

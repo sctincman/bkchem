@@ -596,7 +596,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   meta__undo_properties = point_drawable.meta__undo_properties +\
                           text_like.meta__undo_properties +\
                           area_colored.meta__undo_properties
-  meta__undo_simple = ('x', 'y', 'text', 'font_size', 'font_family', 'line_color', 'area_color')
+  meta__undo_simple = ('text',)
 
   def __init__( self, paper, xy=(), text='', package=None):
     meta_enabled.__init__( self, paper)

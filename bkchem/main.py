@@ -72,6 +72,7 @@ class BKchem( Tk):
 
     # menu initialization
     self.init_menu()
+    self.init_plugins_menu()
 
     # modes initialization
     self.init_modes()
@@ -181,9 +182,9 @@ class BKchem( Tk):
     fileMenu.add( 'command', label=_('Load to the same tab'), command = lambda : self.load_CDML( replace=1))
     fileMenu.add( 'separator')
     # export cascade
-    export_menu = Menu( fileButton, tearoff=0)
-    export_cascade = fileMenu.add( 'cascade', label=_('Export'), menu = export_menu)
-    export_menu.add( 'command', label=_('SVG'), command = self.save_SVG)
+    self.export_menu = Menu( fileButton, tearoff=0)
+    export_cascade = fileMenu.add( 'cascade', label=_('Export'), menu = self.export_menu)
+    self.export_menu.add( 'command', label=_('SVG'), command = self.save_SVG)
     # import cascade
     self.import_menu = Menu( fileButton, tearoff=0)
     import_cascade = fileMenu.add( 'cascade', label=_('Import'), menu = self.import_menu)
@@ -324,7 +325,7 @@ class BKchem( Tk):
         if ('importer' in  plugin.__dict__) and plugin.importer:
           self.import_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_import, [self.plugins.index( plugin)]))
         if ('exporter' in plugin.__dict__) and plugin.exporter:
-          export_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
+          self.export_menu.add( 'command', label=plugin.name, command = misc.lazy_apply( self.plugin_export, [self.plugins.index( plugin)]))
 
 
 
