@@ -623,10 +623,11 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       return PT.formula_dict( GT.groups_table[ self.name.lower()]['composition'])
     elif self.group_graph:
       form = self.group_graph.get_formula_dict()
-      if form['H'] > self.get_occupied_valency():
-        form['H'] -= self.get_occupied_valency()
-      else:
-        del form['H']
+      if 'H' in form:
+        if form['H'] > self.get_occupied_valency():
+          form['H'] -= self.get_occupied_valency()
+        else:
+          del form['H']
       return form
     else:
       return PT.formula_dict( self.name)

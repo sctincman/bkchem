@@ -100,7 +100,7 @@ class BKchem( Tk):
 
     # menu initialization
     self.init_menu()
-    self.init_plugins_menu()
+    #self.init_plugins_menu()
 
     # modes initialization
     self.init_modes()
@@ -166,154 +166,222 @@ class BKchem( Tk):
 
   def init_menu( self):
     # defining menu
-    menu = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
-    menu.grid( row=0, sticky="we")
+    menuf = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
+    menuf.grid( row=0, sticky="we")
 
-    helpButton = Menubutton( menu, text=_('Help'))
-    helpButton.pack( side = RIGHT)
-    
-    helpMenu = Menu( helpButton, tearoff=0)
-    helpButton['menu'] = helpMenu
-    helpMenu.add( 'command', label=_('About'), command = self.about) 
+    self.menu = Pmw.MenuBar( menuf, balloon=self.menu_balloon)
+    m = self.menu
+    self.menu.pack( side="left", expand=1, fill="both")
 
-    # file menu
-    fileButton = Menubutton( menu, text=_('File'))
-    fileButton.pack( side = LEFT)
-    fileMenu = Menu( fileButton, tearoff=0)
-    fileButton['menu'] = fileMenu
-    fileMenu.add( 'command', label=_('New'), command = self.add_new_paper, accelerator='(C-x C-n)')
-    fileMenu.add( 'command', label=_('Save'), command = self.save_CDML, accelerator='(C-x C-s)')
-    fileMenu.add( 'command', label=_('Save As...'), command = self.save_as_CDML, accelerator='(C-x C-w)')
-    fileMenu.add( 'command', label=_('Save As Template'), command = self.save_as_template)
-    fileMenu.add( 'command', label=_('Load'), command = self.load_CDML, accelerator='(C-x C-f)')
-    fileMenu.add( 'command', label=_('Load to the same tab'), command = lambda : self.load_CDML( replace=1))
-    fileMenu.add( 'separator')
+    m.addmenu( _('File'), _('Open, save, export and import files'))
+    m.addmenuitem( _('File'), 'command', label=_('New'), accelerator='(C-x C-n)',
+                   statusHelp=_("Create a new file in a new tab"),
+                   command=self.add_new_paper)
+    m.addmenuitem( _('File'), 'command', label=_('Save'),accelerator='(C-x C-s)',
+                   statusHelp=_("Save the file"),
+                   command = self.save_CDML)
+    m.addmenuitem( _("File"), 'command', label=_('Save As...'), accelerator='(C-x C-w)',
+                   statusHelp=_("Save the file under different name"),
+                   command = self.save_as_CDML)
+    m.addmenuitem( _("File"), 'command', label=_('Save As Template'),
+                   statusHelp=_("Save the file as template, certain criteria must be met for this to work"),
+                   command = self.save_as_template)
+    m.addmenuitem( _("File"), 'command', label=_('Load'), accelerator='(C-x C-f)',
+                   statusHelp=_("Load (open) a file in a new tab"), command = self.load_CDML)
+    m.addmenuitem( _("File"), 'command', label=_('Load to the same tab'),
+                   statusHelp=_("Load a file replacing the current one"),
+                   command = lambda : self.load_CDML( replace=1))
+    m.addmenuitem( _("File"), 'separator')
     # export cascade
-    self.export_menu = Menu( fileButton, tearoff=0)
-    export_cascade = fileMenu.add( 'cascade', label=_('Export'), menu = self.export_menu)
-    self.export_menu.add( 'command', label=_('SVG'), command = self.save_SVG)
+    m.addcascademenu( _("File"), _('Export'), _("Export the current file"), tearoff=0)
+    m.addmenuitem( _("Export"), 'command', label=_('SVG'),
+                   statusHelp=_("Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"),
+                   command = self.save_SVG)
     # import cascade
-    self.import_menu = Menu( fileButton, tearoff=0)
-    import_cascade = fileMenu.add( 'cascade', label=_('Import'), menu = self.import_menu)
+    m.addcascademenu( _("File"), _('Import'), _("Import a non-native file format"), tearoff=0)
     # file properties
-    fileMenu.add( 'separator')
-    fileMenu.add( 'command', label=_('File properties'), command=self.change_properties)
-    fileMenu.add( 'separator')
-    fileMenu.add( 'command', label=_('Close tab'), command = self.close_current_paper, accelerator='(C-x C-t)')
-    fileMenu.add( 'command', label=_('Exit'), command = self._quit, accelerator='(C-x C-c)')
-
+    m.addmenuitem( _("File"), 'separator')
+    m.addmenuitem( _("File"), 'command', label=_('File properties'),
+                   statusHelp=_("Set the papers size and other properties of the document"),
+                   command=self.change_properties)
+    m.addmenuitem( _("File"), 'separator')
+    m.addmenuitem( _("File"), 'command', label=_('Close tab'), accelerator='(C-x C-t)',
+                   statusHelp=_("Close the current tab, exit when there is only one tab"),
+                   command=self.close_current_paper)
+    m.addmenuitem( _("File"),  'command', label=_('Exit'), accelerator='(C-x C-c)',
+                   statusHelp=("Exit BKchem"), command = self._quit)
 
     # edit menu
-    editButton = Menubutton( menu, text=_('Edit'))
-    editButton.pack( side = LEFT)
-    editMenu = Menu( editButton, tearoff=0)
-    editButton['menu'] = editMenu
-    editMenu.add( 'command', label=_('Undo'), command = lambda : self.paper.undo(), accelerator='(C-z)')
-    editMenu.add( 'command', label=_('Redo'), command = lambda : self.paper.redo(), accelerator='(C-S-z)')
-    editMenu.add( 'separator')
-    editMenu.add( 'command', label=_('Cut'), command = lambda : self.paper.selected_to_clipboard( delete_afterwards=1), accelerator='(C-w)')
-    editMenu.add( 'command', label=_('Copy'), command = lambda : self.paper.selected_to_clipboard(), accelerator='(A-w)')
-    editMenu.add( 'command', label=_('Paste'), command = lambda : self.paper.paste_clipboard( None), accelerator='(C-y)')
-    editMenu.add( 'separator')
-    editMenu.add( 'command', label=_('Selected to clipboard as SVG'), command = lambda : self.paper.selected_to_real_clipboard_as_SVG())
-    editMenu.add( 'separator')
-    editMenu.add( 'command', label=_('Select all'), command = lambda : self.paper.select_all(), accelerator='(C-S-a)')
-    
-    alignButton = Menubutton( menu, text=_('Align'))
-    alignButton.pack( side = LEFT)
-    alignMenu = Menu( alignButton, tearoff=0)
-    alignButton['menu'] = alignMenu
-    alignMenu.add( 'command', label=_('Top'), command = lambda : self.paper.align_selected( 't'), accelerator='(C-a C-t)')
-    alignMenu.add( 'command', label=_('Bottom'), command = lambda : self.paper.align_selected( 'b'), accelerator='(C-a C-b)')
-    alignMenu.add( 'separator')
-    alignMenu.add( 'command', label=_('Left'), command = lambda : self.paper.align_selected( 'l'), accelerator='(C-a C-l)')
-    alignMenu.add( 'command', label=_('Right'), command = lambda : self.paper.align_selected( 'r'), accelerator='(C-a C-r)')
-    alignMenu.add( 'separator')
-    alignMenu.add( 'command', label=_('Center horizontaly'), command = lambda : self.paper.align_selected( 'h'), accelerator='(C-a C-h)')
-    alignMenu.add( 'command', label=_('Center verticaly'), command = lambda : self.paper.align_selected( 'v'), accelerator="(C-a C-v)")
+    m.addmenu( _('Edit'), _("Undo, Copy, Paste etc."))
+    m.addmenuitem( _("Edit"), 'command', label=_('Undo'), accelerator='(C-z)',
+                   statusHelp=_("Revert the last change made"),
+                   command=lambda : self.paper.undo())
+    m.addmenuitem( _("Edit"), 'command', label=_('Redo'), accelerator='(C-S-z)',
+                   statusHelp=_("Revert the last undo action"),
+                   command=lambda : self.paper.redo())
+    m.addmenuitem( _("Edit"), 'separator')
+    m.addmenuitem( _("Edit"), 'command', label=_('Cut'), accelerator='(C-w)',
+                   statusHelp=_("Copy the selected objects to clipboard and delete them"), 
+                   command=lambda : self.paper.selected_to_clipboard( delete_afterwards=1))
+    m.addmenuitem( _("Edit"), 'command', label=_('Copy'), accelerator='(A-w)',
+                   statusHelp=("Copy the selected objects to clipboard"),
+                   command=lambda : self.paper.selected_to_clipboard())
+    m.addmenuitem( _("Edit"), 'command', label=_('Paste'), accelerator='(C-y)',
+                   statusHelp=_("Paste the content of clipboard to current paper"),
+                   command=lambda : self.paper.paste_clipboard( None))
+    m.addmenuitem( _("Edit"), 'separator')
+    m.addmenuitem( _("Edit"), 'command', label=_('Selected to clipboard as SVG'),
+                   statusHelp=_("Create SVG for the selected objects and place it to clipboard in text form"),
+                   command = lambda : self.paper.selected_to_real_clipboard_as_SVG())
+    m.addmenuitem( _("Edit"), 'separator')
+    m.addmenuitem( _("Edit"), 'command', label=_('Select all'), accelerator='(C-S-a)',
+                   statusHelp=_("Select everything on the paper"),
+                   command=lambda : self.paper.select_all())
 
-    scaleButton = Menubutton( menu, text=_('Object'))
-    scaleButton.pack( side= 'left')
-    scaleMenu = Menu( scaleButton, tearoff=0)
-    scaleButton['menu'] = scaleMenu
-    scaleMenu.add( 'command', label=_('Scale'), command = self.scale)
-    scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Bring to front'), command = lambda : self.paper.lift_selected_to_top(), accelerator='(C-o C-f)')
-    scaleMenu.add( 'command', label=_('Send back'), command = lambda : self.paper.lower_selected_to_bottom(), accelerator='(C-o C-b)')
-    scaleMenu.add( 'command', label=_('Swap on stack'), command = lambda : self.paper.swap_selected_on_stack(), accelerator='(C-o C-s)')
-    scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Vertical mirror'), command = lambda : self.paper.swap_sides_of_selected())
-    scaleMenu.add( 'command', label=_('Horizontal mirror'), command = lambda : self.paper.swap_sides_of_selected('horizontal') )
-    scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Configure'), command = lambda : self.paper.config_selected(), accelerator='Mouse-3')
-    scaleMenu.add( 'separator')
-    scaleMenu.add( 'command', label=_('Set molecule name'), command = lambda : interactors.ask_name_for_selected( self.paper))
-    scaleMenu.add( 'command', label=_('Set molecule ID'), command = lambda : interactors.ask_id_for_selected( self.paper))
+
+    # ALIGN MENU
+    m.addmenu( _('Align'), _("Aligning of selected objects"))
+    m.addmenuitem( _("Align"), 'command', label=_('Top'), accelerator='(C-a C-t)',
+                   statusHelp=_("Align the tops of selected objects"),
+                   command=lambda : self.paper.align_selected( 't'))
+    m.addmenuitem( _("Align"), 'command', label=_('Bottom'), accelerator='(C-a C-b)',
+                   statusHelp=_("Align the bottoms of selected objects"),
+                   command=lambda : self.paper.align_selected( 'b'))
+    m.addmenuitem( _("Align"), 'command', label=_('Left'), accelerator='(C-a C-l)',
+                   statusHelp=_("Align the left sides of selected objects"),
+                   command=lambda : self.paper.align_selected( 'l'))
+    m.addmenuitem( _("Align"), 'command', label=_('Right'), accelerator='(C-a C-r)',
+                   statusHelp=_("Align the rights sides of selected objects"),
+                   command=lambda : self.paper.align_selected( 'r'))
+    m.addmenuitem( _("Align"), 'separator')
+    m.addmenuitem( _("Align"), 'command', label=_('Center horizontally'), accelerator='(C-a C-h)',
+                   statusHelp=_("Align the horizontal centers of selected objects"),
+                   command=lambda : self.paper.align_selected( 'h'))
+    m.addmenuitem( _("Align"), 'command', label=_('Center vertically'), accelerator='(C-a C-v)',
+                   statusHelp=_("Align the vertical centers of selected objects"),
+                   command=lambda : self.paper.align_selected( 'v'))
+
+    # OBJECT MENU
+    m.addmenu( _("Object"), _("Set properties of selected objects"))
+    m.addmenuitem( _("Object"), 'command', label=_('Scale'),
+                   statusHelp=_("Scale selected objects"),
+                   command=self.scale)
+    m.addmenuitem( _("Object"), 'separator')
+    m.addmenuitem( _("Object"), 'command', label=_('Bring to front'), accelerator='(C-o C-f)',
+                   statusHelp=_("Lift selected objects to the top of the stack"),
+                   command=lambda : self.paper.lift_selected_to_top())
+    m.addmenuitem( _("Object"), 'command', label=_('Send back'), accelerator='(C-o C-b)',
+                   statusHelp=_("Lower the selected objects to the bottom of the stack"),
+                   command = lambda : self.paper.lower_selected_to_bottom())
+    m.addmenuitem( _("Object"), 'command', label=_('Swap on stack'), accelerator='(C-o C-s)',
+                   statusHelp=_("Reverse the ordering of the selected objects on the stack"),
+                   command=lambda : self.paper.swap_selected_on_stack())
+    m.addmenuitem( _("Object"), 'separator')
+    m.addmenuitem( _("Object"), 'command', label=_('Vertical mirror'),
+                   statusHelp=_("Creates a reflection of the selected objects, the reflection axis is the common vertical axis of all the selected objects"),
+                   command=lambda : self.paper.swap_sides_of_selected())
+    m.addmenuitem( _("Object"), 'command', label=_('Horizontal mirror'),
+                   statusHelp=_("Creates a reflection of the selected objects, the reflection axis is the common horizontal axis of all the selected objects"),
+                   command=lambda : self.paper.swap_sides_of_selected('horizontal'))
+    m.addmenuitem( _("Object"), 'separator')
+    m.addmenuitem( _("Object"), 'command', label=_('Configure'), accelerator='Mouse-3',
+                   statusHelp=_("Set the properties of the object, such as color, font size etc."),
+                   command=lambda : self.paper.config_selected())
+    #m.addmenuitem( _("Object"), 'separator')
     
-    # for dev only
+##     # for dev only
 
     # CHEMISTRY MENU
-    chemistry_button = Menubutton( menu, text=_('Chemistry'))
-    chemistry_button.pack( side= 'left')
-    self.chemistry_menu = Menu( chemistry_button, tearoff=0)
-    chemistry_button['menu'] = self.chemistry_menu
-    self.chemistry_menu.add( 'command', label=_('Info'), command = lambda : self.paper.display_info_on_selected(), accelerator='(C-o C-i)')
-    self.chemistry_menu.add( 'command', label=_('Check chemistry'), command = lambda : self.paper.check_chemistry_of_selected(), accelerator='(C-o C-c)')
-    self.chemistry_menu.add( 'command', label=_('Expand groups'), command = lambda : self.paper.expand_groups(), accelerator='(C-o C-e)')
-    self.chemistry_menu.add( 'separator')
+    m.addmenu( _('Chemistry'), _("Information about molecules, group expansion and other chemistry related stuff"))
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Info'), accelerator='(C-o C-i)',
+                   statusHelp=("Display summary formula and other infos on all selected molecules"),
+                   command=lambda : self.paper.display_info_on_selected())
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Check chemistry'), accelerator='(C-o C-c)',
+                   statusHelp=_("Check if the selected objects have chemical meaning"),
+                   command=lambda : self.paper.check_chemistry_of_selected())
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Expand groups'), accelerator='(C-o C-e)',
+                   statusHelp=_("Expand all selected groups to their structures"),
+                   command=lambda : self.paper.expand_groups())
+    m.addmenuitem( _("Chemistry"), 'separator')
     # oasa related stuff
     oasa_state = oasa_bridge.oasa_available and 'normal' or 'disabled'
-    self.chemistry_menu.add( 'command', label=_('Read SMILES'), command = self.read_smiles, state=oasa_state)
-    self.chemistry_menu.add( 'command', label=_('Read INChI'), command = self.read_inchi, state=oasa_state)
-    self.chemistry_menu.add( 'separator')
-    self.chemistry_menu.add( 'command', label=_('Generate SMILES'), command = self.gen_smiles, state=oasa_state)
-    self.chemistry_menu.add( 'command', label=_('Generate INChI'),
-                             command = self.gen_inchi,
-                             state=Store.pm.has_preference("inchi_program_path") and "normal" or "disabled")
-    if config.devel:
-      self.chemistry_menu.add( 'command', label=_('Flush mol'), command = lambda : self.paper.flush_first_selected_mol_to_graph_file())
-    self.chemistry_menu.add( 'command', label=_('Set display form'), command = lambda : interactors.ask_display_form_for_selected( self.paper), accelerator="(C-o C-d)")
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Read SMILES'),
+                   statusHelp=_("Read a SMILES string and convert it to structure"),
+                   command=self.read_smiles, state=oasa_state)
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Read INChI'),
+                   statusHelp=("Read an INChI string and convert it to structure"),
+                   command=self.read_inchi, state=oasa_state)
+    m.addmenuitem( _("Chemistry"), 'separator')
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Generate SMILES'),
+                   statusHelp=_("Generate SMILES for the selected structure"),
+                   command=self.gen_smiles, state=oasa_state)
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Generate INChI'),
+                   statusHelp=_("Generate an INChI for the selected structure by calling the INChI program"),
+                   command = self.gen_inchi,
+                   state=Store.pm.has_preference("inchi_program_path") and "normal" or "disabled")
+    m.addmenuitem( _("Chemistry"), 'separator')
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Set display form'), accelerator="(C-o C-d)",
+                   statusHelp=_("The display form is stored in the saved file and tells how the molecule should be displayed in text"), 
+                   command=lambda : interactors.ask_display_form_for_selected( self.paper))
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Set molecule name'),
+                   statusHelp=_("Set the name of the selected molecule"),
+                   command=lambda : interactors.ask_name_for_selected( self.paper))
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Set molecule ID'),
+                   statusHelp=_("Set the ID of the selected molecule"),
+                   command=lambda : interactors.ask_id_for_selected( self.paper))
 
-    self.chemistry_menu.add( 'separator')
-    self.chemistry_menu.add( 'command', label=_('Create fragment'), command = lambda : interactors.create_fragment_from_selected( self.paper))
-    self.chemistry_menu.add( 'command', label=_('View fragments'), command = lambda : interactors.view_fragments( self.paper))
-
-
-
-
-    # HACKS MENU
-    hacksButton = Menubutton( menu, text=_('Hacks'))
-    hacksButton.pack( side= 'right')
-    hacksMenu = Menu( hacksButton, tearoff=0)
-    hacksButton['menu'] = hacksMenu
-    hacksMenu.add( 'command', label=_('Molecules to separate tabs'), command=self.molecules_to_separate_tabs)
-    hacksMenu.add( 'command', label=_('Rings to separate tabs'), command=self.rings_to_separate_tabs)
-    hacksMenu.add( 'command', label=_('Normalize aromatic double bonds'), command=self.normalize_aromatic_double_bonds)
-    hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
-
-
-
-    # PLUGIN MENU
-    pluginButton = Menubutton( menu, text=_('Plugins'))
-    pluginButton.pack( side= 'right')
-    pluginMenu = Menu( pluginButton, tearoff=0)
-    pluginButton['menu'] = pluginMenu
-    for name in self.plug_man.get_names():
-      recent = pluginMenu.add_command( label=name, command=misc.lazy_apply( self.run_plugin, (name,)))
-      tooltip = self.plug_man.get_description( name)
-      if tooltip and recent:
-        print "adding tooltip:", tooltip
-        self.balloon.bind( recent, tooltip)
+    m.addmenuitem( _("Chemistry"), 'separator')
+    m.addmenuitem( _("Chemistry"), 'command', label=_('Create fragment'),
+                   statusHelp=_("Create a fragment from the selected part of the molecule"),
+                   command=lambda : interactors.create_fragment_from_selected( self.paper))
+    m.addmenuitem( _("Chemistry"), 'command', label=_('View fragments'),
+                   statusHelp=_("Show already defined fragments"),
+                   command=lambda : interactors.view_fragments( self.paper))
 
 
 
     # OPTIONS
-    optionsButton = Menubutton( menu, text=_('Options'))
-    optionsButton.pack( side= 'left')
-    optionsMenu = Menu( optionsButton, tearoff=0)
-    optionsButton['menu'] = optionsMenu
-    optionsMenu.add( 'command', label=_('Standard'), command=self.standard_values)
-    optionsMenu.add( 'command', label=_('INChI program path'), command=interactors.ask_inchi_program_path)
+    m.addmenu( _('Options'), _("Settings that affect how BKchem works"))
+    m.addmenuitem( _("Options"), 'command', label=_('Standard'),
+                   statusHelp=_("Set the default drawing style here"),
+                   command=self.standard_values)
+    m.addmenuitem( _("Options"), 'command', label=_('INChI program path'),
+                   statusHelp=_("To use INChI in BKchem you must first give it a path to the INChI program here"),
+                   command=interactors.ask_inchi_program_path)
+
+
+
+##     # HACKS MENU
+##     hacksButton = Menubutton( menu, text=_('Hacks'))
+##     hacksButton.pack( side= 'right')
+##     hacksMenu = Menu( hacksButton, tearoff=0)
+##     hacksButton['menu'] = hacksMenu
+##     hacksMenu.add( 'command', label=_('Molecules to separate tabs'), command=self.molecules_to_separate_tabs)
+##     hacksMenu.add( 'command', label=_('Rings to separate tabs'), command=self.rings_to_separate_tabs)
+##     hacksMenu.add( 'command', label=_('Normalize aromatic double bonds'), command=self.normalize_aromatic_double_bonds)
+##     hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
+
+
+
+
+    # HELP MENU
+    m.addmenu( _('Help'), _("Help and information about the program"), side="right")
+    m.addmenuitem( _("Help"), 'command', label=_('About'),
+                   statusHelp=_("General information about BKchem"),
+                   command=self.about)
+
+    # PLUGIN MENU
+    m.addmenu( _("Plugins"), _("Small additional scripts"), side="right")
+    for name in self.plug_man.get_names():
+      tooltip = self.plug_man.get_description( name)
+      m.addmenuitem( _("Plugins"), 'command', label=name,
+                     statusHelp=tooltip,
+                     command=misc.lazy_apply( self.run_plugin, (name,)))
+
+
+
+
+
 
 
 
@@ -351,6 +419,7 @@ class BKchem( Tk):
     self._after = None
 
     self.balloon = Pmw.Balloon( self)
+    self.menu_balloon = Pmw.Balloon( self, statuscommand=self.update_status)
     self.main_frame = Frame( self)
     self.main_frame.pack( fill='both', expand=1)
     self.main_frame.rowconfigure( 4, weight=1)

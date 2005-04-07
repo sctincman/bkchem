@@ -184,7 +184,7 @@ def atom_valency( objs):
   # the names must be the same
   if misc.has_one_value_only( [a.name for a in atoms]):
     name = atoms[0].name
-    return "valency", (_('Atom valency'), PT.periodic_table[ name]['valency'])
+    return "valency", (_('Atom valency'), (0,)+PT.periodic_table[ name]['valency'])
   return "valency", None
 
 

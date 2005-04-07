@@ -247,7 +247,7 @@ class state_record:
     ## DELETED OBJECTS
     # deleted are known from the top of this def
     for o in deleted:
-      if o.object_type not in ( 'molecule','mark'):
+      if o.object_type not in ( 'molecule','mark') and hasattr( o, 'draw'):
         # no_automatic where possible
         if 'automatic' in inspect.getargspec( o.draw)[0]:
           o.draw( automatic = "none")
