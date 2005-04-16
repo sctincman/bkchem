@@ -537,7 +537,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       if fnt.getAttribute( 'color'):
         self.line_color = fnt.getAttribute( 'color')
     # background color
-    if package.getAttribute( 'background-color'):
+    if package.getAttributeNode( 'background-color') != None:
       self.area_color = package.getAttribute( 'background-color')
 
 
@@ -643,12 +643,15 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
 
 
   def lift( self):
-    if self.selector:
-      self.paper.lift( self.selector)
     if self.ftext:
       self.ftext.lift()
     if self.item:
       self.paper.lift( self.item)
+
+
+  def lift_selector( self):
+    if self.selector:
+      self.paper.lift( self.selector)
 
 
 

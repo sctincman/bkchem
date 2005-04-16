@@ -332,8 +332,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
     self.text = self.get_ftext()
     name = '<ftext>%s</ftext>' % self.text
     self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, pos=self.pos, fill=self.line_color)
-    self.ftext.draw()
-    x1, y1, x2, y2 = self.ftext.bbox()
+    x1, y1, x2, y2 = self.ftext.draw()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
     ## shrink the selector to improve appearance (y2-2)
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
@@ -506,7 +505,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
       if fnt.getAttribute( 'color'):
         self.line_color = fnt.getAttribute( 'color')
     # background color
-    if package.getAttribute( 'background-color'):
+    if package.getAttributeNode( 'background-color') != None:
       self.area_color = package.getAttribute( 'background-color')
     # number
     if package.getAttribute( 'show_number'):
@@ -608,14 +607,17 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
 
 
   def lift( self):
-    if self.selector:
-      self.paper.lift( self.selector)
     # marks
     [m.lift() for m in self.marks]
     if self.ftext:
       self.ftext.lift()
     if self.item:
       self.paper.lift( self.item)
+
+
+  def lift_selector( self):
+    if self.selector:
+      self.paper.lift( self.selector)
 
 
 

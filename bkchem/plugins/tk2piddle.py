@@ -124,7 +124,8 @@ class tk2piddle:
     fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
     width = self.convert( float( self.paper.itemcget( item, 'width')))
     x1, y1, x2, y2 = coords
-    self.canvas.drawRect( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
+    if fill != piddle.transparent or outline != piddle.transparent:
+      self.canvas.drawRect( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
     
     
   def _draw_polygon( self, item):

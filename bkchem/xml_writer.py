@@ -321,6 +321,14 @@ class SVG_writer( XML_writer):
       item = a.selector
       x1, y1 = a.get_xy()
       x, y, x2, y2 = self.paper.bbox( item)
+      if a.area_color != '':
+        dom_extensions.elementUnder( self.group, 'rect',
+                                     (( 'x', str( x)),
+                                      ( 'y', str( y)),
+                                      ( 'width', str( x2-x)),
+                                      ( 'height', str( y2-y)),
+                                      ( 'fill', a.area_color),
+                                      ( 'stroke', a.area_color)))
 
       # some fine tuning 
       y1 += a.font.metrics('descent') #(y2-y)/4.0

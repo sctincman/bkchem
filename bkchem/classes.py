@@ -55,7 +55,7 @@ class standard:
     self.font_size = 12
     self.font_family = 'helvetica'
     self.line_color = "#000"
-    self.area_color = '#ffffff'
+    self.area_color = '' ##ffffff'
     # bond
     self.bond_length = '0.7cm'
     self.bond_width = '6px'

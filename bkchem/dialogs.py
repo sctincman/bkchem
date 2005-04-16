@@ -360,8 +360,8 @@ class config_dialog:
         line = lines[0]
       else:
         line = None
-      self.line_color = widgets.ColorButton( self.common_page, color=line, text=_("Line color"))
-      self.line_color.pack( anchor='nw', padx=10, pady=5)
+      self.line_color = widgets.ColorButtonWithTransparencyChecker( self.common_page, color=line, text=_("Line color"))
+      self.line_color.pack( anchor='nw', padx=10, pady=10)
 
     area_color_items = filter( lambda x: hasattr( x, 'area_color'), items)
     if area_color_items:
@@ -370,7 +370,7 @@ class config_dialog:
         area = areas[0]
       else:
         area = None
-      self.area_color = widgets.ColorButton( self.common_page, color=area, text=_("Area color"))
+      self.area_color = widgets.ColorButtonWithTransparencyChecker( self.common_page, color=area, text=_("Area color"))
       self.area_color.pack( anchor='nw', padx=10, pady=5)
 
 
@@ -453,16 +453,14 @@ class config_dialog:
         # COMMON PROPERTIES
         # LINE COLOR
         if hasattr( o, 'line_color'):
-          if self.line_color.color:
-            if self.line_color.color != o.line_color:
-              o.line_color = self.line_color.color
-              change = 1
+          if self.line_color.color != o.line_color:
+            o.line_color = self.line_color.color
+            change = 1
         # AREA COLOR
         if hasattr( o, 'area_color'):
-          if self.area_color.color:
-            if self.area_color.color != o.area_color:
-              o.area_color = self.area_color.color
-              change = 1
+          if self.area_color.color != o.area_color:
+            o.area_color = self.area_color.color
+            change = 1
         # LINE WIDTH
         if hasattr( o, 'line_width'):
           w = Screen.any_to_px( self.line_width.getvalue())
@@ -636,10 +634,10 @@ class standard_values_dialog:
     color_group = Pmw.Group( common_page, tag_text=_('Color'))
     color_group.pack( fill='x')
     # line color
-    self.line_color = widgets.ColorButton( color_group.interior(), color=self.standard.line_color, text=_("Line color"))
+    self.line_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.line_color, text=_("Line color"))
     self.line_color.pack( side='left', padx=10, pady=5)
     # area color
-    self.area_color = widgets.ColorButton( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
+    self.area_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
     self.area_color.pack( side='right', padx=10, pady=5)
 
     # BOND
@@ -840,10 +838,10 @@ class preferences_dialog:
     color_group = Pmw.Group( common_page, tag_text=_('Color'))
     color_group.pack( fill='x')
     # line color
-    self.line_color = widgets.ColorButton( color_group.interior(), color=self.standard.line_color, text=_("Line color"))
+    self.line_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.line_color, text=_("Line color"))
     self.line_color.pack( side='left', padx=10, pady=5)
     # area color
-    self.area_color = widgets.ColorButton( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
+    self.area_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
     self.area_color.pack( side='right', padx=10, pady=5)
 
     # BOND

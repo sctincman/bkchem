@@ -28,6 +28,7 @@ from group import group
 from sets import Set
 import types
 import interactors
+import parents
 
 
 
@@ -42,13 +43,13 @@ class context_menu( Tkinter.Menu):
     self.changes_made = 0
     already_there = []
     self.configurable = {} # this is similar to configurable but is prepared on init to take dynamic things into account
-    
-    # object type related configuration
-    self.obj_types = misc.filter_unique( [o.object_type for o in selected])
-    self.obj_types.sort()
-  
-    for obj_type in self.obj_types:
-      if obj_type not in configurable:
+    for obj_type in configurable.keys():
+      if type( obj_type) == types.StringType:
+        objs = [o for o in self.selected if o.object_type == obj_type]
+      else:
+        objs = [o for o in self.selected if isinstance( o, obj_type)]
+
+      if not objs:
         continue
       for attr in configurable[ obj_type]:
         if type( attr) == types.StringType:
@@ -64,9 +65,9 @@ class context_menu( Tkinter.Menu):
           self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [ attr] 
           for v in vals[ VALUES]:
             if type( v) == types.TupleType:
-              casc.add_command( label=v[1], command=misc.lazy_apply( self.callback, (attr,v[0])))
+              casc.add_command( label=v[1], command=misc.lazy_apply( self.callback, (attr, objs, v[0])))
             else:
-              casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr,v)))
+              casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr, objs, v)))
           # to know what is already there
           already_there.append( attr)
           
@@ -84,12 +85,9 @@ class context_menu( Tkinter.Menu):
     self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
 
 
-  def callback( self, command, value):
-    for o in self.selected:
-      if o.object_type not in self.configurable:
-        continue
-      if command in self.configurable[ o.object_type]:
-        self.set_value( o, command, value)
+  def callback( self, command, objects, value):
+    for o in objects:
+      self.set_value( o, command, value)
     self.finish()
 
 
@@ -211,6 +209,13 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                   'order':            ( _("Bond order"),         (0,1,2,3)),
                   'size':             ( _("Mark size"),          (2,4,6,8,10,12,14,16,18)),
                   'number':           ( _("Atom number"),        ('1','2','3','4','5','6','7','8','9','10','11','12')),
+                  'area_color':       ( _("Area color"),         (('', _("transparent")),
+                                                                  ('white', _("white")),
+                                                                  ('yellow', _("yellow")),
+                                                                  ('green', _("green")),
+                                                                  ('blue', _("blue")),
+                                                                  ('red', _("red")),
+                                                                  ('black', _("black"))))
                   }
 
 
@@ -219,7 +224,8 @@ configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',
                 'bond':    ('line_width','bond_width','order'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',),
-                'mark':    ('size', draw_mark_circle)
+                'mark':    ('size', draw_mark_circle),
+                parents.area_colored: ('area_color',)
                 }
 
 

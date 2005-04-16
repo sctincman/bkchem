@@ -274,10 +274,10 @@ class area_colored( line_colored):
 
   # area_color
   def _get_area_color( self):
-    return self.__area_color
+    return self._area_color
 
   def _set_area_color( self, area_color):
-    self.__area_color = area_color
+    self._area_color = area_color
     self.dirty = 1
 
   area_color = property( _get_area_color, _set_area_color)

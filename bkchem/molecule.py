@@ -540,6 +540,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
 
   def lift( self):
+    [o.lift_selector() for o in self.atoms]
     [o.lift() for o in self.bonds]
     [o.lift() for o in self.atoms]
 

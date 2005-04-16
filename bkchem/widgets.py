@@ -84,6 +84,46 @@ class ColorButton( Tkinter.Button):
       
 
 
+class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
+
+  def __init__( self, master=None, color=None, text=''):
+    """well, init..."""
+    Tkinter.Frame.__init__( self, master)
+    self.master = master
+    self.button = ColorButton( master=self, color=color, text=text)
+    self.transparent = Tkinter.IntVar()
+    self.transparent.set( color == '' and 1 or 0)
+    self.checker = Tkinter.Checkbutton( self,
+                                        text="Transparent",
+                                        variable=self.transparent,
+                                        command=self._set_trasparency)
+    self._set_trasparency()
+
+
+  def pack( self, **kw):
+    self.button.pack( anchor="w", padx=0, pady=0)
+    self.checker.pack( anchor="w", padx=0, pady=0)
+    Tkinter.Frame.pack( self, **kw)
+
+
+  def _get_color( self):
+    if not self.transparent.get():
+      return self.button.color
+    else:
+      return ''
+
+  color = property( _get_color, None, None, "")
+  
+
+  def _set_trasparency( self):
+    if self.transparent.get():
+      self.button.configure( state="disabled")
+    else:
+      self.button.configure( state="active")
+  
+
+
+
 class GraphicalAngleChooser( Tkinter.Frame):
 
   def __init__( self, parent, angle, line_color="#000", fill_color="#ffffff"):

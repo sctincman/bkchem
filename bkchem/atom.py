@@ -476,7 +476,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       x1, y1, x2, y2 = self.ftext.draw()
       self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
       ## shrink the selector to improve appearance (y2-2)
-      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill='', outline='',tags='helper_a')
+      self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
       self.ftext.lift()
       self.paper.lift( self.item)
     else:
@@ -533,7 +533,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
   def unfocus( self):
     if self.show:
-      self.paper.itemconfig( self.selector, fill='') #self.area_color)
+      self.paper.itemconfig( self.selector, fill=self.area_color)
     if self.focus_item:
       self.paper.delete( self.focus_item)
       self.focus_item = None
@@ -676,7 +676,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       fnt = fnt[0]
       self.font_size = int( fnt.getAttribute( 'size'))
       self.font_family = fnt.getAttribute( 'family')
-      if fnt.getAttribute( 'color'):
+      if fnt.getAttribute( 'color') != None:
         self.line_color = fnt.getAttribute( 'color')
     # show
     if package.getAttribute( 'show'):
@@ -684,7 +684,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
     else:
       self.show = (self.name!='C')
     # background color
-    if package.getAttribute( 'background-color'):
+    if package.getAttributeNode( 'background-color') != None:
       self.area_color = package.getAttribute( 'background-color')
     # multiplicity
     if package.getAttribute( 'multiplicity'):
@@ -804,14 +804,18 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
 
   def lift( self):
-    if self.selector:
-      self.paper.lift( self.selector)
     # marks
     [m.lift() for m in self.marks]
     if self.ftext:
       self.ftext.lift()
     if self.item:
       self.paper.lift( self.item)
+
+
+  def lift_selector( self):
+    if self.selector:
+      self.paper.lift( self.selector)
+
 
 
 
