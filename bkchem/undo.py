@@ -236,6 +236,7 @@ class state_record:
         to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
       elif o.object_type == 'point':
         to_redraw.add( o)
+        to_redraw.add( o.parent)
 
       i += 1
 

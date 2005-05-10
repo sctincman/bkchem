@@ -21,6 +21,7 @@
 from piddle import piddle
 import tkFont
 import transform
+import geometry
 
 
 class tk2piddle:
@@ -67,30 +68,41 @@ class tk2piddle:
     for item in self.paper.find_all():
       if not "no_export" in self.paper.gettags( item):
         method = "_draw_" + self.paper.type( item)
-        if not method in self.__class__.__dict__:
+        if not hasattr( self, method):
           print "method to draw %s is not implemented" % self.paper.type( item)
         else:
-          self.__class__.__dict__[ method]( self, item)
+          getattr( self, method)( item)
 
 
 
   def _draw_line( self, item):
     if self.paper.itemcget( item, 'fill') != '':
+      # arrows at first as they make the lines bellow them shorter
+      start = None
+      end = None
+      arrows = self.paper.itemcget( item, 'arrow')
+      if arrows != "none":
+        color = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
+        coords = self.paper.coords( item)
+        if arrows in ("last", "both"):
+          end = self._create_arrow( self.paper.itemcget( item, 'arrowshape'), coords[-4:-2], coords[-2:], color)
+        if arrows in ("first", "both"):
+          start = self._create_arrow( self.paper.itemcget( item, 'arrowshape'), coords[2:4], coords[0:2], color)
+
       coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
+      if start:
+        coords[0] = start[0]
+        coords[1] = start[1]
+      if end:
+        coords[-2] = end[0]
+        coords[-1] = end[1]
+
       if len( coords) > 4:
         # polyline
         outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
         fill = piddle.transparent
         width = self.convert( float( self.paper.itemcget( item, 'width')))
-        i = 0
-        cs = []
-        for c in coords:
-          if i == 0:
-            x = c
-            i = 1
-          else:
-            cs.append( (x, c))
-            i = 0
+        cs = self._flat_list_to_list_of_tuples( coords)
         self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
       else:
         # simple line
@@ -133,15 +145,7 @@ class tk2piddle:
     outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'outline'))
     fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
     width = self.convert( float( self.paper.itemcget( item, 'width')))
-    i = 0
-    cs = []
-    for c in coords:
-      if i == 0:
-        x = c
-        i = 1
-      else:
-        cs.append( (x, c))
-        i = 0
+    cs = self._flat_list_to_list_of_tuples( coords)
     self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=1)
     
 
@@ -155,3 +159,34 @@ class tk2piddle:
     
 
 
+  # other than drawing private methods
+
+  def _create_arrow( self, shape, start, to, color):
+    """creates an arrow with 'shape' pointing from 'start' to 'to' filled with 'color'
+    and returns x, y - where the to should be to not to overlay the arrow"""
+    a, b, c = map( float, shape.split())
+    points = [a,0, a-b,c, 0,0, a-b,-c]
+    ang = geometry.clockwise_angle_from_east( to[0]-start[0], to[1]-start[1])
+    tr = transform.transform()
+    tr.set_move( -a, 0)
+    tr.set_rotation( ang)
+    tr.set_move( to[0], to[1])
+    points = tr.transform_xy_flat_list( points)
+    points = self.transformer.transform_xy_flat_list( points)
+    points = self._flat_list_to_list_of_tuples( points)
+    self.canvas.drawPolygon( points, edgeColor=color, edgeWidth=0, fillColor=color, closed=1)    
+    return points[2]
+
+
+
+  def _flat_list_to_list_of_tuples( self, coords):
+    i = 0
+    cs = []
+    for c in coords:
+      if i == 0:
+        x = c
+        i = 1
+      else:
+        cs.append( (x, c))
+        i = 0
+    return cs
