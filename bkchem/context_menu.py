@@ -186,14 +186,6 @@ def atom_valency( objs):
   return "valency", None
 
 
-def set_show( o, value):
-  o.show = value
-  o.redraw()
-  [b.redraw() for b in o.paper.bonds_to_update()]
-  
-  
-  
-
 
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
                                                                   ('no', _("no")))),
@@ -221,7 +213,7 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
 
 configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',show_number,atom_valency),
                 'text':    ('font_size',),
-                'bond':    ('line_width','bond_width','order'),
+                'bond':    ('line_width','bond_width','order','auto_bond_sign'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',),
                 'mark':    ('size', draw_mark_circle),
@@ -233,7 +225,28 @@ I18N_NAME = 0
 VALUES = 1
 
 
-setter_functions = {'show': set_show}
+
+def set_show( o, value):
+  o.show = value
+  o.redraw()
+  [b.redraw() for b in o.paper.bonds_to_update()]
+  
+
+def set_bond_auto_sign( o, value):
+  o.auto_bond_sign = value
+  o.redraw( recalc_side=1)
+
+
+def set_bond_width( o, value):
+  o.bond_width = value
+  o.redraw( recalc_side=1)
+  
+
+
+
+setter_functions = {'show': set_show,
+                    'auto_bond_sign': set_bond_auto_sign,
+                    'bond_width': set_bond_width}
 
 
 def center( bonds):

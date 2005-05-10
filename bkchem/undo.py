@@ -110,6 +110,13 @@ class undo_manager:
     return len( self._records)
   
 
+  def can_undo( self):
+    return bool( self._pos)
+
+  def can_redo( self):
+    return bool( self.get_number_of_records() - self._pos - 1)
+
+
 
 ##-------------------- STATE RECORD --------------------
     

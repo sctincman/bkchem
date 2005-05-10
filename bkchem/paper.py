@@ -180,6 +180,45 @@ class chem_paper( Canvas, object):
   top_levels = property( _get_top_levels)
 
 
+  # selection related properties
+  def _get_selected_mols( self):
+    return [o for o in self.selected_to_unique_top_levels()[0] if isinstance( o, molecule)]
+
+  selected_mols = property( _get_selected_mols)
+
+  def _get_selected_atoms( self):
+    return [o for o in self.selected if isinstance( o, oasa.graph.vertex)]
+
+  selected_atoms = property( _get_selected_atoms)
+
+  def _get_selected_bonds( self):
+    return [o for o in self.selected if isinstance( o, bond)]
+
+  selected_bonds = property( _get_selected_bonds)
+
+  def _is_two_or_more_selected( self):
+    if len( self.selected_to_unique_top_levels()[0]) > 1:
+      return True
+    else:
+      return False
+
+  two_or_more_selected = property( _is_two_or_more_selected)
+
+  def _get_groups_selected( self):
+    return [o for o in self.selected if isinstance( o, group)]
+
+  groups_selected = property( _get_groups_selected)
+
+
+  def _is_one_molecule_selected( self):
+    if len( self.selected_mols) != 1:
+      return False
+    else:
+      return True
+
+  one_mol_selected = property( _is_one_molecule_selected)
+
+
   ### // PROPERTIES
 
 
@@ -196,6 +235,8 @@ class chem_paper( Canvas, object):
       for name in names:
         self.tag_bind( name, '<Enter>', self.enter_item)
         self.tag_bind( name, '<Leave>', self.leave_item)
+    self.event_generate( "<<selection-changed>>")
+    # we generate this event here because this method is often called after some change as a last thing
 
 
   def remove_bindings( self):
@@ -353,6 +394,7 @@ class chem_paper( Canvas, object):
       elif o not in self.selected:
         self.selected.append( o)
         o.select()
+    self.event_generate( "<<selection-changed>>")
     #print [o.object_type for o in self.selected]
 
 
@@ -366,15 +408,15 @@ class chem_paper( Canvas, object):
         item.unselect()
       except ValueError:
         pass #warn( 'trying to unselect not selected object '+id( item))
-
+    self.event_generate( "<<selection-changed>>")
 
 
 
 
   def unselect_all( self):
-    map( lambda o: o.unselect(), self.selected)
+    [o.unselect() for o in self.selected]
     self.selected = []
-
+    self.event_generate( "<<selection-changed>>")
 
 
 
@@ -442,7 +484,7 @@ class chem_paper( Canvas, object):
 
     ## check reactions
     [a.reaction.check_the_references( self.stack) for a in self.arrows]
-      
+    self.event_generate( "<<selection-changed>>")      
 
       
 
@@ -1141,7 +1183,7 @@ class chem_paper( Canvas, object):
       Store.log( _("undo (%d further undos available)") % i)
     else:
       Store.log( _("no further undo"))
-    
+    self.event_generate( "<<undo>>")    
 
 
 
@@ -1154,6 +1196,7 @@ class chem_paper( Canvas, object):
       Store.log( _("redo (%d further redos available)") % i)
     else:
       Store.log( _("no further redo"))
+    self.event_generate( "<<redo>>")
     
 
 

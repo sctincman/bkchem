@@ -297,7 +297,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.item:
       warn( "drawing bond that is probably drawn already", UserWarning, 2)
     method = "_draw_%s%d" % (self.type, self.order or 1)
-    if (automatic != "none" or self.center == None) and (self.order == 2 and self.auto_bond_sign == 1):
+    if (automatic != "none" or self.center == None) and self.order == 2:
       sign, center = self._compute_sign_and_center()
       self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
       if automatic == "both":

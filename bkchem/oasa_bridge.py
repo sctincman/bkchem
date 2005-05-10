@@ -35,7 +35,7 @@ from singleton_store import Screen
 
 def read_smiles( text, paper):
   mol = oasa.smiles.text_to_mol( text)
-  oasa.coords_generator.calculate_coords( mol)
+  oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
   return oasa_mol_to_bkchem_mol( mol, paper)
 
 def mol_to_smiles( mol):
@@ -46,7 +46,7 @@ def mol_to_smiles( mol):
 
 def read_inchi( text, paper):
   mol = oasa.inchi.text_to_mol( text)
-  oasa.coords_generator.calculate_coords( mol)
+  oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
   return oasa_mol_to_bkchem_mol( mol, paper)
   
 
