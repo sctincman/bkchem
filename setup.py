@@ -67,12 +67,12 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
   except:
     print "ERROR: couldn't open the file %s for write" %  config_name
     sys.exit()
-  file.write( "# the bkchem configuration file, do not edit! (unless you are pretty sure you know what you are doing)\n")
+  file.write( "# the bkchem configuration file, do not edit!\n #(unless you are pretty sure that you know what you are doing, which even I am not)\n")
   file.write( 'BKCHEM_MODULE_PATH="%s"\n' % os.path.join( py_dir, "bkchem"))
   file.write( 'BKCHEM_TEMPLATE_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/templates"))
   file.write( 'BKCHEM_PIXMAP_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/pixmaps"))
   file.write( 'BKCHEM_IMAGE_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/images"))
-  file.write( 'BKCHEM_PLUGIN_PATH="%s"\n' % os.path.join( py_dir, "bkchem/plugins"))
+  file.write( 'BKCHEM_PLUGIN_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/plugins"))
   file.close()
   print "file %s created" % config_name
 

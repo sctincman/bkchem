@@ -402,7 +402,7 @@ class config_dialog:
             change = 1
           if self.atom_charge.get():
             a = int( self.atom_charge.get())
-            if o.charge != a:
+            if hasattr( o, 'charge') and o.charge != a:
               o.charge = a
             change = 1
           # hydrogens

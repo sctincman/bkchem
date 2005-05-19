@@ -34,6 +34,7 @@ import tkFont
 from oasa import periodic_table as PT
 import groups_table as GT
 from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
+from special_parents import vertex_common
 import data
 import re
 import debug
@@ -49,7 +50,7 @@ from singleton_store import Store, Screen
 
 
 ### Class GROUP --------------------------------------------------
-class group( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.graph.vertex):
+class group( meta_enabled, area_colored, point_drawable, text_like, child_with_paper, oasa.graph.vertex, vertex_common):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -65,13 +66,18 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
   meta__undo_properties = area_colored.meta__undo_properties + \
                           point_drawable.meta__undo_properties + \
                           text_like.meta__undo_properties + \
+                          vertex_common.meta__undo_properties + \
                           ( 'z', 'name', 'molecule', 'pos')
-  meta__undo_copy = ('_neighbors',)
+  meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
+  meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
 
+  # only number marks are allowed for groups
+  meta__allowed_marks = ("atom_number",)
 
 
   def __init__( self, standard=None, xy = (), package = None, molecule = None):
     meta_enabled.__init__( self, standard=standard)
+    vertex_common.__init__( self)
     self.molecule = molecule
     point_drawable.__init__( self)
     oasa.graph.vertex.__init__( self)

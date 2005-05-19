@@ -30,7 +30,7 @@ env_vars = {'template': 'BKCHEM_TEMPLATE_PATH',
 std_dirs = {'template': '../templates',
             'pixmap': '../pixmaps',
             'image': '../images',
-            'plugin': 'plugins'}
+            'plugin': '../plugins'}
 
 
 try:
@@ -41,27 +41,18 @@ except:
 
 def get_path( filename, file_category):
   dir = None
-  if file_category in env_vars:
-    if os.name in ('posix', 'nt'):
-      if os.getenv( env_vars[ file_category]):
-        dirs = [os.getenv( env_vars[ file_category])]
-      elif site_config:
-        dirs = [site_config.__dict__[ env_vars[ file_category]]]
-      else:
-        dirs = []
-      dirs.extend( (std_dirs[ file_category], os.path.join( sys.path[0], std_dirs[ file_category])))
-      for dir in dirs:
-        path = os.path.join( dir, filename)
-        if os.path.isfile( path):
-          break
-    else:
-      dir = std_dirs[ file_category]
+  dirs = get_dirs( file_category)
+  for dir in dirs:
+    path = os.path.join( dir, filename)
+    if os.path.isfile( path):
+      break
 
   if dir:
     path = os.path.join( dir, filename)
     if os.path.isfile( path):
       return path
   return None
+
 
 
 def get_config_filename( name, level="global", mode="r"):
@@ -97,6 +88,25 @@ def get_config_filename( name, level="global", mode="r"):
   return None
 
 
+
+
+
+def get_dirs( file_category):
+  if os.name in ('posix', 'nt'):
+    if os.getenv( env_vars[ file_category]):
+      dirs = [os.getenv( env_vars[ file_category])]
+    elif site_config:
+      dirs = [site_config.__dict__[ env_vars[ file_category]]]
+    else:
+      dirs = []
+    dirs.extend( (os.path.join( sys.path[0], std_dirs[ file_category]),))
+  else:
+    dirs = std_dirs[ file_category]
+
+  return dirs
+
+
+
 def get_local_templates():
   dir = get_local_templates_path()
   if os.path.isdir( dir):
@@ -104,11 +114,14 @@ def get_local_templates():
   return []
 
 
+
+
 def get_personal_config_directory():
   dir = os.getenv( 'HOME') or '../'
   dir = os.path.join( dir, '.bkchem')
   return dir
   
+
 
 
 def create_personal_config_directory( path=""):

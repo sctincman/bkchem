@@ -48,6 +48,7 @@ import os_support
 import pref_manager
 import popen2
 from id_manager import id_manager
+import string
 
 
 import oasa_bridge
@@ -297,7 +298,7 @@ class BKchem( Tk):
         self.menu.addcascademenu( temp[0], temp[2], temp[3], tearoff=0)
         
 
-    for name in self.plug_man.get_names():
+    for name in self.plug_man.get_names( type="script"):
       tooltip = self.plug_man.get_description( name)
       self.menu.addmenuitem( _("Plugins"), 'command', label=name,
                              statusHelp=tooltip,
@@ -439,15 +440,21 @@ class BKchem( Tk):
                         'plus', 'text', 'rotate', 'bondalign', 'vector', 'reaction', 'misc'] #,'rapiddraw'] #, 'externaldata', 'rapiddraw']
 
     # import plugin modes
-    name = "nomenclature"
-    try:
-      module = __import__(name, globals(), locals(), [os.path.abspath("./")])
-    except ImportError:
-      return None
-    else:
-      self.modes[ name] = module.plugin_mode()
-      self.modes_sort.append( name)
-      
+    import imp
+    for plug_name in self.plug_man.get_names( type="mode"):
+      plug = self.plug_man.get_plugin_handler( plug_name)
+      module_name = plug.get_module_name()
+      # no invalid characters in mode_name
+      mode_name = ''.join( [x in string.ascii_letters and x or "X" for x in module_name])
+      try:
+        module = imp.load_source( module_name, plug.filename)
+      except ImportError:
+        continue
+      else:
+        self.modes[ module_name.replace("_","")] = module.plugin_mode()
+        self.modes_sort.append( module_name.replace("_",""))
+
+    del imp
 
 
 

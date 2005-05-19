@@ -34,12 +34,13 @@ class plugin_manager( object):
     self.descriptions = {}
 
   def get_available_plugins( self):
+    dir2 = os_support.get_dirs( 'plugin')
     dir1 = os_support.get_bkchem_private_dir()
     dir1 = os.path.join( dir1, 'plugins')
-    dirs = [dir1]
+    dirs = dir2 + [dir1]
     for dir in dirs:
       if not os.path.isdir( dir):
-        break
+        continue
       for name in os.listdir( dir):
         base, ext = os.path.splitext( name)
         if ext == ".xml":
@@ -54,6 +55,8 @@ class plugin_manager( object):
 
   def read_plugin_file( self, dir, name):
     doc = dom.parse( os.path.join( dir, name))
+    root = doc.childNodes[0]
+    plugin_type = root.getAttribute( 'type') or 'script'
     sources = dom_ext.simpleXPathSearch( doc, "/plugin/source")
     if sources:
       source = sources[0]
@@ -66,24 +69,62 @@ class plugin_manager( object):
           file = os.path.normpath( os.path.join( dir, file))
         name = dom_ext.getAllTextFromElement( names[0])
 
-        self.plugins[ name] = file
-        self.descriptions[ name] = descs and dom_ext.getAllTextFromElement( descs[0]) or ''
+        plugin = plugin_handler( name, file, type=plugin_type,
+                                 desc=descs and dom_ext.getAllTextFromElement( descs[0]) or '')
+        self.plugins[ name] = plugin
 
 
 
   def run_plugin( self, name):
-    filename = self.plugins[ name]
+    handler = self.plugins[ name]
 
-    the_globals = {'App': Store.app}
-    execfile( filename, the_globals)
+    if handler.type == "script":
+      filename = handler.filename
+      the_globals = {'App': Store.app}
+      execfile( filename, the_globals)
+    else:
+      raise ValueError, "Wrong type of plugin %s" % name
 
 
 
-  def get_names( self):
-    return self.plugins.keys()
+  def get_names( self, type=""):
+    if not type:
+      return self.plugins.keys()
+    else:
+      return [k for k, v in self.plugins.iteritems() if v.type == type]
     
 
   def get_description( self, name):
-    return self.descriptions.get( name, '')
-      
+    handler = self.get_plugin_handler( name)
+    if handler:
+      return handler.desc
+      return ''
+
+
+  def get_plugin_handler( self, name):
+    return self.plugins.get( name, None)
+
+
+  
+
+class plugin_handler:
+  """this class stores information about plugin"""
+
+  def __init__( self, name, filename, type="script", desc=""):
+    self.name = name
+    self.type = type
+    self.desc = desc
+    self.filename = filename
+
+    
+  def get_module_name( self):
+    """returns name of module suitable for loading of this plugin via import"""
+    return os.path.splitext( os.path.split( self.filename)[1])[0]
+
+
+  def get_directory_name( self):
+    """returns directory where the plugin resides"""
+    return os.path.split( self.filename)[0]
+
+
   

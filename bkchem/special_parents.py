@@ -36,6 +36,8 @@ class vertex_common( object):
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
 
+  meta__allowed_marks = ()   # when empty all marks are allowed
+
 
   def __init__( self):
     self.marks = Set()
@@ -87,9 +89,12 @@ class vertex_common( object):
 
   def set_mark( self, mark='radical', angle='auto'):
     """sets the mark and takes care of charge and multiplicity changes"""
-    m = self.create_mark( mark=mark, angle=angle)
-    self._set_mark_helper( mark, sign=1)
-    return m
+    if meta__allowed_marks and mark in meta__allowed_marks:
+      m = self.create_mark( mark=mark, angle=angle)
+      self._set_mark_helper( mark, sign=1)
+      return m
+    else:
+      raise ValueError, "not a allowed mark for this type %s" % mark
 
 
 
