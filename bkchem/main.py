@@ -1378,52 +1378,6 @@ Enter IChI:""")
       self.update_status( _("The file was saved as a template %s") % name)
 
 
-  # HACKS CALLBACKS
-
-  def molecules_to_separate_tabs( self):
-    name = self.get_paper_tab_name( self.paper)
-    file_name, ext = os.path.splitext( self.paper.file_name['name'])
-    i = 0
-    while self.paper.molecules:
-      i += 1
-      mol = self.paper.molecules[0]
-      self.paper.unselect_all()
-      self.paper.select( tuple( mol))
-      self.paper.selected_to_clipboard( delete_afterwards=1)
-      self.add_new_paper( name="%s-%d%s" % (file_name, i, ext))
-      self.paper.paste_clipboard( (200,200))
-      self.notebook.selectpage( name)
-
-
-  def rings_to_separate_tabs( self):
-    name = self.get_paper_tab_name( self.paper)
-    file_name, ext = os.path.splitext( self.paper.file_name['name'])
-    i = 0
-    for mol in self.paper.molecules:
-      for edges in mol.get_all_cycles_e():
-      #for ring in mol.get_smallest_independent_cycles():
-        i += 1
-        #edges = mol.vertex_subgraph_to_edge_subgraph( ring)
-        ring = mol.edge_subgraph_to_vertex_subgraph( edges)
-        self.paper.unselect_all()
-        self.paper.select( tuple( ring | edges))
-        self.paper.selected_to_clipboard( delete_afterwards=0, strict=1)
-        self.add_new_paper( name="%s-%d%s" % (file_name, i, ext))
-        self.paper.paste_clipboard( (200,200))
-        self.paper.unselect_all()
-        self.notebook.selectpage( name)
-
-
-  def normalize_aromatic_double_bonds( self):
-    for mol in self.paper.molecules:
-      mol.mark_aromatic_bonds()
-      for b in mol.bonds:
-        if b.aromatic == 1:
-          b.order = 4
-      mol.localize_aromatic_bonds()
-      mol.redraw()
-      self.paper.start_new_undo_record()
-
 
 
   def clean( self):

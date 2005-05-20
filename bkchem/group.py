@@ -38,6 +38,7 @@ from special_parents import vertex_common
 import data
 import re
 import debug
+import marks
 
 import oasa
 
@@ -377,7 +378,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
 
 
 
-  def draw( self):
+  def draw( self, redraw=False):
     "draws atom with respect to its properties"
     if self.item:
       warn( "drawing atom that is probably drawn", UserWarning, 2)
@@ -395,6 +396,9 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
     ## shrink the selector to improve appearance (y2-2)
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
+    if not redraw:
+      [m.draw() for m in self.marks]
+
     self.ftext.lift()
     self.paper.lift( self.item)
     self.paper.register_id( self.item, self)
@@ -546,6 +550,16 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
     if package.getAttributeNode( 'background-color') != None:
       self.area_color = package.getAttribute( 'background-color')
 
+    # marks
+    for m in package.getElementsByTagName( 'mark'):
+      mrk = marks.mark.read_package( m, self)
+      self.marks.add( mrk)
+    # number
+    if package.getAttribute( 'show_number'):
+      self.show_number = bool( data.booleans.index( package.getAttribute( 'show_number')))
+    if package.getAttribute( 'number'):
+      self.number = package.getAttribute( 'number')
+
 
 
   def get_package( self, doc):
@@ -580,6 +594,13 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
     else: 
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
+    # marks
+    for o in self.marks:
+      a.appendChild( o.get_package( doc))
+    # number
+    if self.number:
+      a.setAttribute( 'number', self.number)
+      a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
 
     return a
 
