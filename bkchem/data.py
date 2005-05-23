@@ -67,25 +67,11 @@ cdml_namespace = 'http://www.freesoftware.fsf.org/bkchem/cdml'
 
 
 # types of vector graphics
-vector_graphics_types = ('oval', 'rect', 'polygon')
+vector_graphics_types = ('oval', 'rect', 'polygon','polyline')
 
-# types that have fonts
-font_types = ('atom', 'plus', 'text')
-
-# types that have fill color
-line_color_types = vector_graphics_types + ('arrow', 'bond') + font_types
-
-# types that have outline color
-area_color_types = vector_graphics_types + font_types
-
-# types that have lines
-line_types = vector_graphics_types + ('bond', 'arrow')
-
-# saveable types - types that have their own element under <cdml> in CDML
-saveable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon')
 
 # names of all objects that have their own element under <cdml> in CDML - for reading
-loadable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction') 
+loadable_types = ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction','polyline') 
 
 
 paper_types = { 'A4': [297,210],

@@ -126,6 +126,8 @@ class SVG_writer( XML_writer):
           self.add_oval( o)
         elif o.object_type == 'polygon':
           self.add_polygon( o)
+        elif o.object_type == 'polyline':
+          self.add_polyline( o)
           
 
     
@@ -385,6 +387,17 @@ class SVG_writer( XML_writer):
                                          ( 'fill', o.area_color),
                                          ( 'stroke', o.line_color),
                                          ( 'fill-rule', 'evenodd')))
+
+
+  def add_polyline( self, o):
+    ps = ''
+    for (x,y) in [p.get_xy() for p in o.points]:
+      ps += '%d,%d ' % (x,y)
+    poly = dom_extensions.elementUnder( self.group, 'polyline',
+                                        (( 'points', ps),
+                                         ( 'stroke-width', str( o.line_width)),
+                                         ( 'fill', 'none'),
+                                         ( 'stroke', o.line_color)))
 
 
 

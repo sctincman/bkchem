@@ -30,7 +30,7 @@ from parents import meta_enabled, drawable, interactive, area_colored, container
 from singleton_store import Screen
 
 
-class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, with_line, top_level):
+class vector_graphics_item( meta_enabled, drawable, interactive, with_line, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -39,8 +39,7 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color']
   # undo related metas
-  meta__undo_properties = area_colored.meta__undo_properties + \
-                          with_line.meta__undo_properties
+  meta__undo_properties = with_line.meta__undo_properties
   meta__undo_copy = ('coords',)
 
 
@@ -119,9 +118,12 @@ class vector_graphics_item( meta_enabled, drawable, interactive, area_colored, w
 
 
 # RECTANGLE
-class rect( vector_graphics_item):
+class rect( vector_graphics_item, area_colored):
 
   object_type = 'rect'
+
+  meta__undo_properties = vector_graphics_item.meta__undo_properties + \
+                          area_colored.meta__undo_properties
 
   def __init__( self, paper, coords=(), package=None, width=1):
     vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
@@ -210,6 +212,10 @@ class square( rect):
 class oval( vector_graphics_item):
 
   object_type = 'oval'
+
+  meta__undo_properties = vector_graphics_item.meta__undo_properties + \
+                          area_colored.meta__undo_properties
+
 
   def __init__( self, paper, coords=(), package=None):
     vector_graphics_item.__init__( self, paper, coords=coords, package=package)
@@ -307,8 +313,13 @@ class polygon( vector_graphics_item, container):
 
   object_type = 'polygon'
   # undo related metas
+  meta__undo_properties = vector_graphics_item.meta__undo_properties + \
+                          area_colored.meta__undo_properties
+
   meta__undo_copy = ('points',)
   meta__undo_children_to_record = ('points',)
+
+
 
   def __init__( self, paper, coords=(), package=None, width=1):
     vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
@@ -397,6 +408,137 @@ class polygon( vector_graphics_item, container):
 
   def is_empty_or_single_point( self):
     return len( self.points) < 3 
+
+  def delete( self):
+    [o.delete() for o in self.points]
+    self.points = []
+    self.paper.delete( self.item)
+    self.paper.unregister_id( self.item)
+    self.item = None
+
+
+
+  # shape_defining_points
+  def _get_shape_defining_points( self):
+    return self.points
+
+  shape_defining_points = property( _get_shape_defining_points, None, None,
+                                    "should give list of point_drawable instances")
+
+
+
+
+
+
+# Polyline
+class polyline( vector_graphics_item, container):
+  # note that all children of simple_parent have default meta infos set
+  # therefor it is not necessary to provide them for all new classes if they
+  # don't differ (are not non-empty)
+
+  object_type = 'polyline'
+  # undo related metas
+  meta__undo_copy = ('points',)
+  meta__undo_children_to_record = ('points',)
+
+
+
+  def __init__( self, paper, coords=(), package=None, width=1):
+    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
+    del self.coords # polygon does use points for storage of coord information
+    if not package:
+      self.points = []
+      for i in range( 0, len( coords), 2):
+        x = coords[i]
+        y = coords[i+1]
+        self.points.append( classes.point( self.paper, xy=( x, y), arrow=self))
+    
+
+
+  def draw( self):
+    [p.draw() for p in self.points]
+    coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+    self.item = self.paper.create_line( tuple( coords),
+                                        fill=self.line_color,
+                                        width=self.line_width,
+                                        tags=("polyline","vector"))
+    self.paper.register_id( self.item, self)
+
+
+  def move( self, dx, dy):
+    [p.move( dx, dy) for p in self.points]
+    self.paper.move( self.item, dx, dy)
+
+
+  def redraw( self):
+    if not self.item:
+      self.draw()
+    else:
+      coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+      self.paper.coords( self.item, tuple( coords))
+      self.paper.itemconfig( self.item, width=self.line_width, fill=self.line_color)
+
+
+  def select( self):
+    #self.selector = hg.selection_square( self.paper, self, coords=tuple( self.bbox()))
+    [o.select() for o in self.points]
+
+
+  def unselect( self):
+    [o.unselect() for o in self.points]
+
+
+  def bbox( self):
+    """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
+    return self.paper.bbox( self.item)
+
+
+  def get_package( self, doc):
+    """returns a DOM element describing the object in CDML,
+    doc is the parent document which is used for element creation
+    (the returned element is not inserted into the document)"""
+    pack = doc.createElement( 'polyline')
+    dom_extensions.setAttributes( pack, (('line_color', self.line_color),
+                                         ('width', str( self.line_width))))
+    for p in self.points:
+      pack.appendChild( p.get_package( doc))
+    return pack
+
+
+  def read_package( self, pack):
+    """reads the dom element pack and sets internal state according to it"""
+    self.points = []
+    for p in pack.getElementsByTagName( 'point'):
+      self.points.append( classes.point( self.paper, arrow=self, package=p))
+
+    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+
+    w = pack.getAttribute( 'width')
+    if w:
+      self.line_width = float( w)
+    else:
+      self.line_width = 1.0
+
+      
+  def lift( self):
+    if self.selector:
+      self.selector.lift()
+    if self.item:
+      self.paper.lift( self.item)
+    [o.lift() for o in self.points]
+
+
+  def delete_point( self, pnt):
+    try:
+      self.points.remove( pnt)
+    except IndexError:
+      warn( "trying to remove nonexisting point from polyline")
+    pnt.delete()
+
+
+  def is_empty_or_single_point( self):
+    return len( self.points) < 2
+
 
   def delete( self):
     [o.delete() for o in self.points]

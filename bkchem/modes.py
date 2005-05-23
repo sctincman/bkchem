@@ -1450,34 +1450,35 @@ class vector_mode( edit_mode):
   def __init__( self):
     edit_mode.__init__( self)
     self.name = _('vector graphics')
-    self.submodes = [['rectangle','square','oval', 'circle', 'polygon']]
-    self.submodes_names = [[_('rectangle'),_('square'),_('oval'),_('circle'),_('polygon')]]
+    self.submodes = [['rectangle','square','oval', 'circle', 'polygon', 'polyline']]
+    self.submodes_names = [[_('rectangle'),_('square'),_('oval'),_('circle'),_('polygon'),_('polyline')]]
     self.submode = [0]
     self._polygon_points = []
     self._polygon_line = None
     self._current_obj = None
 
-  def mouse_down( self, event):
+  def mouse_down( self, event, modifiers=""):
     edit_mode.mouse_down( self, event)
-    if self.submode[0] == 4:
+    if self.get_submode(0) in ("polyline","polygon"):
       Store.app.paper.unselect_all()
       self._block_leave_event = 0
       self._polygon_points += [event.x, event.y]
 
+
   def mouse_drag( self, event):
-    if self.submode[0] == 4:
+    if self.get_submode(0) in ("polyline","polygon"):
       self.mouse_move( event)
       return
     if not self.focused and not self._dragging:
       self._dragging = 5
       Store.app.paper.unselect_all()
-      if self.submode[0] == 0:
+      if self.get_submode( 0) == "rectangle":
         self._current_obj = Store.app.paper.new_rect( (self._startx, self._starty, event.x, event.y))
-      elif self.submode[0] == 1:
+      elif self.get_submode( 0) == "square":
         self._current_obj = Store.app.paper.new_square( (self._startx, self._starty, event.x, event.y))
-      elif self.submode[0] == 2:
+      elif self.get_submode( 0) == "oval":
         self._current_obj = Store.app.paper.new_oval( (self._startx, self._starty, event.x, event.y))
-      elif self.submode[0] == 3:
+      elif self.get_submode( 0) == "circle":
         self._current_obj = Store.app.paper.new_circle( (self._startx, self._starty, event.x, event.y))
       self._current_obj.draw()
     elif not self.focused and self._dragging and self._current_obj:
@@ -1487,7 +1488,7 @@ class vector_mode( edit_mode):
       edit_mode.mouse_drag( self, event)
 
   def mouse_up( self, event):
-    if self.submode[0] == 4:
+    if self.get_submode( 0) in ("polyline","polygon"):
       if not self._polygon_line:
         self._polygon_line = Store.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
       else:
@@ -1508,10 +1509,15 @@ class vector_mode( edit_mode):
       self.mouse_click( event)
 
   def mouse_down3( self, event, modifiers = []):
-    if self.submode[0] == 4 and self._polygon_line:
+    if self._polygon_line:
       Store.app.paper.delete( self._polygon_line)
-      if len( self._polygon_points) > 2:
-        poly = Store.app.paper.new_polygon( tuple( self._polygon_points + [event.x, event.y]))
+      poly = None
+      if self.get_submode( 0) == "polygon":
+        if len( self._polygon_points) > 2:
+          poly = Store.app.paper.new_polygon( tuple( self._polygon_points + [event.x, event.y]))
+      elif self.get_submode( 0) == "polyline":
+        poly = Store.app.paper.new_polyline( tuple( self._polygon_points + [event.x, event.y]))
+      if poly:
         poly.draw()
         Store.app.paper.select( [poly])
       self._polygon_points = []
@@ -1522,7 +1528,7 @@ class vector_mode( edit_mode):
       edit_mode.mouse_down3( self, event, modifiers=modifiers)
 
   def mouse_move( self, event):
-    if self.submode[0] == 4 and self._polygon_points:
+    if self.get_submode( 0) in ("polyline","polygon") and self._polygon_points:
       if not self._polygon_line:
         self._polygon_line = Store.app.paper.create_line( tuple( self._polygon_points + [event.x, event.y]), fill='black')
       else:

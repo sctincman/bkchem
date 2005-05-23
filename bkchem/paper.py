@@ -447,9 +447,9 @@ class chem_paper( Canvas, object):
       o.delete()
       self.stack.remove( o)
     # polygon is special (points were removed on begining together with arrow points)
-    to_delete = [o for o in self.selected if o.object_type == 'polygon']
+    to_delete = [o for o in self.selected if o.object_type in ('polygon','polyline')]
     for a in self.vectors:
-      if a.object_type == 'polygon':
+      if a.object_type in ('polygon','polyline'):
         if a.is_empty_or_single_point():
           if a not in to_delete:
             to_delete += [a]
@@ -939,6 +939,13 @@ class chem_paper( Canvas, object):
 
 
 
+  def new_polyline( self, coords):
+    p = graphics.polyline( self, coords=coords)
+    self.stack.append( p)
+    return p
+
+
+
 
 
   def list_bbox( self, items):
@@ -1051,6 +1058,8 @@ class chem_paper( Canvas, object):
       o = graphics.circle( self, package=package)
     elif package.nodeName == 'polygon':
       o = graphics.polygon( self, package=package)
+    elif package.nodeName == 'polyline':
+      o = graphics.polyline( self, package=package)
     elif package.nodeName == 'reaction':
       react = reaction()
       react.read_package( package)
