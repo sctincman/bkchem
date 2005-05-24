@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Creating custom plugins for BKchem</title>
+  </head>
+  <body>
+    <h2>How to create a custom plugin for BKchem</h2>
+
+    <h3>What is a plugin</h3>
+
+    <p>From version <b>0.10.0-pre1</b> BKchem supports custom plugins, that is pieces of code that
+    can be inserted into BKchem without need of modification of the program. These are typically
+    written by users and provide some minor enhancements to the functionality of the program.</p>
+
+    <h3>How does BKchem handle plugins</h3>
+
+    <p>A BKchem plugin in general consists of two main parts. The first one is a short XML file that
+    describes the plugin. If you don't know anything about XML, just don't worry. It is so easy even
+    I understand it :). The second part is a <a href="http://www.python.org">Python</a> script that
+    is the actual code of the plugin.</p>
+
+    <p>On startup BKchem searches in predefined directories (more on this later) and tries to read
+    all XML files (having extension .xml) and find if they describe some plugin. If yes it performs
+    an action depending on the type of plugin.</p>
+
+    <p>At the time of writing of this document there are two distinct types of plugins that BKchem
+    supports. The default (and probably most interesting one) is the <b>script plugin</b>. For such
+    a plugin an entry into the menu is added and the plugin code is executed when the entry is
+    selected.</p>
+
+    <p>The second type of plugin is <b>mode plugin</b>. Modes are used in BKchem to provide different
+    types of actions to perform on the drawn objects. They are represented by the main toolbar of the
+    program. There is an "edit mode", "draw mode", "rotate mode" etc. A plugin of this type adds a
+    new mode to BKchem, enabling a new functionality. It is a little more complicated matter, because
+    it implies a deeper knowledge of BKchem to write such a plugin, and therefore is not described in
+    this material, yet.</p>
+
+
+    <h3>Writing a script plugin - brief tutorial</h3>
+
+    <h4>Foreword</h4>
+
+    <p>As mentioned above a plugin consist of two separate files - a XML document describing the
+    plugin and a Python script containing the actual code. In case of script plugin, the only file
+    that is read on BKchem startup is the XML file. If this file is successfully read, an entry is
+    added to the <i>Plugins</i> menu. The Python script is not executed until requested by the
+    user.</p>
+
+    <p>This fact has two major implications:</p>
+    <ul>
+      <li>a successful startup of BKchem and appearance of the
+      entry in BKchem menu does not mean the plugin will actually work
+      </li>
+      <li>each time you run the plugin from the menu, its source is re-read. This means that as long
+      as your plugin does not cause some inconsistencies in the internal state of the program, you
+      may debug and modify the plugin without restarting BKchem.
+      </li>
+    </ul>
+
+
+    <h4>The XML specification file</h4>
+
+    <p>The XML file describing the plugin is very short and simple as you can see on this
+    example:</p>
+
+
+<pre>
+&lt;?xml version="1.0" encoding="utf-8"?>
+
+&lt;plugin>
+
+  &lt;meta>
+    &lt;author email="beda@zirael.org">Beda Kosata&lt;/author>
+    &lt;description>
+      Takes a compound name and tries to find it in the NIST Webbook. When successful, tries
+      to fetch the molfile and import it.
+    &lt;/description>
+  &lt;/meta>
+
+  &lt;source>
+    &lt;file>fetch_from_webbook.py&lt;/file>
+    &lt;menu-text lang="en">Fetch from Webbook&lt;/menu-text>
+  &lt;/source>
+&lt;/plugin>
+</pre>
+
+
+
+    <p>The only necessary part is
+    content of the <b>&lt;source></b> tag, where the <b>&lt;file></b> tag says which file contains
+    the Python script and the <b>&lt;menu-text></b> tag says how the entry in the "Plugins" menu
+    for this plugin should be called. For future purposes the <b>menu-text</b> tag may have an
+    attribute <i>lang</i> that says in which language the text is. In this case more than one 
+    <b>menu-text</b> elements may be present with different <i>lang</i> attributes.</p>
+
+    <p>The sample config file contains also a <b>meta</b> tag with information about the author and
+    the function of the plugin. It is considered good habit to provide these information if you are
+    going to distribute your plugins to other people. The description of the function of the plugin
+    will be shown in the program status-bar when the cursor is over the plugin menu entry.
+    </p>
+
+    <h4>The Python script</h4>
+
+    <p>The heart (or maybe brain) of the plugin is the Python script. Inside this script you can use
+    any Python functions you want, there is no limit. <b>WARNING: Because of this, the plugins
+    present a possible threat to your computer. A plugin from an unknown source may delete all data
+    from you harddisk, send your private emails to strange people or even drink all your beer and
+    kick you out from your own house - you have been warned.</b></p>
+
+    <p>The way how the script communicates with BKchem is via a global variable <i>App</i> that
+    represents the instance of the BKchem application. You may call its methods, retrieve its
+    attributes etc.</p>
+
+    <p>Bellow is a sample script that find all aromatic bonds in all molecules present on the
+    current paper and sets their color to dark red.</p>
+
+    <pre>
+# at first we cancel all selections
+App.paper.unselect_all()
+
+# App.paper is the current paper
+# App.paper.molecules is a list of all molecules on this paper
+for mol in App.paper.molecules:
+
+  # the aromaticity of bonds is not checked by default
+  # therefore we must at first call the mark_aromatic_bonds() method
+  mol.mark_aromatic_bonds()
+
+  # then we can loop over all the bonds
+  # and change the color of all the aromatic ones
+  for b in mol.bonds:
+    if b.aromatic:
+      b.line_color = "#aa0000"
+      b.redraw()
+    </pre>
+
+    <p>After the script finishes a new undo record is started automatically, therefor any changes by the plugin
+    are undoable in one step.</p>
+
+
+    <h4>Last word</h4>
+
+    <p>There are some sample plugins distributed together with BKchem (in the directory plugins
+    under the main BKchem directory (not the /bkchem/bkchem/plugins, but /bkchem/plugins). Some of
+    them are pretty simple, some a little more complex. Feel free to use them for studying or as
+    starting material for your own scripts.
+    </p>
+
+
+
+  </body>
+</html>
