@@ -1108,3 +1108,44 @@ class logging_dialog( Pmw.Dialog):
 
 
 
+
+
+## -------------------- language dialog --------------------
+
+class language_dialog( Pmw.Dialog):
+
+  def __init__( self, paper):
+    Pmw.Dialog.__init__( self,
+                         Store.app,
+                         buttons=(_('OK'), _('Cancel')),
+                         defaultbutton=_('OK'),
+                         title=_('Language'),
+                         command=self.done,
+                         master='parent')
+    self.init_list()
+
+
+  def init_list( self):
+    langs = []
+    import gettext
+    
+    for lang, language in data.languages.iteritems():
+      system = gettext.find( 'BKchem', '/usr/share/locale', [lang])
+      local = gettext.find( 'BKchem', '../locale', [lang])
+      if system or local or lang == "en":
+        langs.append( lang)
+
+    self.list = Pmw.ScrolledListBox( self.interior(),
+                                     #selectioncommand=self.select,
+                                     labelpos = "n",
+                                     label_text=_("Available Languages"),
+                                     listbox_selectmode="single",
+                                     listbox_width=30,
+                                     items=langs)
+    del gettext
+    self.list.pack()
+
+
+  def done( self, button):
+    self.deactivate()
+    

@@ -28,27 +28,45 @@ sys.path.insert( 1, os_support.get_module_path())
 
 ### now starting for real
 
+from singleton_store import Store
+import pref_manager
+
+# at first preference manager
+Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
+
+
 ## first turn locale support on
 
 import gettext
 
-## for some strange reason python gettext raises error when no translation is found
-## (fixed in Python 2.2.1 but we must be backward compatible with 2.2)
-## this makes it to use the original strings when translation is not available
-if gettext.find( 'BKchem'):
-  # at first try if locale is in its standard location
-  try:
-    gettext.install( 'BKchem', unicode=1)
-  except IOError:
-    import __builtin__
-    __builtin__.__dict__['_'] = lambda m: m
+user_lang = Store.pm.get_preference( "lang")
+if user_lang:
+  langs = [[user_lang], []]
 else:
-  # it is not. then we are in the single directory deployment probably
-  try:
-    gettext.install( 'BKchem', '../locale', unicode=1)
-  except IOError:
+  langs = [[]]
+
+for lang in langs:
+  if gettext.find( 'BKchem', languages=lang):
+    # at first try if locale is in its standard location
+    tr = gettext.translation( 'BKchem', languages=lang)
+    tr.install( unicode=True)
+    break
+  elif gettext.find( 'BKchem', localedir='../locale', languages=lang):
+    # it is not. then we are in the single directory deployment probably
+    tr = gettext.translation( 'BKchem', localedir='../locale', languages=lang)
+    tr.install( unicode=True)
+    break
+  elif lang and lang[0]=="en":
     import __builtin__
     __builtin__.__dict__['_'] = lambda m: m
+    break
+  elif not lang:
+    gettext.install( "BKchem", unicode=True)
+  else:
+    pass
+      
+
+
 
 import config
 

@@ -355,3 +355,11 @@ def log_atom_type( vtype):
   elif vtype == "textatom":
     Store.log( _("BKchem could not interpret the entered text as anything with chemical meaning"))
 
+
+
+def select_language( paper):
+  a = dialogs.language_dialog( paper)
+  a.activate()
+  lang = a.list.getvalue()
+  if lang:
+    Store.pm.add_preference( "lang", lang[0])

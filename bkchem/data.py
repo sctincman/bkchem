@@ -89,3 +89,9 @@ paper_types = { 'A4': [297,210],
 FROM_STRING = 0
 TO_STRING = 1
 
+
+languages = {'en': 'English',
+             'cs': 'Czech',
+             'de': 'German',
+             'fr': 'French'
+             }

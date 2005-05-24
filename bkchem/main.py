@@ -45,7 +45,6 @@ from temp_manager import template_manager
 import modes
 import interactors
 import os_support
-import pref_manager
 import popen2
 from id_manager import id_manager
 import string
@@ -263,6 +262,7 @@ class BKchem( Tk):
       # options
       ( _('Options'), 'menu',    _("Settings that affect how BKchem works"), 'left'),
       ( _("Options"), 'command', _('Standard'), None, _("Set the default drawing style here"), self.standard_values, None),
+      ( _("Options"), 'command', _('Language'), None, _("Set the language used after next restart"), lambda : interactors.select_language( self.paper), None),
       ( _("Options"), 'command', _('INChI program path'), None, _("To use INChI in BKchem you must first give it a path to the INChI program here"),
         interactors.ask_inchi_program_path, None),
 
@@ -397,8 +397,6 @@ class BKchem( Tk):
     Store.gm.add_template_from_CDML( "groups.cdml")
     Store.gm.add_template_from_CDML( "groups2.cdml")
 
-    # preference manager
-    Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
 
     # logger
     Store.logger = logger.logger()
