@@ -1,9 +1,9 @@
 #! /usr/bin/python
 
+import sys
 from distutils.core import setup
 import glob
 import os
-import sys
 import operator
 try:
   import py2exe
@@ -11,16 +11,41 @@ except:
   pass
 from bkchem import config
 
-## if os.name != 'posix':
-##   print "Sorry, but install is not available for non-posix OSes, yet"
-##   sys.exit()
+
+
+## A few pre-setup hacks
+
 
 if os.name != 'posix':
   sys.path.insert( 0, 'bkchem')
 
+# all the apicdoc directories and files
+apidocs = [('share/doc/bkchem/'+path[4:], map( os.path.join, len( filenames)*[path], filenames)) for (path, dirnames, filenames) in os.walk( 'doc/api')]
 
-apidocs = [(path, map( os.path.join, len( filenames)*[path], filenames)) for (path, dirnames, filenames) in os.walk( 'doc/api')]
+# available languages to pack
+langs = [l for l in os.listdir( 'locale') if os.path.isdir( 'locale/'+l) and os.path.exists( 'locale/'+l+'/LC_MESSAGES/BKchem.mo')]
 
+print "found languages:", langs
+localizations = [('share/locale/'+lang+'/LC_MESSAGES', ['locale/'+lang+'/LC_MESSAGES/BKchem.mo']) for lang in langs]
+
+
+# should we strip something from in the scripts from the installation path (used in gentoo sandboxing etc.)
+strip = ""
+for arg in sys.argv:
+  if arg.startswith( "--strip="):
+    strip = arg.lstrip( "--strip=")
+    sys.argv.remove( arg)
+    break
+
+def strip_path( path):
+  if path.startswith( strip):
+    new = path.replace( strip, "", 1)
+    return new
+  else:
+    return path
+
+
+# the setup itself
 
 set = setup(
   name = 'bkchem',
@@ -33,7 +58,7 @@ set = setup(
   platforms = ["Unix", "Windows", "hopefully other OSes able to run Python"],
   long_description = "BKchem is a chemical drawing program written in Python",
   
-  packages=[ 'bkchem', 'bkchem/plugins', 'bkchem/oasa', 'bkchem/oasa/oasa', 'bkchem/oasa/oasa/graph', 'bkchem/piddle'],
+  packages=[ 'bkchem', 'bkchem/plugins', 'bkchem/oasa', 'bkchem/oasa/oasa', 'bkchem/oasa/oasa/graph', 'bkchem/plugins/piddle'],
 
   data_files=[ ('share/bkchem/templates', glob.glob( 'templates/*.cdml')+['templates/oo_manifest.xml']),
                ('share/bkchem/images', ['images/logo.ppm']),
@@ -45,13 +70,11 @@ set = setup(
                ('share/doc/bkchem/html', glob.glob( 'doc/html/*')),
                ('share/doc/bkchem/scripts', glob.glob( 'doc/scripts/*')),
                ('share/doc/bkchem/img', glob.glob( 'doc/img/*')),
-               ('share/locale/cs/LC_MESSAGES', ['locale/cs/LC_MESSAGES/BKchem.mo']),
-               ('share/locale/pl/LC_MESSAGES', ['locale/pl/LC_MESSAGES/BKchem.mo']),
-               ('share/locale/fr/LC_MESSAGES', ['locale/fr/LC_MESSAGES/BKchem.mo'])
-               ] + apidocs,
+               ] + localizations + apidocs,
   windows=['bkchem/bkchem.py'],
   options = {"py2exe": {"packages": ["encodings"]}}
   )
+
 
 
 
@@ -68,36 +91,37 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
     print "ERROR: couldn't open the file %s for write" %  config_name
     sys.exit()
   file.write( "# the bkchem configuration file, do not edit!\n #(unless you are pretty sure that you know what you are doing, which even I am not)\n")
-  file.write( 'BKCHEM_MODULE_PATH="%s"\n' % os.path.join( py_dir, "bkchem"))
-  file.write( 'BKCHEM_TEMPLATE_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/templates"))
-  file.write( 'BKCHEM_PIXMAP_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/pixmaps"))
-  file.write( 'BKCHEM_IMAGE_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/images"))
-  file.write( 'BKCHEM_PLUGIN_PATH="%s"\n' % os.path.join( data_dir, "share/bkchem/plugins"))
+  file.write( 'BKCHEM_MODULE_PATH="%s"\n' % strip_path( os.path.join( py_dir, "bkchem")))
+  file.write( 'BKCHEM_TEMPLATE_PATH="%s"\n' % strip_path( os.path.join( data_dir, "share/bkchem/templates")))
+  file.write( 'BKCHEM_PIXMAP_PATH="%s"\n' % strip_path( os.path.join( data_dir, "share/bkchem/pixmaps")))
+  file.write( 'BKCHEM_IMAGE_PATH="%s"\n' % strip_path( os.path.join( data_dir, "share/bkchem/images")))
+  file.write( 'BKCHEM_PLUGIN_PATH="%s"\n' % strip_path( os.path.join( data_dir, "share/bkchem/plugins")))
   file.close()
   print "file %s created" % config_name
 
 
   # the executable
+  if not os.path.isdir( bin_dir):
+    try:
+      os.mkdir( bin_dir)
+    except:
+      print "ERROR: could not create directory %s" % bin_dir
+      sys.exit( 201)      
   exec_name = os.path.join( bin_dir, 'bkchem')
   try:
     file = open( exec_name, 'w')
   except:
     print "ERROR: couldn't open the file %s for write" %  exec_name
-    sys.exit()
+    sys.exit( 201)
   file.write( "#!/bin/sh\n")
-##   file.write( "export BKCHEM_MODULE_PATH=%s\n" % os.path.join( py_dir, "bkchem"))
-##   file.write( "export BKCHEM_TEMPLATE_PATH=%s\n" % os.path.join( data_dir, "share/bkchem/templates"))
-##   file.write( "export BKCHEM_PIXMAP_PATH=%s\n" % os.path.join( data_dir, "share/bkchem/pixmaps"))
-##   file.write( "export BKCHEM_IMAGE_PATH=%s\n" % os.path.join( data_dir, "share/bkchem/images"))
-##   file.write( "export BKCHEM_PLUGIN_PATH=%s\n" % os.path.join( py_dir, "bkchem/plugins"))
-  file.write( 'python %s "$@"\n' % os.path.join( py_dir, "bkchem", "bkchem.py"))
+  file.write( 'python %s "$@"\n' % strip_path( os.path.join( py_dir, "bkchem", "bkchem.py")))
   file.close()
   print "file %s created" % exec_name
   try:
     os.chmod( os.path.join( bin_dir, 'bkchem'), 5+5*8+7*8*8)
   except:
-    print "failed to make %s executable" % exec_name
-    sys.exit()
+    print "ERROR: failed to make %s executable" % exec_name
+    sys.exit( 201)
   print "file %s made executable" % exec_name
   
 

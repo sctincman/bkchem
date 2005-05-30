@@ -10,7 +10,5 @@ include images/icon.ico
 include images/icon.png
 recursive-include doc *.xml *.html *.py *.png
 recursive-include dtd *.dtd *.xsd
-include locale/cs/LC_MESSAGES/BKchem.mo
-include locale/pl/LC_MESSAGES/BKchem.mo
-include locale/fr/LC_MESSAGES/BKchem.mo
+recursive-include locale LC_MESSAGES/BKchem.mo
 include bkchem.iss
