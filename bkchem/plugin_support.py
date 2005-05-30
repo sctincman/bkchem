@@ -67,10 +67,10 @@ class plugin_manager( object):
         file = dom_ext.getAllTextFromElement( files[0])
         if not os.path.isabs( file):
           file = os.path.normpath( os.path.join( dir, file))
-        name = dom_ext.getAllTextFromElement( names[0])
+        name = self._select_correct_text( names)
 
         plugin = plugin_handler( name, file, type=plugin_type,
-                                 desc=descs and dom_ext.getAllTextFromElement( descs[0]) or '')
+                                 desc= self._select_correct_text( descs))
         self.plugins[ name] = plugin
 
 
@@ -103,6 +103,20 @@ class plugin_manager( object):
 
   def get_plugin_handler( self, name):
     return self.plugins.get( name, None)
+
+
+  def _select_correct_text( self, texts):
+    """returns the right text according to the lang attribute"""
+    if not texts:
+      return ''
+    for text in texts:
+      lang = text.getAttribute( "lang") or "en"
+      if lang == Store.lang:
+        return dom_ext.getAllTextFromElement( text)
+    # if nothing found, return the first one
+    return dom_ext.getAllTextFromElement( texts[0])
+
+
 
 
   

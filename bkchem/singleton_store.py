@@ -41,6 +41,9 @@ class Store:
   logger = None       # the logger
   log = None          # the log method of the logger (usually)
   id_manager = None   # the id manager
+
+  # attrs
+  lang = "en"
   
   # recently unused
   clipboard = None    # the clipboard

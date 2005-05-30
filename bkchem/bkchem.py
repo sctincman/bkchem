@@ -41,30 +41,31 @@ import gettext
 
 user_lang = Store.pm.get_preference( "lang")
 if user_lang:
-  langs = [[user_lang], []]
+  langs = [[user_lang], None]
 else:
-  langs = [[]]
+  langs = [None]
 
 for lang in langs:
   if gettext.find( 'BKchem', languages=lang):
     # at first try if locale is in its standard location
+    Store.lang = gettext.find( 'BKchem', languages=lang).split("/")[-3]
     tr = gettext.translation( 'BKchem', languages=lang)
     tr.install( unicode=True)
     break
   elif gettext.find( 'BKchem', localedir='../locale', languages=lang):
     # it is not. then we are in the single directory deployment probably
+    Store.lang = gettext.find( 'BKchem', languages=lang).split("/")[-3]
     tr = gettext.translation( 'BKchem', localedir='../locale', languages=lang)
     tr.install( unicode=True)
     break
-  elif lang and lang[0]=="en":
+  elif lang and lang[0]=="en" or not lang:
     import __builtin__
     __builtin__.__dict__['_'] = lambda m: m
+    Store.lang = "en"
     break
-  elif not lang:
-    gettext.install( "BKchem", unicode=True)
   else:
     pass
-      
+
 
 
 

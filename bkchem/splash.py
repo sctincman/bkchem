@@ -32,7 +32,7 @@ class Splash( Tkinter.Toplevel):
   def __init__( self):
     Tkinter.Toplevel.__init__( self)
 
-    self.title(_('BKchem starting...'))
+    self.title(_('BKchem is starting...'))
 
     # splash image
     splash_image_path = 'logo.ppm'
