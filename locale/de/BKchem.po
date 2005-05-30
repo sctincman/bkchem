@@ -1256,7 +1256,7 @@ msgstr "Horizontal ausrichten"
 
 #: ../../bkchem/modes.py:1231
 msgid "select the second atom, please."
-msgstr "Bitte ein zweites Atom auswählen.
+msgstr "Bitte ein zweites Atom auswählen."
 
 #: ../../bkchem/modes.py:1252
 msgid "atoms must be in the same molecule!"

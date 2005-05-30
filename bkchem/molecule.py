@@ -122,6 +122,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   ## OVERRIDES THE OASA.GRAPH METHODS
 
+  def create_graph( self):
+    return molecule( paper=self.paper)
+
+
   def create_vertex( self, vertex_class=None):
     if not vertex_class:
       vertex_class = self.vertex_class
@@ -254,6 +258,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         deleted += [self.delete_atom( o) for o in self.atoms if len(o.neighbors) == 0]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
+      # check_integrity should be called before redrawing, because it moves atoms and bonds
+      # to new molecules when the molecule is spit and avoids working on non-connected graph
+      offspring = self.check_integrity()
       if redraw:
         bonds_to_redraw = []
         for b in deleted:
@@ -265,8 +272,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         [o.decide_pos() for o in self.atoms if isinstance( o, atom)]
         [o.redraw() for o in self.atoms]
     else:
+      offspring = self.check_integrity()
       deleted += map( self.delete_bond, self.bonds)
-    return deleted, self.check_integrity()
+    return deleted, offspring
 
   def delete_bond( self, item):
     item.delete()

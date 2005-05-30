@@ -451,29 +451,32 @@ class edit_mode( basic_mode):
   def mouse_click( self, event):
     if not self._shift:
       Store.app.paper.unselect_all()
+
     if self.focused:
 #      if self.focused.object_type == 'arrow':
 #        Store.app.paper.select( self.focused.points)
 #      else:
-        if self.focused in Store.app.paper.selected:
-          Store.app.paper.unselect( [self.focused])
-        elif (self.focused.object_type == 'selection_rect') and (self.focused.object in Store.app.paper.selected):
-          Store.app.paper.unselect( [self.focused.object])
+      if self.focused in Store.app.paper.selected:
+        Store.app.paper.unselect( [self.focused])
+      elif (self.focused.object_type == 'selection_rect') and (self.focused.object in Store.app.paper.selected):
+        Store.app.paper.unselect( [self.focused.object])
+      else:
+        if self.focused.object_type == 'selection_rect':
+          Store.app.paper.select( [self.focused.object])
         else:
-          if self.focused.object_type == 'selection_rect':
-            Store.app.paper.select( [self.focused.object])
-          else:
-            Store.app.paper.select( [self.focused])
-        # double click?
-        t = time.time()
-        if t - self._last_click_time < 0.3:
-          self._last_click_time = 0
-          self.double_click( event)
-        else:
-          self._last_click_time = t
-    if self._ctrl:
-      self._delete_selected()
-      Store.app.paper.start_new_undo_record()
+          Store.app.paper.select( [self.focused])
+      # double click?
+      t = time.time()
+      if t - self._last_click_time < 0.3:
+        self._last_click_time = 0
+        self.double_click( event)
+      else:
+        self._last_click_time = t
+
+      # when clicked with Ctrl pressed delete the focused atom
+      if self._ctrl:
+        self._delete_selected()
+
     Store.app.paper.add_bindings()
 
 
