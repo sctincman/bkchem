@@ -64,6 +64,7 @@ set = setup(
                ('share/bkchem/images', ['images/logo.ppm']),
                ('share/bkchem/pixmaps', glob.glob( 'pixmaps/*.gif')),
                ('share/bkchem/dtd', glob.glob( 'dtd/*.dtd') + glob.glob( 'dtd/*.xsd')),
+               ('share/bkchem/plugins', glob.glob( 'plugins/*.py')+glob.glob( 'plugins/*.xml')),
                ('share/doc/bkchem', glob.glob( 'doc/*.xml') + glob.glob( 'doc/*.html') + ['README', 'RELEASE', 'INSTALL', 'INSTALL.binary', 'progress.log']),
                ('share/doc/bkchem/ps', glob.glob( 'doc/ps/*')),
                ('share/doc/bkchem/pdf', glob.glob( 'doc/pdf/*')),
