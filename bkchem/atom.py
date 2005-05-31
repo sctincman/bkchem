@@ -844,6 +844,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
 
   def update_after_valency_change( self):
+    if self.free_valency <= 0:
+      self.raise_valency_to_senseful_value()
     if self.show_hydrogens:
       self.redraw()
 

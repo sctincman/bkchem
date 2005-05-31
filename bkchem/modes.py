@@ -339,7 +339,7 @@ class edit_mode( basic_mode):
     self.register_key_sequence( ' ', self._set_name_to_selected)
     self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
     self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
-    self.register_key_sequence( 'Return', lambda : Store.app.paper.set_name_to_selected( Store.app.editPool.text)) 
+    self.register_key_sequence( 'Return', self._set_old_name_to_selected) 
     self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
     # object related key bindings
     self.register_key_sequence( 'C-o C-e', self._expand_groups)
@@ -648,6 +648,18 @@ class edit_mode( basic_mode):
       Store.app.paper.add_bindings()
 
 
+  def _set_old_name_to_selected( self):
+    name = Store.app.editPool.text
+    vtype = Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
+    # inform the user what was set
+    interactors.log_atom_type( vtype)
+    # cleanup
+    [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
+    [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
+    Store.app.paper.add_bindings()
+    
+
+
 
   def _move_selected( self, dx, dy):
     Store.app.paper.select( Store.app.paper.atoms_to_update())
@@ -801,6 +813,7 @@ class draw_mode( edit_mode):
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
+        # raise valency if there is no free valency
         if self.submode[3] == 1:
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
@@ -808,6 +821,11 @@ class draw_mode( edit_mode):
         else:
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b)
+
+        # update atom text
+        if hasattr( self.focused, 'update_after_valency_change'):
+          self.focused.update_after_valency_change()
+
         #Store.app.paper.add_bindings( active_names=('atom',))
 
     if self._start_atom:
@@ -1724,7 +1742,11 @@ class atom_mode( edit_mode):
           a.delete()
           v.draw()
           interactors.log_atom_type( v.__class__.__name__)
-          
+
+          # cleanup
+          [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
+          [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
+
           Store.app.paper.start_new_undo_record()        
           Store.app.paper.add_bindings()
 
