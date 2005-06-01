@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=BKchem
-AppVerName=BKchem-0.9.0-pre1
+AppVerName=BKchem-0.9.0
 AppPublisher=Beda Kosata
 AppPublisherURL=http://www.zirael.org/bkchem
 AppSupportURL=http://www.zirael.org/bkchem
@@ -11,22 +11,23 @@ AppUpdatesURL=http://www.zirael.org/bkchem
 DefaultDirName={pf}\BKchem
 DefaultGroupName=BKchem
 AllowNoIcons=yes
-LicenseFile=C:\tmp\bkchem-0.9.0-pre1\gpl.txt
+LicenseFile=C:\tmp\rel\bkchem-0.9.0\gpl.txt
 Compression=lzma
 SolidCompression=yes
+SetupIconFile=C:\tmp\rel\bkchem-0.9.0\images\icon.ico
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 ;Source: "C:\tmp\bkchem-0.7.0\bkchem\bkchem.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\tmp\bkchem-0.9.0-pre1\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "C:\tmp\rel\bkchem-0.9.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\BKchem"; Filename: "{app}\bkchem\bkchem.exe"; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\bkchem.ico"
+Name: "{group}\BKchem"; Filename: "{app}\bkchem\bkchem.exe"; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\images\icon.ico"
 Name: "{group}\{cm:UninstallProgram,BKchem}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\BKchem"; Filename: "{app}\bkchem\bkchem.exe"; Tasks: desktopicon; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\bkchem.ico"
+Name: "{userdesktop}\BKchem"; Filename: "{app}\bkchem\bkchem.exe"; Tasks: desktopicon; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\images\icon.ico"
 
 [Run]
 ;;Filename: "{app}\bkchem\win_inst.exe"; Description: "Post install config"; Parameters: "{app}"; StatusMsg: "Writing configuration file"; Flags: runhidden nowait

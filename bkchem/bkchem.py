@@ -38,6 +38,7 @@ Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml
 ## first turn locale support on
 
 import gettext
+import os.path
 
 user_lang = Store.pm.get_preference( "lang")
 if user_lang:
@@ -45,26 +46,27 @@ if user_lang:
 else:
   langs = [None]
 
+Store.lang = None
 for lang in langs:
-  if gettext.find( 'BKchem', languages=lang):
-    # at first try if locale is in its standard location
-    Store.lang = gettext.find( 'BKchem', languages=lang).split("/")[-3]
-    tr = gettext.translation( 'BKchem', languages=lang)
-    tr.install( unicode=True)
+  for localedir in (None, os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale'))):
+    if gettext.find( 'BKchem', localedir=localedir, languages=lang):
+      # at first try if locale is in its standard location
+      # find what language was loaded
+      rest = gettext.find( 'BKchem', localedir=localedir, languages=lang)
+      for i in range( 3):
+        rest, Store.lang = os.path.split( rest)
+
+      tr = gettext.translation( 'BKchem', localedir=localedir, languages=lang)
+      tr.install( unicode=True)
+      break
+  if Store.lang:
     break
-  elif gettext.find( 'BKchem', localedir='../locale', languages=lang):
-    # it is not. then we are in the single directory deployment probably
-    Store.lang = gettext.find( 'BKchem', languages=lang).split("/")[-3]
-    tr = gettext.translation( 'BKchem', localedir='../locale', languages=lang)
-    tr.install( unicode=True)
-    break
-  elif lang and lang[0]=="en" or not lang:
-    import __builtin__
-    __builtin__.__dict__['_'] = lambda m: m
-    Store.lang = "en"
-    break
-  else:
-    pass
+
+if not Store.lang:
+  import __builtin__
+  __builtin__.__dict__['_'] = lambda m: m
+  Store.lang = "en"
+
 
 
 
@@ -118,7 +120,6 @@ if __name__ == '__main__':
     opts = ()
     files = ()
     from getopt import gnu_getopt, GetoptError
-    import os.path
     try:
       opts, files = gnu_getopt( sys.argv[1:], "")
     except GetoptError, o:

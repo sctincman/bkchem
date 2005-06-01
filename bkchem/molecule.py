@@ -262,7 +262,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       # check_integrity should be called before redrawing, because it moves atoms and bonds
       # to new molecules when the molecule is spit and avoids working on non-connected graph
       offspring = self.check_integrity()
-      print offspring
       if redraw:
         bonds_to_redraw = []
         for b in deleted:
@@ -285,7 +284,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       
   def delete_atom( self, item):
     "remove links to atom from molecule records"
-    print item
     self.vertices.remove( item)
     item.delete()
     if item == self.t_atom:

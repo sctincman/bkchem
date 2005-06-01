@@ -99,7 +99,7 @@ def get_dirs( file_category):
       dirs = [site_config.__dict__[ env_vars[ file_category]]]
     else:
       dirs = []
-    dirs.extend( (os.path.join( sys.path[0], std_dirs[ file_category]),))
+    dirs.extend( (os.path.join( get_bkchem_run_dir(), std_dirs[ file_category]),))
   else:
     dirs = std_dirs[ file_category]
 
@@ -168,3 +168,14 @@ def get_bkchem_private_dir():
   dir = os.path.join( dir, ".bkchem/")
   return dir
   
+
+
+
+def get_bkchem_run_dir():
+  """returns directory from which bkchem is run"""
+  path = sys.path[0]
+  if not os.path.isdir( path):
+    # this happens on windows when running from bkchem.exe
+    path = os.path.split( path)[0]
+  return path
+
