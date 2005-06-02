@@ -120,14 +120,14 @@ class mode( object):
         self._recent_key_seq = key
       # look if the keysequence is registered
       if self._recent_key_seq in self._key_sequences:
-        Store.app.update_status( self._recent_key_seq)
+        Store.log( self._recent_key_seq)
         self._key_sequences[ self._recent_key_seq]()
         self._recent_key_seq = ''
       else:
         # or its a prefix of some registered sequence
         for key in self._key_sequences.keys():
           if not string.find( key, self._recent_key_seq):
-            Store.app.update_status( self._recent_key_seq)
+            Store.log( self._recent_key_seq)
             return None
         # if we get here it means that the key is neither used nor a prefix
         self._recent_key_seq = ''
@@ -548,7 +548,7 @@ class edit_mode( basic_mode):
       Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
       self._dragged_molecule.drag( event.x, event.y, fix=(self._startx, self._starty))
-      Store.app.update_status( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
+      Store.log( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
       
   def enter_object( self, object, event):
     if not self._dragging:
@@ -1045,7 +1045,7 @@ class template_mode( edit_mode):
     
   def mouse_click( self, event):
     if self.submodes == [[]]:
-      Store.app.update_status( _("No template is available"))
+      Store.log( _("No template is available"))
       return 
     Store.app.paper.unselect_all()
     if not self.focused:
@@ -1504,7 +1504,7 @@ class vector_mode( edit_mode):
       self._current_obj.draw()
     elif not self.focused and self._dragging and self._current_obj:
       self._current_obj.resize( (self._startx, self._starty, event.x, event.y), fix=( self._startx, self._starty))
-      Store.app.update_status( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
+      Store.log( '%i, %i' % ( abs( self._startx-event.x), abs( self._starty-event.y)))
     elif self.focused or self._dragging in (1,2):
       edit_mode.mouse_drag( self, event)
 

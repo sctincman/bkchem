@@ -566,8 +566,9 @@ class BKchem( Tk):
           self.subbuttons[i].pack( side=LEFT)
 
     self.paper.mode = self.mode
+    #Store.log( _('mode changed to ')+self.modes[ tag].name)
     self.mode.startup()
-    self.update_status( _('mode changed to ')+self.modes[ tag].name)
+
 
 
 
@@ -579,10 +580,11 @@ class BKchem( Tk):
 
 
   def update_status( self, signal, time=4):
-    self.stat.set( signal)
-    if self._after:
-      self.after_cancel( self._after)
-    self._after = self.after( time*1000, func=self.clear_status)
+    if signal:
+      self.stat.set( signal)
+      if self._after:
+        self.after_cancel( self._after)
+      self._after = self.after( time*1000, func=self.clear_status)
 
 
 
@@ -748,11 +750,11 @@ class BKchem( Tk):
       type = _('CD-SVG')
       success = export.export_CD_SVG( self.paper, filename, gzipped=0)
     if success:
-      self.update_status( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( save_dir, save_file))))
+      Store.log( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( save_dir, save_file))))
       self.paper.changes_made = 0
       return 1
     else:
-      self.update_status( _("failed to save to %s file: %s") % (type, save_file))
+      Store.log( _("failed to save to %s file: %s") % (type, save_file))
       return 0
 
 
@@ -811,7 +813,7 @@ class BKchem( Tk):
         inp = gzip.open( a, "rb")
       except IOError:
         # can't read the file
-        self.update_status( _("cannot open file ") + a)
+        Store.log( _("cannot open file ") + a)
         return None
       # is it a gzip file?
       it_is_gzip = 1
@@ -825,7 +827,7 @@ class BKchem( Tk):
         try:
           doc = dom.parseString( str)
         except:
-          self.update_status( _("error reading file"))
+          Store.log( _("error reading file"))
           inp.close()
           return None
         inp.close()
@@ -837,7 +839,7 @@ class BKchem( Tk):
         try:
           doc = dom.parse( a)
         except IndexError: 
-          self.update_status( _("error reading file"))
+          Store.log( _("error reading file"))
           return None
         ## if it works check if its CDML of CD-SVG file
         doc = doc.childNodes[0]
@@ -863,17 +865,17 @@ class BKchem( Tk):
             if proceed:
               doc = docs[0]
             else:
-              self.update_status(_("file not loaded"))
+              Store.log(_("file not loaded"))
               return None
           else:
             ## sorry but there is no cdml in the svg file
-            self.update_status(_("cdml data are not present in SVG or are corrupted!"))
+            Store.log(_("cdml data are not present in SVG or are corrupted!"))
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc)
       if type( self.mode) != StringType:
         self.mode.startup()
-      self.update_status( _("loaded file: ")+self.paper.full_path)
+      Store.log( _("loaded file: ")+self.paper.full_path)
       return 1
 
 
@@ -896,7 +898,7 @@ class BKchem( Tk):
       dom_extensions.safe_indent( exporter.document.childNodes[0])
       inp.write( unicode( exporter.document.toxml()).encode('utf-8'))
       inp.close()
-      self.update_status( _("exported to SVG file: ")+svg_file)
+      Store.log( _("exported to SVG file: ")+svg_file)
 
 
 
@@ -1009,7 +1011,7 @@ class BKchem( Tk):
       elif cdml:
         self.paper.read_package( doc)
 
-      self.update_status( _("loaded file: ")+filename)
+      Store.log( _("loaded file: ")+filename)
 
 
 
@@ -1044,7 +1046,7 @@ class BKchem( Tk):
           return
       else:
         doc = exporter.write_to_file( a)
-      self.update_status( _("exported file: ")+a)
+      Store.log( _("exported file: ")+a)
   
 
 
@@ -1373,7 +1375,7 @@ Enter IChI:""")
     name = interactors.save_as_template( self.paper)
     if name:
       self.save_CDML( name=name, update_default_dir=0)
-      self.update_status( _("The file was saved as a template %s") % name)
+      Store.log( _("The file was saved as a template %s") % name)
 
 
 
