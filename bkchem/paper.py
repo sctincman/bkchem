@@ -128,8 +128,9 @@ class chem_paper( Canvas, object):
       # scrolling (linux only?)
       self.bind( "<Button-4>", lambda e: self.yview( "scroll", -1, "units"))
       self.bind( "<Button-5>", lambda e: self.yview( "scroll", 1, "units"))
-
-
+      # scrolling (windows)
+      self.bind( "<MouseWheel>", lambda e: self.yview( "scroll", -misc.signum( e.delta), "units"))
+      # hope it does not clash on some platforms :(
 
 
   ### PROPERTIES

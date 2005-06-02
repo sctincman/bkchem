@@ -1,3 +1,76 @@
+RELEASE 0.10.0_pre1
+----------------------------------------
+
+ * enhancements - marks can be moved by mouse in mark_mode
+	     	- position of cursor is shown in the status bar
+		- wheel scrolling added
+     		- the active paper tab is highlighted
+		- scaling dialog was improved
+		- support for fragments (continuous blocks of bond in a molecule) - right now has no builtin usage
+		- context menu was improved and polished
+		- PS (both old and new), PDF and SVG support cropping (set it in file properties or standard)
+		  (thanks to Maciek Fialkowski for the original patch for old PS export)
+		- it is possible to set margins for cropping of exported drawings
+		- bonds are drawn only from and to the borders of visible text
+     		- atom text selector is invisible
+		- support for more marks of the same type on one atom
+		- numbering support for atoms (use context menu or numbering mode)
+		  * number is represented by a mark - it can be positioned in mark mode
+		- dragging threshold of 1px was added experimentaly to the edit_mode
+		- menu rewritten again to support context sensitive activation of menu items
+		- arrow heads are properly exported via piddle (pdf,ps) 
+		- it is possible to choose menu language from inside of BKchem
+		- support for line vector graphics object
+		- support for user written plugins (more in doc/custom_plugins_en.html)
+		- transparency support in color selection, other additions
+		- Ctrl-click in edit mode can be used for deletion of individual atoms/bonds
+		  (thanks to Piotr Wawrzyniak for the idea and patch)
+		- parsing of linear formulas (e.g. -CH2CH2COCl) used in atoms added
+		- group is capable of working as a single vertex of the molecule (PhCH2CCl3 is interpreted correctly)
+		- circle around some marks can be switched off
+		- marks are supported by context_menu under mark_mode - size, draw_circle
+		- textatom has marks again
+		- dotted_electronpair mark added
+		   * it is the same as biradical but does not affect the multiplicity of the atom
+		- some common grups were added, such as Ac (acetyl, not actinium), Ts, Ms, Pr, Bz, Bn
+		  (thanks to Piotr Wawrzyniak for the idea)
+
+
+ * changes - if both atoms of a bond are visible, the 'stroke-linecap' is set to 'butt' instead of 'round'
+	   - drawing of hatches was tuned a little
+	   - the size of the SVG picture is given in 'mm', fixing some rendering problems
+           - the CDML format was slightly changed - old files should be read properly in new BKchem
+	     but new files will likely crash in old BKchem (when groups of text-atoms are used)
+
+
+ * bugfixes - fix of occupied valency and free valency computation
+              * fixed the problem with marks and number of hydrogens)
+	    - memory leak that prevented molecules and papers to be collected was fixed
+	    - SVG export - stroke was removed from the text attributes thus rendering of text is much nicer
+	    - fix of setting atoms valency from a context_menu
+	    - context menu has no longer redundant separators
+            - there was a bug in the linux install scripts that caused api documentation 
+	      to be installed under /usr/doc/api/.., please remove it if you find it there (sorry)
+	    - double bonds in groups as SO3H and similar are now properly centered
+	    - SVG export of single dashed bond was fixed
+	    - text export to svg was fixed - no redundant tspan is created
+	      * this fixes batik rendering problems of italics subscripts
+
+
+ * acknowledgments - Piotr Wawrzyniak (patches and ideas)
+		   - Maciek Fialkowski (patches and ideas)
+		   - Martin Ballaschk (German translation)
+		   - Tomas Novotny (bugreports and patience)
+
+
+ * translations - added - German
+
+
+
+
+
+
+
 RELEASE 0.9.0
 ----------------------------------------
 
