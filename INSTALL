@@ -8,17 +8,8 @@ must install the following:
 
 1/ Python.
    On www.python.org get a distribution of Python for your platform. Note that
-   BKchem will run only on Python 2.2 or newer. (Python 2.2.1 is highly
-   recommended as it fixes some bugs in 2.2)
+   BKchem will run only on Python 2.3 or newer.
 
-2/ Pmw.
-   Pmw is available at http://pmw.sourceforge.net/. The version used for
-   development of BKchem is 1.2.
-
-3/ PIL (optional, has very limited use in BKchem now)
-   PIL is available at http://www.pythonware.com/products/pil/index.htm. The
-   version used by author of BKchem is 1.1.2. The newest version is 1.1.3. Both
-   should work.
 
 
 
@@ -26,15 +17,15 @@ must install the following:
 
 No installation is needed to run BKchem. This means that you can run the program
 directly after unpacking the downloaded sources.
-To do this you must be in the directory 'bkchem/bkchem' and run the 'bkchem.py'
-script. Trying to run this script from other directory will result in an import
-error.
+Simply run the bkchem.py located in the 'bkchem-X.Y.Z/bkchem' directory, where X,Y,Z
+are version numbers of BKchem release.
+
 
 example:
 on Unix do
 >cd "the dir where you have downloaded the BKchem package"
 >tar -xzf bkchem-X.X.X.tgz -C "the dir where you want to unpack BKchem"
->cd "the dir where you have unpacked BKchem"/bkchem/bkchem
+>cd "the dir where you have unpacked BKchem"/bkchem-X.Y.Z/bkchem
 >python bkchem.py
 
 
@@ -42,8 +33,8 @@ on Unix do
 --- System-wide install ---
 
 Under Linux and other Unix systems you have the possibility to use a 'classic'
-way of installing software. Major advantage of doing this is that it will enable
-you to run BKchem from any directory you want.
+way of installing software. Major advantage of doing this is that it you will have
+a "bkchem" program in your path, thus easily startable from any path.
 For the purpose of installation BKchem uses a standard for installation of
 python modules - distutils. The installation is accomplished by simply running
 the setup.py script from the bkchem directory with 'install' argument:

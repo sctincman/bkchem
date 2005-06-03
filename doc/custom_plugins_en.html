@@ -21,12 +21,14 @@
     <h3>How does BKchem handle plugins</h3>
 
     <p>A BKchem plugin in general consists of two main parts. The first one is a short XML file that
-    describes the plugin. If you don't know anything about XML, just don't worry. It is so easy even
+    describes the plugin. If you don't know anything about XML, just don't worry. It is so easy that even
     I understand it :). The second part is a <a href="http://www.python.org">Python</a> script that
     is the actual code of the plugin.</p>
 
-    <p>On startup BKchem searches in predefined directories (more on this later) and tries to read
-    all XML files (having extension .xml) and find if they describe some plugin. If yes it performs
+    <p>On startup BKchem searches in predefined directories (<i>plugins</i> directory in the BKchem installation
+    directory and <i>plugins</i> directory in the users <i>.bkchem</i> directory - located either in the installation
+    directory or the users HOME directory) and tries to read
+    all XML files (having extension .xml) and find if they describe some plugin. If yes, it performs
     an action depending on the type of plugin.</p>
 
     <p>At the time of writing of this document there are two distinct types of plugins that BKchem
@@ -86,6 +88,7 @@
   &lt;source>
     &lt;file>red_aromates.py&lt;/file>
     &lt;menu-text lang="en">Mark aromatic bonds&lt;/menu-text>
+    &lt;menu-text lang="cs">Označ aromatické vazby&lt;/menu-text>
   &lt;/source>
 &lt;/plugin>
 </pre>
@@ -95,15 +98,19 @@
     <p>The only necessary part is
     content of the <b>&lt;source></b> tag, where the <b>&lt;file></b> tag says which file contains
     the Python script and the <b>&lt;menu-text></b> tag says how the entry in the "Plugins" menu
-    for this plugin should be called. For future purposes the <b>menu-text</b> tag may have an
-    attribute <i>lang</i> that says in which language the text is. In this case more than one 
-    <b>menu-text</b> elements may be present with different <i>lang</i> attributes.</p>
+    for this plugin should be called.</p>
 
     <p>The sample config file contains also a <b>meta</b> tag with information about the author and
     the function of the plugin. It is considered good habit to provide these information if you are
     going to distribute your plugins to other people. The description of the function of the plugin
     will be shown in the program status-bar when the cursor is over the plugin menu entry.
     </p>
+
+    <p>Both the <b>&lt;menu-text></b> and <b>&lt;description</b> elements may have an optional
+    <i>lang</i> attribute, that says in what language the text is. In this case more than one 
+    such elements may be present with different <i>lang</i> attributes. BKchem will choose the one
+    that corresponds to the current language setting or uses the first one, if no matching language
+    is found.</p>
 
     <h4>The Python script</h4>
 

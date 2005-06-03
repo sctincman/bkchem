@@ -23,11 +23,10 @@ If you are lucky, everything should work...
 
 
 *Note* - the binary distribution of BKchem does not come with the sources of the
-program. To get the sources visit http://savannah.gnu.org/projects/bkchem/ and
-get a source code release.
+program. To get the sources visit http://bkchem.zirael.org/ and get a source code release.
 
 *Note 2* - for users convenience the binary distribution includes packages that
-are not part of BKchem (Pmw, PIL and Python itself)! To learn more about them,
+are not part of BKchem (Pmw, Piddle and Python itself)! To learn more about them,
 please read the INSTALL instructions for source code release where the paths to
 corresponding resources can be found. All credit for these programs goes to
 their respective authors.

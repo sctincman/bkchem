@@ -41,6 +41,9 @@ RELEASE 0.10.0_pre1
 	   - the size of the SVG picture is given in 'mm', fixing some rendering problems
            - the CDML format was slightly changed - old files should be read properly in new BKchem
 	     but new files will likely crash in old BKchem (when groups of text-atoms are used)
+	   - Pmw is distributed together with BKchem as I had to fix an unicode problem there
+	     and it seems the Pmw itself is dead
+	   - BKchem now relies on Python 2.3 and higher (because of the new Set class)
 
 
  * bugfixes - fix of occupied valency and free valency computation
