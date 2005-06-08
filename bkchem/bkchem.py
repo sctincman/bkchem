@@ -46,26 +46,32 @@ if user_lang:
 else:
   langs = [None]
 
-Store.lang = None
-for lang in langs:
-  for localedir in (None, os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale'))):
-    if gettext.find( 'BKchem', localedir=localedir, languages=lang):
-      # at first try if locale is in its standard location
-      # find what language was loaded
-      rest = gettext.find( 'BKchem', localedir=localedir, languages=lang)
-      for i in range( 3):
-        rest, Store.lang = os.path.split( rest)
-
-      tr = gettext.translation( 'BKchem', localedir=localedir, languages=lang)
-      tr.install( unicode=True)
-      break
-  if Store.lang:
-    break
-
-if not Store.lang:
+if user_lang == "en":
   import __builtin__
   __builtin__.__dict__['_'] = lambda m: m
   Store.lang = "en"
+
+else:
+  Store.lang = None
+  for lang in langs:
+    for localedir in (None, os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale'))):
+      if gettext.find( 'BKchem', localedir=localedir, languages=lang):
+        # at first try if locale is in its standard location
+        # find what language was loaded
+        rest = gettext.find( 'BKchem', localedir=localedir, languages=lang)
+        for i in range( 3):
+          rest, Store.lang = os.path.split( rest)
+
+        tr = gettext.translation( 'BKchem', localedir=localedir, languages=lang)
+        tr.install( unicode=True)
+        break
+    if Store.lang:
+      break
+
+  if not Store.lang:
+    import __builtin__
+    __builtin__.__dict__['_'] = lambda m: m
+    Store.lang = "en"
 
 
 

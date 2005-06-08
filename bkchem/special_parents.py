@@ -89,12 +89,12 @@ class vertex_common( object):
 
   def set_mark( self, mark='radical', angle='auto'):
     """sets the mark and takes care of charge and multiplicity changes"""
-    if meta__allowed_marks and mark in meta__allowed_marks:
+    if not self.meta__allowed_marks or mark in self.meta__allowed_marks:
       m = self.create_mark( mark=mark, angle=angle)
       self._set_mark_helper( mark, sign=1)
       return m
     else:
-      raise ValueError, "not a allowed mark for this type %s" % mark
+      raise ValueError, "not a allowed mark for this type - %s" % mark
 
 
 

@@ -1478,7 +1478,7 @@ class vector_mode( edit_mode):
     self._polygon_line = None
     self._current_obj = None
 
-  def mouse_down( self, event, modifiers=""):
+  def mouse_down( self, event, modifiers=[]):
     edit_mode.mouse_down( self, event)
     if self.get_submode(0) in ("polyline","polygon"):
       Store.app.paper.unselect_all()
@@ -1591,7 +1591,11 @@ class mark_mode( edit_mode):
     if self.get_submode( 1) == 'add':
       # we are adding a mark
       if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):
-        m = self.focused.set_mark( mark=mark_name)
+        try:
+          m = self.focused.set_mark( mark=mark_name)
+        except ValueError:
+          Store.log( _("This mark type is not allowed for this object"))
+          return
         if m:
           m.register()
         if (self.focused.show_hydrogens and self.focused.show) and not isinstance( self.focused, textatom):
@@ -1778,7 +1782,7 @@ class reaction_mode( basic_mode):
     self.arrow = None
 
 
-  def mouse_down( self, event):
+  def mouse_down( self, event, modifiers=[]):
     if self.focused:
       if not self.arrow:
         tkMessageBox.showerror( _("No arrow present"),
@@ -1927,7 +1931,7 @@ class external_data_mode( basic_mode):
     self._focus_selector = None  # item that highlights the object refered in entry
 
 
-  def mouse_down( self, event):
+  def mouse_down( self, event, modifiers=[]):
     if self.focused:
       e = self._get_active_entry()
       if e:
