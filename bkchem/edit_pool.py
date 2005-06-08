@@ -48,6 +48,11 @@ class editPool( Frame):
     self.editPool.bind( '<Return>', self._interpretButtonPressed)
     self.editPool.bind( '<Escape>', self._cancel)
 
+    self.editPool.bind( '<Control-s>', lambda e: self._tag_it( "sub"))
+    self.editPool.bind( '<Control-S>', lambda e: self._tag_it( "sup"))
+    self.editPool.bind( '<Control-i>', lambda e: self._tag_it( "i"))
+    self.editPool.bind( '<Control-b>', lambda e: self._tag_it( "b"))
+
     self.editPool.bind("<KeyPress>", self._key)
 
 
