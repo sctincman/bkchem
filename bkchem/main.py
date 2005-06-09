@@ -185,6 +185,7 @@ class BKchem( Tk):
       ( _("File"),  'command',  _('Save As Template'), None, _("Save the file as template, certain criteria must be met for this to work"), self.save_as_template, None),
       ( _("File"),  'command',  _('Load'),      '(C-x C-f)', _("Load (open) a file in a new tab"), self.load_CDML,    None),
       ( _("File"),  'command',  _('Load to the same tab'), None, _("Load a file replacing the current one"), lambda : self.load_CDML( replace=1), None),
+      ( _("File"),  'cascade',  _("Recent files"), _("The most recently used files")),
       ( _("File"),  'separator'),
       # export cascade
       ( _("File"),  'cascade',  _('Export'),     _("Export the current file")),
@@ -194,6 +195,7 @@ class BKchem( Tk):
       ( _("File"),  'command',  _('File properties'), None, _("Set the papers size and other properties of the document"), self.change_properties, None),
       ( _("File"),  'separator'),
       ( _("File"),  'command',  _('Close tab'), '(C-x C-t)', _("Close the current tab, exit when there is only one tab"), self.close_current_paper, None),
+      ( _("File"),  'separator'),
       ( _("File"),  'command',  _('Exit'),      '(C-x C-c)', _("Exit BKchem"), self._quit, None),
 
       # edit menu
@@ -334,6 +336,7 @@ class BKchem( Tk):
     self.save_file = None
     self.svg_dir = '.'
     self.svg_file = ''
+    self._recent_files = []
 
     self._clipboard = None
     self._clipboard_pos = None
@@ -414,7 +417,14 @@ class BKchem( Tk):
   def init_preferences( self):
     # save_dir must be set after the preference manager is initiated
     #self.save_dir = Store.pm.get_preference( "default-dir")
-    pass
+    for i in range( 5):
+      path = Store.pm.get_preference( "recent-file%d" % (i+1))
+      if path:
+        self._recent_files.insert( 0, path)
+        self.menu.addmenuitem( _("Recent files"), 'command', label=path,
+                               command=misc.lazy_apply( self.load_CDML, (path,)))
+
+
 
   def init_modes( self):
     self.modes = { 'draw': modes.draw_mode(),
@@ -751,6 +761,7 @@ class BKchem( Tk):
       success = export.export_CD_SVG( self.paper, filename, gzipped=0)
     if success:
       Store.log( _("saved to %s file: %s") % (type, os.path.abspath( os.path.join( save_dir, save_file))))
+      self._record_recent_file( os.path.abspath( os.path.join( save_dir, save_file)))
       self.paper.changes_made = 0
       return 1
     else:
@@ -876,6 +887,7 @@ class BKchem( Tk):
       if type( self.mode) != StringType:
         self.mode.startup()
       Store.log( _("loaded file: ")+self.paper.full_path)
+      self._record_recent_file( os.path.abspath( self.paper.full_path))
       return 1
 
 
@@ -950,6 +962,11 @@ class BKchem( Tk):
       # this leads to window having size 0x0 and similar problems
       if self.svg_dir:
         Store.pm.add_preference( "default-dir", self.save_dir)
+      i = 0
+      # save recent files
+      for name in self._recent_files:
+        i += 1
+        Store.pm.add_preference( "recent-file%d" % i, name)
       self.save_configuration()
     self.quit()
 
@@ -1399,6 +1416,16 @@ Enter IChI:""")
         elif state not in  ('normal', 'disabled'):
           state = getattr( self.paper, temp[6]) and 'normal' or 'disabled'
         self.menu.component( temp[0] + "-menu").entryconfigure( temp[2], state=state)
+
+
+
+
+  def _record_recent_file( self, name):
+    if name in self._recent_files:
+      self._recent_files.remove( name)
+    self._recent_files.insert( 0, name)
+    if len( self._recent_files) > 5:
+      self._recent_files = self._recent_files[0:5]
 
 
 
