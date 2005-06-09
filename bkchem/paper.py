@@ -1374,7 +1374,7 @@ class chem_paper( Canvas, object):
 
   def select_all( self):
     self.unselect_all()
-    self.select( [o for o in map( self.id_to_object, self.find_all()) if o and o.object_type != 'arrow']) 
+    self.select( [o for o in map( self.id_to_object, self.find_all()) if o and hasattr( o, 'select') and o.object_type != 'arrow']) 
     self.add_bindings()
     
 

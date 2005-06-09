@@ -1072,7 +1072,7 @@ class template_mode( edit_mode):
                self.focused.molecule.atoms_bound_to( self.focused.atom2)
         atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
         coords = [a.get_xy() for a in atms]
-        if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords]) > 0:
+        if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords], 0) > 0:
           x1, y1, x2, y2 = x2, y2, x1, y1
         t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=Store.app.paper)
         if not t:

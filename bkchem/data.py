@@ -93,5 +93,6 @@ TO_STRING = 1
 languages = {'en': 'English',
              'cs': 'Czech',
              'de': 'German',
-             'fr': 'French'
+             'fr': 'French',
+             'pl': 'Polish'
              }

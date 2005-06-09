@@ -1,3 +1,19 @@
+RELEASE 0.10.0_pre2
+----------------------------------------
+
+ * enhancements - when editing text or atom it is possible to use keyboard shortcuts to insert formating tags
+		  * Ctrl-s = sub, Ctrl-S = sup, Ctrl-i = i, Ctrl-b = b
+
+ * bugfixes - adding marks to atom triggered an error
+	    - system locale overrode internal language setting when it was set to "en"
+	    - clicking on empty canvas in reaction mode triggered an error
+
+ * acknowledgments - Piotr Wawrzyniak for bugreport
+
+
+
+
+
 RELEASE 0.10.0_pre1
 ----------------------------------------
 
