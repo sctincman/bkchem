@@ -170,7 +170,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     if pos:
       # try if the coordinates are the same as of another atom
       for at in self.atoms:
-        if abs( at.x - x) < 2 and abs( at.y - y) < 2:
+        if abs( at.x - x) < 2 and abs( at.y - y) < 2 and not at == a1:
           a2 = at
           break
     if not a2:

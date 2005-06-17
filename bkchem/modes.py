@@ -813,7 +813,6 @@ class draw_mode( edit_mode):
                   type=self.__mode_to_bond_type(),
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
-        # raise valency if there is no free valency
         if self.submode[3] == 1:
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
@@ -827,6 +826,7 @@ class draw_mode( edit_mode):
           self.focused.update_after_valency_change()
 
         #Store.app.paper.add_bindings( active_names=('atom',))
+
 
     if self._start_atom:
       if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
