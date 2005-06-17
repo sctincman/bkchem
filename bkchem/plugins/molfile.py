@@ -26,6 +26,9 @@
 import plugin
 import oasa_bridge
 import types
+import transform
+
+
 
 class molfile_importer( plugin.importer):
 
@@ -42,6 +45,7 @@ class molfile_importer( plugin.importer):
   def get_molecules( self, name):
     file = open( name, 'r')
     mol = oasa_bridge.read_molfile( file, self.paper)
+    invert_coords( mol)
     file.close()
     return [mol]
 
@@ -73,8 +77,27 @@ class molfile_exporter( plugin.exporter):
       file = open( name, 'w')
     else:
       file = name
+    tr = invert_coords( self.molecule)
     oasa_bridge.write_molfile( self.molecule, file)
-    
+    invert_coords( self.molecule)
+
+
+
+
+def invert_coords( molecule, tr=None):
+  if not tr:
+    ys = [a.y for a in molecule.vertices]
+    center_y = (max( ys) + min( ys)) / 2.0
+    tr = transform.transform()
+    tr.set_move( 0, -center_y)
+    tr.set_scaling_xy( 1, -1)
+    tr.set_move( 0, center_y)
+
+  molecule.transform( tr)
+  return tr
+
+
+
 
 name = "Molfile"
 extensions = ['.mol']
