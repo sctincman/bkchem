@@ -1192,12 +1192,12 @@ Enter IChI:""")
     sms = []
     for m in u:
       if m.object_type == 'molecule':
-        try:
-          sms.append( oasa_bridge.mol_to_smiles( m))
-        except:
-          tkMessageBox.showerror( _("Error generating %s") % 'SMILES',
-                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
-          return
+        #try:
+        sms.append( oasa_bridge.mol_to_smiles( m))
+        #except:
+        #  tkMessageBox.showerror( _("Error generating %s") % 'SMILES',
+        #                          _("The oasa library ended with error:\n%s") % sys.exc_value)
+        #  return
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,
                            title='Generated SMILES',

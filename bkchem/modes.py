@@ -1434,7 +1434,7 @@ class bond_align_mode( edit_mode):
     b = self.focused
     mol = b.molecule
     mol.delete_bond( b)
-    cc = mol.get_connected_components()
+    cc = list( mol.get_connected_components())
     mol.add_edge( b.atom1, b.atom2, b)
     b.draw()
     b.focus()

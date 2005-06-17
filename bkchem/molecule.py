@@ -309,11 +309,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     at.molecule = self
   
 
-  ##LOOK  (how is it with the generator?)
-  def get_connected_components( self):
-    """returns the connected components of graph in a form o list of sets of vertices"""
-    return list( oasa.molecule.get_connected_components( self))
-
 
   def check_integrity( self):
     """after deleting atoms or bonds it is important to see if it's needed to divide molecule to fragments
@@ -321,7 +316,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     if not self.atoms:
       return []
     # first distribute atoms to new_maps
-    new_maps = self.get_connected_components()
+    new_maps = list( self.get_connected_components())
     if len( new_maps) == 1:
       return []
     return [self.get_induced_subgraph_from_vertices( vs) for vs in new_maps]
