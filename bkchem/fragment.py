@@ -35,7 +35,7 @@ class fragment( simple_parent):
     self.id = id
     self.name = name
     self.edges = Set()
-    self.type = type # type is one og "explicit", "implicit"
+    self.type = type # type is one of "explicit", "implicit"
     self.properties = {}  # this is the place for information about an particular fragment
     
 

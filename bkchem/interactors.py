@@ -30,6 +30,8 @@ import xml
 import os_support
 import os
 import dialogs
+from sets import Set
+
 
 from singleton_store import Store
 
@@ -365,3 +367,58 @@ def select_language( paper):
     Store.pm.add_preference( "lang", lang[0])
     tkMessageBox.showinfo( _("Info"),
                            _("The selected language will be used the next time you start BKchem."))
+
+
+
+
+def convert_selected_to_linear_fragment( paper):
+  # check the selection
+  changes = False
+  mols = [m for m in paper.selected_to_unique_top_levels()[0] if m.object_type == "molecule"]
+  for mol in mols:
+    vs = [v for v in mol.vertices if v in paper.selected]
+    if vs and mol.defines_connected_subgraph_v( vs):
+      # the selection is connected
+      for v in vs:
+        if len( [n for n in v.neighbors if n in vs]) > 2:
+          Store.log( "the selection is not linear - there are some splittings", message_type="error")
+          return
+      # ok, we are clear
+      # here comes the code to do the work
+      # we start from the end atom that more on the left side
+      changes = True
+      ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
+      start = ends[0].x > ends[1].x and ends[1] or ends[0]
+      end = start == ends[0] and ends[1] or ends[0]
+      current = start
+      x = current.x
+      y = current.y
+      processed = Set()
+      while 1:
+        processed.add( current)
+        current.show_hydrogens = True
+        current.redraw()
+        if current != start:
+          dx = x - current.bbox()[0]
+          dy = start.y - current.y
+          current.move( dx, dy)
+          # move all neighbors that are not selected
+          for n in current.neighbors:
+            if n not in vs:
+              n.move( dx, dy)
+        x = current.bbox()[2]
+        if current != end:
+          current = [n for n in current.neighbors if n in vs and n not in processed][0]
+        else:
+          break
+
+      mol.redraw()
+
+      
+    else:
+      Store.log( "the selection does not define connected subgraph", message_type="error")
+      return 
+
+  if changes:
+    paper.start_new_undo_record()
+

@@ -314,21 +314,35 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # nasty hacks
     modifier = (0,0,0,-3)
     # // nasty hacks
+    # at first check if the bboxes are not overlapping
+    bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
+    bbox1 = map( operator.add, bbox1, modifier)
+    bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
+    bbox2 = map( operator.add, bbox2, modifier)
+    if geometry.do_rectangles_intersect( bbox1, bbox2):
+      return None
+    # then we continue with computation
     if self.atom1.show:
-      bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
-      bbox1 = map( operator.add, bbox1, modifier)
       x1, y1 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox1, round_edges=0)
     if self.atom2.show:
-      bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
-      bbox2 = map( operator.add, bbox2, modifier)
       x2, y2 = geometry.intersection_of_line_and_rect( (x1,y1,x2,y2), bbox2, round_edges=0)
-    return (x1, y1, x2, y2)
+
+    if geometry.point_distance( x1, y1, x2, y2) <= 1.0:
+      return None
+    else:
+      return (x1, y1, x2, y2)
+
 
 
   # normal bond
 
   def _draw_n1( self):
-    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
+    where = self._where_to_draw_from_and_to()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
     # draw helper items
     self.second = self.third = []
@@ -336,7 +350,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return x1,y1,x2,y2
 
   def _draw_n2( self):
-    x1,y1,x2,y2 = self._draw_n1()
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -358,7 +377,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.third = [self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)]
 
   def _draw_n3( self):
-    x1,y1,x2,y2 = self._draw_n1()
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -373,7 +397,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_h1( self):
-    x1,y1,x2,y2 = self._draw_n1()    
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
     # main item
     self.paper.itemconfig( self.item, fill='')
     # the small lines
@@ -386,11 +414,20 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     d = self.bond_width
     # double
     if self.center:
-      x1,y1,x2,y2 = self._draw_n1()
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
       self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
-      x1,y1,x2,y2 = self._draw_h1()
+      where = self._draw_h1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
+
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
     # gray magic (not black, but not so white :)
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_hatch
@@ -399,7 +436,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
   def _draw_h3( self):
-    x1,y1,x2,y2 = self._draw_h1()
+    where = self._draw_h1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -468,7 +510,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   # dashed bond
 
   def _draw_d1( self):
-    x1,y1,x2,y2 = self._draw_n1()    
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
     # main item
     self.paper.itemconfig( self.item, fill='')
     # the small lines
@@ -481,14 +527,27 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     d = self.bond_width
     # double
     if self.center:
-      x1,y1,x2,y2 = self._draw_n1()
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
+
       self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
       if self.simple_double:
-        x1,y1,x2,y2 = self._draw_n1()
+        where = self._draw_n1()
+        if not where:
+          # the bond is too short to draw it
+          return None
+        x1, y1, x2, y2 = where
       else:
-        x1,y1,x2,y2 = self._draw_d1()
+        where = self._draw_d1()
+        if not where:
+          # the bond is too short to draw it
+          return None
+        x1, y1, x2, y2 = where
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
     # shortening of the second bond
     dx = x-x0
@@ -503,9 +562,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def _draw_d3( self):
     if self.simple_double:
-      x1,y1,x2,y2 = self._draw_n1()
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
     else:
-      x1,y1,x2,y2 = self._draw_d1()
+      where = self._draw_d1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -572,24 +639,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   # wedge bonds
 
   def _draw_w1( self):
-    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
-    #x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
-    # main item
-    # we check if there is a bold bond attached to the wider end of wedge
-
-##     bbonds = [b for b in self.molecule.atoms_bonds( self.atom2) if b.type == 'b']
-##     if len( bbonds):
-##       # we draw the wedge so that it fits the bold bond
-##       b = bbonds[0]
-##       xx1, yy1 = self.atom2.x, self.atom2.y
-##       aa2 = (b.atom1 == self.atom2) and b.atom2 or b.atom1
-##       xx2, yy2 = aa2.x, aa2.y
-##       x, y, x0, y0 = geometry.find_parallel( xx1, yy1, xx2, yy2, b.wedge_width/2.0)
-##       coords = [self.atom1.x, self.atom1.y, x, y]
-##       x, y, x0, y0 = geometry.find_parallel( xx1, yy1, xx2, yy2, -b.wedge_width/2.0)
-##       coords.extend( [x,y])
-##       self.item = self.paper.create_polygon( tuple( coords), outline=self.line_color, fill=self.line_color, joinstyle="miter")
-##     else:
+    where = self._where_to_draw_from_and_to()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
 
     self.item = self._draw_wedge( (x1,y1,x2,y2))[0]
     self.paper.addtag_withtag( "bond", self.item)
@@ -604,11 +658,19 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     d = self.bond_width
     # double
     if self.center:
-      x1,y1,x2,y2 = self._draw_n1()
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
       self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
-      x1,y1,x2,y2 = self._draw_w1()
+      where = self._draw_w1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
     # gray magic (not black, but not so white :)
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_wedge
@@ -617,7 +679,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
   def _draw_w3( self):
-    x1,y1,x2,y2 = self._draw_w1()
+    where = self._draw_w1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -638,7 +705,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_a1( self):
-    x1, y1, x2, y2 = self._where_to_draw_from_and_to()
+    where = self._where_to_draw_from_and_to()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
     # main item
     self.item = self._draw_adder( (x1,y1,x2,y2))[0]
     self.paper.addtag_withtag( "bond", self.item)
@@ -653,11 +724,19 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     d = self.bond_width
     # double
     if self.center:
-      x1,y1,x2,y2 = self._draw_n1()
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
       self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
-      x1,y1,x2,y2 = self._draw_a1()
+      where = self._draw_a1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
     # gray magic (not black, but not so white :)
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_adder
@@ -667,7 +746,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_a3( self):
-    x1,y1,x2,y2 = self._draw_a1()
+    where = self._draw_a1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
@@ -724,7 +808,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return [self.paper.create_line( coords2, width=self.line_width, fill=self.line_color)]
 
   def _draw_b1( self):
-    self._draw_n1()
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
     self.paper.itemconfigure( self.item, width = self.wedge_width)
 
   def _draw_b2( self):

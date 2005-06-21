@@ -187,3 +187,27 @@ def point_distance( x1, y1, x2, y2):
 
 
 
+def rectangle_intersection( rect1, rect2):
+  pass
+
+
+def do_rectangles_intersect( rect1, rect2):
+  xs1 = [rect1[0], rect1[2]]
+  xs2 = [rect2[0], rect2[2]]  
+  xs = xs1 + xs2
+  ys1 = [rect1[1], rect1[3]]
+  ys2 = [rect2[1], rect2[3]]
+  ys = ys1 + ys2
+  
+  dx1 = abs( xs1[0] - xs1[1])
+  dx2 = abs( xs2[0] - xs2[1])
+  dx = max( xs) - min( xs)
+
+  dy1 = abs( ys1[0] - ys1[1])
+  dy2 = abs( ys2[0] - ys2[1])
+  dy = max( ys) - min( ys)
+
+  if dx1+dx2 > dx and dy1+dy2 > dy:
+    return True
+  else:
+    return False
