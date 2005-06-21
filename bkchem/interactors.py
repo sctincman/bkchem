@@ -394,6 +394,7 @@ def convert_selected_to_linear_fragment( paper):
       x = current.x
       y = current.y
       processed = Set()
+      current_e = None
       while 1:
         processed.add( current)
         current.show_hydrogens = True
@@ -401,14 +402,16 @@ def convert_selected_to_linear_fragment( paper):
         if current != start:
           dx = x - current.bbox()[0]
           dy = start.y - current.y
-          current.move( dx, dy)
-          # move all neighbors that are not selected
-          for n in current.neighbors:
-            if n not in vs:
-              n.move( dx, dy)
+          # move all neighbors that are not selected with their fragments
+          ps = mol.get_pieces_after_edge_removal( current_e)
+          p = current in ps[0] and ps[0] or ps[1]
+          for a in p:
+            a.move( dx, dy)
         x = current.bbox()[2]
         if current != end:
-          current = [n for n in current.neighbors if n in vs and n not in processed][0]
+          new = [n for n in current.neighbors if n in vs and n not in processed][0]
+          current_e = new.get_edge_leading_to( current)
+          current = new
         else:
           break
 
