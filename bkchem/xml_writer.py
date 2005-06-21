@@ -133,10 +133,12 @@ class SVG_writer( XML_writer):
     
   def add_bond( self, b):
     """adds bond item to SVG document"""
+    if not b.item:
+      return
     line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
     l_group = dom_extensions.elementUnder( self.group, 'g',
-                                           (( 'stroke-width', str( line_width)),
-                                            ( 'stroke', b.line_color)))
+                                           (('stroke-width', str( line_width)),
+                                            ('stroke', b.line_color)))
     if sum( [int( a.show) for a in b.atoms]) == 2:
       # both atoms are visible, it does not look good with round caps
       l_group.setAttribute('stroke-linecap', 'butt')
