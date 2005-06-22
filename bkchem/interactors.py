@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2004-2005 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import os_support
 import os
 import dialogs
 from sets import Set
-
+import bkchem_exceptions as excs
 
 from singleton_store import Store
 
@@ -328,7 +328,7 @@ def create_fragment_from_selected( paper):
 
 
 def view_fragments( paper):
-  a = dialogs.fragment_dialog( paper)
+  a = dialogs.fragment_dialog( paper, deletion=True)
   a.activate()
 
 
@@ -377,51 +377,80 @@ def convert_selected_to_linear_fragment( paper):
   mols = [m for m in paper.selected_to_unique_top_levels()[0] if m.object_type == "molecule"]
   for mol in mols:
     vs = [v for v in mol.vertices if v in paper.selected]
-    if vs and mol.defines_connected_subgraph_v( vs):
-      # the selection is connected
-      for v in vs:
-        if len( [n for n in v.neighbors if n in vs]) > 2:
-          Store.log( "the selection is not linear - there are some splittings", message_type="error")
-          return
-      # ok, we are clear
-      # here comes the code to do the work
-      # we start from the end atom that more on the left side
-      changes = True
-      ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
-      start = ends[0].x > ends[1].x and ends[1] or ends[0]
-      end = start == ends[0] and ends[1] or ends[0]
-      current = start
-      x = current.x
-      y = current.y
-      processed = Set()
-      current_e = None
-      while 1:
-        processed.add( current)
-        current.show_hydrogens = True
-        current.redraw()
-        if current != start:
-          dx = x - current.bbox()[0]
-          dy = start.y - current.y
-          # move all neighbors that are not selected with their fragments
-          ps = mol.get_pieces_after_edge_removal( current_e)
-          p = current in ps[0] and ps[0] or ps[1]
-          for a in p:
-            a.move( dx, dy)
-        x = current.bbox()[2]
-        if current != end:
-          new = [n for n in current.neighbors if n in vs and n not in processed][0]
-          current_e = new.get_edge_leading_to( current)
-          current = new
-        else:
-          break
-
-      mol.redraw()
-
-      
-    else:
+    try:
+      change = atoms_to_linear_fragment( mol, vs)
+    except ValueError:
       Store.log( "the selection does not define connected subgraph", message_type="error")
-      return 
+      return
+    except excs.bkchem_graph_error, e:
+      if e.id == "circular_selection":
+        Store.log( e.value, message_type="error")
+      else:
+        raise
+    else:
+      changes = changes or change
+      mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), type="linear_form")
 
   if changes:
     paper.start_new_undo_record()
+
+
+
+
+
+
+
+def atoms_to_linear_fragment( mol, vs):
+  changes = False
+  if vs and mol.defines_connected_subgraph_v( vs):
+    # the selection is connected
+    for v in vs:
+      if len( [n for n in v.neighbors if n in vs]) > 2:
+        Store.log( "the selection is not linear - there are some splittings", message_type="error")
+        return
+    # ok, we are clear
+    # here comes the code to do the work
+    # we start from the end atom that more on the left side
+    changes = True
+    ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
+    if not ends:
+      # whole ring is selected, how could this be possibly linearized?
+      raise excs.bkchem_graph_error( "circular_selection",
+                                     _("The selected part of a molecule if a whole ring, there is no way to linearize it"))
+    start = ends[0].x > ends[1].x and ends[1] or ends[0]
+    end = start == ends[0] and ends[1] or ends[0]
+    current = start
+    x = current.x
+    y = current.y
+    processed = Set()
+    current_e = None
+    while 1:
+      processed.add( current)
+      current.show_hydrogens = True
+      current.redraw()
+      if current != start:
+        dx = x - current.bbox()[0]
+        dy = start.y - current.y
+        # move all neighbors that are not selected with their fragments
+        ps = mol.get_pieces_after_edge_removal( current_e)
+        if len( ps) == 2:
+          p = current in ps[0] and ps[0] or ps[1]
+          for a in p:
+            a.move( dx, dy)
+        else:
+          # we are in a ring - move only current
+          current.move( dx, dy)
+      x = current.bbox()[2]
+      if current != end:
+        new = [n for n in current.neighbors if n in vs and n not in processed][0]
+        current_e = new.get_edge_leading_to( current)
+        current = new
+      else:
+        break
+
+    mol.redraw()
+    return changes
+
+  else:
+    raise ValueError, "the vertices do not define connected subgraph"
 

@@ -260,7 +260,8 @@ class BKchem( Tk):
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Create fragment'), None, _("Create a fragment from the selected part of the molecule"), lambda : interactors.create_fragment_from_selected( self.paper), 'one_mol_selected'),
       ( _("Chemistry"), 'command', _('View fragments'), None, _("Show already defined fragments"), lambda : interactors.view_fragments( self.paper), None),
-      ( _("Chemistry"), 'command', _('Convert to linear fragment'), None, _("Convert selected part of chain to linear fragment. The selected chain must not be split."), lambda : interactors.convert_selected_to_linear_fragment( self.paper), None),
+      ( _("Chemistry"), 'separator'),
+      ( _("Chemistry"), 'command', _('Convert selection to linear form'), None, _("Convert selected part of chain to linear fragment. The selected chain must not be split."), lambda : interactors.convert_selected_to_linear_fragment( self.paper), 'selected_mols'),
       #
       
       # options

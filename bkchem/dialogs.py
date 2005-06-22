@@ -1010,11 +1010,16 @@ class preferences_dialog:
 
 class fragment_dialog( Pmw.Dialog):
 
-  def __init__( self, paper):
+  def __init__( self, paper, deletion=True):
     self.paper = paper
+    if deletion:
+      butts = (_('OK'), _('Delete'), ('Cancel'))
+    else:
+      butts = (_('OK'), _('Cancel'))
+
     Pmw.Dialog.__init__( self,
                          Store.app,
-                         buttons=(_('OK'), _('Cancel')),
+                         buttons=butts,
                          defaultbutton=_('OK'),
                          title=_('Fragment overview'),
                          command=self.done,
@@ -1072,9 +1077,18 @@ class fragment_dialog( Pmw.Dialog):
 
 
   def done( self, button):
+    if button == _('Delete'):
+      self._delete_selected()
+      return
     self.clean()
     self.deactivate()
 
+
+  def _delete_selected( self):
+    if self.value:
+      mol = list( self.value.edges)[0].molecule
+      mol.fragments.remove( self.value)
+    self.list.setlist( self.get_all_fragments())
 
 
 

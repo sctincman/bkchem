@@ -207,7 +207,15 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   ('green', _("green")),
                                                                   ('blue', _("blue")),
                                                                   ('red', _("red")),
+                                                                  ('black', _("black")))),
+                  'line_color':       ( _("Line color"),         (('', _("transparent")),
+                                                                  ('white', _("white")),
+                                                                  ('yellow', _("yellow")),
+                                                                  ('green', _("green")),
+                                                                  ('blue', _("blue")),
+                                                                  ('red', _("red")),
                                                                   ('black', _("black"))))
+
                   }
 
 
@@ -217,7 +225,8 @@ configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',),
                 'mark':    ('size', draw_mark_circle),
-                parents.area_colored: ('area_color',)
+                parents.area_colored: ('area_color',),
+                parents.line_colored: ('line_color',)
                 }
 
 

@@ -29,13 +29,18 @@ class fragment( simple_parent):
 
   meta__undo_properties = ('name', 'id')
   meta__undo_copy = ('edges', 'properties')
+  meta__allowed_type = ('implicit', 'explicit', 'linear_form')
+  # implicit - created by bkchem without users request - to mark expanded groups etc.
+  # explicit - created by user
+  # linear_form - used to track linear forms
 
+  
 
   def __init__( self, id="", name="", type="explicit"):
     self.id = id
     self.name = name
     self.edges = Set()
-    self.type = type # type is one of "explicit", "implicit"
+    self.type = type # type is one of "explicit", "implicit", "linear_form"
     self.properties = {}  # this is the place for information about an particular fragment
     
 
