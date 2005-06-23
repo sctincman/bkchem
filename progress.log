@@ -1,3 +1,37 @@
+RELEASE 0.10.0
+----------------------------------------
+
+ * enhancements - line color is settable from context menu
+		- it is possible to delete fragments from the fragment dialog
+		- linear form support
+		  (it is possible to select a linear fragment of a molecule and convert
+		   it to a "linear form", that is for instance -CH2CH2CH3 from /\/,
+		   while maintaining the independence of atoms (in contrast to groups))
+		- better handling of very short bonds (they are not drawn at all :)
+		- "recent files" functionality implemented
+
+* bugfixes - bonds between overlapping atoms are not drawn anymore
+	   - bug in freestyle drawing was fixed
+	   - molfiles export swapped y-coordinate (the coordinate system is different in bkchem and in molfiles)
+	   - SMILES generation for nested rings was fixed
+           - SMILES reading for aromatics given in form C1=CC=CC=C1 instead of c1ccccc1 was fixed
+	   - adding template to the bond of ethane crashes no more
+	   - select_all in mark mode crashes no more
+	   - pl language was missing from the Language dialog
+
+
+ * changes - wheel-scrolling removed on windows - it crashes besause a Tk bug
+
+ * translations - Polish (updated)
+
+ * acknowledgments - Piotr Wawrzyniak for bugreports
+		   - Staszek for bugreports
+		   - Nikodem Kuznik for Polish translation
+
+
+
+
+
 RELEASE 0.10.0_pre2
 ----------------------------------------
 
