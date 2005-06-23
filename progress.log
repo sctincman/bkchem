@@ -18,6 +18,7 @@ RELEASE 0.10.0
 	   - adding template to the bond of ethane crashes no more
 	   - select_all in mark mode crashes no more
 	   - pl language was missing from the Language dialog
+	   - redraw was not properly triggered on undo of group expansion
 
 
  * changes - wheel-scrolling removed on windows - it crashes besause a Tk bug
