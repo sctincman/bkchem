@@ -240,6 +240,32 @@ class state_record:
 
       i += 1
 
+
+    ## DELETED OBJECTS
+    # deleted are known from the top of this def
+    for o in deleted:
+      if o.object_type not in ( 'molecule','mark') and hasattr( o, 'draw'):
+        # no_automatic where possible
+        if 'automatic' in inspect.getargspec( o.draw)[0]:
+          o.draw( automatic = "none")
+        else:
+          o.draw()
+      # hacks to ensure complete redraw
+      if o.object_type == 'atom':
+        to_redraw |= Set( [b for b in o.molecule.atoms_bonds( o) if b not in deleted])
+      elif o.object_type == 'bond':
+        to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
+      elif o.object_type == 'point':
+        to_redraw.add( o)
+        to_redraw.add( o.parent)
+
+    ## ADDED OBJECTS
+    added = misc.difference( previous.objects, self.objects)
+    for o in added:
+      if o.object_type != 'molecule' and hasattr( o, "delete"):
+        o.delete()
+
+
     # now redrawing
     # sort the to_redraw
     to_redraw = list( to_redraw)
@@ -251,24 +277,11 @@ class state_record:
         else:
           o.redraw()
 
-
-    ## DELETED OBJECTS
-    # deleted are known from the top of this def
-    for o in deleted:
-      if o.object_type not in ( 'molecule','mark') and hasattr( o, 'draw'):
-        # no_automatic where possible
-        if 'automatic' in inspect.getargspec( o.draw)[0]:
-          o.draw( automatic = "none")
-        else:
-          o.draw()
-    ## ADDED OBJECTS
-    added = misc.difference( previous.objects, self.objects)
-    for o in added:
-      if o.object_type != 'molecule' and hasattr( o, "delete"):
-        o.delete()
-
     self.paper.stack = copy.copy( self.stack)
     self.paper.add_bindings()
+
+
+
 
   def get_difference( self, previous):
     """obsolet method that finds difference between two state_records.

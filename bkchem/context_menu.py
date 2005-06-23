@@ -239,6 +239,12 @@ def set_show( o, value):
   o.show = value
   o.redraw()
   [b.redraw() for b in o.paper.bonds_to_update()]
+
+
+def set_show_hydrogens( o, value):
+  o.show_hydrogens = value
+  o.redraw()
+  [b.redraw() for b in o.paper.bonds_to_update()]
   
 
 def set_bond_auto_sign( o, value):
@@ -254,6 +260,7 @@ def set_bond_width( o, value):
 
 
 setter_functions = {'show': set_show,
+                    'show_hydrogens': set_show_hydrogens,
                     'auto_bond_sign': set_bond_auto_sign,
                     'bond_width': set_bond_width}
 
