@@ -125,7 +125,7 @@ class OO_exporter( plugin.exporter):
     style_name = self.get_appropriate_style_name( s)
     l_group = page
     # items to export
-    if b.type == 'h':
+    if b.type in 'hd':
       items = b.items
     else:
       if b.center:
@@ -142,7 +142,7 @@ class OO_exporter( plugin.exporter):
     else:
       line_items = b.second + b.third
     # the export itself
-    if b.type in 'nh':
+    if b.type in 'nhd':
       for i in items:
         coords = map( Screen.px_to_cm, self.paper.coords( i))
         self.create_oo_line( coords, page, style_name)
@@ -165,11 +165,6 @@ class OO_exporter( plugin.exporter):
         for i in range( 0, len( coords), 2):
           point_array.append( (coords[i], coords[i+1]))
         self.create_oo_polygon( point_array, page, style_name)
-    elif b.type == 'h':
-      for i in items:
-        for p in i:
-          coords = map( Screen.px_to_cm, self.paper.coords( p))
-          self.create_oo_line( coords, page, style_name)
     elif b.type == 'a':
       s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),
                           stroke_width=Screen.px_to_cm( b.line_width))
@@ -207,11 +202,12 @@ class OO_exporter( plugin.exporter):
 
       self.create_oo_text( '<ftext>%s</ftext>' % a.get_ftext(), coords, page, para_style_name, txt_style_name, gr_style_name)
     # marks
-    for name,m in a.marks.iteritems():
+    for m in a.marks:
       if m:
+        name = m.__class__.__name__
         if name == 'radical':
           self.add_radical_mark( m, page)
-        elif name == 'biradical':
+        elif name in ('biradical','dotted_electronpair'):
           self.add_radical_mark( m, page)
         elif name == 'electronpair':
           self.add_electronpair_mark( m, page)
@@ -237,7 +233,7 @@ class OO_exporter( plugin.exporter):
   def add_text( self, a, page):
     """adds text object to document"""
     gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
-                                 fill_color=self.paper.any_color_to_rgb_string( a.area_color))
+                               fill_color=self.paper.any_color_to_rgb_string( a.area_color))
     gr_style_name = self.get_appropriate_style_name( gr_style)
     para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family, color=a.line_color)
     para_style_name = self.get_appropriate_style_name( para_style)
@@ -260,6 +256,8 @@ class OO_exporter( plugin.exporter):
 
     coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
     self.create_oo_text( '<ftext>+</ftext>', coords, page, para_style_name, txt_style_name, gr_style_name)
+
+
 
   def add_arrow( self, a, page):
     end_pin, start_pin = None,None
@@ -343,8 +341,9 @@ class OO_exporter( plugin.exporter):
                         fill_color=self.paper.any_color_to_rgb_string( o.atom.area_color),
                         stroke_width=Screen.px_to_cm( 1))
     style_name = self.get_appropriate_style_name( s)
+    # we must process oval first - it would otherwise cover the lines
     for i in o.items:
-      if o.items.index( i) == 0:
+      if self.paper.type( i) == "oval":
         x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
         size = Screen.px_to_cm( o.size)
         dom_extensions.elementUnder( page, 'draw:ellipse',
@@ -353,17 +352,18 @@ class OO_exporter( plugin.exporter):
                                       ( 'svg:width', '%fcm' %  size),
                                       ( 'svg:height', '%fcm' % size),
                                       ( 'draw:style-name', style_name)))
-      else:
+    for i in o.items:
+      if self.paper.type( i) == "line":
         coords = self.paper.coords( i)
         # because some weird bug in tcl/tk i had to hack the coordinates in marks.py
         # the hack is reversed here in order to get the coords back
         # I also reduce the size of the mark a little
-        if o.items.index( i) == 1:
-          coords[0] += 0
-          coords[2] += -1
-        elif o.items.index( i) == 2:
-          coords[1] += 0
-          coords[3] += -1
+        #if o.items.index( i) == 1:
+        #  coords[0] += 0
+        #  coords[2] += -1
+        #elif o.items.index( i) == 2:
+        #  coords[1] += 0
+        #  coords[3] += -1
         # end of hack
         coords = map( Screen.px_to_cm, coords)
         self.create_oo_line( coords, page, style_name)
@@ -587,7 +587,7 @@ class graphics_style( style):
                                                                     ( 'svg:stroke-width', '%fcm' % self.stroke_width),
                                                                     ( 'draw:auto-grow-width', 'true'),
                                                                     ( 'draw:auto-grow-height', 'true'),
-                                                                    ( 'draw:textarea-horizontal-align','left'),
+                                                                    ( 'draw:textarea-horizontal-align','middle'),
                                                                     ( 'draw:textarea-vertical-align','middle'),
                                                                     ( 'fo:padding-top', pad_top),
                                                                     ( 'fo:padding-bottom', pad_bot)))
