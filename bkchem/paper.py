@@ -108,6 +108,7 @@ class chem_paper( Canvas, object):
 
     self.changes_made = 0
 
+    self._do_not_focus = [] # this is to enable an ugly hack in a drag-and-focus hack
 
 
   def set_bindings( self):
@@ -238,15 +239,19 @@ class chem_paper( Canvas, object):
       for name in names:
         self.tag_bind( name, '<Enter>', self.enter_item)
         self.tag_bind( name, '<Leave>', self.leave_item)
+    self._do_not_focus = [] # self._do_not_focus is temporary and is cleaned automatically here
     self.event_generate( "<<selection-changed>>")
     # we generate this event here because this method is often called after some change as a last thing
 
 
-  def remove_bindings( self):
-    for tag in self.all_names_to_bind + ("mark",):
-      self.tag_unbind( tag, '<Enter>')
-      self.tag_unbind( tag, '<Leave>')
-    
+  def remove_bindings( self, ids=()):
+    if not ids:
+      for tag in self.all_names_to_bind + ("mark",):
+        self.tag_unbind( tag, '<Enter>')
+        self.tag_unbind( tag, '<Leave>')
+    else:
+      [self.tag_unbind( id, '<Enter>') for id in ids]
+      [self.tag_unbind( id, '<Leave>') for id in ids]
     
   ## event bound methods
 
@@ -279,9 +284,12 @@ class chem_paper( Canvas, object):
     event.y = self.canvasy( event.y)
     Store.app.update_cursor_position( event.x, event.y)
     Store.app.mode.mouse_drag( event) 
-    b = self.find_enclosed( event.x-2, event.y-2, event.x+2, event.y+2)
-    if b:
-      a = self.id_to_object( b[0])
+    b = self.find_overlapping( event.x-2, event.y-2, event.x+2, event.y+2)
+    b = filter( self.is_registered_id, b)
+    a = map( self.id_to_object, b)
+    a = [i for i in a if i not in self._do_not_focus]
+    if a:
+      a = a[-1]
     else:
       a = None
     if a:
@@ -838,6 +846,13 @@ class chem_paper( Canvas, object):
     except KeyError:
       return None
 
+
+
+  def object_to_id( self, obj):
+    for k, v in self._id_2_object.iteritems():
+      if v == obj:
+        return k
+    return None
 
 
 

@@ -821,6 +821,9 @@ class draw_mode( edit_mode):
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b)
 
+        # deactivate the new atom and bond for focus
+        Store.app.paper._do_not_focus = [self._moved_atom, b]
+
         # update atom text
         if hasattr( self.focused, 'update_after_valency_change'):
           self.focused.update_after_valency_change()
