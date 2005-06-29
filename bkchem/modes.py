@@ -798,7 +798,8 @@ class draw_mode( edit_mode):
           # warn when valency is exceeded
           if self.focused.atom1.free_valency < 0 or self.focused.atom2.free_valency < 0:
             Store.log( _("maximum valency exceeded!"), message_type="warning")
-          self.focused.focus() # refocus
+          else:
+            self.focused.focus() # refocus
 
     Store.app.paper.handle_overlap()
     Store.app.paper.start_new_undo_record()
