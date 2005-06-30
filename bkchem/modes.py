@@ -2305,7 +2305,7 @@ class misc_mode( edit_mode):
     if self.focused and hasattr( self.focused, 'number'):
       self.focused.number = str( self._number)
       self._number += 1
-
+      Store.app.paper.start_new_undo_record()
 
 
   def cleanup( self):
