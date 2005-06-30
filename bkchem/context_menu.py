@@ -72,7 +72,8 @@ class context_menu( Tkinter.Menu):
           already_there.append( attr)
           
     # commands
-    if already_there:
+    if already_there and len( [o for o in self.selected if o.object_type != 'mark']):
+      # marks do not have entry in properties dialog
       self.add_separator()        
     i = False
     i += self.register_command_by_object_type( _("Center bond"), ('bond',), center)
@@ -80,9 +81,11 @@ class context_menu( Tkinter.Menu):
     i += self.register_command_by_object_type( _("Set atom number"), ('atom',), set_atom_number)
 
     # common commands
-    if i:
-      self.add_separator()
-    self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
+    if len( [o for o in self.selected if o.object_type != 'mark']):
+      # marks do not have entry in properties dialog
+      if i:
+        self.add_separator()
+      self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
 
 
   def callback( self, command, objects, value):
