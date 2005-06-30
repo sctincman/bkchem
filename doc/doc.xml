@@ -318,7 +318,7 @@
   <figure id="pict.modes-all">
     <title>Mode selection panel</title>
     <screenshot>
-      <graphic fileref="img/modes-all.png"/>
+      <graphic fileref="../img/modes-all.png"/>
     </screenshot>
   </figure>
 

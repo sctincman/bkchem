@@ -1,3 +1,18 @@
+RELEASE 0.10.1
+----------------------------------------
+
+ * bugfixes - context menu does not show "Properties" entry for marks
+	      (there is no properties dialog for marks)
+	    - undo of numbering via the "Misc small modes/Numbering" was fixed
+	    - fixed crash after "maximum valency exceeded" was reported on bond order change
+	    - atoms with visible text were inactive during dragging in draw mode
+	    - several openoffice export fixes (marks, dash bonds and texts)
+
+ * acknowledgments - Piotr Wawrzyniak (bugreports)
+
+
+
+
 RELEASE 0.10.0
 ----------------------------------------
 
