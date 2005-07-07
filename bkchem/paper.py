@@ -301,7 +301,7 @@ class chem_paper( Canvas, object):
         Store.app.mode.leave_object( event)
         Store.app.mode.enter_object( self.__in, event)
     else:
-      if self.__in:
+      if self.__in or Store.app.mode.focused: # sometimes self.__in and Store.app.mode.focused is different
         self.__in = None
         Store.app.mode.leave_object( event)
 
@@ -328,6 +328,20 @@ class chem_paper( Canvas, object):
   def _move( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
+
+    # unfocusing of forgotten focused items
+    b = self.find_overlapping( event.x-2, event.y-2, event.x+2, event.y+2)
+    b = filter( self.is_registered_id, b)
+    a = map( self.id_to_object, b)
+    a = [i for i in a if i not in self._do_not_focus]
+    if a:
+      a = a[-1]
+    else:
+      a = None
+    if not a and Store.app.mode.focused:
+      Store.app.mode.leave_object( event)
+    # //
+    
     Store.app.update_cursor_position( event.x, event.y)
     Store.app.mode.mouse_move( event)
 
@@ -361,7 +375,6 @@ class chem_paper( Canvas, object):
     if a and a != self.__in:
       self.__in = a
       Store.app.mode.enter_object( self.__in, event)
-
 
 
 

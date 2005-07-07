@@ -127,7 +127,7 @@ class tk2piddle:
     y = max(y1,y2)- self.convert( afont.metrics()['descent'])
     fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
     font = piddle.Font( face=font_family, size=font_size, bold=bold, italic=italic)
-    self.canvas.drawString( text, x1+self.convert(2), y, font=font, color=fill)  # +2 is a hack
+    self.canvas.drawString( text, x1+self.convert(1.6), y, font=font, color=fill)  # +1.6 is a hack
 
 
   def _draw_rectangle( self, item):
