@@ -190,3 +190,39 @@ class tk2piddle:
         cs.append( (x, c))
         i = 0
     return cs
+
+
+
+
+
+
+
+class tk2piddle_pdf( tk2piddle):
+  """specialized class to make use of available additional functions of the piddle PDF
+  interface (and pdfgen)"""
+
+  _caps = {'butt': 0,
+           'round': 1,
+           'projecting': 2}
+
+  def _draw_line( self, item):
+    cap = self.paper.itemcget( item, 'capstyle')
+    self.canvas.pdf.setLineCap( self._caps[ cap])
+    tk2piddle._draw_line( self, item)
+  
+
+
+
+
+class tk2piddle_ps( tk2piddle):
+  """specialized class to make use of available additional functions of the piddle PS
+  interface"""
+
+  _caps = {'butt': 0,
+           'round': 1,
+           'projecting': 2}
+
+  def _draw_line( self, item):
+    cap = self.paper.itemcget( item, 'capstyle')
+    self.canvas.setLineCap( self._caps[ cap])
+    tk2piddle._draw_line( self, item)

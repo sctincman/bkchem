@@ -19,11 +19,15 @@
 
 
 from piddle_lowlevel import piddle_exporter
+from tk2piddle import tk2piddle_pdf
 from piddle import piddlePDF
 
 
 class pdf_exporter( piddle_exporter):
 
+  def __init__( self, paper):
+    piddle_exporter.__init__( self, paper, converter_class=tk2piddle_pdf)
+    
 
   def init_canvas( self, pagesize=None):
     return piddlePDF.PDFCanvas( pagesize=pagesize)
