@@ -105,8 +105,8 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   if calc_position:
     bl = sum( bond_lengths) / len( bond_lengths)
     scale = Screen.any_to_px( paper.standard.bond_length) / bl
-    movex = -scale*(maxx+minx)/2
-    movey = -scale*(maxy+miny)/2
+    movex = (maxx+minx)/2
+    movey = (maxy+miny)/2
     trans = transform3d.transform3d()
     trans.set_move( movex, movey, 0)
     trans.set_scaling( scale)
