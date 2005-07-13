@@ -32,6 +32,9 @@ class tk2cairo:
            'projecting': cairo.LINE_CAP_SQUARE}
 
 
+  _font_remap = {'helvetica': 'Arial'}
+
+
   def __init__( self):
     pass
 
@@ -123,7 +126,7 @@ class tk2cairo:
 
 
   def _draw_text( self, item):
-    text = self.paper.itemcget( item, 'text')
+    text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
     #x, y = map( self.convert, self.paper.coords( item))
     x1, y1, x2, y2 = self.transformer.transform_4( self.paper.bbox( item))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
@@ -132,14 +135,27 @@ class tk2cairo:
     slant =  'italic' in conf['slant'] and cairo.FONT_SLANT_ITALIC or cairo.FONT_SLANT_NORMAL
     weight = 'bold' in conf['weight'] and cairo.FONT_WEIGHT_BOLD or cairo.FONT_WEIGHT_NORMAL
     y = max(y1,y2)- self.convert( afont.metrics()['descent'])
+
     # color
     self.set_cairo_color( self.paper.itemcget( item, 'fill'))
-    print font_family, weight, slant
-    # for some reason it works only if all the information is provided in one string
-    self.context.select_font_face( "%s %s %s" % (font_family, conf['weight'], conf['slant']), slant, weight)
-    self.context.set_font_size( afont.metrics()['ascent'] + afont.metrics()['descent']) # size in cairo is defined like that
+    # helvetica which is often used does not work for me - therefor I use remap
+    font_name = self._font_remap.get( font_family, font_family)
+    self.context.select_font_face( font_name, slant, weight)
+
+    # here we compute the font_size so that it matches what is on the screen
+    cairo_size = conf['size']
+    self.context.set_font_size( cairo_size)
+    asc, desc, height, _a, _b = self.context.font_extents()
+    
+    while afont.metrics()['linespace'] > height:
+      cairo_size += 1
+      self.context.set_font_size( cairo_size)
+      asc, desc, height, _a, _b = self.context.font_extents()
+
+    xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
+
     self.context.new_path()
-    self.context.move_to( x1, y)
+    self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
     self.context.text_path( text)
     self.context.fill()
 

@@ -31,7 +31,17 @@ class png_cairo_exporter( cairo_exporter):
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    return cairo.ImageSurface( cairo.FORMAT_ARGB32, w, h)
+    surface = cairo.ImageSurface( cairo.FORMAT_ARGB32, w, h)
+    return surface
+
+
+  def init_context( self):
+    """to be overriden; should be called after init_surface"""
+    context = cairo.Context( self.surface)
+    context.set_source_rgb( 1, 1, 1)
+    context.rectangle( 0, 0, self.pagesize[0], self.pagesize[1])
+    context.fill()
+    return context
 
 
   def save( self):

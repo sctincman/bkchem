@@ -43,6 +43,12 @@ class cairo_exporter( plugin.exporter):
     pass
 
 
+  def init_context( self):
+    """to be overriden; should be called after init_surface"""
+    return cairo.Context( self.surface)
+
+
+
   def save( self):
     """to be overriden; makes use of self.filename"""
     pass
@@ -50,7 +56,7 @@ class cairo_exporter( plugin.exporter):
 
   def on_begin( self):
     self.paper.unselect_all()
-    scale = 720.0/self.paper.winfo_fpixels( '254m')
+    scale = 1 #720.0/self.paper.winfo_fpixels( '254m')
     if self.paper.get_paper_property( 'crop_svg'):
       margin = self.paper.get_paper_property('crop_margin')
       items = list( self.paper.find_all())
@@ -75,7 +81,7 @@ class cairo_exporter( plugin.exporter):
   def write_to_file( self, name):
     self.filename = name
     self.surface = self.init_surface()
-    self.context = cairo.Context( self.surface)
-    self.converter.export_to_cairo( self.paper, self.context, transformer=None) #self.transformer)
+    self.context = self.init_context()
+    self.converter.export_to_cairo( self.paper, self.context, transformer=self.transformer)
     self.save()
 
