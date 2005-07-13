@@ -31,6 +31,7 @@ import math
 import operator
 
 from singleton_store import Screen
+import transform3d
 
 
 def read_smiles( text, paper):
@@ -104,11 +105,14 @@ def oasa_mol_to_bkchem_mol( mol, paper):
   if calc_position:
     bl = sum( bond_lengths) / len( bond_lengths)
     scale = Screen.any_to_px( paper.standard.bond_length) / bl
-    movex = 320 - scale*(maxx+minx)/2
-    movey = 240 - scale*(maxy+miny)/2
+    movex = -scale*(maxx+minx)/2
+    movey = -scale*(maxy+miny)/2
+    trans = transform3d.transform3d()
+    trans.set_move( movex, movey, 0)
+    trans.set_scaling( scale)
+    trans.set_move( 320, 240, 0)
     for a in m.atoms:
-      a.x = movex + scale*a.x
-      a.y = movey + scale*a.y
+      a.x, a.y, a.z = trans.transform_xyz( a.x, a.y, a.z)
   return m
 
 
@@ -116,6 +120,7 @@ def oasa_atom_to_bkchem_atom( a, paper, m):
   at = atom.atom( standard=paper.standard, molecule=m)
   at.x = a.x
   at.y = a.y
+  at.z = a.z
   at.set_name( a.symbol, interpret=1)
   at.charge = a.charge
   return at
@@ -150,6 +155,7 @@ def bkchem_atom_to_oasa_atom( a):
   x, y = a.get_xy()
   ret.x = x
   ret.y = y
+  ret.z = z
   ret.charge = a.charge
   return ret
 

@@ -103,7 +103,7 @@ class transform3d:
 
   def set_scaling( self, scale):
     "add an scaling step to transformation matrix, same scaling for both dimensions"
-    self.set_scaling( scale, scale, scale)
+    self.set_scaling_xyz( scale, scale, scale)
 
 
 
