@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2004  Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -18,19 +18,29 @@
 #--------------------------------------------------------------------------
 
 
-__all__ = []
-_names = ['CML','CML2','openoffice','postscript','molfile','pdf', 'postscript2','pdf_cairo', 'png_cairo']
-# 'bitmap' and 'gtml' were removed for the release
+from cairo_lowlevel import cairo_exporter
+from tk2cairo import tk2cairo
+import cairo
 
-import sys
 
-for _name in _names:
-  exec 'import %s' % _name
-  try:
-    exec 'import %s' % _name
-    __all__.append( _name)
-  except:
-    print >> sys.stderr, "could not load module %s" % _name
+class png_cairo_exporter( cairo_exporter):
 
-del _name
-del _names
+  def __init__( self, paper):
+    cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
+    
+
+  def init_surface( self):
+    w, h = map( int, map( round, self.pagesize))
+    return cairo.ImageSurface( cairo.FORMAT_ARGB32, w, h)
+
+
+  def save( self):
+    self.surface.write_to_png( self.filename)
+    self.surface.finish()
+
+
+
+# PLUGIN INTERFACE SPECIFICATION
+name = "PNG Cairo"
+extensions = [".png"]
+exporter = png_cairo_exporter

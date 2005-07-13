@@ -1,0 +1,240 @@
+#--------------------------------------------------------------------------
+#     This file is part of BKchem - a chemical drawing program
+#     Copyright (C) 2004  Beda Kosata <beda@zirael.org>
+
+#     This program is free software; you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation; either version 2 of the License, or
+#     (at your option) any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     Complete text of GNU GPL can be found in the file gpl.txt in the
+#     main directory of the program
+
+#--------------------------------------------------------------------------
+
+
+import cairo
+import tkFont
+import transform
+import geometry
+
+
+class tk2cairo:
+
+
+  _caps = {'butt': cairo.LINE_CAP_BUTT,
+           'round': cairo.LINE_CAP_ROUND,
+           'projecting': cairo.LINE_CAP_SQUARE}
+
+
+  def __init__( self):
+    pass
+
+
+  def export_to_cairo( self, tk_canvas, cairo_context, transformer=None):
+    self.context = cairo_context
+    self.paper = tk_canvas
+    self.convert = self.paper_to_canvas_coord
+    if not transformer:
+      self.transformer = self.prepare_dumb_transformer()
+    else:
+      self.transformer = transformer
+    self.draw_document()
+
+
+
+  def set_cairo_color( self, color):
+    if not color:
+      self.context.set_source_rgba( 0,0,0,0)
+    else:
+      colors = self.paper.winfo_rgb( color)
+      self.context.set_source_rgb( *map( lambda x: x/65535.0, colors))
+
+
+
+  def paper_to_canvas_coord( self, x):
+    return x
+    #dpi = self.paper.winfo_fpixels( '254m')/10.0
+    #return dpi*x/72
+
+
+  def prepare_dumb_transformer( self):
+    tr = transform.transform()
+    tr.set_scaling( self.paper_to_canvas_coord( 1))
+    return tr
+
+
+
+  def draw_document( self):
+    # the conversion function for coordinates
+    for item in self.paper.find_all():
+      if not "no_export" in self.paper.gettags( item):
+        method = "_draw_" + self.paper.type( item)
+        if not hasattr( self, method):
+          print "method to draw %s is not implemented" % self.paper.type( item)
+        else:
+          getattr( self, method)( item)
+    self.context.show_page()
+
+
+
+  def _draw_line( self, item):
+    if self.paper.itemcget( item, 'fill') != '':
+      # arrows at first as they make the lines bellow them shorter
+      start = None
+      end = None
+      arrows = self.paper.itemcget( item, 'arrow')
+      if arrows != "none":
+        color = self.paper.itemcget( item, 'fill')
+        coords = self.paper.coords( item)
+        if arrows in ("last", "both"):
+          end = self._create_arrow( self.paper.itemcget( item, 'arrowshape'), coords[-4:-2], coords[-2:], color)
+        if arrows in ("first", "both"):
+          start = self._create_arrow( self.paper.itemcget( item, 'arrowshape'), coords[2:4], coords[0:2], color)
+
+      coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
+      if start:
+        coords[0] = start[0]
+        coords[1] = start[1]
+      if end:
+        coords[-2] = end[0]
+        coords[-1] = end[1]
+
+      # cap style
+      cap = self.paper.itemcget( item, 'capstyle')
+      self.context.set_line_cap( self._caps[ cap])
+      # color
+      self.set_cairo_color( self.paper.itemcget( item, 'fill'))
+      # line width
+      width = self.convert( float( self.paper.itemcget( item, 'width')))
+      self.context.set_line_width( width)
+      # the path itself 
+      cs = self._flat_list_to_list_of_tuples( map( self.convert, coords))
+      self._create_cairo_path( cs, closed=False)
+      # stroke it
+      self.context.stroke()
+    else:
+      pass #transparent things
+
+
+  def _draw_text( self, item):
+    text = self.paper.itemcget( item, 'text')
+    #x, y = map( self.convert, self.paper.coords( item))
+    x1, y1, x2, y2 = self.transformer.transform_4( self.paper.bbox( item))
+    afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
+    conf = afont.config()
+    font_family = conf['family']
+    slant =  'italic' in conf['slant'] and cairo.FONT_SLANT_ITALIC or cairo.FONT_SLANT_NORMAL
+    weight = 'bold' in conf['weight'] and cairo.FONT_WEIGHT_BOLD or cairo.FONT_WEIGHT_NORMAL
+    y = max(y1,y2)- self.convert( afont.metrics()['descent'])
+    # color
+    self.set_cairo_color( self.paper.itemcget( item, 'fill'))
+    print font_family, weight, slant
+    # for some reason it works only if all the information is provided in one string
+    self.context.select_font_face( "%s %s %s" % (font_family, conf['weight'], conf['slant']), slant, weight)
+    self.context.set_font_size( afont.metrics()['ascent'] + afont.metrics()['descent']) # size in cairo is defined like that
+    self.context.new_path()
+    self.context.move_to( x1, y)
+    self.context.text_path( text)
+    self.context.fill()
+
+
+
+  def _draw_rectangle( self, item):
+    coords = self.transformer.transform_4( self.paper.coords( item))
+    outline = self.paper.itemcget( item, 'outline')
+    fill = self.paper.itemcget( item, 'fill')
+    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    x1, y1, x2, y2 = coords
+    self.context.rectangle( x1, y1, x2-x1, y2-y1)
+    self.set_cairo_color( fill)
+    self.context.fill_preserve()
+    self.context.set_line_width( width)
+    self.set_cairo_color( outline)
+    self.context.stroke()
+
+    
+    
+  def _draw_polygon( self, item):
+    coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
+    outline = self.paper.itemcget( item, 'outline')
+    fill = self.paper.itemcget( item, 'fill')
+    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    cs = self._flat_list_to_list_of_tuples( coords)
+
+    self._create_cairo_path( cs, closed=True)
+    self.set_cairo_color( fill)
+    self.context.fill_preserve()
+    self.set_cairo_color( outline)
+    self.context.set_line_width( width)
+    self.context.stroke()
+    
+    
+
+  def _draw_oval( self, item):
+    return
+##     coords = self.transformer.transform_4( self.paper.coords( item))
+##     outline = self.set_cairo_color( self.paper.itemcget( item, 'outline'))
+##     fill = self.set_cairo_color( self.paper.itemcget( item, 'fill'))
+##     width = self.convert( float( self.paper.itemcget( item, 'width')))
+##     x1, y1, x2, y2 = coords
+##     self.canvas.drawEllipse( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
+    
+
+
+  # other than drawing private methods
+
+  def _create_arrow( self, shape, start, to, color):
+    """creates an arrow with 'shape' pointing from 'start' to 'to' filled with 'color'
+    and returns x, y - where the to should be to not to overlay the arrow"""
+    a, b, c = map( float, shape.split())
+    points = [a,0, a-b,c, 0,0, a-b,-c]
+    ang = geometry.clockwise_angle_from_east( to[0]-start[0], to[1]-start[1])
+    tr = transform.transform()
+    tr.set_move( -a, 0)
+    tr.set_rotation( ang)
+    tr.set_move( to[0], to[1])
+    points = tr.transform_xy_flat_list( points)
+    points = self.transformer.transform_xy_flat_list( points)
+    points = self._flat_list_to_list_of_tuples( points)
+
+    self._create_cairo_path( points, closed=True)
+    self.set_cairo_color( color)
+    self.context.fill()
+
+    return points[1]
+
+
+
+  def _flat_list_to_list_of_tuples( self, coords):
+    i = 0
+    cs = []
+    for c in coords:
+      if i == 0:
+        x = c
+        i = 1
+      else:
+        cs.append( (x, c))
+        i = 0
+    return cs
+
+
+
+  def _create_cairo_path( self, points, closed=False):
+    x, y = points.pop( 0)
+    self.context.move_to( x, y)
+    for (x,y) in points:
+      self.context.line_to( x, y)
+    if closed:
+      self.context.close_path()
+
+
+
+
+
+

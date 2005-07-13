@@ -634,7 +634,7 @@ class BKchem( Tk):
     _tab_name = self.get_new_tab_name()
     page = self.notebook.add( _tab_name, tab_text = chem_paper.create_window_name( name_dic))
     paper = chem_paper( page,
-                        scrollregion=(0,0,'210m','297m'),
+                        scrollregion=(-100,-100,'300m','400m'),
                         background="grey",
                         closeenough=3,
                         file_name=name_dic)
