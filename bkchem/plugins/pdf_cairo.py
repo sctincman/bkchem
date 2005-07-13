@@ -24,6 +24,8 @@ import cairo
 
 
 class pdf_cairo_exporter( cairo_exporter):
+  """Exports PDF via the Cairo (pycairo) library. This is the preferred PDF output plugin
+as it supports unicode strings and the output is of very good quality."""
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)

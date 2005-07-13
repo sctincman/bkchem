@@ -378,11 +378,11 @@ class BKchem( Tk):
       plugin = self.plugins[ name]
       if ('importer' in  plugin.__dict__) and plugin.importer:
         self.menu.addmenuitem( _("Import"), 'command', label=plugin.name,
-                               statusHelp="",
+                               statusHelp=plugin.importer.__doc__,
                                command=misc.lazy_apply( self.plugin_import, (plugin.name,)))
       if ('exporter' in plugin.__dict__) and plugin.exporter:
         self.menu.addmenuitem( _("Export"), 'command', label=plugin.name,
-                               statusHelp="",
+                               statusHelp=plugin.exporter.__doc__,
                                command=misc.lazy_apply( self.plugin_export, (plugin.name,)))
 
 
@@ -592,12 +592,15 @@ class BKchem( Tk):
 
 
 
-  def update_status( self, signal, time=4):
+  def update_status( self, signal, time=None):
+    """if time is none it is calculated based on the string length"""
+    if time == None and signal:
+      time = 4 + 0.05 * len( signal)
     if signal:
       self.stat.set( signal)
       if self._after:
         self.after_cancel( self._after)
-      self._after = self.after( time*1000, func=self.clear_status)
+      self._after = self.after( int( time*1000), func=self.clear_status)
 
 
 
