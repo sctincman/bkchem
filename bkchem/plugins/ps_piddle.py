@@ -37,6 +37,6 @@ class ps_exporter( piddle_exporter):
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PostScript (new)"
-extensions = [".ps"]
+name = "PostScript (Piddle)"
+extensions = [".eps",".ps"]
 exporter = ps_exporter

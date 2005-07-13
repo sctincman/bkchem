@@ -51,6 +51,6 @@ class png_cairo_exporter( cairo_exporter):
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PNG Cairo"
+name = "PNG (Cairo)"
 extensions = [".png"]
 exporter = png_cairo_exporter

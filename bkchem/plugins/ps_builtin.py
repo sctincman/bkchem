@@ -53,6 +53,6 @@ class PS_exporter( plugin.exporter):
 
 
 
-name = "Encapsulated PostScript"
-extensions = ['.eps']
+name = "PostScript (builtin)"
+extensions = ['.eps','.ps']
 exporter = PS_exporter

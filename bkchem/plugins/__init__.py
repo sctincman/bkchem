@@ -19,7 +19,7 @@
 
 
 __all__ = []
-_names = ['CML','CML2','openoffice','postscript','molfile','pdf', 'postscript2','pdf_cairo', 'png_cairo']
+_names = ['CML','CML2','openoffice','ps_builtin','molfile','pdf_piddle','ps_piddle','pdf_cairo','png_cairo']#,'ps_cairo']
 # 'bitmap' and 'gtml' were removed for the release
 
 import sys

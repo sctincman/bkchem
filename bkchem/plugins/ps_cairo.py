@@ -23,7 +23,7 @@ from tk2cairo import tk2cairo
 import cairo
 
 
-class pdf_cairo_exporter( cairo_exporter):
+class ps_cairo_exporter( cairo_exporter):
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
@@ -31,7 +31,9 @@ class pdf_cairo_exporter( cairo_exporter):
 
   def init_surface( self):
     w, h = self.pagesize
-    return cairo.PDFSurface( self.filename, w, h)
+    surface = cairo.PSSurface( self.filename, w, h)
+    #surface.set_dpi( 300, 300)
+    return surface
 
 
   def save( self):
@@ -39,6 +41,9 @@ class pdf_cairo_exporter( cairo_exporter):
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PDF (Cairo)"
-extensions = [".pdf"]
-exporter = pdf_cairo_exporter
+name = "PostScript (Cairo)"
+extensions = [".eps",".ps"]
+exporter = ps_cairo_exporter
+
+
+## ! DOES NOT WORK YET - IT SEEMS AS THERE IS VERY BAD PIXEL GRAPHICS EMBEDDED INTO THE PS !

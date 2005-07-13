@@ -35,6 +35,6 @@ class pdf_exporter( piddle_exporter):
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PDF"
+name = "PDF (Piddle)"
 extensions = [".pdf"]
 exporter = pdf_exporter
