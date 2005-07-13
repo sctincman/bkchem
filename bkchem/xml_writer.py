@@ -281,13 +281,15 @@ class SVG_writer( XML_writer):
     item = t.item
     x1, y1 = t.get_xy()
     x, y, x2, y2 = self.paper.bbox( item)
-    dom_extensions.elementUnder( self.group, 'rect',
-                                 (( 'x', str( x)),
-                                  ( 'y', str( y)),
-                                  ( 'width', str( x2-x)),
-                                  ( 'height', str( y2-y)),
-                                  ( 'fill', t.area_color),
-                                  ( 'stroke', t.area_color)))
+    if t.area_color:
+      # it is not needed to export the rectangle in case its transparent
+      dom_extensions.elementUnder( self.group, 'rect',
+                                   (( 'x', str( x)),
+                                    ( 'y', str( y)),
+                                    ( 'width', str( x2-x)),
+                                    ( 'height', str( y2-y)),
+                                    ( 'fill', t.area_color),
+                                    ( 'stroke', t.area_color)))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
     text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document)
@@ -304,13 +306,15 @@ class SVG_writer( XML_writer):
     item = p.item
     x1, y1 = p.get_xy()
     x, y, x2, y2 = self.paper.bbox( item)
-    dom_extensions.elementUnder( self.group, 'rect',
-                                 (( 'x', str( x)),
-                                  ( 'y', str( y)),
-                                  ( 'width', str( x2-x)),
-                                  ( 'height', str( y2-y)),
-                                  ( 'fill', p.area_color),
-                                  ( 'stroke', p.area_color)))
+    if p.area_color:
+      # it is not needed to export the rectangle in case its transparent
+      dom_extensions.elementUnder( self.group, 'rect',
+                                   (( 'x', str( x)),
+                                    ( 'y', str( y)),
+                                    ( 'width', str( x2-x)),
+                                    ( 'height', str( y2-y)),
+                                    ( 'fill', p.area_color),
+                                    ( 'stroke', p.area_color)))
     y1 += (y2-y)/4.0
     text = dom_extensions.textOnlyElementUnder( self.group, 'text', '+',
                                                 (('font-size', "%d%s" % (p.font_size, pt_or_px)),
@@ -326,6 +330,7 @@ class SVG_writer( XML_writer):
       x1, y1 = a.get_xy()
       x, y, x2, y2 = self.paper.bbox( item)
       if a.area_color != '':
+        # it is not needed to export the rectangle in case its transparent
         dom_extensions.elementUnder( self.group, 'rect',
                                      (( 'x', str( x)),
                                       ( 'y', str( y)),
@@ -358,25 +363,32 @@ class SVG_writer( XML_writer):
 
   def add_rect( self, o):
     x1, y1, x2, y2 = o.coords
-    dom_extensions.elementUnder( self.group, 'rect',
-                                 (( 'x', str( x1)),
-                                  ( 'y', str( y1)),
-                                  ( 'width', str( x2-x1)),
-                                  ( 'height', str( y2-y1)),
-                                  ( 'fill', o.area_color),
-                                  ( 'stroke', o.line_color),
-                                  ( 'stroke-width', str( o.line_width))))
+    el = dom_extensions.elementUnder( self.group, 'rect',
+                                      (( 'x', str( x1)),
+                                       ( 'y', str( y1)),
+                                       ( 'width', str( x2-x1)),
+                                       ( 'height', str( y2-y1)),
+                                       ( 'stroke-width', str( o.line_width))))
+    if o.area_color:
+      el.setAttribute( 'fill', o.area_color)
+    if o.line_color:
+      el.setAttribute( 'stroke', o.line_color)
+      
+
     
   def add_oval( self, o):
     x1, y1, x2, y2 = o.coords
-    dom_extensions.elementUnder( self.group, 'ellipse',
-                                 (( 'cx', str( (x2+x1)/2)),
-                                  ( 'cy', str( (y2+y1)/2)),
-                                  ( 'rx', str( (x2-x1)/2)),
-                                  ( 'ry', str( (y2-y1)/2)),
-                                  ( 'fill', o.area_color),
-                                  ( 'stroke', o.line_color),
-                                  ( 'stroke-width', str( o.line_width))))
+    el = dom_extensions.elementUnder( self.group, 'ellipse',
+                                      (( 'cx', str( (x2+x1)/2)),
+                                       ( 'cy', str( (y2+y1)/2)),
+                                       ( 'rx', str( (x2-x1)/2)),
+                                       ( 'ry', str( (y2-y1)/2)),
+                                       ( 'stroke-width', str( o.line_width))))
+    if o.area_color:
+      el.setAttribute( 'fill', o.area_color)
+    if o.line_color:
+      el.setAttribute( 'stroke', o.line_color)
+
 
 
   def add_polygon( self, o):
@@ -386,9 +398,12 @@ class SVG_writer( XML_writer):
     poly = dom_extensions.elementUnder( self.group, 'polygon',
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
-                                         ( 'fill', o.area_color),
-                                         ( 'stroke', o.line_color),
                                          ( 'fill-rule', 'evenodd')))
+    if o.area_color:
+      poly.setAttribute( 'fill', o.area_color)
+    if o.line_color:
+      poly.setAttribute( 'stroke', o.line_color)
+
 
 
   def add_polyline( self, o):
@@ -398,8 +413,10 @@ class SVG_writer( XML_writer):
     poly = dom_extensions.elementUnder( self.group, 'polyline',
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
-                                         ( 'fill', 'none'),
-                                         ( 'stroke', o.line_color)))
+                                         ( 'fill', 'none')))
+    if o.line_color:
+      el.setAttribute( 'stroke', o.line_color)
+
 
 
 
