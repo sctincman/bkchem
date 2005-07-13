@@ -22,6 +22,7 @@ import cairo
 import tkFont
 import transform
 import geometry
+import math
 
 
 class tk2cairo:
@@ -33,6 +34,10 @@ class tk2cairo:
 
 
   _font_remap = {'helvetica': 'Arial'}
+
+  _joins = {'round': cairo.LINE_JOIN_ROUND,
+            'miter': cairo.LINE_JOIN_MITER,
+            'bevel': cairo.LINE_JOIN_BEVEL}
 
 
   def __init__( self):
@@ -74,6 +79,8 @@ class tk2cairo:
 
 
   def draw_document( self):
+    # initial values
+    self.context.set_fill_rule( cairo.FILL_RULE_EVEN_ODD)
     # the conversion function for coordinates
     for item in self.paper.find_all():
       if not "no_export" in self.paper.gettags( item):
@@ -111,6 +118,9 @@ class tk2cairo:
       # cap style
       cap = self.paper.itemcget( item, 'capstyle')
       self.context.set_line_cap( self._caps[ cap])
+      # join style
+      join = self.paper.itemcget( item, 'joinstyle')
+      self.context.set_line_join( self._joins[ join])
       # color
       self.set_cairo_color( self.paper.itemcget( item, 'fill'))
       # line width
@@ -167,6 +177,7 @@ class tk2cairo:
     fill = self.paper.itemcget( item, 'fill')
     width = self.convert( float( self.paper.itemcget( item, 'width')))
     x1, y1, x2, y2 = coords
+    self.context.set_line_join( cairo.LINE_JOIN_MITER)
     self.context.rectangle( x1, y1, x2-x1, y2-y1)
     self.set_cairo_color( fill)
     self.context.fill_preserve()
@@ -183,6 +194,10 @@ class tk2cairo:
     width = self.convert( float( self.paper.itemcget( item, 'width')))
     cs = self._flat_list_to_list_of_tuples( coords)
 
+    # join style
+    join = self.paper.itemcget( item, 'joinstyle')
+    self.context.set_line_join( self._joins[ join])
+
     self._create_cairo_path( cs, closed=True)
     self.set_cairo_color( fill)
     self.context.fill_preserve()
@@ -193,13 +208,25 @@ class tk2cairo:
     
 
   def _draw_oval( self, item):
-    return
-##     coords = self.transformer.transform_4( self.paper.coords( item))
-##     outline = self.set_cairo_color( self.paper.itemcget( item, 'outline'))
-##     fill = self.set_cairo_color( self.paper.itemcget( item, 'fill'))
-##     width = self.convert( float( self.paper.itemcget( item, 'width')))
-##     x1, y1, x2, y2 = coords
-##     self.canvas.drawEllipse( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
+    coords = self.transformer.transform_4( self.paper.coords( item))
+    outline = self.paper.itemcget( item, 'outline')
+    fill = self.paper.itemcget( item, 'fill')
+    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    x1, y1, x2, y2 = coords
+    w = x2 - x1
+    h = y2 - y1
+    self.context.save()
+    self.context.translate( x1+w/2, y1+h/2)
+    self.context.scale( w/2.0, h/2.0);
+    self.context.arc( 0, 0, 1, 0, 2 * math.pi);
+    self.context.restore()
+
+    self.set_cairo_color( fill)
+    self.context.fill_preserve()
+    self.context.set_line_width( width)
+    self.set_cairo_color( outline)
+    self.context.stroke()
+
     
 
 
@@ -219,6 +246,7 @@ class tk2cairo:
     points = self.transformer.transform_xy_flat_list( points)
     points = self._flat_list_to_list_of_tuples( points)
 
+    self.context.set_line_join( cairo.LINE_JOIN_MITER)
     self._create_cairo_path( points, closed=True)
     self.set_cairo_color( color)
     self.context.fill()
