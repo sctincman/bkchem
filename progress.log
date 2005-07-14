@@ -1,3 +1,25 @@
+RELEASE 0.10.2
+----------------------------------------
+
+ * enhancements - high quality PDF and PNG export via Cairo (pycairo) added
+		  (it is currently available for linux only)
+		- line cap styles in PDF and PS piddle export are supported
+                  so the bond-joins look much better.
+
+ * bugfixes - problem of reading files with non-standard font size of atoms was fixed
+	    - problems with dialogs when using localized interface were (hopefully) fixed
+	    - saved SVGs did sometimes conform to the standard (stroke was set to ""), fixed
+            - molfile import od 3D molecules works again
+	    - small bug in 3D rotation was fixed
+
+ * changes - import/export plugins were renamed and some info texts were added to them
+	   - scrollregion of mail window expanded for B4 to fit easily in
+
+ * acknowledgments - Piotr Wawrzyniak (bugreports)
+
+
+
+
 RELEASE 0.10.1
 ----------------------------------------
 

@@ -25,7 +25,7 @@ _names = ['CML','CML2','openoffice','ps_builtin','molfile','pdf_piddle','ps_pidd
 import sys
 
 for _name in _names:
-  exec 'import %s' % _name
+  #exec 'import %s' % _name
   try:
     exec 'import %s' % _name
     __all__.append( _name)
