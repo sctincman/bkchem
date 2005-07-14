@@ -676,7 +676,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       fnt = fnt[0]
       self.font_size = int( fnt.getAttribute( 'size'))
       self.font_family = fnt.getAttribute( 'family')
-      if fnt.getAttribute( 'color') != None:
+      if fnt.getAttribute( 'color'):
         self.line_color = fnt.getAttribute( 'color')
     # show
     if package.getAttribute( 'show'):
@@ -684,7 +684,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
     else:
       self.show = (self.name!='C')
     # background color
-    if package.getAttributeNode( 'background-color') != None:
+    if package.getAttributeNode( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
     # multiplicity
     if package.getAttribute( 'multiplicity'):

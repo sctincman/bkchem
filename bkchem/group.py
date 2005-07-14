@@ -547,7 +547,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       if fnt.getAttribute( 'color'):
         self.line_color = fnt.getAttribute( 'color')
     # background color
-    if package.getAttributeNode( 'background-color') != None:
+    if package.getAttributeNode( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
 
     # marks

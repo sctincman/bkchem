@@ -810,7 +810,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     (the returned element is not inserted into the document)"""
     a = doc.createElement('text')
     a.setAttribute( 'id', self.id)
-    if self.area_color != '#ffffff':
+    if self.area_color != '':
       a.setAttribute( 'background-color', self.area_color)
     if self.font_size != self.paper.standard.font_size \
        or self.font_family != self.paper.standard.font_family \

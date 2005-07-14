@@ -505,7 +505,7 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
       if fnt.getAttribute( 'color'):
         self.line_color = fnt.getAttribute( 'color')
     # background color
-    if package.getAttributeNode( 'background-color') != None:
+    if package.getAttributeNode( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
     # number
     if package.getAttribute( 'show_number'):
