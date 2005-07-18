@@ -152,7 +152,7 @@ def bkchem_mol_to_oasa_mol( mol):
 def bkchem_atom_to_oasa_atom( a):
   s = a.name
   ret = oasa.atom( symbol=s)
-  x, y = a.get_xy()
+  x, y, z = a.get_xyz()
   ret.x = x
   ret.y = y
   ret.z = z

@@ -217,12 +217,13 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   ('green', _("green")),
                                                                   ('blue', _("blue")),
                                                                   ('red', _("red")),
-                                                                  ('black', _("black"))))
+                                                                  ('black', _("black")))),
+                  'free_sites':       ( _("Free sites"),         (0,1,2,3,4,5,6))
 
                   }
 
 
-configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',show_number,atom_valency),
+configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number', 'free_sites', show_number,atom_valency),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order','auto_bond_sign'),
                 'plus':    ('font_size',),

@@ -71,7 +71,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
                           text_like.meta__undo_properties + \
                           vertex_common.meta__undo_properties + \
                           ( 'z', 'show', 'name', 'molecule', 'charge', 'show_hydrogens',
-                            'pos', 'multiplicity', 'valency')
+                            'pos', 'multiplicity', 'valency', 'free_sites')
   meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
   meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
 
@@ -697,6 +697,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       self.show_number = bool( data.booleans.index( package.getAttribute( 'show_number')))
     if package.getAttribute( 'number'):
       self.number = package.getAttribute( 'number')
+    # free_sites
+    if package.getAttribute( 'free_sites'):
+      self.free_sites = int( package.getAttribute( 'free_sites'))
 
 
 
@@ -745,6 +748,9 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
     if self.number:
       a.setAttribute( 'number', self.number)
       a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
+    # free_sites
+    if self.free_sites:
+      a.setAttribute( 'free_sites', self.free_sites)
     return a
 
 

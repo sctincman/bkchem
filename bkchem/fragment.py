@@ -23,6 +23,7 @@ import dom_extensions as dom_ext
 import xml.sax.saxutils
 from singleton_store import Store
 from parents import simple_parent
+from bkchem_exceptions import bkchem_fragment_error
 
 
 class fragment( simple_parent):
@@ -103,5 +104,8 @@ class fragment( simple_parent):
     if name:
       self.name = dom_ext.getAllTextFromElement( name)
     for b in dom_ext.simpleXPathSearch( doc, "bond"):
-      self.edges.add( Store.id_manager.get_object_with_id( b.getAttribute( "id")))
+      try:
+        self.edges.add( Store.id_manager.get_object_with_id( b.getAttribute( "id")))
+      except KeyError:
+        raise bkchem_fragment_error( "inconsistent", "")
     

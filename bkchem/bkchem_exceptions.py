@@ -37,3 +37,21 @@ class bkchem_graph_error( bkchem_error):
   def __str__( self):
     print "BKchem graph error, id=%s, value=%s" % (self.id, self.value)
 
+
+
+
+
+class bkchem_fragment_error( bkchem_error):
+  """exceptions related to fragments consistency etc.
+  ids: inconsistent"""
+
+  def __init__( self, id, value):
+    self.id = id
+    self.value = value
+
+
+  def __str__( self):
+    print "BKchem fragments error, id=%s, value=%s" % (self.id, self.value)
+
+
+  

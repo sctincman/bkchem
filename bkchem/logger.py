@@ -44,12 +44,9 @@ class logger:
 
 
   def __init__( self):
-    self.handling = {'info': 'status_bar',
-                     'warning': 'dialog',
-                     'error': 'dialog',
-                     'debug': 'console',
-                     'hint': 'status_bar'}
+    self.handling = normal
 
+    
 
   def log( self, message, message_type="info", delay=4):
     """message_type is one of (info, warning, error, debug, hint),
@@ -104,3 +101,10 @@ ignorant = {'info': 'ignore',
             'error': 'ignore',
             'debug': 'ignore',
             'hint': 'ignore'}
+
+
+normal = {'info': 'status_bar',
+          'warning': 'dialog',
+          'error': 'dialog',
+          'debug': 'console',
+          'hint': 'status_bar'}

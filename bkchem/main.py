@@ -788,7 +788,7 @@ class BKchem( Tk):
 
 
   def load_CDML( self, file=None, replace=0):
-    """loads a file into the current paper,
+    """loads a file into a new paper or the current one (depending on replace value),
     file is the name of the file to load (if not supplied dialog is fired),
     if replace == 0 the content of the file is added to the current content of the file"""
     if not file:

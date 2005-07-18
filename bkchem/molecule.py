@@ -40,6 +40,7 @@ from atom import atom
 from group import group
 from textatom import textatom
 from fragment import fragment
+import bkchem_exceptions
 
 from sets import Set
 
@@ -360,8 +361,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     # fragments
     for fel in dom_extensions.simpleXPathSearch( package, "fragment"):
       f = fragment()
-      f.read_package( fel)
-      self.fragments.add( f)
+      try:
+        f.read_package( fel)
+      except bkchem_exceptions.bkchem_fragment_error:
+        pass
+      else:
+        self.fragments.add( f)
 
     ud = dom_extensions.getChildrenNamed( package, "user-data")
     if ud:
@@ -391,8 +396,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         dom_extensions.elementUnder( mol, 'template', ( ('atom', str( self.t_atom.id)),))
     for i in to_export:
       mol.appendChild( i.get_package( doc))
+
     if not items:
       # we do not save fragments if the molecule is not guaranteed to be saved whole
+      self.check_fragments()
       [mol.appendChild( f.get_package( doc)) for f in self.fragments]
 
     for ud in self.user_data:
