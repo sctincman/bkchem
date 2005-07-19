@@ -29,7 +29,7 @@ from sets import Set
 import types
 import interactors
 import parents
-
+import oasa
 
 
 from singleton_store import Store
@@ -43,6 +43,8 @@ class context_menu( Tkinter.Menu):
     self.changes_made = 0
     already_there = []
     self.configurable = {} # this is similar to configurable but is prepared on init to take dynamic things into account
+    # at first prepare all the items
+    items = {}
     for obj_type in configurable.keys():
       if type( obj_type) == types.StringType:
         objs = [o for o in self.selected if o.object_type == obj_type]
@@ -60,17 +62,26 @@ class context_menu( Tkinter.Menu):
           attr, vals = attr( [o for o in self.selected if o.object_type == obj_type])
 
         if vals and attr not in already_there:
-          casc = Tkinter.Menu( self, tearoff=0)
-          self.add_cascade( label=vals[ I18N_NAME], menu=casc)
+          items[ vals[ I18N_NAME]] = []
           self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [ attr] 
           for v in vals[ VALUES]:
             if type( v) == types.TupleType:
-              casc.add_command( label=v[1], command=misc.lazy_apply( self.callback, (attr, objs, v[0])))
+              items[ vals[ I18N_NAME]].append( (v[1], attr, objs, v[0]))
             else:
-              casc.add_command( label=v, command=misc.lazy_apply( self.callback, (attr, objs, v)))
+              items[ vals[ I18N_NAME]].append( (v, attr, objs, v))
           # to know what is already there
           already_there.append( attr)
-          
+
+    # then sort the items and polulate the menu
+    keys = items.keys()
+    keys.sort()
+    for key in keys:
+      casc = Tkinter.Menu( self, tearoff=0)
+      self.add_cascade( label=key, menu=casc)
+      for (v1, attr, objs, v0) in items[ key]:
+        casc.add_command( label=v1, command=misc.lazy_apply( self.callback, (attr, objs, v0)))
+
+    
     # commands
     if already_there and len( [o for o in self.selected if o.object_type != 'mark']):
       # marks do not have entry in properties dialog
@@ -190,6 +201,9 @@ def atom_valency( objs):
 
 
 
+# CONFIGURABLE VALUES
+
+
 config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
                                                                   ('no', _("no")))),
                   'show_hydrogens':   ( _("Hydrogens"),          (('on',_("on")),
@@ -218,10 +232,14 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                                                                   ('blue', _("blue")),
                                                                   ('red', _("red")),
                                                                   ('black', _("black")))),
-                  'free_sites':       ( _("Free sites"),         (0,1,2,3,4,5,6))
+                  'free_sites':       ( _("Free sites"),         (0,1,2,3,4,5,6)),
+                  'symbol':           ( _("Atom symbol"),        ("C","O","N","H","S","P","F","Cl","Br","I","B")),
+                  'group':            ( _("Group"),              ("CHO","COOH","COOCH3","OCH3","Bn","OBn","Bz","OBz","Ts","OTs","Ms","OMs","NO2"))
 
                   }
 
+
+## WHAT OBJECT HAS WHAT CONFIGURABLE
 
 configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number', 'free_sites', show_number,atom_valency),
                 'text':    ('font_size',),
@@ -230,13 +248,16 @@ configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number',
                 'arrow':   ('line_width',),
                 'mark':    ('size', draw_mark_circle),
                 parents.area_colored: ('area_color',),
-                parents.line_colored: ('line_color',)
+                parents.line_colored: ('line_color',),
+                oasa.graph.vertex: ('symbol','group')
                 }
 
 
 I18N_NAME = 0
 VALUES = 1
 
+
+## SETTER FUNCTIONS
 
 
 def set_show( o, value):
@@ -259,15 +280,28 @@ def set_bond_auto_sign( o, value):
 def set_bond_width( o, value):
   o.bond_width = value
   o.redraw( recalc_side=1)
-  
+
+
+def set_symbol( a, name):
+  v = a.molecule.create_vertex_according_to_text( a, name, interpret=True)
+  a.copy_settings( v)
+  a.molecule.replace_vertices( a, v)
+  a.delete()
+  v.draw()
+  [b.redraw() for b in v.get_neighbor_edges()]
+
 
 
 
 setter_functions = {'show': set_show,
                     'show_hydrogens': set_show_hydrogens,
                     'auto_bond_sign': set_bond_auto_sign,
-                    'bond_width': set_bond_width}
+                    'bond_width': set_bond_width,
+                    'symbol': set_symbol,
+                    'group': set_symbol}
 
+
+# COMMANDS
 
 def center( bonds):
   for b in bonds:

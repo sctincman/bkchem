@@ -172,7 +172,8 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       t = name.decode( 'utf-8')
     self.symbol = t.encode('utf-8')
     self.dirty = 1
-    #self.show = int( self.symbol != 'C')
+    if self.symbol != 'C':
+      self.show = True
 
   name = property( _get_name, _set_name)
 
