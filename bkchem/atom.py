@@ -750,7 +750,7 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
       a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
     # free_sites
     if self.free_sites:
-      a.setAttribute( 'free_sites', self.free_sites)
+      a.setAttribute( 'free_sites', str( self.free_sites))
     return a
 
 

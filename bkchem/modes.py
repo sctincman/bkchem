@@ -725,6 +725,8 @@ class draw_mode( edit_mode):
       a.focus()
       self.focused = a
     #Store.app.paper.add_bindings()
+
+
     
   def mouse_up( self, event):
     if not self._dragging:
@@ -750,6 +752,8 @@ class draw_mode( edit_mode):
       self._moved_atom = None
       Store.app.paper.add_bindings()
       Store.app.paper.start_new_undo_record()
+
+
 
   def mouse_click( self, event):
     if not self.focused:
@@ -779,7 +783,7 @@ class draw_mode( edit_mode):
         # adding more than one bond to group
         if isinstance( self.focused, group):
           #LOOK
-          Store.log( _("groups could have valency of 1 only! Atom was transformed to text!"), message_type="warning")
+          Store.log( _("Groups could have valency of 1 only! It was transformed to text!"), message_type="warning")
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
         Store.app.paper.select( [a])
@@ -804,6 +808,9 @@ class draw_mode( edit_mode):
     Store.app.paper.handle_overlap()
     Store.app.paper.start_new_undo_record()
     Store.app.paper.add_bindings()
+
+
+
 
   def mouse_drag( self, event):
     if not self._dragging:
@@ -833,8 +840,10 @@ class draw_mode( edit_mode):
 
 
     if self._start_atom:
+      z = 0
       if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
         x, y = self.focused.get_xy()
+        z = self.focused.z
       elif self.submode[3] == 1:
         x, y = event.x, event.y
       else:
@@ -845,6 +854,9 @@ class draw_mode( edit_mode):
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_atom.move_to( x, y)
+      # to be able to connect atoms with non-zero z coordinate
+      if z != 0:
+        self._moved_atom.z = z
       self._bonds_to_update.redraw()
 
   def enter_object( self, object, event):

@@ -423,7 +423,7 @@ class BKchem( Tk):
     for i in range( 5):
       path = Store.pm.get_preference( "recent-file%d" % (i+1))
       if path:
-        self._recent_files.insert( 0, path)
+        self._recent_files.append( path)
         self.menu.addmenuitem( _("Recent files"), 'command', label=path,
                                command=misc.lazy_apply( self.load_CDML, (path,)))
 
