@@ -1060,7 +1060,7 @@ class BKchem( Tk):
                              filetypes=types)
     else:
       a = filename
-    if a != '':
+    if a:
       if not config.debug:
         try:
           doc = exporter.write_to_file( a)

@@ -415,7 +415,7 @@ class SVG_writer( XML_writer):
                                          ( 'stroke-width', str( o.line_width)),
                                          ( 'fill', 'none')))
     if o.line_color:
-      el.setAttribute( 'stroke', o.line_color)
+      poly.setAttribute( 'stroke', o.line_color)
 
 
 

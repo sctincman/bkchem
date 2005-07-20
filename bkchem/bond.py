@@ -1050,7 +1050,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.order != 1:
       bnd.setAttribute( 'bond_width', str( self.bond_width * self.paper.screen_to_real_ratio()))
       if self.order == 2:
-        bnd.setAttribute( 'center', b[ self.center])
+        bnd.setAttribute( 'center', b[ int( self.center)])
         if self.auto_bond_sign != 1:
           bnd.setAttribute( 'auto_sign', str( self.auto_bond_sign))
     if self.type != 'n':

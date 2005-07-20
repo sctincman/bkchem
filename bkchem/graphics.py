@@ -25,7 +25,7 @@ import dom_extensions
 import misc
 import classes
 import operator
-from parents import meta_enabled, drawable, interactive, area_colored, container, with_line, top_level
+from parents import meta_enabled, drawable, interactive, area_colored, container, with_line, top_level, line_colored
 
 from singleton_store import Screen
 
@@ -306,7 +306,7 @@ class circle( oval):
 
 
 # POLYGON
-class polygon( vector_graphics_item, container):
+class polygon( vector_graphics_item, container, area_colored):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -323,6 +323,7 @@ class polygon( vector_graphics_item, container):
 
   def __init__( self, paper, coords=(), package=None, width=1):
     vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
+    area_colored.__init__( self)
     del self.coords # polygon does use points for storage of coord information
     if not package:
       self.points = []
@@ -431,13 +432,16 @@ class polygon( vector_graphics_item, container):
 
 
 # Polyline
-class polyline( vector_graphics_item, container):
+class polyline( vector_graphics_item, container, line_colored):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'polyline'
   # undo related metas
+  meta__undo_properties = vector_graphics_item.meta__undo_properties + \
+                          line_colored.meta__undo_properties
+
   meta__undo_copy = ('points',)
   meta__undo_children_to_record = ('points',)
 
@@ -445,6 +449,7 @@ class polyline( vector_graphics_item, container):
 
   def __init__( self, paper, coords=(), package=None, width=1):
     vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
+    line_colored.__init__( self)
     del self.coords # polygon does use points for storage of coord information
     if not package:
       self.points = []
