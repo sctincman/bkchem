@@ -322,8 +322,8 @@ class polygon( vector_graphics_item, container, area_colored):
 
 
   def __init__( self, paper, coords=(), package=None, width=1):
-    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
     area_colored.__init__( self)
+    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
     del self.coords # polygon does use points for storage of coord information
     if not package:
       self.points = []
@@ -448,8 +448,8 @@ class polyline( vector_graphics_item, container, line_colored):
 
 
   def __init__( self, paper, coords=(), package=None, width=1):
-    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
     line_colored.__init__( self)
+    vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
     del self.coords # polygon does use points for storage of coord information
     if not package:
       self.points = []
