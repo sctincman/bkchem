@@ -48,6 +48,7 @@ import os_support
 import popen2
 from id_manager import id_manager
 import string
+from sets import Set
 
 
 import oasa_bridge
@@ -290,10 +291,14 @@ class BKchem( Tk):
 ## ##     hacksMenu.add( 'command', label=_('Clean'), command=self.clean)
 
 
+    # CREATION OF THE MENU
+    
+    menus = Set() # we use this later for plugin entries addition
 
     for temp in self.menu_template:
       if temp[1] == "menu":
         self.menu.addmenu( temp[0], temp[2], side=temp[3])
+        menus.add( temp[0])
       elif temp[1] == "command":
         menu, _ignore, label, accelerator, help, command, state_var = temp
         self.menu.addmenuitem( menu, 'command', label=label, accelerator=accelerator, statusHelp=help, command=command)
@@ -301,16 +306,25 @@ class BKchem( Tk):
         self.menu.addmenuitem( temp[0], 'separator')
       elif temp[1] == "cascade":
         self.menu.addcascademenu( temp[0], temp[2], temp[3], tearoff=0)
-        
 
+        
+    # ADDITION OF PLUGINS TO THE MENU
+        
+    added_to = Set()
     for name in self.plug_man.get_names( type="script"):
       tooltip = self.plug_man.get_description( name)
-      self.menu.addmenuitem( _("Plugins"), 'command', label=name,
-                             statusHelp=tooltip,
-                             command=misc.lazy_apply( self.run_plugin, (name,)))
+      menu = self.plug_man.get_menu( name) 
+      if menu and _(menu) in menus:
+        menu = _(menu)
+        if not menu in added_to:
+          self.menu.addmenuitem( menu, "separator")
+      else:
+        menu = _("Plugins")
 
-
-
+      self.menu.addmenuitem( menu, 'command', label=name,
+                               statusHelp=tooltip,
+                               command=misc.lazy_apply( self.run_plugin, (name,)))
+      added_to.add( menu)
 
 
 

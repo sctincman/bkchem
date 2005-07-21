@@ -63,14 +63,20 @@ class plugin_manager( object):
       files = dom_ext.simpleXPathSearch( source, "file")
       names = dom_ext.simpleXPathSearch( source, "menu-text")
       descs = dom_ext.simpleXPathSearch( source, "/plugin/meta/description")
+      menus = dom_ext.simpleXPathSearch( source, "menu")
       if files and names:
         file = dom_ext.getAllTextFromElement( files[0])
         if not os.path.isabs( file):
           file = os.path.normpath( os.path.join( dir, file))
         name = self._select_correct_text( names)
+        if menus:
+          menu = dom_ext.getAllTextFromElement( menus[0])
+        else:
+          menu = ""
 
         plugin = plugin_handler( name, file, type=plugin_type,
-                                 desc= self._select_correct_text( descs))
+                                 desc=self._select_correct_text( descs),
+                                 menu=menu)
         self.plugins[ name] = plugin
 
 
@@ -98,7 +104,14 @@ class plugin_manager( object):
     handler = self.get_plugin_handler( name)
     if handler:
       return handler.desc
-      return ''
+    return ''
+
+
+  def get_menu( self, name):
+    handler = self.get_plugin_handler( name)
+    if handler:
+      return handler.menu
+    return ''
 
 
   def get_plugin_handler( self, name):
@@ -124,11 +137,12 @@ class plugin_manager( object):
 class plugin_handler:
   """this class stores information about plugin"""
 
-  def __init__( self, name, filename, type="script", desc=""):
+  def __init__( self, name, filename, type="script", desc="", menu=""):
     self.name = name
     self.type = type
     self.desc = desc
     self.filename = filename
+    self.menu = menu
 
     
   def get_module_name( self):
