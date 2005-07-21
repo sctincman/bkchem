@@ -321,11 +321,12 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       self.group_graph.paper = self.paper
       return True
     # try chain
-    form = PT.formula_dict( name.upper())
-    if occupied_valency == 1 and form.is_saturated_alkyl_chain():
-      self.name = str( form)
-      self.group_type = "chain"
-      return True
+    if re.compile( "^[cC][0-9]*[hH][0-9]*$").match( name):
+      form = PT.formula_dict( name.upper())
+      if occupied_valency == 1 and form.is_saturated_alkyl_chain():
+        self.name = str( form)
+        self.group_type = "chain"
+        return True
     return False
 
 
@@ -741,6 +742,7 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       last = None
       for i in range( n):
         v = self.group_graph.add_vertex()
+        v.x, v.y = None, None
         if last:
           self.group_graph.add_edge( last, v)
         last = v
