@@ -23,6 +23,7 @@ from tk2cairo import tk2cairo
 import transform
 import cairo
 
+
 from singleton_store import Screen
 
 
@@ -61,6 +62,13 @@ class cairo_exporter( plugin.exporter):
       margin = self.paper.get_paper_property('crop_margin')
       items = list( self.paper.find_all())
       items.remove( self.paper.background)
+
+      if not items:
+        import tkMessageBox
+        tkMessageBox.showerror( _("Nothing to export."),
+                                _('There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu.'))
+        return 0
+
       x1, y1, x2, y2 = self.paper.list_bbox( items)
       self.transformer = transform.transform()
       self.transformer.set_move( -x1+margin, -y1+margin)
