@@ -820,7 +820,7 @@ class BKchem( Tk):
 
 
 
-  def _load_CDML_file( self, a):
+  def _load_CDML_file( self, a, draw=True):
     if a != '':
       self.save_dir, save_file = os.path.split( a)
       ## try if the file is gzipped
@@ -889,7 +889,7 @@ class BKchem( Tk):
             Store.log(_("cdml data are not present in SVG or are corrupted!"))
             return None
       self.paper.clean_paper()
-      self.paper.read_package( doc)
+      self.paper.read_package( doc, draw=draw)
       if type( self.mode) != StringType:
         self.mode.startup()
       Store.log( _("loaded file: ")+self.paper.full_path)
@@ -1388,9 +1388,12 @@ Enter IChI:""")
 
 
   def run_plugin( self, name):
+    p = self.paper
     self.plug_man.run_plugin( name)
-    self.paper.add_bindings()
-    self.paper.start_new_undo_record()
+    if p == self.paper:
+      # we update bindings and start_new_undo_record only if the paper did not change during the run
+      self.paper.add_bindings()
+      self.paper.start_new_undo_record()
 
 
 

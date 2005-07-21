@@ -547,7 +547,7 @@ class chem_paper( Canvas, object):
 
 
 
-  def read_package( self, CDML):
+  def read_package( self, CDML, draw=True):
     self.onread_id_sandbox_activate() # to sandbox the ids 
 
     original_version = CDML.getAttribute( 'version')
@@ -603,9 +603,11 @@ class chem_paper( Canvas, object):
             # it was in version '0.12' of CDML moved to the saved package and does not have to be
             # checked on start anymore
             [b.post_read_analysis() for b in o.bonds]
-          o.draw( automatic="none")
+          if draw:
+            o.draw( automatic="none")
         else:
-          o.draw()
+          if draw:
+            o.draw()
     # now check if the old standard differs
     if new_standard and old_standard != self.standard and not Store.app.in_batch_mode:
       if not tkMessageBox.askokcancel( _('Replace standard values'),
@@ -623,7 +625,8 @@ class chem_paper( Canvas, object):
     # we close the sandbox and generate new ids for everything
     self.onread_id_sandbox_finish()
     
-    self.add_bindings()
+    if draw:
+      self.add_bindings()
     self.um.start_new_record()
 
 
