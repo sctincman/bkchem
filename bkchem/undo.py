@@ -203,11 +203,6 @@ class state_record:
           o.__dict__[a] = self.records[i][a]
           if a != 'molecule':  # this jumps a little from the clean, meta-driven design, however saves much time
             changed = 1
-      for a in o.meta__undo_properties:
-        if hasattr( o, a):
-          if self.records[i][a] != getattr( o, a):
-            setattr( o, a, self.records[i][a])
-            changed = 1
       for a in o.meta__undo_copy:
         if self.records[i][a] != o.__dict__[a]:
           o.__dict__[a] = copy.copy( self.records[i][a])
@@ -218,6 +213,11 @@ class state_record:
           elif a == 'atoms':
             o.vertices = o.atoms
           # / end of the shitty patch
+      for a in o.meta__undo_properties:
+        if hasattr( o, a):
+          if self.records[i][a] != getattr( o, a):
+            setattr( o, a, self.records[i][a])
+            changed = 1
       for a in o.meta__undo_2d_copy:
         subrec = []
         for line in self.records[i][a]:
@@ -281,26 +281,6 @@ class state_record:
 
 
 
-  def get_difference( self, previous):
-    """obsolet method that finds difference between two state_records.
-    Its too slow to be used in undo tracking so full state_record is used instead"""
-    p_records = previous.records
-    r_records = self.records
-    p_objects = previous.objects
-    r_objects = self.objects
-    un_rec = undo_record( self.paper)
-    for o in r_objects:
-      if o not in p_objects:
-        un_rec.added.append( o)
-      else:
-        a = p_records[ p_objects.index(o)]
-        b = r_records[ r_objects.index(o)]
-        if a != b:
-          un_rec.modified.append( o)
-          un_rec.modified_records.append( a)
-    un_rec.deleted = misc.difference( p_objects, r_objects)
-    return un_rec
-    
 
 
 REDRAW_PREFERENCES = ("atom", "bond")

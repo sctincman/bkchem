@@ -33,7 +33,8 @@ class tk2cairo:
            'projecting': cairo.LINE_CAP_SQUARE}
 
 
-  _font_remap = {'helvetica': 'Arial'}
+  _font_remap = {'helvetica': 'Arial',
+                 'times': 'Times New Roman'}
 
   _joins = {'round': cairo.LINE_JOIN_ROUND,
             'miter': cairo.LINE_JOIN_MITER,

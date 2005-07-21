@@ -747,7 +747,6 @@ class group( meta_enabled, area_colored, point_drawable, text_like, child_with_p
       replacement = self.group_graph.vertices[0]
       replacement.x = self.x
       replacement.y = self.y
-      print self.group_graph.vertices, self.group_graph.edges, self.group_graph.is_connected()
 
     elif self.group_type == "implicit":
       if not self.group_graph:

@@ -468,7 +468,6 @@ class text_mark( mark):
     
 
   def draw( self):
-    
     self.items = [self.paper.create_text( self.x,
                                           self.y,
                                           text=self.text,
@@ -525,4 +524,12 @@ class atom_number( referencing_text_mark):
 
   def __init__( self, atom, x, y, size=8, auto=1):
     referencing_text_mark.__init__( self, atom, x, y, "number", size=size, auto=auto)
+  
+
+
+
+class free_sites( referencing_text_mark):
+
+  def __init__( self, atom, x, y, size=8, auto=1):
+    referencing_text_mark.__init__( self, atom, x, y, "free_sites_text", size=size, auto=auto)
   

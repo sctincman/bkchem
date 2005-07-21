@@ -309,6 +309,35 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
 
 
 
+  # free-sites - replaces oasa.atom.free_sites
+  def _set_free_sites( self, free_sites):
+    self._free_sites = free_sites
+    marks = self.get_marks_by_type( "free_sites")
+    if self._free_sites:
+      if not marks:
+        self.create_mark( "free_sites", draw=self.drawn)
+      elif self.drawn:
+        marks[0].redraw()
+    else:
+      if marks:
+        self.remove_mark( "free_sites")
+
+
+  def _get_free_sites( self):
+    return self._free_sites
+
+  free_sites = property( _get_free_sites, _set_free_sites, None, "atoms free_sites")
+
+
+  def _get_free_sites_text( self):
+    """used by free-site mark"""
+    if self.free_sites:
+      return "[%d]" % self.free_sites
+    else:
+      return ""
+
+  free_sites_text = property( _get_free_sites_text, None, None, "atoms free_sites as text")
+
 
 
 
