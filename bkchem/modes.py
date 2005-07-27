@@ -1582,10 +1582,10 @@ class mark_mode( edit_mode):
   def __init__( self):
     edit_mode.__init__( self)
     self.name = _('mark')
-    self.submodes = [['radical','biradical','electronpair','dottedelectronpair','plusincircle','minusincircle'],
+    self.submodes = [['radical','biradical','electronpair','dottedelectronpair','plusincircle','minusincircle','pzorbital'],
                      ['add','remove']]
     self.submodes_names = [[_('radical'), _('biradical'), _('electron pair'), _('dotted electron pair'),
-                            _('plus'), _('minus')],
+                            _('plus'), _('minus'), _('pz orbital')],
                            [_('add'), _('remove')]]
     self.submode = [0, 0]
 
@@ -1601,7 +1601,8 @@ class mark_mode( edit_mode):
     mark_name = self.get_submode( 0)
     recode = {'dottedelectronpair':'dotted_electronpair',
               'plusincircle'      :'plus',
-              'minusincircle'     :'minus'}
+              'minusincircle'     :'minus',
+              'pzorbital'         :'pz_orbital'}
     if mark_name in recode:
       mark_name = recode[ mark_name]
     if self.get_submode( 1) == 'add':
@@ -1617,6 +1618,7 @@ class mark_mode( edit_mode):
         if (self.focused.show_hydrogens and self.focused.show) and not isinstance( self.focused, textatom):
           self.focused.redraw()
         Store.app.paper.start_new_undo_record()
+
     elif self.get_submode( 1) == 'remove':
       # we are removing a mark
       if self.focused:
@@ -1634,6 +1636,7 @@ class mark_mode( edit_mode):
           m = self.focused.atom.remove_mark( self.focused)
           if (self.focused.atom.show_hydrogens and self.focused.atom.show) and not isinstance( self.focused, textatom):
             self.focused.atom.redraw()
+          self.focused = None
           Store.app.paper.start_new_undo_record()
 
     Store.app.paper.add_bindings()

@@ -1281,7 +1281,7 @@ class chem_paper( Canvas, object):
       if scale_font:
         [i.scale_font( ratio) for i in o.atoms]
         [i.redraw() for i in o.atoms if i.show]
-    if o.object_type == 'arrow' or o.object_type == 'polygon':
+    if o.object_type in ('arrow','polygon','polyline'):
       for i in o.points:
         x, y = tr.transform_xy( i.x, i.y)
         i.move_to( x, y)

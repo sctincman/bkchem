@@ -170,6 +170,11 @@ class vertex_common( object):
 
 
   def find_place_for_mark( self, mark):
+
+    # deal with marks centered
+    if marks.__dict__[ mark].meta__mark_positioning == 'atom':
+      return self.x, self.y
+    
     if not self.show:
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
     else:

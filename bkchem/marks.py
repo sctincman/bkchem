@@ -29,7 +29,7 @@ from parents import simple_parent
 from singleton_store import Screen
 import data
 import tkFont
-
+import math
 
 
 class mark( simple_parent):
@@ -42,6 +42,8 @@ class mark( simple_parent):
   # undo related metas
   meta__undo_simple = ('x', 'y', 'auto','size')
   meta__save_attrs = {}
+  meta__mark_positioning = 'mark' # could be 'atom' to use the atoms coordinates
+
 
   def __init__( self, atom, x, y, size=4, auto=1):
     """size is a diameter of the mark"""
@@ -532,4 +534,73 @@ class free_sites( referencing_text_mark):
 
   def __init__( self, atom, x, y, size=8, auto=1):
     referencing_text_mark.__init__( self, atom, x, y, "free_sites_text", size=size, auto=auto)
+  
+
+
+
+class pz_orbital( mark):
+  
+  meta__mark_positioning = 'atom'
+
+
+  def __init__( self, atom, x, y, size=40, auto=1):
+    mark.__init__( self, atom, x, y, size=size, auto=auto)
+
+
+  def draw( self):
+    """outline color is used for both outline and fill for radical"""
+    if self.items:
+      warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
+      self.delete()
+
+    ps = points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=20)
+    
+    self.items = [self.paper.create_polygon( ps,
+                                             outline=self.atom.line_color,
+                                             fill=self.atom.area_color,
+                                             tags='mark',
+                                             smooth=1)]
+
+
+
+  def get_svg_element( self, doc):
+    e = doc.createElement( 'g')
+
+    ps = ''
+    coords = points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=50)
+    for i in range( 0, len( coords), 2):
+      ps += '%.3f,%.3f ' % (coords[i],coords[i+1])
+      
+    poly = dom_extensions.elementUnder( e, 'polygon',
+                                        (( 'points', ps),
+                                         ( 'stroke-width', str( 1)),
+                                         ( 'fill-rule', 'evenodd')))
+    if self.atom.area_color:
+      poly.setAttribute( 'fill', self.atom.area_color)
+    else:
+      poly.setAttribute( 'fill-opacity', '0')
+
+    if self.atom.line_color:
+      poly.setAttribute( 'stroke', self.atom.line_color)
+
+    return e
+
+
+
+
+
+# -------------------- HELPER FUNCTIONS --------------------
+
+def points_of_curve_eight_y( x0, y0, dx, dy, part, num_points=20):
+  """part is 1 for complete curve"""
+  ps = []
+
+  for i in range( num_points + 1):
+    t = part * i * 2*math.pi / num_points
+    x = x0 + dx*math.sin( t)*math.cos( t)
+    y = y0 + dy*math.sin( t)
+    ps.append( x)
+    ps.append( y)
+
+  return ps
   

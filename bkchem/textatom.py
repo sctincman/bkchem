@@ -587,10 +587,6 @@ class textatom( meta_enabled, area_colored, point_drawable, text_like,
 
 
 
-  def get_free_valency( self):
-    """returns free valency of atom."""
-    return 0
-
 
   def get_formula_dict( self):
     """returns formula as dictionary that can
