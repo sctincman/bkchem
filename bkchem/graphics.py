@@ -162,8 +162,9 @@ class rect( vector_graphics_item, area_colored):
     """reads the dom element pack and sets internal state according to it"""
     self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
-    self.area_color = pack.getAttribute( 'area_color') or self.area_color
-    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+    for attr in ("area_color", "line_color"):
+      if pack.getAttributeNode( attr):
+        setattr( self, attr, pack.getAttribute( 'area_color'))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -255,8 +256,9 @@ class oval( vector_graphics_item):
     self.coords = self.paper.real_to_screen_coords( map( Screen.any_to_px,
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
 
-    self.area_color = pack.getAttribute( 'area_color') or self.area_color
-    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+    for attr in ("area_color", "line_color"):
+      if pack.getAttributeNode( attr):
+        setattr( self, attr, pack.getAttribute( 'area_color'))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -384,8 +386,9 @@ class polygon( vector_graphics_item, container, area_colored):
     for p in pack.getElementsByTagName( 'point'):
       self.points.append( classes.point( self.paper, arrow=self, package=p))
 
-    self.area_color = pack.getAttribute( 'area_color') or self.area_color
-    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+    for attr in ("area_color", "line_color"):
+      if pack.getAttributeNode( attr):
+        setattr( self, attr, pack.getAttribute( 'area_color'))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -516,7 +519,9 @@ class polyline( vector_graphics_item, container, line_colored):
     for p in pack.getElementsByTagName( 'point'):
       self.points.append( classes.point( self.paper, arrow=self, package=p))
 
-    self.line_color = pack.getAttribute( 'line_color') or self.line_color
+    for attr in ("line_color",):
+      if pack.getAttributeNode( attr):
+        setattr( self, attr, pack.getAttribute( 'area_color'))
 
     w = pack.getAttribute( 'width')
     if w:
