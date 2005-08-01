@@ -174,6 +174,11 @@ class vertex_common( object):
     # deal with marks centered
     if marks.__dict__[ mark].meta__mark_positioning == 'atom':
       return self.x, self.y
+
+    # deal with statically positioned marks
+    if marks.__dict__[ mark].meta__mark_positioning == 'righttop':
+      bbox = self.bbox()
+      return bbox[2]+2, bbox[1]
     
     if not self.show:
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)

@@ -339,6 +339,13 @@ class atom( meta_enabled, area_colored, point_drawable, text_like,
   free_sites_text = property( _get_free_sites_text, None, None, "atoms free_sites as text")
 
 
+  # oxidation number as text
+  def _get_oxidation_number_text( self):
+    return data.roman_numbers[ self.oxidation_number]
+
+  oxidation_number_text = property( _get_oxidation_number_text, None, None, "atoms oxidation number as text")
+
+
 
 
   ## // -------------------- END OF PROPERTIES --------------------------

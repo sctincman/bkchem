@@ -246,6 +246,8 @@ class BKchem( Tk):
       ( _("Chemistry"), 'command', _('Check chemistry'), '(C-o C-c)', _("Check if the selected objects have chemical meaning"), lambda : self.paper.check_chemistry_of_selected(), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Expand groups'), '(C-o C-e)', _("Expand all selected groups to their structures"), lambda : self.paper.expand_groups(), 'groups_selected'),
       ( _("Chemistry"), 'separator'),
+      ( _("Chemistry"), 'command', _('Compute oxidation number'), None, _("Compute and display the oxidation number of selected atoms"), lambda : interactors.compute_oxidation_number( self.paper), 'selected_atoms'),      
+      ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Read SMILES'), None, _("Read a SMILES string and convert it to structure"), self.read_smiles, None),
       ( _("Chemistry"), 'command', _('Read INChI'), None, _("Read an INChI string and convert it to structure"), self.read_inchi, None),
       ( _("Chemistry"), 'separator'),

@@ -454,3 +454,15 @@ def atoms_to_linear_fragment( mol, vs):
   else:
     raise ValueError, "the vertices do not define connected subgraph"
 
+
+
+def compute_oxidation_number( paper):
+  for a in paper.selected_atoms:
+    if a.object_type == 'atom':
+      oxes = a.get_marks_by_type( "oxidation_number")
+      if not oxes:
+        a.create_mark( "oxidation_number", draw=a.drawn)
+      elif a.drawn:
+        oxes[0].redraw()
+
+  paper.start_new_undo_record()

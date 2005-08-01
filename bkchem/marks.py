@@ -42,7 +42,8 @@ class mark( simple_parent):
   # undo related metas
   meta__undo_simple = ('x', 'y', 'auto','size')
   meta__save_attrs = {}
-  meta__mark_positioning = 'mark' # could be 'atom' to use the atoms coordinates
+  meta__mark_positioning = 'mark' # could be 'atom' to use the atoms coordinates,
+                                  #          'righttop' to use right top corner of atom
 
 
   def __init__( self, atom, x, y, size=4, auto=1):
@@ -534,7 +535,16 @@ class free_sites( referencing_text_mark):
 
   def __init__( self, atom, x, y, size=8, auto=1):
     referencing_text_mark.__init__( self, atom, x, y, "free_sites_text", size=size, auto=auto)
-  
+
+
+
+class oxidation_number( referencing_text_mark):
+
+  meta__mark_positioning = 'righttop'
+
+  def __init__( self, atom, x, y, size=8, auto=1):
+    referencing_text_mark.__init__( self, atom, x, y, "oxidation_number_text", size=size, auto=auto)
+
 
 
 
@@ -553,7 +563,7 @@ class pz_orbital( mark):
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
 
-    ps = points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=20)
+    ps = self._get_my_curve( num_points=20)
     
     self.items = [self.paper.create_polygon( ps,
                                              outline=self.atom.line_color,
@@ -563,11 +573,16 @@ class pz_orbital( mark):
 
 
 
+  def _get_my_curve( self, num_points=20):
+    return  points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=num_points)
+
+
+
   def get_svg_element( self, doc):
     e = doc.createElement( 'g')
 
     ps = ''
-    coords = points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=50)
+    coords = self._get_my_curve( num_points=50)
     for i in range( 0, len( coords), 2):
       ps += '%.3f,%.3f ' % (coords[i],coords[i+1])
       

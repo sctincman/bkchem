@@ -55,9 +55,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
   
-  vertex_class = atom
-  edge_class = bond
-  
   object_type = 'molecule'
   # other meta infos
   meta__is_container = 1
@@ -129,18 +126,21 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def create_vertex( self, vertex_class=None):
     if not vertex_class:
-      vertex_class = self.vertex_class
+      vertex_class = atom
     std = self.paper and self.paper.standard or Store.app.paper.standard
     return vertex_class( standard=std)
+
 
   def create_edge( self):
     std = self.paper and self.paper.standard or Store.app.paper.standard
     return bond( standard=std)
 
+
   def add_vertex( self, v=None):
     x = oasa.molecule.add_vertex( self, v=v)
     x.molecule = self
     return x
+
 
   def add_edge( self, v1, v2, e=None):
     x = oasa.molecule.add_edge( self, v1, v2, e=e)
