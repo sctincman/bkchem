@@ -92,7 +92,7 @@ class CML_importer( plugin.importer):
       # atom does not have sufficient data to be safely converted to cdml
       raise plugin.import_exception( "missing "+str( atom.not_enough_data())+" in atom specification")
     self.atoms.append( atom)
-    dom_ext.setAttributes( out, (('name', atom.name),
+    dom_ext.setAttributes( out, (('name', atom.symbol),
                                  ('id', atom.id)))
     pnt = dom_ext.elementUnder( out, 'point', (('x', str( atom.x)),
                                                ('y', str( atom.y))))
@@ -245,7 +245,7 @@ class CML_atom:
 
   def __init__( self, atom=None, cml=None):
     self.id = None
-    self.name = None
+    self.symbol = None
     self.x = None
     self.y = None
     self.z = None
@@ -263,7 +263,7 @@ class CML_atom:
     dom_ext.textOnlyElementUnder( out, 'string', str( self.id), (('builtin','atomId'),
                                                                  ('convention','CML')))
     #name
-    dom_ext.textOnlyElementUnder( out, 'string', str( self.name), (('builtin','elementType'),
+    dom_ext.textOnlyElementUnder( out, 'string', str( self.symbol), (('builtin','elementType'),
                                                                    ('convention','CML')))
     # x, y
     if self.z == None:
@@ -276,7 +276,7 @@ class CML_atom:
     return out
 
   def not_enough_data( self):
-    if (self.id and self.name and self.x!=None and self.y!=None):
+    if (self.id and self.symbol and self.x!=None and self.y!=None):
       return 0
     else:
       res = []
@@ -289,7 +289,7 @@ class CML_atom:
     self.x = atom.x
     self.y = atom.y
     self.id = atom.id
-    self.name = atom.name
+    self.symbol = atom.symbol
     self.charge = atom.charge
 
   def read_CML( self, cml):
@@ -303,7 +303,7 @@ class CML_atom:
       if attr == 'atomId':
         self.id = dom_ext.getTextFromElement( e)
       elif attr == 'elementType':
-        self.name = dom_ext.getTextFromElement( e)
+        self.symbol = dom_ext.getTextFromElement( e)
       elif attr in ['x2', 'x3']:
         self.x = float( dom_ext.getTextFromElement( e))
       elif attr in ['y2', 'y3']:

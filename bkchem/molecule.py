@@ -188,15 +188,15 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   def find_place( self, a, distance, added_order=1):
     """tries to find accurate place for next atom around atom 'id',
     returns x,y and list of ids of 'items' found there for overlap, those atoms are not bound to id"""
-    ids_bonds = self.atoms_bound_to( a)
+    ids_bonds = a.neighbors
     if len( ids_bonds) == 0:
       x = a.x + cos( pi/6) *distance
       y = a.y - sin( pi/6) *distance
     elif len( ids_bonds) == 1:
       neigh = ids_bonds[0]
-      if self.atoms_bonds( a)[0].order != 3 and added_order != 3:
+      if a.neighbor_edges[0].order != 3 and added_order != 3:
         # we add a normal bond to atom with one normal bond
-        if a == self._last_used_atom or len( self.atoms_bound_to( neigh)) != 2:
+        if a == self._last_used_atom or len( neigh.neighbors) != 2:
           # the user has either deleted the last added bond and wants it to be on the other side
           # or it is simply impossible to define a transoid configuration
           self.sign = -self.sign
@@ -204,7 +204,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
           y = a.y + sin( self.get_angle( a, ids_bonds[0]) +self.sign*2*pi/3) *distance
         else:
           # we would add the new bond transoid
-          neighs2 = self.atoms_bound_to( neigh)
+          neighs2 = neigh.neighbors
           neigh2 = (neighs2[0] == a) and neighs2[1] or neighs2[0]
           x = a.x + cos( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
           y = a.y + sin( self.get_angle( a, neigh) +self.sign*2*pi/3) *distance
@@ -221,20 +221,15 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       x, y = self.find_least_crowded_place_around_atom( a, range=distance)
     return x, y
 
-  ##LOOK
-  def atoms_bonds( self, a):
-    return a.get_neighbor_edges()
 
-  ##LOOK
-  def atoms_bound_to( self, a):
-    "returns list of ids of atoms bound to atom with id = 'id'"
-    return a.get_neighbors()
 
   def get_angle( self, a1, a2):
     "what is the angle between horizontal line through i1 and i1-i2 line"
     a = a2.x - a1.x
     b = a2.y - a1.y
     return atan2( b, a)
+
+
     
   def delete_items( self, items, redraw=1, delete_single_atom=1):
     """deletes items and also makes cleaning of orphan bonds and atoms"""
@@ -269,7 +264,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
           if b.object_type == 'bond':
             for a in b.atoms:
               if a in self.atoms:
-                bonds_to_redraw.extend( self.atoms_bonds( a))
+                bonds_to_redraw.extend( a.neighbor_edges)
         [o.redraw( recalc_side=1) for o in misc.filter_unique( bonds_to_redraw) if o.order == 2 and o.item]
         [o.decide_pos() for o in self.atoms if isinstance( o, atom)]
         [o.redraw() for o in self.atoms]
@@ -351,7 +346,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       if temp.getAttribute('bond_first') and temp.getAttribute('bond_second'):
         self.t_bond_first = Store.id_manager.get_object_with_id( temp.getAttribute( 'bond_first'))
         self.t_bond_second = Store.id_manager.get_object_with_id( temp.getAttribute( 'bond_second'))
-      self.next_to_t_atom = self.atoms_bound_to( self.t_atom)[0]
+      self.next_to_t_atom = self.t_atom.neighbors[0]
     # display form
     df = package.getElementsByTagName('display-form')
     if df:
@@ -530,7 +525,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         a.delete()
         # creating a fragment for implosion of the group
         edges = self.vertex_subgraph_to_edge_subgraph( to_draw)
-        self.create_fragment( a.name, edges, type="implicit")
+        self.create_fragment( a.symbol, edges, type="implicit")
     self.redraw()
     
 
@@ -556,7 +551,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     [o.lift() for o in self.atoms]
 
   def find_least_crowded_place_around_atom( self, a, range=10):
-    atms = self.atoms_bound_to( a)
+    atms = a.neighbors
     x, y = a.get_xy()
     if not atms:
       # single atom molecule
@@ -580,11 +575,13 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
     f = file( name, 'w')
     for a in self.atoms:
-      f.write('%s ' % a.name)
+      f.write('%s ' % a.symbol)
     f.write('\n')
     for b in self.bonds:
       f.write('%d %d %d\n' % (b.order, self.atoms.index( b.atom1), self.atoms.index( b.atom2)))
     f.close()
+
+
 
   def transform( self, tr):
     """applies given transformation to its children"""
@@ -592,6 +589,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       a.transform( tr)
     for b in self.bonds:
       b.transform( tr)
+
 
 
   def get_geometry( self):
@@ -623,7 +621,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       v = self.create_vertex( vertex_class=textatom)
       v.set_name( text)
       return v
-    val = old and old.get_occupied_valency() or 0
+    val = old and old.occupied_valency or 0
     for cls in (atom, group, textatom):
       v = self.create_vertex( vertex_class=cls)
       if v.set_name( text, occupied_valency=val):

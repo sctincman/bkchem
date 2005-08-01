@@ -474,10 +474,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
     # we have to decide if the first line should be at the position of the first atom
     draw_start = 0  # is index not boolean
-    if not self.atom1.show and self.atom1.get_occupied_valency() > 1:
+    if not self.atom1.show and self.atom1.occupied_valency > 1:
       draw_start = 1
     draw_end = 1     # is added to index not boolean
-    if not self.atom1.show and self.atom2.get_occupied_valency() > 1:
+    if not self.atom1.show and self.atom2.occupied_valency > 1:
       draw_end = 0
 
     # djust the step length
@@ -1208,10 +1208,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       if not circles:
         # recompute side with weighting of atom types
         for i in range( len( sides)):
-          if sides[i] and atms[i].name == 'H':
-            sides[i] *= 0.1 # this discriminates H
-          elif sides[i] and atms[i].name != 'C':
-            sides[i] *= 0.2 # this makes "non C" less then C but more then H
+          if sides[i] and atms[i].__class__.__name__ == "atom":
+            if atms[i].symbol == 'H':
+              sides[i] *= 0.1 # this discriminates H
+            elif atms[i].symbol != 'C':
+              sides[i] *= 0.2 # this makes "non C" less then C but more then H
           side = reduce( operator.add, sides, 0)
       if side < 0:
         return (-1, 0)

@@ -24,6 +24,8 @@ mostly the desired meta_behaviour"""
 
 import misc
 from singleton_store import Store
+import xml.dom.minidom as dom
+import dom_extensions
 
 
 
@@ -335,24 +337,27 @@ class with_font( simple_parent):
 
 
 class text_like( with_font):
-  """for text like objects needing font_size and font_family properties and variable xml_text"""
-
-  meta__undo_properties = with_font.meta__undo_properties +  ("xml_text",)
+  """for text like objects needing font_size and font_family properties and variable text and xml_ftext"""
 
 
   def __init__( self):
     with_font.__init__( self)
-    self.xml_text = ''
 
-  # xml_text
-  def _get_xml_text( self):
-    return self.__xml_text
 
-  def _set_xml_text( self, xml_text):
-    self.__xml_text = xml_text
-    self.dirty = 1
+  # text
+  def _get_text( self):
+    doc = dom.parseString( "<ftext>%s</ftext>" % self.ftext)
+    return dom_extensions.getAllTextFromElement( doc)
 
-  xml_text = property( _get_xml_text, _set_xml_text)
+  text = property( _get_text, None, None,
+                   "the unmarked plain-text representing the object - it is taken from xml_ftext and the markup is stripped")
+ 
+
+  # xml_ftext
+  def _get_xml_ftext( self):
+    return ""
+
+  xml_ftext = property( _get_xml_ftext, None, None, "the text used for rendering using the ftext class")
 
 
 

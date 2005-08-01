@@ -153,7 +153,7 @@ class state_record:
   def record_object( self, o):
     rec = {}
     for a in o.meta__undo_fake:
-      rec[a] = o.__dict__[a]
+      rec[a] = getattr( o, a)
     for a in o.meta__undo_simple:
       rec[a] = o.__dict__[a]
     for a in o.meta__undo_properties:
@@ -196,7 +196,7 @@ class state_record:
       changed = 0
       for a in o.meta__undo_fake:
         # fakes serve only to force redraw in some cases however do not perform any undo
-        if self.records[i][a] != o.__dict__[a]:
+        if self.records[i][a] != getattr( o, a):
           changed = 1
       for a in o.meta__undo_simple:
         if self.records[i][a] != o.__dict__[a]:
@@ -229,7 +229,7 @@ class state_record:
 
       # some hacks needed to ensure complete redraw
       if o.object_type == 'atom':
-        to_redraw |= Set( [b for b in o.molecule.atoms_bonds( o) if b not in deleted])
+        to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
       elif o.object_type == 'bond':
         to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
       elif o.object_type == 'point':
@@ -250,7 +250,7 @@ class state_record:
           o.draw()
       # hacks to ensure complete redraw
       if o.object_type == 'atom':
-        to_redraw |= Set( [b for b in o.molecule.atoms_bonds( o) if b not in deleted])
+        to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
       elif o.object_type == 'bond':
         to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
       elif o.object_type == 'point':

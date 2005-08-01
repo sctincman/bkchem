@@ -824,7 +824,7 @@ class chem_paper( Canvas, object):
           vtype = v.__class__.__name__
       if item.object_type == 'text':
         if name:
-          item.set_text( name)
+          item.xml_ftext = name
           item.redraw()
     if self.selected:
       self.start_new_undo_record()

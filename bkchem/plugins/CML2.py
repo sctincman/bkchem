@@ -65,7 +65,7 @@ class CML2_atom( CML.CML_atom):
 
   def __init__( self, atom=None, cml=None):
     self.id = None
-    self.name = None
+    self.symbol = None
     self.x = None
     self.y = None
     self.z = None
@@ -84,13 +84,13 @@ class CML2_atom( CML.CML_atom):
       dom_ext.setAttributes( out, (('id', str( self.id)),
                                    ('x2', str( self.x)),
                                    ('y2', str( self.y)),
-                                   ('elementType', self.name)))
+                                   ('elementType', self.symbol)))
     else:
       dom_ext.setAttributes( out, (('id', str( self.id)),
                                    ('x3', str( self.x)),
                                    ('y3', str( self.y)),
                                    ('z3', str( self.z)),
-                                   ('elementType', self.name)))
+                                   ('elementType', self.symbol)))
     if self.charge:
       out.setAttribute( 'formalCharge', self.charge)
     return out
@@ -107,7 +107,7 @@ class CML2_atom( CML.CML_atom):
     if cml.getAttribute( 'formalCharge'):
       self.charge = int( cml.getAttribute( 'formalCharge'))
     if cml.getAttribute( 'elementType'):
-      self.name = cml.getAttribute( 'elementType')
+      self.symbol = cml.getAttribute( 'elementType')
     if cml.getAttribute( 'x3'):
       self.x = float( cml.getAttribute( 'x3'))
     if cml.getAttribute( 'y3'):

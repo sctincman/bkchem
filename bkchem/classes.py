@@ -660,7 +660,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.ftext = None
     if xy:
       self.set_xy( xy[0], xy[1])
-    self.set_text( text)
+    self.xml_ftext = text
     self.item = None
     if package:
       self.read_package( package)
@@ -676,7 +676,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    name = '<ftext>%s</ftext>' % self.xml_text
+    name = '<ftext>%s</ftext>' % self.xml_ftext
     self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, fill=self.line_color)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
@@ -788,9 +788,9 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
     try:
-      self.set_text( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], ''))
+      self.xml_ftext = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
     except IndexError:
-      self.xml_text = "?"
+      self.xml_ftext = "?"
 
     fnt = package.getElementsByTagName('font')
     if fnt:
@@ -824,20 +824,18 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return a
 
 
+  # xml_ftext
+  def _get_xml_ftext( self):
+    return self._ftext
 
-  def set_text( self, text):
+  def _set_xml_ftext( self, text):
     try:
       t = unicode( text)
     except UnicodeDecodeError:
       t = text.decode( 'utf-8')
-    self.xml_text = t.encode('utf-8')
+    self._ftext = t.encode('utf-8')
 
-
-
-  def get_text( self):
-    return self.xml_text
-
-  text = property( get_text, set_text, None, "alias for xml_text")
+  xml_ftext = property( _get_xml_ftext, _set_xml_ftext, None, "the text used for rendering using the ftext class")
 
 
 
@@ -872,4 +870,4 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   def get_parsed_text( self):
-    return dom.parseString( "<ftext>%s</ftext>" % self.xml_text).childNodes[0]    
+    return dom.parseString( "<ftext>%s</ftext>" % self.xml_ftext).childNodes[0]    

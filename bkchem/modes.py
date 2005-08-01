@@ -427,7 +427,7 @@ class edit_mode( basic_mode):
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
-        atoms = reduce( operator.add, [o.molecule.atoms_bound_to( o) for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
+        atoms = reduce( operator.add, [o.neighbors for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
         atoms = misc.filter_unique( [o for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]
@@ -569,13 +569,13 @@ class edit_mode( basic_mode):
         self.focused = None
 
   def reposition_bonds_around_atom( self, a):
-    bs = a.molecule.atoms_bonds( a)
+    bs = a.neighbor_edges
     [b.redraw( recalc_side = 1) for b in bs] # if b.order == 2]
     if isinstance( a, textatom) or isinstance( a, atom):
       a.reposition_marks()
 
   def reposition_bonds_around_bond( self, b):
-    bs = misc.filter_unique( b.molecule.atoms_bonds( b.atom1) +  b.molecule.atoms_bonds( b.atom2))
+    bs = misc.filter_unique( b.atom1.neighbor_edges + b.atom2.neighbor_edges)
     [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     # all atoms to update
     as = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
@@ -618,7 +618,7 @@ class edit_mode( basic_mode):
       elif len( Store.app.paper.selected) == 1:
         item = Store.app.paper.selected[0]
         if isinstance( item, parents.text_like):
-          text = item.get_text()
+          text = item.xml_ftext
       if text:
 	name = Store.app.editPool.activate( text=text, select=select)
       else:
@@ -1073,7 +1073,7 @@ class template_mode( edit_mode):
                         message_type="hint")
           return
         if self.focused.free_valency >= self._get_templates_valency():
-          x1, y1 = self.focused.molecule.atoms_bound_to( self.focused)[0].get_xy()
+          x1, y1 = self.focused.neighbors[0].get_xy()
           x2, y2 = self.focused.get_xy()
           t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='atom1', paper=Store.app.paper)
         else:
@@ -1084,8 +1084,7 @@ class template_mode( edit_mode):
         x1, y1 = self.focused.atom1.get_xy()
         x2, y2 = self.focused.atom2.get_xy()
         #find right side of bond to append template to
-        atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + \
-               self.focused.molecule.atoms_bound_to( self.focused.atom2)
+        atms = self.focused.atom1.neighbors + self.focused.atom2.neighbors
         atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
         coords = [a.get_xy() for a in atms]
         if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords], 0) > 0:
@@ -1120,7 +1119,7 @@ class template_mode( edit_mode):
       self.focused.molecule.t_atom = self.focused
       Store.log( _("focused atom marked as 'template atom'")) 
     elif self.focused and isinstance( self.focused, bond):
-      atms = self.focused.molecule.atoms_bound_to( self.focused.atom1) + self.focused.molecule.atoms_bound_to( self.focused.atom2)
+      atms = self.focused.atom1.neighbors + self.focused.atom2.neighbors
       atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
       coords = [a.get_xy() for a in atms]
       line = self.focused.atom1.get_xy() + self.focused.atom2.get_xy()
@@ -1199,7 +1198,7 @@ class text_mode( edit_mode):
     else:
       if self.focused.object_type == 'text':
         Store.app.paper.select( [self.focused])
-        name = Store.app.editPool.activate( text = self.focused.get_text())
+        name = Store.app.editPool.activate( text = self.focused.xml_ftext)
         if name and not dom_extensions.isOnlyTags( name):
           Store.app.paper.set_name_to_selected( name)
           Store.app.paper.add_bindings()
@@ -1756,7 +1755,7 @@ class atom_mode( edit_mode):
       if isinstance( self.focused, oasa.graph.vertex):
         Store.app.paper.select( [self.focused])
         a = self.focused
-        name = Store.app.editPool.activate( text = a.get_text())
+        name = Store.app.editPool.activate( text = a.xml_ftext)
         if name and not dom_extensions.isOnlyTags( name):
           # we need to change the class of the vertex
           v = a.molecule.create_vertex_according_to_text( a, name, interpret=Store.app.editPool.interpret)

@@ -200,7 +200,7 @@ class OO_exporter( plugin.exporter):
       txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
       txt_style_name = self.get_appropriate_style_name( txt_style)
 
-      self.create_oo_text( '<ftext>%s</ftext>' % a.get_ftext(), coords, page, para_style_name, txt_style_name, gr_style_name)
+      self.create_oo_text( '<ftext>%s</ftext>' % a.xml_ftext, coords, page, para_style_name, txt_style_name, gr_style_name)
     # marks
     for m in a.marks:
       if m:

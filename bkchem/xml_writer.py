@@ -343,7 +343,7 @@ class SVG_writer( XML_writer):
       y1 += a.font.metrics('descent') #(y2-y)/4.0
       x += 1.3 ## hack to compensate for the wrong measuring of text
 
-      text = svg_help.ftext_to_svg_dom( a.get_ftext())
+      text = svg_help.ftext_to_svg_dom( a.xml_ftext)
       dom_extensions.setAttributes( text, (( "x", str( x)),
                                            ( "y", str( y1)),
                                            ( "font-family", a.font_family),
