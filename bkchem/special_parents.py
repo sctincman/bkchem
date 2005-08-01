@@ -563,6 +563,8 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       self.item = None
     if self.ftext:
       self.ftext.delete()
+    [m.delete() for m in self.marks]
+    self.marks = Set()
     return self
 
 

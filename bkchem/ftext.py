@@ -42,7 +42,7 @@ class ftext:
     if xy:
       self.x, self.y = xy
     if text:
-      self.text = text
+      self.text = unicode( text).encode('utf-8')
     if font:
       self.font = font
     else:
@@ -197,6 +197,7 @@ class FtextHandler ( xml.sax.ContentHandler):
 
   def characters( self, data):
     self.chunks.append( text_chunk( data, attrs = Set( self._above)))
+
 
 
 

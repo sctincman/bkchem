@@ -39,6 +39,7 @@ from bond import bond
 from atom import atom
 from group import group
 from textatom import textatom
+from queryatom import queryatom
 from fragment import fragment
 import bkchem_exceptions
 
@@ -330,7 +331,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     self.name = package.getAttribute( 'name')
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
-    for name, cls in {'atom':atom, 'group':group, 'text': textatom}.iteritems():
+    for name, cls in {'atom':atom, 'group':group, 'text': textatom, 'query': queryatom}.iteritems():
       for a in dom_extensions.simpleXPathSearch( package, name):
         self.insert_atom( cls( standard=std, package=a, molecule=self))
       
@@ -622,7 +623,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       v.set_name( text)
       return v
     val = old and old.occupied_valency or 0
-    for cls in (atom, group, textatom):
+    for cls in (atom, queryatom, group, textatom):
       v = self.create_vertex( vertex_class=cls)
       if v.set_name( text, occupied_valency=val):
         return v

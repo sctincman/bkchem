@@ -30,6 +30,7 @@ from singleton_store import Screen
 import data
 import tkFont
 import math
+import debug
 
 
 class mark( simple_parent):
@@ -87,8 +88,6 @@ class mark( simple_parent):
 
   def redraw( self):
     registered = self.paper.is_registered_object( self)
-    if registered:
-      self.unregister()
     self.delete()
     self.draw()
     if registered:

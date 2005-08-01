@@ -567,7 +567,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     splitter = re.compile("^([a-z]+)([0-9]*)([+-]?)$")
     match = splitter.match( txt.lower())
     if match:
-      if match.group(1).capitalize() not in PT.periodic_table:
+      if match.group(1).capitalize() not in PT.periodic_table or 'query' in PT.periodic_table[ match.group(1).capitalize()].keys():
         return None
       if match.group(3) == '+':
         charge = match.group(2) and int( match.group(2)) or 1
