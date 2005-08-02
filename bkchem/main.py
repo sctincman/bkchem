@@ -646,8 +646,8 @@ class BKchem( Tk):
     # check if the same file is opened
     p = self.check_if_the_file_is_opened( name)
     if p:
-      tkMessageBox.showerror( _("File already opened!"),_("Sorry but I cannot open one file twice."))
-      return 0
+      Store.log( _("Sorry but I cannot open the same file twice."), message_type="error")
+      return False
     name_dic = self.get_name_dic( name=name)
     # create the tab
     _tab_name = self.get_new_tab_name()
@@ -679,6 +679,7 @@ class BKchem( Tk):
       self.paper = paper  # this is needed for the batch mode, normaly its done in change_paper
     else:
       self.paper.focus_set()
+    return True
 
 
   def close_current_paper( self):
