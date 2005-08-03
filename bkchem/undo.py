@@ -150,17 +150,15 @@ class state_record:
     for o in self.paper.top_levels:
       self.record_object( o)
 
+
   def record_object( self, o):
     rec = {}
     for a in o.meta__undo_fake:
       rec[a] = getattr( o, a)
     for a in o.meta__undo_simple:
-      rec[a] = o.__dict__[a]
+      rec[a] = getattr( o, a)
     for a in o.meta__undo_properties:
-      for p in o.__class__.mro():
-        if a in p.__dict__:
-          rec[a] = p.__dict__[a].fget( o)
-          break
+      rec[a] = getattr( o, a)
     for a in o.meta__undo_copy:
       rec[a] = copy.copy( o.__dict__[a])
     for a in o.meta__undo_2d_copy:
@@ -172,7 +170,7 @@ class state_record:
     self.records.append( rec)
     # process the chidren
     for a in o.meta__undo_children_to_record:
-      obj = o.__dict__[a]
+      obj = getattr( o, a)
       if type( obj) == ListType or type( obj) == Set:
         [self.record_object( i) for i in obj]
       elif type( obj) == DictType:
@@ -180,9 +178,11 @@ class state_record:
       else:
         self.record_object( obj)
 
+
   def undo( self, previous):
     """does undo, actually only calls self.set_state"""
     self.set_state( previous)
+
 
   def set_state( self, previous):
     """sets the system to the recorded state (update is done only where necessary,

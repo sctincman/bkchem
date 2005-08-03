@@ -49,7 +49,7 @@ class atom( drawable_chem_vertex, oasa.atom):
 
   object_type = 'atom'
   meta__undo_properties = drawable_chem_vertex.meta__undo_properties + \
-                          ( 'show', 'name', 'show_hydrogens',
+                          ( 'show', 'show_hydrogens',
                             'multiplicity', 'valency', 'free_sites')
 
 

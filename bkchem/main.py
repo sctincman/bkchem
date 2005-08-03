@@ -429,7 +429,7 @@ class BKchem( Tk):
 
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
-    print >> sys.stderr, "loaded plugins:", plugs
+    #print >> sys.stderr, "loaded plugins:", plugs
 
 
 

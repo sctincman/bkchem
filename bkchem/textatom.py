@@ -52,7 +52,7 @@ class textatom( drawable_chem_vertex):
   object_type = 'atom'
   # these values will be automaticaly read from paper.standard on __init__
   meta__undo_properties = drawable_chem_vertex.meta__undo_properties + \
-                          ( 'name', 'charge')
+                          ( 'charge',)
 
 
   def __init__( self, standard=None, xy=(), package=None, molecule=None):

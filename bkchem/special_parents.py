@@ -253,7 +253,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
                           vertex_common.meta__undo_properties + \
                           ( 'z', 'molecule', 'pos', 'charge')
   meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
-
+  meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
 
 
 

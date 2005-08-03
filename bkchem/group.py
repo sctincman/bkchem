@@ -50,8 +50,7 @@ class group( drawable_chem_vertex):
 
   object_type = 'atom'
 
-  meta__undo_properties = drawable_chem_vertex.meta__undo_properties + \
-                          ( 'name',)
+  meta__undo_properties = drawable_chem_vertex.meta__undo_properties
 
   # only number marks are allowed for groups
   meta__allowed_marks = ("atom_number",)
