@@ -1561,8 +1561,11 @@ class chem_paper( Canvas, object):
 
 
   def any_color_to_rgb_string( self, color):
-    r, g, b = map( lambda x: (x < 256 and x) or (x >= 256 and x//256),  self.winfo_rgb( color))
-    return "#%02x%02x%02x" % (r,g,b)
+    if not color:
+      return "none"
+    else:
+      r, g, b = map( lambda x: (x < 256 and x) or (x >= 256 and x//256),  self.winfo_rgb( color))
+      return "#%02x%02x%02x" % (r,g,b)
   
 
 

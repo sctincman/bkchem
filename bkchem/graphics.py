@@ -521,7 +521,7 @@ class polyline( vector_graphics_item, container, line_colored):
 
     for attr in ("line_color",):
       if pack.getAttributeNode( attr):
-        setattr( self, attr, pack.getAttribute( 'area_color'))
+        setattr( self, attr, pack.getAttribute( 'line_color'))
 
     w = pack.getAttribute( 'width')
     if w:

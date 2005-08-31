@@ -1163,3 +1163,75 @@ class language_dialog( Pmw.Dialog):
   def done( self, button):
     self.deactivate()
     
+
+
+
+
+## -------------------- PROGRESS DIALOG --------------------
+
+class progress_dialog( Tkinter.Toplevel):
+
+  bar_width = 300
+  bar_height = 20
+  bar_fontsize = 8
+
+
+  def __init__(self, parent, title=None):
+    
+    self.parent = parent
+
+    Tkinter.Toplevel.__init__(self, parent)
+    self.transient(parent)
+    self.geometry("+%d+%d" % (parent.winfo_rootx()+200,
+                              parent.winfo_rooty()+200))
+    #self.resizable( 0, 0)
+    self.update_idletasks()
+    
+    if title:
+      self.title(title)
+
+    body = Tkinter.Frame(self)
+    body.pack(padx=5, pady=5, side="left", expand=1, fill="both")
+
+    self.top_text = Tkinter.StringVar()
+    Tkinter.Label( body, textvariable=self.top_text, width=50, height=1, anchor="w").grid( row=1, sticky="W")
+
+    self.canvas = Tkinter.Canvas( body, width=self.bar_width, height=self.bar_height, background="white")
+    self.canvas.grid( row=2)
+    self.bar = self.canvas.create_rectangle( 0, 0, 0, self.bar_height, fill="#7395c8")
+    self.ratio = self.canvas.create_text( (self.bar_width/2)-10,
+                                          self.bar_height-8,
+                                          text="0%",
+                                          font="Helvetica %d normal" % self.bar_fontsize)
+
+    self.bottom_text = Tkinter.StringVar()
+    Tkinter.Label( body, textvariable=self.bottom_text, width=50, height=1, anchor="w").grid( row=3, sticky="W")
+
+    self.grab_set()
+    self.protocol("WM_DELETE_WINDOW", self.close)
+
+    self.focus_set()
+    self.update_idletasks()
+    self.parent.update_idletasks()
+    #self.wait_window(self)
+
+
+  def update( self, ratio, top_text="", bottom_text=""):
+    self.set_ratio( ratio)
+    if top_text:
+      self.top_text.set( top_text)
+    if bottom_text:
+      self.bottom_text.set( bottom_text)
+    
+    self.update_idletasks()
+    
+
+  def set_ratio( self, ratio):
+    self.canvas.coords( self.bar, 0, 0, ratio*self.bar_width, self.bar_height)
+    self.canvas.itemconfig( self.ratio, text="%d%%" % (100*ratio)) 
+
+
+  def close( self):
+    self.parent.focus_set()
+    self.destroy()
+

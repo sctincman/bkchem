@@ -37,10 +37,12 @@ class fragment( simple_parent):
 
   
 
-  def __init__( self, id="", name="", type="explicit"):
+  def __init__( self, id="", name="", type="explicit", strict=True):
     self.id = id
     self.name = name
     self.edges = Set()
+    self.vertices = Set()
+    self.strict = strict # strict fragment must be a continuos subgraph, otherwise it is just a mixture of vertices and edges
     self.type = type # type is one of "explicit", "implicit", "linear_form" or custom string
     self.properties = {}  # this is the place for information about an particular fragment
     
@@ -71,6 +73,9 @@ class fragment( simple_parent):
     for e in self.edges:
       if e not in molecule.edges:
         return False
+    for v in self.vertices:
+      if v not in molecule.vertices:
+        return False
     return True
   
 
@@ -82,7 +87,7 @@ class fragment( simple_parent):
     return vs
 
   # property for easier manipulation
-  vertices = property( get_all_vertices, None, None, "the vertices associated with fragment bonds")
+  all_vertices = property( get_all_vertices, None, None, "the vertices associated with fragment bonds")
 
 
 
@@ -93,6 +98,8 @@ class fragment( simple_parent):
     dom_ext.textOnlyElementUnder( el, "name", xml.sax.saxutils.escape( self.name))
     for e in self.edges:
       dom_ext.elementUnder( el, "bond", (("id", e.id),))
+    for v in self.vertices:
+      dom_ext.elementUnder( el, "vertex", (("id", v.id),))
     return el
 
 
@@ -108,4 +115,10 @@ class fragment( simple_parent):
         self.edges.add( Store.id_manager.get_object_with_id( b.getAttribute( "id")))
       except KeyError:
         raise bkchem_fragment_error( "inconsistent", "")
-    
+
+    for v in dom_ext.simpleXPathSearch( doc, "vertex"):
+      try:
+        self.vertices.add( Store.id_manager.get_object_with_id( v.getAttribute( "id")))
+      except KeyError:
+        raise bkchem_fragment_error( "inconsistent", "")
+

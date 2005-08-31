@@ -260,6 +260,8 @@ def save_as_template( paper):
     dialog.tag_config( 'headline', underline=1)
     dialog.activate()
 
+
+
   if not errors:
     # check the template directory
     path = os_support.get_local_templates_path()
