@@ -143,32 +143,7 @@ class SVG_writer( XML_writer):
       # both atoms are visible, it does not look good with round caps
       l_group.setAttribute('stroke-linecap', 'butt')
 
-    # items to be exported
-    if b.type == 'd':
-      # d is a little bit twisted
-      if b.simple_double and not b.center and not b.order in (0,1):
-        line_items = [b.item]
-        items = b.second + b.third
-      else:
-        line_items = b.items
-        items = b.second + b.third
-    else:
-      if b.type == 'h':
-        items = b.items
-      else:
-        if b.center:
-          if not b.order == 2:
-            print b.order, b.center, b.type
-          items = []
-        else:
-          items = [b.item]
-      # simple doubles?
-      if b.type == 'n' or (not b.simple_double and not b.center):
-        items += b.second
-        items += b.third
-        line_items = []
-      else:
-        line_items = b.second + b.third
+    line_items, items = b.get_exportable_items()
     # the conversion function for coordinates
     convert = str
     # export itself
@@ -180,6 +155,15 @@ class SVG_writer( XML_writer):
                                              ( 'y1', convert( y1)),
                                              ( 'x2', convert( x2)),
                                              ( 'y2', convert( y2))))
+    elif b.type == 'o':
+      for i in items:
+        x1, y1, x2, y2 = self.paper.coords( i)
+        dom_extensions.elementUnder( l_group, 'ellipse',
+                                     (( 'cx', str( 0.5*(x2+x1))),
+                                      ( 'cy', str( 0.5*(y2+y1))),
+                                      ( 'rx', str( 0.5*(x2-x1))),
+                                      ( 'ry', str( 0.5*(y2-y1))),
+                                      ( 'stroke-width', '1.0')))
     elif b.type == 'w':
       for i in items:
         coords = self.paper.coords( b.item)

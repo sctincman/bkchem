@@ -706,12 +706,12 @@ class draw_mode( edit_mode):
     self._start_atom = None
     self.submodes = [['30','18','6','1'],
                      ['single','double','triple'],
-                     ['normal','wedge','hatch','adder','bbold','dash'],
+                     ['normal','wedge','hatch','adder','bbold','dash','dotted'],
                      ['fixed','freestyle'],
                      ['nosimpledouble','simpledouble']]
     self.submodes_names = [[_('30'),_('18'),_('6'),_('1')],
                            [_('single'),_('double'),_('triple')],
-                           [_('normal'),_('wedge'),_('hatch'),_('adder'),_('bold'),_('dash')],
+                           [_('normal'),_('wedge'),_('hatch'),_('adder'),_('bold'),_('dash'),_('dotted')],
                            [_('fixed length'),_('freestyle')],
                            [_('normal double bonds for wedge/hatch'),_('simple double bonds for wedge/hatch')]]
     self.submode = [0, 0, 0, 0, 1]
@@ -874,9 +874,13 @@ class draw_mode( edit_mode):
       pass #warn( "leaving NONE", UserWarning, 2)
 
   def __mode_to_bond_type( self):
-    """maps bond type submode to bond_type number"""
-    type = self.submodes[2][ self.submode[2]][0]
-    return type
+    """maps bond type submode to bond_type"""
+    type = self.get_submode( 2)
+    if type == 'dotted':
+      return "o"
+    else:
+      return type[0]
+
 
   def __mode_to_bond_order( self):
     order = self.submode[1]+1

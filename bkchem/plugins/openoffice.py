@@ -125,27 +125,23 @@ class OO_exporter( plugin.exporter):
     style_name = self.get_appropriate_style_name( s)
     l_group = page
     # items to export
-    if b.type in 'hd':
-      items = b.items
-    else:
-      if b.center:
-        if not b.order == 2:
-          print "shit!"
-        items = []
-      else:
-        items = [b.item]
-    # simple doubles?
-    if b.type == 'n' or (not b.simple_double and not b.center):
-      items += b.second
-      items += b.third
-      line_items = []
-    else:
-      line_items = b.second + b.third
+    line_items, items = b.get_exportable_items()
+
     # the export itself
     if b.type in 'nhd':
       for i in items:
         coords = map( Screen.px_to_cm, self.paper.coords( i))
         self.create_oo_line( coords, page, style_name)
+    elif b.type == 'o':
+      for i in items:
+        x, y, x2, y2 = map( Screen.px_to_cm, self.paper.coords( i))
+        size = Screen.px_to_cm( x2-x)
+        dom_extensions.elementUnder( page, 'draw:ellipse',
+                                     (( 'svg:x', '%fcm' %  x),
+                                      ( 'svg:y', '%fcm' %  y),
+                                      ( 'svg:width', '%fcm' %  size),
+                                      ( 'svg:height', '%fcm' % size),
+                                      ( 'draw:style-name', style_name)))
     elif b.type == 'b':
       # bold bonds width is determined by the wedge_width
       s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( b.line_color),

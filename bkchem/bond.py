@@ -831,6 +831,130 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     [self.paper.itemconfigure( item, width = self.wedge_width) for item in items]
 
 
+
+  # dotted bonds
+
+  def _draw_o1( self):
+    where = self._draw_n1()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+    # main item
+    self.paper.itemconfig( self.item, fill='')
+    # the small lines
+    self.items = self._draw_dotted( (x1,y1,x2,y2))
+    return x1,y1,x2,y2    
+
+
+  def _draw_o2( self):
+    if self.center == None or self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # double
+    if self.center:
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
+
+      self.paper.itemconfig( self.item, fill='')
+      d = int( round( d/3))
+    else:
+      if self.simple_double:
+        where = self._draw_n1()
+        if not where:
+          # the bond is too short to draw it
+          return None
+        x1, y1, x2, y2 = where
+      else:
+        where = self._draw_o1()
+        if not where:
+          # the bond is too short to draw it
+          return None
+        x1, y1, x2, y2 = where
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
+    # shortening of the second bond
+    dx = x-x0
+    dy = y-y0
+    if self.center:
+      _k = 0
+    else:
+      _k = (1-self.double_length_ratio)/2
+    self.second = self._draw_dotted(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
+    if self.center:
+      self.third = self._draw_dotted(( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
+
+
+  def _draw_o3( self):
+    if self.simple_double:
+      where = self._draw_n1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
+    else:
+      where = self._draw_o1()
+      if not where:
+        # the bond is too short to draw it
+        return None
+      x1, y1, x2, y2 = where
+    if self.bond_width == None:
+      self._decide_distance_and_center()
+    d = self.bond_width
+    # we don't want to shorten the bonds (yet)
+    _k = (1-self.double_length_ratio)/2
+    _k = 0
+    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
+    dx = x-x0
+    dy = y-y0
+    self.second = self._draw_dotted(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
+    self.third = self._draw_dotted(( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy))
+
+    
+
+  def _draw_dotted( self, coords):
+    """returns list items"""
+    x1, y1, x2, y2 = coords
+    # main item
+    diameter = self.line_width
+    spacing = 2*self.line_width
+    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    # we adjust the spacing
+    _d = spacing + diameter
+    i = 1.0
+    while not _d > d:
+      _d += spacing + diameter
+      i += 1.0
+    spacing += (_d - d) / i
+    # //
+    dx = (x2 - x1)/d 
+    dy = (y2 - y1)/d 
+
+    # now we finally draw
+    items = []
+    x = x1
+    y = y1
+    x += dx*( diameter + 0.5*spacing)
+    y += dy*( diameter + 0.5*spacing)
+
+    radius = 0.5*diameter
+    while min(x1,x2) <= x <= max(x1, x2) and min(y1,y2) <= y <= max(y1,y2):
+      coords = (x-radius, y-radius, x+radius, y+radius)
+      items.append( self.paper.create_oval( coords, width=self.line_width, fill=self.line_color))
+      x += dx*( diameter + spacing)
+      y += dy*( diameter + spacing)
+    return items
+
+
+
+
+
+
+
+
   ## // DRAW HELPER METHODS
 
 
@@ -886,7 +1010,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
     elif self.type == 'b':
       [self.paper.itemconfig( item, width = self.wedge_width+2) for item in items]
-    elif self.type == 'h':
+    elif self.type in 'ho':
       self.paper.itemconfig( self.item, fill="black")
     elif self.type == 'd':
       if self.simple_double and not self.center and not self.order == 1:
@@ -915,7 +1039,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       [self.paper.itemconfig( item, width = self.line_width) for item in items]
     elif self.type == 'b':
       [self.paper.itemconfig( item, width = self.wedge_width) for item in items]
-    elif self.type in 'h':
+    elif self.type in 'ho':
       self.paper.itemconfig( self.item, fill = "")
     elif self.type == 'd':
       if self.simple_double and not self.center and not self.order == 1:
@@ -1285,3 +1409,49 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       if sign * self.bond_width < 0:
         self.bond_width *= -1
 
+
+
+  def get_exportable_items( self):
+    """helper function for exporters,
+    it returns a tuple in form of (line_items, items) where
+    line_items are items that are exported as lines,
+    items are items that are exported according to the bond type;
+    as this code is a ugly mix of conditionals it makes sense to put it into one
+    place co that the exporters do not have to reinvent it themself."""
+
+    # items to be exported
+    if self.type == 'd':
+      # d is a little bit twisted
+      if self.simple_double and not self.center and not self.order in (0,1):
+        line_items = [self.item]
+        items = self.second + self.third
+      else:
+        line_items = self.items
+        items = self.second + self.third
+    elif self.type == 'o':
+      # o is a little bit twisted, too
+      if self.simple_double and not self.center and not self.order in (0,1):
+        line_items = [self.item]
+        items = self.second + self.third
+      else:
+        line_items = []
+        items = self.items + self.second + self.third
+    else:
+      if self.type == 'h':
+        items = self.items
+      else:
+        if self.center:
+          if not self.order == 2:
+            print self.order, self.center, self.type
+          items = []
+        else:
+          items = [self.item]
+      # simple doubles?
+      if self.type == 'n' or (not self.simple_double and not self.center):
+        items += self.second
+        items += self.third
+        line_items = []
+      else:
+        line_items = self.second + self.third
+
+    return line_items, items
