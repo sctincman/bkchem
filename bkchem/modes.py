@@ -421,9 +421,7 @@ class edit_mode( basic_mode):
       self.mouse_click( event)
     else:
       if self._dragging == 3:
-        Store.app.paper.select( filter( lambda o: o,\
-                               map( Store.app.paper.id_to_object,\
-                                    Store.app.paper.find_enclosed( self._startx, self._starty, event.x, event.y))))
+        self._end_of_empty_drag( self._startx, self._starty, event.x, event.y)
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
@@ -580,6 +578,13 @@ class edit_mode( basic_mode):
     # all atoms to update
     as = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
     [a.reposition_marks() for a in as if isinstance( a, atom)]
+
+
+  def _end_of_empty_drag( self, x1, y1, x2, y2):
+    Store.app.paper.select( filter( lambda o: o,\
+                                    map( Store.app.paper.id_to_object,\
+                                         Store.app.paper.find_enclosed( x1, y1, x2, y2))))
+
 
 
   ## METHODS FOR KEY EVENTS RESPONSES
@@ -2301,12 +2306,36 @@ class rapid_draw_mode( edit_mode):
 
 
 
+# -------------------- BRACKETS MODE --------------------
+
+class bracket_mode( edit_mode):
+
+
+  def __init__( self):
+    edit_mode.__init__( self)
+    self.name = _('Brackets')
+
+
+  def _end_of_empty_drag( self, x1, y1, x2, y2):
+    Store.app.paper.new_polyline( [x1+0.1*abs(y2-y1), y1,
+                                   x1,                y1,
+                                   x1,                y2,
+                                   x1+0.1*abs(y2-y1), y2]).draw()
+
+    Store.app.paper.new_polyline( [x2-0.1*abs(y2-y1), y1,
+                                   x2,                y1,
+                                   x2,                y2,
+                                   x2-0.1*abs(y2-y1), y2]).draw()
+    
+
+
+
 
 
 # -------------------- MISCELANOUS MODE --------------------
 
 class misc_mode( edit_mode):
-  """container mode for small, seldom needen modes"""
+  """container mode for small, seldom needed modes"""
 
   def __init__( self):
     edit_mode.__init__( self)
