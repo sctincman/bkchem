@@ -31,6 +31,7 @@ import data
 import tkFont
 import math
 import debug
+import transform
 
 
 class mark( simple_parent):
@@ -556,8 +557,13 @@ class pz_orbital( mark):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
 
 
+  def move( self, dx, dy):
+    self.x += dx
+    self.y += dy
+    self.redraw()
+
+
   def draw( self):
-    """outline color is used for both outline and fill for radical"""
     if self.items:
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
@@ -573,8 +579,14 @@ class pz_orbital( mark):
 
 
   def _get_my_curve( self, num_points=20):
-    return  points_of_curve_eight_y( self.x, self.y, 0.35*self.size, 0.5*self.size, 1, num_points=num_points)
-
+    points = points_of_curve_eight_y( self.atom.x, self.atom.y, 0.35*self.size, 0.5*self.size, 1, num_points=num_points)
+    angle = math.atan2( self.atom.x - self.x, self.atom.y - self.y)
+    tr = transform.transform()
+    tr.set_move( -self.atom.x, -self.atom.y)
+    tr.set_rotation( -angle)
+    tr.set_move( self.atom.x, self.atom.y)
+    points = tr.transform_xy_flat_list( points)
+    return points
 
 
   def get_svg_element( self, doc):

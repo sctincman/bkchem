@@ -236,9 +236,9 @@ class chem_paper( Canvas, object):
         names = self.all_names_to_bind
       else:
         names = active_names
-      for name in names:
-        self.tag_bind( name, '<Enter>', self.enter_item)
-        self.tag_bind( name, '<Leave>', self.leave_item)
+##       for name in names:
+##         self.tag_bind( name, '<Enter>', self.enter_item)
+##         self.tag_bind( name, '<Leave>', self.leave_item)
     self._do_not_focus = [] # self._do_not_focus is temporary and is cleaned automatically here
     self.event_generate( "<<selection-changed>>")
     # we generate this event here because this method is often called after some change as a last thing
@@ -329,22 +329,27 @@ class chem_paper( Canvas, object):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
 
-    # unfocusing of forgotten focused items
-##     b = self.find_overlapping( event.x-2, event.y-2, event.x+2, event.y+2)
-##     b = filter( self.is_registered_id, b)
-##     a = map( self.id_to_object, b)
-##     a = [i for i in a if i not in self._do_not_focus]
-##     if a:
-##       a = a[-1]
-##     else:
-##       a = None
-##     if not a and Store.app.mode.focused:
-##       Store.app.mode.leave_object( event)
-##     # //
-
-    
     Store.app.update_cursor_position( event.x, event.y)
     Store.app.mode.mouse_move( event)
+
+
+    b = self.find_overlapping( event.x-3, event.y-3, event.x+3, event.y+3)
+    b = filter( self.is_registered_id, b)
+    a = map( self.id_to_object, b)
+    a = [i for i in a if i not in self._do_not_focus]
+
+    if a:
+      a = a[-1]
+    else:
+      a = None
+
+    if a and a != self.__in:
+      self.__in = a
+      Store.app.mode.enter_object( self.__in, event)
+    elif not a and self.__in:
+      #if not a and Store.app.mode.focused:
+      self.__in = None
+      Store.app.mode.leave_object( event)
 
 
 
@@ -369,6 +374,21 @@ class chem_paper( Canvas, object):
   def enter_item( self, event):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
+
+    #
+##     b = self.find_overlapping( event.x-3, event.y-3, event.x+3, event.y+3)
+##     b = filter( self.is_registered_id, b)
+##     a = map( self.id_to_object, b)
+##     print a
+##     a = [i for i in a if i not in self._do_not_focus]
+##     print a
+
+##     if a:
+##       a = a[-1]
+##     else:
+##       a = None
+    # //
+
     try:
       a = self.id_to_object( self.find_withtag( 'current')[0])
     except IndexError:

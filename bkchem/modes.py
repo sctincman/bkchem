@@ -1659,6 +1659,16 @@ class mark_mode( edit_mode):
         Store.app.paper.start_new_undo_record()
 
 
+  def mouse_drag( self, event):
+    # this is here because the pz_orbital is rotated instead of moved when dragging,
+    # therefor we need to use the move_to to position the mark
+    # "pivot point" under the cursor when drags begins
+    if not self._dragging and self.focused.object_type == "mark" and self.focused.__class__.__name__ == "pz_orbital":
+      self.focused.move_to( event.x, event.y)
+    edit_mode.mouse_drag( self, event)
+
+
+
   def _move_mark_for_selected( self, dx, dy):
     to_move = [a for a in Store.app.paper.selected if isinstance( a, oasa.graph.vertex)]
     
