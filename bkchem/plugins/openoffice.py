@@ -211,6 +211,10 @@ class OO_exporter( plugin.exporter):
           self.add_plus_mark( m, page)
         elif name == 'plus':
           self.add_plus_mark( m, page)
+        elif name in ("atom_number","oxidation_number","free_sites"):
+          self.add_text_mark( m, page)
+        elif name == "pz_orbital":
+          self.add_orbital( m, page)
 
 ##       s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( m.outline),
 ##                           fill_color=self.paper.any_color_to_rgb_string( m.line_color),
@@ -277,6 +281,7 @@ class OO_exporter( plugin.exporter):
     style_name = self.get_appropriate_style_name( s)
     points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
     self.create_oo_polygon( points, page, style_name)
+
 
   def add_rect( self, o, page):
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.line_color),
@@ -364,6 +369,38 @@ class OO_exporter( plugin.exporter):
         coords = map( Screen.px_to_cm, coords)
         self.create_oo_line( coords, page, style_name)
         
+
+  def add_orbital( self, o, page):
+    s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.atom.line_color),
+                        fill_color=self.paper.any_color_to_rgb_string( o.atom.area_color),
+                        stroke_width=Screen.px_to_cm( 1.0))
+
+    style_name = self.get_appropriate_style_name( s)
+    i = 0
+    points = []
+    for c in o._get_my_curve( num_points=50):
+      if not i:
+        x = c
+        i = 1
+      else:
+        points.append( map( Screen.px_to_cm, (x, c)))
+        i = 0
+      
+    self.create_oo_polygon( points, page, style_name)
+
+  def add_text_mark( self, a, page):
+    """adds text object to document"""
+    gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.atom.line_color),
+                               fill_color=self.paper.any_color_to_rgb_string( a.atom.area_color))
+    gr_style_name = self.get_appropriate_style_name( gr_style)
+    para_style = paragraph_style( font_size='%dpx' % round(a.size*1), font_family=a.atom.font_family, color=a.atom.line_color)
+    para_style_name = self.get_appropriate_style_name( para_style)
+    txt_style = text_style( font_size='%dpx' % round(a.size*1), font_family=a.atom.font_family)
+    txt_style_name = self.get_appropriate_style_name( txt_style)
+
+    coords = map( Screen.px_to_cm, self.paper.bbox( a.items[0]))
+    self.create_oo_text( '<ftext>%s</ftext>' % a.text, coords, page, para_style_name, txt_style_name, gr_style_name)
+
 
 
 
@@ -562,6 +599,8 @@ class graphics_style( style):
     self.stroke_color = stroke_color
     self.fill = fill
     self.fill_color = fill_color
+    if self.fill_color == "none":
+      self.fill = "none"  # this simplifies things very much
     self.stroke_color = stroke_color
     self.stroke_width = stroke_width
     self.marker_end = marker_end

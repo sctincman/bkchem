@@ -164,7 +164,7 @@ class rect( vector_graphics_item, area_colored):
                                                          dom_extensions.getAttributes( pack, ['x1', 'y1', 'x2', 'y2'])))
     for attr in ("area_color", "line_color"):
       if pack.getAttributeNode( attr):
-        setattr( self, attr, pack.getAttribute( 'area_color'))
+        setattr( self, attr, pack.getAttribute( attr))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -258,7 +258,7 @@ class oval( vector_graphics_item):
 
     for attr in ("area_color", "line_color"):
       if pack.getAttributeNode( attr):
-        setattr( self, attr, pack.getAttribute( 'area_color'))
+        setattr( self, attr, pack.getAttribute( attr))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -388,7 +388,7 @@ class polygon( vector_graphics_item, container, area_colored):
 
     for attr in ("area_color", "line_color"):
       if pack.getAttributeNode( attr):
-        setattr( self, attr, pack.getAttribute( 'area_color'))
+        setattr( self, attr, pack.getAttribute( attr))
 
     w = pack.getAttribute( 'width')
     if w:
@@ -521,7 +521,7 @@ class polyline( vector_graphics_item, container, line_colored):
 
     for attr in ("line_color",):
       if pack.getAttributeNode( attr):
-        setattr( self, attr, pack.getAttribute( 'line_color'))
+        setattr( self, attr, pack.getAttribute( attr))
 
     w = pack.getAttribute( 'width')
     if w:
