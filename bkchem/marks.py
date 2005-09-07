@@ -503,11 +503,11 @@ class referencing_text_mark( text_mark, mark):
 
   meta__undo_simple = mark.meta__undo_simple
   meta__save_attrs = {"refname": str}
-  
+  refname = ""
 
-  def __init__( self, atom, x, y, refname, size=8, auto=1):
+  def __init__( self, atom, x, y, size=8, auto=1):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
-    self.refname = refname
+
 
   # the text property
   def _get_text( self):
@@ -525,25 +525,20 @@ class referencing_text_mark( text_mark, mark):
 
 class atom_number( referencing_text_mark):
 
-  def __init__( self, atom, x, y, size=8, auto=1):
-    referencing_text_mark.__init__( self, atom, x, y, "number", size=size, auto=auto)
-  
+  refname = "number"
 
 
 
 class free_sites( referencing_text_mark):
 
-  def __init__( self, atom, x, y, size=8, auto=1):
-    referencing_text_mark.__init__( self, atom, x, y, "free_sites_text", size=size, auto=auto)
+  refname = "free_sites_text"
 
 
 
 class oxidation_number( referencing_text_mark):
 
   meta__mark_positioning = 'righttop'
-
-  def __init__( self, atom, x, y, size=8, auto=1):
-    referencing_text_mark.__init__( self, atom, x, y, "oxidation_number_text", size=size, auto=auto)
+  refname = "oxidation_number_text"
 
 
 

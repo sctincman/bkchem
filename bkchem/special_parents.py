@@ -96,7 +96,7 @@ class vertex_common( object):
 
 
 
-  def set_mark( self, mark='radical', angle='auto'):
+  def set_mark( self, mark='radical', angle='auto', draw=1):
     """sets the mark and takes care of charge and multiplicity changes"""
     if not self.meta__allowed_marks or mark in self.meta__allowed_marks:
       m = self.create_mark( mark=mark, angle=angle)

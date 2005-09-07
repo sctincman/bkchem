@@ -34,7 +34,8 @@ from sets import Set
 import bkchem_exceptions as excs
 
 from singleton_store import Store
-
+from atom import atom
+import operator
 
 
 def ask_name_for_selected( paper):
@@ -459,11 +460,21 @@ def atoms_to_linear_fragment( mol, vs):
 
 
 def compute_oxidation_number( paper):
+  v = validator.validator()
+  v.validate( paper.selected_atoms)
+  if v.report.group_atoms:
+    Store.log( _("Groups must be expanded to compute oxidation number for them."), message_type="hint")
+  # we have to check if the neighbors of the atoms we are processing are not groups or so...
+  ns = list( reduce( operator.or_, map(Set, [a.neighbors for a in paper.selected_atoms])))
+  v.validate( ns)
+  if v.report.group_atoms or v.report.text_atoms:
+    Store.log( _("Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."), message_type="warning")
+  
   for a in paper.selected_atoms:
-    if a.object_type == 'atom':
+    if isinstance( a, atom):
       oxes = a.get_marks_by_type( "oxidation_number")
       if not oxes:
-        a.create_mark( "oxidation_number", draw=a.drawn)
+        a.set_mark( "oxidation_number", draw=a.drawn)
       elif a.drawn:
         oxes[0].redraw()
 

@@ -191,7 +191,7 @@ class atom( drawable_chem_vertex, oasa.atom):
 
   # oxidation number as text
   def _get_oxidation_number_text( self):
-    return data.roman_numbers[ self.oxidation_number]
+    return data.roman_numbers[ self._get_oxidation_number()]
 
   oxidation_number_text = property( _get_oxidation_number_text, None, None, "atoms oxidation number as text")
 
