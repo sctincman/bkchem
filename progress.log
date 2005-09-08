@@ -1,3 +1,49 @@
+RELEASE 0.11.0_pre1
+----------------------------------------
+
+ * enhancements - plugin to search for files containing a given molecular fragment added
+		  (it supports free-sites, A,Q,X query groups etc., pretty much like Beilstein CrossFire)
+		- simple bracket mode
+                  (draw rectangle and it will be converted to two polylines in shape of a bracket)
+		- dotted bonds implemented
+		- automatic oxidation number computation implemented
+		- p-orbital mark implemented
+		- plugins may say to which menu they should be added
+		  (the .xml file may contain <menu>XXX</menu> tag that says it should be placed
+		   to the XXX menu instead of Plugins. The plugin entries are placed at the end,
+		   separated by a separator from the rest)
+		- atom symbol may be set from context menu
+		- group may be set from context menu
+
+
+ * bugfixes - reading of line_color for vector graphics fixed, openoffice export update
+	    - several openoffice export fixes
+	    - several polyline related bugs were fixed
+	    - minor unicode problems hopefully fixed for good
+	    - fixed buggy reading of transparent colors from cdml in graphics
+	    - fix crashes of export of empty paper with cairo and piddle
+	    - fixed bug in deletion of molecule in some cases (after expand of C4H9)
+	    - fixed bug in coords generation for alkyl chain groups expansion
+	    - fixed bug that interpreted ch2ch2ch2ch3 as C4H9, now alkyl chains are
+	      interpreted only for CxHy
+	    - undo of numbering was fixed
+	    - fixed bug in bonds saving under some obscure conditions
+	    - crash on canceling export dialog was fixed
+	    - fixed bug with wrong sorting of recent files	
+	    - molfile export fixed
+
+
+ * changes - new focusing and unfocusing code should avoid left-behind focus circles
+	   - entries in context menu are alphabetically sorted
+	   - setting atom symbol to something else then 'C' turns on show automatically
+	   - when dragging an atom to another its Z-coord is changed to match the other ones
+	     so that they can be concatenated
+
+ * acknowledgments - to all the numerous people that supplied me with bugreports and ideas
+
+
+
+
 RELEASE 0.10.2
 ----------------------------------------
 
