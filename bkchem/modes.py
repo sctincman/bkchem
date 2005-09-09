@@ -72,6 +72,12 @@ class mode( object):
   def mouse_down( self, event, modifiers = []):
     pass
 
+  def mouse_down3( self, event, modifiers = []):
+    pass
+
+  def mouse_down2( self, event, modifiers = []):    
+    pass
+
   def mouse_up( self, event):
     pass
 
@@ -1772,7 +1778,6 @@ class atom_mode( edit_mode):
         Store.app.paper.start_new_undo_record()        
     else:
       if isinstance( self.focused, oasa.graph.vertex):
-        Store.app.paper.select( [self.focused])
         a = self.focused
         name = Store.app.editPool.activate( text = a.xml_ftext)
         if name and not dom_extensions.isOnlyTags( name):
@@ -1782,6 +1787,7 @@ class atom_mode( edit_mode):
           a.molecule.replace_vertices( a, v)
           a.delete()
           v.draw()
+          Store.app.paper.select( [v])
           interactors.log_atom_type( v.__class__.__name__)
 
           # cleanup
@@ -2337,6 +2343,8 @@ class bracket_mode( edit_mode):
                                    x2,    y1,
                                    x2,    y2,
                                    x2-dx, y2]).draw()
+
+    Store.app.paper.start_new_undo_record()
     
 
 

@@ -462,14 +462,17 @@ def atoms_to_linear_fragment( mol, vs):
 def compute_oxidation_number( paper):
   v = validator.validator()
   v.validate( paper.selected_atoms)
+  logged = False
   if v.report.group_atoms:
     Store.log( _("Groups must be expanded to compute oxidation number for them."), message_type="hint")
+    logged = True
   # we have to check if the neighbors of the atoms we are processing are not groups or so...
   ns = list( reduce( operator.or_, map(Set, [a.neighbors for a in paper.selected_atoms])))
   v.validate( ns)
   if v.report.group_atoms or v.report.text_atoms:
     Store.log( _("Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."), message_type="warning")
-  
+    logged = True
+    
   for a in paper.selected_atoms:
     if isinstance( a, atom):
       oxes = a.get_marks_by_type( "oxidation_number")
@@ -479,3 +482,5 @@ def compute_oxidation_number( paper):
         oxes[0].redraw()
 
   paper.start_new_undo_record()
+  if not logged:
+    Store.log( _("You can move and delete the created oxidation numbers in the mark mode"), message_type="hint")
