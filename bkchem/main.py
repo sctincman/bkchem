@@ -1189,15 +1189,18 @@ Enter IChI:""")
       text = inchi
 
     if text:
-      try:
+      if config.devel:
         mol = oasa_bridge.read_inchi( text, self.paper)
-      except:
-        if not inchi:
-          tkMessageBox.showerror( _("Error processing %s") % 'INChI',
-                                  _("The oasa library ended with error:\n%s") % sys.exc_value)
-          return
-        else:
-          raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+      else:
+        try:
+          mol = oasa_bridge.read_inchi( text, self.paper)
+        except:
+          if not inchi:
+            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+                                    _("The oasa library ended with error:\n%s") % sys.exc_value)
+            return
+          else:
+            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
 
       self.paper.stack.append( mol)
       mol.draw()

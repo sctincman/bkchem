@@ -164,7 +164,7 @@ def ask_inchi_program_path():
   a = dial.activate()
   if a == _("OK"):
     Store.pm.add_preference( "inchi_program_path", dial.entry.get())
-    Store.app.chemistry_menu.entryconfigure( _("Generate INChI"), state="normal")
+    Store.app.menu.component( _("Chemistry")+"-menu").entryconfigure( _("Generate INChI"), state="normal")
     return 1
   return 0
 

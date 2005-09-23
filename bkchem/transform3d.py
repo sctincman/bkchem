@@ -16,10 +16,7 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
+
 
 """this module provides basic coordinate transformations in 3D based on matrix algebra"""
 

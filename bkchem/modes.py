@@ -1240,8 +1240,8 @@ class rotate_mode( edit_mode):
     edit_mode.__init__( self)
     self.name = _('rotate')
     self._rotated_mol = None
-    self.submodes = [['2D','3D']]
-    self.submodes_names = [[_('2D'),_('3D')]]
+    self.submodes = [['2D','3D']] #,['one','all']]
+    self.submodes_names = [[_('2D'),_('3D')]] #,['one object','all objects']]
     self.submode = [0]
 
 

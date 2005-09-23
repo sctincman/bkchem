@@ -191,7 +191,8 @@ class OO_exporter( plugin.exporter):
                                  fill_color=self.paper.any_color_to_rgb_string( a.area_color),
                                  padding=(ptop,pbot))
       gr_style_name = self.get_appropriate_style_name( gr_style)
-      para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family, color=a.line_color)
+      para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family,
+                                    color=self.paper.any_color_to_rgb_string( a.line_color))
       para_style_name = self.get_appropriate_style_name( para_style)
       txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
       txt_style_name = self.get_appropriate_style_name( txt_style)
@@ -235,7 +236,8 @@ class OO_exporter( plugin.exporter):
     gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
                                fill_color=self.paper.any_color_to_rgb_string( a.area_color))
     gr_style_name = self.get_appropriate_style_name( gr_style)
-    para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family, color=a.line_color)
+    para_style = paragraph_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family,
+                                  color=self.paper.any_color_to_rgb_string( a.line_color))
     para_style_name = self.get_appropriate_style_name( para_style)
     txt_style = text_style( font_size='%dpx' % round(a.font_size*1), font_family=a.font_family)
     txt_style_name = self.get_appropriate_style_name( txt_style)
