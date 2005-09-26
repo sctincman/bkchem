@@ -1378,42 +1378,21 @@ Enter INChI:""")
 
   def gen_inchi( self):
     program = Store.pm.get_preference( "inchi_program_path")
-    import tempfile
-    
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
     sms = []
     if not interactors.check_validity( u):
       return
-    for m in u:
-      if m.object_type == 'molecule':
-        plugin = plugins.molfile
-        exporter = plugin.exporter( self.paper)
-        try:
-          name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
-          file = open( name, 'w')
-          oasa_bridge.write_molfile( m, file)
-          file.close()
-        except:
-          sms.append( _("It was imposible to write a temporary Molfile %s" % name))
-          break
 
-        in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
-
-        if os.name == 'nt':
-          options = "/AUXNONE"
-        else:
-          options = "-AUXNONE"
-        exit_code = os.spawnv( os.P_WAIT, program, (program, name, in_name, options))
-
-        if exit_code == 0:
-          in_file = open( in_name, 'r')
-          [line for line in in_file.readlines()]
-          sms.append( line[6:].strip())
-          in_file.close()
-        else:
-          sms.append( _("Inchi program returned exit code %d") % exit_code)
+    try:
+      for m in u:
+        if m.object_type == 'molecule':
+            sms.append( oasa_bridge.mol_to_inchi( m, program))
+    except oasa.oasa_exceptions.oasa_inchi_error, e:
+      sms = ["InChI generation failed,","make sure the path to the InChI program is correct in 'Options/INChI program path'"]
+    except:
+      sms = ["Unknown error occured during INChI generation, sorry", "Please, try to make sure the path to the InChI program is correct in 'Options/INChI program path'"]
 
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,

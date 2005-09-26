@@ -1,3 +1,20 @@
+RELEASE 0.11.0_pre2
+----------------------------------------
+
+ * enhancements - InChI reading support was very thoroughly updated and fixed
+		  (see http://bkchem.zirael.org/inchi_en.html)
+
+
+ * bugfixes - OpenOffice export of colored texts was fixed
+	    - brackets undo was fixed
+	    - setting atom text in atom mode was buggy under special conditions
+
+
+ * acknowledgments - thanks to Piotr Wawrzyniak, Daniel Leidert and Jaroslav Sebestik
+
+
+
+
 RELEASE 0.11.0_pre1
 ----------------------------------------
 
