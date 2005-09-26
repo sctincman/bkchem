@@ -59,6 +59,8 @@ from plugin_support import plugin_manager
 
 
 from singleton_store import Store, Screen
+import oasa
+import molecule
 
 
 
@@ -80,8 +82,6 @@ class BKchem( Tk):
     self.tk_setPalette( "background", config.background_color,
                         "insertBackground","#ffffff")
 
-    import oasa
-    import molecule
     oasa.config.Config.molecule_class = molecule.molecule
     
 
@@ -1172,9 +1172,9 @@ Enter SMILES:""")
       return 
     lt = _("""Before you use his tool, be warned that not all features of INChI are currently supported.
 There is no support for stereo-related information, isotopes and a few more things.
-The IChI should be entered in the plain text form, e.g.- 1.0Beta/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
+The INChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
 
-Enter IChI:""")
+Enter INChI:""")
     text = None
     if not inchi:
       dial = Pmw.PromptDialog( self,
@@ -1190,14 +1190,37 @@ Enter IChI:""")
 
     if text:
       if config.devel:
+        # in development mode we do not want to catch the exceptions
         mol = oasa_bridge.read_inchi( text, self.paper)
       else:
         try:
           mol = oasa_bridge.read_inchi( text, self.paper)
-        except:
+        except oasa.oasa_exceptions.oasa_not_implemented_error, e:
           if not inchi:
             tkMessageBox.showerror( _("Error processing %s") % 'INChI',
-                                    _("The oasa library ended with error:\n%s") % sys.exc_value)
+                                    _("Some feature of the submitted InChI is not supported.\n\nYou have most probaly submitted a multicomponent structure (having a . in the sumary layer"))
+            return
+          else:
+            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+        except oasa.oasa_exceptions.oasa_inchi_error, e:
+          if not inchi:
+            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+                                    _("There was an error reading the submitted InChI.\n\nIf you are sure it is a valid InChI, please send me a bug report."))
+            return
+          else:
+            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+        except oasa.oasa_exceptions.oasa_unsupported_inchi_version_error, e:
+          if not inchi:
+            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+                                    _("The submitted InChI has unsupported version '%s'.\n\nYou migth try resubmitting with the version string (the first part of InChI) changed to '1'.") % e.version)
+            return
+          else:
+            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+        except:
+          
+          if not inchi:
+            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+                                    _("The reading of InChI failed with following error:\n\n'%s'\n\nIf you are sure you have submitted a valid InChI, please send me a bug report.") % sys.exc_value)
             return
           else:
             raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
