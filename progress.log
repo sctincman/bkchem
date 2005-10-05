@@ -1,3 +1,13 @@
+RELEASE 0.11.0
+----------------------------------------
+
+ * bugfixes - one stupid bug was fixed in the coordinate generation code
+	      that crippled InChI and SMILES reading
+
+
+
+
+
 RELEASE 0.11.0_pre2
 ----------------------------------------
 

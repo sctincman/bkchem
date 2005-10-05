@@ -50,6 +50,7 @@ import external_data
 from sets import Set
 import interactors
 import marks
+import types
 
 from singleton_store import Store, Screen
 
@@ -1961,8 +1962,8 @@ class external_data_mode( basic_mode):
   def __init__( self):
     basic_mode.__init__( self)
     self.name = _('External data management')
-    self.submodes = [['molecule','atom','bond'],['reactivity']]
-    self.submodes_names = [[_('molecule'),_('atom'),_('bond')],[_('reactivity')]]
+    self.submodes = [['molecule','atom','bond'], Store.app.paper.edm.get_definition_classes()]
+    self.submodes_names = [[_('molecule'),_('atom'),_('bond')],Store.app.paper.edm.get_definition_classes()]
     self.submode = [0,0]
     self.pulldown_menu_submodes = [1]
     self.focused = None
@@ -2058,6 +2059,8 @@ class external_data_mode( basic_mode):
           entry = external_data.ExternalDataEntry( self._frame, v['type'], "reference")
           entry.bind( "<FocusIn>", lambda e: self._entry_entered( e.widget))
           entry.bind( "<FocusOut>", lambda e: self._entry_left())
+        elif type( v['type']) == types.ListType:
+          entry = external_data.ExternalDataListSelection( self._frame, v['type'])
         else:
           entry = external_data.ExternalDataEntry( self._frame, v['type'], "internal")
         self._items.add( label)

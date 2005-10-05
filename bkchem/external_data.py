@@ -25,6 +25,7 @@ to CDML"""
 from atom import atom
 from bond import bond
 from textatom import textatom
+from queryatom import queryatom
 from group import group
 from molecule import molecule
 import types
@@ -39,10 +40,11 @@ from singleton_store import Store
 
 class external_data_manager( object):
 
-  types = {'atom': (atom,group,textatom),
+  types = {'atom': (atom,group,textatom,queryatom),
            'bond': (bond,),
            'molecule': (molecule,),
-           'IntType': (types.IntType,)
+           'IntType': (types.IntType,),
+           #'toplevel': ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction','polyline')
            }
            
 
@@ -83,6 +85,12 @@ class external_data_manager( object):
         for evalue in dom_ext.simpleXPathSearch( eobj, "value"):
           vname = evalue.getAttribute( 'name')
           vtype = evalue.getAttribute( 'type')
+          # try to decode list style types
+          if vtype.startswith( "[") and vtype.endswith( "]"):
+            try:
+              vtype = eval( vtype)
+            except ValueError:
+              pass
           text = dom_ext.getAllTextFromElement( dom_ext.getFirstChildNamed( evalue, "text"))
           self.definitions[ cls][ obj][ vname] = {'type': vtype,
                                                   'text': text }
@@ -149,14 +157,27 @@ class external_data_manager( object):
       raise ValueError, "wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass)
 
     t = self.definitions[ dclass][ obj.object_type][ category]['type']
-    if isinstance( value, self.expand_type( t)):
+    if self.conforms_to_type( value, t):
       return True
     else:
-      try:
-        self.convert_to_type( value, t)
+      return False
+    
+
+  def conforms_to_type( self, value, t):
+    if type( t) == types.ListType:
+      for v2 in t:
+        if value == v2:
+          return True
+      return False
+
+    v = self.convert_to_type( value, t)
+    if t in self.types:
+      if filter( None, [isinstance( v, tt) for tt in self.types[t]]):
         return True
-      except ValueError:
+      else:
         return False
+    else:
+      return isinstance( value, t)
     
 
 
@@ -201,6 +222,8 @@ class external_data_manager( object):
 
 
   def convert_to_type( self, value, vtype):
+    if type( vtype) == types.ListType:
+      return value
     if vtype in types.__dict__:
       t = self.expand_type( vtype)[0]
       return t( value)
@@ -274,3 +297,30 @@ class ExternalDataList( Pmw.OptionMenu, object):
       paper.delete( self.arrow)
       self.arrow = None
     
+
+
+class ExternalDataListSelection( Pmw.RadioSelect, object):
+  
+  def __init__( self, parent, type, **kw):
+    Pmw.RadioSelect.__init__( self, parent, **kw)
+    for t in type:
+      self.add( t)
+    self.type_class = "internal"
+    self.arrow = None
+    self.type = type
+
+  def _set_value( self, value):
+    if value:
+      self.invoke( value)
+
+
+  def _get_value( self):
+    return self.getvalue()
+
+  value = property( _get_value, _set_value, None, "value of the List")
+
+
+  def cleanup( self, paper):
+    if self.arrow:
+      paper.delete( self.arrow)
+      self.arrow = None

@@ -407,7 +407,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def draw( self, automatic="none"):
     [a.draw() for a in self.atoms]
-    [a.draw( automatic=automatic) for a in self.bonds]
+    [a.draw( automatic=automatic) for a in copy.copy( self.bonds)]
     self.lift()
     
 
