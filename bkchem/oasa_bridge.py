@@ -46,7 +46,7 @@ def mol_to_smiles( mol):
 
 
 def read_inchi( text, paper):
-  mol = oasa.inchi.text_to_mol( text, calc_coords=1, include_hydrogens=False)
+  mol = oasa.inchi.text_to_mol( text, calc_coords=1, include_hydrogens=True)
   #oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
   return oasa_mol_to_bkchem_mol( mol, paper)
   

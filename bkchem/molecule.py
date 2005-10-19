@@ -526,6 +526,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         a.delete()
         # creating a fragment for implosion of the group
         edges = self.vertex_subgraph_to_edge_subgraph( to_draw)
+        [e.draw() for e in edges]
         self.create_fragment( a.symbol, edges, type="implicit")
     self.redraw()
     

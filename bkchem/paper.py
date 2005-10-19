@@ -1932,3 +1932,17 @@ class chem_paper( Canvas, object):
 
       mol.redraw( reposition_double=1)
       self.start_new_undo_record()
+
+
+  def get_cropping_bbox( self):
+    margin = self.get_paper_property('crop_margin')
+    items = list( self.find_all())
+    items.remove( self.background)
+
+    if not items:
+      return None
+
+    x1, y1, x2, y2 = self.list_bbox( items)
+    return x1-margin, y1-margin, x2+margin, y2+margin
+
+
