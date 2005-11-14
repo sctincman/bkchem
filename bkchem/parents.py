@@ -346,7 +346,8 @@ class text_like( with_font):
 
   # text
   def _get_text( self):
-    doc = dom.parseString( "<ftext>%s</ftext>" % self.ftext)
+    print self.ftext
+    doc = dom.parseString( "<ftext>%s</ftext>" % self.xml_ftext)
     return dom_extensions.getAllTextFromElement( doc)
 
   text = property( _get_text, None, None,

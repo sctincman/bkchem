@@ -178,8 +178,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     if not a2:
       a2 = self.create_new_atom( x, y)
     b = bond_to_use or bond( self.paper.standard, order=1, type='n')
-    b.atom1 = a1
-    b.atom2 = a2
     self.add_edge( a1, a2, e=b)
     b.molecule = self
     b.draw()

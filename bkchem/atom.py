@@ -123,10 +123,10 @@ class atom( drawable_chem_vertex, oasa.atom):
 
   # charge (override of oasa.chem_vertex.charge)
   def _get_charge( self):
-    return self._charge
+    return drawable_chem_vertex._get_charge( self)
 
   def _set_charge( self, charge):
-    self._charge = charge
+    drawable_chem_vertex._set_charge( self, charge)
     self.dirty = 1
 
   charge = property( _get_charge, _set_charge)
@@ -142,21 +142,10 @@ class atom( drawable_chem_vertex, oasa.atom):
     return self._valency
 
   def _set_valency( self, val):
-    self._valency = val
+    drawable_chem_vertex._set_valency( self, val)
 
   valency = property( _get_valency, _set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
 
-
-
-  # multiplicity
-  def _get_multiplicity( self):
-    return self._multiplicity
-  
-  def _set_multiplicity( self, multiplicity):
-    self._multiplicity = multiplicity
-
-  multiplicity = property( _get_multiplicity, _set_multiplicity, None,
-                           "returns multiplicity of molecule")
 
 
   # free-sites - replaces oasa.atom.free_sites

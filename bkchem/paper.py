@@ -97,7 +97,8 @@ class chem_paper( Canvas, object):
 
     # external data management
     self.edm = external_data_manager()
-    print "loaded definitions for classes:", self.edm.load_available_definitions()
+    self.edm.load_available_definitions()
+    #print "loaded definitions for classes:", self.edm.load_available_definitions()
 
     # file name
     self.file_name = file_name

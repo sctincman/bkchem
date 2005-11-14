@@ -750,7 +750,8 @@ class draw_mode( edit_mode):
       # repositioning of double bonds
       if self._start_atom:
         # at first atom text
-        self._start_atom.update_after_valency_change()
+        if hasattr( self._start_atom, 'update_after_valency_change'):
+          self._start_atom.update_after_valency_change()
         # warn when valency is exceeded
         if self._start_atom.free_valency < 0:
           Store.log( _("maximum valency exceeded!"), message_type="warning")
@@ -794,7 +795,16 @@ class draw_mode( edit_mode):
           Store.log( _("maximum valency exceeded!"), message_type="warning")
         # adding more than one bond to group
         if isinstance( self.focused, group):
-          #LOOK
+          # we need to change the class of the vertex
+          a = self.focused
+          m = a.molecule
+          v = m.create_vertex_according_to_text( None, a.xml_ftext, interpret=0)
+          a.copy_settings( v)
+          a.molecule.replace_vertices( a, v)
+          a.delete()
+          v.draw()
+          v.focus()
+          self.focused = v
           Store.log( _("Groups could have valency of 1 only! It was transformed to text!"), message_type="warning")
         # repositioning of double bonds
         self.reposition_bonds_around_bond( b)
@@ -1780,7 +1790,7 @@ class atom_mode( edit_mode):
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         a = self.focused
-        name = Store.app.editPool.activate( text = a.xml_ftext)
+        name = Store.app.editPool.activate( text = a.symbol)
         if name and not dom_extensions.isOnlyTags( name):
           # we need to change the class of the vertex
           v = a.molecule.create_vertex_according_to_text( a, name, interpret=Store.app.editPool.interpret)
