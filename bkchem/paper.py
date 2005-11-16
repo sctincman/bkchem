@@ -431,7 +431,7 @@ class chem_paper( Canvas, object):
   def select( self, items):
     "adds an object to the list of other selected objects and calls their select() method"
     for o in items:
-      if o.object_type == 'arrow' or o.object_type == 'polygon':
+      if o.object_type in ('arrow','polygon','polyline'):
         # we cannot allow arrows or polygons to be selected because selection of arrow and its points
         # doubles some actions (moving etc.) and this couldn't be easily solved other way
         self.select( o.points)
