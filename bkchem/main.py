@@ -461,11 +461,11 @@ class BKchem( Tk):
                    'usertemplate': modes.user_template_mode(),
                    'misc': modes.misc_mode(),
                    'bracket': modes.bracket_mode(),
-                   'externaldata': modes.external_data_mode(),
+                   #'externaldata': modes.external_data_mode(),
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
-                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc', 'externaldata'] #,'rapiddraw'] #, 'externaldata', 'rapiddraw']
+                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc'] #, 'externaldata', 'rapiddraw']
 
     # import plugin modes
     import imp

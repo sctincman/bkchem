@@ -1936,6 +1936,9 @@ class chem_paper( Canvas, object):
 
 
   def get_cropping_bbox( self):
+    if hasattr( self, '_cropping_bbox') and self._cropping_bbox:
+      return self._cropping_bbox
+      
     margin = self.get_paper_property('crop_margin')
     items = list( self.find_all())
     items.remove( self.background)
@@ -1947,3 +1950,10 @@ class chem_paper( Canvas, object):
     return x1-margin, y1-margin, x2+margin, y2+margin
 
 
+
+  def set_cropping_bbox( self, coords):
+    self._cropping_bbox = coords
+    
+
+  def fix_current_cropping_bbox( self):
+    self.set_cropping_bbox( self.get_cropping_bbox())

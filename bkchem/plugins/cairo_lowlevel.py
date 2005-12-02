@@ -59,22 +59,19 @@ class cairo_exporter( plugin.exporter):
     self.paper.unselect_all()
     scale = 1 #720.0/self.paper.winfo_fpixels( '254m')
     if self.paper.get_paper_property( 'crop_svg'):
-      margin = self.paper.get_paper_property('crop_margin')
-      items = list( self.paper.find_all())
-      items.remove( self.paper.background)
 
-      if not items:
+      if len( self.paper.find_all()) <= 1: # background only
         import tkMessageBox
         tkMessageBox.showerror( _("Nothing to export."),
                                 _('There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu.'))
         return 0
 
-      x1, y1, x2, y2 = self.paper.list_bbox( items)
+      x1, y1, x2, y2 = self.paper.get_cropping_bbox()
       self.transformer = transform.transform()
-      self.transformer.set_move( -x1+margin, -y1+margin)
+      self.transformer.set_move( -x1, -y1)
       self.transformer.set_scaling( scale)
-      dx = x2-x1 +2*margin
-      dy = y2-y1 +2*margin
+      dx = x2-x1
+      dy = y2-y1
     else:
       self.transformer = transform.transform()
       self.transformer.set_scaling( scale)
