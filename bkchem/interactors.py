@@ -392,7 +392,8 @@ def convert_selected_to_linear_fragment( paper):
         raise
     else:
       changes = changes or change
-      mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), type="linear_form")
+      if changes:
+        mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), type="linear_form")
 
   if changes:
     paper.start_new_undo_record()
@@ -413,13 +414,13 @@ def atoms_to_linear_fragment( mol, vs):
         return
     # ok, we are clear
     # here comes the code to do the work
-    # we start from the end atom that more on the left side
+    # we start from the end atom that is more on the left side
     changes = True
     ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
     if not ends:
       # whole ring is selected, how could this be possibly linearized?
       raise excs.bkchem_graph_error( "circular_selection",
-                                     _("The selected part of a molecule if a whole ring, there is no way to linearize it"))
+                                     _("The selected part of a molecule is a whole ring, there is no way to linearize it"))
     start = ends[0].x > ends[1].x and ends[1] or ends[0]
     end = start == ends[0] and ends[1] or ends[0]
     current = start

@@ -81,7 +81,7 @@ class fragment( simple_parent):
 
 
   def get_all_vertices( self):
-    vs = Set()
+    vs = Set( self.vertices)
     for e in self.edges:
       vs |= Set( e.vertices)
     return vs

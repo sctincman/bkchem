@@ -658,3 +658,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       return fs[0]
     else:
       return None
+
+
+  def delete_fragment( self, f):
+    if f in self.fragments:
+      self.fragments.remove( f)
+      return True
+    return False

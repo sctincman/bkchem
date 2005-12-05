@@ -64,6 +64,7 @@ from sets import Set
 from id_manager import id_manager
 import interactors
 import exceptions
+import checks
       
 from singleton_store import Store, Screen
 
@@ -1362,13 +1363,7 @@ class chem_paper( Canvas, object):
   def before_undo_record( self):
     """this method is place where periodical checks and other things that should be done before
     undo is recorded should be done"""
-    for mol in self.molecules:
-      to_del = Set()
-      for f in mol.fragments:
-        if f.type == "linear_form":
-          vs = mol.edge_subgraph_to_vertex_subgraph( f.edges)
-          to_del.add( f)
-          interactors.atoms_to_linear_fragment( mol, vs)
+    checks.check_linear_fragments( self)
 
 
 

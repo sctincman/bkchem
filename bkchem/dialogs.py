@@ -1043,6 +1043,7 @@ class fragment_dialog( Pmw.Dialog):
 
 
   def get_all_fragments( self):
+    self._frags = {}
     for m in self.paper.molecules:
       for frag in m.fragments:
         text_form = "%s (%s)" % (frag.name, frag.id)
@@ -1086,8 +1087,8 @@ class fragment_dialog( Pmw.Dialog):
 
   def _delete_selected( self):
     if self.value:
-      mol = list( self.value.edges)[0].molecule
-      mol.fragments.remove( self.value)
+      mol = list( self.value.all_vertices)[0].molecule
+      mol.delete_fragment( self.value)
     self.list.setlist( self.get_all_fragments())
 
 
