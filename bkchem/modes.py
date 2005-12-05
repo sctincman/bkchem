@@ -746,20 +746,31 @@ class draw_mode( edit_mode):
     else:
       if self._moved_atom:
         Store.app.paper.select( [self._moved_atom])
-      Store.app.paper.handle_overlap() # should be done before repositioning for ring closure to take effect
+      deleted, preserved = Store.app.paper.handle_overlap() # should be done before repositioning for ring closure to take effect
       # repositioning of double bonds
-      if self._start_atom:
-        # at first atom text
-        if hasattr( self._start_atom, 'update_after_valency_change'):
-          self._start_atom.update_after_valency_change()
-        # warn when valency is exceeded
-        if self._start_atom.free_valency < 0:
-          Store.log( _("maximum valency exceeded!"), message_type="warning")
-        # adding more than one bond to group
-        if isinstance( self._start_atom, group):
-          #LOOK
-          print "here must be some checking"
-        self.reposition_bonds_around_atom( self._start_atom)
+
+      for vrx in preserved + [self._start_atom]:
+        if vrx:
+          # at first atom text
+          if hasattr( vrx, 'update_after_valency_change'):
+            vrx.update_after_valency_change()
+          # warn when valency is exceeded
+          if vrx.free_valency < 0:
+            Store.log( _("maximum valency exceeded!"), message_type="warning")
+          # adding more than one bond to group
+          if isinstance( vrx, group):
+            # we need to change the class of the vertex
+            a = vrx
+            m = a.molecule
+            v = m.create_vertex_according_to_text( None, a.xml_ftext, interpret=0)
+            a.copy_settings( v)
+            a.molecule.replace_vertices( a, v)
+            a.delete()
+            v.draw()
+            Store.log( _("Groups could have valency of 1 only! It was transformed to text!"), message_type="warning")
+
+          self.reposition_bonds_around_atom( vrx)
+
       self._dragging = 0
       self._start_atom = None
       self._moved_atom = None

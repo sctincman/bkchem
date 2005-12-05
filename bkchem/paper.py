@@ -822,6 +822,11 @@ class chem_paper( Canvas, object):
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
       Store.log( _('concatenated overlaping atoms'))
+
+    preserved = []
+    for a, b in overlap:
+      preserved.append( a in deleted and b or a)
+    return deleted, preserved
     #print 5, time.time() - ttt
       
 

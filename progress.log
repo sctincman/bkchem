@@ -1,3 +1,28 @@
+RELEASE 0.11.1
+----------------------------------------
+
+ * bugfixes - openoffice export of text was not working properly and crashed on unicode
+	    - after expansion of groups some bonds were not drawn
+	    - group text is no longer displayed with tags when edited
+	    - groups are now really converted to text when second bond is added to them
+	    - lines moved twice as fast as other objects when moved via arrow keys
+	    - the plugin for finding files containig a fragment was somehow forgotten in the last
+	      release
+	    - warnings about maximum valency were not issued when an atom was the receiving side
+	      of molecule concatenation
+
+ * enhancements - several new groups are now recongnized by BKChem such as Fmoc, MOP, TMS etc.
+		  (thanks to Radek Liboska for providing them)
+		- InChI reading was tuned slightly
+		- BKchem now uses the standard InChI program in much cleaner way for InChI generation,
+		  without the use of temporary files
+
+ * acknowledgments - Radek Liboska (bugreports, new groups)
+		   - Piotr Wawrzyniak (tireless bug-hunting)
+
+
+
+
 RELEASE 0.11.0
 ----------------------------------------
 
