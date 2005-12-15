@@ -65,8 +65,7 @@ def get_config_filename( name, level="global", mode="r"):
       dir = (site_config and site_config.BKCHEM_MODULE_PATH) or os.getenv( 'BKCHEM_MODULE_PATH') or None
   if level == "personal":
     if os.name in ('posix', 'nt'):
-      dir = os.getenv( 'HOME') or '../'
-      dir = os.path.join( dir, ".bkchem/")
+      dir = get_personal_config_directory()
 
   if dir:
     if mode == "w":
@@ -117,9 +116,7 @@ def get_local_templates():
 
 
 def get_personal_config_directory():
-  dir = os.getenv( 'HOME') or '../'
-  dir = os.path.join( dir, '.bkchem')
-  return dir
+  return get_bkchem_private_dir()
   
 
 
@@ -164,8 +161,18 @@ def get_opened_config_file( name, level="global", mode="r"):
 
 
 def get_bkchem_private_dir():
-  dir = os.getenv( 'HOME') or '../'
-  dir = os.path.join( dir, ".bkchem/")
+  dir = ""
+  if os.name == "nt":
+    try:
+      import _winreg as reg
+      dir = reg.QueryValueEx( reg.OpenKey( reg.HKEY_CURRENT_USER, "Volatile Environment"), "APPDATA")[0]
+      dir = os.path.join( dir, "bkchem")
+    except EnvironmentError:
+      pass
+
+  if not dir:
+    dir = os.getenv( 'HOME') or '../'
+    dir = os.path.join( dir, ".bkchem/")
   return dir
   
 

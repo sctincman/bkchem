@@ -32,7 +32,9 @@ from singleton_store import Store
 import pref_manager
 
 # at first preference manager
-Store.pm = pref_manager.pref_manager( os_support.get_config_filename( "prefs.xml", level="personal", mode='r'))
+Store.pm = pref_manager.pref_manager(
+  [os_support.get_config_filename( "prefs.xml", level="global", mode='r'),
+   os_support.get_config_filename( "prefs.xml", level="personal", mode='r')])
 
 
 ## first turn locale support on

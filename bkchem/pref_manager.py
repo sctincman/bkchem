@@ -20,17 +20,18 @@
 import xml.dom.minidom as dom
 import dom_extensions
 import types
-
+import os
 
 
 class pref_manager( object):
 
 
 
-  def __init__( self, file_name=None):
+  def __init__( self, file_names=None):
     self.data = {}
-    if file_name:
-      self.read_pref_file( file_name)
+    if file_names:
+      for file_name in file_names:
+        self.read_pref_file( file_name)
 
 
 
@@ -55,8 +56,9 @@ class pref_manager( object):
 
 
   def read_pref_file( self, name):
-    doc = dom.parse( name)
-    self.read_from_dom( doc)
+    if name and os.path.exists( name):
+      doc = dom.parse( name)
+      self.read_from_dom( doc)
 
 
 
