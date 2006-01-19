@@ -59,7 +59,7 @@ def get_config_filename( name, level="global", mode="r"):
   dir = None
   if level == "global":
     if os.name in ('posix', 'nt'):
-      dir = (site_config and site_config.BKCHEM_MODULE_PATH) or os.getenv( 'BKCHEM_MODULE_PATH') or '../'
+      dir = (site_config and site_config.BKCHEM_MODULE_PATH) or os.getenv( 'BKCHEM_MODULE_PATH') or os.path.join('..','.bkchem')
   elif level == "local":
     if os.name in ('posix', 'nt'):
       dir = (site_config and site_config.BKCHEM_MODULE_PATH) or os.getenv( 'BKCHEM_MODULE_PATH') or None

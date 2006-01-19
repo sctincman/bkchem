@@ -1328,53 +1328,6 @@ Enter INChI:""")
     [Store.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
 
 
-  def gen_inchi_for_molecule( self, m):
-    program = Store.pm.get_preference( "inchi_program_path")
-    if not program:
-      return
-    
-    import tempfile
-    
-    if not oasa_bridge.oasa_available:
-      return
-
-    if not interactors.check_validity( [m]):
-      return
-
-    if m.object_type == 'molecule':
-      plugin = plugins.molfile
-      exporter = plugin.exporter( self.paper)
-      try:
-        name = os.path.join( tempfile.gettempdir(), "gen_inchi.mol")
-        file = open( name, 'w')
-        oasa_bridge.write_molfile( m, file)
-        file.close()
-      except:
-        file.close()
-        return "could not write to temporary file %s" % name
-
-      in_name = os.path.join( tempfile.gettempdir(), "gen_inchi.temp")
-
-      if os.name == 'nt':
-        options = "/AUXNONE"
-      else:
-        options = "-AUXNONE"
-
-      command = ' '.join( (program, name, in_name, options))
-      popen = popen2.Popen4( command)
-      exit_code = popen.wait()
-
-      if exit_code == 0:
-        in_file = open( in_name, 'r')
-        [line for line in in_file.readlines()]
-        out = line[6:].strip()
-        in_file.close()
-        return out
-      else:
-        return "Inchi program returned exit code %d" % exit_code
-
-
-
 
   def gen_inchi( self):
     program = Store.pm.get_preference( "inchi_program_path")
@@ -1390,7 +1343,7 @@ Enter INChI:""")
         if m.object_type == 'molecule':
             sms.append( oasa_bridge.mol_to_inchi( m, program))
     except oasa.oasa_exceptions.oasa_inchi_error, e:
-      sms = ["InChI generation failed,","make sure the path to the InChI program is correct in 'Options/INChI program path'"]
+      sms = ["InChI generation failed,","make sure the path to the InChI program is correct in 'Options/INChI program path'", "", str( e)]
     except:
       sms = ["Unknown error occured during INChI generation, sorry", "Please, try to make sure the path to the InChI program is correct in 'Options/INChI program path'"]
 

@@ -1,3 +1,18 @@
+RELEASE 0.11.2
+----------------------------------------
+
+ * bugfixes - on windows bkchem saves its config file and user templates to
+              the user directory (Documents and Settings/Username/bkchem or similar),
+              so no errors should be issued when non-privilidged user tries to save a template
+
+ * translations - French - updated (thanks to Edouard Saintesprit)
+
+ * acknowledgments - Piotr Wawrzyniak (bugreport and testing)
+	           - Edouard Saintesprit (French translation)
+
+
+
+
 RELEASE 0.11.1
 ----------------------------------------
 
