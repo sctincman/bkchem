@@ -20,7 +20,7 @@ For installation instructions see the file INSTALL in main BKchem directory.
 NOTE: Starting with the version 0.9.0-pre1 I ship piddle sources together with
 bkchem. Piddle is a library provided under the GPL license and seems to be dead
 at least 2 years. Therefore I have decided to put it inside bkchem sources and
-distribute any eventual additions this way. I case I will make any major changes
+distribute any eventual additions this way. In case I will make any major changes
 I will release piddle as a standalone library.
 
 NOTE: Starting with the version 0.10.0-pre1 I ship Pmw (http://pmw.sourceforge.net/)
@@ -28,3 +28,12 @@ sources (version 1.2) together with bkchem.
 I had to make some minor fixes in Pwm and as it is a library provided under the GPL
 license and seems to be dead I have decided to put it inside bkchem sources and
 distribute the fixed version this way.
+
+NOTE: I bundle the official InChI software from IUPAC in a binary form together
+with BKchem in my Windows binary builds. All the credit for this nice piece of
+software goes to its creators.
+This information comes with the software:
+
+Copyright © The International Union of Pure and Applied Chemistry 2005: IUPAC
+International Chemical Identifier (InChI)
+(contact: secretariat@iupac.org)
