@@ -21,6 +21,8 @@
 from cairo_lowlevel import cairo_exporter
 from tk2cairo import tk2cairo
 import cairo
+# try if there is PDFSurface in cairo
+_x = cairo.PDFSurface
 
 
 class pdf_cairo_exporter( cairo_exporter):

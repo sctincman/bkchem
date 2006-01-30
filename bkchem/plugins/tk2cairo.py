@@ -48,12 +48,13 @@ class tk2cairo:
   def export_to_cairo( self, tk_canvas, cairo_context, transformer=None):
     self.context = cairo_context
     self.paper = tk_canvas
-    self.convert = self.paper_to_canvas_coord
     if not transformer:
       self.transformer = self.prepare_dumb_transformer()
     else:
       self.transformer = transformer
+    self.width_scaling = self.transformer.get_scaling()
     self.draw_document()
+    
 
 
 
@@ -66,16 +67,16 @@ class tk2cairo:
 
 
 
-  def paper_to_canvas_coord( self, x):
-    return x
-    #dpi = self.paper.winfo_fpixels( '254m')/10.0
-    #return dpi*x/72
-
-
   def prepare_dumb_transformer( self):
     tr = transform.transform()
-    tr.set_scaling( self.paper_to_canvas_coord( 1))
+    tr.set_scaling( 1)
     return tr
+
+
+  def p2c_width( self, w):
+    """converts a paper width to canvas width using the value of self.width_scaling"""
+    return self.width_scaling * w
+
 
 
 
@@ -125,10 +126,10 @@ class tk2cairo:
       # color
       self.set_cairo_color( self.paper.itemcget( item, 'fill'))
       # line width
-      width = self.convert( float( self.paper.itemcget( item, 'width')))
+      width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
       self.context.set_line_width( width)
       # the path itself 
-      cs = self._flat_list_to_list_of_tuples( map( self.convert, coords))
+      cs = self._flat_list_to_list_of_tuples( coords)
       self._create_cairo_path( cs, closed=False)
       # stroke it
       self.context.stroke()
@@ -138,14 +139,13 @@ class tk2cairo:
 
   def _draw_text( self, item):
     text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
-    #x, y = map( self.convert, self.paper.coords( item))
     x1, y1, x2, y2 = self.transformer.transform_4( self.paper.bbox( item))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
     conf = afont.config()
     font_family = conf['family']
     slant =  'italic' in conf['slant'] and cairo.FONT_SLANT_ITALIC or cairo.FONT_SLANT_NORMAL
     weight = 'bold' in conf['weight'] and cairo.FONT_WEIGHT_BOLD or cairo.FONT_WEIGHT_NORMAL
-    y = max(y1,y2)- self.convert( afont.metrics()['descent'])
+    y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent']
 
     # color
     self.set_cairo_color( self.paper.itemcget( item, 'fill'))
@@ -154,11 +154,11 @@ class tk2cairo:
     self.context.select_font_face( font_name, slant, weight)
 
     # here we compute the font_size so that it matches what is on the screen
-    cairo_size = conf['size']
+    cairo_size = self.p2c_width( conf['size'])
     self.context.set_font_size( cairo_size)
     asc, desc, height, _a, _b = self.context.font_extents()
     
-    while afont.metrics()['linespace'] > height:
+    while self.p2c_width( afont.metrics()['linespace']) > height:
       cairo_size += 1
       self.context.set_font_size( cairo_size)
       asc, desc, height, _a, _b = self.context.font_extents()
@@ -176,7 +176,7 @@ class tk2cairo:
     coords = self.transformer.transform_4( self.paper.coords( item))
     outline = self.paper.itemcget( item, 'outline')
     fill = self.paper.itemcget( item, 'fill')
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
     x1, y1, x2, y2 = coords
     self.context.set_line_join( cairo.LINE_JOIN_MITER)
     self.context.rectangle( x1, y1, x2-x1, y2-y1)
@@ -192,7 +192,7 @@ class tk2cairo:
     coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
     outline = self.paper.itemcget( item, 'outline')
     fill = self.paper.itemcget( item, 'fill')
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
     cs = self._flat_list_to_list_of_tuples( coords)
 
     # join style
@@ -212,7 +212,7 @@ class tk2cairo:
     coords = self.transformer.transform_4( self.paper.coords( item))
     outline = self.paper.itemcget( item, 'outline')
     fill = self.paper.itemcget( item, 'fill')
-    width = self.convert( float( self.paper.itemcget( item, 'width')))
+    width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
     x1, y1, x2, y2 = coords
     w = x2 - x1
     h = y2 - y1

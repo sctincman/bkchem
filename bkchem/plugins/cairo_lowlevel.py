@@ -78,7 +78,8 @@ class cairo_exporter( plugin.exporter):
       dx = Screen.mm_to_px( self.paper._paper_properties['size_x'])
       dy = Screen.mm_to_px( self.paper._paper_properties['size_y'])
 
-    self.pagesize = (dx, dy)
+    x1, y1, x2, y2 = self.transformer.transform_4( (0, 0, dx, dy))
+    self.pagesize = (x2-x1, y2-y1)
     self.converter = self.converter_class()
     return 1
 

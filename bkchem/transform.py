@@ -24,6 +24,8 @@
 """this module provides basic coordinate transformations based on matrix algebra"""
 
 from math import cos, sin, pi
+import geometry
+
 
 class transform:
   """this class provides basic higher-level interface for coordinate transforms"""
@@ -79,6 +81,23 @@ class transform:
   def set_scaling( self, scale):
     "add an scaling step to transformation matrix, same scaling for both dimensions"
     self.mat = matrix( mat=self.mat.get_multiplied( [[scale,0,0],[0,scale,0],[0,0,1]]))
+
+  def get_scaling( self):
+    """computes the value of scaling from self"""
+    x01, y01, x02, y02 = [0, 0, 100, 100]
+    x11, y11, x12, y12 = self.transform_4( (x01, y01, x02, y02))
+    l1 = geometry.point_distance( x01, y01, x02, y02)
+    l2 = geometry.point_distance( x11, y11, x12, y12)
+    return l2/l1
+
+
+  def get_scaling_xy( self):
+    """computes the scaling for 'x' and 'y' separately"""
+    x01, y01, x02, y02 = [0, 0, 100, 100]
+    x11, y11, x12, y12 = self.transform_4( (x01, y01, x02, y02))
+    return (x02-x01)/(x12-x11), (y02-y01/y12-y02)
+
+
 
 
 class matrix:
