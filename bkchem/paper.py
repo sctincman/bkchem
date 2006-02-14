@@ -1058,6 +1058,7 @@ class chem_paper( Canvas, object):
 	self.start_new_undo_record()
       else:
         Store.log( _("copied %s object(s) to clipboard") % str( len( cp)))
+      self.event_generate( "<<clipboard-changed>>")
       return [xmin, ymin, xmax, ymax]
 
 

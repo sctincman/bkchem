@@ -674,6 +674,7 @@ class BKchem( Tk):
     self.change_paper( _tab_name)
     self.notebook.selectpage( Pmw.END)
     paper.bind( "<<selection-changed>>", self.update_menu_after_selection_change)
+    paper.bind( "<<clipboard-changed>>", self.update_menu_after_selection_change)
     paper.bind( "<<undo>>", self.update_menu_after_selection_change)
     paper.bind( "<<redo>>", self.update_menu_after_selection_change)
     if not self.paper:
