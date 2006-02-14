@@ -23,6 +23,7 @@ import types
 import os
 
 
+
 class pref_manager( object):
 
 
@@ -57,7 +58,11 @@ class pref_manager( object):
 
   def read_pref_file( self, name):
     if name and os.path.exists( name):
-      doc = dom.parse( name)
+      try:
+        doc = dom.parse( name)
+      except:
+        #print "corrupt preference file %s" % name
+        return 
       self.read_from_dom( doc)
 
 
@@ -66,7 +71,7 @@ class pref_manager( object):
     top = doc.getElementsByTagName( "bkchem-prefs")[0]
     for child in dom_extensions.childNodesWithoutEmptySpaces( top):
       name = child.nodeName
-      itype = child.getAttribute( 'type') or str
+      itype = child.getAttribute( 'type') or unicode
       if itype in ("ListType", "TupleType", "DictType"):
         value = eval( dom_extensions.getAllTextFromElement( child))
       else:
@@ -85,15 +90,15 @@ class pref_manager( object):
     doc.appendChild( top)
 
     for k, v in self.data.iteritems():
-      itype = 'StringType'
+      itype = 'UnicodeType'
       for tn in types.__dict__:
         if type( v) == types.__dict__[ tn]:
           itype = tn
           break
-      el = dom_extensions.textOnlyElementUnder( top, k, str( v),
+      el = dom_extensions.textOnlyElementUnder( top, k, unicode( v),
                                                 attributes = (("type", itype),))
     return doc
 
 
   def write_to_file( self, f):
-    f.write( self.write_to_dom().toxml())
+    f.write( self.write_to_dom().toxml().encode('utf-8'))
