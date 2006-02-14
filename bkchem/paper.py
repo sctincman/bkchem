@@ -646,6 +646,9 @@ class chem_paper( Canvas, object):
     # finish
     # we close the sandbox and generate new ids for everything
     self.onread_id_sandbox_finish()
+
+    # this forces forgetting of old viewport and effectively transforms the coordinates for rest of work
+    self.set_viewport()
     
     if draw:
       self.add_bindings()

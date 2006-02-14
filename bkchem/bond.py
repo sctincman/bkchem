@@ -1361,8 +1361,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     elif self.atom2 == a1:
       self.atom2 = a2
     else:
-      warn("not bonds' atom in bond.change_atoms()", UserWarning, 2)
-
+      warn("not bonds' atom in bond.change_atoms(): "+str( a1), UserWarning, 2)
 
 
 
