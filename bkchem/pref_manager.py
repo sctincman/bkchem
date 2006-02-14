@@ -101,4 +101,7 @@ class pref_manager( object):
 
 
   def write_to_file( self, f):
-    f.write( self.write_to_dom().toxml().encode('utf-8'))
+    try:
+      f.write( self.write_to_dom().toxml().encode('utf-8'))
+    except:
+      print "failed to write to the personal preference file"

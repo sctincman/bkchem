@@ -1,3 +1,22 @@
+RELEASE 0.11.3
+----------------------------------------
+
+ * bugfixes - "Paste" menu entry is activated when something is copied
+	    - crashes of copying of molecules imported from CML were fixed
+	    - saving of user preferences on bkchem exit was made more error-proof
+               - unicode names of directories are handled properly
+               - corrupt preference files do not render bkchem unstartable
+	    - check of cairo PDF export availability is performed on start
+
+ * changes - due to changes in cairo, PDF support is not always available, even if 
+	     cairo is installed (depends on cairo version)
+	   - README file was updated to include InChI information
+
+ * acknowledgments - all those who reported bugs to me
+
+
+
+
 RELEASE 0.11.2
 ----------------------------------------
 
