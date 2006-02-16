@@ -97,7 +97,7 @@ class transform:
     """computes the scaling for 'x' and 'y' separately"""
     x01, y01, x02, y02 = [0, 0, 100, 100]
     x11, y11, x12, y12 = self.transform_4( (x01, y01, x02, y02))
-    return (x02-x01)/(x12-x11), (y02-y01)/(y12-y11)
+    return (x12-x11)/(x02-x01), (y12-y11)/(y02-y01)
 
 
 

@@ -138,6 +138,7 @@ class tk2cairo:
 
 
   def _draw_text( self, item):
+
     text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
     x1, y1, x2, y2 = self.transformer.transform_4( self.paper.bbox( item))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
@@ -145,7 +146,6 @@ class tk2cairo:
     font_family = conf['family']
     slant =  'italic' in conf['slant'] and cairo.FONT_SLANT_ITALIC or cairo.FONT_SLANT_NORMAL
     weight = 'bold' in conf['weight'] and cairo.FONT_WEIGHT_BOLD or cairo.FONT_WEIGHT_NORMAL
-    y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent']
 
     # color
     self.set_cairo_color( self.paper.itemcget( item, 'fill'))
@@ -157,18 +157,24 @@ class tk2cairo:
     cairo_size = self.p2c_width( conf['size'])
     self.context.set_font_size( cairo_size)
     asc, desc, height, _a, _b = self.context.font_extents()
-    
+
     while self.p2c_width( afont.metrics()['linespace']) > height:
-      cairo_size += 1
+      dh = self.p2c_width( afont.metrics()['linespace']) - height
+      if dh > 3:
+        cairo_size += int( 0.5*dh)
+      else:
+        cairo_size += 1
       self.context.set_font_size( cairo_size)
       asc, desc, height, _a, _b = self.context.font_extents()
 
     xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
-
+    y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent']
     self.context.new_path()
     self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
     self.context.text_path( text)
     self.context.fill()
+
+
 
 
 
