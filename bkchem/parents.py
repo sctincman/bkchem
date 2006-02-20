@@ -89,7 +89,8 @@ class id_enabled( simple_parent):
 
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
-    other.id = self.id
+    pass
+    #other.id = self.id
 
     
 
