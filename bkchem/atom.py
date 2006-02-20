@@ -554,7 +554,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     """returns tuple of (element, charge) or None if the text does not match this pattern"""
     ### this could be a static method
     splitter = re.compile("^([a-z]+)([0-9]*)([+-]?)$")
-    matcher = re.compile( "^([a-z]+)([0-9][+-])?$")
+    matcher = re.compile( "^([a-z]+)([0-9]*[+-])?$")
     if not matcher.match( txt.lower()):
       return None
     match = splitter.match( txt.lower())

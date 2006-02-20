@@ -200,6 +200,13 @@ def atom_valency( objs):
   return "valency", None
 
 
+def mark_size( objs):
+  os = [o for o in objs if hasattr( o, "marks")]
+  if os:
+    return "mark_size", (_("Mark size"), (2,4,6,8,10,12,14,16,18,20,25,30,40,50))
+  else:
+    return "mark_size", None
+
 
 # CONFIGURABLE VALUES
 
@@ -241,7 +248,7 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
 
 ## WHAT OBJECT HAS WHAT CONFIGURABLE
 
-configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number', 'free_sites', show_number,atom_valency),
+configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number', 'free_sites', show_number, atom_valency, mark_size),
                 'text':    ('font_size',),
                 'bond':    ('line_width','bond_width','order','auto_bond_sign'),
                 'plus':    ('font_size',),
@@ -291,6 +298,11 @@ def set_symbol( a, name):
   [b.redraw() for b in v.get_neighbor_edges()]
 
 
+def set_mark_size( o, value):
+  for mark in o.marks:
+    mark.size = value
+  o.redraw()
+
 
 
 setter_functions = {'show': set_show,
@@ -298,7 +310,8 @@ setter_functions = {'show': set_show,
                     'auto_bond_sign': set_bond_auto_sign,
                     'bond_width': set_bond_width,
                     'symbol': set_symbol,
-                    'group': set_symbol}
+                    'group': set_symbol,
+                    'mark_size': set_mark_size}
 
 
 # COMMANDS
