@@ -48,7 +48,8 @@ def mol_to_smiles( mol):
 def read_inchi( text, paper):
   mol = oasa.inchi.text_to_mol( text, calc_coords=1, include_hydrogens=False)
   #oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
-  return oasa_mol_to_bkchem_mol( mol, paper)
+  m = oasa_mol_to_bkchem_mol( mol, paper)
+  return m
   
 def mol_to_inchi( mol, program):
   m = bkchem_mol_to_oasa_mol( mol)
@@ -127,6 +128,8 @@ def oasa_atom_to_bkchem_atom( a, paper, m):
   at.z = a.z
   at.set_name( a.symbol, interpret=1)
   at.charge = a.charge
+  at.number = a.properties_.get( 'inchi_number', None)
+  at.show_number = False
   return at
 
 def oasa_bond_to_bkchem_bond( b, paper):
