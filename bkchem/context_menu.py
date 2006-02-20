@@ -276,7 +276,8 @@ def set_show( o, value):
 def set_show_hydrogens( o, value):
   o.show_hydrogens = value
   o.redraw()
-  [b.redraw() for b in o.paper.bonds_to_update()]
+  print o.paper.bonds_to_update()
+  [b.redraw() for b in o.paper.bonds_to_update( exclude_selected_bonds=False)]
   
 
 def set_bond_auto_sign( o, value):

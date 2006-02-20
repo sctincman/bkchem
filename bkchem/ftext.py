@@ -73,7 +73,8 @@ class ftext:
           scale = 0.7
         else:
           scale = 1
-          ch.ignore_y = True
+        # we ignore subscripts and superscript in bbox calculation
+        ch.ignore_y = True
         ch.ignore_x = True
         if Set(('sub','sup')) & last_attrs:
           self._current_x = last_x
@@ -139,7 +140,7 @@ class ftext:
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     xbbox = list( self.canvas.list_bbox( [i.item for i in self.items if not i.ignore_x]))
     ybbox = list( self.canvas.list_bbox( [i.item for i in self.items if not i.ignore_y]))
-    bbox = [xbbox[0], ybbox[1], xbbox[2], ybbox[3]-2]
+    bbox = [xbbox[0], ybbox[1], xbbox[2], ybbox[3]]
 ##     for i in self.items:
 ##       if i.ignore_y:
 ##         x1, y1, x2, y2 = self.canvas.bbox( i.item)
