@@ -436,6 +436,7 @@ class edit_mode( basic_mode):
         atoms = misc.filter_unique( [o for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]
+        [self.reposition_bonds_around_atom( o) for o in atoms]
         [self.reposition_bonds_around_bond( o) for o in self._bonds_to_update]
         Store.app.paper.handle_overlap()
         Store.app.paper.start_new_undo_record()
