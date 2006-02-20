@@ -226,6 +226,19 @@ class atom( drawable_chem_vertex, oasa.atom):
   ## // -------------------- END OF PROPERTIES --------------------------
 
 
+  ## -------------------- OVERRIDES OF CHEM_VERTEX METHODS --------------------
+
+  def decide_pos( self):
+    if self.show_hydrogens or self.free_valency:
+      # in case hydrogens are shown, use the chem_vertex.decide_pos algorithm
+      drawable_chem_vertex.decide_pos( self)
+    else:
+      #  otherwise always center the first letter
+      self.pos = "center-first"
+  
+
+  ## // -------------------- END --------------------
+
 
   def set_name( self, name, interpret=1, check_valency=1, occupied_valency=None):
     ret = self._set_name( name, interpret=interpret, check_valency=check_valency, occupied_valency=occupied_valency)

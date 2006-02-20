@@ -222,8 +222,8 @@ class vertex_common( object):
     angle = (angles[i] +angles[i+1]) / 2
 
     # in visible text x,y are not on the center, therefore we compensate for it
-    if self.show:
-      y -= 0.166 * self.font_size
+#    if self.show:
+#      y -= 0.166 * self.font_size
     
     return x +dist*cos( angle), y +dist*sin( angle)
 
