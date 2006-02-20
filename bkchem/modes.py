@@ -1319,7 +1319,7 @@ class rotate_mode( edit_mode):
         angle2 = round( dy1 / 50.0, 2)
         tr = transform3d.transform3d()
         tr.set_move( -self._centerx, -self._centery, 0)
-        tr.set_rotation( angle2, angle1, 0)
+        tr.set_rotation( -angle2, angle1, 0)
         tr.set_move( self._centerx, self._centery, 0)
         for a in self._rotated_mol.atoms:
           x, y, z = a.x, a.y, a.z
