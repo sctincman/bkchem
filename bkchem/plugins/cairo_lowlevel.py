@@ -55,7 +55,8 @@ class cairo_exporter( plugin.exporter):
     pass
 
 
-  def get_scaling( self):
+  def get_scaling( self, x, y):
+    """x and y are the original sizes of the drawing"""
     return 1, 1
 
 
@@ -70,19 +71,27 @@ class cairo_exporter( plugin.exporter):
                                 _('There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu.'))
         return 0
 
-      scalex, scaley = self.get_scaling()
       x1, y1, x2, y2 = self.paper.get_cropping_bbox()
+      dx = x2-x1
+      dy = y2-y1
+      scalex, scaley = self.get_scaling( dx, dy)
+      if not scalex:
+        # the setting of scaling was canceled
+        return 0
+
       self.transformer = transform.transform()
       self.transformer.set_move( -x1, -y1)
       self.transformer.set_scaling_xy( scalex, scaley)
-      dx = x2-x1
-      dy = y2-y1
     else:
-      scalex, scaley = self.get_scaling()
-      self.transformer = transform.transform()
-      self.transformer.set_scaling_xy( scalex, scaley)
       dx = Screen.mm_to_px( self.paper._paper_properties['size_x'])
       dy = Screen.mm_to_px( self.paper._paper_properties['size_y'])
+      scalex, scaley = self.get_scaling( dx, dy)
+      if not scalex:
+        # the setting of scaling was canceled
+        return 0
+
+      self.transformer = transform.transform()
+      self.transformer.set_scaling_xy( scalex, scaley)
 
     x1, y1, x2, y2 = self.transformer.transform_4( (0, 0, dx, dy))
     self.pagesize = (x2-x1, y2-y1)

@@ -47,6 +47,15 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
     return context
 
 
+  def get_scaling( self, x, y):
+    d = scale_dialog( self.paper, x, y)
+    if d.result:
+      return d.result
+    else:
+      return None, None
+
+
+
   def save( self):
     self.surface.write_to_png( self.filename)
     self.surface.finish()
@@ -57,3 +66,172 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
 name = "PNG (Cairo)"
 extensions = [".png"]
 exporter = png_cairo_exporter
+
+
+
+
+import Pmw, Tkinter
+from singleton_store import Screen
+
+
+class scale_dialog:
+  """dialog used to get ratio for scaling in percent"""
+  def __init__( self, parent, x, y):
+    self.orig_x = int( x)
+    self.orig_y = int( y)
+    
+
+    self.dialog = Pmw.Dialog( parent,
+                              buttons=(_('OK'), _('Cancel')),
+                              defaultbutton=_('OK'),
+                              title=_('PNG resolution'),
+                              command=self.done)
+
+    Tkinter.Label(self.dialog.interior(), text=_("Set the PNG picture resolution using one of the bellow criteria.")).pack( pady=10, anchor="w", expand="1", padx=5)
+
+
+    # X RATIO
+    self.entryx = Pmw.Counter( self.dialog.interior(),
+                               labelpos = 'w',
+                               label_text=_("Scale X (in %):"),
+                               entryfield_value = 100,
+                               entryfield_validate={ 'validator':'real', 'min':0, 'max':10000},
+                               entry_width = 5,
+                               entryfield_modifiedcommand = self._scalex_changed,
+                               increment = 10,
+                               datatype = 'real')
+    self.entryx.pack(pady=3, anchor='n', padx=10)
+    # Y RATIO
+    self.entryy = Pmw.Counter( self.dialog.interior(),
+                               labelpos = 'w',
+                               label_text=_("Scale Y (in %):"),
+                               entryfield_value = 100,
+                               entryfield_validate={ 'validator':'real', 'min':0, 'max':10000},
+                               entry_width = 5,
+                               entryfield_modifiedcommand = self._scaley_changed,
+                               increment = 10,
+                               datatype = 'real')
+    self.entryy.pack(pady=3, anchor='n', padx=10)
+
+    Tkinter.Label(self.dialog.interior(), text=" ").pack( pady=1, anchor="w", expand="1")
+
+
+    # X RES
+    self.entry_resx = Pmw.Counter( self.dialog.interior(),
+                               labelpos = 'w',
+                               label_text=_("Size X (in px):"),
+                               entryfield_value = self.orig_x,
+                               entryfield_validate={ 'validator':'integer', 'min':0, 'max':100000},
+                               entry_width = 5,
+                               entryfield_modifiedcommand = self._resx_changed,
+                               increment = 10,
+                               datatype = 'integer')
+    self.entry_resx.pack(pady=3, anchor='n', padx=10)
+    # Y RES
+    self.entry_resy = Pmw.Counter( self.dialog.interior(),
+                               labelpos = 'w',
+                               label_text=_("Size Y (in px):"),
+                               entryfield_value = self.orig_y,
+                               entryfield_validate={ 'validator':'integer', 'min':0, 'max':100000},
+                               entry_width = 5,
+                               entryfield_modifiedcommand = self._resy_changed,
+                               increment = 10,
+                               datatype = 'integer')
+    self.entry_resy.pack(pady=3, anchor='n', padx=10)
+
+
+    Tkinter.Label(self.dialog.interior(), text=" ").pack( pady=1, anchor="w", expand="1")
+
+
+    # DPI
+    self.entry_dpi = Pmw.Counter( self.dialog.interior(),
+                               labelpos = 'w',
+                               label_text=_("Resolution (dpi):"),
+                               entryfield_value = round( Screen.dpi),
+                               entryfield_validate={ 'validator':'real', 'min':0, 'max':10000},
+                               entry_width = 5,
+                               entryfield_modifiedcommand = self._dpi_changed,
+                               increment = 10,
+                               datatype = 'real')
+    self.entry_dpi.pack( pady=3, anchor='n', padx=10)
+
+
+    Tkinter.Label(self.dialog.interior(), text=" ").pack( pady=1, anchor="w", expand="1")
+
+##     self.preserve_ratio = Tkinter.IntVar()
+##     self.preserve_ratio_entry = Tkinter.Checkbutton( self.dialog.interior(),
+##                                                      text=_('Preserve aspect ratio?'),
+##                                                      variable = self.preserve_ratio,
+##                                                      command = self._preserve_ratio_changed)
+##     self.preserve_ratio_entry.pack( anchor="w")
+##     self.preserve_ratio.set( 1)
+
+
+    self.dialog.activate()
+
+
+  def done( self, button):
+    """called on dialog exit"""
+    if not button or button == _('Cancel'):
+      self.result = None
+    else:
+      self.result = (float( self.entryx.get())/100.0, float( self.entryy.get())/100.0) #, self.preserve_center.get())
+    self.dialog.deactivate()
+
+
+  def _set_value( self, entry, value):
+    entry.component('entry').delete( 0, Tkinter.END)
+    entry.component('entry').insert( 0, value)
+
+
+
+  def _set_values( self, rx, ry, x, y, dpi):
+    if rx: self._set_value( self.entryx, rx)
+    if ry: self._set_value( self.entryy, ry)
+    if x: self._set_value( self.entry_resx, int( x))
+    if y: self._set_value( self.entry_resy, int( y))
+    if dpi: self._set_value( self.entry_dpi, round( dpi))
+
+
+  def _scalex_changed( self):
+    scale = float( self.entryx.get())
+    res_x = self.orig_x * scale * 0.01
+    res_y = self.orig_y * scale * 0.01
+    dpi = Screen.dpi * scale * 0.01
+    self._set_values( False, scale, res_x, res_y, dpi)
+
+
+  def _scaley_changed( self):
+    scale = float( self.entryy.get())
+    res_x = self.orig_x * scale * 0.01
+    res_y = self.orig_y * scale * 0.01
+    dpi = Screen.dpi * scale * 0.01
+    self._set_values( scale, False, res_x, res_y, dpi)
+
+
+  def _resx_changed( self):
+    res_x = int( self.entry_resx.get())
+    scale = 100.0 * res_x / self.orig_x
+    res_y = self.orig_y * scale * 0.01
+    dpi = Screen.dpi * scale * 0.01
+    self._set_values( scale, scale, False, res_y, dpi)
+
+
+  def _resy_changed( self):
+    res_y = int( self.entry_resy.get())
+    scale = 100.0 * res_y / self.orig_y
+    res_x = self.orig_x * scale * 0.01
+    dpi = Screen.dpi * scale * 0.01
+    self._set_values( scale, scale, res_x, False, dpi)
+
+
+
+  def _dpi_changed( self):
+    dpi = float( self.entry_dpi.get())
+    scale = 100.0 * dpi / Screen.dpi
+    res_x = self.orig_x * scale * 0.01
+    res_y = self.orig_y * scale * 0.01
+    self._set_values( scale, scale, res_x, res_y, False)
+
+    
+
