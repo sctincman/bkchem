@@ -305,6 +305,11 @@ def set_mark_size( o, value):
   o.redraw()
 
 
+def set_symbol_pos( o, value):
+  o.pos = value
+  o.redraw()
+  [b.redraw() for b in o.neighbor_edges]
+
 
 setter_functions = {'show': set_show,
                     'show_hydrogens': set_show_hydrogens,
@@ -312,7 +317,8 @@ setter_functions = {'show': set_show,
                     'bond_width': set_bond_width,
                     'symbol': set_symbol,
                     'group': set_symbol,
-                    'mark_size': set_mark_size}
+                    'mark_size': set_mark_size,
+                    'pos': set_symbol_pos}
 
 
 # COMMANDS
