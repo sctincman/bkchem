@@ -6,19 +6,27 @@ RELEASE 0.11.4
             - "atoms" like H2 are now properly parsed and understood
             - direction of 3D rotation was fixed (thanks to Armando Navarro Vazquez for bugfix)
             - PNG export text positioning fixed
+            - crash of file saving in the German localization was fixed (thanks to Stefan Duemke for bugreport)
 
 
- * enhancements - size of marks is now configurable from the context menu of the atom
+ * enhancements - Cairo PNG export plugin now allows users to set resolution for the exported picture
+                - size of marks is now configurable from the context menu of the atom
                 - atoms of molecules generated from InChI have their number set
                   to their number in InChI, to show it use context menu - "Show number"
+                - parsing of linear formula fragments was improved
 
 
  * changes - bkchem now ignores subscripts and superscripts when calculating
              bounding boxes for text, this changes rendering of formulas.
            - automatic mark positioning was changes slightly for free electron pairs not
-             to appear skewed
+             to appear skewed when placed on horizontally aligned molecules
+
 
  * acknowledgments - Armando Navarro Vazquez for 3D rotation bugfix
+                   - Stefan Duemke for bugreport
+
+
+
 
 
 
@@ -37,6 +45,8 @@ RELEASE 0.11.3
 	   - README file was updated to include InChI information
 
  * acknowledgments - all those who reported bugs to me
+
+
 
 
 

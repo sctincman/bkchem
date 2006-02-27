@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: Mon Nov 29 14:38:10 2004\n"
-"PO-Revision-Date: 2005-03-02 18:26+0100\n"
+"PO-Revision-Date: 2006-02-23 18:11+0100\n"
 "Last-Translator: Martin Ballaschk <sorbischegurke@gmx.de>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -118,7 +118,7 @@ msgstr ""
 "Informationen siehe auch die Datei 'gpl.txt' im Programmverzeichnis.\n"
 "\n"
 "Die GNU GPL erlaubt es, BKchem zu studieren, zu verändern und\n"
-"weiterzugeben, solange dies unter den Bedingungen der GPL geschieht.\n"
+"weiterzugeben, solange dies unter den Bedingungen der GPL geschieht."
 
 #: ../../bkchem/data.py:76
 msgid ""
@@ -142,7 +142,7 @@ msgstr ""
 "Starten von BKchem.\n"
 "\n"
 "Leider konnte kein Splash-Bild\n"
-"gefunden werden :(\n"
+"gefunden werden :("
 
 #: ../../bkchem/data.py:88
 msgid ""
@@ -845,11 +845,11 @@ msgstr ""
 
 #: ../../bkchem/main.py:670
 msgid "saved to %s file: %s"
-msgstr "Datei %s wurde gespeichert"
+msgstr "%s Datei %s wurde gespeichert"
 
 #: ../../bkchem/main.py:674
 msgid "failed to save to %s file: %s"
-msgstr "Datei %s konnte nicht gespeichert werden"
+msgstr "%s Datei %s konnte nicht gespeichert werden"
 
 #: ../../bkchem/main.py:696 ../../bkchem/main.py:867
 msgid "Forget changes in currently visiting file?"
@@ -951,9 +951,11 @@ msgid ""
 "There is no support for stereo-related information, for the square brackets [] and a few more things.\n"
 "\n"
 "Enter SMILES:"
-msgstr "Zurzeit sind nicht alle Funktionen von SMILES durch BKchem unterstützt, \n"
+msgstr ""
+"Zurzeit sind nicht alle Funktionen von SMILES durch BKchem unterstützt, \n"
 "wie Informationen zur Stereochemie, eckige Klammern [] und anderes mehr.\n"
 "\n"
+"SMILES eingeben:"
 
 #: ../../bkchem/main.py:1023 ../../bkchem/main.py:1060
 msgid "Error processing %s"
