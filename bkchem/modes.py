@@ -502,7 +502,7 @@ class edit_mode( basic_mode):
       if self._move_sofar <= 1.0:
         return
 
-      if self.focused and (self.focused.object_type == 'arrow' or self.focused.object_type == 'polygon'):
+      if self.focused and (self.focused.object_type == 'arrow' or self.focused.object_type == 'polygon' or self.focused.object_type == "polyline"):
         for p in self.focused.points:
           if p in Store.app.paper.selected:
             self._moving_selected_arrow = self.focused
