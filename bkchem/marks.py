@@ -148,7 +148,7 @@ class mark( simple_parent):
     if cls:
       auto = (package.getAttribute( 'auto') != None and package.getAttribute( 'auto')) or 0
       x, y, z = Screen.read_xml_point( package)
-      size = package.getAttribute( 'size') and int( package.getAttribute( 'size')) or None
+      size = package.getAttribute( 'size') and float( package.getAttribute( 'size')) or None
       if size:
         m = cls( atom, x, y, size=size, auto=int(auto))
       else:

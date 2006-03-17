@@ -64,6 +64,9 @@ class SVG_writer( XML_writer):
   def __init__( self, paper):
     XML_writer.__init__( self, paper)
     self.full_size = not (paper.get_paper_property( 'crop_svg') and len( paper.stack))
+    # shortcut for color conversion
+    self.cc = self.paper.any_color_to_rgb_string
+    
 
   def construct_dom_tree( self, top_levels):
     """constructs the SVG dom from all top_levels"""
@@ -138,7 +141,7 @@ class SVG_writer( XML_writer):
     line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
     l_group = dom_extensions.elementUnder( self.group, 'g',
                                            (('stroke-width', str( line_width)),
-                                            ('stroke', b.line_color)))
+                                            ('stroke', self.cc( b.line_color))))
     if sum( [int( a.show) for a in b.atoms]) == 2:
       # both atoms are visible, it does not look good with round caps
       l_group.setAttribute('stroke-linecap', 'butt')
@@ -168,8 +171,8 @@ class SVG_writer( XML_writer):
       for i in items:
         coords = self.paper.coords( b.item)
         line = dom_extensions.elementUnder( l_group, 'polygon',
-                                            (( 'fill', b.line_color),
-                                             ( 'stroke', b.line_color),
+                                            (( 'fill', self.cc( b.line_color)),
+                                             ( 'stroke', self.cc( b.line_color)),
                                              ( 'points', list_to_svg_points( coords))))
     elif b.type in 'h':
       for i in items:
@@ -208,8 +211,8 @@ class SVG_writer( XML_writer):
                                                             ('markerUnits','userSpaceOnUse'),
                                                             ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
                                                             ('orient','auto'),
-                                                            ('stroke', a.line_color),
-                                                            ('fill', a.line_color)))
+                                                            ('stroke', self.cc( a.line_color)),
+                                                            ('fill', self.cc( a.line_color))))
       dom_extensions.elementUnder( arrow, 'path', (('d', 'M %d %d L 0 0 L %d %d L 0 %d z'%(d2, d3, d2-d1, d3, 2*d3)),))
     if a.pin == 2 or a.pin == 3:
       d1, d2, d3 = a.shape
@@ -218,8 +221,8 @@ class SVG_writer( XML_writer):
                                                             ('markerUnits','userSpaceOnUse'),
                                                             ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
                                                             ('orient','auto'),
-                                                            ('stroke', a.line_color),
-                                                            ('fill', a.line_color)))
+                                                            ('stroke', self.cc( a.line_color)),
+                                                            ('fill', self.cc( a.line_color))))
       dom_extensions.elementUnder( arrow, 'path', (('d', 'M 0 %d L %d 0 L %d %d L %d %d z'%(d3, d2, d1, d3, d2, 2*d3)),))
 
     if a.spline and len( a.points) > 2:
@@ -244,7 +247,7 @@ class SVG_writer( XML_writer):
                                           (( 'd', ps),
                                            ( 'stroke-width', str( a.line_width)),
                                            ( 'fill', 'none'),
-                                           ( 'stroke', a.line_color)))
+                                           ( 'stroke', self.cc( a.line_color))))
     else:
       ps = ''
       for (x,y) in [p.get_xy() for p in a.points]:
@@ -253,7 +256,7 @@ class SVG_writer( XML_writer):
                                           (( 'points', ps),
                                            ( 'stroke-width', str( a.line_width)),
                                            ( 'fill', 'none'),
-                                           ( 'stroke', a.line_color)))
+                                           ( 'stroke', self.cc( a.line_color))))
     if a.pin == 1 or a.pin == 3:
       line.setAttribute( 'marker-end','url(#Arrow'+str(i)+')')
     if a.pin == 2 or a.pin == 3:
@@ -272,8 +275,8 @@ class SVG_writer( XML_writer):
                                     ( 'y', str( y)),
                                     ( 'width', str( x2-x)),
                                     ( 'height', str( y2-y)),
-                                    ( 'fill', t.area_color),
-                                    ( 'stroke', t.area_color)))
+                                    ( 'fill', self.cc( t.area_color)),
+                                    ( 'stroke', self.cc( t.area_color))))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
     text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document)
@@ -281,7 +284,7 @@ class SVG_writer( XML_writer):
                                          ( "y", str( y1)),
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
-                                         ( 'fill', t.line_color),
+                                         ( 'fill', self.cc( t.line_color)),
                                          ( 'textLength', "%d" % (x2-x))))
     self.group.appendChild( text)
 
@@ -297,15 +300,15 @@ class SVG_writer( XML_writer):
                                     ( 'y', str( y)),
                                     ( 'width', str( x2-x)),
                                     ( 'height', str( y2-y)),
-                                    ( 'fill', p.area_color),
-                                    ( 'stroke', p.area_color)))
+                                    ( 'fill', self.cc( p.area_color)),
+                                    ( 'stroke', self.cc( p.area_color))))
     y1 += (y2-y)/4.0
     text = dom_extensions.textOnlyElementUnder( self.group, 'text', '+',
                                                 (('font-size', "%d%s" % (p.font_size, pt_or_px)),
                                                  ('font-family', p.font_family),
                                                  ( "x", str( x)),
                                                  ( "y", str( round( y1))),
-                                                 ( 'fill', p.line_color)))
+                                                 ( 'fill', self.cc( p.line_color))))
 
   def add_atom( self, a):
     """adds atom item to SVG document"""
@@ -320,8 +323,8 @@ class SVG_writer( XML_writer):
                                       ( 'y', str( y)),
                                       ( 'width', str( x2-x)),
                                       ( 'height', str( y2-y)),
-                                      ( 'fill', a.area_color),
-                                      ( 'stroke', a.area_color)))
+                                      ( 'fill', self.cc( a.area_color)),
+                                      ( 'stroke', self.cc( a.area_color))))
 
       # some fine tuning 
       y1 += a.font.metrics('descent') #(y2-y)/4.0
@@ -332,7 +335,7 @@ class SVG_writer( XML_writer):
                                            ( "y", str( y1)),
                                            ( "font-family", a.font_family),
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
-                                           ( 'fill', a.line_color)))
+                                           ( 'fill', self.cc( a.line_color))))
       # set the text length but only for text longer than threshold
       if (x2-x) > 50:
         text.setAttribute( 'textLength', "%.1f" % (x2-x))
@@ -353,10 +356,9 @@ class SVG_writer( XML_writer):
                                        ( 'width', str( x2-x1)),
                                        ( 'height', str( y2-y1)),
                                        ( 'stroke-width', str( o.line_width))))
-    if o.area_color:
-      el.setAttribute( 'fill', o.area_color)
-    if o.line_color:
-      el.setAttribute( 'stroke', o.line_color)
+
+    el.setAttribute( 'fill', self.cc( o.area_color))
+    el.setAttribute( 'stroke', self.cc( o.line_color))
       
 
     
@@ -368,11 +370,9 @@ class SVG_writer( XML_writer):
                                        ( 'rx', str( (x2-x1)/2)),
                                        ( 'ry', str( (y2-y1)/2)),
                                        ( 'stroke-width', str( o.line_width))))
-    if o.area_color:
-      el.setAttribute( 'fill', o.area_color)
-    if o.line_color:
-      el.setAttribute( 'stroke', o.line_color)
 
+    el.setAttribute( 'fill', self.cc( o.area_color))
+    el.setAttribute( 'stroke', self.cc( o.line_color))
 
 
   def add_polygon( self, o):
@@ -383,10 +383,10 @@ class SVG_writer( XML_writer):
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
                                          ( 'fill-rule', 'evenodd')))
-    if o.area_color:
-      poly.setAttribute( 'fill', o.area_color)
-    if o.line_color:
-      poly.setAttribute( 'stroke', o.line_color)
+
+    poly.setAttribute( 'fill', self.cc( o.area_color))
+    poly.setAttribute( 'stroke', self.cc( o.line_color))
+
 
 
 
@@ -398,8 +398,8 @@ class SVG_writer( XML_writer):
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
                                          ( 'fill', 'none')))
-    if o.line_color:
-      poly.setAttribute( 'stroke', o.line_color)
+
+    poly.setAttribute( 'stroke', self.cc( o.line_color))
 
 
 

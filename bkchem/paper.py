@@ -1310,11 +1310,17 @@ class chem_paper( Canvas, object):
 
 
   def scale_object( self, o, tr, ratio, scale_font=1):
+    """scale_font now also refers to scaling of marks"""
     if o.object_type == 'molecule':
       o.transform( tr)
       if scale_font:
         [i.scale_font( ratio) for i in o.atoms]
         [i.redraw() for i in o.atoms if i.show]
+      if scale_font:
+        for a in o.atoms:
+          for m in a.marks:
+            m.size *= ratio
+            m.redraw()
     if o.object_type in ('arrow','polygon','polyline'):
       for i in o.points:
         x, y = tr.transform_xy( i.x, i.y)

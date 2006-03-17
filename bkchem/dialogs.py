@@ -82,7 +82,7 @@ class scale_dialog:
 
     self.scale_fonts = Tkinter.IntVar()
     self.scale_fonts_entry = Tkinter.Checkbutton( self.dialog.interior(),
-                                                       text=_('Scale font sizes?'),
+                                                       text=_('Scale font and mark sizes?'),
                                                        variable = self.scale_fonts)
     self.scale_fonts_entry.pack( anchor="w")
     self.scale_fonts.set( 1)
