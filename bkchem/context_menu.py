@@ -32,6 +32,7 @@ import parents
 import oasa
 
 
+
 from singleton_store import Store
 
 
@@ -90,6 +91,8 @@ class context_menu( Tkinter.Menu):
     i += self.register_command_by_object_type( _("Center bond"), ('bond',), center)
     i += self.register_command_by_class_name( _("Expand group"), ('group',), expand_groups)
     i += self.register_command_by_object_type( _("Set atom number"), ('atom',), set_atom_number)
+    i += self.register_command_through_filter( mark_template_atom_filter, objs)
+    i += self.register_command_through_filter( mark_template_bond_filter, objs)
 
     # common commands
     if len( [o for o in self.selected if o.object_type != 'mark']):
@@ -162,6 +165,17 @@ class context_menu( Tkinter.Menu):
     return True
 
 
+  def register_command_through_filter( self, filter_f, objs):
+    ret = filter_f( objs)
+    if ret:
+      label, callback, apply_to = ret
+      return self._register_command( label, apply_to, callback)
+    else:
+      return False
+      
+
+
+
 
   def apply_command( self, callback, apply_to):
     callback( apply_to)
@@ -206,6 +220,28 @@ def mark_size( objs):
     return "mark_size", (_("Mark size"), (2,4,6,8,10,12,14,16,18,20,25,30,40,50))
   else:
     return "mark_size", None
+
+
+
+# command filters
+
+def mark_template_atom_filter( objs):
+  atms = [o for o in objs if isinstance( o, oasa.graph.vertex) and o.degree==1]
+  if len( atms) == 1:
+    return ("Mark as template atom"), set_template_atom, atms
+  else:
+    return None
+
+
+
+def mark_template_bond_filter( objs):
+  bonds = [o for o in objs if isinstance( o, oasa.bond)]
+  if len( bonds) == 1:
+    return ("Mark as template bond"), set_template_bond, bonds
+  else:
+    return None
+
+
 
 
 # CONFIGURABLE VALUES
@@ -338,3 +374,21 @@ def expand_groups( groups):
 
 def set_atom_number( atoms):
   interactors.set_atom_number( atoms)
+
+
+
+def set_template_atom( objs):
+  if len( objs) == 1:
+    a = objs[0]
+    if isinstance( a, oasa.graph.vertex):
+      a.molecule.mark_template_atom( a)
+
+
+
+def set_template_bond( objs):
+  if len( objs) == 1:
+    b = objs[0]
+    if isinstance( b, oasa.bond):
+      b.molecule.mark_template_bond( b)
+
+

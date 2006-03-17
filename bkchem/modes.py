@@ -1154,19 +1154,10 @@ class template_mode( edit_mode):
 
   def _mark_focused_as_template_atom_or_bond( self):
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
-      self.focused.molecule.t_atom = self.focused
+      self.focused.molecule.mark_template_atom( self.focused)
       Store.log( _("focused atom marked as 'template atom'")) 
     elif self.focused and isinstance( self.focused, bond):
-      atms = self.focused.atom1.neighbors + self.focused.atom2.neighbors
-      atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
-      coords = [a.get_xy() for a in atms]
-      line = self.focused.atom1.get_xy() + self.focused.atom2.get_xy()
-      if reduce( operator.add, [geometry.on_which_side_is_point( line, xy) for xy in coords], 0) > 0:
-        self.focused.molecule.t_bond_first = self.focused.atom1
-        self.focused.molecule.t_bond_second = self.focused.atom2
-      else:
-        self.focused.molecule.t_bond_first = self.focused.atom2
-        self.focused.molecule.t_bond_second = self.focused.atom1
+      self.focused.molecule.mark_template_bond( self.focused)
       Store.log( _("focused bond marked as 'template bond'")) 
 
 

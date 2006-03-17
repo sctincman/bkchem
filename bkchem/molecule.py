@@ -24,6 +24,7 @@ from __future__ import division
 from __future__ import generators
 
 from math import atan2, sin, cos, pi, sqrt
+import operator
 import misc
 import time
 import geometry
@@ -42,6 +43,8 @@ from textatom import textatom
 from queryatom import queryatom
 from fragment import fragment
 import bkchem_exceptions
+
+
 
 from sets import Set
 
@@ -665,3 +668,27 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       self.fragments.remove( f)
       return True
     return False
+
+
+
+  def mark_template_bond( self, b):
+    if b in self.edges:
+      atms = b.atom1.neighbors + b.atom2.neighbors
+      atms = misc.difference( atms, [b.atom1, b.atom2])
+      coords = [a.get_xy() for a in atms]
+      line = b.atom1.get_xy() + b.atom2.get_xy()
+      if reduce( operator.add, [geometry.on_which_side_is_point( line, xy) for xy in coords], 0) > 0:
+        self.t_bond_first = b.atom1
+        self.t_bond_second = b.atom2
+      else:
+        self.t_bond_first = b.atom2
+        self.t_bond_second = b.atom1
+    else:
+      raise ValueError, "submitted bond does not belong to this molecule"
+
+
+  def mark_template_atom( self, v):
+    if v in self.vertices:
+      self.t_atom = v
+    else:
+      raise ValueError, "submitted atom does not belong to this molecule"
