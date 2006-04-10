@@ -20,7 +20,7 @@
 import xml.dom.minidom as dom
 import dom_extensions
 import types
-import os
+import os, sys
 
 
 
@@ -76,7 +76,11 @@ class pref_manager( object):
         value = eval( dom_extensions.getAllTextFromElement( child))
       else:
         itype = types.__dict__[ itype]
-        value = itype( dom_extensions.getAllTextFromElement( child))
+        try:
+          value = itype( dom_extensions.getAllTextFromElement( child))
+        except:
+          print >> sys.stderr, "Preference manager: ignoring value %s of type %s" % (dom_extensions.getAllTextFromElement( child), itype)
+          break
       self.add_preference( name, value)
 
 

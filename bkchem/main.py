@@ -273,6 +273,8 @@ class BKchem( Tk):
       ( _("Options"), 'command', _('Language'), None, _("Set the language used after next restart"), lambda : interactors.select_language( self.paper), None),
       ( _("Options"), 'command', _('INChI program path'), None, _("To use INChI in BKchem you must first give it a path to the INChI program here"),
         interactors.ask_inchi_program_path, None),
+      ( _("Options"), 'separator'),      
+      ( _("Options"), 'command', _('Preferences'), None, _("Preferences"), self.ask_preferences, None),
 
       # help menu
       ( _('Help'), 'menu', _("Help and information about the program"), "right"),
@@ -406,6 +408,13 @@ class BKchem( Tk):
 
 
   def init_singletons( self):
+    # logger
+    Store.logger = logger.logger()
+    Store.log = Store.logger.log
+
+    # id_manager
+    Store.id_manager = id_manager()
+
     # template_manager
     Store.tm = template_manager()
     Store.tm.add_template_from_CDML( "templates.cdml")
@@ -418,14 +427,6 @@ class BKchem( Tk):
     Store.gm = template_manager()
     Store.gm.add_template_from_CDML( "groups.cdml")
     Store.gm.add_template_from_CDML( "groups2.cdml")
-
-
-    # logger
-    Store.logger = logger.logger()
-    Store.log = Store.logger.log
-
-    # id_manager
-    Store.id_manager = id_manager()
 
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
@@ -1412,6 +1413,11 @@ Enter INChI:""")
     self._recent_files.insert( 0, name)
     if len( self._recent_files) > 5:
       self._recent_files = self._recent_files[0:5]
+
+
+
+  def ask_preferences( self):
+    pd = dialogs.preferences_dialog( self, Store.pm)
 
 
 

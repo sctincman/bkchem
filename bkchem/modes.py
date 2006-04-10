@@ -348,6 +348,7 @@ class edit_mode( basic_mode):
     self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
     self.register_key_sequence( 'Return', self._set_old_name_to_selected) 
     self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
+    self.register_key_sequence( 'BackSpace', self._delete_selected, use_warning=0)
     # object related key bindings
     self.register_key_sequence( 'C-o C-e', self._expand_groups)
     # emacs like key bindings

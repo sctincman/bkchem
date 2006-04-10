@@ -265,9 +265,8 @@ class SVG_writer( XML_writer):
 
   def add_text( self, t):
     """adds text item to SVG document"""
-    item = t.item
     x1, y1 = t.get_xy()
-    x, y, x2, y2 = self.paper.bbox( item)
+    x, y, x2, y2 = t.ftext.bbox( complete=True)
     if t.area_color:
       # it is not needed to export the rectangle in case its transparent
       dom_extensions.elementUnder( self.group, 'rect',

@@ -22,6 +22,9 @@
 
 import xml.dom.minidom as dom
 import dom_extensions
+from singleton_store import Store
+
+
 
 def ftext_to_svg_dom( ftext):
   fd = dom.parseString( '<ftext>%s</ftext>' % ftext).childNodes[0]
@@ -58,7 +61,10 @@ def ftext_dom_to_svg_dom( ftext, doc, add_to=None):
     for el in ftext.childNodes:
       ftext_dom_to_svg_dom( el, doc, add_to=my_svg)
   else:
-    element.appendChild( doc.createTextNode( ftext.nodeValue))
+    if Store.pm.get_preference( "replace_minus"):
+      element.appendChild( doc.createTextNode( ftext.nodeValue.replace( "-", unichr( 8722))))
+    else:
+      element.appendChild( doc.createTextNode( ftext.nodeValue))
 
   return element
 

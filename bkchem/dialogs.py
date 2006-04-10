@@ -809,199 +809,56 @@ class standard_values_dialog:
 
 class preferences_dialog:
 
-  def __init__( self, parent, standard):
+  def __init__( self, parent, preferences):
     self.parent = parent
-    self.standard = standard
+    self.preferences = preferences
     self.dialog = Pmw.Dialog( parent,
-                              buttons=(_('OK'), _('Cancel'), _('Save')),
+                              buttons=(_('OK'), _('Cancel')),
                               defaultbutton=_('OK'),
-                              title=_('Standard values'),
+                              title=_('Preferences'),
                               command=self.done,
                               master='parent')
     self.body = self.dialog.interior()
     #self.body.pack( fill='both', expand=1)
+    self.replace_minus = Tkinter.IntVar()
+    self.replace_minus.set( self.preferences.get_preference( "replace_minus"))
+    self.use_real_minus = Tkinter.IntVar()
+    self.use_real_minus.set( self.preferences.get_preference( "use_real_minus"))
+
     self.draw()
     self.dialog.activate()
+
+
 
   def draw( self):
     self.pages = Pmw.NoteBook( self.body)
     self.pages.pack( anchor='w', pady=0, padx=0, fill='both', expand=1)
     # COMMON
     common_page = self.pages.add( _('Common'))
-    # LINE
-    line_group = Pmw.Group( common_page, tag_text=_('Line'))
-    line_group.pack( fill='x')
-    # line width
-    self.line_width = widgets.WidthChooser( line_group.interior(), self.standard.line_width, label=_('Line width'))
-    self.line_width.pack( anchor='nw', padx=10, pady=5)
-    # COLORS
-    color_group = Pmw.Group( common_page, tag_text=_('Color'))
-    color_group.pack( fill='x')
-    # line color
-    self.line_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.line_color, text=_("Line color"))
-    self.line_color.pack( side='left', padx=10, pady=5)
-    # area color
-    self.area_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
-    self.area_color.pack( side='right', padx=10, pady=5)
+    # use real minus ?
+    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Use real minus chracter (instead of hyphen)?'),
+                                                variable=self.use_real_minus)
+    replace_minus_button.pack( anchor='w', padx=10, pady=10)
 
-    # BOND
-    bond_group = self.pages.add( _("Bond")) #Pmw.Group( self.body, tag_text=_('Bond'))
-    # bond width
-    self.bond_width = widgets.WidthChooser( bond_group, self.standard.bond_width, label=_('Bond width'))
-    self.bond_width.pack( anchor='ne', padx=10, pady=5)
-    # wedge bond width
-    self.wedge_width = widgets.WidthChooser( bond_group, self.standard.wedge_width, label=_('Wedge/Hatch width'))
-    self.wedge_width.pack( anchor='ne', padx=10, pady=5)
-    # bond length
-    self.bond_length = widgets.LengthChooser( bond_group, self.standard.bond_length, label=_('Bond length'))
-    self.bond_length.pack( anchor='ne', padx=10, pady=5)
-    # double bond length ratio
-    self.double_length_ratio = widgets.RatioCounter( bond_group,
-                                                     self.standard.double_length_ratio,
-                                                     label=_('Double-bond length ratio'))
-    self.double_length_ratio.pack( anchor='ne', padx=10, pady=5)
-
-    # FONT
-    font_group = self.pages.add( _('Font'))
-    # font size
-    self.font_size = widgets.FontSizeChooser( font_group, self.standard.font_size)
-    self.font_size.pack( anchor = 'nw')
-    # font family
-    self.font_family = widgets.FontFamilyChooser( font_group, self.standard.font_family)
-    self.font_family.pack( anchor="nw", side = 'bottom')
-
-    # PAPER
-    # paper type
-    self.paper = self.parent.paper
-    paper_group = self.pages.add(_('Paper'))
-    if self.paper._paper_properties['type'] == 'custom':
-      t = _('Custom')
-    else:
-      t = self.paper._paper_properties['type']
-    self.paper_type_chooser = Pmw.OptionMenu( paper_group,
-                                              items=data.paper_types.keys(), #+[_('Custom')],
-                                              initialitem = t,
-                                              labelpos = 'w',
-                                              label_text = _('Paper size')+':',
-                                              menubutton_width = 10)
-    self.paper_type_chooser.pack( anchor='w', padx=10, pady=10)
-    # paper orientation
-    self.paper_orientation_chooser = Pmw.RadioSelect( paper_group,
-                                                      buttontype='radiobutton',
-                                                      orient='vertical',
-                                                      pady=0)
-    self.paper_orientation_chooser.add(_('Portrait'))
-    self.paper_orientation_chooser.add(_('Landscape'))
-    self.paper_orientation_chooser.pack( anchor='w', padx=10, pady=10)
-    if self.paper._paper_properties['orientation'] == 'portrait':
-      i = 0
-    else:
-      i = 1
-    self.paper_orientation_chooser.invoke( i)
-    # full svg or just the filled part
-    self.crop_paper_in_svg = Tkinter.IntVar()
-    self.crop_paper_in_svg.set( self.paper.get_paper_property( 'crop_svg'))
-    crop = Tkinter.Checkbutton( paper_group, text=_('Auto crop image in SVG?'), variable=self.crop_paper_in_svg)
-    crop.pack( anchor='w', padx=10, pady=10)
-    # crop margin
-    margin = self.paper.get_paper_property( 'crop_margin')
-    self.margin_entry = Pmw.Counter( paper_group,
-                                     labelpos = 'w',
-                                     label_text=_("Margin for cropped image (in pixels):"),
-                                     entryfield_value = margin,
-                                     entryfield_validate={ 'validator':'integer', 'min':0, 'max':1000},
-                                     entry_width = 5,
-                                     increment = 5,
-                                     datatype = 'integer')
-    self.margin_entry.pack( anchor='w', padx=10, pady=10)
-
-
-    # DIALOG WIDE PART
-    # how to apply?
-    apply_group = Pmw.Group( self.body, tag_text=_('Apply'))
-    apply_group.pack( fill='x', padx=5, pady=5)
-    # apply all or only the changed ones? - it must be created before apply_button because
-    # of the callback that operates on activity of apply_button2
-    self.apply_button2 = Pmw.RadioSelect( apply_group.interior(),
-                                         buttontype = 'radiobutton',
-                                         orient = 'vertical',
-                                         pady = 0)
-    self.apply_button2.add( _("changed values only"))
-    self.apply_button2.add( _("all values"))
-    self.apply_button2.invoke( 0)
-    # apply to current drawing?
-    self.apply_button = Pmw.RadioSelect( apply_group.interior(),
-                                         buttontype = 'radiobutton',
-                                         command = self._apply_button_callback,
-                                         orient = 'vertical',
-                                         pady = 0)
-    self.apply_button.add( _("to new drawings only"))
-    self.apply_button.add( _("to selected and new drawings (no resize)"))
-    self.apply_button.add( _("to the whole drawing (no resize)"))
-    self.apply_button.invoke( 0)
-    self.apply_button.pack( padx=0, pady=0, anchor='w')
-    # we pack the button2 here to get a better organization
-    self.apply_button2.pack( padx=0, pady=10, anchor='w')
+    # replace hyphens with minuses in export?
+    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Replace hyphens with minus?'),
+                                                variable=self.replace_minus)
+    replace_minus_button.pack( anchor='w', padx=10, pady=10)
 
     self.pages.setnaturalsize()
 
 
+
   def done( self, button):
-    if button == _('Save'):
-      a = self.parent.paper.save_personal_standard( self.get_the_standard())
-      if a:
-        tkMessageBox.showinfo( _("Standard saved"),
-                               _("The standard was successfully saved as personal standard to %s") % a)
-      else:
-        tkMessageBox.showerror( _("Standard not saved"),
-                                _("""For some reason the standard couldn't be saved. Probably the right location
-                                for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."""))
-      return 
     self.dialog.deactivate()
     if button == _('OK'):
-      self.standard = self.get_the_standard()
-      self.apply = self.apply_button.index( self.apply_button.getvalue())
-      self.apply_all = self.apply_button2.index( self.apply_button2.getvalue())
-      self.change = 1
+      self.preferences.add_preference( "replace_minus", self.replace_minus.get())
+      self.preferences.add_preference( "use_real_minus", self.use_real_minus.get())
     else:
-      self.change = 0
-      self.apply_all = 0
+      pass
 
-  def get_the_standard( self):
-    st = classes.standard()
-    st.bond_width = self.bond_width.getvalue()
-    st.line_width = self.line_width.getvalue()
-    st.wedge_width = self.wedge_width.getvalue()
-    st.bond_length = self.bond_length.getvalue()
-    st.double_length_ratio = float( self.double_length_ratio.getvalue())
-    st.line_color = self.line_color.color
-    st.area_color = self.area_color.color
-    st.font_family = self.font_family.getcurselection()[0]
-    st.font_size = int( self.font_size.get())
-    # paper properties
-    # type
-    type = self.paper_type_chooser.getvalue()
-    if type == _('Custom'):
-      type = 'custom'
-    st.paper_type = type
-    # orientation
-    if self.paper_orientation_chooser.getvalue() == _('Portrait'):
-      self.paper_orientation = 'portrait'
-    else:
-      st.paper_orientation = 'landscape'
-    # crop_svg
-    st.paper_crop_svg = self.crop_paper_in_svg.get()
-    # crop_margin
-    st.paper_crop_margin = self.margin_entry.getvalue()
-    return st
 
-  def _apply_button_callback( self, tag):
-    if self.apply_button.index( tag) != 0:
-      self.apply_button2.invoke(0)
-      self.apply_button2.configure( Button_state = 'normal')
-    else:
-      self.apply_button2.invoke(1)
-      self.apply_button2.configure( Button_state = 'disabled')
+
 
 
 

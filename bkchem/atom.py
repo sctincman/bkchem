@@ -33,7 +33,7 @@ import re
 import debug
 
 import oasa
-from singleton_store import Screen
+from singleton_store import Screen, Store
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -210,7 +210,7 @@ class atom( drawable_chem_vertex, oasa.atom):
       if self.charge -self.get_charge_from_marks() > 0:
         ch = '<sup>%s+</sup>' % ch
       else:
-        ch = u'<sup>%s-</sup>' % ch
+        ch = u'<sup>%s%s</sup>' % (ch, Store.pm.get_preference( 'use_real_minus') and unichr( 8722) or "-")
     else:
       ch = ''
     if self.pos == 'center-last':
