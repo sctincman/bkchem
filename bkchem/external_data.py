@@ -188,19 +188,20 @@ class external_data_manager( object):
 
 
   def get_package( self, doc):
-    if not self.records:
+    if not self.records or sum( map( len, self.records.values())) == 0:
       return None
     e = doc.createElement( 'external-data')
     for dclass in self.records:
-      ecls = dom_ext.elementUnder( e, "class", (("name", dclass),))
-      for obj in self.records[ dclass]:
-        eobj = dom_ext.elementUnder( ecls, "object", (("ref", obj.id),("type", obj.object_type)))
-        for cat in self.records[ dclass][ obj]:
-          val = self.get_data( dclass, obj, cat)
-          if hasattr( val, 'id'):
-            val = val.id
-          ecat = dom_ext.elementUnder( eobj, "value", (("category", cat),
-                                                       ("value", str( val))))
+      if self.records[ dclass]:
+        ecls = dom_ext.elementUnder( e, "class", (("name", dclass),))
+        for obj in self.records[ dclass]:
+          eobj = dom_ext.elementUnder( ecls, "object", (("ref", obj.id),("type", obj.object_type)))
+          for cat in self.records[ dclass][ obj]:
+            val = self.get_data( dclass, obj, cat)
+            if hasattr( val, 'id'):
+              val = val.id
+            ecat = dom_ext.elementUnder( eobj, "value", (("category", cat),
+                                                         ("value", str( val))))
     return e
 
 

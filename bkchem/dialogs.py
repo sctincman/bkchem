@@ -569,6 +569,24 @@ class file_properties_dialog:
                                      increment = 5,
                                      datatype = 'integer')
     self.margin_entry.pack( anchor='n', padx=10, pady=10)
+    # use real minus ?
+    f1 = Tkinter.Frame( self.dialog.interior())
+    f1.pack(  anchor='w', padx=10, pady=10)
+    self.use_real_minus = Tkinter.IntVar()
+    use_real_minus_button = Tkinter.Checkbutton( f1,
+                                                 text=_('Use real minus chracter (instead of hyphen)?'),
+                                                 variable = self.use_real_minus)
+    self.use_real_minus.set( self.paper.get_paper_property( 'use_real_minus'))
+    use_real_minus_button.pack( anchor='w', padx=0, pady=0)
+
+    # replace hyphens with minuses in export?
+    self.replace_minus = Tkinter.IntVar()
+    replace_minus_button = Tkinter.Checkbutton( f1,
+                                                text=_('Replace hyphens with minus in SVG export?'),
+                                                variable = self.replace_minus)
+    self.replace_minus.set( self.paper.get_paper_property( 'replace_minus'))
+    replace_minus_button.pack( anchor='w', padx=0, pady=0)
+
 
 
 
@@ -585,7 +603,9 @@ class file_properties_dialog:
       self.paper.set_paper_properties( type=type,
                                        orientation=o,
                                        crop_svg=self.crop_paper_in_svg.get(),
-                                       crop_margin=int( self.margin_entry.getvalue()))
+                                       crop_margin=int( self.margin_entry.getvalue()),
+                                       use_real_minus=int( self.use_real_minus.get()),
+                                       replace_minus=int( self.replace_minus.get()))
       self.paper.changes_made = 1
 
 
@@ -841,7 +861,7 @@ class preferences_dialog:
     replace_minus_button.pack( anchor='w', padx=10, pady=10)
 
     # replace hyphens with minuses in export?
-    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Replace hyphens with minus?'),
+    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Replace hyphens with minus in SVG export?'),
                                                 variable=self.replace_minus)
     replace_minus_button.pack( anchor='w', padx=10, pady=10)
 

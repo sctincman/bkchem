@@ -267,6 +267,7 @@ class SVG_writer( XML_writer):
     """adds text item to SVG document"""
     x1, y1 = t.get_xy()
     x, y, x2, y2 = t.ftext.bbox( complete=True)
+    _x, y, _x2, y2 = t.ftext.bbox( complete=False)
     if t.area_color:
       # it is not needed to export the rectangle in case its transparent
       dom_extensions.elementUnder( self.group, 'rect',
@@ -278,13 +279,13 @@ class SVG_writer( XML_writer):
                                     ( 'stroke', self.cc( t.area_color))))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
-    text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document)
+    text = svg_help.ftext_dom_to_svg_dom( t.get_parsed_text(), self.document, replace_minus=t.paper.get_paper_property('replace_minus'))
     dom_extensions.setAttributes( text, (( "x", str( x)),
                                          ( "y", str( y1)),
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
                                          ( 'fill', self.cc( t.line_color)),
-                                         ( 'textLength', "%d" % (x2-x))))
+                                         ( 'textLength', "%d" % (x2-x+len( [1 for i in t.xml_ftext if i=="-" and t.paper.get_paper_property( 'replace_minus')])))))
     self.group.appendChild( text)
 
   def add_plus( self, p):

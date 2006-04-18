@@ -601,7 +601,9 @@ class chem_paper( Canvas, object):
       else:
         cr = 1
       cm = int( paper.getAttribute( 'crop_margin') or self.standard.paper_crop_margin)
-      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr, crop_margin=cm)
+      use_real_minus = int( paper.getAttribute( 'use_real_minus') or Store.pm.get_preference( "use_real_minus") or 0)
+      replace_minus = int( paper.getAttribute( 'replace_minus') or Store.pm.get_preference( "replace_minus") or 0)
+      self.set_paper_properties( type=t, orientation=o, x=sx, y=sy, crop_svg=cr, crop_margin=cm, use_real_minus=use_real_minus, replace_minus=replace_minus)
     else:
       self.set_default_paper_properties()
     # viewport
@@ -689,7 +691,9 @@ class chem_paper( Canvas, object):
                                          attributes = (('type', self._paper_properties['type']),
                                                        ('orientation', self._paper_properties['orientation']),
                                                        ('crop_svg', '%d' % self._paper_properties['crop_svg']),
-                                                       ('crop_margin', '%d' % self._paper_properties['crop_margin'])
+                                                       ('crop_margin', '%d' % self._paper_properties['crop_margin']),
+                                                       ('use_real_minus', '%d' % self._paper_properties['use_real_minus']),
+                                                       ('replace_minus', '%d' % self._paper_properties['replace_minus'])
                                                        ))
     if self._paper_properties['type'] == 'custom':
       dom_extensions.setAttributes( paper, (('size_x', '%d' % self._paper_properties['size_x']),
@@ -1625,7 +1629,10 @@ class chem_paper( Canvas, object):
     self._paper_properties['crop_svg'] = self.standard.paper_crop_svg
     # crop margin
     self._paper_properties['crop_margin'] = self.standard.paper_crop_margin
-    
+    self._paper_properties['use_real_minus'] = Store.pm.get_preference( "use_real_minus") or 0
+    self._paper_properties['replace_minus'] = Store.pm.get_preference( "replace_minus") or 0
+
+
     
 
   def create_background( self):
@@ -1639,7 +1646,7 @@ class chem_paper( Canvas, object):
     
 
 
-  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None, crop_margin=None):
+  def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None, crop_margin=None, use_real_minus=None, replace_minus=None):
     if all:
       self._paper_properties = copy.copy( all)
       return
@@ -1666,6 +1673,15 @@ class chem_paper( Canvas, object):
 
     if crop_margin != None:
       self._paper_properties['crop_margin'] = crop_margin
+
+    if use_real_minus != None:
+      old = 'use_real_minus' in self._paper_properties and self._paper_properties['use_real_minus'] or 0
+      self._paper_properties['use_real_minus'] = use_real_minus
+      if old != use_real_minus:
+        [i.redraw() for i in self.stack]
+
+    if replace_minus != None:
+      self._paper_properties['replace_minus'] = replace_minus
 
     self.create_background()
 

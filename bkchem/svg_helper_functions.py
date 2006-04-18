@@ -32,7 +32,7 @@ def ftext_to_svg_dom( ftext):
   return ftext_dom_to_svg_dom( fd, svg)
 
 
-def ftext_dom_to_svg_dom( ftext, doc, add_to=None):
+def ftext_dom_to_svg_dom( ftext, doc, add_to=None, replace_minus=False):
   if not add_to:
     element = doc.createElement( 'text')
   else:
@@ -61,7 +61,7 @@ def ftext_dom_to_svg_dom( ftext, doc, add_to=None):
     for el in ftext.childNodes:
       ftext_dom_to_svg_dom( el, doc, add_to=my_svg)
   else:
-    if Store.pm.get_preference( "replace_minus"):
+    if replace_minus:
       element.appendChild( doc.createTextNode( ftext.nodeValue.replace( "-", unichr( 8722))))
     else:
       element.appendChild( doc.createTextNode( ftext.nodeValue))

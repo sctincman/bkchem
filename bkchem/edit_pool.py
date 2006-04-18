@@ -26,6 +26,8 @@ import config, re, string
 from groups_table import groups_table
 import misc
 from keysymdef import keysyms
+import os
+from xml.sax import saxutils
 
 from singleton_store import Store
 
@@ -107,6 +109,18 @@ class editPool( Frame):
       Store.app.balloon.bind( self.__dict__[i], i)
       self.__dict__[ i].pack( side="left")
 
+    # special characters
+    pix = Store.app.request( 'pixmap', name='specialchar')
+    self.specialCharButton = Button( self,
+                                      image=pix,
+                                      text=_('Special Character'),
+                                      command=self._specialCharButtonPressed,
+                                      state='disabled',
+                                      bd=config.border_width)
+    Store.app.balloon.bind( self.specialCharButton, _('Insert a special character'))
+    self.specialCharButton.pack( side='left')
+    
+
       
 
   def _interpretButtonPressed( self, *e):
@@ -129,6 +143,7 @@ class editPool( Frame):
     self._setText( re.sub( "\d+", '<sub>\g<0></sub>', self.editPool.get()))
     self._quit()
 
+
   def _cancel( self, e):
     self._setText( None)
     self._quit()
@@ -139,6 +154,7 @@ class editPool( Frame):
     self._normaly_terminated = 1
     self.quit()
 
+
   def _disable( self):
     self.interpretButton.configure( state='disabled')
     self.numbersToSubButton.configure( state='disabled')
@@ -148,6 +164,7 @@ class editPool( Frame):
     self.bold.configure( state='disabled')
     self.superscript.configure( state='disabled')
     self.subscript.configure( state='disabled')
+    self.specialCharButton.configure( state='disabled')
     
   def _enable( self):
     self.interpretButton.configure( state='normal')
@@ -158,6 +175,7 @@ class editPool( Frame):
     self.bold.configure( state='normal')
     self.superscript.configure( state='normal')
     self.subscript.configure( state='normal')
+    self.specialCharButton.configure( state='normal')
 
   def _setText( self, text):
     self.text = text
@@ -204,3 +222,43 @@ class editPool( Frame):
         self.editPool.delete( "anchor", "insert")
       self.editPool.insert( 'insert', unicode( keysyms[ event.keysym]))
       return "break"
+
+
+  def _specialCharButtonPressed( self):
+    dialog = special_character_menu( self._insertText)
+    dialog.post( self.specialCharButton.winfo_rootx(), self.specialCharButton.winfo_rooty())
+
+
+  def _insertText( self, text):
+    if text != None:
+      self.editPool.insert( Tkinter.INSERT, text)
+    self.grab_set()
+
+
+
+
+class special_character_menu( Tkinter.Menu):
+
+  chars = {'minus': "&#8722;",
+           'arrow-left': "&#x2190;",
+           'arrow-right': "&#x2192;"
+           }
+
+  def __init__( self, callback, **kw):
+    self.callback = callback
+    Tkinter.Menu.__init__( self, Store.app, tearoff=0, **kw)
+    keys = self.chars.keys()
+    keys.sort()
+    for k in keys:
+      self.add_command( label=k, command=misc.lazy_apply( self.itemselected, (k,)))
+    self.char = None
+
+
+  def itemselected( self, k):
+    self.callback( saxutils.unescape( self.chars[k]))
+
+
+  def post( self, x, y):
+    Tkinter.Menu.post( self, x, y)
+    if os.name != 'nt':
+      self.grab_set()
