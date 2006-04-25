@@ -241,7 +241,8 @@ class special_character_menu( Tkinter.Menu):
 
   chars = {'minus': "&#8722;",
            'arrow-left': "&#x2190;",
-           'arrow-right': "&#x2192;"
+           'arrow-right': "&#x2192;",
+           'nu': "&#x3bd;"
            }
 
   def __init__( self, callback, **kw):

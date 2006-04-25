@@ -345,6 +345,10 @@ class chem_paper( Canvas, object):
     else:
       a = None
 
+    # this may cause some trouble later on
+    # it was hacked because of the http_server2 functionality, but could break unexpected things
+    self.__in = Store.app.mode.focused
+
     if a and a != self.__in:
       self.__in = a
       Store.app.mode.enter_object( self.__in, event)

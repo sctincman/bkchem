@@ -48,11 +48,14 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
 
 
   def get_scaling( self, x, y):
-    d = scale_dialog( self.paper, x, y)
-    if d.result:
-      return d.result
+    if self.interactive:
+      d = scale_dialog( self.paper, x, y)
+      if d.result:
+        return d.result
+      else:
+        return None, None
     else:
-      return None, None
+      return 1.0, 1.0
 
 
 

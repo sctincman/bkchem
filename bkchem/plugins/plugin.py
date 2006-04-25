@@ -52,6 +52,7 @@ class exporter:
 
   def __init__( self, paper):
     self.paper = paper
+    self.interactive = True # whether the exporter should ask anything
 
   def on_begin( self):
     return 1

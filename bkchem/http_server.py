@@ -84,7 +84,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       self.return_error()
     else:
       Store.app.paper.clean_paper()
-      Store.app.paper.create_rectangle()
+      Store.app.paper.create_background()
       Store.app.read_smiles( path_list[0])
       self.serve__content_svg()
 

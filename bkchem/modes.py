@@ -653,18 +653,17 @@ class edit_mode( basic_mode):
           Store.app.paper.bell()
           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
           return
-      vtype = Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
-      # inform the user what was set
-      interactors.log_atom_type( vtype)
-      # cleanup
-      [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
-      [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
-      Store.app.paper.add_bindings()
+      self.set_given_name_to_selected( name, interpret=Store.app.editPool.interpret)
+
 
 
   def _set_old_name_to_selected( self):
-    name = Store.app.editPool.text
-    vtype = Store.app.paper.set_name_to_selected( name, interpret=Store.app.editPool.interpret)
+    self.set_given_name_to_selected( Store.app.editPool.text)
+
+
+
+  def set_given_name_to_selected( self, name, interpret=1):
+    vtype = Store.app.paper.set_name_to_selected( name, interpret=interpret)
     # inform the user what was set
     interactors.log_atom_type( vtype)
     # cleanup

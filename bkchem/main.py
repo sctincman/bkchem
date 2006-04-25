@@ -132,7 +132,7 @@ class BKchem( Tk):
 
     self.update_menu_after_selection_change( None)
 
-    #self.start_server()
+    self.start_server()
 
 
   def initialize_batch( self):
@@ -1058,9 +1058,11 @@ class BKchem( Tk):
 
 
 
-  def plugin_export( self, pl_id, filename=None):
+  def plugin_export( self, pl_id, filename=None, interactive=True):
+    """interactive attribute tells whether the plugin should be run in interactive mode"""
     plugin = self.plugins[ pl_id]
     exporter = plugin.exporter( self.paper)
+    exporter.interactive = interactive
     if not exporter.on_begin():
       return
     if not filename:
@@ -1298,7 +1300,7 @@ Enter INChI:""")
 
   def start_server( self):
 
-    import http_server
+    import http_server2 as http_server
     
     server_address = ('', 8008)
     httpd = http_server.bkchem_http_server( server_address, http_server.bkchem_http_handler)

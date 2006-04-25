@@ -166,6 +166,8 @@ class mark( simple_parent):
             value = val
           setattr( m, attr, value)
 
+      if hasattr( m, "_after_read_package"):
+        m._after_read_package()
       return m
     else:
       raise ValueError, "no such mark type %s" % typ
@@ -494,6 +496,10 @@ class text_mark( mark):
                                                  ( 'fill', self.atom.line_color)))
     return e
 
+
+  def _after_read_package( self):
+    self.size = int( self.size)
+      
 
 
 
