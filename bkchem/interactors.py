@@ -312,6 +312,7 @@ def create_fragment_from_selected( paper):
 
   mol = top_levels[0]
   es = [e for e in paper.selected if e in mol.edges]
+  vs = [v for v in paper.selected if v in mol.vertices]
 
   # ask for name
   dial = Pmw.PromptDialog( paper,
@@ -321,10 +322,10 @@ def create_fragment_from_selected( paper):
                            buttons=(_('OK'),_('Cancel')))
   res = dial.activate()
   if res == _('OK'):
-    if mol.create_fragment( dial.get(), es):
-      Store.log( _("The bonds were used for creation of a new molecular fragment."), message_type="info")
+    if mol.create_fragment( dial.get(), es, vs):
+      Store.log( _("The bonds and atoms were used for creation of a new molecular fragment."), message_type="info")
     else:
-      Store.log( _("The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
+      Store.log( _("The bonds and atoms could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
 
 
 
@@ -393,7 +394,7 @@ def convert_selected_to_linear_fragment( paper):
     else:
       changes = changes or change
       if changes:
-        mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), type="linear_form")
+        mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), vs, type="linear_form")
 
   if changes:
     paper.start_new_undo_record()

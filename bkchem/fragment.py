@@ -29,7 +29,7 @@ from bkchem_exceptions import bkchem_fragment_error
 class fragment( simple_parent):
 
   meta__undo_properties = ('name', 'id')
-  meta__undo_copy = ('edges', 'properties')
+  meta__undo_copy = ('edges', 'vertices', 'properties')
   meta__allowed_type = ('implicit', 'explicit', 'linear_form')
   # implicit - created by bkchem without users request - to mark expanded groups etc.
   # explicit - created by user
@@ -82,8 +82,8 @@ class fragment( simple_parent):
 
   def get_all_vertices( self):
     vs = Set( self.vertices)
-    for e in self.edges:
-      vs |= Set( e.vertices)
+    #for e in self.edges:
+    #  vs |= Set( e.vertices)
     return vs
 
   # property for easier manipulation

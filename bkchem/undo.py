@@ -270,6 +270,8 @@ class state_record:
     to_redraw.sort( _redraw_sorting)
     for o in to_redraw:
       if o not in deleted and o.object_type != 'molecule':
+        if hasattr( o, "after_undo"):
+          o.after_undo()
         if o.object_type == 'atom':
           o.redraw( suppress_reposition=1)
         else:

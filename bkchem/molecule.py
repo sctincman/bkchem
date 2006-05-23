@@ -634,10 +634,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   # fragment support
 
-  def create_fragment( self, name, edges, type="explicit"):
-    if self.defines_connected_subgraph_e( edges):
+  def create_fragment( self, name, edges, vertices, type="explicit", strict=False):
+    if (strict and self.defines_connected_subgraph_e( edges)) or not strict:
       nf = fragment( Store.id_manager.generate_id( "frag"), name=name, type=type)
       nf.edges = Set( edges)
+      nf.vertices = Set( vertices)
       self.fragments.add( nf)
       return nf
     else:

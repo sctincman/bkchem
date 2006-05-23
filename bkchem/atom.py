@@ -53,7 +53,6 @@ class atom( drawable_chem_vertex, oasa.atom):
                             'multiplicity', 'valency', 'free_sites')
 
 
-
   def __init__( self, standard=None, xy=(), package=None, molecule=None):
     drawable_chem_vertex.__init__( self, standard=standard, xy=xy, molecule=molecule)
     if xy:
@@ -585,4 +584,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       return None
 
 
-
+  def after_undo( self):
+    """this is run after undo"""
+    self._clean_cache()

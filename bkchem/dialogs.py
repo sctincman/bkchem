@@ -964,7 +964,7 @@ class fragment_dialog( Pmw.Dialog):
 
   def _delete_selected( self):
     if self.value:
-      mol = list( self.value.all_vertices)[0].molecule
+      mol = list( self.value.edges | self.value.vertices)[0].molecule
       mol.delete_fragment( self.value)
     self.list.setlist( self.get_all_fragments())
 

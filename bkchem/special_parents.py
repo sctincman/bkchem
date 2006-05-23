@@ -631,12 +631,12 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     if self.item:
       box = self.paper.bbox( self.item)
-      if Store.app.in_batch_mode:
-        # in batch mode the bboxes work really strangely and this fixes it somehow
-        length = self.font.measure( self.text)
-        return [box[0],box[1],box[0]+length,box[3]]
-      else:
-        return box
+      #if Store.app.in_batch_mode:
+      #  # in batch mode the bboxes work really strangely and this fixes it somehow
+      #  length = self.font.measure( self.text)
+      #  return [box[0],box[1],box[0]+length,box[3]]
+      #else:
+      return box
     else:
       # we have to calculate it, the atoms was not drawn yet
       length = self.font.measure( self.text)

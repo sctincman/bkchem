@@ -132,7 +132,7 @@ class BKchem( Tk):
 
     self.update_menu_after_selection_change( None)
 
-    self.start_server()
+    #self.start_server()
 
 
   def initialize_batch( self):
