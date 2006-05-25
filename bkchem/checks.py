@@ -24,6 +24,8 @@ throughout bkchem - mainly from paper and modules"""
 
 from sets import Set
 import interactors
+from singleton_store import Store
+
 
 
 def check_linear_fragments( paper):
@@ -37,19 +39,20 @@ def check_linear_fragments( paper):
           # something from the fragment was deleted
           es = f.edges & mol.edges
           vs = f.vertices & Set( mol.vertices)
-          if es and mol.defines_connected_subgraph_e( es):
+          if es or vs:
             f.edges = es
-            f.vertices = Set()
-          elif vs and mol.defines_connected_subgraph_v( vs):
-            f.edges = Set()
             f.vertices = vs
           else:
             to_del.add( f)
             continue
           
         # the fragment should be redrawn
-        vs = mol.edge_subgraph_to_vertex_subgraph( f.edges)
-        interactors.atoms_to_linear_fragment( mol, vs)
+        try:
+          interactors.atoms_to_linear_fragment( mol, f.vertices, bond_length=f.properties.get( 'bond_length',0))
+        except ValueError:
+          # the remains of the fragment are not consistent
+          Store.log( _('The linear form was no longer consistent - it has been removed'))
+          to_del.add( f)
 
     for f in to_del:
       mol.delete_fragment( f)

@@ -830,7 +830,7 @@ class BKchem( Tk):
       a = file
     if not a:
       return None
-    if replace or (self.paper.file_name['auto'] and not self.paper.changes_made):
+    if self.papers and (replace or (self.paper.file_name['auto'] and not self.paper.changes_made)):
       self.close_paper()
     p = self.add_new_paper( name=a)
     if p != 0:

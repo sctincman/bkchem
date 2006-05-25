@@ -133,7 +133,9 @@ class vertex_common( object):
 
 
   def _set_mark_helper( self, mark, sign=1):
-    pass
+    if mark == "atom_number":
+      if not self.get_marks_by_type( "atom_number"):
+        self.show_number = False
 
     
 
@@ -186,6 +188,14 @@ class vertex_common( object):
       bbox = self.bbox()
       return bbox[2]+2, bbox[1]
     
+    # deal with marks in linear_form
+
+    if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
+      if mark == "atom_number":
+        bbox = self.bbox()
+        return int( self.x-0.5*self.font_size), bbox[1]-2
+    
+
     if not self.show:
       dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
     else:
@@ -433,7 +443,12 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     name = '<ftext>%s</ftext>' % self.xml_ftext
     self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, pos=self.pos, fill=self.line_color)
     self.ftext.draw()
-    x1, y1, x2, y2 = self.ftext.bbox()
+    # should we want a complete bbox? (yes only for atoms in linear form)
+    if len( [x for x in self.molecule.get_fragments_with_vertex( self) if x.type=="linear_form" and x.properties.get('bond_length',0)>20]):
+      complete = True
+    else:
+      complete = False
+    x1, y1, x2, y2 = self.ftext.bbox( complete=complete)
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
     ## shrink the selector to improve appearance (y2-2)
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')

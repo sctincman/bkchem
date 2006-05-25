@@ -394,8 +394,9 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     for i in to_export:
       mol.appendChild( i.get_package( doc))
 
-    if not items:
-      # we do not save fragments if the molecule is not guaranteed to be saved whole
+    if 1: #not items:
+      # (we do not save fragments if the molecule is not guaranteed to be saved whole) old
+      # now the approach is - you must know what you do!
       self.check_fragments()
       [mol.appendChild( f.get_package( doc)) for f in self.fragments]
 
@@ -528,7 +529,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         # creating a fragment for implosion of the group
         edges = self.vertex_subgraph_to_edge_subgraph( to_draw)
         [e.draw() for e in edges]
-        self.create_fragment( a.symbol, edges, type="implicit")
+        self.create_fragment( a.symbol, edges, to_draw, type="implicit")
     self.redraw()
     
 
@@ -671,6 +672,24 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return False
 
 
+  def get_fragments_with_vertex( self, v):
+    fs = Set()
+    for f in self.fragments:
+      if v in f.vertices:
+        fs.add( f)
+    return fs
+
+
+  def get_fragments_with_edge( self, e):
+    fs = Set()
+    for f in self.fragments:
+      if e in f.edges:
+        fs.add( f)
+    return fs
+
+
+
+  # template support
 
   def mark_template_bond( self, b):
     if b in self.edges:

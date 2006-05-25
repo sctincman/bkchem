@@ -377,14 +377,15 @@ def select_language( paper):
 
 def convert_selected_to_linear_fragment( paper):
   # check the selection
+  bond_length = 10
   changes = False
   mols = [m for m in paper.selected_to_unique_top_levels()[0] if m.object_type == "molecule"]
   for mol in mols:
     vs = [v for v in mol.vertices if v in paper.selected]
     try:
-      change = atoms_to_linear_fragment( mol, vs)
+      change = atoms_to_linear_fragment( mol, vs, bond_length=bond_length)
     except ValueError:
-      Store.log( "the selection does not define connected subgraph", message_type="error")
+      Store.log( _("The selection does not define connected subgraph"), message_type="error")
       return
     except excs.bkchem_graph_error, e:
       if e.id == "circular_selection":
@@ -394,7 +395,8 @@ def convert_selected_to_linear_fragment( paper):
     else:
       changes = changes or change
       if changes:
-        mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), vs, type="linear_form")
+        f = mol.create_fragment( "linear_form", mol.vertex_subgraph_to_edge_subgraph( vs), vs, type="linear_form")
+        f.properties['bond_length'] = bond_length
 
   if changes:
     paper.start_new_undo_record()
@@ -405,7 +407,7 @@ def convert_selected_to_linear_fragment( paper):
 
 
 
-def atoms_to_linear_fragment( mol, vs):
+def atoms_to_linear_fragment( mol, vs, bond_length=10):
   changes = False
   if vs and mol.defines_connected_subgraph_v( vs):
     # the selection is connected
@@ -434,7 +436,7 @@ def atoms_to_linear_fragment( mol, vs):
       current.show_hydrogens = True
       current.redraw()
       if current != start:
-        dx = x - current.bbox()[0]
+        dx = x - current.bbox()[0] + bond_length
         dy = start.y - current.y
         # move all neighbors that are not selected with their fragments
         ps = mol.get_pieces_after_edge_removal( current_e)

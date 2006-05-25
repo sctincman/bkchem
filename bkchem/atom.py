@@ -480,8 +480,9 @@ class atom( drawable_chem_vertex, oasa.atom):
 
 
 
-  # overrides parents.vertex_common method
+  # overrides special_parents.drawable_chem_vertex method
   def _set_mark_helper( self, mark, sign=1):
+    drawable_chem_vertex._set_mark_helper( self, mark, sign=sign)
     if mark == 'plus':
       self.charge += 1*sign
     elif mark == 'minus':

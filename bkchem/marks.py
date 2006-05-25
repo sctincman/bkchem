@@ -146,7 +146,7 @@ class mark( simple_parent):
     typ = package.getAttribute( 'type')
     cls = globals().get( typ, None)
     if cls:
-      auto = (package.getAttribute( 'auto') != None and package.getAttribute( 'auto')) or 0
+      auto = 0 #package.getAttribute( 'auto') != None and package.getAttribute( 'auto')) or 0
       x, y, z = Screen.read_xml_point( package)
       size = package.getAttribute( 'size') and float( package.getAttribute( 'size')) or None
       if size:

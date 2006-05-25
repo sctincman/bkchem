@@ -2387,8 +2387,11 @@ class misc_mode( edit_mode):
     if self.focused and hasattr( self.focused, 'number'):
       self.focused.number = str( self._number)
       self._number += 1
+      for m in self.focused.get_marks_by_type( "atom_number"):
+        m.auto = False
+      
       Store.app.paper.start_new_undo_record()
-
+      
 
   def cleanup( self):
     Store.app.paper.remove_bindings()

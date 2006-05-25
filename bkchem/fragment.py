@@ -24,6 +24,7 @@ import xml.sax.saxutils
 from singleton_store import Store
 from parents import simple_parent
 from bkchem_exceptions import bkchem_fragment_error
+import types
 
 
 class fragment( simple_parent):
@@ -100,6 +101,15 @@ class fragment( simple_parent):
       dom_ext.elementUnder( el, "bond", (("id", e.id),))
     for v in self.vertices:
       dom_ext.elementUnder( el, "vertex", (("id", v.id),))
+    for k, v in self.properties.iteritems():
+      itype = 'UnicodeType'
+      for tn in types.__dict__:
+        if type( v) == types.__dict__[ tn]:
+          itype = tn
+          break
+      dom_ext.elementUnder( el, "property", (("name",str( k)),
+                                             ("value",str( v)),
+                                             ("type", itype)))
     return el
 
 
@@ -122,3 +132,9 @@ class fragment( simple_parent):
       except KeyError:
         raise bkchem_fragment_error( "inconsistent", "")
 
+    for p in dom_ext.simpleXPathSearch( doc, "property"):
+      k = p.getAttribute( "name")
+      v = p.getAttribute( "value")
+      t = p.getAttribute( "type")
+      typ = types.__dict__[ t]
+      self.properties[k] = typ( v)
