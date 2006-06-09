@@ -63,7 +63,8 @@ exporter = CML2_exporter
 
 class CML2_atom( CML.CML_atom):
 
-  def __init__( self, atom=None, cml=None):
+  def __init__( self, atom=None, cml=None, scaling=1.0):
+    self._scaling = scaling
     self.id = None
     self.symbol = None
     self.x = None

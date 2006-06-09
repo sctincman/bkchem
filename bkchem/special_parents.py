@@ -30,6 +30,7 @@ from singleton_store import Store, Screen
 from ftext import ftext
 import xml.dom.minidom as dom
 import tkFont
+import debug
 
 
 
@@ -96,9 +97,19 @@ class vertex_common( object):
 
 
 
+  def _mark_to_name_and_class( self, mark):
+    if type( mark) in (types.ClassType, types.TypeType):
+      return mark.__name__, mark
+    else:
+      return mark, marks.__dict__[ mark]
+
+
   def set_mark( self, mark='radical', angle='auto', draw=1):
-    """sets the mark and takes care of charge and multiplicity changes"""
-    if not self.meta__allowed_marks or mark in self.meta__allowed_marks:
+    """sets the mark and takes care of charge and multiplicity changes;
+    mark may be either the class or mark name"""
+    mark_name, _ = self._mark_to_name_and_class( mark)
+    
+    if not self.meta__allowed_marks or mark_name in self.meta__allowed_marks:
       m = self.create_mark( mark=mark, angle=angle)
       self._set_mark_helper( mark, sign=1)
       return m
@@ -133,7 +144,8 @@ class vertex_common( object):
 
 
   def _set_mark_helper( self, mark, sign=1):
-    if mark == "atom_number":
+    mark_name, _ = self._mark_to_name_and_class( mark)
+    if mark_name == "atom_number":
       if not self.get_marks_by_type( "atom_number"):
         self.show_number = False
 
@@ -144,14 +156,24 @@ class vertex_common( object):
   def create_mark( self, mark='radical', angle='auto', draw=1):
     """creates the mark, does not care about the chemical meaning of this"""
     # decide where to put the mark
+    mark_name, mark_class = self._mark_to_name_and_class( mark)
     if angle == 'auto':
       x, y = self.find_place_for_mark( mark)
     else:
+      if not self.show:
+        dist = 5 + round( mark_class.standard_size / 2)
+      else:
+        bbox = self.bbox()
+        x2 = self.x + round( cos( angle) *1000)
+        y2 = self.y + round( sin( angle) *1000)
+        x1, y1 = geometry.intersection_of_line_and_rect( (self.x,self.y,x2,y2), bbox, round_edges=0)      
+        dist = geometry.point_distance( self.x, self.y, x1, y1) + round( mark_class.standard_size / 2)
+        
       x = self.x + round( cos( angle) *dist)
       y = self.y + round( sin( angle) *dist)
       #ang = angle
 
-    m = marks.__dict__[ mark]( self, x, y, auto=(angle=='auto'))
+    m = mark_class( self, x, y, auto=(angle=='auto'))
     if draw:
       m.draw()
     self.marks.add( m)
@@ -177,29 +199,32 @@ class vertex_common( object):
 
 
 
-  def find_place_for_mark( self, mark):
+  def find_place_for_mark( self, mark, resolution=30):
+    """resolution says if the angles should be somehow 'rounded', it is given in degrees;
+    see geometry.point_on_circle for a similar thing"""
+    mark_name, mark_class = self._mark_to_name_and_class( mark)
 
     # deal with marks centered
-    if marks.__dict__[ mark].meta__mark_positioning == 'atom':
+    if mark_class.meta__mark_positioning == 'atom':
       return self.x, self.y
 
     # deal with statically positioned marks
-    if marks.__dict__[ mark].meta__mark_positioning == 'righttop':
+    if mark_class.meta__mark_positioning == 'righttop':
       bbox = self.bbox()
       return bbox[2]+2, bbox[1]
     
     # deal with marks in linear_form
 
     if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
-      if mark == "atom_number":
+      if mark_name == "atom_number":
         bbox = self.bbox()
         return int( self.x-0.5*self.font_size), bbox[1]-2
     
 
     if not self.show:
-      dist = 5 + round( marks.__dict__[ mark].standard_size / 2)
+      dist = 5 + round( mark_class.standard_size / 2)
     else:
-      dist = 0.75*self.font_size + round( marks.__dict__[ mark].standard_size / 2)
+      dist = 0.75*self.font_size + round( mark_class.standard_size / 2)
 
     atms = self.get_neighbors()
     x, y = self.get_xy()
@@ -230,12 +255,13 @@ class vertex_common( object):
     diffs = misc.list_difference( angles)
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
+    retx, rety = geometry.point_on_circle( x, y, dist, direction=(cos(angle), sin( angle)), resolution=resolution)
 
     # in visible text x,y are not on the center, therefore we compensate for it
 #    if self.show:
 #      y -= 0.166 * self.font_size
     
-    return x +dist*cos( angle), y +dist*sin( angle)
+    return retx, rety
 
 
 
@@ -415,6 +441,9 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
   def decide_pos( self):
     """decides whether the first or the last letter in the text should be positioned on the
     coords of the vertex"""
+    if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
+      self.pos = 'center-first'
+      return 
     as = self.get_neighbors()
     p = 0
     for a in as:

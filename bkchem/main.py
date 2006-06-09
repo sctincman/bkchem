@@ -1062,7 +1062,7 @@ class BKchem( Tk):
     """interactive attribute tells whether the plugin should be run in interactive mode"""
     plugin = self.plugins[ pl_id]
     exporter = plugin.exporter( self.paper)
-    exporter.interactive = interactive
+    exporter.interactive = interactive and not self.in_batch_mode
     if not exporter.on_begin():
       return
     if not filename:
@@ -1167,7 +1167,7 @@ Enter SMILES:""")
       mol.draw()
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
-
+      return mol
 
 
 

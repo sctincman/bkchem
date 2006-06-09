@@ -1313,7 +1313,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
     circles = 0
 
-    for ring in self.molecule.get_smallest_independent_cycles():
+    for ring in self.molecule.get_smallest_independent_cycles_dangerous_and_cached():
       if self.atom1 in ring and self.atom2 in ring:
         on_which_side = lambda xy: geometry.on_which_side_is_point( line, xy)
         circles += reduce( operator.add, map( on_which_side, [a.get_xy() for a in ring if a not in self.atoms]))
@@ -1440,8 +1440,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         items = self.items
       else:
         if self.center:
-          if not self.order == 2:
-            print self.order, self.center, self.type
           items = []
         else:
           items = [self.item]

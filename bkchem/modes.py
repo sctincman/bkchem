@@ -433,7 +433,7 @@ class edit_mode( basic_mode):
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
-        atoms = reduce( operator.add, [o.neighbors for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)], [])
+        atoms = reduce( operator.add, [o.neighbors for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex) and not o in Store.app.paper.selected], [])
         atoms = misc.filter_unique( [o for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]

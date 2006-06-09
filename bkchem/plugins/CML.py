@@ -172,9 +172,20 @@ class CML_exporter( plugin.exporter):
     # this makes implementing CML2 much easier - just supply different CML_atom and CML_bond
     self.CML_atom = CML_atom
     self.CML_bond = CML_bond
+    self.scale = 1.0
 
   def on_begin( self):
-    return self.check_chemistry()
+    if self.check_chemistry():
+      import tkMessageBox      
+      yes = tkMessageBox.askyesno( _("Normalize bond length?"),
+                                   _("If you are exporting to some kind of computational software it might be important to rescale the molecule, so that the bond lengths are in range of normal chemical bonds. Do you want to do this? In will influence only the exported CML file, not the drawing."))
+      if yes:
+        self.scale = self.compute_scaling()
+      else:
+        self.scale = 1.0
+      return 1
+    return 0
+    
 
   def check_chemistry( self):
     import validator
@@ -215,7 +226,7 @@ class CML_exporter( plugin.exporter):
         mol.setAttribute( 'id', m.id)
       atoms = dom_ext.elementUnder( mol, 'atomArray')
       for a in m.atoms:
-        atoms.appendChild( self.CML_atom( atom=a).get_CML_dom( out))
+        atoms.appendChild( self.CML_atom( atom=a, scaling=self.scale).get_CML_dom( out))
       bonds = dom_ext.elementUnder( mol, 'bondArray')
       for b in m.bonds:
         bonds.appendChild( self.CML_bond( bond=b).get_CML_dom( out))
@@ -223,7 +234,18 @@ class CML_exporter( plugin.exporter):
     f = open( name, "w")
     f.write( out.toxml())
     f.close()
-    
+
+
+  def compute_scaling( self):
+    ls = []
+    for mol in self.paper.molecules:
+      for e in mol.edges:
+        ls.append( e.length)
+    if ls:
+      mean_l = sum( ls) / len( ls)
+      return 1.3 / mean_l # 1.3 was taken as "normal bond length"
+    else:
+      return 0
 
   
 # PLUGIN INTERFACE SPECIFICATION
@@ -243,7 +265,8 @@ exporter = CML_exporter
 
 class CML_atom:
 
-  def __init__( self, atom=None, cml=None):
+  def __init__( self, atom=None, cml=None, scaling=1.0):
+    self._scaling = scaling
     self.id = None
     self.symbol = None
     self.x = None
@@ -286,8 +309,8 @@ class CML_atom:
       return res
 
   def read_atom( self, atom):
-    self.x = atom.x
-    self.y = atom.y
+    self.x = atom.x * self._scaling
+    self.y = atom.y * self._scaling
     self.id = atom.id
     self.symbol = atom.symbol
     self.charge = atom.charge

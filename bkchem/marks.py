@@ -107,7 +107,7 @@ class mark( simple_parent):
     self.set_color( "red")
 
   def unfocus( self):
-    self.set_color( self.atom.line_color)
+    self.set_color( self.line_color)
 
 
   def set_color( self, color):
@@ -175,6 +175,18 @@ class mark( simple_parent):
   read_package = classmethod( read_package)
 
 
+  def _get_line_color( self):
+    if not hasattr( self, "_line_color") or not self._line_color:
+      return self.atom.line_color
+    else:
+      return self._line_color
+
+
+  def _set_line_color( self, color):
+    self._line_color = color
+
+  line_color = property( _get_line_color, _set_line_color, None,
+                         "the line color - if not set, it is taken from atom, otherwise as set")
 
 
 
@@ -189,7 +201,7 @@ class radical( mark):
     x, y = self.x, self.y
     s = round( self.size / 2)
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s,
-                                          fill=self.atom.line_color, outline=self.atom.line_color,
+                                          fill=self.line_color, outline=self.line_color,
                                           tags='mark')]
 
 
@@ -201,8 +213,8 @@ class radical( mark):
                                   ( 'cy', str( self.y)),
                                   ( 'rx', str( self.size /2)),
                                   ( 'ry', str( self.size /2)),
-                                  ( 'fill', self.atom.line_color),
-                                  ( 'stroke', self.atom.line_color),
+                                  ( 'fill', self.line_color),
+                                  ( 'stroke', self.line_color),
                                   ( 'stroke-width', '1')))
     return e
 
@@ -229,12 +241,12 @@ class biradical( mark):
     x, y = geometry.find_parallel( x1, y1, x2, y2, s*1.5)[0:2]
     # one circle
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s,
-                                          fill=self.atom.line_color, outline=self.atom.line_color,
+                                          fill=self.line_color, outline=self.line_color,
                                           tags='mark')]
     # and the second on the other side
     x, y = geometry.find_parallel( x1, y1, x2, y2, -s*1.5)[0:2]
     self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s,
-                                               fill=self.atom.line_color, outline=self.atom.line_color,
+                                               fill=self.line_color, outline=self.line_color,
                                                tags='mark'))
     
 
@@ -249,8 +261,8 @@ class biradical( mark):
                                     ( 'cy', str( y)),
                                     ( 'rx', str( self.size /2)),
                                     ( 'ry', str( self.size /2)),
-                                    ( 'fill', self.atom.line_color),
-                                    ( 'stroke', self.atom.line_color),
+                                    ( 'fill', self.line_color),
+                                    ( 'stroke', self.line_color),
                                     ( 'stroke-width', '1')))
     return e
 
@@ -300,7 +312,7 @@ class electronpair( mark):
     x, y = geometry.find_parallel( x1, y1, x2, y2, s)[0:2]
     # and the other
     x0, y0 = geometry.find_parallel( x1, y1, x2, y2, -s)[0:2]
-    self.items = [self.paper.create_line( x, y, x0, y0, fill=self.atom.line_color,
+    self.items = [self.paper.create_line( x, y, x0, y0, fill=self.line_color,
                                           width=round(s/2), tags='mark')]
     
 
@@ -313,8 +325,8 @@ class electronpair( mark):
                                   ( 'x2', str( x2)),
                                   ( 'y2', str( y2)),
                                   ( 'stroke-width', str( round( round( self.size /2)/2))),
-                                  ( 'fill', self.atom.line_color),
-                                  ( 'stroke', self.atom.line_color)))
+                                  ( 'fill', self.line_color),
+                                  ( 'stroke', self.line_color)))
     return e
 
   def transform( self, tr):
@@ -350,12 +362,12 @@ class plus( mark):
     s = round( self.size / 2)
 
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
-                                          fill=self.atom.line_color, tags='mark')]
+                                          fill=self.line_color, tags='mark')]
     self.items.append( self.paper.create_line( x, y-s+2, x, y+s-2,
-                                               fill=self.atom.line_color, tags='mark'))
+                                               fill=self.line_color, tags='mark'))
     if self.draw_circle:
       self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                                 outline=self.atom.line_color, tags='mark'))
+                                                 outline=self.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):
@@ -369,7 +381,7 @@ class plus( mark):
                                     ( 'rx', str( s)),
                                     ( 'ry', str( s)),
                                     ( 'fill', 'none'),
-                                    ( 'stroke', self.atom.line_color),
+                                    ( 'stroke', self.line_color),
                                     ( 'stroke-width', '1')))
     for x1, y1, x2, y2 in [(x-s+2, y, x+s-2, y), (x, y-s+2, x, y+s-2)]:
       dom_extensions.elementUnder( e, 'line',
@@ -378,8 +390,8 @@ class plus( mark):
                                      ( 'x2', str( x2)),
                                      ( 'y2', str( y2)),
                                      ( 'stroke-width', '1'),
-                                     ( 'fill', self.atom.line_color),
-                                     ( 'stroke', self.atom.line_color)))
+                                     ( 'fill', self.line_color),
+                                     ( 'stroke', self.line_color)))
 
     return e
 
@@ -412,10 +424,10 @@ class minus( mark):
     x, y = self.x, self.y
     s = round( self.size / 2)
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
-                                          fill=self.atom.line_color, tags='mark')]
+                                          fill=self.line_color, tags='mark')]
     if self.draw_circle:
       self.items.append( self.paper.create_oval( x-s, y-s, x+s, y+s, fill='',
-                                                 outline=self.atom.line_color, tags='mark'))
+                                                 outline=self.line_color, tags='mark'))
 
 
   def get_svg_element( self, doc):
@@ -429,7 +441,7 @@ class minus( mark):
                                     ( 'rx', str( s)),
                                     ( 'ry', str( s)),
                                     ( 'fill', 'none'),
-                                    ( 'stroke', self.atom.line_color),
+                                    ( 'stroke', self.line_color),
                                     ( 'stroke-width', '1')))
     for x1, y1, x2, y2 in [(x-s+2, y, x+s-2, y)]:
       dom_extensions.elementUnder( e, 'line',
@@ -438,8 +450,8 @@ class minus( mark):
                                      ( 'x2', str( x2)),
                                      ( 'y2', str( y2)),
                                      ( 'stroke-width', '1'),
-                                     ( 'fill', self.atom.line_color),
-                                     ( 'stroke', self.atom.line_color)))
+                                     ( 'fill', self.line_color),
+                                     ( 'stroke', self.line_color)))
 
     return e
 
@@ -476,7 +488,7 @@ class text_mark( mark):
     self.items = [self.paper.create_text( self.x,
                                           self.y,
                                           text=self.text,
-                                          fill=self.atom.line_color,
+                                          fill=self.line_color,
                                           font=(self.atom.font_family, self.size, "normal"),
                                           tags="mark")]
 
@@ -493,7 +505,7 @@ class text_mark( mark):
                                                  ('font-family', self.atom.font_family),
                                                  ( "x", str( x - dx)),
                                                  ( "y", str( y)),
-                                                 ( 'fill', self.atom.line_color)))
+                                                 ( 'fill', self.line_color)))
     return e
 
 
@@ -549,6 +561,7 @@ class oxidation_number( referencing_text_mark):
 
 
 
+
 class pz_orbital( mark):
   
   meta__mark_positioning = 'atom'
@@ -572,7 +585,7 @@ class pz_orbital( mark):
     ps = self._get_my_curve( num_points=20)
     
     self.items = [self.paper.create_polygon( ps,
-                                             outline=self.atom.line_color,
+                                             outline=self.line_color,
                                              fill=self.atom.area_color,
                                              tags='mark',
                                              smooth=1)]
@@ -607,8 +620,8 @@ class pz_orbital( mark):
     else:
       poly.setAttribute( 'fill-opacity', '0')
 
-    if self.atom.line_color:
-      poly.setAttribute( 'stroke', self.atom.line_color)
+    if self.line_color:
+      poly.setAttribute( 'stroke', self.line_color)
 
     return e
 
