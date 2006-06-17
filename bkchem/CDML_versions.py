@@ -171,6 +171,23 @@ class CDML_transformer_13_14:
       
 
 
+class CDML_transformer_14_15:
+
+  """CDML version 0.15 adds line_width attribute to the electronpair mark"""
+
+  output_version = '0.15'
+  input_version = '0.14'
+
+  def tranform_dom( self, dom):
+    for a in dom.getElementsByTagName( 'atom'):
+      for m in a.getElementsByTagName( 'mark'):
+        if m.getAttribute( "type") == "electronpair":
+          if not m.getAttribute( "line_width"):
+            size = float( m.getAttribute( "size"))
+            m.setAttribute( "line_width", str( round( round( size /2)/2)))
+      
+
+
 
 
 
@@ -183,8 +200,8 @@ transformers = { '0.6': CDML_transformer_06_07,
                  '0.10': CDML_transformer_10_11,
                  '0.11': CDML_transformer_11_12,
                  '0.12': CDML_transformer_12_13,
-                 '0.13': CDML_transformer_13_14}
-
+                 '0.13': CDML_transformer_13_14,
+                 '0.14': CDML_transformer_14_15}
 
 # TRANSFORMING FUNCTION
 

@@ -293,8 +293,12 @@ class dotted_electronpair( biradical):
 
 class electronpair( mark):
 
+  meta__save_attrs = {"line_width": float}
+
+
   def __init__( self, atom, x, y, size=10, auto=1):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
+    self.line_width = 1
 
   def move( self, dx, dy):
     """marks that have a direction and not only position should be redrawn on move"""
@@ -313,7 +317,7 @@ class electronpair( mark):
     # and the other
     x0, y0 = geometry.find_parallel( x1, y1, x2, y2, -s)[0:2]
     self.items = [self.paper.create_line( x, y, x0, y0, fill=self.line_color,
-                                          width=round(s/2), tags='mark')]
+                                          width=self.line_width, tags='mark')]
     
 
   def get_svg_element( self, doc):
@@ -324,7 +328,7 @@ class electronpair( mark):
                                   ( 'y1', str( y1)),
                                   ( 'x2', str( x2)),
                                   ( 'y2', str( y2)),
-                                  ( 'stroke-width', str( round( round( self.size /2)/2))),
+                                  ( 'stroke-width', str( self.line_width)),
                                   ( 'fill', self.line_color),
                                   ( 'stroke', self.line_color)))
     return e
