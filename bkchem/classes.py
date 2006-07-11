@@ -160,7 +160,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.pin = 1
     if points:
       for p in points:
-        pnt = point( self.paper, p[0], p[1], arrow=self)
+        pnt = point( self.paper, xy=p, arrow=self)
         self.points.append( pnt)
     self.reaction = reaction()
     self.reaction.arrows.append( self)

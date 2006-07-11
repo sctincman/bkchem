@@ -546,6 +546,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     self.add_vertex( new)
     self.move_bonds_between_atoms( old, new)
     self.delete_vertex( old)
+    # change the references to the vertex in fragments as well
+    for f in self.fragments:
+      if old in f.vertices:
+        f.vertices.remove( old)
+        f.vertices.add( new)
 
 
 
@@ -653,7 +658,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     for f in self.fragments:
       if not f.is_consistent( self):
         todel.add( f)
-    [self.fragments.remove( f) for f in todel]
     return todel
 
 

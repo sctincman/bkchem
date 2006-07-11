@@ -319,7 +319,8 @@ def create_fragment_from_selected( paper):
                            title=_('Fragment name'),
                            label_text=_('Enter fragment name:'),
                            entryfield_labelpos = 'w',
-                           buttons=(_('OK'),_('Cancel')))
+                           buttons=(_('OK'),_('Cancel')),
+                           defaultbutton=_('OK'))
   res = dial.activate()
   if res == _('OK'):
     if mol.create_fragment( dial.get(), es, vs):
@@ -421,6 +422,7 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     changes = True
     ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
     if not ends:
+      print [len( [n for n in v.neighbors if n in vs]) for v in vs]
       # whole ring is selected, how could this be possibly linearized?
       raise excs.bkchem_graph_error( "circular_selection",
                                      _("The selected part of a molecule is a whole ring, there is no way to linearize it"))

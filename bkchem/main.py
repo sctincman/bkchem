@@ -462,11 +462,11 @@ class BKchem( Tk):
                    'usertemplate': modes.user_template_mode(),
                    'misc': modes.misc_mode(),
                    'bracket': modes.bracket_mode(),
-                   #'externaldata': modes.external_data_mode(),
+                   'externaldata': modes.external_data_mode(),
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
-                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc'] #, 'externaldata', 'rapiddraw']
+                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc', 'externaldata'] #, 'rapiddraw']
 
     # import plugin modes
     import imp
@@ -648,7 +648,7 @@ class BKchem( Tk):
     # check if the same file is opened
     p = self.check_if_the_file_is_opened( name)
     if p:
-      Store.log( _("Sorry but I cannot open the same file twice."), message_type="error")
+      Store.log( _("Sorry but I cannot open the same file twice: ")+name, message_type="error")
       return False
     name_dic = self.get_name_dic( name=name)
     # create the tab
@@ -1058,12 +1058,13 @@ class BKchem( Tk):
 
 
 
-  def plugin_export( self, pl_id, filename=None, interactive=True):
+  def plugin_export( self, pl_id, filename=None, interactive=True, on_begin_attrs=None):
     """interactive attribute tells whether the plugin should be run in interactive mode"""
     plugin = self.plugins[ pl_id]
     exporter = plugin.exporter( self.paper)
     exporter.interactive = interactive and not self.in_batch_mode
-    if not exporter.on_begin():
+    attrs = on_begin_attrs or {}
+    if not exporter.on_begin( **attrs):
       return
     if not filename:
       file_name = self.paper.get_base_name()

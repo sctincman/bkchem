@@ -856,7 +856,7 @@ class chem_paper( Canvas, object):
       if isinstance( item, oasa.graph.vertex):
         if name:
           self.unselect( [item])
-          v = item.molecule.create_vertex_according_to_text( item, name, interpret=Store.app.editPool.interpret)
+          v = item.molecule.create_vertex_according_to_text( item, name, interpret=interpret)
           item.copy_settings( v)
           item.molecule.replace_vertices( item, v)
           item.delete()

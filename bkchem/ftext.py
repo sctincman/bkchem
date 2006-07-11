@@ -27,7 +27,7 @@ import dom_extensions
 import xml.sax
 import copy
 from sets import Set
-
+import tuning
 
 
 
@@ -109,7 +109,9 @@ class ftext:
       weight = "normal"
 
     if 'sub' in chunk.attrs:
-      item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
+      item = canvas.create_text( x+tuning.supsubscript_separation_shift,
+                                 y+tuning.subscript_down_shift,
+                                 tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="nw", justify="right", fill=self.fill)
     elif 'sup' in chunk.attrs:

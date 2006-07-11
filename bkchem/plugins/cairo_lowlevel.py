@@ -61,7 +61,7 @@ class cairo_exporter( plugin.exporter):
 
 
 
-  def on_begin( self):
+  def on_begin( self, scaling=None):
     self.paper.unselect_all()
     if self.paper.get_paper_property( 'crop_svg'):
 
@@ -74,7 +74,7 @@ class cairo_exporter( plugin.exporter):
       x1, y1, x2, y2 = self.paper.get_cropping_bbox()
       dx = x2-x1
       dy = y2-y1
-      scalex, scaley = self.get_scaling( dx, dy)
+      scalex, scaley = scaling or self.get_scaling( dx, dy)
       if not scalex:
         # the setting of scaling was canceled
         return 0
@@ -85,7 +85,7 @@ class cairo_exporter( plugin.exporter):
     else:
       dx = Screen.mm_to_px( self.paper._paper_properties['size_x'])
       dy = Screen.mm_to_px( self.paper._paper_properties['size_y'])
-      scalex, scaley = self.get_scaling( dx, dy)
+      scalex, scaley = scaling or self.get_scaling( dx, dy)
       if not scalex:
         # the setting of scaling was canceled
         return 0
@@ -94,7 +94,7 @@ class cairo_exporter( plugin.exporter):
       self.transformer.set_scaling_xy( scalex, scaley)
 
     x1, y1, x2, y2 = self.transformer.transform_4( (0, 0, dx, dy))
-    self.pagesize = (x2-x1, y2-y1)
+    self.pagesize = tuple( map( round, (x2-x1, y2-y1)))
     self.converter = self.converter_class()
     return 1
 

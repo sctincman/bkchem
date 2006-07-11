@@ -112,7 +112,13 @@ def point_on_circle( center_x, center_y, radius, direction = (), resolution = 15
 
 def angle_between_lines( l1, l2):
   """returns angle between two lines"""
-  pass
+  a = clockwise_angle_from_east( l1[2]-l1[0], l1[3]-l1[1]) - clockwise_angle_from_east( l2[2]-l2[0], l2[3]-l2[1])
+  if a > pi:
+    return a - 2*pi
+  elif a < -pi:
+    return a + 2*pi
+  else:
+    return a
 
 
 def clockwise_angle_from_east( dx, dy):
@@ -211,3 +217,18 @@ def do_rectangles_intersect( rect1, rect2):
     return True
   else:
     return False
+
+
+def is_point_inside_polygon( point, polygon):
+  """point is a tuple or list of length == 2,
+  polygon is a tuple or list of points"""
+  a = 0
+  for i in range( len( polygon)-1):
+    a += angle_between_lines( point+polygon[i+1], point+polygon[i])
+  a += angle_between_lines( point+polygon[0], point+polygon[ len( polygon)-1])
+  a = abs( a)
+  if a < 0.1:
+    return False
+  else:
+    return True
+
