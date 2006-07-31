@@ -104,7 +104,10 @@ def point_on_circle( center_x, center_y, radius, direction = (), resolution = 15
   """finds point on circle in direction of (dx, dy), optionaly rounds the angle
   according to resolution"""
   dx, dy = direction
-  angle = round( atan2( dy, dx)/(pi*resolution/180.0))*(pi*resolution/180.0)
+  if resolution:
+    angle = round( atan2( dy, dx)/(pi*resolution/180.0))*(pi*resolution/180.0)
+  else:
+    angle = atan2( dy, dx)
   x = center_x + round( cos( angle) *radius, 2)
   y = center_y + round( sin( angle) *radius, 2)
   return x,y

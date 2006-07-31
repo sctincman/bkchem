@@ -104,13 +104,13 @@ class vertex_common( object):
       return mark, marks.__dict__[ mark]
 
 
-  def set_mark( self, mark='radical', angle='auto', draw=1):
+  def set_mark( self, mark='radical', angle='auto', draw=1, angle_resolution=1):
     """sets the mark and takes care of charge and multiplicity changes;
     mark may be either the class or mark name"""
     mark_name, _ = self._mark_to_name_and_class( mark)
     
     if not self.meta__allowed_marks or mark_name in self.meta__allowed_marks:
-      m = self.create_mark( mark=mark, angle=angle)
+      m = self.create_mark( mark=mark, angle=angle, angle_resolution=angle_resolution)
       self._set_mark_helper( mark, sign=1)
       return m
     else:
@@ -153,12 +153,12 @@ class vertex_common( object):
 
 
 
-  def create_mark( self, mark='radical', angle='auto', draw=1):
+  def create_mark( self, mark='radical', angle='auto', draw=1, angle_resolution=1):
     """creates the mark, does not care about the chemical meaning of this"""
     # decide where to put the mark
     mark_name, mark_class = self._mark_to_name_and_class( mark)
     if angle == 'auto':
-      x, y = self.find_place_for_mark( mark)
+      x, y = self.find_place_for_mark( mark, resolution=angle_resolution)
     else:
       if not self.show:
         dist = 5 + round( mark_class.standard_size / 2)
@@ -433,7 +433,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     point_drawable.copy_settings( self, other)
     text_like.copy_settings( self, other)
     child_with_paper.copy_settings( self, other)
-    other.pos = self.pos
+    #other.pos = self.pos
 
 
 
