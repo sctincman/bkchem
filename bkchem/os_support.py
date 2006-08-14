@@ -33,6 +33,11 @@ std_dirs = {'template': '../templates',
             'plugin': '../plugins'}
 
 
+class os_support_store:
+  private_dir_override = None
+
+
+
 try:
   import site_config
 except:
@@ -159,8 +164,15 @@ def get_opened_config_file( name, level="global", mode="r"):
     return f
 
 
+def set_bkchem_private_dir( dir):
+  if os.path.exists( dir):
+    os_support_store.private_dir_override = dir
+
 
 def get_bkchem_private_dir():
+  # this allows users to override the private dir
+  if os_support_store.private_dir_override and os.path.exists( os_support_store.private_dir_override):
+    return os_support_store.private_dir_override
   dir = ""
   if os.name == "nt":
     try:

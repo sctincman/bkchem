@@ -255,6 +255,15 @@ class vertex_common( object):
     diffs = misc.list_difference( angles)
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
+
+    # we calculate the distance here again as it is anisotropic (depends on direction)
+    bbox = list( misc.normalize_coords( self.bbox()))
+    x0, y0 = geometry.point_on_circle( x, y, 500, direction=(cos(angle), sin( angle)), resolution=resolution)
+    x1, y1 = geometry.intersection_of_line_and_rect( (x,y,x0,y0), bbox, round_edges=0)
+    dist = geometry.point_distance( x, y, x1, y1) + round( mark_class.standard_size / 2)
+    # //
+
+    
     retx, rety = geometry.point_on_circle( x, y, dist, direction=(cos(angle), sin( angle)), resolution=resolution)
 
     # in visible text x,y are not on the center, therefore we compensate for it

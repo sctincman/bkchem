@@ -111,3 +111,13 @@ the splash image was not found :(""")
 standards_differ_text = _('''This CDML document was created using different standard values than you are currently using. To retain the same drawing style it could be more convenient to use these new values for this file. Your global preferences will be unaffected. \n\nDo you want set these new standard values?''')
 
 
+usage_text = _("""usage: bkchem [options] [filenames]
+
+options:
+
+ -h, --help      show this help message and exit
+ -H DIR          overrides the BKChem home dir
+                 (where standard drawing setting, user-defined templates etc. are stored.)
+ -b SCRIPT       start BKChem in batch mode, run SCRIPT and exit
+ -v, --version   show program version and exit
+""")

@@ -67,7 +67,8 @@ class external_data_manager( object):
         #try:
         self.read_data_definition( os.path.join( dir, name))
         #except:
-        #  debug.log( "could not load plugin file", name)
+        #  Store.log( "could not load definition file: %s", message_type="error")
+        
 
     return self.definitions.keys()
 

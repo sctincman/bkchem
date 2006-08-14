@@ -792,7 +792,7 @@ class standard_values_dialog:
     st.double_length_ratio = float( self.double_length_ratio.getvalue())
     st.line_color = self.line_color.color
     st.area_color = self.area_color.color
-    st.font_family = self.font_family.getcurselection()[0]
+    st.font_family = self.font_family.getcurselection() and self.font_family.getcurselection()[0] or ''
     st.font_size = int( self.font_size.get())
     # paper properties
     # type

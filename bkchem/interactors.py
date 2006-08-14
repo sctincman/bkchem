@@ -421,13 +421,16 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     # we start from the end atom that is more on the left side
     changes = True
     ends = [v for v in vs if len( [n for n in v.neighbors if n in vs]) == 1]
-    if not ends:
-      print [len( [n for n in v.neighbors if n in vs]) for v in vs]
+    if not ends and len( vs) != 1:
       # whole ring is selected, how could this be possibly linearized?
       raise excs.bkchem_graph_error( "circular_selection",
                                      _("The selected part of a molecule is a whole ring, there is no way to linearize it"))
-    start = ends[0].x > ends[1].x and ends[1] or ends[0]
-    end = start == ends[0] and ends[1] or ends[0]
+    if len( vs) == 1:
+      start = list(vs)[0]
+      end = start
+    else:
+      start = ends[0].x > ends[1].x and ends[1] or ends[0]
+      end = start == ends[0] and ends[1] or ends[0]
     current = start
     x = current.x
     y = current.y
