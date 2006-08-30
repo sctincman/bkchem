@@ -138,7 +138,7 @@ class vertex_common( object):
 
     m.delete()
     self.marks.remove( m)
-    self._set_mark_helper( m.__class__.__name__, sign=-1)
+    self._set_mark_helper( m.__class__, sign=-1)
     return m
 
 

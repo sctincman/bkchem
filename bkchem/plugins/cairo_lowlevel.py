@@ -24,7 +24,7 @@ import transform
 import cairo
 
 
-from singleton_store import Screen
+from singleton_store import Screen, Store
 
 
 class cairo_exporter( plugin.exporter):
@@ -66,9 +66,7 @@ class cairo_exporter( plugin.exporter):
     if self.paper.get_paper_property( 'crop_svg'):
 
       if len( self.paper.find_all()) <= 1: # background only
-        import tkMessageBox
-        tkMessageBox.showerror( _("Nothing to export."),
-                                _('There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu.'))
+        Store.log( _('There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu.'), message_type="error")
         return 0
 
       x1, y1, x2, y2 = self.paper.get_cropping_bbox()

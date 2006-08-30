@@ -869,7 +869,7 @@ class BKchem( Tk):
           return None
         inp.close()
         del gzip
-        doc = doc.childNodes[0]
+        doc = [n for n in doc.childNodes if n.nodeType == doc.ELEMENT_NODE][0]
       else:
       ## otherwise it should be normal xml file
         ## try to parse it
@@ -879,9 +879,9 @@ class BKchem( Tk):
           Store.log( _("error reading file"))
           return None
         ## if it works check if its CDML of CD-SVG file
-        doc = doc.childNodes[0]
+        doc = [n for n in doc.childNodes if n.nodeType == doc.ELEMENT_NODE][0]
       ## check if its CD-SVG or CDML
-      if doc.nodeName == 'svg':
+      if doc.nodeName != 'cdml':
         ## first try if there is the right namespace
         if hasattr( doc, 'getElementsByTagNameNS'):
           docs = doc.getElementsByTagNameNS( data.cdml_namespace, 'cdml')
