@@ -1065,7 +1065,7 @@ class BKchem( Tk):
     exporter.interactive = interactive and not self.in_batch_mode
     attrs = on_begin_attrs or {}
     if not exporter.on_begin( **attrs):
-      return
+      return False
     if not filename:
       file_name = self.paper.get_base_name()
       types = []
@@ -1089,11 +1089,12 @@ class BKchem( Tk):
           doc = exporter.write_to_file( a)
         except:
           tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
-          return
+          return False
       else:
         doc = exporter.write_to_file( a)
       Store.log( _("exported file: ")+a)
-  
+      return True
+    return False
 
 
 

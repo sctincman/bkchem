@@ -594,7 +594,7 @@ class style:
 
 class graphics_style( style):
 
-  def __init__( self, name='gr', stroke_color='#ffffff', fill='solid', fill_color='#ffffff', stroke_width=1,
+  def __init__( self, name='gr', stroke_color='#ffffff', fill='solid', fill_color='#ffffff', stroke_width=0,
                 marker_end=None, marker_end_width=None, marker_start=None, marker_start_width=None, padding=(0,0)):
     self.name = name
     self.family = 'graphics'
@@ -638,6 +638,8 @@ class graphics_style( style):
       if self.marker_start_width:
         prop.setAttribute( 'draw:marker-start-width',
                            "%dcm" % self.marker_start_width)
+    if not self.stroke_width:
+      prop.setAttribute('draw:stroke', 'none')
       
     return style
 
