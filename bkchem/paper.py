@@ -362,14 +362,14 @@ class chem_paper( Canvas, object):
 
 
   def _enter( self, event):
-    Store.app.mode.clean_key_query()
+    Store.app.mode.clean_key_queue()
 
 
 
 
 
   def _leave( self, event):
-    Store.app.mode.clean_key_query()
+    Store.app.mode.clean_key_queue()
 
   # item bound methods
 

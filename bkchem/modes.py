@@ -145,7 +145,7 @@ class mode( object):
     if len( key) == 1 and key in 'CAMS':
       self._specials_pressed[ key] = 0
 
-  def clean_key_query( self):
+  def clean_key_queue( self):
     """cleans status of all special keys;
     needed because especially after C-x C-f the C-release is grabed by dialog
     and never makes it to paper, therefor paper calls this after a file was read"""
