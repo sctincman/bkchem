@@ -65,6 +65,7 @@ from id_manager import id_manager
 import interactors
 import exceptions
 import checks
+from helper_graphics import selection_rect
       
 from singleton_store import Store, Screen
 
@@ -73,7 +74,11 @@ class chem_paper( Canvas, object):
 
   object_type = 'paper'
   all_names_to_bind = ('atom','bond','arrow','point','plus','text','vector','helper_rect')
-
+  # the following classes should have refocus triggered when a different item of these
+  # composite objects is focused - this is typical for selection_rect that needs to respond
+  # differently in different corners
+  classes_with_per_item_reselection = (selection_rect,)
+  
 
   def __init__( self, master = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)
@@ -84,6 +89,7 @@ class chem_paper( Canvas, object):
     self.submode = None
     self.selected = []    # selected item
     self.__in = 1
+    self.__in_id = 0
     self._id_2_object = {}
     self.stack = []
 
@@ -337,24 +343,26 @@ class chem_paper( Canvas, object):
 
     b = self.find_overlapping( event.x-3, event.y-3, event.x+3, event.y+3)
     b = filter( self.is_registered_id, b)
-    a = map( self.id_to_object, b)
-    a = [i for i in a if i not in self._do_not_focus]
+    id_objs = [(x, self.id_to_object( x)) for x in b]
+    a = [i for i in id_objs if i[1] not in self._do_not_focus]
 
     if a:
-      a = a[-1]
+      fid, fobj = a[-1]
     else:
-      a = None
+      fid, fobj = None, None
 
     # this may cause some trouble later on
     # it was hacked because of the http_server2 functionality, but could break unexpected things
     self.__in = Store.app.mode.focused
 
-    if a and a != self.__in:
-      self.__in = a
+    if fobj and (fobj != self.__in or (misc.isinstance_of_one( fobj, self.classes_with_per_item_reselection) and self.__in_id != fid)):
+      self.__in = fobj
+      self.__in_id = fid
       Store.app.mode.enter_object( self.__in, event)
-    elif not a and self.__in:
+    elif not fobj and self.__in:
       #if not a and Store.app.mode.focused:
       self.__in = None
+      self.__in_id = None
       Store.app.mode.leave_object( event)
 
 
