@@ -554,8 +554,12 @@ class edit_mode( basic_mode):
     elif self._dragging == 3:
       Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
-      self._dragged_molecule.drag( event.x, event.y, fix=(self._startx, self._starty))
-      Store.log( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
+      # whole means that the selection-rect is moving whole, not only one part
+      whole = self._dragged_molecule.drag( event.x, event.y, fix=(self._startx, self._starty))
+      if whole:
+        self._startx, self._starty = event.x, event.y
+      else:
+        Store.log( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
       
   def enter_object( self, object, event):
     if not self._dragging:

@@ -131,17 +131,30 @@ class selection_rect:
     self._active_item = None
 
   def drag( self, x, y, fix=()):
-    if self._active_item in (self._lt, self._lm, self._lb):
-      self.coords[0] = x
-    elif self._active_item in (self._rt, self._rm, self._rb):
-      self.coords[2] = x
-    if self._active_item in (self._lt, self._mt, self._rt):
-      self.coords[1] = y
-    elif self._active_item in (self._lb, self._mb, self._rb):
-      self.coords[3] = y
-    self.redraw()
-    if self.object:
-      self.object.resize( self.coords)
+    if self._active_item == self._rect and fix:
+      # we drag the whole rectangle
+      x2, y2 = fix
+      dx = x - x2
+      dy = y - y2
+      if self.object:
+        self.object.move( dx, dy)
+      else:
+        self.move( dx, dy)
+      return True
+    else:
+      if self._active_item in (self._lt, self._lm, self._lb):
+        self.coords[0] = x
+      elif self._active_item in (self._rt, self._rm, self._rb):
+        self.coords[2] = x
+      if self._active_item in (self._lt, self._mt, self._rt):
+        self.coords[1] = y
+      elif self._active_item in (self._lb, self._mb, self._rb):
+        self.coords[3] = y
+
+      self.redraw()
+      if self.object:
+        self.object.resize( self.coords)
+      return False
 
   def lift( self):
     [self.paper.lift( i) for i in self.get_items()]
