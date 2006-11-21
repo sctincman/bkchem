@@ -1314,6 +1314,18 @@ Enter INChI:""")
     t.start()
 
 
+    # soap
+    import SOAPpy as SOAP
+    CAL_NS = "http://beda.zirael.org/pokusy"
+    server = SOAP.SOAPServer(("localhost", 8888))
+    server.registerObject(self, CAL_NS)
+    print "Starting server..."
+    t = threading.Thread( target=server.serve_forever, name='soap')
+    t.setDaemon( 1)
+    t.start()
+
+
+
 
   def get_new_tab_name( self):
     self.__last_tab += 1
