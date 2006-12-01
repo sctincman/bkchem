@@ -645,7 +645,9 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   # undo related metas
   meta__undo_properties = point_drawable.meta__undo_properties +\
                           text_like.meta__undo_properties +\
-                          area_colored.meta__undo_properties
+                          area_colored.meta__undo_properties +\
+                          ("xml_ftext",)
+  
 
   def __init__( self, paper, xy=(), text='', package=None):
     text_like.__init__( self)
