@@ -14,8 +14,8 @@
 
     <h3>Foreword</h3>
 
-    <p>Even if the possibility to create custom templates in BKchem exists from the version 0.1.0, there was no possibility
-    how to actually use them and therefore it was not documented. Starting from BKchem version 0.9.0-pre1 a special mode
+    <p>Even if the possibility to create custom templates in BKchem existed from the version 0.1.0, there was no way
+    how to actually use them afterwards and therefore it was not documented. Starting from BKchem version 0.9.0-pre1 a special mode
     for custom templates was added and here is the documentation how to use it.</p>
 
     <h3>How to do it?</h3>
@@ -23,16 +23,16 @@
     Even if it would be possible for the program to guess how to attach the template to another molecule
     when you use it, I did not implement anything like this, because explicit is usually better than
     implicit. Therefore you have to tell BKchem which position you would like to use for attaching a template
-    to a new molecule and which bond should be used when you click on a bond in an exiting molecule.</p>
+    to a new molecule and which bond should be used when you click on a bond in an existing molecule.</p>
 
-    <p>I will demostrate the process on creating a template of naphtalene-2-yl. To do so, you have to draw naphtalene
-    and then add a substituent (usualy methyl but it does not matter as this atom is ignored) to the position
+    <p>I will demonstrate the process on creating a template of naphthalene-2-yl. To do so, you have to draw naphthalene
+    and then add a substituent (usually methyl but it does not matter as this atom is ignored) to the position
     you would like this template to connect with. In this case to the position 2.</p>
 
     <!--<img src="../img/custom_templates-1.png" alt="screenshot 1"/>-->
 
     <p>Now we have to tell BKchem which atom is the <i>template atom</i> - the atom that marks the position of
-    molecule concatenation. To do it, you have to change the mode to <i>template mode</i> (click on the
+    molecule concatenation. To do it, you have to switch to the <i>template mode</i> (click on the
     cyclohexane icon in the upper button menu), focus the atom you want to mark (put the cursor above it so
     that a circle appears around it) and hit the keys <b>C-t</b> (press <b>t</b> while holding the
     <b>Control</b> key). In the status bar a message "<i>focused atom was marked template atom</i>"
@@ -43,14 +43,14 @@
 
     <img src="img/custom_templates-2.png" alt="screenshot 2"/>
 
-    <p>Now we have specify the bond that will be used when you want to add the template to a bond and not an atom
-    (as for instance when you create the naphtalene molecule from 2 benzene molecules). The procedure is the same as for atom,
+    <p>Now we have to specify the bond that will be used when you want to add the template to a bond and not to an atom
+    (as for instance when you create the naphthalene molecule from 2 benzene molecules). The procedure is the same as for an atom,
     however in this case the bond really exists in the molecule and is not deleted when the template is used. You have to <i>focus</i>
     the bond in <i>template mode</i> and hit <b>C-t</b>. You will get a message informing you that the focused bond was marked
     as <i>template bond</i>.</p>
 
    <p>Now, as the access points of the template are defined, only one thing remains to be done and this is to name your template.
-   You can do it by selecting the molecule or any part of it and using the <i>Menu/Object/Set molecule name</i> command. Under this name you
+   You can do it by selecting the molecule or any part of it and using the <i>Menu/Chemistry/Set molecule name</i> command. Under this name you
    will be able to access the prepared template.</p>
 
 
