@@ -9,7 +9,7 @@ include plugins/*.py
 include pixmaps/*.gif
 include images/logo.ppm
 include images/icon.ico
-include images/icon.png
+include images/bkchem.png
 recursive-include doc *.html *.py *.png
 recursive-include dtd *.dtd *.xsd
 recursive-include locale LC_MESSAGES/BKchem.mo
