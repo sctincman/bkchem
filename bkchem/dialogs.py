@@ -516,51 +516,58 @@ class file_properties_dialog:
                               title=_('File properties'),
                               command=self.done,
                               master='parent')
-    self.body = Tkinter.Frame( self.dialog.interior(),
-                               bd=2,
-                               relief="groove")
-    self.body.pack( padx=10, pady=10, anchor="n" )
     self.draw()
     self.dialog.activate()
 
   def draw( self):
+    paper_frame = Tkinter.Frame( self.dialog.interior(),
+                                 bd=2,
+                                 relief="groove")
+    paper_frame.pack( padx=10, pady=10, anchor="n", fill="x")
+
     # paper type
     if self.paper._paper_properties['type'] == 'custom':
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
-    self.paper_type_chooser = Pmw.OptionMenu( self.body,
+    self.paper_type_chooser = Pmw.OptionMenu( paper_frame,
                                               items=data.paper_types.keys(), #+[_('Custom')],
                                               initialitem = t,
                                               labelpos = 'w',
                                               label_text = _('Paper size')+':',
                                               menubutton_width = 10)
-    self.paper_type_chooser.pack( anchor='n', padx=10, pady=10)
+    self.paper_type_chooser.pack( anchor='w', padx=5, pady=5)
     # paper orientation
-    self.paper_orientation_chooser = Pmw.RadioSelect( self.body,
+    self.paper_orientation_chooser = Pmw.RadioSelect( paper_frame,
                                                       buttontype='radiobutton',
                                                       orient='vertical',
                                                       pady=0)
     self.paper_orientation_chooser.add(_('Portrait'))
     self.paper_orientation_chooser.add(_('Landscape'))
-    self.paper_orientation_chooser.pack( anchor='w', padx=10, pady=10)
+    self.paper_orientation_chooser.pack( anchor='w', padx=5, pady=5)
     if self.paper._paper_properties['orientation'] == 'portrait':
       i = 0
     else:
       i = 1
     self.paper_orientation_chooser.invoke( i)
+
     # full svg or just the filled part
+    crop_frame = Tkinter.Frame( self.dialog.interior(),
+                                 bd=2,
+                                 relief="groove")
+    crop_frame.pack( padx=10, pady=10, anchor="n", fill="x")
+
     self.crop_paper_in_svg = Tkinter.IntVar()
     self.crop_paper_in_svg.set( self.paper.get_paper_property( 'crop_svg'))
-    crop = Tkinter.Checkbutton( self.dialog.interior(),
+    crop = Tkinter.Checkbutton( crop_frame,
                                 anchor="n",
                                 text=_('Auto crop image in SVG?\n(applies to some other exports as well)'),
                                 variable=self.crop_paper_in_svg,
                                 command=self.crop_paper_changed)
-    crop.pack( anchor='w', padx=10, pady=10)
+    crop.pack( anchor='w', padx=5, pady=5)
     # margin for cropping
     margin = self.paper.get_paper_property( 'crop_margin')
-    self.margin_entry = Pmw.Counter( self.dialog.interior(),
+    self.margin_entry = Pmw.Counter( crop_frame,
                                      labelpos = 'w',
                                      label_text=_("Margin for cropped image (in pixels):"),
                                      entryfield_value = margin,
@@ -568,24 +575,27 @@ class file_properties_dialog:
                                      entry_width = 5,
                                      increment = 5,
                                      datatype = 'integer')
-    self.margin_entry.pack( anchor='n', padx=10, pady=10)
+    self.margin_entry.pack( anchor='n', padx=5, pady=5)
     # use real minus ?
-    f1 = Tkinter.Frame( self.dialog.interior())
-    f1.pack(  anchor='w', padx=10, pady=10)
+    minus_frame = Tkinter.Frame( self.dialog.interior(),
+                                 bd=2,
+                                 relief="groove")
+    minus_frame.pack( padx=10, pady=10, anchor="n", fill="x")
+
     self.use_real_minus = Tkinter.IntVar()
-    use_real_minus_button = Tkinter.Checkbutton( f1,
+    use_real_minus_button = Tkinter.Checkbutton( minus_frame,
                                                  text=_('Use real minus chracter (instead of hyphen)?'),
                                                  variable = self.use_real_minus)
     self.use_real_minus.set( self.paper.get_paper_property( 'use_real_minus'))
-    use_real_minus_button.pack( anchor='w', padx=0, pady=0)
+    use_real_minus_button.pack( anchor='w', padx=5, pady=5)
 
     # replace hyphens with minuses in export?
     self.replace_minus = Tkinter.IntVar()
-    replace_minus_button = Tkinter.Checkbutton( f1,
+    replace_minus_button = Tkinter.Checkbutton( minus_frame,
                                                 text=_('Replace hyphens with minus in SVG export?'),
                                                 variable = self.replace_minus)
     self.replace_minus.set( self.paper.get_paper_property( 'replace_minus'))
-    replace_minus_button.pack( anchor='w', padx=0, pady=0)
+    replace_minus_button.pack( anchor='w', padx=5, pady=5)
 
 
 
