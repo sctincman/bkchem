@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: Fri Feb 17 13:29:16 2006\n"
-"PO-Revision-Date: 2006-03-17 07:49+0100\n"
+"PO-Revision-Date: 2006-10-26 17:41+0200\n"
 "Last-Translator:  <spam.to.f@lkenhagen.de>\n"
 "Language-Team: german <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1303,11 +1303,11 @@ msgstr "CD-SVG"
 
 #: ../../bkchem/main.py:788
 msgid "saved to %s file: %s"
-msgstr "wurde gespeichert: %s"
+msgstr "Zeichnung wurde in %s-Datei %s gespeichert."
 
 #: ../../bkchem/main.py:793
 msgid "failed to save to %s file: %s"
-msgstr "konnte nicht gespeichert werden: %s"
+msgstr "Zeichnung konnte nicht in %s-Datei %s gespeichert werden."
 
 #: ../../bkchem/main.py:815 ../../bkchem/main.py:1004
 msgid "Forget changes in currently visiting file?"

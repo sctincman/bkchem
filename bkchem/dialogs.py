@@ -28,6 +28,8 @@ import data
 import re
 import widgets
 import classes
+import os
+import os_support
 from sets import Set
 
 from singleton_store import Store, Screen
@@ -1026,7 +1028,9 @@ class language_dialog( Pmw.Dialog):
                          title=_('Language'),
                          command=self.done,
                          master='parent')
+    self.proceed = False
     self.init_list()
+
 
 
   def init_list( self):
@@ -1035,7 +1039,7 @@ class language_dialog( Pmw.Dialog):
     
     for lang, language in data.languages.iteritems():
       system = gettext.find( 'BKchem', '/usr/share/locale', [lang])
-      local = gettext.find( 'BKchem', '../locale', [lang])
+      local = gettext.find( 'BKchem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
       if system or local or lang == "en":
         langs.append( lang)
 
@@ -1051,6 +1055,8 @@ class language_dialog( Pmw.Dialog):
 
 
   def done( self, button):
+    if button == _("OK"):
+      self.proceed = True
     self.deactivate()
     
 

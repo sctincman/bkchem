@@ -89,16 +89,16 @@ class validator_report:
   def get_summary( self):
     out = ""
     if self.text_atoms:
-      out += _("%d text only atom%s (chemical interpretation is unknown)") % misc.len_and_ending( self.text_atoms)
+      out += _("%d text only atom(s) (chemical interpretation is unknown)") % len( self.text_atoms)
       out += "\n"
     if self.exceeded_valency:
-      out += _("%d atom%s with exceeded valency") % misc.len_and_ending( self.exceeded_valency)
+      out += _("%d atom(s) with exceeded valency") % len( self.exceeded_valency)
       out += "\n"
     if self.group_atoms:
-      out += _("%d group%s (groups need to be expanded for some export formats)") % misc.len_and_ending( self.group_atoms)
+      out += _("%d group(s) (groups need to be expanded for some export formats)") % len( self.group_atoms)
       out += "\n"
     if self.zero_order_bonds:
-      out += _("%d zero order bond%s (such bonds will not be exported into chemical formats)") % misc.len_and_ending( self.zero_order_bonds)
+      out += _("%d zero order bond(s) (such bonds will not be exported into chemical formats)") % len( self.zero_order_bonds)
     if not out:
       out = "OK"
     return out

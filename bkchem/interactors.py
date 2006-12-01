@@ -367,11 +367,12 @@ def log_atom_type( vtype):
 def select_language( paper):
   a = dialogs.language_dialog( paper)
   a.activate()
-  lang = a.list.getvalue()
-  if lang:
-    Store.pm.add_preference( "lang", lang[0])
-    tkMessageBox.showinfo( _("Info"),
-                           _("The selected language will be used the next time you start BKchem."))
+  if a.proceed:
+    lang = a.list.getvalue()
+    if lang:
+      Store.pm.add_preference( "lang", lang[0])
+      tkMessageBox.showinfo( _("Info"),
+                             _("The selected language will be used the next time you start BKchem."))
 
 
 

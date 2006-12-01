@@ -1,3 +1,22 @@
+RELEASE 0.11.6
+----------------------------------------
+
+ * bugfixes - checked and fixed German and Czech translation problems (fixes bug 17990)
+	    - language dialog did not properly find available languages when BKChem started
+	      from unusual location
+	    - cancel in the language dialog did not have the desired effect and the
+	      language was set anyway
+	    - OpenOffice Draw version >=2.0.2 created thick outlines around the exported text
+
+ * translations - German translation fixed by me with help of Peter Liebetraut
+		- Czech translation fixed slightly by me
+
+ * acknowledgments - Michael Palmer (OpenOffice Draw fix)
+		   - René Genz (bugreports)
+                   - Peter Liebetraut (bugreports)
+
+
+
 RELEASE 0.11.5
 ----------------------------------------
 
