@@ -382,6 +382,13 @@ class BKchem( Tk):
         plugin = plugins.__dict__[ name]
         self.plugins[ plugin.name] = plugin
 
+        print plugin.name
+        # support for tuning of piddle
+        if plugin.name.endswith( "(Piddle)"):
+          from plugins import tk2piddle
+          import tuning
+          tk2piddle.tk2piddle.text_x_shift = tuning.Tuning.piddle_text_x_shift
+
     self.paper = None
 
 

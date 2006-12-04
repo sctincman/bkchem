@@ -18,6 +18,13 @@
 #--------------------------------------------------------------------------
 
 
-subscript_down_shift = 2
+class Tuning:
 
-supsubscript_separation_shift = -1
+    # how to shift subscript in relation to the baseline (y)
+    ftext_subscript_y_shift = 2
+    
+    # when placing subscript or superscript after a letter, how to tweak the x position
+    ftext_supsubscript_x_shift = -1
+    
+    # how to shift texts x coordinate when exporting via piddle
+    piddle_text_x_shift = 0.7
