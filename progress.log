@@ -1,3 +1,52 @@
+RELEASE 0.12.0_pre1
+----------------------------------------
+
+ * bugfixes - reading of preferences crashed on startup in some cases
+	    - reading files containing numbers crashed in some cases
+	    - positioning of atom numbers was tweaked
+	    - dragging large ring systems was awfully slow in some cases
+	    - standard_values_dialog crashed when values were added manually
+	    - trying to read non-bkchem SVGs sometimes stalled on a comment
+	    - forgotten pictures in documentation were added
+	    - typo in About text was fixed
+	    - selected rectangle did not properly respond to dragging
+	    - undo did not work for text (not atom) in many cases
+	    - middle mouse button caused crash in mark mode
+	    - in some cases changing standard bond_width in standard_values_dialog
+	      caused wrong positioning of second line in double bonds
+
+ * enhancements - preferences dialog lets you decide whether to use real minus
+                  for minuses of the hyphen. Hyphen is shorter, but is part of ASCII,
+		  minus is the right character for minus, but is not part of ASCII.
+		- the same preferences are accessible on document level through the
+		  File properties dialog
+		- backspace can be used to delete selected objects as well as delete.
+		- the text-entry used to input text has a menu with a few special
+		  characters like minus or arrow (xml entities are used for them).
+		- CML export now asks whether atomic coordinates should remain in
+		  pixels or should be rescaled to something smaller, so that bond-
+		  lengths resemble real ones in angstroems.
+		- mark placement was polished
+		- electron pair mark has line_width as well as size
+		- file tuning.py was added, it enables experianced and/or brave users
+		  to tweak some of the rendering options. More will be added in future
+		- running bkchem with "-v" option only prints version and exists
+		- the file_properties_dialog was polished a little
+		- fixes of typos in documentation and source-code (thanks to René Genz)
+		- piddle exports was finetuned (using tuning.py)
+		- bkchem remembers the last active directory it used.
+		  It uses it only when it seems it is run via an desktop icon and
+		  not from command line.
+		- Cairo PNG export is capable of exporting pictures with transparent
+		  background (it can be set in a dialog that appears on export)
+
+ * acknowledgments - René Genz (bug- and typo- reports)
+		   - many others who reported bugs and made useful suggestions
+
+
+
+
+
 RELEASE 0.11.6
 ----------------------------------------
 
