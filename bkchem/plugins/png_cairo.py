@@ -30,7 +30,8 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
-    
+    self.background_color = (1,1,1,1)
+
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
@@ -41,7 +42,7 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
   def init_context( self):
     """to be overriden; should be called after init_surface"""
     context = cairo.Context( self.surface)
-    context.set_source_rgb( 1, 1, 1)
+    context.set_source_rgba( *self.background_color)
     context.rectangle( 0, 0, self.pagesize[0], self.pagesize[1])
     context.fill()
     return context
@@ -51,6 +52,7 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
     if self.interactive:
       d = scale_dialog( self.paper, x, y)
       if d.result:
+        self.background_color = d.background_color
         return d.result
       else:
         return None, None
@@ -87,10 +89,10 @@ class scale_dialog:
     self.dialog = Pmw.Dialog( parent,
                               buttons=(_('OK'), _('Cancel')),
                               defaultbutton=_('OK'),
-                              title=_('PNG resolution'),
+                              title=_('PNG resolution and background color'),
                               command=self.done)
 
-    Tkinter.Label(self.dialog.interior(), text=_("Set the PNG picture resolution using one of the bellow criteria.")).pack( pady=10, anchor="w", expand="1", padx=5)
+    Tkinter.Label(self.dialog.interior(), text=_("Set the PNG picture resolution and background color using one of the criteria below.")).pack( pady=10, anchor="w", expand="1", padx=5)
 
 
     # X RATIO
@@ -170,7 +172,19 @@ class scale_dialog:
 ##     self.preserve_ratio.set( 1)
 
 
+    self.background_color_button = Pmw.RadioSelect( self.dialog.interior(),
+                                                    buttontype = 'radiobutton',
+                                                    orient = 'vertical',
+                                                    labelpos = "wn",
+                                                    label_text=_("Background color"),
+                                                    pady = 0)
+    self.background_color_button.add( _("white"))
+    self.background_color_button.add( _("transparent"))
+    self.background_color_button.invoke( 0)
+    self.background_color_button.pack(pady=3, anchor='n', padx=10)
+
     self.dialog.activate()
+
 
 
   def done( self, button):
@@ -179,6 +193,7 @@ class scale_dialog:
       self.result = None
     else:
       self.result = (float( self.entryx.get())/100.0, float( self.entryy.get())/100.0) #, self.preserve_center.get())
+    self.background_color = self.background_color_button.getvalue() == _("white") and (1,1,1,1) or (0,0,0,0)
     self.dialog.deactivate()
 
 
