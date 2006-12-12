@@ -14,6 +14,7 @@ RELEASE 0.12.0_pre1
 	    - middle mouse button caused crash in mark mode
 	    - in some cases changing standard bond_width in standard_values_dialog
 	      caused wrong positioning of second line in double bonds
+	    - openoffice export of transparent lines was fixed, again
 
  * enhancements - preferences dialog lets you decide whether to use real minus
                   for minuses of the hyphen. Hyphen is shorter, but is part of ASCII,
