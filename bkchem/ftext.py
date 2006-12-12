@@ -115,7 +115,9 @@ class ftext:
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="nw", justify="right", fill=self.fill)
     elif 'sup' in chunk.attrs:
-      item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
+      item = canvas.create_text( x+tuning.Tuning.ftext_supsubscript_x_shift,
+                                 y,
+                                 tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="sw", justify="right", fill=self.fill)
     else:
@@ -193,17 +195,26 @@ class FtextHandler ( xml.sax.ContentHandler):
     xml.sax.ContentHandler.__init__( self)
     self._above = []
     self.chunks = []
+    self._text = ""
 
   def startElement( self, name, attrs):
+    self._closeCurrentText()
     self._above.append( name)
 
 
   def endElement( self, name):
+    self._closeCurrentText()
     self._above.pop( -1)
 
 
+  def _closeCurrentText( self):
+    if self._text:
+      self.chunks.append( text_chunk( self._text, attrs = Set( self._above)))
+      self._text = ""
+
+
   def characters( self, data):
-    self.chunks.append( text_chunk( data, attrs = Set( self._above)))
+    self._text += data
 
 
 

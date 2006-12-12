@@ -24,7 +24,7 @@ class Tuning:
     ftext_subscript_y_shift = 2
     
     # when placing subscript or superscript after a letter, how to tweak the x position
-    ftext_supsubscript_x_shift = -1
+    ftext_supsubscript_x_shift = -2
     
     # how to shift texts x coordinate when exporting via piddle
     piddle_text_x_shift = 0.7
