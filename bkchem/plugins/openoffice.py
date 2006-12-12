@@ -592,6 +592,7 @@ class style:
   def to_dom( self, doc):
     pass
 
+
 class graphics_style( style):
 
   def __init__( self, name='gr', stroke_color='#ffffff', fill='solid', fill_color='#ffffff', stroke_width=0,
@@ -640,6 +641,8 @@ class graphics_style( style):
                            "%dcm" % self.marker_start_width)
     if not self.stroke_width:
       prop.setAttribute('draw:stroke', 'none')
+    else:
+      prop.setAttribute('draw:stroke', self.stroke_color)
       
     return style
 
