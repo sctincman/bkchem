@@ -780,7 +780,7 @@ class standard_values_dialog:
       a = self.parent.paper.save_personal_standard( self.get_the_standard())
       if a:
         tkMessageBox.showinfo( _("Standard saved"),
-                               _("The standard was successfully saved as personal standard to %s") % a)
+                               _("The standard was successfully saved as personal standard to %s\n\nIt is not automatically applied to the current drawing and will be activated after you restart BKChem.\nYou can still apply the changes to the current drawing from the dialog window.") % a)
       else:
         tkMessageBox.showerror( _("Standard not saved"),
                                 _("""For some reason the standard couldn't be saved. Probably the right location
