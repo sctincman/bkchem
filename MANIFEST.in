@@ -13,4 +13,3 @@ include images/bkchem.png
 recursive-include doc *.html *.py *.png
 recursive-include dtd *.dtd *.xsd
 recursive-include locale LC_MESSAGES/BKchem.mo
-include bkchem.iss

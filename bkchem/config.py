@@ -19,7 +19,7 @@
 
 
 debug = 1
-devel = 0
+devel = 1
 
 current_CDML_version = '0.15'
 

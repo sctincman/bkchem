@@ -442,7 +442,21 @@ class BKchem( Tk):
 
   def init_preferences( self):
     # save_dir must be set after the preference manager is initiated
-    #self.save_dir = Store.pm.get_preference( "default-dir")
+    # we set the old directory only when the current working directory is
+    # the same as the installation directory and the install was really performed
+    # this is very common on windows, where you mostly start the program via an icon
+    # it is not easy to guess when the right situation occured
+    if os.path.abspath( os_support.get_bkchem_run_dir()) == os.path.abspath( os.getcwd()):
+      # we are running from the installation directory
+      if os_support.site_config != None:
+        # we are probably on Linux after install, go ahead
+        self.save_dir = Store.pm.get_preference( "default-dir")
+      elif sys.path[0].endswith( ".exe"):
+        # we are running on windows from an exe file, good as well
+        self.save_dir = Store.pm.get_preference( "default-dir")
+      else:
+        # otherwise we do not want to reset the path - it could confuse the user
+        pass
     for i in range( 5):
       path = Store.pm.get_preference( "recent-file%d" % (i+1))
       if path:
@@ -468,11 +482,11 @@ class BKchem( Tk):
                    'usertemplate': modes.user_template_mode(),
                    'misc': modes.misc_mode(),
                    'bracket': modes.bracket_mode(),
-                   'externaldata': modes.external_data_mode(),
+                   #'externaldata': modes.external_data_mode(),
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
-                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc', 'externaldata'] #, 'rapiddraw']
+                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc']#, 'externaldata'] #, 'rapiddraw']
 
     # import plugin modes
     import imp
@@ -993,7 +1007,7 @@ class BKchem( Tk):
       # we dont save configuration if we are in batch mode
       # this leads to window having size 0x0 and similar problems
       if self.svg_dir:
-        Store.pm.add_preference( "default-dir", self.save_dir)
+        Store.pm.add_preference( "default-dir", os.path.abspath( self.save_dir))
       i = 0
       # save recent files
       for name in self._recent_files:
