@@ -283,7 +283,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.line_width = Screen.any_to_px( standard.line_width)
     # bond width
     if not old_standard or (standard.bond_width != old_standard.bond_width):
-      if 'bond_width' in self.__dict__:
+      if hasattr( self, 'bond_width'):
         self.bond_width = misc.signum( self.bond_width) * Screen.any_to_px( standard.bond_width)
       else:
         self.bond_width = Screen.any_to_px( standard.bond_width)
