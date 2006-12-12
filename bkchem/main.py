@@ -382,7 +382,6 @@ class BKchem( Tk):
         plugin = plugins.__dict__[ name]
         self.plugins[ plugin.name] = plugin
 
-        print plugin.name
         # support for tuning of piddle
         if plugin.name.endswith( "(Piddle)"):
           from plugins import tk2piddle

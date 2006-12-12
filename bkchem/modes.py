@@ -405,7 +405,7 @@ class edit_mode( basic_mode):
 
 
   def mouse_down2( self, event, modifiers = []):
-    if self.focused:
+    if self.focused and not isinstance( self.focused, marks.mark):
       if self.focused not in Store.app.paper.selected:
         Store.app.paper.select( [self.focused])
       dialog = dialogs.config_dialog( Store.app, Store.app.paper.selected[:])
