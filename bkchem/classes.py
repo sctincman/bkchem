@@ -491,7 +491,7 @@ class point( point_drawable, interactive, child):
 
 ##-------------------- PLUS CLASS ------------------------------
 
-class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, top_level):
+class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
@@ -505,10 +505,10 @@ class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, 
                           area_colored.meta__undo_properties
 
   def __init__( self, paper, xy=(), package=None):
-    meta_enabled.__init__( self, standard=paper.standard)
+    area_colored.__init__( self)
     point_drawable.__init__( self)
     with_font.__init__( self)
-    area_colored.__init__( self)
+    meta_enabled.__init__( self, standard=paper.standard)
 
     self.paper = paper
 
@@ -530,6 +530,7 @@ class plus( meta_enabled, interactive, point_drawable, with_font, area_colored, 
     self.paper.register_id( self.item, self)
     self.selector = self.paper.create_rectangle( self.paper.bbox( self.item), fill=self.area_color, outline=self.area_color)
     self.paper.lift( self.item)
+
 
   def redraw( self):
     self.update_font()
