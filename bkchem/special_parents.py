@@ -442,6 +442,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     point_drawable.copy_settings( self, other)
     text_like.copy_settings( self, other)
     child_with_paper.copy_settings( self, other)
+    other.z = self.z
     #other.pos = self.pos
 
 
