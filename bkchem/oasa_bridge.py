@@ -113,7 +113,7 @@ def oasa_mol_to_bkchem_mol( mol, paper):
     movex = (maxx+minx)/2
     movey = (maxy+miny)/2
     trans = transform3d.transform3d()
-    trans.set_move( movex, movey, 0)
+    trans.set_move( -movex, -movey, 0)
     trans.set_scaling( scale)
     trans.set_move( 320, 240, 0)
     for a in m.atoms:

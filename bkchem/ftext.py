@@ -109,13 +109,13 @@ class ftext:
       weight = "normal"
 
     if 'sub' in chunk.attrs:
-      item = canvas.create_text( x+tuning.Tuning.ftext_supsubscript_x_shift,
-                                 y+tuning.Tuning.ftext_subscript_y_shift,
+      item = canvas.create_text( x+tuning.Tuning.Screen.supsubscript_x_shift,
+                                 y+tuning.Tuning.Screen.subscript_y_shift,
                                  tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="nw", justify="right", fill=self.fill)
     elif 'sup' in chunk.attrs:
-      item = canvas.create_text( x+tuning.Tuning.ftext_supsubscript_x_shift,
+      item = canvas.create_text( x+tuning.Tuning.Screen.supsubscript_x_shift,
                                  y,
                                  tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),

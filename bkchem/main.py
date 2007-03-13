@@ -386,7 +386,7 @@ class BKchem( Tk):
         if plugin.name.endswith( "(Piddle)"):
           from plugins import tk2piddle
           import tuning
-          tk2piddle.tk2piddle.text_x_shift = tuning.Tuning.piddle_text_x_shift
+          tk2piddle.tk2piddle.text_x_shift = tuning.Tuning.Piddle.text_x_shift
 
     self.paper = None
 

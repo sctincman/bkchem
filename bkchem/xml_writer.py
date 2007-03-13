@@ -29,6 +29,7 @@ import operator
 import svg_helper_functions as svg_help
 import dom_extensions
 import os
+from tuning import Tuning
 
 from singleton_store import Screen
 
@@ -327,8 +328,8 @@ class SVG_writer( XML_writer):
                                       ( 'stroke', self.cc( a.area_color))))
 
       # some fine tuning 
-      y1 += a.font.metrics('descent') #(y2-y)/4.0
-      x += 1.3 ## hack to compensate for the wrong measuring of text
+      y1 += a.font.metrics('descent') + Tuning.SVG.text_y_shift
+      x += Tuning.SVG.text_x_shift ## hack to compensate for the wrong measuring of text
 
       text = svg_help.ftext_to_svg_dom( a.xml_ftext)
       dom_extensions.setAttributes( text, (( "x", str( x)),
