@@ -94,7 +94,8 @@ languages = {'en': 'English',
              'cs': 'Czech',
              'de': 'German',
              'fr': 'French',
-             'pl': 'Polish'
+             'pl': 'Polish',
+             'tw': 'Traditional Chinese',
              }
 
 

@@ -904,7 +904,7 @@ class fragment_dialog( Pmw.Dialog):
   def __init__( self, paper, deletion=True):
     self.paper = paper
     if deletion:
-      butts = (_('OK'), _('Delete'), ('Cancel'))
+      butts = (_('OK'), _('Delete'), _('Cancel'))
     else:
       butts = (_('OK'), _('Cancel'))
 

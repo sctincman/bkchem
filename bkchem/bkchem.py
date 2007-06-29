@@ -111,7 +111,6 @@ from singleton_store import Store
 myapp = BKchem()
 myapp.withdraw()
 
-
 if __name__ == '__main__':
 
   import messages

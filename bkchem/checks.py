@@ -34,25 +34,11 @@ def check_linear_fragments( paper):
   for mol in paper.molecules:
     to_del = Set()
     for f in mol.fragments:
-      if f.type == "linear_form":
-        if f.edges - mol.edges or f.vertices - Set( mol.vertices):
-          # something from the fragment was deleted
-          es = f.edges & mol.edges
-          vs = f.vertices & Set( mol.vertices)
-          if es or vs:
-            f.edges = es
-            f.vertices = vs
-          else:
-            to_del.add( f)
-            continue
-          
-        # the fragment should be redrawn
-        try:
-          interactors.atoms_to_linear_fragment( mol, f.vertices, bond_length=f.properties.get( 'bond_length',0))
-        except ValueError:
-          # the remains of the fragment are not consistent
-          Store.log( _('The linear form was no longer consistent - it has been removed'))
-          to_del.add( f)
-
+      if mol.check_linear_form_fragment( f) == False:
+        to_del.add( f)
+        
     for f in to_del:
+      Store.log( _('The linear form was no longer consistent - it has been removed'))
       mol.delete_fragment( f)
+
+

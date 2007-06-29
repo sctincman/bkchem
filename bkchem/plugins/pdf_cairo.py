@@ -34,9 +34,17 @@ as it supports unicode strings and the output is of very good quality."""
     
 
   def init_surface( self):
-    w, h = self.pagesize
+    w, h = map( int, map( round, self.pagesize))
     return cairo.PDFSurface( self.filename, w, h)
 
+
+  def get_scaling( self, x, y):
+    sc = self._get_scaling_ratio()
+    return sc, sc
+
+  def _get_scaling_ratio( self):
+    from singleton_store import Screen
+    return 72.0/Screen.dpi
 
   def save( self):
     self.surface.finish()

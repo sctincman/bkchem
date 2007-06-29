@@ -1299,24 +1299,16 @@ class chem_paper( Canvas, object):
   def scale_selected( self, ratio_x, ratio_y, scale_font=1, fix_centers=0):
     top_levels, unique = self.selected_to_unique_top_levels()
     ratio = math.sqrt( ratio_x*ratio_y) # ratio for operations where x and y can't be distinguished (font size etc.)
-
-    if not fix_centers:
-      # we can use one transformation for all objects
-      tr = transform()
-      tr.set_scaling_xy( ratio_x, ratio_y)
-      for o in top_levels:
-        self.scale_object( o, tr, ratio, scale_font=scale_font)
-    else:
-      # we have to recalculate the transformation for every object
-      for o in top_levels:
+    tr = transform()
+    tr.set_scaling_xy( ratio_x, ratio_y)
+    for o in top_levels:
+      if fix_centers:
         bbox = o.bbox()
         x0 = (bbox[0] + bbox[2])/2
         y0 = (bbox[1] + bbox[3])/2
-        tr = transform()
-        tr.set_move( -x0, -y0)
-        tr.set_scaling_xy( ratio_x, ratio_y)
-        tr.set_move( x0, y0)
-        self.scale_object( o, tr, ratio, scale_font=scale_font)
+      self.scale_object( o, tr, ratio, scale_font=scale_font)
+      if fix_centers:
+        self.center_object( o, x0, y0)
 
     # the final things
     if top_levels:
@@ -1337,6 +1329,10 @@ class chem_paper( Canvas, object):
           for m in a.marks:
             m.size *= ratio
             m.redraw()
+      for frag in o.fragments:
+        if frag.type == "linear_form":
+          frag.properties['bond_length'] = round( frag.properties['bond_length'] * ratio)
+          o.check_linear_form_fragment( frag)
     if o.object_type in ('arrow','polygon','polyline'):
       for i in o.points:
         x, y = tr.transform_xy( i.x, i.y)
@@ -1998,3 +1994,12 @@ class chem_paper( Canvas, object):
 
   def fix_current_cropping_bbox( self):
     self.set_cropping_bbox( self.get_cropping_bbox())
+
+
+  def center_object( self, obj, x, y):
+    """moves an object so that its centered on coordinates x,y"""
+    x1, y1, x2, y2 = obj.bbox()
+    dx = x2 - x1
+    dy = y2 - y1
+    obj.move( x-x1-dx/2.0, y-y1-dy/2.0)
+

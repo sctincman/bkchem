@@ -1,3 +1,17 @@
+RELEASE 0.12.0_pre2
+----------------------------------------
+ * bugfixes - crash with Python 2.5 because of __future__ import was fixed
+	    - structures imported from molfiles should no longer appear outside
+              the boundaries of the drawing area (fixes bug 19088)
+	    - tuning support added to SVG export (should 'fix' 19259)
+	    - changing symbol of atom reset the z-coordinate to 0 - fixed
+	    - error appeared when undoing a change to an atom that was part of a fragment
+	    - background color of plus was not read from standard
+
+ * acknowledgments - to all who sent me bug reports and suggestions
+
+
+
 RELEASE 0.12.0_pre1
 ----------------------------------------
 

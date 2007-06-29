@@ -692,6 +692,33 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return fs
 
 
+  def check_linear_form_fragment( self, f):
+    """checks the consistency of a linear_form - returns either True (consistent) or
+    False (inconsistent).
+    Consistent fragments are automatically redrawn"""
+    import interactors
+    if f.type == "linear_form":
+      if f.edges - self.edges or f.vertices - Set( self.vertices):
+        # something from the fragment was deleted
+        es = f.edges & self.edges
+        vs = f.vertices & Set( self.vertices)
+        if es or vs:
+          f.edges = es
+          f.vertices = vs
+        else:
+          return False
+      # the fragment should be redrawn
+      try:
+        interactors.atoms_to_linear_fragment( self, f.vertices, bond_length=f.properties.get( 'bond_length',0))
+      except ValueError:
+        # the remains of the fragment are not consistent
+        return False
+      else:
+        return True
+    return True
+
+
+
 
   # template support
 
