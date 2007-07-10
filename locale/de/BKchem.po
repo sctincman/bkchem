@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: 2007-07-10 13:47+CEST\n"
-"PO-Revision-Date: 2007-07-10 13:49+0200\n"
+"PO-Revision-Date: 2007-07-10 14:15+0200\n"
 "Last-Translator:  <spam.to.f@lkenhagen.de>\n"
 "Language-Team: german <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -755,7 +755,7 @@ msgstr "Fragmentname"
 
 #: ../../bkchem/interactors.py:320
 msgid "Enter fragment name:"
-msgstr "Bitte einen Namen für das Fragmment eingeben:"
+msgstr "Bitte einen Namen für das Fragment eingeben:"
 
 #: ../../bkchem/interactors.py:327
 #, fuzzy
@@ -888,7 +888,7 @@ msgstr "Datei"
 
 #: ../../bkchem/main.py:183
 msgid "Create a new file in a new tab"
-msgstr "Neue Datei in neuem Reiter erstellen"
+msgstr "Neue Datei in neuem Tab erstellen"
 
 #: ../../bkchem/main.py:183
 msgid "New"
@@ -918,7 +918,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:187
 msgid "Load (open) a file in a new tab"
-msgstr "Datei in neuem Reiter öffnen"
+msgstr "Datei in neuem Tab öffnen"
 
 #: ../../bkchem/main.py:187 ../../bkchem/main.py:840 ../../bkchem/main.py:1035
 msgid "Load"
@@ -926,12 +926,11 @@ msgstr "Öffnen"
 
 #: ../../bkchem/main.py:188
 msgid "Load a file replacing the current one"
-msgstr ""
-"Datei in den aktuellen Reiter laden und das derzeitige Dokument ersetzen"
+msgstr "Datei in den aktuellen Tab laden und das derzeitige Dokument ersetzen"
 
 #: ../../bkchem/main.py:188
 msgid "Load to the same tab"
-msgstr "Im gleichen Reiter laden"
+msgstr "Im gleichen Tab laden"
 
 #: ../../bkchem/main.py:189
 msgid "The most recently used files"
@@ -979,9 +978,8 @@ msgid "Close tab"
 msgstr "Tab schließen"
 
 #: ../../bkchem/main.py:198
-#, fuzzy
 msgid "Close the current tab, exit when there is only one tab"
-msgstr "Tab schließen, beenden wenn es der einzige ist"
+msgstr "Tab schließen, beenden wenn es der einzigste ist"
 
 #: ../../bkchem/main.py:200
 msgid "Exit"
@@ -1020,8 +1018,7 @@ msgstr "Letzte rückgängig gemachte Aktion wiederholen"
 
 #: ../../bkchem/main.py:207
 msgid "Copy the selected objects to clipboard and delete them"
-msgstr ""
-"Ausgewählte Objekte in die Zwischenablage kopieren und vom Blatt löschen"
+msgstr "Ausgewählte Objekte in die Zwischenablage kopieren und vom Blatt löschen"
 
 #: ../../bkchem/main.py:207
 msgid "Cut"
@@ -1052,7 +1049,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:211
 msgid "Selected to clipboard as SVG"
-msgstr "Ausgewählte als SVG in die Zwischenablage kopieren"
+msgstr "Ausgewählte Objekte als SVG in die Zwischenablage kopieren"
 
 #: ../../bkchem/main.py:213
 msgid "Select all"
