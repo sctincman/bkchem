@@ -178,7 +178,7 @@ class BKchem( Tk):
 
     self.menu_template = [
       # file menu
-      ( _('File'),  'menu',     _('Open, save, export and import files'),   'left'),
+      ( _('File'),  'menu',     _('Open, save, export, and import files'),   'left'),
       #  menu         type        name            accelerator  status help                          command             state variable
       ( _('File'),  'command',  _('New'),       '(C-x C-n)', _("Create a new file in a new tab"), self.add_new_paper, None),
       ( _('File'),  'command',  _('Save'),      '(C-x C-s)', _("Save the file"),                  self.save_CDML,     None),
@@ -668,7 +668,7 @@ class BKchem( Tk):
     # check if the same file is opened
     p = self.check_if_the_file_is_opened( name)
     if p:
-      Store.log( _("Sorry but I cannot open the same file twice: ")+name, message_type="error")
+      Store.log( _("Sorry but I cannot open the same file twice: ")+"\n"+name, message_type="error")
       return False
     name_dic = self.get_name_dic( name=name)
     # create the tab

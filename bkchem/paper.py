@@ -1296,7 +1296,7 @@ class chem_paper( Canvas, object):
 
 
 
-  def scale_selected( self, ratio_x, ratio_y, scale_font=1, fix_centers=0):
+  def scale_selected( self, ratio_x, ratio_y, scale_font=1, fix_centers=0, scale_bond_width=False):
     top_levels, unique = self.selected_to_unique_top_levels()
     ratio = math.sqrt( ratio_x*ratio_y) # ratio for operations where x and y can't be distinguished (font size etc.)
     tr = transform()
@@ -1306,7 +1306,7 @@ class chem_paper( Canvas, object):
         bbox = o.bbox()
         x0 = (bbox[0] + bbox[2])/2
         y0 = (bbox[1] + bbox[3])/2
-      self.scale_object( o, tr, ratio, scale_font=scale_font)
+      self.scale_object( o, tr, ratio, scale_font=scale_font, scale_bond_width=scale_bond_width)
       if fix_centers:
         self.center_object( o, x0, y0)
 
@@ -1317,7 +1317,7 @@ class chem_paper( Canvas, object):
 
 
 
-  def scale_object( self, o, tr, ratio, scale_font=1):
+  def scale_object( self, o, tr, ratio, scale_font=1, scale_bond_width=False):
     """scale_font now also refers to scaling of marks"""
     if o.object_type == 'molecule':
       o.transform( tr)
@@ -1329,6 +1329,10 @@ class chem_paper( Canvas, object):
           for m in a.marks:
             m.size *= ratio
             m.redraw()
+      if scale_bond_width:
+        for e in o.edges:
+          e.bond_width *= ratio
+          e.redraw()
       for frag in o.fragments:
         if frag.type == "linear_form":
           frag.properties['bond_length'] = round( frag.properties['bond_length'] * ratio)

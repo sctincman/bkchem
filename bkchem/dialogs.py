@@ -586,7 +586,7 @@ class file_properties_dialog:
 
     self.use_real_minus = Tkinter.IntVar()
     use_real_minus_button = Tkinter.Checkbutton( minus_frame,
-                                                 text=_('Use real minus chracter (instead of hyphen)?'),
+                                                 text=_('Use real minus character (instead of hyphen)?'),
                                                  variable = self.use_real_minus)
     self.use_real_minus.set( self.paper.get_paper_property( 'use_real_minus'))
     use_real_minus_button.pack( anchor='w', padx=5, pady=5)
@@ -869,7 +869,7 @@ class preferences_dialog:
     # COMMON
     common_page = self.pages.add( _('Common'))
     # use real minus ?
-    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Use real minus chracter (instead of hyphen)?'),
+    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Use real minus character (instead of hyphen)?'),
                                                 variable=self.use_real_minus)
     replace_minus_button.pack( anchor='w', padx=10, pady=10)
 

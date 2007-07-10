@@ -73,8 +73,8 @@ bond_align_mode_mirrorthrough = _("click a bond or two atoms to mirror the molec
 # -------------------- OTHER MESSAGES --------------------
 
 
-about_text = _("""BKchem was conceived and written by BK
-and is performed by Python, Pmw & (optionaly :) PIL.
+about_text = _("""BKchem was conceived and written by Beda Kosata
+and is performed by Python, Pmw & (optionally) Cairo.
 
 BKchem is free software and is distributed under GNU GPL.
 BKchem is provided as is without warranty of any kind.
@@ -104,7 +104,7 @@ Sorry for the inconvenience, but you would need to upgrade Python in order to ru
 
 splash_text = _("""BKchem is starting.
 
-Unfortunatelly,
+Unfortunately,
 the splash image was not found :(""")
 
 

@@ -32,13 +32,12 @@ from xml.sax import saxutils
 from singleton_store import Store
 
 
-font_decorations = ('italic', 'bold', 'subscript', 'superscript')
-font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
-
-
-
-
 class editPool( Frame):
+
+  font_decorations = ('italic', 'bold', 'subscript', 'superscript')
+  font_decorations_to_names = {'italic':_('italic'), 'bold':_('bold'), 'subscript':_('subscript'), 'superscript':_('superscript')}
+  font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
+
 
   def __init__( self, master, buttons=('interpret','asis'), **kw):
     Frame.__init__( self, master, **kw)
@@ -98,13 +97,13 @@ class editPool( Frame):
     # text decoration
     decorFrame = Frame( self)
     decorFrame.pack( padx=5, side="left")
-    for i in font_decorations:
-      pix = Store.app.request( 'pixmap', name=i)
+    for i in self.font_decorations:
+      pix = Store.app.request( 'pixmap', name=self.font_decorations_to_names[i])
       self.__dict__[ i] = Button( self,
                                   image=pix,
-                                  command=misc.lazy_apply( self._tag_it, (font_decorations_to_html[i],)),
+                                  command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
                                   state='disabled',
-                                  text=i,
+                                  text=self.font_decorations_to_names[i],
                                   bd=config.border_width)
       Store.app.balloon.bind( self.__dict__[i], i)
       self.__dict__[ i].pack( side="left")

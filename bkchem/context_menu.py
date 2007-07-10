@@ -228,7 +228,7 @@ def mark_size( objs):
 def mark_template_atom_filter( objs):
   atms = [o for o in objs if isinstance( o, oasa.graph.vertex) and o.degree==1]
   if len( atms) == 1:
-    return ("Mark as template atom"), set_template_atom, atms
+    return _("Mark as template atom"), set_template_atom, atms
   else:
     return None
 
@@ -237,7 +237,7 @@ def mark_template_atom_filter( objs):
 def mark_template_bond_filter( objs):
   bonds = [o for o in objs if isinstance( o, oasa.bond)]
   if len( bonds) == 1:
-    return ("Mark as template bond"), set_template_bond, bonds
+    return _("Mark as template bond"), set_template_bond, bonds
   else:
     return None
 
