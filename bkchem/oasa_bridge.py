@@ -62,10 +62,7 @@ def read_molfile( file, paper):
 
 
 def write_molfile( mol, file):
-  from singleton_store import Store
   m = bkchem_mol_to_oasa_mol( mol)
-  program = Store.pm.get_preference( "inchi_program_path")
-  print oasa.inchi.mol_to_text( m, program=program)
   oasa.molfile.mol_to_file( m, file)
 
   
