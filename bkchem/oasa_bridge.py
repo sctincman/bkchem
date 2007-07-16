@@ -53,7 +53,7 @@ def read_inchi( text, paper):
   
 def mol_to_inchi( mol, program):
   m = bkchem_mol_to_oasa_mol( mol)
-  return oasa.inchi.mol_to_text( mol, program=program)
+  return oasa.inchi.mol_to_text( m, program=program)
 
 
 def read_molfile( file, paper):
@@ -62,7 +62,10 @@ def read_molfile( file, paper):
 
 
 def write_molfile( mol, file):
+  from singleton_store import Store
   m = bkchem_mol_to_oasa_mol( mol)
+  program = Store.pm.get_preference( "inchi_program_path")
+  print oasa.inchi.mol_to_text( m, program=program)
   oasa.molfile.mol_to_file( m, file)
 
   
@@ -154,6 +157,8 @@ def bkchem_mol_to_oasa_mol( mol):
     b2.vertices = (v1, v2)
     m.add_edge( v1, v2, b2)
   return m
+
+
 
 
 def bkchem_atom_to_oasa_atom( a):

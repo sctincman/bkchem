@@ -1074,7 +1074,7 @@ class chem_paper( Canvas, object):
       if delete_afterwards:
         [self.del_container(o) for o in cp]
         Store.log( _("killed %s object(s) to clipboard") % str( len( cp)))
-	self.start_new_undo_record()
+        self.start_new_undo_record()
       else:
         Store.log( _("copied %s object(s) to clipboard") % str( len( cp)))
       self.event_generate( "<<clipboard-changed>>")
@@ -1229,6 +1229,50 @@ class chem_paper( Canvas, object):
     self.start_new_undo_record()
 
 
+  def place_next_to_selected( self, mode, align, dist, obj):
+    """Places an object (obj) in a distance (dist) next to the selection,
+    by changing the x or the y value of the object according to the mode.
+    Modes: l= left r=right a=above b=below
+    Align: t=top b=bottom l=left r=right h=horizontal v=vertical
+    align or mode can be set to "" to use only one function"""
+    # locate all selected top_levels, filter them to be unique
+    cp, unique = self.selected_to_unique_top_levels()
+      # now find center of bbox of all objects in cp
+    bboxs = []
+    xmin, ymin, xmax, ymax = cp[0].bbox()
+    for o in cp:
+      x0, y0, x1, y1 = o.bbox()
+      if x0 < xmin:
+        xmin = x0
+      if y0 < ymin:
+        ymin = y0
+      if x1 > xmax:
+        xmax = x1
+      if ymax < y1:
+        ymax = y1
+    x1o,y1o,x2o,y2o = obj.bbox()
+    if mode == "l":
+        obj.move(xmin-x2o-dist, 0)
+    elif mode == "r":
+        obj.move(xmax-x1o+dist, 0)
+    elif mode == "b":
+        obj.move(0, ymax-y1o+dist)
+    elif mode == "a":
+        obj.move(0, ymin-y2o-dist)
+#####################################
+    if align == "t":
+        obj.move (0,ymin-y1o)
+    elif align == "b":
+        obj.move (0,ymax-y2o)
+    elif align == "l":
+        obj.move (xmin-x1o,0)
+    elif align == "r":
+        obj.move (xmax-x2o,0)
+    elif align == "v":
+        obj.move ((xmax+xmin)/2-(x1o+x2o)/2,0)
+    elif align == "h":
+        obj.move (0,(ymax+ymin)/2-(y1o+y2o)/2)
+    self.start_new_undo_record()
 
 
 

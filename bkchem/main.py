@@ -1369,6 +1369,7 @@ Enter INChI:""")
 
   def gen_inchi( self):
     program = Store.pm.get_preference( "inchi_program_path")
+    self.paper.swap_sides_of_selected("horizontal")
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
@@ -1379,12 +1380,14 @@ Enter INChI:""")
     try:
       for m in u:
         if m.object_type == 'molecule':
-            sms.append( oasa_bridge.mol_to_inchi( m, program))
+            inchi, warning = oasa_bridge.mol_to_inchi( m, program)
+            sms = sms + warning
+	    sms.append(inchi)
     except oasa.oasa_exceptions.oasa_inchi_error, e:
       sms = ["InChI generation failed,","make sure the path to the InChI program is correct in 'Options/INChI program path'", "", str( e)]
     except:
       sms = ["Unknown error occured during INChI generation, sorry", "Please, try to make sure the path to the InChI program is correct in 'Options/INChI program path'"]
-
+    self.paper.swap_sides_of_selected("horizontal")
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,
                            title='Generated INChIs',
