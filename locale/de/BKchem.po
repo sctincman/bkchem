@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: 2007-07-10 13:47+CEST\n"
-"PO-Revision-Date: 2007-07-10 14:15+0200\n"
+"PO-Revision-Date: 2007-07-18 08:23+0200\n"
 "Last-Translator:  <spam.to.f@lkenhagen.de>\n"
 "Language-Team: german <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -440,12 +440,12 @@ msgid ""
 "wasn't writable. Sorry for the inconvenience."
 msgstr ""
 "Die Einstellungen konnten nicht gespeichert werden. Grund hierfür könnte "
-"sein\n"
+"sein,\n"
 "dass das persönliche Profil nicht gefunden wurde oder nicht schreibbar ist."
 
 #: ../../bkchem/dialogs.py:851 ../../bkchem/main.py:277
 msgid "Preferences"
-msgstr "Eigenschaften"
+msgstr "Einstellungen"
 
 #: ../../bkchem/dialogs.py:907 ../../bkchem/dialogs.py:972
 msgid "Delete"
@@ -473,19 +473,19 @@ msgstr "Verfügbare Sprachen"
 
 #: ../../bkchem/edit_pool.py:38
 msgid "italic"
-msgstr ""
+msgstr "Kursiv"
 
 #: ../../bkchem/edit_pool.py:38
 msgid "subscript"
-msgstr ""
+msgstr "Tiefstellen"
 
 #: ../../bkchem/edit_pool.py:38
 msgid "superscript"
-msgstr ""
+msgstr "Hochstellen"
 
 #: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:731
 msgid "bold"
-msgstr "fett"
+msgstr "Fett"
 
 #: ../../bkchem/edit_pool.py:63
 msgid "Interpret"
@@ -1071,7 +1071,7 @@ msgstr "Ausrichten"
 
 #: ../../bkchem/main.py:217
 msgid "Align the tops of selected objects"
-msgstr "Ausgewählte Objekte an den oberen Begrenzungen ausrichten"
+msgstr "Ausgewählte Objekte an der oberen Begrenzung ausrichten"
 
 #: ../../bkchem/main.py:217
 msgid "Top"
@@ -1079,7 +1079,7 @@ msgstr "Oben"
 
 #: ../../bkchem/main.py:218
 msgid "Align the bottoms of selected objects"
-msgstr "Ausgewählte Objekte an den unteren Begrenzungen ausrichten"
+msgstr "Ausgewählte Objekte an der unteren Begrenzung ausrichten"
 
 #: ../../bkchem/main.py:218
 msgid "Bottom"
@@ -1087,7 +1087,7 @@ msgstr "Unten"
 
 #: ../../bkchem/main.py:219
 msgid "Align the left sides of selected objects"
-msgstr "Ausgewählte Objekte an den linken Begrenzungen ausrichten"
+msgstr "Ausgewählte Objekte an der linken Begrenzung ausrichten"
 
 #: ../../bkchem/main.py:219
 msgid "Left"
@@ -1095,7 +1095,7 @@ msgstr "Links"
 
 #: ../../bkchem/main.py:220
 msgid "Align the rights sides of selected objects"
-msgstr "Ausgewählte Objekte an den rechten Begrenzungen ausrichten"
+msgstr "Ausgewählte Objekte an der rechten Begrenzung ausrichten"
 
 #: ../../bkchem/main.py:220
 msgid "Right"
@@ -1103,7 +1103,7 @@ msgstr "Rechts"
 
 #: ../../bkchem/main.py:222
 msgid "Align the horizontal centers of selected objects"
-msgstr "Ausgewählte Objekte an den horizontalen Mitten ausrichten"
+msgstr "Ausgewählte Objekte an der horizontalen Mitte ausrichten"
 
 #: ../../bkchem/main.py:222
 msgid "Center horizontally"
@@ -1111,7 +1111,7 @@ msgstr "Horizontal zentrieren"
 
 #: ../../bkchem/main.py:223
 msgid "Align the vertical centers of selected objects"
-msgstr "Ausgewählte Objekte an den vertikalen Mitten ausrichten"
+msgstr "Ausgewählte Objekte an der vertikalen Mitte ausrichten"
 
 #: ../../bkchem/main.py:223
 msgid "Center vertically"
