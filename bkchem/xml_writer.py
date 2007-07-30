@@ -228,14 +228,29 @@ class SVG_writer( XML_writer):
 
     if a.spline and len( a.points) > 2:
       x,y = a.points[0].get_xy()
-      ps = 'M%d,%d ' % (x,y)
-      odd = 1
-      for (x,y) in [p.get_xy() for p in a.points[1:]]:
-        if odd:
-          ps += 'Q%d,%d ' % (x,y)
-        else:
-          ps += '%d,%d ' % (x,y)
-        odd = not odd
+      xb1,yb1 =  a.points[1].get_xy()
+      xb2,yb2 =  a.points[2].get_xy()
+      ps = 'M%d,%d Q%d,%d ' % (x,y,xb1,yb1)
+      if len(a.points)==3:
+        ps += '%d,%d ' % (xb2,yb2)
+      else:
+       (xold,yold)=(xb1,yb1)
+       xnew=(xold+xb2)/2
+       ynew=(yold+yb2)/2
+       ps+= '%d,%d ' % (xnew,ynew)
+       (xold,yold)=(xb2,yb2)
+       for (x,y) in [p.get_xy() for p in a.points[3:-1]]:
+         xnew=(xold+x)/2
+         ynew=(yold+y)/2
+         ps+= 'Q%d,%d %d,%d ' % (xold,yold,xnew,ynew)
+         (xold,yold)=(x,y)
+       (x,y)=a.points[-1].get_xy()
+       ps+= 'Q%d,%d %d,%d' % (xold,yold,x,y)
+	#if odd:
+          #ps += 'Q%d,%d ' % (x,y)
+        #else:
+          #ps += '%d,%d ' % (x,y)
+        #odd = not odd
 
 ##       x,y = a.points[0].get_xy()
 ##       x1,y1 = a.points[1].get_xy()
