@@ -238,10 +238,10 @@ class editPool( Frame):
 
 class special_character_menu( Tkinter.Menu):
 
-  chars = {'minus': "&#8722;",
-           'arrow-left': "&#x2190;",
-           'arrow-right': "&#x2192;",
-           'nu': "&#x3bd;"
+  chars = {_("minus"): "&#8722;",
+           _("arrow-left"): "&#x2190;",
+           _("arrow-right"): "&#x2192;",
+           _("nu"): "&#x3bd;"
            }
 
   def __init__( self, callback, **kw):

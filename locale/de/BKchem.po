@@ -241,9 +241,8 @@ msgid "Fix position of centers of objects?"
 msgstr "Objekt-Mitten festhalten?"
 
 #: ../../bkchem/dialogs.py:87
-#, fuzzy
 msgid "Scale font and mark sizes?"
-msgstr "Schriftgrößen mitskalieren?"
+msgstr "Schriftgrößen und Markierungen mitskalieren?"
 
 #: ../../bkchem/dialogs.py:142
 msgid "Configuration"
@@ -2130,6 +2129,7 @@ msgid "radical"
 msgstr "Radikal"
 
 #: ../../bkchem/modes.py:1620
+#: ../../bkchem/context_menu.py:242
 msgid "minus"
 msgstr "Minus"
 
@@ -2408,3 +2408,72 @@ msgstr "Hochgestellte Ladungen"
 #~ msgid "The standard was successfully saved as personal standard to %s"
 #~ msgstr ""
 #~ "Die persönlichen Voreinstellungen wurden erfolgreich gespeichert (%s)"
+
+#: ../../plugins/angle_between_bonds.py:10
+msgid "You have to have 2 bonds selected"
+msgstr "Es müssen 2 Bindungen ausgewählt werden!"
+
+#: ../../plugins/fetch_from_webbook.py:14
+msgid "Fetching progress"
+msgstr "Fortschritt"
+
+#: ../../plugins/fetch_from_webbook.py:16
+msgid "Connecting to WebBook..."
+msgstr "Baue Verbindung zum Webbook auf ..."
+
+#: ../../plugins/fetch_from_webbook.py:22
+msgid "Searching for the compound..."
+msgstr "Suche nach der Komponente ..."
+
+#: ../../plugins/fetch_from_webbook.py:30
+msgid "Reading the molfile..."
+msgstr "Importiere das Molekül ..."
+
+#: ../../plugins/fetch_from_webbook.py:48
+msgid "Give the name of a molecule to fetch:"
+msgstr "Wie ist der Name oder die CAS-Nummer des Moleküls, das gesucht wird?"
+
+#: ../../plugins/fetch_from_webbook.py:73
+msgid "Sorry, molecule with name %s was not found"
+msgstr "Ein Molekül mit dem Namen bzw. der CAS-Nummer %s wurde nicht gefunden!"
+
+#: ../../plugins/fragment_search.py:15
+msgid "Search progress"
+msgstr "Suchfortschritt"
+
+#: ../../plugins/fragment_search.py:21
+msgid "Found: %d"
+msgstr "Gefunden: %d"
+
+#: ../../plugins/fragment_search.py:61
+msgid "Select only one molecule"
+msgstr "Bitte nur ein Molekül auswählen!"
+
+#: ../../plugins/fragment_search.py:64
+msgid "Draw a molecule that you want to use as the fragment for search"
+msgstr "Wähle ein Molekül aus, das zur Fragmentsuche verwendet werden soll."
+
+#: ../../plugins/fragment_search.py:82
+msgid "Searched %d files, %.2fs, %.2fms per file"
+msgstr "Es wurden %d Dateien durchsucht, %.2fs, %.2fms pro Datei."
+
+#: ../../plugins/fragment_search.py:84
+msgid "No files to search in were found"
+msgstr "Es wurden keine Dateien gefunden, in denen gesucht werden kann."
+
+#: ../../plugins/text_to_group.py:24
+msgid "%d textatoms were converted to groups"
+msgstr "%d Textatome wurden zu Gruppen konvertiert."
+
+#: ../../bkchem/context_menu.py:243
+msgid "arrow-left"
+msgstr "Pfeil nach links"
+
+#: ../../bkchem/context_menu.py:244
+msgid "arrow-right"
+msgstr "Pfeil nach rechts"
+
+#: ../../bkchem/context_menu.py:245
+msgid "nu"
+msgstr "Ny"
+
