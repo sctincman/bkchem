@@ -25,15 +25,15 @@ install: $(DOMAIN).mo
 	cp $(DOMAIN).mo LC_MESSAGES/$(DOMAIN).mo
 
 $(DOMAIN).mo: $(DOMAIN).po
-	msgfmt.py $(DOMAIN).po
+	msgfmt $(DOMAIN).po -o $(DOMAIN).mo
 
-$(DOMAIN).po: $(DOMAIN).iso.po
-	$(RECODEBACK) $(DOMAIN).iso.po $(DOMAIN).po
+#$(DOMAIN).po: $(DOMAIN).iso.po
+#	$(RECODEBACK) $(DOMAIN).iso.po $(DOMAIN).po
 
 update: prepare
-	$(RECODE) $(DOMAIN).po $(DOMAIN).iso.po
+#$(RECODE) $(DOMAIN).po $(DOMAIN).iso.po
 	echo created $(DOMAIN).po - edit it
-	rm $(DOMAIN).pot
+#	rm $(DOMAIN).pot
 
 prepare: $(DOMAIN).pot $(DOMAIN).po
 	cp $(DOMAIN).po $(DOMAIN).po.backup
@@ -41,4 +41,4 @@ prepare: $(DOMAIN).pot $(DOMAIN).po
 	rm $(DOMAIN).po.backup
 
 $(DOMAIN).pot: 
-	$(S2POT) -d $(DOMAIN) $(PYDIR)/$(PYFILES)
+	$(S2POT) -d $(DOMAIN) $(PYDIR)/$(PYFILES) $(PYDIR)/plugins/$(PYFILES) 

@@ -35,6 +35,8 @@ class molfile_importer( plugin.importer):
   gives_molecule = 1
   gives_cdml = 0
 
+  doc_string = _("Imports a molfile document")
+
   def __init__( self, paper):
     plugin.importer.__init__( self)
     self.paper = paper
@@ -51,6 +53,8 @@ class molfile_importer( plugin.importer):
 
 
 class molfile_exporter( plugin.exporter):
+
+  doc_string = _("Exports to molfile document")
 
   def __init__( self, paper):
     plugin.exporter.__init__( self, paper)
@@ -103,6 +107,7 @@ name = "Molfile"
 extensions = ['.mol']
 exporter = molfile_exporter
 importer = molfile_importer
+local_name = _("Molfile")
 
 if not oasa_bridge.oasa_available:
   del importer

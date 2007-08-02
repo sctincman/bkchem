@@ -400,13 +400,16 @@ class BKchem( Tk):
     names.sort()
     for name in names:
       plugin = self.plugins[ name]
+      local_name = hasattr( plugin, "local_name") and getattr( plugin, "local_name") or plugin.name
       if ('importer' in  plugin.__dict__) and plugin.importer:
-        self.menu.addmenuitem( _("Import"), 'command', label=plugin.name,
-                               statusHelp=plugin.importer.__doc__,
+        doc_string = hasattr( plugin.importer, "doc_string") and getattr( plugin.importer, "doc_string") or plugin.importer.__doc__
+        self.menu.addmenuitem( _("Import"), 'command', label=local_name,
+                               statusHelp=doc_string,
                                command=misc.lazy_apply( self.plugin_import, (plugin.name,)))
       if ('exporter' in plugin.__dict__) and plugin.exporter:
-        self.menu.addmenuitem( _("Export"), 'command', label=plugin.name,
-                               statusHelp=plugin.exporter.__doc__,
+        doc_string = hasattr( plugin.exporter, "doc_string") and getattr( plugin.exporter, "doc_string") or plugin.exporter.__doc__
+        self.menu.addmenuitem( _("Export"), 'command', label=local_name,
+                               statusHelp=doc_string,
                                command=misc.lazy_apply( self.plugin_export, (plugin.name,)))
 
 

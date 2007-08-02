@@ -27,6 +27,10 @@ class pdf_exporter( piddle_exporter):
   """Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode
 strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used"""
 
+  doc_string = _("""Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode
+strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used""")
+
+
   def __init__( self, paper):
     piddle_exporter.__init__( self, paper, converter_class=tk2piddle_pdf)
     
@@ -40,3 +44,4 @@ strings (ASCII only) and the position of the text may be slightly off, depending
 name = "PDF (Piddle)"
 extensions = [".pdf"]
 exporter = pdf_exporter
+local_name = _("PDF (Piddle)")

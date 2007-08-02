@@ -32,6 +32,9 @@ import math
 
 class CML_importer( plugin.importer):
 
+  doc_string = _("""Imports a CML (Chemical Markup Language) document,
+uses version 1.0 of the CML standard.""")
+
   def __init__( self):
     # this makes implementing CML2 much easier - just supply different CML_atom and CML_bond
     self.CML_atom = CML_atom
@@ -167,6 +170,10 @@ class CML_importer( plugin.importer):
 
 class CML_exporter( plugin.exporter):
 
+  doc_string = _("""Exports a CML (Chemical Markup Language) document,
+uses version 1.0 of the CML standard.""")
+
+
   def __init__( self, paper):
     self.paper = paper
     # this makes implementing CML2 much easier - just supply different CML_atom and CML_bond
@@ -253,7 +260,7 @@ name = "CML"
 extensions = [".cml",".xml"]
 importer = CML_importer
 exporter = CML_exporter
-
+local_name = _("CML")
 
 
 

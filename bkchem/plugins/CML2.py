@@ -32,6 +32,9 @@ import dom_extensions as dom_ext
 
 class CML2_importer( CML.CML_importer):
 
+  doc_string = _("""Imports a CML (Chemical Markup Language) document,
+uses version 2.0 of the CML standard.""")
+
   def __init__( self):
     CML.CML_importer.__init__( self)
     self.CML_atom = CML2_atom
@@ -39,6 +42,9 @@ class CML2_importer( CML.CML_importer):
 
 
 class CML2_exporter( CML.CML_exporter):
+
+  doc_string = _("""Exports a CML (Chemical Markup Language) document,
+uses version 2.0 of the CML standard.""")
 
   def __init__( self, paper):
     CML.CML_exporter.__init__( self, paper)
@@ -51,7 +57,7 @@ name = "CML2"
 extensions = [".cml",".xml"]
 importer = CML2_importer
 exporter = CML2_exporter
-
+local_name = _("CML2")
 
 
 

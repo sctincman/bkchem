@@ -41,6 +41,9 @@ from singleton_store import Screen
 
 class OO_exporter( plugin.exporter):
 
+  doc_string = _("""Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0),
+note that this is not an ODF (Open Document Format) export.""")
+
   def __init__( self, paper):
     self.paper = paper
     self.used_styles = []
@@ -566,6 +569,7 @@ class OO_exporter( plugin.exporter):
 name = "OpenOffice Draw"
 extensions = [".sxd",".zip"]
 exporter = OO_exporter
+local_name = _("OpenOffice Draw")
 
 
 ## PRIVATE CLASSES AND FUNCTIONS
