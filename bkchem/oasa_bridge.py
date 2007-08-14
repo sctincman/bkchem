@@ -53,7 +53,8 @@ def read_inchi( text, paper):
   
 def mol_to_inchi( mol, program):
   m = bkchem_mol_to_oasa_mol( mol)
-  return oasa.inchi.mol_to_text( m, program=program)
+  # we do not use mol_to_text because generate_inchi returns extra warning messages
+  return oasa.inchi.generate_inchi( m, program=program)
 
 
 def read_molfile( file, paper):
