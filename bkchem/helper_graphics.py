@@ -215,7 +215,7 @@ class selection_square( selection_rect):
     x1, y1, x2, y2 = fix + (x, y)
     if self.object:
       self.object.resize( (x1, y1, x2, y2), fix=fix)
-      self.coords = copy.copy( self.object.coords)
+      self.coords = list( self.object.coords)
     self.redraw()
 
   def get_fix( self):
