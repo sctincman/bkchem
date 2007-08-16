@@ -853,9 +853,9 @@ class preferences_dialog:
     self.body = self.dialog.interior()
     #self.body.pack( fill='both', expand=1)
     self.replace_minus = Tkinter.IntVar()
-    self.replace_minus.set( self.preferences.get_preference( "replace_minus"))
+    self.replace_minus.set( self.preferences.get_preference( "replace_minus") or 0)
     self.use_real_minus = Tkinter.IntVar()
-    self.use_real_minus.set( self.preferences.get_preference( "use_real_minus"))
+    self.use_real_minus.set( self.preferences.get_preference( "use_real_minus") or 0)
 
     self.draw()
     self.dialog.activate()
@@ -873,9 +873,9 @@ class preferences_dialog:
     replace_minus_button.pack( anchor='w', padx=10, pady=10)
 
     # replace hyphens with minuses in export?
-    replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Replace hyphens with minus in SVG export?'),
-                                                variable=self.replace_minus)
     # ***HACK***
+    #replace_minus_button = Tkinter.Checkbutton( common_page, text=_('Replace hyphens with minus in SVG export?'),
+    #                                            variable=self.replace_minus)
     #replace_minus_button.pack( anchor='w', padx=10, pady=10)
 
     self.pages.setnaturalsize()
@@ -885,7 +885,7 @@ class preferences_dialog:
   def done( self, button):
     self.dialog.deactivate()
     if button == _('OK'):
-      self.preferences.add_preference( "replace_minus", self.replace_minus.get())
+      #self.preferences.add_preference( "replace_minus", self.replace_minus.get())
       self.preferences.add_preference( "use_real_minus", self.use_real_minus.get())
     else:
       pass
