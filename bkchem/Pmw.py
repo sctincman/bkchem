@@ -1815,7 +1815,8 @@ def _reporterror(func, args):
     if type(exc_type) == types.ClassType:
 	# Handle python 1.5 class exceptions.
 	exc_type = exc_type.__name__
-    msg = exc_type + ' Exception in Tk callback\n'
+    # str here - by BK, it does not work in python 2.5 without it    
+    msg = str(exc_type) + ' Exception in Tk callback\n'
     msg = msg + '  Function: %s (type: %s)\n' % (repr(func), type(func))
     msg = msg + '  Args: %s\n' % str(args)
 
