@@ -29,8 +29,7 @@ class PS_exporter( plugin.exporter):
   """Exports Encapsulated PostScript files. It uses a builtin (Tk) functions for PS export.
 The results vary with the system, problems are usually font-related.""" 
 
-  doc_string = _("""Exports Encapsulated PostScript files. It uses a builtin (Tk) functions for PS export.
-The results vary with the system, problems are usually font-related.""")
+  doc_string = _("Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS export. The results vary with the system, problems are usually font-related.")
 
   def __init__( self, paper):
     #plugin.exporter.__init__( self, paper)

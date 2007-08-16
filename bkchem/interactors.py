@@ -415,7 +415,7 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     # the selection is connected
     for v in vs:
       if len( [n for n in v.neighbors if n in vs]) > 2:
-        Store.log( "the selection is not linear - there are some splittings", message_type="error")
+        Store.log( _("The selection is not linear - there are some splittings."), message_type="error")
         return
     # ok, we are clear
     # here comes the code to do the work

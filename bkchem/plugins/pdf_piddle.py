@@ -25,10 +25,9 @@ from piddle import piddlePDF
 
 class pdf_exporter( piddle_exporter):
   """Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode
-strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used"""
+strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used."""
 
-  doc_string = _("""Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode
-strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used""")
+  doc_string = _("Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used.")
 
 
   def __init__( self, paper):

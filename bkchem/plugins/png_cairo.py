@@ -27,8 +27,7 @@ class png_cairo_exporter( cairo_exporter):
   """Exports PNG files via the Cairo (pycairo) library. The output is usually quite good, with unicode
 support and antialiased fonts. The output should look the same as the PDF (Cairo) export."""
 
-  doc_string = _("""Exports PNG files via the Cairo (pycairo) library. The output is usually quite good, with unicode
-support and antialiased fonts. The output should look the same as the PDF (Cairo) export.""")
+  doc_string = _("Exports PNG files via the Cairo (pycairo) library. The output is usually quite good, with unicode support and antialiased fonts. The output should look the same as the PDF (Cairo) export.")
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)

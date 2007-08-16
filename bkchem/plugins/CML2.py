@@ -31,9 +31,8 @@ import dom_extensions as dom_ext
 ## DEFINITIONS
 
 class CML2_importer( CML.CML_importer):
-
-  doc_string = _("""Imports a CML (Chemical Markup Language) document,
-uses version 2.0 of the CML standard.""")
+  """Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."""
+  doc_string = _("Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard.")
 
   def __init__( self):
     CML.CML_importer.__init__( self)
@@ -42,9 +41,8 @@ uses version 2.0 of the CML standard.""")
 
 
 class CML2_exporter( CML.CML_exporter):
-
-  doc_string = _("""Exports a CML (Chemical Markup Language) document,
-uses version 2.0 of the CML standard.""")
+  """Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."""
+  doc_string = _("Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard.")
 
   def __init__( self, paper):
     CML.CML_exporter.__init__( self, paper)

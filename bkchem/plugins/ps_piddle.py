@@ -23,13 +23,11 @@ from tk2piddle import tk2piddle_ps
 from piddle import piddlePS
 
 
-
 class ps_exporter( piddle_exporter):
   """Exports Encapsulated PostScript files via the Piddle library. Usually gives better results
 than the builtin method, but does not support unicode and the texts might be slightly misplaced.""" 
 
-  doc_string = _("""Exports Encapsulated PostScript files via the Piddle library. Usually gives better results
-than the builtin method, but does not support unicode and the texts might be slightly misplaced.""")
+  doc_string = _("Exports Encapsulated PostScript files via the Piddle library. Usually gives better results than the builtin method, but does not support unicode and the texts might be slightly misplaced.")
 
   def __init__( self, paper):
     piddle_exporter.__init__( self, paper, converter_class=tk2piddle_ps)

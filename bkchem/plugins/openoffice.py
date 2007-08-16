@@ -40,9 +40,10 @@ from singleton_store import Screen
 ## DEFINITIONS
 
 class OO_exporter( plugin.exporter):
+  """Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0),
+note that this is not an ODF (Open Document Format) export."""
 
-  doc_string = _("""Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0),
-note that this is not an ODF (Open Document Format) export.""")
+  doc_string = _("Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0), note that this is not an ODF (Open Document Format) export.")
 
   def __init__( self, paper):
     self.paper = paper
