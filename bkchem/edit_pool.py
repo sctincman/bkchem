@@ -98,14 +98,14 @@ class editPool( Frame):
     decorFrame = Frame( self)
     decorFrame.pack( padx=5, side="left")
     for i in self.font_decorations:
-      pix = Store.app.request( 'pixmap', name=self.font_decorations_to_names[i])
+      pix = Store.app.request( 'pixmap', name=i)
       self.__dict__[ i] = Button( self,
                                   image=pix,
                                   command=misc.lazy_apply( self._tag_it, (self.font_decorations_to_html[i],)),
                                   state='disabled',
                                   text=self.font_decorations_to_names[i],
                                   bd=config.border_width)
-      Store.app.balloon.bind( self.__dict__[i], i)
+      Store.app.balloon.bind( self.__dict__[i], self.font_decorations_to_names[i])
       self.__dict__[ i].pack( side="left")
 
     # special characters
