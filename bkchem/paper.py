@@ -1050,18 +1050,7 @@ class chem_paper( Canvas, object):
     if self.selected:
       cp, unique = self.selected_to_unique_top_levels()
       # now find center of bbox of all objects in cp
-      bboxs = []
-      xmin, ymin, xmax, ymax = cp[0].bbox()
-      for o in cp:
-        x0, y0, x1, y1 = o.bbox()
-      if x0 < xmin:
-        xmin = x0
-      if y0 < ymin:
-        ymin = y0
-      if x1 > xmax:
-        xmax = x1
-      if ymax < y1:
-        ymax = y1
+      xmin, ymin, xmax, ymax = self.common_bbox( cp)
       xy = ( xmin+(xmax-xmin)/2, ymin+(ymax-ymin)/2)
       clipboard_doc = dom.Document()
       clipboard = dom_extensions.elementUnder( clipboard_doc, 'clipboard')
@@ -1237,19 +1226,8 @@ class chem_paper( Canvas, object):
     align or mode can be set to "" to use only one function"""
     # locate all selected top_levels, filter them to be unique
     cp, unique = self.selected_to_unique_top_levels()
-      # now find center of bbox of all objects in cp
-    bboxs = []
-    xmin, ymin, xmax, ymax = cp[0].bbox()
-    for o in cp:
-      x0, y0, x1, y1 = o.bbox()
-      if x0 < xmin:
-        xmin = x0
-      if y0 < ymin:
-        ymin = y0
-      if x1 > xmax:
-        xmax = x1
-      if ymax < y1:
-        ymax = y1
+    # now find center of bbox of all objects in cp
+    xmin, ymin, xmax, ymax = self.common_bbox( cp)
     x1o,y1o,x2o,y2o = obj.bbox()
     if mode == "l":
         obj.move(xmin-x2o-dist, 0)
@@ -1259,7 +1237,6 @@ class chem_paper( Canvas, object):
         obj.move(0, ymax-y1o+dist)
     elif mode == "a":
         obj.move(0, ymin-y2o-dist)
-#####################################
     if align == "t":
         obj.move (0,ymin-y1o)
     elif align == "b":
@@ -2051,3 +2028,31 @@ class chem_paper( Canvas, object):
     dy = y2 - y1
     obj.move( x-x1-dx/2.0, y-y1-dy/2.0)
 
+
+  def center_objects( self, objs, x, y):
+    """moves a set of objects so that the center of the group is placed on coordinates x,y"""
+    x1, y1, x2, y2 = self.common_bbox( objs)
+    dx = x2 - x1
+    dy = y2 - y1
+    for obj in objs:
+      obj.move( x-x1-dx/2.0, y-y1-dy/2.0)
+
+
+  def common_bbox( self, objects):
+    """returns the bbox of all 'objects', in contrast to list_bbox it works with BKChem
+    objects, not Tkinter canvas objects"""
+    if not objects:
+      return None
+    xmin, ymin, xmax, ymax = objects[0].bbox()
+    for o in objects[:]:
+      x0, y0, x1, y1 = o.bbox()
+    if x0 < xmin:
+      xmin = x0
+    if y0 < ymin:
+      ymin = y0
+    if x1 > xmax:
+      xmax = x1
+    if ymax < y1:
+      ymax = y1
+    return xmin, ymin, xmax, ymax
+  
