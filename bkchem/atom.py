@@ -549,10 +549,10 @@ class atom( drawable_chem_vertex, oasa.atom):
 
     
 
-  def bbox( self):
+  def bbox( self, substract_font_descent=False):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     if self.show:
-      return drawable_chem_vertex.bbox( self)
+      return drawable_chem_vertex.bbox( self, substract_font_descent=substract_font_descent)
     else:
       if self.item:
         return self.paper.bbox( self.item)

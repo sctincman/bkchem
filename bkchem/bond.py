@@ -311,14 +311,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def _where_to_draw_from_and_to( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
-    # nasty hacks
-    modifier = (0,0,0,-3)
-    # // nasty hacks
     # at first check if the bboxes are not overlapping
-    bbox1 = list( misc.normalize_coords( self.atom1.bbox()))
-    bbox1 = map( operator.add, bbox1, modifier)
-    bbox2 = list( misc.normalize_coords( self.atom2.bbox()))
-    bbox2 = map( operator.add, bbox2, modifier)
+    bbox1 = list( misc.normalize_coords( self.atom1.bbox( substract_font_descent=True)))
+    bbox2 = list( misc.normalize_coords( self.atom2.bbox( substract_font_descent=True)))
     if geometry.do_rectangles_intersect( bbox1, bbox2):
       return None
     # then we continue with computation
@@ -381,12 +376,18 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if not where:
       # the bond is too short to draw it
       return None
+    if self.atom1.show and self.atom2.show:
+      # both atoms are shown - we don't want round edges at the ends of the central bond
+      # and we don't want to apply shortening of other lines
+      self.paper.itemconfig( self.item, capstyle="butt")
+      _k = 0
+    else:
+      _k = (1-self.double_length_ratio)/2
+      
     x1, y1, x2, y2 = where
-
     if self.bond_width == None:
       self._decide_distance_and_center()
     d = self.bond_width
-    _k = (1-self.double_length_ratio)/2
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
     dx = x-x0
     dy = y-y0

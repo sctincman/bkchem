@@ -489,8 +489,9 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       complete = False
     x1, y1, x2, y2 = self.ftext.bbox( complete=complete)
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
-    ## shrink the selector to improve appearance (y2-2)
-    self.selector = self.paper.create_rectangle( x1, y1, x2, y2-3, fill=self.area_color, outline='',tags='helper_a')
+    ## shrink the selector according to the font size and properties
+    hack_y = self.font.metrics()['descent'] - 1
+    self.selector = self.paper.create_rectangle( x1, y1, x2, y2-hack_y, fill=self.area_color, outline='',tags='helper_a')
     if not redraw:
       [m.draw() for m in self.marks]
 
@@ -681,10 +682,14 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
 
 
 
-  def bbox( self):
+  def bbox( self, substract_font_descent=False):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     if self.item:
       box = self.paper.bbox( self.item)
+      if substract_font_descent and self.show:
+        hack_y = self.font.metrics()['descent']
+        x1, y1, x2, y2 = box
+        box =  x1, y1, x2, y2-hack_y
       #if Store.app.in_batch_mode:
       #  # in batch mode the bboxes work really strangely and this fixes it somehow
       #  length = self.font.measure( self.text)
@@ -696,7 +701,9 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       length = self.font.measure( self.text)
       if self.pos == 'center-first':
         dx = self.font.measure( self.text[0]) / 2
-        return (self.x + length - dx, self.y + 0.3*self.font_size, self.x - dx, self.y - 0.7*self.font_size) 
+        descent = self.font.metrics()['descent']
+        ascent = self.font.metrics()['ascent']
+        return (self.x + length - dx, self.y + descent, self.x - dx, self.y - ascent) 
       else:
         dx = self.font.measure( self.text[-1]) / 2
-        return (self.x + dx, self.y + 0.3*self.font_size, self.x - length + dx, self.y - 0.7*self.font_size) 
+        return (self.x + dx, self.y + descent, self.x - length + dx, self.y - ascent) 
