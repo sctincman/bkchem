@@ -41,4 +41,4 @@ prepare: $(DOMAIN).pot $(DOMAIN).po
 	rm $(DOMAIN).po.backup
 
 $(DOMAIN).pot: 
-	$(S2POT) -d $(DOMAIN) $(PYDIR)/$(PYFILES) $(PYDIR)/plugins/$(PYFILES) 
+	$(S2POT) -d $(DOMAIN) $(PYDIR)/$(PYFILES) $(PYDIR)/plugins/$(PYFILES) $(PYDIR)/../plugins/$(PYFILES) 
