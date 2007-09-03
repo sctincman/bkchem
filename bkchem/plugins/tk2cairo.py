@@ -23,6 +23,7 @@ import tkFont
 import transform
 import geometry
 import math
+import misc
 
 
 class tk2cairo:
@@ -157,18 +158,16 @@ class tk2cairo:
     cairo_size = self.p2c_width( conf['size'])
     self.context.set_font_size( cairo_size)
     asc, desc, height, _a, _b = self.context.font_extents()
+    tk_font_linespace = self.p2c_width( afont.metrics()['linespace'])
 
-    while self.p2c_width( afont.metrics()['linespace']) > height:
-      dh = self.p2c_width( afont.metrics()['linespace']) - height
-      if dh > 3:
-        cairo_size += int( 0.5*dh)
-      else:
-        cairo_size += 1
+    while abs(tk_font_linespace - asc - desc) > 0.1:
+      dh = tk_font_linespace - asc - desc
+      cairo_size += 0.8*dh
       self.context.set_font_size( cairo_size)
       asc, desc, height, _a, _b = self.context.font_extents()
 
     xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
-    y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent']
+    y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent'] * cairo_size / conf['size']
     self.context.new_path()
     self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
     self.context.text_path( text)
