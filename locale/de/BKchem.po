@@ -1,13 +1,8 @@
-# translation of BKchem.po to german
-# german translation of bkchem
-# Copyright (C) 2006 Jan Falkenhagen
-# Jan Falkenhagen <spam.to.f@lkenhagen.de>, 2006.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: 2007-07-10 13:47+CEST\n"
-"PO-Revision-Date: 2007-08-06 18:51+0100\n"
+"PO-Revision-Date: 2007-08-26 18:30+0100\n"
 "Last-Translator: Sobek\n"
 "Language-Team: german <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +13,7 @@ msgstr ""
 
 #: ../../bkchem/checks.py:41
 msgid "The linear form was no longer consistent - it has been removed"
-msgstr ""
+msgstr "Die lineare Form war nicht mehr gültig. Sie wurde entfernt."
 
 #: ../../bkchem/context_menu.py:91
 msgid "Center bond"
@@ -144,6 +139,7 @@ msgstr "Atomnummer"
 
 #: ../../bkchem/context_menu.py:264
 #: ../../bkchem/context_menu.py:271
+#: ../../bkchem/plugins/png_cairo.py:183
 msgid "transparent"
 msgstr "transparent"
 
@@ -155,6 +151,8 @@ msgstr "Füllfarbe"
 
 #: ../../bkchem/context_menu.py:265
 #: ../../bkchem/context_menu.py:272
+#: ../../bkchem/plugins/png_cairo.py:182
+#: ../../bkchem/plugins/png_cairo.py:197
 msgid "white"
 msgstr "weiß"
 
@@ -277,14 +275,17 @@ msgid "Scale"
 msgstr "Skalierung"
 
 #: ../../bkchem/dialogs.py:51
+#: ../../bkchem/plugins/png_cairo.py:102
 msgid "Scale X (in %):"
-msgstr "X-Skalierung (in %)"
+msgstr "X-Skalierung (in %):"
 
 #: ../../bkchem/dialogs.py:62
+#: ../../bkchem/plugins/png_cairo.py:113
 msgid "Scale Y (in %):"
-msgstr "Y-Skalierung (in %)"
+msgstr "Y-Skalierung (in %):"
 
 #: ../../bkchem/dialogs.py:73
+#: ../../bkchem/plugins/png_cairo.py:169
 msgid "Preserve aspect ratio?"
 msgstr "Seitenverhältnis beibehalten?"
 
@@ -424,7 +425,7 @@ msgstr "Minus-Buchstabe anstatt eines Hyphen verwenden?"
 #: ../../bkchem/dialogs.py:597
 #: ../../bkchem/dialogs.py:877
 msgid "Replace hyphens with minus in SVG export?"
-msgstr ""
+msgstr "Hyphen durch Minus-Buchstabe im SVG Export ersetzen?"
 
 #: ../../bkchem/dialogs.py:645
 #: ../../bkchem/dialogs.py:779
@@ -493,19 +494,20 @@ msgid ""
 "It is not automatically applied to the current drawing and will be activated after you restart BKChem.\n"
 "You can still apply the changes to the current drawing from the dialog window."
 msgstr ""
+"Die Einstellungen wurden als persönlicher Standard gespeichert unter:\n"
+"%s\n"
+"Sie werden nicht automatisch, sondern erst nach einem Neustart von BKChem, angewendet.\n"
+"Veränderungen können über das Standardwerte-Fenster auf die momentane Datei angewendet werden."
 
 #: ../../bkchem/dialogs.py:785
 msgid "Standard not saved"
 msgstr "Voreinstellungen wurden nicht gespeichert"
 
 #: ../../bkchem/dialogs.py:786
-#, fuzzy
-msgid ""
-"For some reason the standard couldn't be saved. Probably the right location\n"
-"                                for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."
+msgid "For some reason the standard couldn't be saved. Probably the right location for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."
 msgstr ""
-"Die Einstellungen konnten nicht gespeichert werden. Grund hierfür könnte sein,\n"
-"dass das persönliche Profil nicht gefunden wurde oder nicht schreibbar ist."
+"Die Einstellungen konnten nicht gespeichert werden.\n"
+"Grund hierfür könnte sein, dass das persönliche Profil nicht gefunden wurde oder nicht schreibbar ist."
 
 #: ../../bkchem/dialogs.py:851
 #: ../../bkchem/main.py:277
@@ -592,8 +594,9 @@ msgstr "einen speziellen Buchstaben einfügen"
 #: ../../bkchem/interactors.py:47
 #: ../../bkchem/interactors.py:79
 #: ../../bkchem/interactors.py:178
+#: ../../bkchem/plugins/molfile.py:69
 msgid "No molecule selected."
-msgstr "kein Molekül ausgewählt"
+msgstr "Kein Molekül ausgewählt."
 
 #: ../../bkchem/interactors.py:48
 #: ../../bkchem/interactors.py:80
@@ -646,6 +649,7 @@ msgid "Validity error"
 msgstr "Validitätsfehler"
 
 #: ../../bkchem/interactors.py:130
+#: ../../bkchem/plugins/CML.py:202
 msgid ""
 "Sorry but your drawing includes 'text atoms'\n"
 " - atoms with no chemical sense."
@@ -659,8 +663,9 @@ msgstr "Ihr Export ist nicht möglich."
 
 #: ../../bkchem/interactors.py:132
 #: ../../bkchem/interactors.py:138
+#: ../../bkchem/plugins/CML.py:204
 msgid "For details check the chemistry with '%s/%s'."
-msgstr "Für Details bitte die Chemie mit %s/%s' überprüfen."
+msgstr "Für Details bitte die Chemie mit '%s/%s' kontrollieren."
 
 #: ../../bkchem/interactors.py:132
 #: ../../bkchem/interactors.py:138
@@ -686,12 +691,14 @@ msgstr "Für Details bitte die Chemie mit %s/%s' überprüfen."
 #: ../../bkchem/main.py:265
 #: ../../bkchem/main.py:266
 #: ../../bkchem/main.py:267
+#: ../../bkchem/plugins/CML.py:204
 msgid "Chemistry"
 msgstr "Chemie"
 
 #: ../../bkchem/interactors.py:132
 #: ../../bkchem/interactors.py:138
 #: ../../bkchem/main.py:246
+#: ../../bkchem/plugins/CML.py:204
 msgid "Check chemistry"
 msgstr "Chemie überprüfen"
 
@@ -700,14 +707,17 @@ msgid "Validity warning"
 msgstr "Validitätswarnung"
 
 #: ../../bkchem/interactors.py:137
+#: ../../bkchem/plugins/CML.py:209
 msgid "Your drawing includes some atoms with exceeded valency."
 msgstr "Die Zeichnung enthält Atome mit überschrittener Valenz."
 
 #: ../../bkchem/interactors.py:141
+#: ../../bkchem/plugins/CML.py:213
 msgid "Expand groups?"
 msgstr "Gruppen ausklappen?"
 
 #: ../../bkchem/interactors.py:142
+#: ../../bkchem/plugins/CML.py:214
 msgid "Your drawing includes some groups."
 msgstr "Die Zeichnung enthält Gruppen."
 
@@ -716,6 +726,7 @@ msgid "These must be expanded in order to get chemicaly valid drawing. The expan
 msgstr "Um eine chemisch valide Zeichnung zu erhalten müssen diese ausgeklappt werden. Dies kann danach wieder rückgängig gemacht werden."
 
 #: ../../bkchem/interactors.py:144
+#: ../../bkchem/plugins/CML.py:216
 msgid "Proceed with expansion?"
 msgstr "Mit Ausklappen fortfahren?"
 
@@ -834,7 +845,6 @@ msgid "Enter fragment name:"
 msgstr "Bitte einen Namen für das Fragment eingeben:"
 
 #: ../../bkchem/interactors.py:327
-#, fuzzy
 msgid "The bonds and atoms were used for creation of a new molecular fragment."
 msgstr "Die ausgewählten Bindungen wurden zur Erstellung eines neuen Molekülfragmentes verwendet."
 
@@ -875,11 +885,11 @@ msgstr "Die ausgewählte Sprache wird beim nächsten Start von BKchem aktiviert.
 
 #: ../../bkchem/interactors.py:390
 msgid "The selection does not define connected subgraph"
-msgstr ""
+msgstr "Die Auswahl definiert keine verbundenen Untergraphen."
 
 #: ../../bkchem/interactors.py:428
 msgid "The selected part of a molecule is a whole ring, there is no way to linearize it"
-msgstr "Der ausgewählte Teil des Moleküls ist ein Ring und kann nicht linearisiert werden"
+msgstr "Der ausgewählte Teil des Moleküls ist ein Ring und kann nicht linearisiert werden."
 
 #: ../../bkchem/interactors.py:477
 msgid "Groups must be expanded to compute oxidation number for them."
@@ -926,7 +936,6 @@ msgid "Ignore"
 msgstr "Ignorieren"
 
 #: ../../bkchem/main.py:181
-#, fuzzy
 msgid "Open, save, export, and import files"
 msgstr "Öffnen, speichern, exportieren und importieren von Dateien"
 
@@ -1018,7 +1027,7 @@ msgstr "Exportieren"
 
 #: ../../bkchem/main.py:193
 msgid "Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"
-msgstr "In pures SVG (Scalable Vector Graphics) exportieren (ohne Einbettung von BKchem-Daten)"
+msgstr "In pures SVG (Scalable Vector Graphics) exportieren (ohne Einbettung von BKchem-Daten)."
 
 #: ../../bkchem/main.py:193
 msgid "SVG"
@@ -1510,8 +1519,8 @@ msgstr "Zeichnung konnte nicht in %s-Datei %s gespeichert werden."
 msgid "Forget changes in currently visiting file?"
 msgstr "Änderungen in der aktuell angezeigten Datei verwerfen?"
 
-#: ../../bkchem/main.py:836
-#: ../../bkchem/main.py:1025
+#: ../../bkchem/main.py:839
+#: ../../bkchem/main.py:1028
 msgid "Forget changes?"
 msgstr "Änderungen verwerfen?"
 
@@ -1798,7 +1807,8 @@ msgstr ""
 "und wird von Python, Pmw & (optional) Cairo unterstützt.\n"
 "\n"
 "BKchem ist freie Software und steht unter der Lizenz der GNU GPL.\n"
-"BKchem wird 'so wie es ist' bereitgestellt, es kann keine Gewähr für entstehende etc. Schäden übernommen werden.- Für weitere Informationen siehe auch die Datei 'gpl.txt' im Programmverzeichnis.\n"
+"BKchem wird 'so wie es ist' bereitgestellt, es kann keine Gewähr für entstehende etc. Schäden übernommen werden.\n"
+"Für weitere Informationen siehe auch die Datei 'gpl.txt' im Programmverzeichnis.\n"
 "\n"
 "Die GNU GPL erlaubt es Ihnen BKchem zu studieren, zu verändern und zu verteilen\n"
 "solange dies unter den Bedingungen der GNU GPL geschieht."
@@ -1838,7 +1848,6 @@ msgstr ""
 "Entschuldigen Sie die Umstände aber Python muss aktualisiert werden um BKchem auszuführen."
 
 #: ../../bkchem/messages.py:105
-#, fuzzy
 msgid ""
 "BKchem is starting.\n"
 "\n"
@@ -1872,6 +1881,15 @@ msgid ""
 " -b SCRIPT       start BKChem in batch mode, run SCRIPT and exit\n"
 " -v, --version   show program version and exit\n"
 msgstr ""
+"Verwendung: bkchem [Optionen] [Dateinamen]\n"
+"\n"
+"Optionen:\n"
+"\n"
+" -h, --help         zeigt diese Hilfsnachricht an und hört auf\n"
+" -H <Verzeichnis>   setzt ein neues Heimverzeichnis für BKChem \n"
+"                    (dort werden Standardeinstellungen, eigene Vorlagen usw. gespeichert.)\n"
+" -b <Skript>        startet BKChem im Batchmodus, führt Skript aus und hört auf\n"
+" -v, --version      gibt die Programmversion aus und hört auf\n"
 
 #: ../../bkchem/modes.py:338
 msgid "edit"
@@ -1976,7 +1994,7 @@ msgstr "einfache Doppelbindungen für Keil/Schraffur"
 #: ../../bkchem/modes.py:1148
 #: ../../bkchem/modes.py:1150
 msgid "maximum valency exceeded!"
-msgstr "maximale Valenz überschritten!"
+msgstr "Die maximale Valenz ist überschritten!"
 
 #: ../../bkchem/modes.py:775
 #: ../../bkchem/modes.py:824
@@ -2024,11 +2042,11 @@ msgstr "Text"
 
 #: ../../bkchem/modes.py:1239
 msgid "The text mode can no longer be used to edit atoms, use atom mode."
-msgstr "Im Textmodus können Atome nicht mehr bearbeitet werden, benutzen Sie bitte den Atommodus."
+msgstr "Im Textmodus können Atome nicht mehr bearbeitet werden. Benutzen Sie bitte den Atommodus."
 
 #: ../../bkchem/modes.py:1259
 msgid "rotate"
-msgstr "rotieren"
+msgstr "Rotieren"
 
 #: ../../bkchem/modes.py:1262
 msgid "2D"
@@ -2040,7 +2058,7 @@ msgstr "3D"
 
 #: ../../bkchem/modes.py:1336
 msgid "transformation mode"
-msgstr "Transformationsmodus"
+msgstr "Transformieren"
 
 #: ../../bkchem/modes.py:1340
 msgid "free rotation around bond"
@@ -2060,7 +2078,7 @@ msgstr "Spiegelung an Linie"
 
 #: ../../bkchem/modes.py:1340
 msgid "vertical align"
-msgstr "vertikal ausrichten"
+msgstr "Vertikal ausrichten"
 
 #: ../../bkchem/modes.py:1358
 msgid "select the second atom, please."
@@ -2430,8 +2448,8 @@ msgid "Search progress"
 msgstr "Suchfortschritt"
 
 #: ../../plugins/fragment_search.py:21
-msgid "Found: %d"
-msgstr "Gefunden: %d"
+msgid "Found: %d % matching"
+msgstr "Gefunden: %d Dateien"
 
 #: ../../plugins/fragment_search.py:61
 msgid "Select only one molecule"
@@ -2464,6 +2482,168 @@ msgstr "Pfeil nach rechts"
 #: ../../bkchem/context_menu.py:245
 msgid "nu"
 msgstr "Ny"
+
+#: ../../bkchem/plugins/CML.py:35
+msgid "Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."
+msgstr "Importiert eine standardkonforme 1.0 CML (Chemical Markup Language) Datei."
+
+#: ../../bkchem/plugins/CML.py:172
+msgid "Exports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."
+msgstr "Exportiert eine CML (Chemical Markup Language) Datei im CML 1.0 Standard."
+
+#: ../../bkchem/plugins/CML.py:172
+msgid "Normalize bond length?"
+msgstr "Bindungslänge normalisieren?"
+
+#: ../../bkchem/plugins/CML.py:172
+msgid "If you are exporting to some kind of computational software it might be important to rescale the molecule, so that the bond lengths are in range of normal chemical bonds. Do you want to do this? It will influence only the exported CML file, not the drawing."
+msgstr ""
+"Wenn das Molekül für bestimmte Berechnungssoftware exportiert werden soll, ist es wichtig das Molekül zu skalieren, so das die Bindungslängen normal sind.\n"
+"\n"
+"Möchten Sie dies tun? Es wird nur die exportierte CML Datei skaliert, nicht die Zeichnung."
+
+#: ../../bkchem/plugins/CML.py:201
+msgid "CML export error"
+msgstr "CML Exportfehler"
+
+#: ../../bkchem/plugins/CML.py:203
+msgid "It is not possible to export it to valid CML."
+msgstr "Es ist nicht möglich in eine standardkonforme CML Datei zu exportieren."
+
+#: ../../bkchem/plugins/CML.py:208
+msgid "CML export warning"
+msgstr "CML Exportwarnung"
+
+#: ../../bkchem/plugins/CML.py:215
+msgid "These must be expanded in order to export to valid CML. The expansion could be undone with undo after the export"
+msgstr ""
+"Diese müssen ausgeklappt werden, um eine standardkonforme CML Datei zu erstellen.\n"
+"Das Ausklappen kann nach dem Exportieren rückgängig gemacht werden."
+
+#: ../../bkchem/plugins/CML.py:261
+msgid "CML"
+msgstr "CML"
+
+#: ../../bkchem/plugins/CML2.py:35
+msgid "Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
+msgstr "Import eine standardkonforme 2.0 CML (Chemical Markup Language) Datei."
+
+#: ../../bkchem/plugins/CML2.py:45
+msgid "Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
+msgstr "Exportiert eine CML (Chemical Markup Language) Datei im CML 2.0 Standard."
+
+#: ../../bkchem/plugins/CML2.py:58
+msgid "CML2"
+msgstr "CML2"
+
+#: ../../bkchem/plugins/molfile.py:39
+msgid "Imports a molfile document."
+msgstr "Importiert eine .MOL Datei."
+
+#: ../../bkchem/plugins/molfile.py:59
+msgid "Exports to molfile document."
+msgstr "Exportiert ein Molekül in das .MOL Dateiformat."
+
+#: ../../bkchem/plugins/molfile.py:70
+#: ../../bkchem/plugins/molfile.py:75
+msgid "You have to select exactly one molecule (any atom or bond will do)."
+msgstr "Es muss genau ein Molekül ausgewählt sein."
+
+#: ../../bkchem/plugins/molfile.py:74
+msgid "%d molecules selected."
+msgstr "%d Moleküle ausgewählt."
+
+#: ../../bkchem/plugins/molfile.py:112
+msgid "Molfile"
+msgstr "Molfile"
+
+#: ../../bkchem/plugins/openoffice.py:46
+msgid "Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0), note that this is not an ODF (Open Document Format) export."
+msgstr ""
+"Exportiert die Zeichnung ins Open Office Draw Format (nativ für OO < 2.0).\n"
+"Dies ist kein ODF (Open Document Format) Exporter."
+
+#: ../../bkchem/plugins/openoffice.py:573
+msgid "OpenOffice Draw"
+msgstr "OpenOffice Draw"
+
+#: ../../bkchem/plugins/pdf_cairo.py:32
+msgid "Exports PDF via the Cairo (pycairo) library. This is the preferred PDF output plugin as it supports unicode strings and the output is of very good quality."
+msgstr ""
+"Exportiert in eine PDF Datei via Cairo (pycairo) Bibliothek.\n"
+"Dies ist der empfohlene PDF Exporter, da Unicode unterstützt wird."
+
+#: ../../bkchem/plugins/pdf_cairo.py:59
+msgid "PDF (Cairo)"
+msgstr "PDF (Cairo)"
+
+#: ../../bkchem/plugins/pdf_piddle.py:30
+msgid "Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used."
+msgstr ""
+"Exportiert in eine PDF Datei mithilfe der Piddle Bibliothek.\n"
+"Unicode wird nicht unterstützt und die Textposition ist möglicherweise etwas variiert, abhängig von der verwendeten Schriftart."
+
+#: ../../bkchem/plugins/pdf_piddle.py:46
+msgid "PDF (Piddle)"
+msgstr "PDF (Piddle)"
+
+#: ../../bkchem/plugins/png_cairo.py:30
+msgid "Exports PNG files via the Cairo (pycairo) library. The output is usually quite good, with unicode support and antialiased fonts. The output should look the same as the PDF (Cairo) export."
+msgstr ""
+"Exportiert in eine PNG Datei mit der Cairo (pycairo) Bibliothek.\n"
+"Unicode und geglättete (antialiased) Schriftarten werden unterstützt. Die Ergebnisse sollten ähnlich zum PDF (Cairo) Exporter sein."
+
+#: ../../bkchem/plugins/png_cairo.py:75
+msgid "PNG (Cairo)"
+msgstr "PNG (Cairo)"
+
+#: ../../bkchem/plugins/png_cairo.py:93
+msgid "PNG resolution and background color"
+msgstr "PNG Auflösung und Hintergrundfarbe"
+
+#: ../../bkchem/plugins/png_cairo.py:96
+msgid "Set the PNG picture resolution and background color using one of the criteria below."
+msgstr "Lege die Bildauflösung und die Hintergrundfarbe mit den Eingabefelder unten fest."
+
+#: ../../bkchem/plugins/png_cairo.py:128
+msgid "Size X (in px):"
+msgstr "X-Größe (in px):"
+
+#: ../../bkchem/plugins/png_cairo.py:139
+msgid "Size Y (in px):"
+msgstr "Y-Größe (in px):"
+
+#: ../../bkchem/plugins/png_cairo.py:180
+msgid "Background color"
+msgstr "Hintergrundfarbe"
+
+#: ../../bkchem/plugins/ps_builtin.py:32
+msgid "Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS export. The results vary with the system, problems are usually font-related."
+msgstr ""
+"Exportiert in eine Encapsulated PostScript Datei mithilfe eingebauter (Tk) Funktionen für den PS-Export.\n"
+"Die Ergebnisse variieren mit dem System. Probleme lassen sich meistens auf Schriftart-Probleme zurückführen."
+
+#: ../../bkchem/plugins/ps_builtin.py:63
+msgid "PostScript (builtin)"
+msgstr "PostScript (builtin)"
+
+#: ../../bkchem/plugins/ps_piddle.py:30
+msgid "Exports Encapsulated PostScript files via the Piddle library. Usually gives better results than the builtin method, but does not support unicode and the texts might be slightly misplaced."
+msgstr ""
+"Exportiert in eine  Encapsulated PostScript Datei mit der Piddle Bibliothek.\n"
+"Dies gibt in der Regel bessere Ergebnisse als der bultin-Exporter. Unterstütz aber keinen Unicode und der Text ist möglicherweise etwas fehlplatziert."
+
+#: ../../bkchem/plugins/ps_piddle.py:45
+msgid "PostScript (Piddle)"
+msgstr "PostScript (Piddle)"
+
+#: ../../bkchem/plugins/interactors.py:418
+msgid "The selection is not linear - there are some splittings."
+msgstr "Die Auswahl is nicht linear. Es wurden Verzweigungen gefunden."
+
+#: ../../bkchem/plugins/png_cairo.py:155
+msgid "Resolution (dpi):"
+msgstr "Auflösung (in dpi):"
 
 #~ msgid "The standard was successfully saved as personal standard to %s"
 #~ msgstr ""
