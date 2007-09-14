@@ -255,9 +255,9 @@ class BKchem( Tk):
       ( _("Chemistry"), 'command', _('Generate INChI'), None, _("Generate an INChI for the selected structure by calling the INChI program"), self.gen_inchi,
         lambda : Store.pm.has_preference("inchi_program_path") and self.paper.selected_mols),
       ( _("Chemistry"), 'separator'),
-      ( _("Chemistry"), 'command', _('Set display form'), "(C-o C-d)",
-        _("The display form is stored in the saved file and tells how the molecule should be displayed in text"),
-        lambda : interactors.ask_display_form_for_selected( self.paper), 'selected_mols'),
+      #( _("Chemistry"), 'command', _('Set display form'), "(C-o C-d)",
+      #  _("The display form is stored in the saved file and tells how the molecule should be displayed in text"),
+      #  lambda : interactors.ask_display_form_for_selected( self.paper), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Set molecule name'), None, _("Set the name of the selected molecule"), lambda : interactors.ask_name_for_selected( self.paper), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Set molecule ID'), None, _("Set the ID of the selected molecule"), lambda : interactors.ask_id_for_selected( self.paper), 'one_mol_selected'),
       ( _("Chemistry"), 'separator'),
@@ -708,15 +708,17 @@ class BKchem( Tk):
     return True
 
 
-  def close_current_paper( self):
+  def close_current_paper( self, call_quit_if_no_remains=True):
     ret = self.close_paper()
-    if self.papers == []:
+    if self.papers == [] and call_quit_if_no_remains:
       self._quit()
     return ret
   
 
   def close_paper( self, paper=None):
     p = paper or self.paper
+    if self.editPool.active:
+      self.editPool._cancel(None)
 
     if p.changes_made and not self.in_batch_mode:
       name = p.file_name['name']
@@ -1004,7 +1006,7 @@ class BKchem( Tk):
 
   def _quit( self):
     while self.papers:
-      if not self.close_current_paper():
+      if not self.close_current_paper( call_quit_if_no_remains=False):
         return
     if not self.in_batch_mode:
       # we dont save configuration if we are in batch mode
@@ -1018,7 +1020,7 @@ class BKchem( Tk):
         Store.pm.add_preference( "recent-file%d" % i, name)
       self.save_configuration()
     self.quit()
-
+    sys.exit(0)
 
       
   def plugin_import( self, pl_id, filename=None):

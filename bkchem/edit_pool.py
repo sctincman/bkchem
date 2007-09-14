@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2007 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ class editPool( Frame):
                                       bd=config.border_width)
     Store.app.balloon.bind( self.specialCharButton, _('Insert a special character'))
     self.specialCharButton.pack( side='left')
-    
+    self.active = False
 
       
 
@@ -145,12 +145,14 @@ class editPool( Frame):
 
   def _cancel( self, e):
     self._setText( None)
+    self.active = False
     self._quit()
 
   def _quit( self):
     self.grab_release()
     self._disable()
     self._normaly_terminated = 1
+    self.active = False
     self.quit()
 
 
@@ -188,6 +190,7 @@ class editPool( Frame):
   def activate( self, text=None, select=1):
     """activates edit_pool and returns inserted value (None if cancel occured),
     if parameter text is None it preserves the old one, use text='' to delete old text"""
+    self.active = True
     self.interpret = 1
     self.focus_set()
     self.grab_set()
