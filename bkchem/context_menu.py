@@ -306,7 +306,7 @@ VALUES = 1
 def set_show( o, value):
   o.show = value
   o.redraw()
-  [b.redraw() for b in o.paper.bonds_to_update()]
+  [b.redraw() for b in o.paper.bonds_to_update( exclude_selected_bonds=False)]
 
 
 def set_show_hydrogens( o, value):
