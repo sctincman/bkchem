@@ -131,7 +131,14 @@ class tk2cairo:
       self.context.set_line_width( width)
       # the path itself 
       cs = self._flat_list_to_list_of_tuples( coords)
-      self._create_cairo_path( cs, closed=False)
+      if self.paper.itemcget( item, 'smooth') != "0":
+        # smooth lines
+        xycoords = self._flat_list_to_list_of_tuples( coords)
+        beziers = geometry.tkspline_to_cubic_bezier( xycoords)
+        for bez in beziers:
+          self._create_cairo_curve( bez, closed=False)
+      else:
+        self._create_cairo_path( cs, closed=False)
       # stroke it
       self.context.stroke()
     else:
@@ -280,6 +287,14 @@ class tk2cairo:
     self.context.move_to( x, y)
     for (x,y) in points:
       self.context.line_to( x, y)
+    if closed:
+      self.context.close_path()
+
+
+  def _create_cairo_curve( self, points, closed=False):
+    x1, y1, x2, y2, x3, y3, x4, y4 = points
+    self.context.move_to( x1, y1)
+    self.context.curve_to( x2, y2, x3, y3, x4, y4)
     if closed:
       self.context.close_path()
 
