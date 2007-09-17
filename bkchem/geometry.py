@@ -235,3 +235,42 @@ def is_point_inside_polygon( point, polygon):
   else:
     return True
 
+def tkspline_to_quadratic_bezier( points):   #points = ((x1,y1),(x2,y2),...)
+    if len(points) > 2:
+      qbeziers = []
+      startx,starty = points[0]             #start point
+      curvex,curvey = points[1]             #point that defines curvature
+      for nextx,nexty in points[2:-1]:
+        endx = (curvex+nextx)/2             #calculate midway point
+        endy = (curvey+nexty)/2             #to find end point
+        qbeziers.append((startx,starty,curvex,curvey,endx,endy))
+        
+        startx,starty = endx,endy           #start where the last ended
+        curvex,curvey = nextx,nexty
+      
+      endx,endy = points[-1]                #no midway calculation for last point
+      qbeziers.append((startx,starty,curvex,curvey,endx,endy)) 
+        
+    else:
+      startx,starty = points[0]             #If only two points are given
+      endx,endy = points[1]                 #make a straight line
+      curvex = (startx+endx)/2
+      curvey = (starty+endy)/2
+      qbeziers=((startx,starty,curvex,curvey,endx,endy),)
+    
+    return qbeziers
+
+def tkspline_to_cubic_bezier( points):   #points = ((x1,y1),(x2,y2),...)
+    qbeziers = tkspline_to_quadratic_bezier( points)
+    cbeziers = []
+    for qbez in qbeziers:
+      startx, starty = qbez[0], qbez[1]
+      endx, endy = qbez[4], qbez[5]
+      qcurvex, qcurvey = qbez[2], qbez[3]
+      
+      ccurvexa, ccurveya = startx + 2/3*(qcurvex-startx), starty + 2/3*(qcurvey-starty)
+      ccurvexb, ccurveyb = ccurvexa + 1/3*(endx-startx), ccurveya + 1/3*(endy-starty)
+      cbeziers.append( (startx, starty, ccurvexa, ccurveya, ccurvexb, ccurveyb, endx, endy))
+    # http://fontforge.sourceforge.net/bezier.html
+    return cbeziers
+    

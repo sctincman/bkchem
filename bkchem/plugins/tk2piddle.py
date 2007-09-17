@@ -99,43 +99,33 @@ class tk2piddle:
       if end:
         coords[-2] = end[0]
         coords[-1] = end[1]
-      if self.paper.itemcget( item, 'smooth') != "0":   #smoooth is spline 
-        curvenr = len( coords)/2-2                      #calculate number of curves
-        outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-        fill = piddle.transparent
-        width = self.convert( float( self.paper.itemcget( item, 'width')))
-        xstart=coords[0]
-        ystart=coords[1]
-        for a in range(curvenr): 
-            if a==curvenr-1:        #check for end of curve
-                x4=coords[-2]
-                y4=coords[-1]
-            else:
-                x4=(coords[2*a+4]+coords[2*a+2])/2   #calculate the point where the two curves meet
-                y4=(coords[2*a+5]+coords[2*a+3])/2   #i.e. middle between two bkchem points
-            x1=xstart
-            y1=ystart
-            x2=x1+(2/3)*(x1-coords[2*a+2])      #converting quadratic spline into
-            y2=y1+(2/3)*(y1-coords[2*a+3])      #qubic spline
-            x3=coords[2*a+2]+(1/3)*(x4-x1)      #http://fontforge.sourceforge.net/bezier.html
-            y3=coords[2*a+3]+(1/3)*(y4-y1)
-            self.canvas.drawCurve(x1, y1, x2, y2, x3, y3, x4, y4, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
-            xstart=x4   #end is start for the next
-            ystart=y4
-      else:
-        if len( coords) > 4:
+   
+      if len( coords) > 4:
+        if self.paper.itemcget( item, 'smooth') != "0":   #smoooth is spline 
+          outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
+          fill = piddle.transparent
+          width = self.convert( float( self.paper.itemcget( item, 'width')))
+          xycoords = []
+          for b in range( len( coords)/2):
+            xycoords.append( (coords[2*b], coords[2*b+1]))
+          beziers = geometry.tkspline_to_cubic_bezier( xycoords)
+          for bez in beziers:
+              x1, y1, x2, y2, x3, y3, x4, y4 = bez
+              self.canvas.drawCurve(x1, y1, x2, y2, x3, y3, x4, y4, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
+        
+        else:
           # polyline
           outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
           fill = piddle.transparent
           width = self.convert( float( self.paper.itemcget( item, 'width')))
           cs = self._flat_list_to_list_of_tuples( coords)
           self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
-        else:
-          # simple line
-          fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
-          width = self.convert( float( self.paper.itemcget( item, 'width')))
-          x1, y1, x2, y2 = coords
-          self.canvas.drawLine( x1, y1, x2, y2, color=fill, width=width)
+      else:
+        # simple line
+        fill = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
+        width = self.convert( float( self.paper.itemcget( item, 'width')))
+        x1, y1, x2, y2 = coords
+        self.canvas.drawLine( x1, y1, x2, y2, color=fill, width=width)
     else:
       pass #transparent things
 
