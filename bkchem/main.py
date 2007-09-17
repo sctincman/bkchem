@@ -1020,7 +1020,8 @@ class BKchem( Tk):
         Store.pm.add_preference( "recent-file%d" % i, name)
       self.save_configuration()
     self.quit()
-    sys.exit(0)
+    if os.name != "nt":
+      sys.exit(0)
 
       
   def plugin_import( self, pl_id, filename=None):

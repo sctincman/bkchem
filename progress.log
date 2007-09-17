@@ -1,3 +1,28 @@
+RELEASE 0.12.0_pre3
+----------------------------------------
+ * bugfixes - quit properly even if text is currently edited
+            - plugins are now included into the translation
+	    - cairo export now searches more precisely for proper font size of text
+	    - some parts of the GUI were not translated (thank to René for reporting it)
+	    - new users experienced a crash because they did not have any personal
+	      preferences set (fixes bug 20795)
+	    - fix error in Pmw that appeared under Python 2.5
+	    - fix dragging of selected circles and squares (fixes bug 20766)
+	    - fix InChI generation for drawings with stereochemistry (thanks to Bernhard for the patch)
+              
+ * enhancements - splines export finally works (in SVG, Piddle and Cairo exports)
+                  (many thanks to Bernhard Radzio for that)
+
+ * changes - triple bond between two not-hidden symbols is drawn with all lines 
+   	     with the same length
+	   - warnings from the InChI software now propagate into BKChem
+
+ * translations - German translation updated by René Genz
+
+ * acknowledgments - Bernhard Radzio for the great splines patches and more
+   		   - René Genz for German translation update and many bugreports
+
+
 RELEASE 0.12.0_pre2
 ----------------------------------------
  * bugfixes - crash with Python 2.5 because of __future__ import was fixed
