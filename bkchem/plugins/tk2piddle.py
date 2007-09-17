@@ -101,17 +101,15 @@ class tk2piddle:
         coords[-1] = end[1]
    
       if len( coords) > 4:
-        if self.paper.itemcget( item, 'smooth') != "0":   #smoooth is spline 
+        if self.paper.itemcget( item, 'smooth') != "0":   #smooth is spline 
           outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
           fill = piddle.transparent
           width = self.convert( float( self.paper.itemcget( item, 'width')))
-          xycoords = []
-          for b in range( len( coords)/2):
-            xycoords.append( (coords[2*b], coords[2*b+1]))
+          xycoords = self._flat_list_to_list_of_tuples( coords)
           beziers = geometry.tkspline_to_cubic_bezier( xycoords)
           for bez in beziers:
-              x1, y1, x2, y2, x3, y3, x4, y4 = bez
-              self.canvas.drawCurve(x1, y1, x2, y2, x3, y3, x4, y4, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
+            x1, y1, x2, y2, x3, y3, x4, y4 = bez
+            self.canvas.drawCurve(x1, y1, x2, y2, x3, y3, x4, y4, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
         
         else:
           # polyline
