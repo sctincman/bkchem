@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKchem\n"
 "POT-Creation-Date: 2007-07-10 13:47+CEST\n"
-"PO-Revision-Date: 2007-08-26 18:30+0100\n"
+"PO-Revision-Date: 2007-09-19 19:47+0100\n"
 "Last-Translator: Sobek\n"
 "Language-Team: german <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -70,7 +70,7 @@ msgstr "Als Vorlagebindung markieren"
 
 #: ../../bkchem/context_menu.py:250
 msgid "Show"
-msgstr "Zeigen"
+msgstr "Elementsymbol zeigen"
 
 #: ../../bkchem/context_menu.py:252
 #: ../../bkchem/dialogs.py:221
@@ -937,7 +937,7 @@ msgstr "Ignorieren"
 
 #: ../../bkchem/main.py:181
 msgid "Open, save, export, and import files"
-msgstr "Öffnen, speichern, exportieren und importieren von Dateien"
+msgstr "Öffnen, Speichern, Exportieren und Importieren von Dateien"
 
 #: ../../bkchem/main.py:181
 #: ../../bkchem/main.py:183
@@ -1016,7 +1016,7 @@ msgstr "Zuletzt benutzte Dokumente"
 
 #: ../../bkchem/main.py:192
 msgid "Export the current file"
-msgstr "Aktuelle Datei Exportieren"
+msgstr "Aktuelle Datei exportieren"
 
 #: ../../bkchem/main.py:192
 #: ../../bkchem/main.py:193
@@ -1235,7 +1235,7 @@ msgstr "Ausgewählte Objekte nach ganz unten absenken"
 
 #: ../../bkchem/main.py:230
 msgid "Send back"
-msgstr "absenken"
+msgstr "Ganz nach unten absenken"
 
 #: ../../bkchem/main.py:231
 msgid "Reverse the ordering of the selected objects on the stack"
@@ -1267,7 +1267,7 @@ msgstr "Konfigurieren"
 
 #: ../../bkchem/main.py:240
 msgid "Set the properties of the object, such as color, font size etc."
-msgstr "Ändert die Eigenschaften des Objektes (Farbe, Schriftgröße etc.)"
+msgstr "Eigenschaften (Farbe, Schriftgröße etc.) ändern"
 
 #: ../../bkchem/main.py:244
 msgid "Information about molecules, group expansion and other chemistry related stuff"
@@ -2526,7 +2526,7 @@ msgstr "CML"
 
 #: ../../bkchem/plugins/CML2.py:35
 msgid "Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
-msgstr "Import eine standardkonforme 2.0 CML (Chemical Markup Language) Datei."
+msgstr "Importiert eine standardkonforme 2.0 CML (Chemical Markup Language) Datei."
 
 #: ../../bkchem/plugins/CML2.py:45
 msgid "Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
