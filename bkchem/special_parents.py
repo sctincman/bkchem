@@ -31,7 +31,8 @@ from ftext import ftext
 import xml.dom.minidom as dom
 import tkFont
 import debug
-
+from tuning import Tuning
+import operator
 
 
 
@@ -687,7 +688,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       box = self.paper.bbox( self.item)
       if substract_font_descent and self.show:
         hack_y = self.font.metrics()['descent']
-        x1, y1, x2, y2 = box
+        x1, y1, x2, y2 = map( operator.add, box, Tuning.Screen.drawable_chem_vertex_bbox_mod_after_descent_removal)
         box =  x1, y1, x2, y2-hack_y
       #if Store.app.in_batch_mode:
       #  # in batch mode the bboxes work really strangely and this fixes it somehow
