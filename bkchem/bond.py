@@ -339,7 +339,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x1, y1, x2, y2 = where
 
     # decide the capstyle
-    if self.atom1.is_part_of_linear_fragment() and self.atom2.is_part_of_linear_fragment():
+    if self.atom1.show or self.atom2.show:
       capstyle = "butt"
     else:
       capstyle = "round"
