@@ -23,11 +23,36 @@ class Tuning:
     ## On screen rendering
     class Screen:
         # how to shift subscript in relation to the baseline (y)
-        subscript_y_shift = 2
+        # it lets you select different values for different font sizes
+        # BKchem will inteligently(?) pick the nearest one
+        subscript_y_shift = {7:0, 12:2, 18:3}
     
         # when placing subscript or superscript after a letter, how to tweak the x position
-        supsubscript_x_shift = -2
+        # it lets you select different values for different font sizes
+        # BKchem will inteligently(?) pick the nearest one
+        supsubscript_x_shift = {7:-1, 12:-2}
 
+        # do not edit this! (unless you know what you are doing)
+        def pick_best_value( self, name, font_size):
+            if not hasattr( self, name):
+                raise AttributeError, "attribute %s does not exist" % name
+            d = getattr( self, name)
+            # check if proper value is already present
+            if font_size in d:
+                return d[font_size]
+            # it isn't
+            #print "cache miss", font_size
+            keys = d.keys()
+            diffs = [abs(k-font_size) for k in keys]
+            best_i = diffs.index( min( diffs))
+            best_key = keys[best_i]
+            #d[font_size] = d[best_key]
+            return d[best_key]
+            
+            
+
+        pick_best_value = classmethod( pick_best_value)
+        
 
     ## SVG export
     class SVG:
