@@ -214,8 +214,7 @@ class vertex_common( object):
       return bbox[2]+2, bbox[1]
     
     # deal with marks in linear_form
-
-    if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
+    if self.is_part_of_linear_fragment():
       if mark_name == "atom_number":
         bbox = self.bbox()
         return int( self.x-0.5*self.font_size), bbox[1]-2
@@ -451,7 +450,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
   def decide_pos( self):
     """decides whether the first or the last letter in the text should be positioned on the
     coords of the vertex"""
-    if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
+    if self.is_part_of_linear_fragment():
       self.pos = 'center-first'
       return 
     as = self.get_neighbors()
@@ -707,3 +706,12 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       else:
         dx = self.font.measure( self.text[-1]) / 2
         return (self.x + dx, self.y + descent, self.x - length + dx, self.y - ascent) 
+
+
+  def is_part_of_linear_fragment( self):
+    """returns boolean, useful to trigger special drawing of linear forms"""
+    if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
+      return True
+    else:
+      return False
+    

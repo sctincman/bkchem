@@ -338,7 +338,13 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return None
     x1, y1, x2, y2 = where
 
-    self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle="round")
+    # decide the capstyle
+    if self.atom1.is_part_of_linear_fragment() and self.atom2.is_part_of_linear_fragment():
+      capstyle = "butt"
+    else:
+      capstyle = "round"
+
+    self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle=capstyle)
     # draw helper items
     self.second = self.third = []
     self.paper.register_id( self.item, self)

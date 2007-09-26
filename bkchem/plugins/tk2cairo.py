@@ -146,7 +146,6 @@ class tk2cairo:
 
 
   def _draw_text( self, item):
-
     text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
     x1, y1, x2, y2 = self.transformer.transform_4( self.paper.bbox( item))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
@@ -165,7 +164,7 @@ class tk2cairo:
     cairo_size = self.p2c_width( conf['size'])
     self.context.set_font_size( cairo_size)
     asc, desc, height, _a, _b = self.context.font_extents()
-    tk_font_linespace = self.p2c_width( afont.metrics()['linespace'])
+    tk_font_linespace = round( self.p2c_width( afont.metrics()['linespace']))
 
     while abs(tk_font_linespace - asc - desc) > 0.1:
       dh = tk_font_linespace - asc - desc

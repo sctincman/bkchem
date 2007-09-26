@@ -717,7 +717,7 @@ class BKchem( Tk):
 
   def close_paper( self, paper=None):
     p = paper or self.paper
-    if self.editPool.active:
+    if hasattr( self, "editPool") and self.editPool.active:
       self.editPool._cancel(None)
 
     if p.changes_made and not self.in_batch_mode:

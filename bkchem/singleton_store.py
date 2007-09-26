@@ -68,6 +68,14 @@ class Screen:
 
 
 
+  def in_to_px( self, inch):
+    """transforms coord from in to px"""
+    return self.dpi * inch
+
+  in_to_px = classmethod( in_to_px)
+
+
+
 
   def mm_to_px( self, mm):
     """transforms coord from mm to px"""
@@ -99,6 +107,8 @@ class Screen:
         a = self.cm_to_px( a)
       elif au == 'mm':
         a = self.mm_to_px( a)
+      elif au == 'in':
+        a = self.in_to_px( a)
       if au == 'px':
         return a
     return a
