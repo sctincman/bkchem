@@ -32,6 +32,7 @@ from parents import point_drawable, interactive, drawable, top_level
 from reaction import reaction
 from singleton_store import Screen
 
+import debug
 
 ##-------------------- ARROW CLASS ------------------------------
 
@@ -55,7 +56,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
 
-  def __init__( self, paper, points=[], shape=(8,10,3), pin=1, spline=0, package=None, fill="#000"):
+  def __init__( self, paper, type="normal", points=[], shape=(8,10,3), pin=1, spline=0, package=None, fill="#000"):
     meta_enabled.__init__( self, standard=paper.standard)
     drawable.__init__( self)
     with_line.__init__( self)
@@ -63,11 +64,13 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
     self.paper = paper
 
+    self.type = type
     self.points = []
     self.spline = spline
     self.paper = paper
     self.shape = shape
     self.item = None
+    self.items = []
     self.pin = 1
     if points:
       for p in points:
@@ -78,6 +81,17 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     if package:
       self.read_package( package)
 
+
+  # just a hack
+  def _get_item(self):
+    debug.log( "calling GET item", levels=[2])
+    return self.items[0]
+
+  def _set_item(self,i):
+    debug.log( "calling SET item", levels=[2])
+    self.items = [i]
+
+  item = property( _get_item, _set_item)
 
   # PROPERTIES
 
@@ -115,29 +129,21 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       for p in self.points:
         p.type = type
       [pnt.draw() for pnt in self.points]
-      ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
-      self.item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
-                                          width=self.line_width, smooth=self.spline, fill=self.line_color)
-      self.paper.register_id( self.item, self)
+      # here we call a private draw method corresponding to the current type
+      self.items = getattr(self,'_draw_'+self.type)()
+      [self.paper.register_id( i, self) for i in self.items]
     
   def redraw( self):
-    if not self.item:
-      self.draw()
-    else:
-      if len( self.points) > 1:
-        #type = self.spline and 'circle' or 'invisible'
-        type = 'invisible'
-        [pnt.change_type( type) for pnt in self.points]
-        ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
-        self.paper.coords( self.item, ps)
-        self.paper.itemconfig( self.item, arrow=self._pins[ self.pin], arrowshape=self.shape,\
-                               width=self.line_width, smooth=self.spline, fill=self.line_color)
+    if self.items:
+      map( self.paper.unregister_id, self.items)
+      map( self.paper.delete, self.items)
+    self.draw()
 
   def focus( self):
-    self.paper.itemconfig( self.item, width = self.line_width+2)
+    [self.paper.itemconfig( i, width=self.line_width+2) for i in self.items]
 
   def unfocus( self):
-    self.paper.itemconfig( self.item, width = self.line_width)
+    [self.paper.itemconfig( i, width=self.line_width) for i in self.items]
 
 #  def get_id( self):
 #    return self.id
@@ -173,9 +179,9 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def delete( self):
     [p.delete() for p in self.points]
     self.points = []
-    self.paper.unregister_id( self.item)
-    self.paper.delete( self.item)
-    self.item = None
+    map( self.paper.unregister_id, self.items)
+    map( self.paper.delete, self.items)
+    self.items = []
 
   def is_empty_or_single_point( self):
     return len( self.points) < 2 
@@ -189,6 +195,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
     a = ['no', 'yes']
+    self.type = package.getAttribute( 'type') or 'normal'
     start = a.index( package.getAttribute( 'start'))
     end = a.index( package.getAttribute( 'end'))
     if start and end:
@@ -223,7 +230,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
                                         ('width', str( self.line_width)),
                                         ('start', a[start]),
                                         ('end', a[end]),
-                                        ('color', str( self.line_color))))
+                                        ('color', str( self.line_color)),
+                                        ('type', self.type)))
     for p in self.points:
       arr.appendChild( p.get_package( doc))
     return arr
@@ -236,7 +244,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
-    return self.paper.bbox( self.item)
+    return self.paper.list_bbox( self.items)
 
   def set_pins( self, start=None, end=None):
     st, en = self.get_pins()      
@@ -251,6 +259,17 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     return divmod( self.pin, 2)
 
   def lift( self):
-    if self.item:
-      self.paper.lift( self.item)
+    if self.items:
+      map( self.paper.lift, self.items)
     [o.lift() for o in self.points]
+
+
+  # -- private drawing methods for different arrow types --
+  
+  def _draw_normal( self):
+    ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+    item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
+                                   width=self.line_width, smooth=self.spline, fill=self.line_color)
+    return [item]
+  
+
