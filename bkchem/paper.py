@@ -25,6 +25,7 @@ from __future__ import division
 from Tkinter import Canvas
 import tkFont, tkMessageBox
 import classes
+import arrow
 from molecule import molecule
 from transform import transform 
 from transform3d import transform3d
@@ -156,7 +157,7 @@ class chem_paper( Canvas, object):
 
   # arrows
   def _get_arrows( self):
-    return [o for o in self.stack if isinstance( o, classes.arrow)]
+    return [o for o in self.stack if isinstance( o, arrow.arrow)]
 
   arrows = property( _get_arrows)
 
@@ -952,7 +953,7 @@ class chem_paper( Canvas, object):
 
 
   def new_arrow( self, points=[], spline=0):
-    arr = classes.arrow( self, points=points, spline=spline)
+    arr = arrow.arrow( self, points=points, spline=spline)
     self.stack.append( arr)
     arr.draw()
     return arr
@@ -1117,7 +1118,7 @@ class chem_paper( Canvas, object):
     if package.nodeName == 'molecule':
       o = molecule( self, package=package)
     elif package.nodeName == 'arrow':
-      o = classes.arrow( self, package=package)
+      o = arrow.arrow( self, package=package)
     elif package.nodeName == 'plus':
       o = classes.plus( self, package=package)
     elif package.nodeName == 'text':
