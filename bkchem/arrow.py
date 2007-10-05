@@ -72,7 +72,6 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.spline = spline
     self.paper = paper
     self.shape = shape
-    self.item = None
     self.items = []
     self.pin = 1
     if points:
@@ -84,17 +83,6 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     if package:
       self.read_package( package)
 
-
-  # just a hack
-  def _get_item(self):
-    debug.log( "calling GET item", levels=[2])
-    return self.items[0]
-
-  def _set_item(self,i):
-    debug.log( "calling SET item", levels=[2])
-    self.items = [i]
-
-  item = property( _get_item, _set_item)
 
   # PROPERTIES
 
