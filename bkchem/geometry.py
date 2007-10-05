@@ -274,3 +274,140 @@ def tkspline_to_cubic_bezier( points):   #points = ((x1,y1),(x2,y2),...)
     # http://fontforge.sourceforge.net/bezier.html
     return cbeziers
     
+
+
+def point_at_distance_from_line (x1,y1,x2,y2,d,rl): 
+  '''calculates point at distance d from line
+  at point x2,y2 on the line 1-2
+  rl designates where the point is = "l" left or = "r" right'''
+  if x1-x2 == 0:
+    if y1-y2 == 0:
+      return 0,0
+    dxa,dya = d,0
+    rey = y2
+    if rl == "l":
+      dxa = -dxa
+    if y2 > y1 :
+      rex = x2 - dxa
+    else: 
+      rex = x2 + dxa        
+  elif y1-y2 == 0:
+    dxa,dya = 0,d
+    rex = x2
+    if rl == "l":
+      dya = -dya
+    if x2 > x1 :
+      rey = y2 + dya
+    else: 
+      rey = y2 - dya
+  else:
+    m = (y1-y2)/(x1-x2)
+
+    dxa = sqrt(d**2 / (1+ (1/m**2)))
+    dya = -(1/m)*dxa
+
+    if dya < 0:
+      dya = -dya               
+    if rl == "l":
+      dxa,dya = -dxa,-dya            
+
+    if m < 0:
+      dxa,dya = -dxa,-dya
+
+    if x2 >= x1:
+      rex = x2 - dxa
+    else:
+      rex = x2 + dxa       
+    if y2 >= y1:
+      rey = y2 + dya
+    else: 
+      rey = y2 - dya
+  return rex,rey
+
+def intersection_of_two_lines (x1,y1,x2,y2,x3,y3,x4,y4): 
+  """lines 1-2 and 3-4
+  returns x,y, 0 if succesful or 1 if parallel
+  y=mx+c is used"""
+  if x1-x2 == 0:                          
+    if x3-x4 == 0:                      
+      return 0,0,1,0        #lines paralell
+    m2 = (y3-y4)/(x3-x4)
+    c2 = y3 - m2 * x3
+    rex,rey = x1,m2*x1+c2        
+  elif x3-x4 == 0:
+    m1 = (y1-y2)/(x1-x2)
+    c1 = y1 - m1 * x1
+    rex,rey = x3,m1*x3+c1
+  else:
+    m1 = (y1-y2)/(x1-x2)
+    m2 = (y3-y4)/(x3-x4)
+    c2 = y3 - m2 * x3
+    c1 = y1 - m1 * x1
+    if m1-m2 == 0:
+      return 0,0,1,0            #lines paralell
+    rex = -(c2-c1)/(m2-m1)
+    rey = (c1*m2-c2*m1)/(m2-m1)
+  #check if point is on the lines
+  if (rex <= x1 and rex >= x2) or (rex >= x1 and rex <= x2):
+    if (rex <= x3 and rex >= x4) or (rex >= x3 and rex <= x4): 
+      online = 3
+    else:
+      online = 1
+  elif (rex <= x3 and rex >= x4) or (rex >= x3 and rex <= x4):
+    online = 2
+  else:
+    online = 0
+
+  # x-coord, y-coord , paralell(0 or 1), on line (0=no line, 1=on line 1-2, 2=on line 3-4, 3=on both) 
+  return rex,rey,0,online
+
+
+def mirror_point_on_line (xa,ya,x1,y1,x2,y2):
+  """mirroring point a on line 1-2"""
+  if x1-x2 == 0:                           #y=mc+c is used                                           
+    return 2*x1-xa,ya
+  elif y1-y2 == 0:
+    return xa,2*y1-ya
+  else:
+    m=(y1-y2)/(x1-x2)
+    cl=y1-m*x1
+    ca=ya+(1/m)*xa
+    xbl = (ca-cl)/(m+1/m)   #point bl is intersection with line
+    ybl = -(1/m)*xbl+ca
+    xb = xbl*2-xa
+    yb = ybl*2-ya
+    return xb,yb
+
+def elongate_line (x1,y1,x2,y2,d):
+  """line 1-2 will be elongatet at point 2 negative d will make it shorter"""
+  if x1-x2 == 0:
+    rex = x2
+    if y2 > y1: 
+      rey = y2 + d
+    else:
+      rey = y2 - d
+  else:
+    m = (y1-y2)/(x1-x2)
+    dx = sqrt( d**2 / (1 + m**2))
+    dy = m * dx
+    if dy < 0:
+      dy=-dy
+    if d<0: 
+      dx,dy = -dx, -dy
+    if x2 > x1:
+      rex = x2 + dx
+    else:
+      rex = x2 - dx
+    if y2 > y1:
+      rey = y2 + dy
+    else:
+      rey = y2 - dy
+  return rex, rey
+
+
+def coordinate_flat_list_to_xy_tuples( coords):
+  ret = []
+  for i in range( 0, len( coords), 2):
+    ret.append( (coords[i],coords[i+1]))
+  return ret
+    

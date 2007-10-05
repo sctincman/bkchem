@@ -31,6 +31,7 @@ from parents import meta_enabled, container, with_line, line_colored
 from parents import point_drawable, interactive, drawable, top_level
 from reaction import reaction
 from singleton_store import Screen
+import geometry
 
 import debug
 
@@ -42,13 +43,15 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # don't differ (are not non-empty)
 
   _pins = ['none', 'last', 'first', 'both']
+  available_types = ["normal","electron"]
+  available_type_names = [_("normal"),_("electron transfer")]
   object_type = 'arrow'
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color']
   # other meta infos
   meta__is_container = 1
   # undo related metas
-  meta__undo_simple = ('pin', 'spline')
+  meta__undo_simple = ('pin', 'spline', 'type')
   meta__undo_properties = with_line.meta__undo_properties + \
                           line_colored.meta__undo_properties
   meta__undo_copy = ('points',)
@@ -273,3 +276,73 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     return [item]
   
 
+  def _draw_electron( self):
+    coords = [p.get_xy() for p in self.points]
+    pins = []
+    if self.pin in (2,3):
+      x1, y1 = coords[1]
+      x2, y2 = coords[0]
+      pins.append( (x1,y1,x2,y2))
+      coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+    if self.pin in (1,3):
+      x1, y1 = self.points[-2].get_xy()
+      x2, y2 = self.points[-1].get_xy()
+      pins.append( (x1,y1,x2,y2))
+      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      
+    ps = reduce( operator.add, coords)
+    item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
+                                    smooth=self.spline, fill=self.line_color)
+    items = [item1]
+    for x1,y1,x2,y2 in pins:
+      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, "r")
+      items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
+                                               width=1))
+
+    return items
+
+
+
+def retro_arrow (x1,y1,x2,y2,d,l,m):
+  """arrow head at 2
+#                       l
+#                   |-----|_
+#                  C\      |
+#                    \     |m
+#   A----------------B\-P  |
+#   1       |d   __R___\|2 -
+#                      /|
+#   D----------------E/-Q
+#                    /
+#                  F/
+#   P,Q,R are not drawn
+"""
+  xa, ya = point_at_distance_from_line (x2,y2,x1,y1,d,"r")
+  xd ,yd = point_at_distance_from_line (x2,y2,x1,y1,d,"l")    
+  xp ,yp = point_at_distance_from_line (x1,y1,x2,y2,d,"l")
+  xq ,yq = point_at_distance_from_line (x1,y1,x2,y2,d,"r")
+
+  xr ,yr = elongate_line( x1,y1,x2,y2,-l)
+
+  xc,yc = point_at_distance_from_line (x1,y1,xr,yr,m,"l")
+  xf,yf = point_at_distance_from_line (x1,y1,xr,yr,m,"r")
+
+  xb,yb,s,t = intersection_of_two_lines (xa,ya, xp,yp, xc,yc, x2,y2)
+  xe,ye,s,t = intersection_of_two_lines (xd,yd, xq,yq, xf,yf, x2,y2)
+
+  return (xa,ya, xb,yb, xc,yc, x2,y2, xf,yf, xe,ye, xd,yd)  #polyline
+
+
+def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,rl):
+  '''last two points of arrow 1->2
+  a,b,c like tkinter
+  a = leght from point 2 where the head touches the line (out point A)
+  b = total lenght of the head (defines also help point P on the line)
+  c = width 
+  Point B will be the outer Point of the head
+  rl = "r" the head is on the right , = "l" left'''
+
+  xa,ya = geometry.elongate_line (x1,y1,x2,y2,-a)
+  xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
+  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c,rl)
+  return xa,ya, x2,y2, xb,yb

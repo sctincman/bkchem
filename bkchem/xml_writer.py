@@ -31,6 +31,7 @@ import svg_helper_functions as svg_help
 import dom_extensions
 import os
 from tuning import Tuning
+from arrow import arrow
 
 from singleton_store import Screen
 
@@ -206,56 +207,85 @@ class SVG_writer( XML_writer):
   def add_arrow( self, a):
     """adds arrow item to SVG document"""
     i = self._id
-    if a.pin == 1 or a.pin == 3:
-      d1, d2, d3 = a.shape
-      defs = dom_extensions.elementUnder( self.group, 'defs')
-      arrow = dom_extensions.elementUnder( defs, 'marker', (('id','Arrow'+str(i)),('refX',str(d2)),('refY',str(d3)),
-                                                            ('markerUnits','userSpaceOnUse'),
-                                                            ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
-                                                            ('orient','auto'),
-                                                            ('stroke', self.cc( a.line_color)),
-                                                            ('fill', self.cc( a.line_color))))
-      dom_extensions.elementUnder( arrow, 'path', (('d', 'M %d %d L 0 0 L %d %d L 0 %d z'%(d2, d3, d2-d1, d3, 2*d3)),))
-    if a.pin == 2 or a.pin == 3:
-      d1, d2, d3 = a.shape
-      defs = dom_extensions.elementUnder( self.group, 'defs')
-      arrow = dom_extensions.elementUnder( defs, 'marker', (('id','ArrowBack'+str(i)),('refX','0'),('refY',str(d3)),
-                                                            ('markerUnits','userSpaceOnUse'),
-                                                            ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
-                                                            ('orient','auto'),
-                                                            ('stroke', self.cc( a.line_color)),
-                                                            ('fill', self.cc( a.line_color))))
-      dom_extensions.elementUnder( arrow, 'path', (('d', 'M 0 %d L %d 0 L %d %d L %d %d z'%(d3, d2, d1, d3, d2, 2*d3)),))
+    for item in a.items:
+      # polygons (arrow heads, etc.)
+      if self.paper.type( item) == "polygon":
+        ps = ''
+        j = 0
+        for c in self.paper.coords( item):
+          ps += '%.2f' % c
+          if j % 2:
+            ps += " "
+          else:
+            ps += ","
+          j += 1
+        a_color = self.paper.itemcget( item, "fill")
+        l_color = self.paper.itemcget( item, "outline")
+        poly = dom_extensions.elementUnder( self.group, 'polygon',
+                                            (( 'points', ps),
+                                             ( 'stroke-width', '1'),
+                                             ( 'fill-rule', 'evenodd'),
+                                             ( 'fill', self.cc( l_color)),
+                                             ( 'stroke', self.cc( l_color))))
+      # polylines - standard arrows
+      elif self.paper.type( item) == "line":
+        # the pins
+        line_pin = arrow._pins.index( self.paper.itemcget( item, 'arrow'))
+        if line_pin == 1 or line_pin == 3:
+          d1, d2, d3 = map( int, self.paper.itemcget( item, "arrowshape").split())
+          defs = dom_extensions.elementUnder( self.group, 'defs')
+          arrow_point = dom_extensions.elementUnder( defs, 'marker', (('id','Arrow'+str(i)),('refX',str(d2)),('refY',str(d3)),
+                                                                ('markerUnits','userSpaceOnUse'),
+                                                                ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
+                                                                ('orient','auto'),
+                                                                ('stroke', self.cc( a.line_color)),
+                                                                ('fill', self.cc( a.line_color))))
+          dom_extensions.elementUnder( arrow_point, 'path', (('d', 'M %d %d L 0 0 L %d %d L 0 %d z'%(d2, d3, d2-d1, d3, 2*d3)),))
+        if line_pin == 2 or line_pin == 3:
+          d1, d2, d3 = map( int, self.paper.itemcget( item, "arrowshape").split())
+          defs = dom_extensions.elementUnder( self.group, 'defs')
+          arrow_point = dom_extensions.elementUnder( defs, 'marker', (('id','ArrowBack'+str(i)),('refX','0'),('refY',str(d3)),
+                                                                ('markerUnits','userSpaceOnUse'),
+                                                                ('markerWidth',str(d2)),('markerHeight',str(2*d3)),
+                                                                ('orient','auto'),
+                                                                ('stroke', self.cc( a.line_color)),
+                                                                ('fill', self.cc( a.line_color))))
+          dom_extensions.elementUnder( arrow_point, 'path', (('d', 'M 0 %d L %d 0 L %d %d L %d %d z'%(d3, d2, d1, d3, d2, 2*d3)),))
+        # the item
+        if a.spline and len( a.points) > 2:
+          # spline
+          points = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
+          beziers = geometry.tkspline_to_quadratic_bezier( points)
+          ps = 'M%d,%d Q%d,%d %d,%d' % (beziers[0])
+          for bez in beziers[1:]:
+            ps += 'Q%d,%d %d,%d ' % (bez[2:])
+          line = dom_extensions.elementUnder( self.group, 'path',
+                                              (( 'd', ps),
+                                               ( 'stroke-width', str( a.line_width)),
+                                               ( 'fill', 'none'),
+                                               ( 'stroke', self.cc( a.line_color))))
+        else:
+          # normal line
+          ps = ''
+          j = 0
+          for c in self.paper.coords( item):
+            ps += '%.2f' % c
+            if j % 2:
+              ps += " "
+            else:
+              ps += ","
+            j += 1
+          line = dom_extensions.elementUnder( self.group, 'polyline',
+                                              (( 'points', ps),
+                                               ( 'stroke-width', str( a.line_width)),
+                                               ( 'fill', 'none'),
+                                               ( 'stroke', self.cc( a.line_color))))
+        if line_pin == 1 or line_pin == 3:
+          line.setAttribute( 'marker-end','url(#Arrow'+str(i)+')')
+        if line_pin == 2 or line_pin == 3:
+          line.setAttribute( 'marker-start','url(#ArrowBack'+str(i)+')')
+        self._id += 1
 
-    if a.spline and len( a.points) > 2:
-      points = []
-      for yx in a.points:
-        points.append( yx.get_xy())
-        
-      beziers = geometry.tkspline_to_quadratic_bezier( points)
-      ps = 'M%d,%d Q%d,%d %d,%d' % (beziers[0])
-      for bez in beziers[1:]:
-        ps += 'Q%d,%d %d,%d ' % (bez[2:])
-
-      line = dom_extensions.elementUnder( self.group, 'path',
-                                          (( 'd', ps),
-                                           ( 'stroke-width', str( a.line_width)),
-                                           ( 'fill', 'none'),
-                                           ( 'stroke', self.cc( a.line_color))))
-    else:
-      ps = ''
-      for (x,y) in [p.get_xy() for p in a.points]:
-        ps += '%d,%d ' % (x,y)
-      line = dom_extensions.elementUnder( self.group, 'polyline',
-                                          (( 'points', ps),
-                                           ( 'stroke-width', str( a.line_width)),
-                                           ( 'fill', 'none'),
-                                           ( 'stroke', self.cc( a.line_color))))
-    if a.pin == 1 or a.pin == 3:
-      line.setAttribute( 'marker-end','url(#Arrow'+str(i)+')')
-    if a.pin == 2 or a.pin == 3:
-      line.setAttribute( 'marker-start','url(#ArrowBack'+str(i)+')')
-    self._id += 1
 
   def add_text( self, t):
     """adds text item to SVG document"""

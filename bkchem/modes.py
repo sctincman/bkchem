@@ -51,6 +51,7 @@ from sets import Set
 import interactors
 import marks
 import types
+from arrow import arrow
 
 from singleton_store import Store, Screen
 
@@ -937,10 +938,10 @@ class arrow_mode( edit_mode):
     self._start_point = None
     self._moved_point = None
     self._arrow_to_update = None
-    self.submodes = [['30','18','6','1'],['fixed','freestyle'],['anormal','spline']]
+    self.submodes = [['30','18','6','1'],['fixed','freestyle'],['anormal','spline'],arrow.available_types]
     self.submodes_names = [[_('30'),_('18'),_('6'),_('1')], [_('fixed length'),_('freestyle')],
-                           [_('normal'),_('spline')]]
-    self.submode = [0, 0, 0]
+                           [_('normal'),_('spline')],arrow.available_type_names]
+    self.submode = [0, 0, 0, 0]
     self.__nothing_special = 0 # to easy determine whether new undo record should be started
 
   def mouse_down( self, event, modifiers = []):
@@ -948,7 +949,8 @@ class arrow_mode( edit_mode):
     Store.app.paper.unselect_all()
     if not self.focused:
       spline = (self.get_submode( 2) == 'spline')
-      arr = Store.app.paper.new_arrow( spline=spline)
+      type = self.get_submode( 3)
+      arr = Store.app.paper.new_arrow( spline=spline, type=type)
       self._start_point = arr.create_new_point( event.x, event.y)
       self._start_point.focus()
       self.focused = self._start_point

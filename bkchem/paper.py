@@ -952,8 +952,8 @@ class chem_paper( Canvas, object):
 
 
 
-  def new_arrow( self, points=[], spline=0):
-    arr = arrow.arrow( self, points=points, spline=spline)
+  def new_arrow( self, points=[], spline=0, type="normal"):
+    arr = arrow.arrow( self, type=type, points=points, spline=spline)
     self.stack.append( arr)
     arr.draw()
     return arr
