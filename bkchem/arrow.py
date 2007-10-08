@@ -31,7 +31,7 @@ from parents import meta_enabled, container, with_line, line_colored
 from parents import point_drawable, interactive, drawable, top_level
 from reaction import reaction
 from singleton_store import Screen
-import geometry
+import geometry, misc
 
 import debug
 
@@ -43,8 +43,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # don't differ (are not non-empty)
 
   _pins = ['none', 'last', 'first', 'both']
-  available_types = ["normal","electron"]
-  available_type_names = [_("normal"),_("electron transfer")]
+  available_types = ["normal","electron","retro"]
+  available_type_names = [_("normal"),_("electron transfer"),_("retrosynthetic arrow")]
   object_type = 'arrow'
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color']
@@ -283,10 +283,28 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
     for x1,y1,x2,y2 in pins:
-      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, "r", self.line_width)
+      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, self.line_width)
       items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
 
+    return items
+
+
+  def _draw_retro( self):
+    coords = [p.get_xy() for p in self.points]
+    pins = []
+    if self.pin in (2,3):
+      pass
+    if self.pin in (1,3):
+      pass
+      
+    items = []
+    for sig in (-1,1):
+      cs = geometry.find_parallel_polyline( coords, sig*5)
+      ps = reduce( operator.add, cs)
+      item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
+                                      smooth=self.spline, fill=self.line_color)
+      items.append( item1)
     return items
 
 
@@ -321,7 +339,7 @@ def retro_arrow (x1,y1,x2,y2,d,l,m):
   return (xa,ya, xb,yb, xc,yc, x2,y2, xf,yf, xe,ye, xd,yd)  #polyline
 
 
-def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,rl,lw):
+def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
   '''last two points of arrow 1->2
   a,b,c like tkinter
   a = leght from point 2 where the head touches the line (out point A)
@@ -332,8 +350,8 @@ def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,rl,lw):
   lw is the line_width of the line the arrow will be attached to'''
 
   xa,ya = geometry.elongate_line (x1,y1,x2,y2,-a)
-  xa,ya = geometry.point_at_distance_from_line (x1,y1,xa,ya,(lw-1.0)/2.0,rl=="r" and "l" or "r")
+  xa,ya = geometry.point_at_distance_from_line (x1,y1,xa,ya,-misc.signum(c)*(lw-1.0)/2.0)
   xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
-  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c,rl)
-  xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,(lw-1.0)/2.0,rl=="r" and "l" or "r")
+  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c)
+  xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,-misc.signum(c)*(lw-1.0)/2.0)
   return xa,ya, xc,yc, xb,yb
