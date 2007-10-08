@@ -131,10 +131,10 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.draw()
 
   def focus( self):
-    [self.paper.itemconfig( i, width=self.line_width+2) for i in self.items]
+    [self.paper.itemconfig( i, width=self.line_width+2) for i in self.items if not "arrow_no_focus" in self.paper.gettags(i)]
 
   def unfocus( self):
-    [self.paper.itemconfig( i, width=self.line_width) for i in self.items]
+    [self.paper.itemconfig( i, width=self.line_width) for i in self.items if not "arrow_no_focus" in self.paper.gettags(i)]
 
 #  def get_id( self):
 #    return self.id
@@ -283,9 +283,9 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
     for x1,y1,x2,y2 in pins:
-      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, "r")
+      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, "r", self.line_width)
       items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
-                                               width=1))
+                                               width=1, tags="arrow_no_focus", joinstyle="miter"))
 
     return items
 
@@ -321,16 +321,19 @@ def retro_arrow (x1,y1,x2,y2,d,l,m):
   return (xa,ya, xb,yb, xc,yc, x2,y2, xf,yf, xe,ye, xd,yd)  #polyline
 
 
-def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,rl):
+def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,rl,lw):
   '''last two points of arrow 1->2
   a,b,c like tkinter
   a = leght from point 2 where the head touches the line (out point A)
   b = total lenght of the head (defines also help point P on the line)
   c = width 
   Point B will be the outer Point of the head
-  rl = "r" the head is on the right , = "l" left'''
+  rl = "r" the head is on the right , = "l" left,
+  lw is the line_width of the line the arrow will be attached to'''
 
   xa,ya = geometry.elongate_line (x1,y1,x2,y2,-a)
+  xa,ya = geometry.point_at_distance_from_line (x1,y1,xa,ya,(lw-1.0)/2.0,rl=="r" and "l" or "r")
   xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
   xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c,rl)
-  return xa,ya, x2,y2, xb,yb
+  xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,(lw-1.0)/2.0,rl=="r" and "l" or "r")
+  return xa,ya, xc,yc, xb,yb
