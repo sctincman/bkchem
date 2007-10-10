@@ -319,7 +319,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)
-      if sig == 1:
+      if sig == -1:
         x1, y1 = coords[1]
         x2, y2 = coords[0]
         coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
@@ -333,7 +333,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
                                       smooth=self.spline, fill=self.line_color)
       items.append( item1)
       # the pin
-      cs = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, -3, self.line_width)
+      cs = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, self.line_width)
       items.append( self.paper.create_polygon( cs, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
     return items
@@ -381,33 +381,4 @@ def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
   xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,-misc.signum(c)*(lw-1.0)/2.0)
   return xa,ya, xc,yc, xb,yb
 
-
-def retro_arrow (x1,y1,x2,y2,d,l,m):
-  """arrow head at 2
-#                       l
-#                   |-----|_
-#                  C\      |
-#                    \     |m
-#   A----------------B\-P  |
-#   1       |d   __R___\|2 -
-#                      /|
-#   D----------------E/-Q
-#                    /
-#                  F/
-#   P,Q,R are not drawn
-"""
-  xa, ya = point_at_distance_from_line (x2,y2,x1,y1,d,"r")
-  xd ,yd = point_at_distance_from_line (x2,y2,x1,y1,d,"l")    
-  xp ,yp = point_at_distance_from_line (x1,y1,x2,y2,d,"l")
-  xq ,yq = point_at_distance_from_line (x1,y1,x2,y2,d,"r")
-
-  xr ,yr = elongate_line( x1,y1,x2,y2,-l)
-
-  xc,yc = point_at_distance_from_line (x1,y1,xr,yr,m,"l")
-  xf,yf = point_at_distance_from_line (x1,y1,xr,yr,m,"r")
-
-  xb,yb,s,t = intersection_of_two_lines (xa,ya, xp,yp, xc,yc, x2,y2)
-  xe,ye,s,t = intersection_of_two_lines (xd,yd, xq,yq, xf,yf, x2,y2)
-
-  return (xa,ya, xb,yb, xc,yc, x2,y2, xf,yf, xe,ye, xd,yd)  #polyline
 
