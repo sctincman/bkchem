@@ -291,22 +291,70 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def _draw_retro( self):
+    width = 3
     coords = [p.get_xy() for p in self.points]
-    pins = []
-    if self.pin in (2,3):
-      pass
-    if self.pin in (1,3):
-      pass
-      
     items = []
+    # the pins
+    if self.pin in (2,3):
+      head = retro_arrow_head(coords[1][0],coords[1][1],coords[0][0],coords[0][1],8,8,width)
+      head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
+      items.append( head_item)
+    if self.pin in (1,3):
+      head = retro_arrow_head(coords[-2][0],coords[-2][1],coords[-1][0],coords[-1][1],8,8,width)
+      head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
+      items.append( head_item)
+    # the lines
     for sig in (-1,1):
-      cs = geometry.find_parallel_polyline( coords, sig*5)
+      cs = geometry.find_parallel_polyline( coords, sig*width)
       ps = reduce( operator.add, cs)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color)
       items.append( item1)
     return items
 
+
+
+
+def retro_arrow_head (x1,y1,x2,y2,length,width,d):
+  """arrow head at 2
+#                    length
+#                   |---|  _
+#                  C\      |
+#                    \     | width
+#   A----------------B\-P  |
+#   1       d |  __R___\|2 -
+#                      /|
+#   D----------------E/-Q
+#                    /
+#                  F/
+#   P,Q,R are not drawn
+"""
+  w_ratio = 1.0*d / width
+  dl = w_ratio * length
+  xh ,yh = geometry.elongate_line( x1,y1,x2,y2,dl)
+  xr, yr = geometry.elongate_line( x1,y1,x2,y2,dl-length)
+  xc, yc = geometry.point_at_distance_from_line (x1,y1,xr,yr,width)
+  xf, yf = geometry.point_at_distance_from_line (x1,y1,xr,yr,-width)
+
+  return (xc,yc, xh,yh, xf,yf)
+
+
+def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
+  '''last two points of arrow 1->2
+  a,b,c like tkinter
+  a = leght from point 2 where the head touches the line (out point A)
+  b = total lenght of the head (defines also help point P on the line)
+  c = width 
+  Point B will be the outer Point of the head
+  rl = "r" the head is on the right , = "l" left,
+  lw is the line_width of the line the arrow will be attached to'''
+
+  xa,ya = geometry.elongate_line (x1,y1,x2,y2,-a)
+  xa,ya = geometry.point_at_distance_from_line (x1,y1,xa,ya,-misc.signum(c)*(lw-1.0)/2.0)
+  xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
+  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c)
+  xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,-misc.signum(c)*(lw-1.0)/2.0)
+  return xa,ya, xc,yc, xb,yb
 
 
 def retro_arrow (x1,y1,x2,y2,d,l,m):
@@ -338,20 +386,3 @@ def retro_arrow (x1,y1,x2,y2,d,l,m):
 
   return (xa,ya, xb,yb, xc,yc, x2,y2, xf,yf, xe,ye, xd,yd)  #polyline
 
-
-def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
-  '''last two points of arrow 1->2
-  a,b,c like tkinter
-  a = leght from point 2 where the head touches the line (out point A)
-  b = total lenght of the head (defines also help point P on the line)
-  c = width 
-  Point B will be the outer Point of the head
-  rl = "r" the head is on the right , = "l" left,
-  lw is the line_width of the line the arrow will be attached to'''
-
-  xa,ya = geometry.elongate_line (x1,y1,x2,y2,-a)
-  xa,ya = geometry.point_at_distance_from_line (x1,y1,xa,ya,-misc.signum(c)*(lw-1.0)/2.0)
-  xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
-  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c)
-  xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,-misc.signum(c)*(lw-1.0)/2.0)
-  return xa,ya, xc,yc, xb,yb
