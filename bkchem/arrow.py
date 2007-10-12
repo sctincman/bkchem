@@ -43,8 +43,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # don't differ (are not non-empty)
 
   _pins = ['none', 'last', 'first', 'both']
-  available_types = ["normal","electron","retro","equilibrium"]
-  available_type_names = [_("normal"),_("electron transfer"),_("retrosynthetic"),_("equilibrium")]
+  available_types = ["normal","electron","retro","equilibrium","equilibrium2"]
+  available_type_names = [_("normal"),_("electron transfer"),_("retrosynthetic"),_("equilibrium"),_("equilibrium simple")]
   object_type = 'arrow'
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color']
@@ -336,6 +336,33 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       cs = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, self.line_width)
       items.append( self.paper.create_polygon( cs, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
+    return items
+
+
+  def _draw_equilibrium2( self):
+    width = 3
+    orig_coords = [p.get_xy() for p in self.points]
+    items = []
+    for sig in (-1,1):
+      coords = geometry.find_parallel_polyline( orig_coords, sig*width)
+      if sig == -1:
+        x1, y1 = coords[1]
+        x2, y2 = coords[0]
+        xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
+        xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+        coords.insert(0,(xp,yp))
+      else:
+        x1, y1 = coords[-2]
+        x2, y2 = coords[-1]
+        xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
+        xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+        coords.append((xp,yp))
+      # the line with pin
+      ps = reduce( operator.add, coords)
+      item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
+                                      smooth=self.spline, fill=self.line_color,
+                                      joinstyle="miter")
+      items.append( item1)
     return items
 
 
