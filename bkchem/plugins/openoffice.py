@@ -33,6 +33,7 @@ import dom_extensions
 import math
 import operator
 import os_support
+import geometry
 
 from singleton_store import Screen
 
@@ -266,18 +267,37 @@ note that this is not an ODF (Open Document Format) export."""
 
 
   def add_arrow( self, a, page):
-    end_pin, start_pin = None,None
-    if a.pin==1 or a.pin==3:
-      end_pin = 1
-    if a.pin==2 or a.pin==3:
-      start_pin = 1
-    s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
-                        marker_end=end_pin,
-                        marker_start=start_pin,
-                        stroke_width=Screen.px_to_cm( a.line_width))
-    style_name = self.get_appropriate_style_name( s)
-    points = [map( Screen.px_to_cm, p.get_xy()) for p in a.points]
-    self.create_oo_polyline( points, page, style_name)
+    for item in a.items:
+      # polygons (arrow heads, etc.)
+      if self.paper.type( item) == "polygon":
+        a_color = self.paper.itemcget( item, "fill")
+        l_color = self.paper.itemcget( item, "outline")
+        l_width = float( self.paper.itemcget( item, "width"))
+        s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( l_color),
+                            fill_color=self.paper.any_color_to_rgb_string( a_color),
+                            stroke_width=Screen.px_to_cm( l_width))
+        style_name = self.get_appropriate_style_name( s)
+        ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
+        points = [map( Screen.px_to_cm, p) for p in ps]
+        self.create_oo_polygon( points, page, style_name)
+      # polylines - standard arrows
+      elif self.paper.type( item) == "line":
+        line_pin = a._pins.index( self.paper.itemcget( item, 'arrow'))
+        end_pin, start_pin = None,None
+        if line_pin==1 or line_pin==3:
+          end_pin = 1
+        if line_pin==2 or line_pin==3:
+          start_pin = 1
+        l_color = self.paper.itemcget( item, "fill")
+        l_width = float( self.paper.itemcget( item, "width"))
+        s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( l_color),
+                            marker_end=end_pin,
+                            marker_start=start_pin,
+                            stroke_width=Screen.px_to_cm( l_width))
+        style_name = self.get_appropriate_style_name( s)
+        ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
+        points = [map( Screen.px_to_cm, p) for p in ps]
+        self.create_oo_polyline( points, page, style_name)
 
 
   def add_polygon( self, o, page):

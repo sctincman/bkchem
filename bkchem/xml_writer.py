@@ -31,7 +31,6 @@ import svg_helper_functions as svg_help
 import dom_extensions
 import os
 from tuning import Tuning
-from arrow import arrow
 
 from singleton_store import Screen
 
@@ -230,7 +229,7 @@ class SVG_writer( XML_writer):
       # polylines - standard arrows
       elif self.paper.type( item) == "line":
         # the pins
-        line_pin = arrow._pins.index( self.paper.itemcget( item, 'arrow'))
+        line_pin = a._pins.index( self.paper.itemcget( item, 'arrow'))
         if line_pin == 1 or line_pin == 3:
           d1, d2, d3 = map( int, self.paper.itemcget( item, "arrowshape").split())
           defs = dom_extensions.elementUnder( self.group, 'defs')
