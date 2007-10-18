@@ -117,6 +117,50 @@ class undo_manager:
     return bool( self.get_number_of_records() - self._pos - 1)
 
 
+  def compare_records( self, o, state_rec1, state_rec2):
+    """returns True if the object o changed between ref1 and ref2"""
+    x1 = o in state_rec1.objects
+    x2 = o in state_rec2.objects
+    if (x1 and not x2) or (x2 and not x1):
+      # one record does not have o
+      return False
+    if not x1 and not x2:
+      # no record has o - they are the same then
+      return True
+    rec1 = state_rec1.records[ state_rec1.objects.index( o)]
+    rec2 = state_rec2.records[ state_rec2.objects.index( o)]
+    for a in o.meta__undo_fake + o.meta__undo_simple + o.meta__undo_properties:
+      if rec1[a] != rec2[a]:
+        return False
+    for a in o.meta__undo_copy:
+      if rec1[a] != rec2[a]:
+        return False
+    # process the chidren
+    for a in o.meta__undo_children_to_record:
+      obj = getattr( o, a)
+      if type( obj) == ListType or type( obj) == Set:
+        for i in obj:
+          if not self.compare_records( i, state_rec1, state_rec2):
+            return False
+      elif type( obj) == DictType:
+        for i in obj.itervalues():
+          if not self.compare_records( i, state_rec1, state_rec2):
+            return False
+      else:
+        if not self.compare_records( obj, state_rec1, state_rec2):
+          return False
+    return True
+
+
+  def get_changed_molecules( self):
+    rec = self._records[ self._pos]
+    ret = []
+    for m in self.paper.molecules:
+      if rec.object_changed( m):
+        ret.append( m)
+    return ret
+
+
 
 ##-------------------- STATE RECORD --------------------
     
@@ -161,11 +205,6 @@ class state_record:
       rec[a] = getattr( o, a)
     for a in o.meta__undo_copy:
       rec[a] = copy.copy( o.__dict__[a])
-    for a in o.meta__undo_2d_copy:
-      subrec = []
-      for line in o.__dict__[a]:
-        subrec.append( copy.copy( line))
-      rec[a] = subrec
     self.objects.append( o)
     self.records.append( rec)
     # process the chidren
@@ -218,11 +257,6 @@ class state_record:
           if self.records[i][a] != getattr( o, a):
             setattr( o, a, self.records[i][a])
             changed = 1
-      for a in o.meta__undo_2d_copy:
-        subrec = []
-        for line in self.records[i][a]:
-          subrec.append( copy.copy( line))
-        o.__dict__[ a] = subrec
 
       if changed:
         to_redraw.add( o)
@@ -281,8 +315,40 @@ class state_record:
     self.paper.add_bindings()
 
 
+  def get_record( self, o):
+    if o in self.objects:
+      i = self.objects.index(o)
+      return self.records[i]
+    else:
+      return None
 
-
+  def object_changed( self, o):
+    """returns True if the object o differs from the state recorded here"""
+    rec = self.get_record( o)
+    if rec == None:
+      return True
+    for a in o.meta__undo_fake + o.meta__undo_simple + o.meta__undo_properties:
+      if getattr( o, a) != rec[a]:
+        return True
+    for a in o.meta__undo_copy:
+      if getattr( o, a) != rec[a]:
+        return True
+    # process the chidren
+    for a in o.meta__undo_children_to_record:
+      obj = getattr( o, a)
+      if type( obj) == ListType or type( obj) == Set:
+        for i in obj:
+          if self.object_changed( i):
+            return True
+      elif type( obj) == DictType:
+        for i in obj.itervalues():
+          if self.object_changed( i):
+            return True
+      else:
+        if self.object_changed( obj):
+          return True
+    return False
+    
 
 
 REDRAW_PREFERENCES = ("atom", "bond")

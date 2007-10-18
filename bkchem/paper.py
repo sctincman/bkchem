@@ -1410,14 +1410,10 @@ class chem_paper( Canvas, object):
 
 
 
-
   def before_undo_record( self):
     """this method is place where periodical checks and other things that should be done before
     undo is recorded should be done"""
     checks.check_linear_fragments( self)
-
-
-
 
 
 
@@ -1427,8 +1423,6 @@ class chem_paper( Canvas, object):
     for m in s_mols:
       w += m.get_formula_dict().get_molecular_weight()
     Store.app.update_status( str( w))
-
-
 
 
 

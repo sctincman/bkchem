@@ -30,15 +30,12 @@ from singleton_store import Store
 
 def check_linear_fragments( paper):
   """checks the state of linear fragments present on the paper and resets their appearance"""
-
-  for mol in paper.molecules:
+  mols = paper.um.get_changed_molecules()
+  for mol in mols:
     to_del = Set()
     for f in mol.fragments:
       if mol.check_linear_form_fragment( f) == False:
         to_del.add( f)
-        
     for f in to_del:
       Store.log( _('The linear form was no longer consistent - it has been removed'))
       mol.delete_fragment( f)
-
-

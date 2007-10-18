@@ -43,7 +43,6 @@ class simple_parent( object):
   meta__undo_simple = ()
   meta__undo_properties = ()
   meta__undo_copy = ()
-  meta__undo_2d_copy = ()
   meta__undo_children_to_record = ()
 
 
