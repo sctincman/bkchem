@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2007 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -297,7 +297,11 @@ note that this is not an ODF (Open Document Format) export."""
         style_name = self.get_appropriate_style_name( s)
         ps = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
         points = [map( Screen.px_to_cm, p) for p in ps]
-        self.create_oo_polyline( points, page, style_name)
+        if self.paper.itemcget( item, "smooth") == "0":
+          self.create_oo_polyline( points, page, style_name)
+        else:
+          self.create_oo_bezier( points, page, style_name)
+        
 
 
   def add_polygon( self, o, page):
@@ -542,6 +546,35 @@ note that this is not an ODF (Open Document Format) export."""
                                          ( 'svg:height', '%fcm' % (maxY-minY)),
                                          ( 'svg:viewBox', '0 0 %d %d' % ((maxX-minX)*1000,(maxY-minY)*1000)),
                                          ( 'draw:points', points_txt),
+                                         ( 'draw:layer', 'layout'),
+                                         ( 'draw:style-name', gr_style_name)))
+
+
+
+  def create_oo_bezier( self, points, page, gr_style_name):
+    maxX, maxY, minX, minY = None,None,None,None
+    for (x,y) in points:
+      if not maxX or x > maxX:
+        maxX = x
+      if not minX or x < minX:
+        minX = x
+      if not maxY or y > maxY:
+        maxY = y
+      if not minY or y < minY:
+        minY = y
+    points_txt = ""
+    for (sx, sy, cxa, cya, cxb, cyb, ex, ey) in geometry.tkspline_to_cubic_bezier( points):
+      if not points_txt:
+        points_txt += "m %d %d c " % (1000*(sx-minX), 1000*(sy-minY))
+      points_txt += "%d %d %d %d %d %d " % (1000*(cxa-sx),1000*(cya-sy),1000*(cxb-sx),1000*(cyb-sy),1000*(ex-sx),1000*(ey-sy))
+  
+    line = dom_extensions.elementUnder( page, 'draw:path',
+                                        (( 'svg:x', '%fcm' % minX),
+                                         ( 'svg:y', '%fcm' % minY),
+                                         ( 'svg:width', '%fcm' % (maxX-minX)),
+                                         ( 'svg:height', '%fcm' % (maxY-minY)),
+                                         ( 'svg:viewBox', '0 0 %d %d' % ((maxX-minX)*1000,(maxY-minY)*1000)),
+                                         ( 'svg:d', points_txt),
                                          ( 'draw:layer', 'layout'),
                                          ( 'draw:style-name', gr_style_name)))
 
