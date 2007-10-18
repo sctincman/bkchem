@@ -209,15 +209,8 @@ class SVG_writer( XML_writer):
     for item in a.items:
       # polygons (arrow heads, etc.)
       if self.paper.type( item) == "polygon":
-        ps = ''
-        j = 0
-        for c in self.paper.coords( item):
-          ps += '%.2f' % c
-          if j % 2:
-            ps += " "
-          else:
-            ps += ","
-          j += 1
+        points = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
+        ps = " ".join( ["%.2f,%.2f" % (x,y) for (x,y) in points])
         a_color = self.paper.itemcget( item, "fill")
         l_color = self.paper.itemcget( item, "outline")
         poly = dom_extensions.elementUnder( self.group, 'polygon',
@@ -251,7 +244,7 @@ class SVG_writer( XML_writer):
                                                                 ('fill', self.cc( a.line_color))))
           dom_extensions.elementUnder( arrow_point, 'path', (('d', 'M 0 %d L %d 0 L %d %d L %d %d z'%(d3, d2, d1, d3, d2, 2*d3)),))
         # the item
-        if a.spline and len( a.points) > 2:
+        if self.paper.itemcget( item, "smooth") != "0" and len( self.paper.coords( item)) > 4:
           # spline
           points = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
           beziers = geometry.tkspline_to_quadratic_bezier( points)
@@ -265,15 +258,8 @@ class SVG_writer( XML_writer):
                                                ( 'stroke', self.cc( a.line_color))))
         else:
           # normal line
-          ps = ''
-          j = 0
-          for c in self.paper.coords( item):
-            ps += '%.2f' % c
-            if j % 2:
-              ps += " "
-            else:
-              ps += ","
-            j += 1
+          points = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
+          ps = " ".join( ["%.2f,%.2f" % (x,y) for (x,y) in points])
           line = dom_extensions.elementUnder( self.group, 'polyline',
                                               (( 'points', ps),
                                                ( 'stroke-width', str( a.line_width)),
