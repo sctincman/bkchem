@@ -248,9 +248,9 @@ class SVG_writer( XML_writer):
           # spline
           points = geometry.coordinate_flat_list_to_xy_tuples( self.paper.coords( item))
           beziers = geometry.tkspline_to_quadratic_bezier( points)
-          ps = 'M%d,%d Q%d,%d %d,%d' % (beziers[0])
+          ps = 'M%.2f,%.2f Q%.2f,%.2f %.2f,%.2f' % (beziers[0])
           for bez in beziers[1:]:
-            ps += 'Q%d,%d %d,%d ' % (bez[2:])
+            ps += 'Q%.2f,%.2f %.2f,%.2f ' % (bez[2:])
           line = dom_extensions.elementUnder( self.group, 'path',
                                               (( 'd', ps),
                                                ( 'stroke-width', str( a.line_width)),

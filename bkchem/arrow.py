@@ -257,14 +257,13 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   # -- private drawing methods for different arrow types --
   
-  def _draw_normal( self):
+  def _draw_normal_old( self):
     ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
     item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
                                    width=self.line_width, smooth=self.spline, fill=self.line_color)
     return [item]
-  
 
-  def _draw_electron( self):
+  def _draw_normal( self):
     coords = [p.get_xy() for p in self.points]
     pins = []
     if self.pin in (2,3):
@@ -277,6 +276,33 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
       coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      
+    ps = reduce( operator.add, coords)
+    item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
+                                    smooth=self.spline, fill=self.line_color)
+    items = [item1]
+    for x1,y1,x2,y2 in pins:
+      coords = double_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3)
+      items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
+                                               width=1, tags="arrow_no_focus", joinstyle="miter"))
+
+    return items
+
+  
+
+  def _draw_electron( self):
+    coords = [p.get_xy() for p in self.points]
+    pins = []
+    if self.pin in (2,3):
+      x1, y1 = coords[1]
+      x2, y2 = coords[0]
+      pins.append( (x1,y1,x2,y2))
+      #coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+    if self.pin in (1,3):
+      x1, y1 = coords[-2]
+      x2, y2 = coords[-1]
+      pins.append( (x1,y1,x2,y2))
+      #coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
       
     ps = reduce( operator.add, coords)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
@@ -407,5 +433,21 @@ def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
   xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c)
   xc,yc = geometry.point_at_distance_from_line (x1,y1,x2,y2,-misc.signum(c)*(lw-1.0)/2.0)
   return xa,ya, xc,yc, xb,yb
+
+
+def double_sided_arrow_head (x1,y1,x2,y2,a,b,c):
+  '''last two points of arrow 1->2
+  a,b,c like tkinter
+  a = leght from point 2 where the head touches the line (out point A)
+  b = total lenght of the head (defines also help point P on the line)
+  c = width 
+  Point B will be the outer Point of the head
+  rl = "r" the head is on the right , = "l" left'''
+  xa,ya = x2,y2
+  xp,yp = geometry.elongate_line (x1,y1,x2,y2,-b)
+  xb,yb = geometry.point_at_distance_from_line (x1,y1,xp,yp,c)
+  xd,yd = geometry.point_at_distance_from_line (x1,y1,xp,yp,-c)
+  xc,yc = geometry.elongate_line (x1,y1,x2,y2,-a)
+  return xa,ya, xb,yb, xc,yc, xd,yd
 
 
