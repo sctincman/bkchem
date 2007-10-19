@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2007 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ class SVG_writer( XML_writer):
     self.full_size = not (paper.get_paper_property( 'crop_svg') and len( paper.stack))
     # shortcut for color conversion
     self.cc = self.paper.any_color_to_rgb_string
+    # the conversion function for coordinates
+    self.convert = lambda x: "%.2f" % x
+
     
 
   def construct_dom_tree( self, top_levels):
@@ -148,25 +151,23 @@ class SVG_writer( XML_writer):
       l_group.setAttribute('stroke-linecap', 'butt')
 
     line_items, items = b.get_exportable_items()
-    # the conversion function for coordinates
-    convert = str
     # export itself
     if b.type in 'nbhd':
       for i in items:
         x1, y1, x2, y2 = self.paper.coords( i)
         line = dom_extensions.elementUnder( l_group, 'line',
-                                            (( 'x1', convert( x1)),
-                                             ( 'y1', convert( y1)),
-                                             ( 'x2', convert( x2)),
-                                             ( 'y2', convert( y2))))
+                                            (( 'x1', self.convert( x1)),
+                                             ( 'y1', self.convert( y1)),
+                                             ( 'x2', self.convert( x2)),
+                                             ( 'y2', self.convert( y2))))
     elif b.type == 'o':
       for i in items:
         x1, y1, x2, y2 = self.paper.coords( i)
         dom_extensions.elementUnder( l_group, 'ellipse',
-                                     (( 'cx', str( 0.5*(x2+x1))),
-                                      ( 'cy', str( 0.5*(y2+y1))),
-                                      ( 'rx', str( 0.5*(x2-x1))),
-                                      ( 'ry', str( 0.5*(y2-y1))),
+                                     (( 'cx', self.convert( 0.5*(x2+x1))),
+                                      ( 'cy', self.convert( 0.5*(y2+y1))),
+                                      ( 'rx', self.convert( 0.5*(x2-x1))),
+                                      ( 'ry', self.convert( 0.5*(y2-y1))),
                                       ( 'stroke-width', '1.0')))
     elif b.type == 'w':
       for i in items:
@@ -180,14 +181,14 @@ class SVG_writer( XML_writer):
         for p in i:
           x1, y1, x2, y2 = self.paper.coords( p)
           line = dom_extensions.elementUnder( l_group, 'line',
-                                              (( 'x1', convert( x1)),
-                                               ( 'y1', convert( y1)),
-                                               ( 'x2', convert( x2)),
-                                               ( 'y2', convert( y2))))
+                                              (( 'x1', self.convert( x1)),
+                                               ( 'y1', self.convert( y1)),
+                                               ( 'x2', self.convert( x2)),
+                                               ( 'y2', self.convert( y2))))
     elif b.type == 'a':
       for i in items:
         coords = self.paper.coords( i)
-        points = ' '.join( map( str, coords))
+        points = ' '.join( map( self.convert, coords))
         line = dom_extensions.elementUnder( l_group, 'polyline',
                                             (( 'points', points),
                                              ( 'fill', 'none')))
@@ -195,10 +196,10 @@ class SVG_writer( XML_writer):
     for i in line_items:
       x1, y1, x2, y2 = self.paper.coords( i)
       line = dom_extensions.elementUnder( l_group, 'line',
-                                          (( 'x1', convert( x1)),
-                                           ( 'y1', convert( y1)),
-                                           ( 'x2', convert( x2)),
-                                           ( 'y2', convert( y2)),
+                                          (( 'x1', self.convert( x1)),
+                                           ( 'y1', self.convert( y1)),
+                                           ( 'x2', self.convert( x2)),
+                                           ( 'y2', self.convert( y2)),
                                            ( 'stroke-width', str( b.line_width))))
 
             
@@ -279,17 +280,17 @@ class SVG_writer( XML_writer):
     if t.area_color:
       # it is not needed to export the rectangle in case its transparent
       dom_extensions.elementUnder( self.group, 'rect',
-                                   (( 'x', str( x)),
-                                    ( 'y', str( y)),
-                                    ( 'width', str( x2-x)),
-                                    ( 'height', str( y2-y)),
+                                   (( 'x', self.convert( x)),
+                                    ( 'y', self.convert( y)),
+                                    ( 'width', self.convert( x2-x)),
+                                    ( 'height', self.convert( y2-y)),
                                     ( 'fill', self.cc( t.area_color)),
                                     ( 'stroke', self.cc( t.area_color))))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
     text = ftext_dom_to_svg_dom( t.get_parsed_text(), self.document, replace_minus=t.paper.get_paper_property('replace_minus'))
-    dom_extensions.setAttributes( text, (( "x", str( x)),
-                                         ( "y", str( y1)),
+    dom_extensions.setAttributes( text, (( "x", self.convert( x)),
+                                         ( "y", self.convert( y1)),
                                          ( "font-family", t.font_family),
                                          ( "font-size", '%d%s' % (t.font_size, pt_or_px)),
                                          ( 'fill', self.cc( t.line_color)),
@@ -304,18 +305,18 @@ class SVG_writer( XML_writer):
     if p.area_color:
       # it is not needed to export the rectangle in case its transparent
       dom_extensions.elementUnder( self.group, 'rect',
-                                   (( 'x', str( x)),
-                                    ( 'y', str( y)),
-                                    ( 'width', str( x2-x)),
-                                    ( 'height', str( y2-y)),
+                                   (( 'x', self.convert( x)),
+                                    ( 'y', self.convert( y)),
+                                    ( 'width', self.convert( x2-x)),
+                                    ( 'height', self.convert( y2-y)),
                                     ( 'fill', self.cc( p.area_color)),
                                     ( 'stroke', self.cc( p.area_color))))
     y1 += (y2-y)/4.0
     text = dom_extensions.textOnlyElementUnder( self.group, 'text', '+',
                                                 (('font-size', "%d%s" % (p.font_size, pt_or_px)),
                                                  ('font-family', p.font_family),
-                                                 ( "x", str( x)),
-                                                 ( "y", str( round( y1))),
+                                                 ( "x", self.convert( x)),
+                                                 ( "y", self.convert( round( y1))),
                                                  ( 'fill', self.cc( p.line_color))))
 
   def add_atom( self, a):
@@ -327,10 +328,10 @@ class SVG_writer( XML_writer):
       if a.area_color != '':
         # it is not needed to export the rectangle in case its transparent
         dom_extensions.elementUnder( self.group, 'rect',
-                                     (( 'x', str( x)),
-                                      ( 'y', str( y)),
-                                      ( 'width', str( x2-x)),
-                                      ( 'height', str( y2-y)),
+                                     (( 'x', self.convert( x)),
+                                      ( 'y', self.convert( y)),
+                                      ( 'width', self.convert( x2-x)),
+                                      ( 'height', self.convert( y2-y)),
                                       ( 'fill', self.cc( a.area_color)),
                                       ( 'stroke', self.cc( a.area_color))))
 
@@ -339,8 +340,8 @@ class SVG_writer( XML_writer):
       x += Tuning.SVG.text_x_shift ## hack to compensate for the wrong measuring of text
 
       text = ftext_to_svg_dom( a.xml_ftext)
-      dom_extensions.setAttributes( text, (( "x", str( x)),
-                                           ( "y", str( y1)),
+      dom_extensions.setAttributes( text, (( "x", self.convert( x)),
+                                           ( "y", self.convert( y1)),
                                            ( "font-family", a.font_family),
                                            ( "font-size", '%d%s' % (a.font_size, pt_or_px)),
                                            ( 'fill', self.cc( a.line_color))))
@@ -359,10 +360,10 @@ class SVG_writer( XML_writer):
   def add_rect( self, o):
     x1, y1, x2, y2 = o.coords
     el = dom_extensions.elementUnder( self.group, 'rect',
-                                      (( 'x', str( x1)),
-                                       ( 'y', str( y1)),
-                                       ( 'width', str( x2-x1)),
-                                       ( 'height', str( y2-y1)),
+                                      (( 'x', self.convert( x1)),
+                                       ( 'y', self.convert( y1)),
+                                       ( 'width', self.convert( x2-x1)),
+                                       ( 'height', self.convert( y2-y1)),
                                        ( 'stroke-width', str( o.line_width))))
 
     el.setAttribute( 'fill', self.cc( o.area_color))
@@ -373,10 +374,10 @@ class SVG_writer( XML_writer):
   def add_oval( self, o):
     x1, y1, x2, y2 = o.coords
     el = dom_extensions.elementUnder( self.group, 'ellipse',
-                                      (( 'cx', str( (x2+x1)/2)),
-                                       ( 'cy', str( (y2+y1)/2)),
-                                       ( 'rx', str( (x2-x1)/2)),
-                                       ( 'ry', str( (y2-y1)/2)),
+                                      (( 'cx', self.convert( (x2+x1)/2)),
+                                       ( 'cy', self.convert( (y2+y1)/2)),
+                                       ( 'rx', self.convert( (x2-x1)/2)),
+                                       ( 'ry', self.convert( (y2-y1)/2)),
                                        ( 'stroke-width', str( o.line_width))))
 
     el.setAttribute( 'fill', self.cc( o.area_color))
@@ -386,7 +387,7 @@ class SVG_writer( XML_writer):
   def add_polygon( self, o):
     ps = ''
     for (x,y) in [p.get_xy() for p in o.points]:
-      ps += '%d,%d ' % (x,y)
+      ps += '%.2f,%.2f ' % (x,y)
     poly = dom_extensions.elementUnder( self.group, 'polygon',
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
@@ -401,7 +402,7 @@ class SVG_writer( XML_writer):
   def add_polyline( self, o):
     ps = ''
     for (x,y) in [p.get_xy() for p in o.points]:
-      ps += '%d,%d ' % (x,y)
+      ps += '%.2f,%.2f ' % (x,y)
     poly = dom_extensions.elementUnder( self.group, 'polyline',
                                         (( 'points', ps),
                                          ( 'stroke-width', str( o.line_width)),
@@ -413,8 +414,7 @@ class SVG_writer( XML_writer):
 
 
 def list_to_svg_points( l):
-  for a in l:
-    return ' '.join( map( str, l))
+  return ' '.join( ["%.2f" % x for x in l])
 
 
 def ftext_to_svg_dom( ftext):
