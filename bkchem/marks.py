@@ -294,7 +294,7 @@ class dotted_electronpair( biradical):
 class electronpair( mark):
 
   meta__save_attrs = {"line_width": float}
-
+  meta__undo_simple = mark.meta__undo_simple + ("line_width",)
 
   def __init__( self, atom, x, y, size=10, auto=1):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
