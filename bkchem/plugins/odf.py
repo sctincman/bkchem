@@ -484,6 +484,7 @@ note that this is not an ODF (Open Document Format) export."""
                                         ( 'svg:y', '%fcm' %  y),
                                         ( 'svg:width', '%fcm' %  (x2-x)),
                                         ( 'svg:height', '%fcm' % (y2-y)),
+                                        ( 'draw:layer', 'layout'),
                                         ( 'draw:style-name', gr_style_name),
                                         ( 'draw:text-style-name', para_style_name)))
     box = dom_extensions.elementUnder( frame, 'draw:text-box')
@@ -547,8 +548,10 @@ note that this is not an ODF (Open Document Format) export."""
 
 
   def create_oo_bezier( self, points, page, gr_style_name):
+    ps = reduce( operator.add, map( geometry.quadratic_beziere_to_polyline,
+                                    geometry.tkspline_to_quadratic_bezier( points)))
     maxX, maxY, minX, minY = None,None,None,None
-    for (x,y) in points:
+    for (x,y) in ps:
       if not maxX or x > maxX:
         maxX = x
       if not minX or x < minX:
@@ -562,7 +565,6 @@ note that this is not an ODF (Open Document Format) export."""
       if not points_txt:
         points_txt += "m %d %d c " % (1000*(sx-minX), 1000*(sy-minY))
       points_txt += "%d %d %d %d %d %d " % (1000*(cxa-sx),1000*(cya-sy),1000*(cxb-sx),1000*(cyb-sy),1000*(ex-sx),1000*(ey-sy))
-  
     line = dom_extensions.elementUnder( page, 'draw:path',
                                         (( 'svg:x', '%fcm' % minX),
                                          ( 'svg:y', '%fcm' % minY),
@@ -619,13 +621,13 @@ note that this is not an ODF (Open Document Format) export."""
     s = dom_ext.elementUnder( root, 'office:styles')
     as = dom_ext.elementUnder( root, 'office:automatic-styles')
     pm = dom_ext.elementUnder( as, 'style:page-layout', (('style:name','PM1'),))
-    dom_ext.elementUnder( pm, 'style:properties', (('fo:page-height','%fcm' % h),
-                                                   ('fo:page-width','%fcm' % w),
-                                                   ('style:print-orientation','portrait'),
-                                                   ('fo:margin-bottom','0.5cm'),
-                                                   ('fo:margin-left','0.5cm'),
-                                                   ('fo:margin-top','0.5cm'),
-                                                   ('fo:margin-right','0.5cm')))
+    dom_ext.elementUnder( pm, 'style:page-layout-properties', (('fo:page-height','%fcm' % h),
+                                                               ('fo:page-width','%fcm' % w),
+                                                               ('style:print-orientation','portrait'),
+                                                               ('fo:margin-bottom','0.5cm'),
+                                                               ('fo:margin-left','0.5cm'),
+                                                               ('fo:margin-top','0.5cm'),
+                                                               ('fo:margin-right','0.5cm')))
     dp = dom_ext.elementUnder( as, 'style:style', (('style:family', 'drawing-page'),
                                                    ('style:name', 'dp1')))
     dom_ext.elementUnder( dp, 'style:drawing-page-properties', (('draw:backgroud-size','border'),
@@ -742,10 +744,13 @@ class paragraph_style( style):
     style = doc.createElement( 'style:style')
     dom_extensions.setAttributes( style, (('style:family', self.family),
                                           ('style:name', self.name)))
-    dom_extensions.elementUnder( style, 'style:paragraph-properties', (( 'fo:font-size', self.font_size),
-                                                                       ( 'fo:font-family', self.font_family),
+    dom_extensions.elementUnder( style, 'style:paragraph-properties', (#( 'fo:font-size', self.font_size),
+                                                                       #( 'fo:font-family', self.font_family),
                                                                        ( 'fo:text-align', 'center'),
-                                                                       ( 'fo:color', self.color)))
+                                                                       #( 'fo:color', self.color),
+                                                                       ( 'fo:margin-left', "0cm"),
+                                                                       ( 'fo:margin-right', "0cm"),
+                                                                       ( 'fo:text-indent', "0cm")))
     return style
 
 
@@ -786,7 +791,7 @@ class span_style( style):
     style = doc.createElement( 'style:style')
     dom_extensions.setAttributes( style, (('style:family', self.family),
                                           ('style:name', self.name)))
-    prop = dom_extensions.elementUnder( style, 'style:properties')
+    prop = dom_extensions.elementUnder( style, 'style:text-properties')
     if self.font_style:
       prop.setAttribute( 'fo:font-style', self.font_style)
     if self.font_weight:

@@ -552,8 +552,10 @@ note that this is not an ODF (Open Document Format) export."""
 
 
   def create_oo_bezier( self, points, page, gr_style_name):
+    ps = reduce( operator.add, map( geometry.quadratic_beziere_to_polyline,
+                                    geometry.tkspline_to_quadratic_bezier( points)))
     maxX, maxY, minX, minY = None,None,None,None
-    for (x,y) in points:
+    for (x,y) in ps:
       if not maxX or x > maxX:
         maxX = x
       if not minX or x < minX:

@@ -424,3 +424,21 @@ def find_parallel_polyline( coords, d):
     i += 1
   return res
 
+
+
+def point_on_quadratic_bezier( coords, t):
+  """based on info from http://en.wikipedia.org/wiki/B%C3%A9zier_curve"""
+  (x0,y0,x1,y1,x2,y2) = coords
+  x = (1-t)**2*x0 + 2*t*(1-t)*x1 + t**2*x2
+  y = (1-t)**2*y0 + 2*t*(1-t)*y1 + t**2*y2
+  return x,y
+
+
+
+def quadratic_beziere_to_polyline( point, n=10):
+  t = 0
+  points = []
+  for i in range( n+1):
+    points.append( point_on_quadratic_bezier( point, t))
+    t += 1.0/n
+  return points
