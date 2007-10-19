@@ -373,10 +373,11 @@ class edit_mode( basic_mode):
     
 
 
-  def mouse_down( self, event, modifiers = []):
-    self._shift = 'shift' in modifiers
-    self._ctrl = 'ctrl' in modifiers
-    self._alt = 'alt' in modifiers
+  def mouse_down( self, event, modifiers=None):
+    mods = modifiers or []
+    self._shift = 'shift' in mods
+    self._ctrl = 'ctrl' in mods
+    self._alt = 'alt' in mods
     # we focus what is under cursor if its not focused already
     if not self.focused:
       ids = Store.app.paper.find_overlapping( event.x, event.y, event.x, event.y)
@@ -394,7 +395,8 @@ class edit_mode( basic_mode):
 
 
 
-  def mouse_down3( self, event, modifiers = []):
+  def mouse_down3( self, event, modifiers=None):
+    mods = modifiers or []
     if self.focused:
       if self.focused not in Store.app.paper.selected:
         Store.app.paper.unselect_all()
@@ -405,9 +407,12 @@ class edit_mode( basic_mode):
 
 
 
-  def mouse_down2( self, event, modifiers = []):
+  def mouse_down2( self, event, modifiers=None):
+    mods = modifiers or []
     if self.focused and not isinstance( self.focused, marks.mark):
       if self.focused not in Store.app.paper.selected:
+        if not "shift" in mods:
+          Store.app.paper.unselect_all()
         Store.app.paper.select( [self.focused])
       dialog = dialogs.config_dialog( Store.app, Store.app.paper.selected[:])
       if dialog.changes_made:

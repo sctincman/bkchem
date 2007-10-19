@@ -134,7 +134,11 @@ class chem_paper( Canvas, object):
       self.bind( "<KeyRelease>", self.key_released)
       self.bind( "<Enter>", self.take_focus)
       self.bind( "<Button-3>", self._n_pressed3)
+      self.bind( "<Shift-Button-3>", lambda e: self._n_pressed3( e, mod=["shift"]))
+      self.bind( "<Control-Button-3>", lambda e: self._n_pressed3( e, mod=["ctrl"]))
       self.bind( "<Button-2>", self._n_pressed2)
+      self.bind( "<Shift-Button-2>", lambda e: self._n_pressed2( e, mod=["shift"]))
+      self.bind( "<Control-Button-2>", lambda e: self._n_pressed2( e, mod=["ctrl"]))
       self.bind( "<Motion>", self._move)
       self.bind( "<Leave>", self._leave)
       # scrolling (linux only?)
@@ -271,7 +275,7 @@ class chem_paper( Canvas, object):
     "button 1"
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    Store.app.mode.mouse_down( event, modifiers=mod)
+    Store.app.mode.mouse_down( event, modifiers=mod or [])
 
 
 
@@ -318,17 +322,17 @@ class chem_paper( Canvas, object):
 
 
 
-  def _n_pressed3( self, event):
+  def _n_pressed3( self, event, mod=None):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    Store.app.mode.mouse_down3( event, modifiers=[])
+    Store.app.mode.mouse_down3( event, modifiers=mod or [])
 
 
 
-  def _n_pressed2( self, event):
+  def _n_pressed2( self, event, mod=None):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
-    Store.app.mode.mouse_down2( event, modifiers=[])
+    Store.app.mode.mouse_down2( event, modifiers=mod or [])
 
 
 
