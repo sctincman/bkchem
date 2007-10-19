@@ -371,19 +371,35 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)
-      if sig == -1:
-        x1, y1 = coords[1]
-        x2, y2 = coords[0]
-        xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
-        xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
-        coords.insert(0,(xp,yp))
+      if not self.spline:
+        # if its not a spline, we can draw it all in one go
+        if sig == -1:
+          x1, y1 = coords[1]
+          x2, y2 = coords[0]
+          xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
+          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+          coords.insert(0,(xp,yp))
+        else:
+          x1, y1 = coords[-2]
+          x2, y2 = coords[-1]
+          xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
+          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+          coords.append((xp,yp))
       else:
-        x1, y1 = coords[-2]
-        x2, y2 = coords[-1]
+        # splines must have a sharp point at the end - the must have a separate head
+        if sig == -1:
+          x1, y1 = coords[1]
+          x2, y2 = coords[0]
+        else:
+          x1, y1 = coords[-2]
+          x2, y2 = coords[-1]
         xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
         xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
-        coords.append((xp,yp))
-      # the line with pin
+        items.append( self.paper.create_line( (x2,y2,xp,yp),
+                                              tags='arrow', width=self.line_width,
+                                              smooth=self.spline, fill=self.line_color,
+                                              joinstyle="miter"))
+      # the line (with optional pin)
       ps = reduce( operator.add, coords)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color,
