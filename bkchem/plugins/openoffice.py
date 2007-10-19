@@ -625,7 +625,7 @@ note that this is not an ODF (Open Document Format) export."""
 name = "OpenOffice Draw"
 extensions = [".sxd",".zip"]
 exporter = OO_exporter
-local_name = _("OpenOffice Draw")
+local_name = _("OpenOffice 1.0 Draw")
 
 
 ## PRIVATE CLASSES AND FUNCTIONS
@@ -671,6 +671,8 @@ class graphics_style( style):
     self.marker_start = marker_start
     self.marker_start_width = marker_start_width
     self.padding_top, self.padding_bottom = padding
+    self.padding_left = 0
+    self.padding_right = 0
 
   def to_dom( self, doc):
     style = doc.createElement( 'style:style')
@@ -679,6 +681,8 @@ class graphics_style( style):
                                           ('style:parent-style-name','standard')))
     pad_top = "%scm" % self.padding_top
     pad_bot = "%scm" % self.padding_bottom
+    pad_left = "%scm" % self.padding_left
+    pad_right = "%scm" % self.padding_right
     prop = dom_extensions.elementUnder( style, 'style:properties', (( 'draw:fill', self.fill),
                                                                     ( 'svg:stroke-color', self.stroke_color),
                                                                     ( 'draw:fill-color', self.fill_color),
@@ -688,7 +692,10 @@ class graphics_style( style):
                                                                     ( 'draw:textarea-horizontal-align','middle'),
                                                                     ( 'draw:textarea-vertical-align','middle'),
                                                                     ( 'fo:padding-top', pad_top),
-                                                                    ( 'fo:padding-bottom', pad_bot)))
+                                                                    ( 'fo:padding-bottom', pad_bot),
+                                                                    ( 'fo:padding-left', pad_left),
+                                                                    ( 'fo:padding-right', pad_right)))
+
     if self.marker_end:
       prop.setAttribute( 'draw:marker-end', 'Arrow')
       if self.marker_end_width:
