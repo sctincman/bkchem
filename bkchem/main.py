@@ -481,7 +481,7 @@ class BKchem( Tk):
                    'vector': modes.vector_mode(),
                    'mark': modes.mark_mode(),
                    'atom': modes.atom_mode(),
-                   'reaction': modes.reaction_mode(),
+                   #'reaction': modes.reaction_mode(),
                    'usertemplate': modes.user_template_mode(),
                    'misc': modes.misc_mode(),
                    'bracket': modes.bracket_mode(),
@@ -489,7 +489,7 @@ class BKchem( Tk):
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
     self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
-                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'reaction', 'misc']#, 'externaldata'] #, 'rapiddraw']
+                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'misc']#  'reaction', 'externaldata'] #, 'rapiddraw']
 
     # import plugin modes
     import imp
