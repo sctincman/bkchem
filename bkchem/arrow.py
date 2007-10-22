@@ -297,19 +297,19 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       x1, y1 = coords[1]
       x2, y2 = coords[0]
       pins.append( (x1,y1,x2,y2))
-      #coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
     if self.pin in (1,3):
       x1, y1 = coords[-2]
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
-      #coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
       
     ps = reduce( operator.add, coords)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
     for x1,y1,x2,y2 in pins:
-      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, self.line_width)
+      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 4, self.line_width)
       items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
 

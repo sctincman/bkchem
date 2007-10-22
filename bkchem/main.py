@@ -531,7 +531,7 @@ class BKchem( Tk):
     # Add some buttons to the radiobutton RadioSelect.
     for m in self.modes_sort:
       if m in pixmaps.images:
-        recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[ m].name, activebackground='grey',
+        recent = self.radiobuttons.add( m, image=pixmaps.images[m], text=self.modes[m].name, activebackground='grey',
                                         relief='flat', borderwidth=config.border_width)
         self.balloon.bind( recent, self.modes[ m].name)
       else:
@@ -601,8 +601,15 @@ class BKchem( Tk):
         else:
           self.subbuttons[i].pack( side=LEFT)
         for sub in m.submodes[i]:
-          if sub in pixmaps.images:
-            recent = self.subbuttons[i].add( sub, image=pixmaps.images[sub], activebackground='grey', borderwidth=config.border_width)
+          img_name = m.__class__.__name__.replace("_mode","") + "-" + sub
+          if img_name in pixmaps.images:
+            img = pixmaps.images[img_name]
+          elif sub in pixmaps.images:
+            img = pixmaps.images[sub]
+          else:
+            img = None
+          if img:
+            recent = self.subbuttons[i].add( sub, image=img, activebackground='grey', borderwidth=config.border_width)
             self.balloon.bind( recent, m.submodes_names[i][m.submodes[i].index(sub)])
           else:
             self.subbuttons[i].add( sub, text=m.submodes_names[i][m.submodes[i].index(sub)], borderwidth=config.border_width)
