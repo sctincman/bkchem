@@ -3,7 +3,7 @@ include win_inst.py
 include INSTALL RELEASE README progress.log
 include gpl.txt progress.log
 include templates/*.cdml
-include templates/oo_manifest.xml
+include templates/*.xml
 include plugins/*.xml
 include plugins/*.py
 include pixmaps/*.gif

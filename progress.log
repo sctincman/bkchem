@@ -1,3 +1,23 @@
+RELEASE 0.12.0_pre4
+----------------------------------------
+ * bugfixes - line width was not configurable for electron-pairs
+   	    - objects are properly deselected when the middle button is used
+	    - OO Draw export of text does not include left and right padding anymore
+
+ * enhancements - different arrow styles support (retro, electron-transfer, equilibrium)
+   		- ODF (OpenOffice 2.0) export plugin added
+		- proper export of spline arrows to OpenOffice 1.0
+		- more variables were added into tuning.py
+
+ * changes - reaction mode was removed - it was obsolete and buggy
+   	   - round ends for bond lines are not used when connecting atoms with visible symbols
+
+ * acknowledgments - Bernhard Radzio for help on the arrow types and splines
+   		   - René Genz for many bugreports and help
+		   - I-Yuan Chiang for the translation into Taiwan Chinese (I forgot to
+		     mention him when the translation was first introduced)
+
+
 RELEASE 0.12.0_pre3
 ----------------------------------------
  * bugfixes - quit properly even if text is currently edited
