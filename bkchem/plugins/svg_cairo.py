@@ -21,15 +21,15 @@
 from cairo_lowlevel import cairo_exporter
 from tk2cairo import tk2cairo
 import cairo
-# try if there is PSSurface in cairo
-_x = cairo.PSSurface
+# try if there is SVGSurface in cairo
+_x = cairo.SVGSurface
 
 
-class ps_cairo_exporter( cairo_exporter):
-  """Exports PostScript via the Cairo (pycairo) library. This is the preferred PS output plugin
-as it supports unicode strings and the output is of very good quality."""
+class svg_cairo_exporter( cairo_exporter):
+  """Exports SVG via the Cairo (pycairo) library. This SVG does not embed BKChem data and is simpler
+  than the default one used by BKChem."""
 
-  doc_string = _("Exports Postscript via the Cairo (pycairo) library. This is the preferred PS output plugin as it supports unicode strings and the output is of very good quality.")
+  doc_string = _("Exports SVG via the Cairo (pycairo) library. This SVG does not embed BKChem data and is simpler than the default one used by BKChem.")
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
@@ -37,7 +37,7 @@ as it supports unicode strings and the output is of very good quality."""
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    return cairo.PSSurface( self.filename, w, h)
+    return cairo.SVGSurface( self.filename, w, h)
 
 
   def get_scaling( self, x, y):
@@ -53,7 +53,7 @@ as it supports unicode strings and the output is of very good quality."""
 
 
 # PLUGIN INTERFACE SPECIFICATION
-name = "PS_Cairo"
-extensions = [".eps",".ps"]
-exporter = ps_cairo_exporter
-local_name = _("Postscript (Cairo)")
+name = "SVG_Cairo"
+extensions = [".svg"]
+exporter = svg_cairo_exporter
+local_name = _("SVG (Cairo)")
