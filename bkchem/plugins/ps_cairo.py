@@ -37,7 +37,8 @@ as it supports unicode strings and the output is of very good quality."""
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    return cairo.PSSurface( self.filename, w, h)
+    surf = cairo.PSSurface( self.filename, w, h)
+    return surf
 
 
   def get_scaling( self, x, y):
@@ -46,10 +47,23 @@ as it supports unicode strings and the output is of very good quality."""
 
   def _get_scaling_ratio( self):
     from singleton_store import Screen
+    print Screen.dpi
     return 72.0/Screen.dpi
 
   def save( self):
     self.surface.finish()
+    # here we process the exported PostScript to include PageSize
+    import re
+    f = file( self.filename, "rb")
+    text = f.read()
+    f.close()
+    f = file( self.filename, "wb")
+    for line in text.splitlines():
+      f.write( line+"\n")
+      m = re.match( "^%%PageBoundingBox: \d+ \d+ (\d+) (\d+)$", line)
+      if m:
+        f.write( "<</PageSize[%s %s]>>setpagedevice\n" % (m.group(1),m.group(2)))
+    f.close()
 
 
 # PLUGIN INTERFACE SPECIFICATION
