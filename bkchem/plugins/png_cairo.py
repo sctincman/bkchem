@@ -164,15 +164,6 @@ class scale_dialog:
 
     Tkinter.Label(self.dialog.interior(), text=" ").pack( pady=1, anchor="w", expand="1")
 
-##     self.preserve_ratio = Tkinter.IntVar()
-##     self.preserve_ratio_entry = Tkinter.Checkbutton( self.dialog.interior(),
-##                                                      text=_('Preserve aspect ratio?'),
-##                                                      variable = self.preserve_ratio,
-##                                                      command = self._preserve_ratio_changed)
-##     self.preserve_ratio_entry.pack( anchor="w")
-##     self.preserve_ratio.set( 1)
-
-
     self.background_color_button = Pmw.RadioSelect( self.dialog.interior(),
                                                     buttontype = 'radiobutton',
                                                     orient = 'vertical',
@@ -193,7 +184,7 @@ class scale_dialog:
     if not button or button == _('Cancel'):
       self.result = None
     else:
-      self.result = (float( self.entryx.get())/100.0, float( self.entryy.get())/100.0) #, self.preserve_center.get())
+      self.result = (float( self.entryx.get())/100.0, float( self.entryy.get())/100.0)
     self.background_color = self.background_color_button.getvalue() == _("white") and (1,1,1,1) or (0,0,0,0)
     self.dialog.deactivate()
 

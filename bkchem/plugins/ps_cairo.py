@@ -47,7 +47,6 @@ as it supports unicode strings and the output is of very good quality."""
 
   def _get_scaling_ratio( self):
     from singleton_store import Screen
-    print Screen.dpi
     return 72.0/Screen.dpi
 
   def save( self):
