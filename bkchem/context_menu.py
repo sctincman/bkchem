@@ -254,6 +254,7 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
                   'font_size':        ( _("Font size"),          (8,10,12,14,16,18)),
                   'line_width':       ( _("Line width"),         (1.0,1.5,2.0,2.5,3.0)),
                   'bond_width':       ( _("Bond width"),         (3,4,5,6,7,8,9,10)),
+                  'wedge_width':      ( _("Wedge/Hatch width"),  (3,4,5,6,7,8,9,10)),
                   'pos':              ( _("Symbol positioning"), (("center-first",_("center first")),
                                                                   ("center-last", _("center last")))),
                   'auto_bond_sign':   ( _("Bond positioning"),   ((1, _("auto")),
@@ -286,7 +287,7 @@ config_values = { 'show':             ( _("Show"),               (('yes',_("yes"
 
 configurable = {'atom':    ('show', 'font_size','show_hydrogens','pos','number', 'free_sites', show_number, atom_valency, mark_size),
                 'text':    ('font_size',),
-                'bond':    ('line_width','bond_width','order','auto_bond_sign'),
+                'bond':    ('line_width','bond_width','order','auto_bond_sign','wedge_width'),
                 'plus':    ('font_size',),
                 'arrow':   ('line_width',),
                 'mark':    ('size', draw_mark_circle),
