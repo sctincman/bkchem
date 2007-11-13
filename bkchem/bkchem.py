@@ -52,7 +52,6 @@ if user_lang == "en":
   import __builtin__
   __builtin__.__dict__['_'] = lambda m: m
   Store.lang = "en"
-
 else:
   Store.lang = None
   for lang in langs:
