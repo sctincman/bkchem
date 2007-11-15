@@ -60,6 +60,7 @@ class group( drawable_chem_vertex):
     drawable_chem_vertex.__init__( self, standard=standard, xy=xy, molecule=molecule)
 
     self.group_graph = None
+    self.connecting_atom = None
     self.group_type = None
     self.symbol = ''
 
@@ -171,9 +172,16 @@ class group( drawable_chem_vertex):
       self.group_type = "builtin"
       return True
     # try interpret the formula
-    lf = oasa.linear_formula.linear_formula( name, valency=occupied_valency)
+    lf = oasa.linear_formula.linear_formula( name, start_valency=occupied_valency)
+    if not lf.molecule:
+      # it is possible the text goes the other way
+      lf = oasa.linear_formula.linear_formula( name, end_valency=occupied_valency)
     if lf.molecule:
       self.group_graph = lf.molecule
+      if lf.first_atom:
+        self.connecting_atom = lf.first_atom
+      if lf.last_atom:
+        self.connecting_atom = lf.last_atom
       self.symbol = name
       self.group_type = "implicit"
       self.group_graph.paper = self.paper
@@ -189,7 +197,7 @@ class group( drawable_chem_vertex):
 
 
   def interpret_name( self, name):
-    lf = oasa.linear_formula.linear_formula( name, valency=self.valency)
+    lf = oasa.linear_formula.linear_formula( name, start_valency=self.valency)
     return lf.molecule
       
 
@@ -345,7 +353,7 @@ class group( drawable_chem_vertex):
       for v in self.group_graph.vertices:
         v.x, v.y = None, None
         v.show = v.symbol != 'C'
-      replacement = self.group_graph.vertices[0]
+      replacement = self.connecting_atom
       replacement.x = self.x
       replacement.y = self.y
       

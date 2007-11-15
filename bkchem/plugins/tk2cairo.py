@@ -41,6 +41,8 @@ class tk2cairo:
             'miter': cairo.LINE_JOIN_MITER,
             'bevel': cairo.LINE_JOIN_BEVEL}
 
+  _font_size_remap_cache = {}
+
 
   def __init__( self):
     pass
@@ -148,7 +150,6 @@ class tk2cairo:
   def _draw_text( self, item):
     text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
     x1, y1, x2, y2 = self.paper.bbox( item)
-    tk_length_orig = x2 - x1
     x1, y1, x2, y2 = self.transformer.transform_4( (x1+1, y1, x2-2, y2))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
     conf = afont.config()
@@ -163,13 +164,8 @@ class tk2cairo:
     self.context.select_font_face( font_name, slant, weight)
 
     # here we compute the font_size so that it matches what is on the screen
-    cairo_size = self.p2c_width( conf['size'])
+    cairo_size = self._get_cairo_font_size( afont)
     self.context.set_font_size( cairo_size)
-    tk_length = self.p2c_width( tk_length_orig -3)
-    for i in range(2): # two iterations should be enough
-      xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
-      cairo_size *= tk_length/width
-      self.context.set_font_size( cairo_size)
 
     xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
     y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent'] # * cairo_size / conf['size']
@@ -297,6 +293,33 @@ class tk2cairo:
       self.context.close_path()
 
 
+  # the following methods deal with font_size remapping between cairo and Tk
+  def _get_cairo_font_size( self, tk_font):
+    conf = tk_font.config()
+    family = conf['family']
+    tk_font_size = conf['size']
+    if family in self._font_size_remap_cache:
+      if tk_font_size in self._font_size_remap_cache[family]:
+        return self._font_size_remap_cache[family][tk_font_size]
+    else:
+      self._font_size_remap_cache[family] = {}
+    cairo_size = self._compute_cairo_font_size( tk_font)
+    self._font_size_remap_cache[family][tk_font_size] = cairo_size
+    return cairo_size
+
+
+  def _compute_cairo_font_size( self, tk_font):
+    test_string = "XXXxxxXXXaaII"
+    tk_length = self.p2c_width( tk_font.measure( test_string))
+    cairo_size = self.p2c_width( tk_font.config()['size'])
+    self.context.set_font_size( cairo_size)
+    for i in range(2): # two iterations should be enough
+      xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( test_string)
+      cairo_size *= tk_length/width
+      self.context.set_font_size( cairo_size)
+    return cairo_size
+    
+    
 
 
 

@@ -181,7 +181,7 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
 
 
   def interpret_name( self, name):
-    lf = oasa.linear_formula.linear_formula( name, valency=self.valency)
+    lf = oasa.linear_formula.linear_formula( name, start_valency=self.valency)
     return lf.molecule
       
 
