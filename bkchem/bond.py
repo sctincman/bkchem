@@ -1337,6 +1337,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return (1 ,1)
     else:
       if not circles:
+        # we center when both atoms have visible symbol and are not in circle
+        if self.atom1.show and self.atom2.show:
+          return (1, 1)
         # recompute side with weighting of atom types
         for i in range( len( sides)):
           if sides[i] and atms[i].__class__.__name__ == "atom":

@@ -160,7 +160,9 @@ class undo_manager:
         ret.append( m)
     return ret
 
-
+  def get_last_record( self):
+    rec = self._records[ self._pos]
+    return rec
 
 ##-------------------- STATE RECORD --------------------
     
