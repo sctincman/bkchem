@@ -262,18 +262,16 @@ class state_record:
 
       if changed:
         to_redraw.add( o)
-
-      # some hacks needed to ensure complete redraw
-      if o.object_type == 'atom':
-        to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
-      elif o.object_type == 'bond':
-        to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
-      elif o.object_type == 'point':
-        to_redraw.add( o)
-        to_redraw.add( o.parent)
+        # some hacks needed to ensure complete redraw
+        if o.object_type == 'atom':
+          to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
+        elif o.object_type == 'bond':
+          to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
+        elif o.object_type == 'point':
+          to_redraw.add( o)
+          to_redraw.add( o.parent)
 
       i += 1
-
 
     ## DELETED OBJECTS
     # deleted are known from the top of this def
@@ -298,7 +296,6 @@ class state_record:
     for o in added:
       if o.object_type != 'molecule' and hasattr( o, "delete"):
         o.delete()
-
 
     # now redrawing
     # sort the to_redraw
