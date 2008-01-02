@@ -131,6 +131,8 @@ def oasa_atom_to_bkchem_atom( a, paper, m):
   at.charge = a.charge
   at.number = a.properties_.get( 'inchi_number', None)
   at.show_number = False
+  at.isotope = a.isotope
+  at.valency = a.valency
   return at
 
 def oasa_bond_to_bkchem_bond( b, paper):
