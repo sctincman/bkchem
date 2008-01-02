@@ -493,7 +493,7 @@ class text_mark( mark):
                                           self.y,
                                           text=self.text,
                                           fill=self.line_color,
-                                          font=(self.atom.font_family, self.size, "normal"),
+                                          font=(self.atom.font_family, int(self.size), "normal"),
                                           tags="mark")]
 
 
