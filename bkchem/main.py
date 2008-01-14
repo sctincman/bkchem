@@ -1051,7 +1051,7 @@ class BKchem( Tk):
       if a:
         filename = a
       else:
-        return
+        return 0
     # we have filename already
     if plugin.importer.gives_molecule:
       # plugins returning molecule need paper instance for molecule initialization
@@ -1067,7 +1067,7 @@ class BKchem( Tk):
           doc = importer.get_cdml_dom( filename)
         except plugins.plugin.import_exception, detail:
           tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
-          return
+          return 0
       # others give directly a molecule object
       elif importer.gives_molecule:
         cdml = 0
@@ -1088,7 +1088,7 @@ class BKchem( Tk):
         self.paper.read_package( doc)
 
       Store.log( _("loaded file: ")+filename)
-
+      return 1
 
 
   def plugin_export( self, pl_id, filename=None, interactive=True, on_begin_attrs=None):

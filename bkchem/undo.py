@@ -161,8 +161,11 @@ class undo_manager:
     return ret
 
   def get_last_record( self):
-    rec = self._records[ self._pos]
-    return rec
+    if self._pos >= 1:
+      return self._records[ self._pos]
+    else:
+      return None
+
 
 ##-------------------- STATE RECORD --------------------
     

@@ -24,6 +24,7 @@ import transform
 import geometry
 import math
 import misc
+import string
 
 
 class tk2cairo:
@@ -164,7 +165,11 @@ class tk2cairo:
     self.context.select_font_face( font_name, slant, weight)
 
     # here we compute the font_size so that it matches what is on the screen
-    cairo_size = self._get_cairo_font_size( afont)
+    # it the text is short, we use scaling based on some sample text, otherwise we compute it exactly for the string
+    if len( text) <= 5:
+      cairo_size = self._get_cairo_font_size( afont)
+    else:
+      cairo_size = self._compute_cairo_font_size( afont, text=text)
     self.context.set_font_size( cairo_size)
 
     xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
@@ -308,8 +313,11 @@ class tk2cairo:
     return cairo_size
 
 
-  def _compute_cairo_font_size( self, tk_font):
-    test_string = "XXXxxxXXXaaII"
+  def _compute_cairo_font_size( self, tk_font, text=""):
+    if text:
+      test_string = text
+    else:
+      test_string = string.ascii_letters + string.punctuation
     tk_length = self.p2c_width( tk_font.measure( test_string))
     cairo_size = self.p2c_width( tk_font.config()['size'])
     self.context.set_font_size( cairo_size)
