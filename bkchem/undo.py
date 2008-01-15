@@ -267,7 +267,14 @@ class state_record:
         to_redraw.add( o)
         # some hacks needed to ensure complete redraw
         if o.object_type == 'atom':
-          to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
+          neigh_edges = Set( [b for b in o.neighbor_edges if b not in deleted])
+          to_redraw |= neigh_edges
+          # neighboring edges of the atoms edges - needed because of new bond drawing code
+          # that takes neighboring edges into account
+          neigh_edges2 = Set()
+          for e in neigh_edges:
+            neigh_edges2 |= Set( [e for e in e.get_neighbor_edges() if e not in deleted])
+          to_redraw |= neigh_edges2
         elif o.object_type == 'bond':
           to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
         elif o.object_type == 'point':

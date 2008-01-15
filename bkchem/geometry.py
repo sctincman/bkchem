@@ -318,12 +318,13 @@ def intersection_of_two_lines (x1,y1,x2,y2,x3,y3,x4,y4,parallel_detection_thresh
     rex = -(c2-c1)/(m2-m1)
     rey = (c1*m2-c2*m1)/(m2-m1)
   #check if point is on the lines
-  if (rex <= x1 and rex >= x2) or (rex >= x1 and rex <= x2):
-    if (rex <= x3 and rex >= x4) or (rex >= x3 and rex <= x4): 
-      online = 3
-    else:
-      online = 1
-  elif (rex <= x3 and rex >= x4) or (rex >= x3 and rex <= x4):
+  online1 = is_point_beween_points_of_line( (x1,y1,x2,y2), (rex,rey))
+  online2 = is_point_beween_points_of_line( (x3,y3,x4,y4), (rex,rey))
+  if online1 and online2:
+    online = 3
+  elif online1:
+    online = 1
+  elif online2:
     online = 2
   else:
     online = 0
@@ -442,3 +443,14 @@ def quadratic_beziere_to_polyline( point, n=10):
     points.append( point_on_quadratic_bezier( point, t))
     t += 1.0/n
   return points
+
+
+def is_point_beween_points_of_line( line, point):
+  """this function asserts that the point is on a line and
+  computes if it is between the points defining the line"""
+  x1, y1, x2, y2 = line
+  x, y = point
+  if point_distance( x1,y1,x,y) + point_distance( x2,y2,x,y) > 1.02 * point_distance( x1,y1,x2,y2):
+    return False
+  return True
+  

@@ -366,16 +366,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       # d = int( round( d/3)) #MB#
       d = round(d*.4) #MB#+
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
-    # shortening of the second bond
-    dx = x-x0
-    dy = y-y0
+    self.second = self._draw_second_line( [x, y, x0, y0])
     if self.center:
-      _k = 0
-    else:
-      _k = (1-self.double_length_ratio)/2
-    self.second = [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
-    if self.center:
-      self.third = [self.paper.create_line( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0, width=self.line_width, fill=self.line_color)]
+      self.third = self._draw_second_line( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
   def _draw_n3( self):
     where = self._draw_n1()
@@ -395,11 +388,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self._decide_distance_and_center()
     d = self.bond_width
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
-    dx = x-x0
-    dy = y-y0
-    self.second = [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
-    self.third = [self.paper.create_line( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy, width=self.line_width, fill=self.line_color)]
-    
+    self.second = self._draw_second_line( [x, y, x0, y0])
+    self.third = self._draw_second_line( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
 
 
@@ -623,9 +613,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
 
-
-
   def _draw_second_line( self, coords):
+    my_x1, my_y1 = self.atom1.get_xy()
+    my_x2, my_y2 = self.atom2.get_xy()
+    my_coords = (my_x1,my_y1,my_x2,my_y2)
     x, y, x0, y0 = coords
     # shortening of the second bond
     dx = x-x0
@@ -634,13 +625,28 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       _k = 0
     else:
       _k = (1-self.double_length_ratio)/2
-    # shift according to the angles arround
-    myang = geometry.clockwise_angle_from_east( dx, dy)
-    angs = [geometry.clockwise_angle_from_east( x-neigh.x, y-neigh.y) for neigh in self.atom1.neighbors]
-    if dx*dy > 0:
-      pass
-    
-    return [self.paper.create_line( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy, width=self.line_width, fill=self.line_color)]
+    x, y, x0, y0 = x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy
+    # shift according to the bonds arround
+    side = geometry.on_which_side_is_point( my_coords, (x,y))
+    for atom in (self.atom1,self.atom2):
+      second_atom = atom is self.atom1 and self.atom2 or self.atom1
+      neighs = [n for n in atom.neighbors if geometry.on_which_side_is_point( my_coords, n.get_xy())==side and n is not second_atom]
+      for n in neighs:
+        dist2 = _k*geometry.point_distance(*my_coords)*geometry.on_which_side_is_point((atom.x, atom.y, n.x, n.y), (second_atom.x, second_atom.y))
+        xn1, yn1, xn2, yn2 = geometry.find_parallel( atom.x, atom.y, n.x, n.y, dist2)
+        xp,yp,parallel,online = geometry.intersection_of_two_lines( x,y,x0,y0,xn1,yn1,xn2,yn2)
+        if not parallel:
+          if not geometry.is_point_beween_points_of_line( (x,y,x0,y0),(xp,yp)):
+            # only shorten the line - do not elongate it
+            continue
+          if geometry.point_distance( atom.x,atom.y,x,y) < geometry.point_distance( atom.x,atom.y,x0,y0):
+            x,y = xp, yp
+          else:
+            x0,y0 = xp, yp
+        else:
+          # parallel
+          pass
+    return [self.paper.create_line( x, y, x0, y0, width=self.line_width, fill=self.line_color)]
 
 
   # wedge bonds
