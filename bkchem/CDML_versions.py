@@ -173,19 +173,25 @@ class CDML_transformer_13_14:
 
 class CDML_transformer_14_15:
 
-  """CDML version 0.15 adds line_width attribute to the electronpair mark"""
+  """CDML version 0.15 adds line_width attribute to the electronpair mark,
+  also multiplicity is now stored explicitly"""
 
   output_version = '0.15'
   input_version = '0.14'
 
   def tranform_dom( self, dom):
     for a in dom.getElementsByTagName( 'atom'):
+      multiplicity = 1
       for m in a.getElementsByTagName( 'mark'):
         if m.getAttribute( "type") == "electronpair":
           if not m.getAttribute( "line_width"):
             size = float( m.getAttribute( "size"))
             m.setAttribute( "line_width", str( round( round( size /2)/2)))
-      
+        if m.getAttribute( "type") == "radical":
+          multiplicity += 1
+        elif m.getAttribute( "type") == "biradical":
+          multiplicity += 2
+      a.setAttribute( "multiplicity", multiplicity)
 
 
 

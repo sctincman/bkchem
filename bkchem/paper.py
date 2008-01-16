@@ -598,11 +598,7 @@ class chem_paper( Canvas, object):
       if not tkMessageBox.askokcancel( _('Proceed'),
 				       _('''This CDML document does not seem to have supported version.
 				       \n Do you want to proceed reading this document?'''),
-				
-
-
-
-       default = 'ok',
+                                       default = 'ok',
 				       parent=self):
         return None
     # paper properties

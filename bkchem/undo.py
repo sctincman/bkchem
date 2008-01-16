@@ -233,6 +233,7 @@ class state_record:
     not changed values are not touched)."""
     # we need to know about deleted bonds before we try to redraw them (when updating atom)
     deleted = misc.difference( self.objects, previous.objects)
+    added = misc.difference( previous.objects, self.objects)
     to_redraw = Set()
     ## CHANGED OBJECTS
     i = 0
@@ -267,16 +268,16 @@ class state_record:
         to_redraw.add( o)
         # some hacks needed to ensure complete redraw
         if o.object_type == 'atom':
-          neigh_edges = Set( [b for b in o.neighbor_edges if b not in deleted])
+          neigh_edges = Set( [b for b in o.neighbor_edges if b not in deleted and b not in added])
           to_redraw |= neigh_edges
           # neighboring edges of the atoms edges - needed because of new bond drawing code
           # that takes neighboring edges into account
           neigh_edges2 = Set()
           for e in neigh_edges:
-            neigh_edges2 |= Set( [e for e in e.get_neighbor_edges() if e not in deleted])
+            neigh_edges2 |= Set( [e2 for e2 in e.get_neighbor_edges() if e2 not in added])
           to_redraw |= neigh_edges2
         elif o.object_type == 'bond':
-          to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
+          to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted and not a in added])
         elif o.object_type == 'point':
           to_redraw.add( o)
           to_redraw.add( o.parent)
@@ -302,7 +303,7 @@ class state_record:
         to_redraw.add( o.parent)
 
     ## ADDED OBJECTS
-    added = misc.difference( previous.objects, self.objects)
+    # added are known from the top of this def
     for o in added:
       if o.object_type != 'molecule' and hasattr( o, "delete"):
         o.delete()

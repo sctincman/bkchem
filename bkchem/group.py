@@ -180,8 +180,10 @@ class group( drawable_chem_vertex):
       self.group_graph = lf.molecule
       if lf.first_atom:
         self.connecting_atom = lf.first_atom
-      if lf.last_atom:
+      elif lf.last_atom:
         self.connecting_atom = lf.last_atom
+      else:
+        self.connecting_atom = lf.molecule.vertices[0]
       self.symbol = name
       self.group_type = "implicit"
       self.group_graph.paper = self.paper
@@ -353,6 +355,7 @@ class group( drawable_chem_vertex):
       for v in self.group_graph.vertices:
         v.x, v.y = None, None
         v.show = v.symbol != 'C'
+      assert self.connecting_atom != None
       replacement = self.connecting_atom
       replacement.x = self.x
       replacement.y = self.y
