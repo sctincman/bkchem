@@ -637,14 +637,19 @@ class chem_paper( Canvas, object):
         if not o:
           continue
         if o.object_type == 'molecule':
-          if float( original_version) < 0.12:
-            # we need to know if the bond is positioned according to the rules or the other way
-            # it is however very expensive for large molecules with many double bonds and therefore
-            # it was in version '0.12' of CDML moved to the saved package and does not have to be
-            # checked on start anymore
-            [b.post_read_analysis() for b in o.bonds]
+          if not o.is_connected():
+            mols = o.get_disconnected_subgraphs()
+          else:
+            mols = [o]
+          for mol in mols:
+            if float( original_version) < 0.12:
+              # we need to know if the bond is positioned according to the rules or the other way
+              # it is however very expensive for large molecules with many double bonds and therefore
+              # it was in version '0.12' of CDML moved to the saved package and does not have to be
+              # checked on start anymore
+              [b.post_read_analysis() for b in mol.bonds]
           if draw:
-            o.draw( automatic="none")
+            [mol.draw( automatic="none") for mol in mols]
         else:
           if draw:
             o.draw()
