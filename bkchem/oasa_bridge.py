@@ -133,6 +133,7 @@ def oasa_atom_to_bkchem_atom( a, paper, m):
   at.show_number = False
   at.isotope = a.isotope
   at.valency = a.valency
+  at.multiplicity = at.multiplicity
   return at
 
 def oasa_bond_to_bkchem_bond( b, paper):
@@ -169,6 +170,9 @@ def bkchem_atom_to_oasa_atom( a):
   ret.y = y
   ret.z = z
   ret.charge = a.charge
+  ret.multiplicity = a.multiplicity
+  ret.valency = a.valency
+  ret.isotope = a.isotope
   return ret
 
 def bkchem_bond_to_oasa_bond( b):

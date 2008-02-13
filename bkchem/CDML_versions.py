@@ -191,7 +191,8 @@ class CDML_transformer_14_15:
           multiplicity += 1
         elif m.getAttribute( "type") == "biradical":
           multiplicity += 2
-      a.setAttribute( "multiplicity", multiplicity)
+      if not a.hasAttribute("multiplicity"):
+        a.setAttribute( "multiplicity", multiplicity)
 
 
 
