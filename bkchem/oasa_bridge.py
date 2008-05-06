@@ -41,8 +41,10 @@ def read_smiles( text, paper):
 
 def mol_to_smiles( mol):
   m = bkchem_mol_to_oasa_mol( mol)
-  m.remove_all_hydrogens()
-  return oasa.smiles.mol_to_text( m)
+  m.remove_unimportant_hydrogens()
+  c = oasa.smiles.converter()
+  text = c.mols_to_text([m])
+  return text
 
 
 def read_inchi( text, paper):

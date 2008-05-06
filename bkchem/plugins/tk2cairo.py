@@ -229,8 +229,8 @@ class tk2cairo:
     h = y2 - y1
     self.context.save()
     self.context.translate( x1+w/2, y1+h/2)
-    self.context.scale( w/2.0, h/2.0);
-    self.context.arc( 0, 0, 1, 0, 2 * math.pi);
+    self.context.scale( w/2.0, h/2.0)
+    self.context.arc( 0, 0, 1, 0, 2 * math.pi)
     self.context.restore()
 
     self.set_cairo_color( fill)

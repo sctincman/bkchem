@@ -156,15 +156,15 @@ def check_validity( mols):
 def ask_inchi_program_path():
   path = Store.pm.get_preference( "inchi_program_path") or ""
   dial = widgets.FileSelectionWithText( Store.app,
-                                        title=_("The INChI program path"),
-                                        prompt =_("Select the INChI program executable: "),
+                                        title=_("The InChI program path"),
+                                        prompt =_("Select the InChI program executable: "),
                                         value = path,
                                         filetypes=((_("Executable files"), ("*",)),)
                                         )
   a = dial.activate()
   if a == _("OK"):
     Store.pm.add_preference( "inchi_program_path", dial.entry.get())
-    Store.app.menu.component( _("Chemistry")+"-menu").entryconfigure( _("Generate INChI"), state="normal")
+    Store.app.menu.component( _("Chemistry")+"-menu").entryconfigure( _("Generate InChI"), state="normal")
     return 1
   return 0
 

@@ -249,10 +249,10 @@ class BKchem( Tk):
       ( _("Chemistry"), 'command', _('Compute oxidation number'), None, _("Compute and display the oxidation number of selected atoms"), lambda : interactors.compute_oxidation_number( self.paper), 'selected_atoms'),      
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Read SMILES'), None, _("Read a SMILES string and convert it to structure"), self.read_smiles, None),
-      ( _("Chemistry"), 'command', _('Read INChI'), None, _("Read an INChI string and convert it to structure"), self.read_inchi, None),
+      ( _("Chemistry"), 'command', _('Read InChI'), None, _("Read an InChI string and convert it to structure"), self.read_inchi, None),
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Generate SMILES'), None, _("Generate SMILES for the selected structure"), self.gen_smiles, 'selected_mols'),
-      ( _("Chemistry"), 'command', _('Generate INChI'), None, _("Generate an INChI for the selected structure by calling the INChI program"), self.gen_inchi,
+      ( _("Chemistry"), 'command', _('Generate InChI'), None, _("Generate an InChI for the selected structure by calling the InChI program"), self.gen_inchi,
         lambda : Store.pm.has_preference("inchi_program_path") and self.paper.selected_mols),
       ( _("Chemistry"), 'separator'),
       #( _("Chemistry"), 'command', _('Set display form'), "(C-o C-d)",
@@ -271,7 +271,7 @@ class BKchem( Tk):
       ( _('Options'), 'menu',    _("Settings that affect how BKchem works"), 'left'),
       ( _("Options"), 'command', _('Standard'), None, _("Set the default drawing style here"), self.standard_values, None),
       ( _("Options"), 'command', _('Language'), None, _("Set the language used after next restart"), lambda : interactors.select_language( self.paper), None),
-      ( _("Options"), 'command', _('INChI program path'), None, _("To use INChI in BKchem you must first give it a path to the INChI program here"),
+      ( _("Options"), 'command', _('InChI program path'), None, _("To use InChI in BKchem you must first give it a path to the InChI program here"),
         interactors.ask_inchi_program_path, None),
       ( _("Options"), 'separator'),      
       ( _("Options"), 'command', _('Preferences'), None, _("Preferences"), self.ask_preferences, None),
@@ -1209,15 +1209,15 @@ Enter SMILES:""")
   def read_inchi( self, inchi=None):
     if not oasa_bridge.oasa_available:
       return 
-    lt = _("""Before you use his tool, be warned that not all features of INChI are currently supported.
+    lt = _("""Before you use his tool, be warned that not all features of InChI are currently supported.
 There is no support for stereo-related information, isotopes and a few more things.
-The INChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
+The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
 
-Enter INChI:""")
+Enter InChI:""")
     text = None
     if not inchi:
       dial = Pmw.PromptDialog( self,
-                               title='INChI',
+                               title='InChI',
                                label_text=lt,
                                entryfield_labelpos = 'n',
                                buttons=(_('OK'),_('Cancel')))
@@ -1236,21 +1236,21 @@ Enter INChI:""")
           mol = oasa_bridge.read_inchi( text, self.paper)
         except oasa.oasa_exceptions.oasa_not_implemented_error, e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
                                     _("Some feature of the submitted InChI is not supported.\n\nYou have most probaly submitted a multicomponent structure (having a . in the sumary layer"))
             return
           else:
             raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
         except oasa.oasa_exceptions.oasa_inchi_error, e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
                                     _("There was an error reading the submitted InChI.\n\nIf you are sure it is a valid InChI, please send me a bug report."))
             return
           else:
             raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
         except oasa.oasa_exceptions.oasa_unsupported_inchi_version_error, e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
                                     _("The submitted InChI has unsupported version '%s'.\n\nYou migth try resubmitting with the version string (the first part of InChI) changed to '1'.") % e.version)
             return
           else:
@@ -1258,7 +1258,7 @@ Enter INChI:""")
         except:
           
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'INChI',
+            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
                                     _("The reading of InChI failed with following error:\n\n'%s'\n\nIf you are sure you have submitted a valid InChI, please send me a bug report.") % sys.exc_value)
             return
           else:
@@ -1397,13 +1397,13 @@ Enter INChI:""")
             sms = sms + warning
 	    sms.append(inchi)
     except oasa.oasa_exceptions.oasa_inchi_error, e:
-      sms = ["InChI generation failed,","make sure the path to the InChI program is correct in 'Options/INChI program path'", "", str( e)]
+      sms = [_("InChI generation failed,"),_("make sure the path to the InChI program is correct in 'Options/InChI program path'"), "", str( e)]
     except:
-      sms = ["Unknown error occured during INChI generation, sorry", "Please, try to make sure the path to the InChI program is correct in 'Options/INChI program path'"]
+      sms = [_("Unknown error occured during InChI generation, sorry."), _("Please, try to make sure the path to the InChI program is correct in 'Options/InChI program path'")]
     self.paper.swap_sides_of_selected("horizontal")
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,
-                           title='Generated INChIs',
+                           title='Generated InChIs',
                            buttons=(_('OK'),))
     dial.insert( 'end', text)
     dial.activate()

@@ -1,3 +1,15 @@
+RELEASE 0.12.1
+----------------------------------------
+ * bugfixes - entering H2O symbol should not longer result in OH2 to appear
+   	    - disconnected molecules are handled properly when importing CML
+	    - group expansion for single node molecules fixed
+	    - molfile import crash fixed
+
+ * enhancements - double bonds are shortened when the angle to the neighboring
+   		  bonds is small (cyclopropene, etc.)
+		- E/Z stereochemistry handled properly when reading SMILES
+		- explicit hydrogens support and more added to SMILES reading
+
 RELEASE 0.12.0
 ----------------------------------------
  * bugfixes - slow undo fixed (especially in case of larger drawings)
@@ -8,7 +20,7 @@ RELEASE 0.12.0
  * enhancements - more types of groups are supported (such as -(CH2)7COOH)
    		- added wedge/hatch width to context menu
 
- * changes - bond is always centered if its between two visible atoms that are not part of a ring
+ * changes - double bond is always centered if its between two visible atoms that are not part of a ring
 
 
 
