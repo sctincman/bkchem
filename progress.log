@@ -10,6 +10,7 @@ RELEASE 0.12.1
 		- E/Z stereochemistry handled properly when reading SMILES
 		- explicit hydrogens support and more added to SMILES reading
 
+
 RELEASE 0.12.0
 ----------------------------------------
  * bugfixes - slow undo fixed (especially in case of larger drawings)
