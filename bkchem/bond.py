@@ -474,7 +474,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if not self.atom1.show and self.atom1.occupied_valency > 1:
       draw_start = 1
     draw_end = 1     # is added to index not boolean
-    if not self.atom1.show and self.atom2.occupied_valency > 1:
+    if not self.atom2.show and self.atom2.occupied_valency > 1:
       draw_end = 0
 
     # djust the step length

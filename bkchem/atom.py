@@ -188,6 +188,8 @@ class atom( drawable_chem_vertex, oasa.atom):
   # xml_ftext (override drawable_chem_vertex.xml_ftext)
   def _get_xml_ftext( self):
     ret = self.symbol
+    if not self.pos:
+      self.decide_pos()
     # hydrogens
     if self.show_hydrogens:
       v = self.free_valency
@@ -275,11 +277,14 @@ class atom( drawable_chem_vertex, oasa.atom):
         if form['H'] in [i-valency+self.charge for i in PT.periodic_table[a[0]]['valency']]:
           self.symbol = a[0]
           self.show_hydrogens = 1
-          # decide hydrogen placement based on how the name was written
-          if name.lower().find( "h") < name.lower().find( self.symbol.lower()):
-            self.pos = "center-last"
+          # decide hydrogen placement based on how the name was written (only if it has no neighbor)
+          if occupied_valency:
+            self.pos = None # decide later
           else:
-            self.pos = "center-first"
+            if name.lower().find( "h") < name.lower().find( self.symbol.lower()):
+              self.pos = "center-last"
+            else:
+              self.pos = "center-first"
           #self.show = 1
           return True
     return False

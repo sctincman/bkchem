@@ -711,6 +711,8 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
 
   def is_part_of_linear_fragment( self):
     """returns boolean, useful to trigger special drawing of linear forms"""
+    if not self.molecule:
+      return False
     if [f for f in self.molecule.get_fragments_with_vertex( self) if f.type == "linear_form"]:
       return True
     else:
