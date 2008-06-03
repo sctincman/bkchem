@@ -1776,7 +1776,7 @@ class chem_paper( Canvas, object):
         for a in m.atoms:
           a.read_standard_values( self.standard, old_standard=old_standard)
           to_redraw.append( a)
-      else:
+      elif m.object_type != "point":
         m.read_standard_values( self.standard, old_standard=old_standard)
         to_redraw.append( m)
     return to_redraw
