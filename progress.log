@@ -1,3 +1,11 @@
+RELEASE 0.12.2
+----------------------------------------
+ * bugfixes - positioning of hydrogen on atoms should again respect
+   	      orientation of the symbol. That is -OH and HO-, not -OH and OH-
+
+ * acknowledgments - Jakub Szypulka for a polished version of the icon
+
+
 RELEASE 0.12.1
 ----------------------------------------
  * bugfixes - entering H2O symbol should not longer result in OH2 to appear

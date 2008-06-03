@@ -61,7 +61,7 @@ set = setup(
   packages=[ 'bkchem', 'bkchem/plugins', 'bkchem/oasa', 'bkchem/oasa/oasa', 'bkchem/oasa/oasa/graph', 'bkchem/plugins/piddle'],
 
   data_files=[ ('share/bkchem/templates', glob.glob( 'templates/*.cdml')+glob.glob('templates/*.xml')),
-               ('share/bkchem/images', ['images/logo.ppm','images/icon.ico','images/bkchem.png']),
+               ('share/bkchem/images', ['images/logo.ppm','images/icon.ico']+glob.glob('images/bkchem*.png')),
                ('share/bkchem/pixmaps', glob.glob( 'pixmaps/*.gif')),
                ('share/bkchem/dtd', glob.glob( 'dtd/*.dtd') + glob.glob( 'dtd/*.xsd')),
                ('share/bkchem/plugins', glob.glob( 'plugins/*.py')+glob.glob( 'plugins/*.xml')),
