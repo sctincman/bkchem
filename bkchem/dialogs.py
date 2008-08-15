@@ -532,8 +532,10 @@ class file_properties_dialog:
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
+    paper_types = data.paper_types.keys()
+    paper_types.sort()
     self.paper_type_chooser = Pmw.OptionMenu( paper_frame,
-                                              items=data.paper_types.keys(), #+[_('Custom')],
+                                              items=paper_types, #+[_('Custom')],
                                               initialitem = t,
                                               labelpos = 'w',
                                               label_text = _('Paper size')+':',
@@ -707,8 +709,10 @@ class standard_values_dialog:
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
+    paper_types = data.paper_types.keys()
+    paper_types.sort()
     self.paper_type_chooser = Pmw.OptionMenu( paper_group,
-                                              items=data.paper_types.keys(), #+[_('Custom')],
+                                              items=paper_types, #+[_('Custom')],
                                               initialitem = t,
                                               labelpos = 'w',
                                               label_text = _('Paper size')+':',

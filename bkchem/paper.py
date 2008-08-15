@@ -22,7 +22,7 @@
 
 from __future__ import division
 
-from Tkinter import Canvas
+from Tkinter import Canvas, ALL
 import tkFont, tkMessageBox
 import classes
 import arrow
@@ -1412,7 +1412,7 @@ class chem_paper( Canvas, object):
     if not self.changes_made:
       self.changes_made = 1
     self.um.start_new_record( name=name)
-
+    self.after_undo_record()
 
 
   def before_undo_record( self):
@@ -1420,6 +1420,16 @@ class chem_paper( Canvas, object):
     undo is recorded should be done"""
     checks.check_linear_fragments( self)
 
+  def after_undo_record( self):
+    """similar to before_undo_record but is run after the undo was recorded"""
+    # check the bbox to see if we need to update scroll region
+    if not hasattr( self, "_old_bbox"):
+      self._old_bbox = self.bbox(ALL)
+      self.update_scrollregion()
+    else:
+      _bbox = self.bbox(ALL)
+      if _bbox != self._old_bbox:
+        self.update_scrollregion()
 
 
   def display_weight_of_selected( self):
@@ -1664,7 +1674,7 @@ class chem_paper( Canvas, object):
     self._paper_properties['crop_margin'] = self.standard.paper_crop_margin
     self._paper_properties['use_real_minus'] = Store.pm.get_preference( "use_real_minus") or 0
     self._paper_properties['replace_minus'] = Store.pm.get_preference( "replace_minus") or 0
-
+    self.update_scrollregion()
 
     
 
@@ -1717,8 +1727,12 @@ class chem_paper( Canvas, object):
       self._paper_properties['replace_minus'] = replace_minus
 
     self.create_background()
+    self.update_scrollregion()
 
 
+  def update_scrollregion( self):
+    x1,y1,x2,y2 = self.bbox(ALL)
+    self.config( scrollregion=(x1-100,y1-100,x2+100,y2+100))
 
 
 
