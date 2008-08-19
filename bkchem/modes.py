@@ -1280,6 +1280,19 @@ class rotate_mode( edit_mode):
       x1, y1, x2, y2 = Store.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
       self._centerx = x1+(x2-x1)/2.0
       self._centery = y1+(y2-y1)/2.0
+    elif self.focused and self.get_submode(0) == '2D' and (isinstance( self.focused, arrow) or (hasattr( self.focused, 'arrow') and isinstance( self.focused.arrow, arrow))):
+      if isinstance( self.focused, arrow):
+        self._rotated_mol = self.focused
+      else:
+        self._rotated_mol = self.focused.arrow
+      x1, y1, x2, y2 = self._rotated_mol.bbox()
+      self._centerx = x1+(x2-x1)/2.0
+      self._centery = y1+(y2-y1)/2.0
+    else:
+      if self.get_submode(0) == '3D':
+        tkMessageBox.showerror( _("You can only rotate molecules in 3D!"), _("Sorry but you can only rotate molecules in 3D."))
+      else:
+        tkMessageBox.showerror( _("You can only rotate molecules and arrows in 2D!"), _("Sorry but you can only rotate molecules and arrows in 2D."))
     if self.focused:
       self.focused.unfocus()
       self.focused = None

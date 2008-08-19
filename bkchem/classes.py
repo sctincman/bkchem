@@ -250,6 +250,9 @@ class point( point_drawable, interactive, child):
     self.type = type
     self.redraw()
 
+  def transform( self, tr):
+    x, y = tr.transform_xy( self.x, self.y)
+    self.move_to( x, y)
 
   # parent
   def _get_parent( self):

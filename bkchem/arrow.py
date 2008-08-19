@@ -255,6 +255,12 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     [o.lift() for o in self.points]
 
 
+  def transform( self, tr):
+    """applies given transformation to its children"""
+    for p in self.points:
+      p.transform( tr)
+    self.redraw()
+
   # -- private drawing methods for different arrow types --
   
   def _draw_normal_old( self):
