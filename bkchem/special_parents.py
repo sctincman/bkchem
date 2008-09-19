@@ -288,7 +288,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
   all the methods are tuned for always shown texts; atoms need to override something"""
 
   # these values will be automaticaly read from paper.standard on __init__
-  meta__used_standard_values = ['line_color','area_color','font_size','font_family']
+  meta__used_standard_values = ['line_color','area_color','font_size','font_family','show_hydrogens']
   # undo meta infos
   meta__undo_fake = ('xml_ftext',)
   meta__undo_simple = ()

@@ -61,9 +61,7 @@ class atom( drawable_chem_vertex, oasa.atom):
       oasa.atom.__init__( self)
 
     # chemistry attrs
-    self.show_hydrogens = 0
     self.show = 0
-
     self.multiplicity = 1
 
     if package:
@@ -112,8 +110,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self._show_hydrogens = data.on_off.index( show_hydrogens)
     else:
       self._show_hydrogens = int( show_hydrogens)
-    if self._show_hydrogens:
-      self.show = 1  # hydrogens imply showing the symbol
     self.dirty = 1
     self._reposition_on_redraw = 1
 
@@ -260,7 +256,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     if elch:
       # name is element symbol + charge
       self.symbol = elch[0]
-      self.show_hydrogens = 0
+      #self.show_hydrogens = 0
       self.charge += elch[1]
       return True
     else:

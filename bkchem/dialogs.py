@@ -675,6 +675,13 @@ class standard_values_dialog:
     self.area_color = widgets.ColorButtonWithTransparencyChecker( color_group.interior(), color=self.standard.area_color, text=_("Area color"))
     self.area_color.pack( side='right', padx=10, pady=5)
 
+    # ATOM
+    atom_group = self.pages.add( _('Atom'))
+    self.show_hydrogens = Tkinter.IntVar()
+    self.show_hydrogens.set( int( self.standard.show_hydrogens))
+    sh = Tkinter.Checkbutton( atom_group, text=_('Show hydrogens on visible atoms'), variable=self.show_hydrogens)
+    sh.pack( anchor='w', padx=10, pady=10)
+
     # BOND
     bond_group = self.pages.add( _("Bond")) #Pmw.Group( self.body, tag_text=_('Bond'))
     # bond width
@@ -810,6 +817,7 @@ class standard_values_dialog:
     st.area_color = self.area_color.color
     st.font_family = self.font_family.getcurselection() and self.font_family.getcurselection()[0] or ''
     st.font_size = int( self.font_size.get())
+    st.show_hydrogens = int( self.show_hydrogens.get())
     # paper properties
     # type
     type = self.paper_type_chooser.getvalue()

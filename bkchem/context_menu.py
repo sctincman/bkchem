@@ -247,7 +247,7 @@ def mark_template_bond_filter( objs):
 # CONFIGURABLE VALUES
 
 
-config_values = { 'show':             ( _("Show"),               (('yes',_("yes")),
+config_values = { 'show':             ( _("Show symbol"),        (('yes',_("yes")),
                                                                   ('no', _("no")))),
                   'show_hydrogens':   ( _("Hydrogens"),          (('on',_("on")),
                                                                   ('off', _("off")))),
@@ -313,6 +313,8 @@ def set_show( o, value):
 
 def set_show_hydrogens( o, value):
   o.show_hydrogens = value
+  if o.show_hydrogens:
+    o.show = 1  # hydrogens imply showing the symbol
   o.redraw()
   [b.redraw() for b in o.paper.bonds_to_update( exclude_selected_bonds=False)]
   
