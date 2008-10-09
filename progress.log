@@ -1,3 +1,16 @@
+RELEASE 0.12.3
+----------------------------------------
+ * bugfixes - a crash that resulted from changing standard values and applying them to selected arrows was fixed
+	    - scroll region updates automatically to always contain all of the drawing -
+	      no part of the drawing should be unreachable after resizing and similar operations
+
+ * enhancements - many more paper sizes were added
+   		- a simple minor mode (available under the last mode icon) for drawing of wavy lines was added
+		- arrows are rotatable in 2D
+		- trying to rotate an object that does not support it pops up an error message
+		- it is now possible to set the default value for "show hydrogens" in the "standard dialog".
+
+
 RELEASE 0.12.2
 ----------------------------------------
  * bugfixes - positioning of hydrogen on atoms should again respect
