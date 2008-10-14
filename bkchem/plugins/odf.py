@@ -619,8 +619,8 @@ note that this is not an ODF (Open Document Format) export."""
     w = self.paper.get_paper_property( 'size_x')/10.0
     h = self.paper.get_paper_property( 'size_y')/10.0
     s = dom_ext.elementUnder( root, 'office:styles')
-    as = dom_ext.elementUnder( root, 'office:automatic-styles')
-    pm = dom_ext.elementUnder( as, 'style:page-layout', (('style:name','PM1'),))
+    astyles = dom_ext.elementUnder( root, 'office:automatic-styles')
+    pm = dom_ext.elementUnder( astyles, 'style:page-layout', (('style:name','PM1'),))
     dom_ext.elementUnder( pm, 'style:page-layout-properties', (('fo:page-height','%fcm' % h),
                                                                ('fo:page-width','%fcm' % w),
                                                                ('style:print-orientation','portrait'),
@@ -628,8 +628,8 @@ note that this is not an ODF (Open Document Format) export."""
                                                                ('fo:margin-left','0.5cm'),
                                                                ('fo:margin-top','0.5cm'),
                                                                ('fo:margin-right','0.5cm')))
-    dp = dom_ext.elementUnder( as, 'style:style', (('style:family', 'drawing-page'),
-                                                   ('style:name', 'dp1')))
+    dp = dom_ext.elementUnder( astyles, 'style:style', (('style:family', 'drawing-page'),
+                                                        ('style:name', 'dp1')))
     dom_ext.elementUnder( dp, 'style:drawing-page-properties', (('draw:backgroud-size','border'),
                                                                 ('draw:fill', 'none')))
 

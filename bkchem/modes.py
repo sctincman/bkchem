@@ -595,8 +595,8 @@ class edit_mode( basic_mode):
     bs = misc.filter_unique( b.atom1.neighbor_edges + b.atom2.neighbor_edges)
     [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     # all atoms to update
-    as = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
-    [a.reposition_marks() for a in as if isinstance( a, atom)]
+    atms = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
+    [a.reposition_marks() for a in atms if isinstance( a, atom)]
 
 
   def _end_of_empty_drag( self, x1, y1, x2, y2):

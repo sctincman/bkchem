@@ -265,12 +265,12 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
   def _get_attrs( self, query):
     attrs = query.split( "&")
-    as = {}
+    _as = {}
     for a in attrs:
       if a:
         k, v = a.split("=")
-        as[ k] = v
-    return as
+        _as[ k] = v
+    return _as
 
 
   def _get_all_smiles( self):

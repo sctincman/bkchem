@@ -252,8 +252,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       deleted += [self.delete_bond( o) for o in (self.bonds - bonds_in_connect)]
       # delete also orphan atoms
       if delete_single_atom:
-        as = [o for o in self.atoms if len(o.neighbors) == 0]
-        deleted += [self.delete_atom( o) for o in as]
+        atms = [o for o in self.atoms if len(o.neighbors) == 0]
+        deleted += [self.delete_atom( o) for o in atms]
       # recalculation of second line of double bond position, optimized to do it only when realy
       # necessary, because its pretty expensive
       # check_integrity should be called before redrawing, because it moves atoms and bonds

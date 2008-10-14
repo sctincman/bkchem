@@ -454,9 +454,9 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     if self.is_part_of_linear_fragment():
       self.pos = 'center-first'
       return 
-    as = self.get_neighbors()
+    atms = self.get_neighbors()
     p = 0
-    for a in as:
+    for a in atms:
       if a.x < self.x:
         p -= 1
       elif a.x > self.x:
