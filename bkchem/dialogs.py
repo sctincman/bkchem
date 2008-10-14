@@ -454,12 +454,12 @@ class config_dialog:
 
         # COMMON PROPERTIES
         # LINE COLOR
-        if hasattr( o, 'line_color'):
+        if hasattr( o, 'line_color') and self.line_color.color:
           if self.line_color.color != o.line_color:
             o.line_color = self.line_color.color
             change = 1
         # AREA COLOR
-        if hasattr( o, 'area_color'):
+        if hasattr( o, 'area_color') and self.area_color.color:
           if self.area_color.color != o.area_color:
             o.area_color = self.area_color.color
             change = 1
@@ -706,7 +706,7 @@ class standard_values_dialog:
     self.font_size.pack( anchor = 'nw')
     # font family
     self.font_family = widgets.FontFamilyChooser( font_group, self.standard.font_family)
-    self.font_family.pack( anchor="nw", side = 'bottom')
+    self.font_family.pack( anchor="nw", side='bottom')
 
     # PAPER
     # paper type
