@@ -61,7 +61,6 @@ from atom import atom
 from textatom import textatom
 import oasa
 import geometry
-from sets import Set
 from id_manager import id_manager
 import interactors
 import exceptions
@@ -554,7 +553,7 @@ class chem_paper( Canvas, object):
 
 
   def bonds_to_update( self, exclude_selected_bonds=True):
-    a = reduce( operator.or_, map( Set, [v.get_neighbor_edges() for v in self.selected if v.object_type == "atom"]), Set())
+    a = reduce( operator.or_, map( set, [v.get_neighbor_edges() for v in self.selected if v.object_type == "atom"]), set())
     # if bond is also selected then it moves with and should not be updated
     if exclude_selected_bonds:
       return [b for b in a if b not in self.selected]
@@ -1961,8 +1960,8 @@ class chem_paper( Canvas, object):
     mols, u = self.selected_to_unique_top_levels()
     for mol in mols:
       if isinstance( mol, molecule):
-        notselected = Set( mol.atoms) - Set( self.selected)
-        selected = Set( mol.atoms) & Set( self.selected)
+        notselected = set( mol.atoms) - set( self.selected)
+        selected = set( mol.atoms) & set( self.selected)
         # we must check if the selection defines one connected subgraph of the molecule
         # otherwise the coordinate generation will not work
         if len( selected) == 1:

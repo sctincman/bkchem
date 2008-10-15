@@ -18,7 +18,7 @@
 #--------------------------------------------------------------------------
 
 
-from sets import Set
+
 import dom_extensions as dom_ext
 import xml.sax.saxutils
 from singleton_store import Store
@@ -41,8 +41,8 @@ class fragment( simple_parent):
   def __init__( self, id="", name="", type="explicit", strict=True):
     self.id = id
     self.name = name
-    self.edges = Set()
-    self.vertices = Set()
+    self.edges = set()
+    self.vertices = set()
     self.strict = strict # strict fragment must be a continuos subgraph, otherwise it is just a mixture of vertices and edges
     self.type = type # type is one of "explicit", "implicit", "linear_form" or custom string
     self.properties = {}  # this is the place for information about an particular fragment
@@ -82,9 +82,9 @@ class fragment( simple_parent):
 
 
   def get_all_vertices( self):
-    vs = Set( self.vertices)
+    vs = set( self.vertices)
     #for e in self.edges:
-    #  vs |= Set( e.vertices)
+    #  vs |= set( e.vertices)
     return vs
 
   # property for easier manipulation

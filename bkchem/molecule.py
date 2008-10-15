@@ -46,7 +46,7 @@ import bkchem_exceptions
 
 
 
-from sets import Set
+
 
 import oasa
 
@@ -84,7 +84,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     self.t_bond_second = None
     self.t_atom = None
     self.display_form = ''  # this is a (html like) text that defines how to present the molecule in linear form
-    self.fragments = Set()
+    self.fragments = set()
     if package:
       self.read_package( package)
 
@@ -244,7 +244,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         self.delete_bond( o)
     if self.atoms:
       # delete bonds that are not in connect anymore
-      bonds_in_connect = Set()
+      bonds_in_connect = set()
       for a in self.atoms:
         for (e,v) in a.get_neighbor_edge_pairs():
           if v in self.atoms:
@@ -428,7 +428,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   def handle_overlap( self):
     "deletes one of overlaping atoms and updates the bonds"
     to_delete = []
-    bonds_to_check = Set() # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
+    bonds_to_check = set() # this can speedup the following for b in bonds_to_check by factor of 10 for big mols
     for i in range( len( self.atoms)):
       for j in range( i+1, len( self.atoms)):
         a = self.atoms[i]
@@ -445,7 +445,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     [self.delete_atom( o) for o in deleted]
     # after all is done, find and delete orphan bonds and update the others
     to_redraw = []
-    bonds = Set( self.bonds)
+    bonds = set( self.bonds)
     for b in bonds_to_check:
       if not b in self.bonds:
         #print b, "not in self.bonds"
@@ -642,8 +642,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   def create_fragment( self, name, edges, vertices, type="explicit", strict=False):
     if (strict and self.defines_connected_subgraph_e( edges)) or not strict:
       nf = fragment( Store.id_manager.generate_id( "frag"), name=name, type=type)
-      nf.edges = Set( edges)
-      nf.vertices = Set( vertices)
+      nf.edges = set( edges)
+      nf.vertices = set( vertices)
       self.fragments.add( nf)
       return nf
     else:
@@ -653,7 +653,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   def check_fragments( self):
     """checks if all the fragments of this molecule are consistent and
     removes and returns the ones that are not"""
-    todel = Set()
+    todel = set()
     for f in self.fragments:
       if not f.is_consistent( self):
         todel.add( f)
@@ -676,7 +676,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
 
   def get_fragments_with_vertex( self, v):
-    fs = Set()
+    fs = set()
     for f in self.fragments:
       if v in f.vertices:
         fs.add( f)
@@ -684,7 +684,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
 
   def get_fragments_with_edge( self, e):
-    fs = Set()
+    fs = set()
     for f in self.fragments:
       if e in f.edges:
         fs.add( f)
@@ -697,10 +697,10 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     Consistent fragments are automatically redrawn"""
     import interactors
     if f.type == "linear_form":
-      if f.edges - self.edges or f.vertices - Set( self.vertices):
+      if f.edges - self.edges or f.vertices - set( self.vertices):
         # something from the fragment was deleted
         es = f.edges & self.edges
-        vs = f.vertices & Set( self.vertices)
+        vs = f.vertices & set( self.vertices)
         if es or vs:
           f.edges = es
           f.vertices = vs

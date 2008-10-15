@@ -47,7 +47,7 @@ import oasa
 import Pmw, Tkinter
 from oasa import periodic_table as PT
 import external_data
-from sets import Set
+
 import interactors
 import marks
 import types
@@ -2004,7 +2004,7 @@ class external_data_mode( basic_mode):
     self.submode = [0,0]
     self.pulldown_menu_submodes = [1]
     self.focused = None
-    self._items = Set()
+    self._items = set()
     self._entries = {}
     self._win = None
     self._active_object = None
@@ -2174,7 +2174,7 @@ class external_data_mode( basic_mode):
   def _delete_table( self, paper=None):
     pap = paper or Store.app.paper
     if self._win:
-      self._items = Set()
+      self._items = set()
       [e.cleanup( pap) for e in self._entries.values()]
       self._entries = {}
       self._frame = None

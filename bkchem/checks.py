@@ -22,7 +22,7 @@
 throughout bkchem - mainly from paper and modules"""
 
 
-from sets import Set
+
 import interactors
 from singleton_store import Store
 
@@ -33,7 +33,7 @@ def check_linear_fragments( paper):
   #mols = paper.um.get_changed_molecules()
   last_record = paper.um.get_last_record()
   for mol in paper.molecules:
-    to_del = Set()
+    to_del = set()
     fs = [f for f in mol.fragments if f.type == "linear_form"]
     if fs and (last_record == None or last_record.object_changed( mol)):
       for f in fs:

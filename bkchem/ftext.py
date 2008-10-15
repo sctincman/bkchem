@@ -26,7 +26,7 @@ import tkFont
 import dom_extensions
 import xml.sax
 import copy
-from sets import Set
+
 import tuning
 
 
@@ -63,12 +63,12 @@ class ftext:
     self._current_x = self.x
 
     self.items = chs
-    last_attrs = Set()
+    last_attrs = set()
     last_x = self._current_x
     
     for ch in self.items:
       scale = 1
-      if Set(('sub','sup')) & ch.attrs:
+      if set(('sub','sup')) & ch.attrs:
         if not (ch.text in "-" and self.big_charges):
           scale = 0.7
         else:
@@ -76,7 +76,7 @@ class ftext:
         # we ignore subscripts and superscript in bbox calculation
         ch.ignore_y = True
         ch.ignore_x = True
-        if Set(('sub','sup')) & last_attrs:
+        if set(('sub','sup')) & last_attrs:
           self._current_x = last_x
       last_x = self._current_x
       last_attrs = ch.attrs
@@ -182,7 +182,7 @@ class text_chunk:
 
   def __init__( self, text, attrs=None):
     self.text = text
-    self.attrs = attrs or Set()
+    self.attrs = attrs or set()
     self.item = None
     self.dx = 0
     self.ignore_y = False
@@ -209,7 +209,7 @@ class FtextHandler ( xml.sax.ContentHandler):
 
   def _closeCurrentText( self):
     if self._text:
-      self.chunks.append( text_chunk( self._text, attrs = Set( self._above)))
+      self.chunks.append( text_chunk( self._text, attrs = set( self._above)))
       self._text = ""
 
 

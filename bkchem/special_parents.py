@@ -20,7 +20,7 @@
 
 import misc
 import marks
-from sets import Set
+
 import geometry
 from math import sin, cos, sqrt, pi
 import types
@@ -48,7 +48,7 @@ class vertex_common( object):
 
 
   def __init__( self):
-    self.marks = Set()
+    self.marks = set()
     # numbering
     self._show_number = True
     self._number = None
@@ -190,7 +190,7 @@ class vertex_common( object):
 
 
   def reposition_marks( self):
-    ms = Set( [m for m in self.marks if m.auto])
+    ms = set( [m for m in self.marks if m.auto])
     self.marks -= ms
     for m in ms:
       x, y = self.find_place_for_mark( m.__class__.__name__)
@@ -619,7 +619,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     if self.ftext:
       self.ftext.delete()
     [m.delete() for m in self.marks]
-    self.marks = Set()
+    self.marks = set()
     return self
 
 

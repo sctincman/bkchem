@@ -28,7 +28,7 @@ exported in __all__."""
 import misc
 import copy
 from types import *  #should be safe
-from sets import Set
+
 import inspect
 
 __all__= ['undo_manager']
@@ -138,7 +138,7 @@ class undo_manager:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == Set:
+      if type( obj) == ListType or type( obj) == set:
         for i in obj:
           if not self.compare_records( i, state_rec1, state_rec2):
             return False
@@ -215,7 +215,7 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == Set:
+      if type( obj) == ListType or type( obj) == set:
         [self.record_object( i) for i in obj]
       elif type( obj) == DictType:
         [self.record_object( i) for i in obj.itervalues() if i]
@@ -234,7 +234,7 @@ class state_record:
     # we need to know about deleted bonds before we try to redraw them (when updating atom)
     deleted = misc.difference( self.objects, previous.objects)
     added = misc.difference( previous.objects, self.objects)
-    to_redraw = Set()
+    to_redraw = set()
     ## CHANGED OBJECTS
     i = 0
     for o in self.objects:
@@ -268,16 +268,16 @@ class state_record:
         to_redraw.add( o)
         # some hacks needed to ensure complete redraw
         if o.object_type == 'atom':
-          neigh_edges = Set( [b for b in o.neighbor_edges if b not in deleted and b not in added])
+          neigh_edges = set( [b for b in o.neighbor_edges if b not in deleted and b not in added])
           to_redraw |= neigh_edges
           # neighboring edges of the atoms edges - needed because of new bond drawing code
           # that takes neighboring edges into account
-          neigh_edges2 = Set()
+          neigh_edges2 = set()
           for e in neigh_edges:
-            neigh_edges2 |= Set( [e2 for e2 in e.get_neighbor_edges() if e2 not in added])
+            neigh_edges2 |= set( [e2 for e2 in e.get_neighbor_edges() if e2 not in added])
           to_redraw |= neigh_edges2
         elif o.object_type == 'bond':
-          to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted and not a in added])
+          to_redraw |= set( [a for a in o.get_atoms() if a.show and not a in deleted and not a in added])
         elif o.object_type == 'point':
           to_redraw.add( o)
           to_redraw.add( o.parent)
@@ -295,9 +295,9 @@ class state_record:
           o.draw()
       # hacks to ensure complete redraw
       if o.object_type == 'atom':
-        to_redraw |= Set( [b for b in o.neighbor_edges if b not in deleted])
+        to_redraw |= set( [b for b in o.neighbor_edges if b not in deleted])
       elif o.object_type == 'bond':
-        to_redraw |= Set( [a for a in o.get_atoms() if a.show and not a in deleted])
+        to_redraw |= set( [a for a in o.get_atoms() if a.show and not a in deleted])
       elif o.object_type == 'point':
         to_redraw.add( o)
         to_redraw.add( o.parent)
@@ -346,7 +346,7 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == Set:
+      if type( obj) == ListType or type( obj) == set:
         for i in obj:
           if self.object_changed( i):
             return True

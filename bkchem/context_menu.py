@@ -25,7 +25,7 @@ from oasa import periodic_table as PT
 import os
 from atom import atom
 from group import group
-from sets import Set
+
 import types
 import interactors
 import parents
@@ -368,10 +368,10 @@ def center( bonds):
     b.redraw()
 
 def expand_groups( groups):
-  all_gs = Set( [g for g in groups if isinstance( g, group)])
-  mols = Set( [g.molecule for g in all_gs])
+  all_gs = set( [g for g in groups if isinstance( g, group)])
+  mols = set( [g.molecule for g in all_gs])
   for mol in mols:
-    gs = Set( mol.vertices) & Set( all_gs)
+    gs = set( mol.vertices) & set( all_gs)
     mol.expand_groups( atoms=gs)
     
 

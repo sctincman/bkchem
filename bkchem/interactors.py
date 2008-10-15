@@ -20,7 +20,6 @@
 """here reside functions that implement a glue between application or paper
 (main.py or paper.py) and the dialogs (dialogs.py)"""
 
-
 from molecule import molecule
 import Pmw
 import tkMessageBox
@@ -30,9 +29,8 @@ import xml
 import os_support
 import os
 import dialogs
-from sets import Set
-import bkchem_exceptions as excs
 
+import bkchem_exceptions as excs
 from singleton_store import Store
 from atom import atom
 import operator
@@ -435,7 +433,7 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     current = start
     x = current.x
     y = current.y
-    processed = Set()
+    processed = set()
     current_e = None
     while 1:
       processed.add( current)
@@ -477,7 +475,7 @@ def compute_oxidation_number( paper):
     Store.log( _("Groups must be expanded to compute oxidation number for them."), message_type="hint")
     logged = True
   # we have to check if the neighbors of the atoms we are processing are not groups or so...
-  ns = list( reduce( operator.or_, map(Set, [a.neighbors for a in paper.selected_atoms])))
+  ns = list( reduce( operator.or_, map(set, [a.neighbors for a in paper.selected_atoms])))
   v.validate( ns)
   if v.report.group_atoms or v.report.text_atoms:
     Store.log( _("Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."), message_type="warning")

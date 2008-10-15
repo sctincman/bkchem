@@ -30,7 +30,7 @@ import widgets
 import classes
 import os
 import os_support
-from sets import Set
+
 
 from singleton_store import Store, Screen
 
@@ -927,7 +927,7 @@ class fragment_dialog( Pmw.Dialog):
                          command=self.done,
                          master='parent')
 
-    self._items = Set()
+    self._items = set()
     self._frags = {}
     self.value = None
     self.init_list()
@@ -976,7 +976,7 @@ class fragment_dialog( Pmw.Dialog):
 
   def clean( self):
     map( self.paper.delete, self._items)
-    self._items = Set()
+    self._items = set()
 
 
   def done( self, button):

@@ -48,7 +48,7 @@ import os_support
 import popen2
 from id_manager import id_manager
 import string
-from sets import Set
+
 
 
 import oasa_bridge
@@ -297,7 +297,7 @@ class BKchem( Tk):
 
     # CREATION OF THE MENU
     
-    menus = Set() # we use this later for plugin entries addition
+    menus = set() # we use this later for plugin entries addition
 
     for temp in self.menu_template:
       if temp[1] == "menu":
@@ -314,7 +314,7 @@ class BKchem( Tk):
         
     # ADDITION OF PLUGINS TO THE MENU
         
-    added_to = Set()
+    added_to = set()
     for name in self.plug_man.get_names( type="script"):
       tooltip = self.plug_man.get_description( name)
       menu = self.plug_man.get_menu( name) 
