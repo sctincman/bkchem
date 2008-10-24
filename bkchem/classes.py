@@ -62,7 +62,7 @@ class standard:
     self.wedge_width = '5px'
     self.double_length_ratio = 0.75
     # atom
-    self.show_hydrogens = False
+    self.show_hydrogens = 0
     # arrow
     self.arrow_length = '1.6cm'
     # paper
@@ -101,7 +101,7 @@ class standard:
                                                ('wedge-width', str( self.wedge_width)),
                                                ('double-ratio', str( self.double_length_ratio))))
     dom_extensions.elementUnder( ret, 'arrow', (('length', str( self.arrow_length)),))
-    dom_extensions.elementUnder( ret, 'atom', (('show_hydrogens', str( self.show_hydrogens)),))
+    dom_extensions.elementUnder( ret, 'atom', (('show_hydrogens', str( int( self.show_hydrogens))),))
     return ret
 
   def read_package( self, p):
@@ -124,7 +124,12 @@ class standard:
       self.arrow_length = a.getAttribute( 'length')
     a = dom_extensions.getFirstChildNamed( p, 'atom')
     if a:
-      self.show_hydrogens = int( a.getAttribute('show_hydrogens'))
+      show_hydrogens = a.getAttribute('show_hydrogens')
+      if show_hydrogens == "False":
+        show_hydrogens = 0
+      elif show_hydrogens == "True":
+        show_hydrogens = 1
+      self.show_hydrogens = int( show_hydrogens)
       
     
 

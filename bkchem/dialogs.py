@@ -30,8 +30,6 @@ import widgets
 import classes
 import os
 import os_support
-
-
 from singleton_store import Store, Screen
 
 
