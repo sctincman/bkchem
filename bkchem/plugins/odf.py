@@ -102,6 +102,10 @@ note that this is not an ODF (Open Document Format) export."""
         self.add_oval( o, page)
       elif o.object_type == 'polygon':
         self.add_polygon( o, page)
+      elif o.object_type == 'polyline':
+        self.add_polyline( o, page)
+      else:
+        pass
 
 #    dom_ext.safe_indent( root)
     
@@ -305,6 +309,14 @@ note that this is not an ODF (Open Document Format) export."""
     style_name = self.get_appropriate_style_name( s)
     points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
     self.create_oo_polygon( points, page, style_name)
+
+
+  def add_polyline( self, o, page):
+    s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.line_color),
+                        stroke_width=Screen.px_to_cm( o.line_width))
+    style_name = self.get_appropriate_style_name( s)
+    points = [map( Screen.px_to_cm, p.get_xy()) for p in o.points]
+    self.create_oo_polyline( points, page, style_name)
 
 
   def add_rect( self, o, page):
