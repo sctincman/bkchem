@@ -1,0 +1,2160 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <nuvaln2@yahoo.it>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: Thu Oct 26 18:43:38 2006\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: ALAN MANGIAFERRO <nuvaln@alice.it>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: iso-8859-1\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: ../../bkchem/context_menu.py:91
+msgid "Center bond"
+msgstr "Centra legame"
+
+#: ../../bkchem/context_menu.py:92
+msgid "Expand group"
+msgstr "Espandi gruppo"
+
+#: ../../bkchem/context_menu.py:93
+msgid "Set atom number"
+msgstr "Imposta numero atomico"
+
+#: ../../bkchem/context_menu.py:102
+msgid "Properties"
+msgstr "Proprietà"
+
+#: ../../bkchem/context_menu.py:196
+msgid "Circle around mark"
+msgstr "Cerchiare segno"
+
+#: ../../bkchem/context_menu.py:196 ../../bkchem/context_menu.py:204
+#: ../../bkchem/context_menu.py:250
+msgid "yes"
+msgstr "sì"
+
+#: ../../bkchem/context_menu.py:196 ../../bkchem/context_menu.py:204
+#: ../../bkchem/context_menu.py:251
+msgid "no"
+msgstr "no"
+
+#: ../../bkchem/context_menu.py:204
+msgid "Show number"
+msgstr "Mostra numero"
+
+#: ../../bkchem/context_menu.py:213
+msgid "Atom valency"
+msgstr "Valenza atomica"
+
+#: ../../bkchem/context_menu.py:220 ../../bkchem/context_menu.py:262
+msgid "Mark size"
+msgstr "Dimensione segno"
+
+#: ../../bkchem/context_menu.py:250
+msgid "Show"
+msgstr "Mostra"
+
+#: ../../bkchem/context_menu.py:252 ../../bkchem/dialogs.py:221
+msgid "Hydrogens"
+msgstr "Idrogeni"
+
+#: ../../bkchem/context_menu.py:252 ../../bkchem/dialogs.py:222
+msgid "on"
+msgstr "su"
+
+#: ../../bkchem/context_menu.py:253 ../../bkchem/dialogs.py:222
+msgid "off"
+msgstr "off"            
+
+#: ../../bkchem/context_menu.py:254 ../../bkchem/widgets.py:180
+msgid "Font size"
+msgstr "Dimensione carattere"
+
+#: ../../bkchem/context_menu.py:255 ../../bkchem/dialogs.py:355
+#: ../../bkchem/dialogs.py:633 ../../bkchem/dialogs.py:837
+msgid "Line width"
+msgstr "Larghezza linea"
+
+#: ../../bkchem/context_menu.py:256 ../../bkchem/dialogs.py:242
+#: ../../bkchem/dialogs.py:648 ../../bkchem/dialogs.py:852
+msgid "Bond width"
+msgstr "Larghezza legame"
+
+#: ../../bkchem/context_menu.py:257
+msgid "Symbol positioning"
+msgstr "Posizionamento simbolo"
+
+#: ../../bkchem/context_menu.py:257
+msgid "center first"
+msgstr "prima centra"
+
+#: ../../bkchem/context_menu.py:258
+msgid "center last"
+msgstr "dopo centra"
+
+#: ../../bkchem/context_menu.py:259
+msgid "Bond positioning"
+msgstr "Posizionamento legame"
+
+#: ../../bkchem/context_menu.py:259
+msgid "auto"
+msgstr "auto"
+
+#: ../../bkchem/context_menu.py:260
+msgid "anti-auto"
+msgstr "anti-auto"
+
+#: ../../bkchem/context_menu.py:261
+msgid "Bond order"
+msgstr "Ordina legame"
+
+#: ../../bkchem/context_menu.py:263 ../../bkchem/interactors.py:341
+msgid "Atom number"
+msgstr "Numero atomico"
+
+#: ../../bkchem/context_menu.py:264 ../../bkchem/context_menu.py:271
+msgid "transparent"
+msgstr "transparente"
+
+#: ../../bkchem/context_menu.py:264 ../../bkchem/dialogs.py:375
+#: ../../bkchem/dialogs.py:642 ../../bkchem/dialogs.py:846
+msgid "Area color"
+msgstr "Colore area"
+
+#: ../../bkchem/context_menu.py:265 ../../bkchem/context_menu.py:272
+msgid "white"
+msgstr "bianco"
+
+#: ../../bkchem/context_menu.py:266 ../../bkchem/context_menu.py:273
+msgid "yellow"
+msgstr "giallo"
+
+#: ../../bkchem/context_menu.py:267 ../../bkchem/context_menu.py:274
+msgid "green"
+msgstr "green"
+
+#: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
+msgid "blue"
+msgstr "verde"
+
+#: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
+msgid "red"
+msgstr "rosso"
+
+#: ../../bkchem/context_menu.py:270 ../../bkchem/context_menu.py:277
+msgid "black"
+msgstr "nero"
+
+#: ../../bkchem/context_menu.py:271 ../../bkchem/dialogs.py:365
+#: ../../bkchem/dialogs.py:639 ../../bkchem/dialogs.py:843
+msgid "Line color"
+msgstr "Colore linea"
+
+#: ../../bkchem/context_menu.py:278
+msgid "Free sites"
+msgstr "Siti liberi"
+
+#: ../../bkchem/context_menu.py:279
+msgid "Atom symbol"
+msgstr "Simbolo atomico"
+
+#: ../../bkchem/context_menu.py:280
+msgid "Group"
+msgstr "Gruppo"
+
+#: ../../bkchem/dialogs.py:44 ../../bkchem/dialogs.py:45
+#: ../../bkchem/dialogs.py:140 ../../bkchem/dialogs.py:141
+#: ../../bkchem/dialogs.py:387 ../../bkchem/dialogs.py:516
+#: ../../bkchem/dialogs.py:517 ../../bkchem/dialogs.py:579
+#: ../../bkchem/dialogs.py:614 ../../bkchem/dialogs.py:615
+#: ../../bkchem/dialogs.py:759 ../../bkchem/dialogs.py:818
+#: ../../bkchem/dialogs.py:819 ../../bkchem/dialogs.py:963
+#: ../../bkchem/dialogs.py:1018 ../../bkchem/dialogs.py:1020
+#: ../../bkchem/dialogs.py:1025 ../../bkchem/dialogs.py:1105
+#: ../../bkchem/dialogs.py:1106 ../../bkchem/dialogs.py:1137
+#: ../../bkchem/dialogs.py:1138 ../../bkchem/dialogs.py:1169
+#: ../../bkchem/interactors.py:55 ../../bkchem/interactors.py:60
+#: ../../bkchem/interactors.py:95 ../../bkchem/interactors.py:101
+#: ../../bkchem/interactors.py:165 ../../bkchem/interactors.py:185
+#: ../../bkchem/interactors.py:194 ../../bkchem/interactors.py:285
+#: ../../bkchem/interactors.py:287 ../../bkchem/interactors.py:321
+#: ../../bkchem/interactors.py:323 ../../bkchem/interactors.py:344
+#: ../../bkchem/interactors.py:346 ../../bkchem/main.py:1147
+#: ../../bkchem/main.py:1149 ../../bkchem/main.py:1186
+#: ../../bkchem/main.py:1188 ../../bkchem/main.py:1256
+#: ../../bkchem/main.py:1355 ../../bkchem/widgets.py:378
+msgid "OK"
+msgstr "OK"
+
+#: ../../bkchem/dialogs.py:44 ../../bkchem/dialogs.py:98
+#: ../../bkchem/dialogs.py:140 ../../bkchem/dialogs.py:516
+#: ../../bkchem/dialogs.py:614 ../../bkchem/dialogs.py:818
+#: ../../bkchem/dialogs.py:1020 ../../bkchem/dialogs.py:1105
+#: ../../bkchem/dialogs.py:1137 ../../bkchem/interactors.py:55
+#: ../../bkchem/interactors.py:95 ../../bkchem/interactors.py:185
+#: ../../bkchem/interactors.py:285 ../../bkchem/interactors.py:321
+#: ../../bkchem/interactors.py:344 ../../bkchem/main.py:702
+#: ../../bkchem/main.py:707 ../../bkchem/main.py:1147
+#: ../../bkchem/main.py:1186 ../../bkchem/widgets.py:378
+msgid "Cancel"
+msgstr "Cancella"
+
+#: ../../bkchem/dialogs.py:46 ../../bkchem/main.py:227
+msgid "Scale"
+msgstr "Scala"
+
+#: ../../bkchem/dialogs.py:51
+msgid "Scale X (in %):"
+msgstr "Scala X (in %):"
+
+#: ../../bkchem/dialogs.py:62
+msgid "Scale Y (in %):"
+msgstr "Scala Y (in %):"
+
+#: ../../bkchem/dialogs.py:73
+msgid "Preserve aspect ratio?"
+msgstr "Adatta proporzionale?"
+
+#: ../../bkchem/dialogs.py:81
+msgid "Fix position of centers of objects?"
+msgstr "Fissa la posizione del centro degli oggetti?"
+
+#: ../../bkchem/dialogs.py:87
+msgid "Scale font and mark sizes?"
+msgstr "Adatta dimensione del carattere e del segno?"
+
+#: ../../bkchem/dialogs.py:142
+msgid "Configuration"
+msgstr "Configurazione"
+
+#: ../../bkchem/dialogs.py:167
+msgid "Atom"
+msgstr "Atomo"
+
+#: ../../bkchem/dialogs.py:176
+msgid "Charge"
+msgstr "Carica"
+
+#: ../../bkchem/dialogs.py:191
+msgid "Atom name"
+msgstr "Nome dell'atomo"
+
+#: ../../bkchem/dialogs.py:192
+msgid "don't show"
+msgstr "Non mostrare"
+
+#: ../../bkchem/dialogs.py:192
+msgid "show"
+msgstr "Mostra"
+
+#: ../../bkchem/dialogs.py:208
+msgid "Atom positioning"
+msgstr "Posiziona atomo"
+
+#: ../../bkchem/dialogs.py:209
+msgid "center first letter"
+msgstr "centra prima lettera"
+
+#: ../../bkchem/dialogs.py:209
+msgid "center last letter"
+msgstr "centra ultima lettera"
+
+#: ../../bkchem/dialogs.py:233 ../../bkchem/dialogs.py:646
+#: ../../bkchem/dialogs.py:850
+msgid "Bond"
+msgstr "legame"
+
+#: ../../bkchem/dialogs.py:253 ../../bkchem/dialogs.py:651
+#: ../../bkchem/dialogs.py:855
+msgid "Wedge/Hatch width"
+msgstr "Larghezza Cresta/Trogolo"
+
+#: ../../bkchem/dialogs.py:265 ../../bkchem/dialogs.py:659
+#: ../../bkchem/dialogs.py:863
+msgid "Double-bond length ratio"
+msgstr "rapporto lunghezze doppio legame"
+
+#: ../../bkchem/dialogs.py:272
+msgid "Arrow"
+msgstr "Freccia"
+
+#: ../../bkchem/dialogs.py:285
+msgid "Arrow-head on start"
+msgstr "Testa della freccia all'inizio"
+
+#: ../../bkchem/dialogs.py:298
+msgid "Arrow-head on end"
+msgstr "Testa della freccia alla fine"
+
+#: ../../bkchem/dialogs.py:311
+msgid "Spline arrow"
+msgstr "Freccia curva"
+
+#: ../../bkchem/dialogs.py:325 ../../bkchem/dialogs.py:663
+#: ../../bkchem/dialogs.py:867
+msgid "Font"
+msgstr "Carattere"
+
+#: ../../bkchem/dialogs.py:345 ../../bkchem/dialogs.py:628
+#: ../../bkchem/dialogs.py:832
+msgid "Common"
+msgstr "Comune"
+
+#: ../../bkchem/dialogs.py:518 ../../bkchem/main.py:196
+msgid "File properties"
+msgstr "Proprietà file"
+
+#: ../../bkchem/dialogs.py:531 ../../bkchem/dialogs.py:585
+#: ../../bkchem/dialogs.py:676 ../../bkchem/dialogs.py:782
+#: ../../bkchem/dialogs.py:880 ../../bkchem/dialogs.py:986
+msgid "Custom"
+msgstr "Personalizzato"
+
+#: ../../bkchem/dialogs.py:538 ../../bkchem/dialogs.py:683
+#: ../../bkchem/dialogs.py:887
+msgid "Paper size"
+msgstr "Dimensione carta"
+
+#: ../../bkchem/dialogs.py:546 ../../bkchem/dialogs.py:580
+#: ../../bkchem/dialogs.py:691 ../../bkchem/dialogs.py:786
+#: ../../bkchem/dialogs.py:895 ../../bkchem/dialogs.py:990
+msgid "Portrait"
+msgstr "Verticale"
+
+#: ../../bkchem/dialogs.py:547 ../../bkchem/dialogs.py:692
+#: ../../bkchem/dialogs.py:896
+msgid "Landscape"
+msgstr "Orizzontale"
+
+#: ../../bkchem/dialogs.py:559
+msgid ""
+"Auto crop image in SVG?\n"
+"(applies to some other exports as well)"
+msgstr ""
+"Auto-ritaglio in SVG?\n"
+"(si applica ad altre esportazioni)"
+
+#: ../../bkchem/dialogs.py:567 ../../bkchem/dialogs.py:708
+#: ../../bkchem/dialogs.py:912
+msgid "Margin for cropped image (in pixels):"
+msgstr "Margini per immagini ritagliate (in pixels):"
+
+#: ../../bkchem/dialogs.py:614 ../../bkchem/dialogs.py:748
+#: ../../bkchem/dialogs.py:818 ../../bkchem/dialogs.py:952
+#: ../../bkchem/main.py:184 ../../bkchem/main.py:702 ../../bkchem/main.py:705
+msgid "Save"
+msgstr "Salva"
+
+#: ../../bkchem/dialogs.py:616 ../../bkchem/dialogs.py:820
+msgid "Standard values"
+msgstr "Valori standard"
+
+#: ../../bkchem/dialogs.py:630 ../../bkchem/dialogs.py:834
+msgid "Line"
+msgstr "Linea"
+
+#: ../../bkchem/dialogs.py:636 ../../bkchem/dialogs.py:840
+msgid "Color"
+msgstr "Colore"
+
+#: ../../bkchem/dialogs.py:654 ../../bkchem/dialogs.py:858
+msgid "Bond length"
+msgstr "Lunghezza legame"
+
+#: ../../bkchem/dialogs.py:674 ../../bkchem/dialogs.py:878
+msgid "Paper"
+msgstr "Carta"
+
+#: ../../bkchem/dialogs.py:702 ../../bkchem/dialogs.py:906
+msgid "Auto crop image in SVG?"
+msgstr "Auto-ritaglio in SVG?"
+
+#: ../../bkchem/dialogs.py:719 ../../bkchem/dialogs.py:923
+msgid "Apply"
+msgstr "Applica"
+
+#: ../../bkchem/dialogs.py:727 ../../bkchem/dialogs.py:931
+msgid "changed values only"
+msgstr "solo ai valori cambiati"
+
+#: ../../bkchem/dialogs.py:728 ../../bkchem/dialogs.py:932
+msgid "all values"
+msgstr "tutti i valori"
+
+#: ../../bkchem/dialogs.py:736 ../../bkchem/dialogs.py:940
+msgid "to new drawings only"
+msgstr "solo alle nuove immagini"
+
+#: ../../bkchem/dialogs.py:737 ../../bkchem/dialogs.py:941
+msgid "to selected and new drawings (no resize)"
+msgstr "alle immagini selezionate e nuove (no ridimensionamento)"
+
+#: ../../bkchem/dialogs.py:738 ../../bkchem/dialogs.py:942
+msgid "to the whole drawing (no resize)"
+msgstr "all'intera immagine (no ridimensionameto)"
+
+#: ../../bkchem/dialogs.py:751 ../../bkchem/dialogs.py:955
+msgid "Standard saved"
+msgstr "Standard salvato"
+
+#: ../../bkchem/dialogs.py:752 ../../bkchem/dialogs.py:956
+msgid "The standard was successfully saved as personal standard to %s"
+msgstr "Lo standard è stato salvato con successo a %s"
+
+#: ../../bkchem/dialogs.py:754 ../../bkchem/dialogs.py:958
+msgid "Standard not saved"
+msgstr "Standard non salvato"
+
+#: ../../bkchem/dialogs.py:755 ../../bkchem/dialogs.py:959
+msgid ""
+"For some reason the standard couldn't be saved. Probably the right location\n"
+"                                for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."
+msgstr ""
+"Per qualche ragione lo standard potrebbe non essere salvato. Probailmente la giusta posizione\n"
+"                                potrebbe non essere trovata o non essere scrivibile. Mi spiace per l'incoveniente."
+
+#: ../../bkchem/dialogs.py:1018 ../../bkchem/dialogs.py:1083
+msgid "Delete"
+msgstr "Cancella"
+
+#: ../../bkchem/dialogs.py:1026
+msgid "Fragment overview"
+msgstr "Descrizione del frammento"
+
+#: ../../bkchem/dialogs.py:1040 ../../bkchem/dialogs.py:1116
+msgid "Fragments"
+msgstr "Frammenti"
+
+#: ../../bkchem/dialogs.py:1107
+msgid "Logging"
+msgstr "Logging"
+
+#: ../../bkchem/dialogs.py:1139 ../../bkchem/main.py:273
+msgid "Language"
+msgstr "Linguaggio"
+
+#: ../../bkchem/dialogs.py:1160
+msgid "Available Languages"
+msgstr "Linguaggi disponibili"
+
+#: ../../bkchem/edit_pool.py:62
+msgid "Interpret"
+msgstr "Interpreta"
+
+#: ../../bkchem/edit_pool.py:67
+msgid "Interpret text (where applicable)"
+msgstr "Interpreta testo (dove applicabile)"
+
+#: ../../bkchem/edit_pool.py:76
+msgid "As is"
+msgstr "Come è"
+
+#: ../../bkchem/edit_pool.py:80
+msgid "Leave text as is - do not interpret"
+msgstr "Lascia il testo come è - non interpretare"
+
+#: ../../bkchem/edit_pool.py:89 ../../bkchem/widgets.py:416
+msgid "Sub numbers"
+msgstr "Numeri a pedice"
+
+#: ../../bkchem/edit_pool.py:93
+msgid "Convert numbers to subscript"
+msgstr "Converti numeri a pedice"
+
+#: ../../bkchem/interactors.py:47 ../../bkchem/interactors.py:79
+#: ../../bkchem/interactors.py:178
+msgid "No molecule selected."
+msgstr "Nessuna molecola selezionata."
+
+#: ../../bkchem/interactors.py:48 ../../bkchem/interactors.py:80
+#: ../../bkchem/interactors.py:179
+msgid "At least one molecule must be selected. Please select it."
+msgstr "Almeno una molecola deve essere selezionata. Perfavore selezionala."
+
+#: ../../bkchem/interactors.py:52
+msgid "Name"
+msgstr "Nome"
+
+#: ../../bkchem/interactors.py:53
+msgid "Name:"
+msgstr "Nome:"
+
+#: ../../bkchem/interactors.py:67
+msgid "Name %s was set to molecule(s)"
+msgstr "Nome %s è stato impostato per la molecola(e)"
+
+#: ../../bkchem/interactors.py:84
+msgid "Only one molecule should be selected."
+msgstr "Solo una molecola dovrebbe essere selezionata."
+
+#: ../../bkchem/interactors.py:85
+msgid "ID must be unique value, therefore it is obviously possible to set it to one molecule only. Please select only one molecule"
+msgstr "ID deve essere un unico valore, perciò è possibile impostarlo per un'unica molecola. Perfavore seleziona un'unica molecola."
+
+#: ../../bkchem/interactors.py:92
+msgid "Id"
+msgstr "Id"
+
+#: ../../bkchem/interactors.py:93
+msgid "Id:"
+msgstr "Id:"
+
+#: ../../bkchem/interactors.py:109
+msgid "ID collision"
+msgstr "ID conflittuale"
+
+#: ../../bkchem/interactors.py:110
+msgid "This ID is already used, use a different one"
+msgstr "Questo ID è già stato usato, usane uno differente."
+
+#: ../../bkchem/interactors.py:117
+msgid "ID %s was set to molecule"
+msgstr "ID %s è stato impostato per la molecola"
+
+#: ../../bkchem/interactors.py:129
+msgid "Validity error"
+msgstr "Errore di validità"
+
+#: ../../bkchem/interactors.py:130
+msgid ""
+"Sorry but your drawing includes 'text atoms'\n"
+" - atoms with no chemical sense."
+msgstr ""
+"Mi spiace ma il tuo disegno include 'atomi testo'\n"
+" - Atomi con nessun senso chimico."
+
+#: ../../bkchem/interactors.py:131
+msgid "It is not possible to export them."
+msgstr "Non è possibile esportarli."
+
+#: ../../bkchem/interactors.py:132 ../../bkchem/interactors.py:138
+msgid "For details check the chemistry with '%s/%s'."
+msgstr "Per dettagli controlla la chimica '%s/%s'."
+
+#: ../../bkchem/interactors.py:132 ../../bkchem/interactors.py:138
+#: ../../bkchem/interactors.py:167 ../../bkchem/main.py:244
+#: ../../bkchem/main.py:245 ../../bkchem/main.py:246 ../../bkchem/main.py:247
+#: ../../bkchem/main.py:248 ../../bkchem/main.py:249 ../../bkchem/main.py:250
+#: ../../bkchem/main.py:251 ../../bkchem/main.py:252 ../../bkchem/main.py:253
+#: ../../bkchem/main.py:254 ../../bkchem/main.py:255 ../../bkchem/main.py:257
+#: ../../bkchem/main.py:258 ../../bkchem/main.py:261 ../../bkchem/main.py:262
+#: ../../bkchem/main.py:263 ../../bkchem/main.py:264 ../../bkchem/main.py:265
+#: ../../bkchem/main.py:266 ../../bkchem/main.py:267
+msgid "Chemistry"
+msgstr "Chimica"
+
+#: ../../bkchem/interactors.py:132 ../../bkchem/interactors.py:138
+#: ../../bkchem/main.py:246
+msgid "Check chemistry"
+msgstr "Controlla la chimica"
+
+#: ../../bkchem/interactors.py:136
+msgid "Validity warning"
+msgstr "Avviso di validità"
+
+#: ../../bkchem/interactors.py:137
+msgid "Your drawing includes some atoms with exceeded valency."
+msgstr "Il tuo disegno comprende atomi con valenze in eccesso."
+
+#: ../../bkchem/interactors.py:141
+msgid "Expand groups?"
+msgstr "Espandi gruppi?"
+
+#: ../../bkchem/interactors.py:142
+msgid "Your drawing includes some groups."
+msgstr "il tuo disegno comprende alcuni gruppi."
+
+#: ../../bkchem/interactors.py:143
+msgid "These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards."
+msgstr "Questi devono essere espansi per ottenere un'immagine chimicamente valida. L'espansione può essere rifatta in seguito."
+
+#: ../../bkchem/interactors.py:144
+msgid "Proceed with expansion?"
+msgstr "Procedi con l'espansione?"
+
+#: ../../bkchem/interactors.py:159
+msgid "The INChI program path"
+msgstr "Il percorso del programma INChI"
+
+#: ../../bkchem/interactors.py:160
+msgid "Select the INChI program executable: "
+msgstr "Seleziona l'eseguibile del programma INChI: "
+
+#: ../../bkchem/interactors.py:162
+msgid "Executable files"
+msgstr "File eseguibili"
+
+#: ../../bkchem/interactors.py:167 ../../bkchem/main.py:255
+msgid "Generate INChI"
+msgstr "Genera INChI"
+
+#: ../../bkchem/interactors.py:183
+msgid "Display Form"
+msgstr "Visualizza formula"
+
+#: ../../bkchem/interactors.py:207 ../../bkchem/modes.py:653
+#: ../../bkchem/modes.py:1216 ../../bkchem/modes.py:1778
+msgid "Parse Error"
+msgstr "Errore di analisi"
+
+#: ../../bkchem/interactors.py:207 ../../bkchem/modes.py:1216
+#: ../../bkchem/modes.py:1778
+msgid ""
+"Unable to parse the text-\n"
+"probably problem with input encoding!"
+msgstr ""
+"Incapace di analizzare il testo-\n"
+"probabilmente un errore nella codifica dell'input!"
+
+#: ../../bkchem/interactors.py:215
+msgid "Display form %s was set to molecule(s)"
+msgstr "Visualizza da %s è stato impostato per la molecola(e)"
+
+#: ../../bkchem/interactors.py:235
+msgid "Template summary"
+msgstr " Sommario template"
+
+#: ../../bkchem/interactors.py:239
+msgid "Errors"
+msgstr "Errori"
+
+#: ../../bkchem/interactors.py:242
+msgid "%d molecules have no template atom specified"
+msgstr "%d le molecole non hanno nessun template degli atomi specificato"
+
+#: ../../bkchem/interactors.py:245
+msgid "%d molecules have no name specified"
+msgstr "%d le molecole non hanno nessun nome specificato"
+
+#: ../../bkchem/interactors.py:249
+msgid "Warnings"
+msgstr "Avvertimento"
+
+#: ../../bkchem/interactors.py:251
+msgid "%d molecules have no template bond specified"
+msgstr "%d le molecole non hanno nessun template di legame specificato"
+
+#: ../../bkchem/interactors.py:256
+msgid "Please correct the above errors first"
+msgstr "Prego correga subito i precedenti errori"
+
+#: ../../bkchem/interactors.py:258
+msgid "A tutorial on how to prepare a template can be found in the file doc/custom_templates_en.html"
+msgstr "Le istruzioni come creare un file template possono essere trovate nel file doc/custom_templates_en.html"
+
+#: ../../bkchem/interactors.py:274
+msgid "Directory creation failed."
+msgstr "Creazione cartella fallita"
+
+#: ../../bkchem/interactors.py:275
+msgid "It was not possible to create the personal directory %s."
+msgstr "Non è possibile creare una cartella personale %s."
+
+#: ../../bkchem/interactors.py:282
+msgid "Template file name"
+msgstr "Nome del file template"
+
+#: ../../bkchem/interactors.py:283
+msgid "File name for the template:"
+msgstr "Il nome del file per il template:"
+
+#: ../../bkchem/interactors.py:295
+msgid "The file already exists."
+msgstr "Il file già esiste."
+
+#: ../../bkchem/interactors.py:296
+msgid ""
+"Template with this name already exists (path %s).\n"
+"Should I rewrite it?"
+msgstr ""
+"Template con questo nome già esiste (path %s).\n"
+"Dovrei riscriverlo?"
+
+#: ../../bkchem/interactors.py:310
+msgid "The selected items must be part of exactly one molecule."
+msgstr "L'oggetto selezionato dovrebbe essere esattamente parte di una molecola."
+
+#: ../../bkchem/interactors.py:318
+msgid "Fragment name"
+msgstr "Nome del frammento"
+
+#: ../../bkchem/interactors.py:319
+msgid "Enter fragment name:"
+msgstr "Inserisci nome del frammento:"
+
+#: ../../bkchem/interactors.py:325
+msgid "The bonds were used for creation of a new molecular fragment."
+msgstr "I legami sono stati usati per creare il nome di un nuovo frammento molecolare."
+
+#: ../../bkchem/interactors.py:327
+msgid "The bonds could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."
+msgstr "I legami potrebbero non essere stati usati per la creazione di nuovo frammento molecolare, probabilmente non stanno definendo un subgrafico collegato al grafico molecolare."
+
+#: ../../bkchem/interactors.py:342
+msgid "Enter atom number:"
+msgstr "Inserisci numero atomico:"
+
+#: ../../bkchem/interactors.py:349
+msgid "Number %s was set to atom(s)."
+msgstr "Il %s è stato impostato per l'Atomo(i)."
+
+#: ../../bkchem/interactors.py:357
+msgid "BKchem interpreted the entered text as an atom"
+msgstr "BKchem ha interpretato il testo inserito come un atomo"
+
+#: ../../bkchem/interactors.py:359
+msgid "BKchem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."
+msgstr "BKchem crede di interpretare il testo inserito come un gruppo , provi a espanderlo per scoprire come è stato interpretato."
+
+#: ../../bkchem/interactors.py:361
+msgid "BKchem could not interpret the entered text as anything with chemical meaning"
+msgstr "BKchem non ha potuto interpretare il testo digitato come qualche cosa con il significato chimico"
+
+#: ../../bkchem/interactors.py:372 ../../bkchem/logger.py:33
+#: ../../bkchem/main.py:245
+msgid "Info"
+msgstr "Info"
+
+#: ../../bkchem/interactors.py:373
+msgid "The selected language will be used the next time you start BKchem."
+msgstr "Il testo selezionato sarà usato la prossima volta che riparte BKchem."
+
+#: ../../bkchem/interactors.py:424
+msgid "The selected part of a molecule is a whole ring, there is no way to linearize it"
+msgstr "La parte selezionata della molecola è un anello intero, non c'è nessun modo di linearizzarla"
+
+#: ../../bkchem/interactors.py:469
+msgid "Groups must be expanded to compute oxidation number for them."
+msgstr "I gruppi devono essere espansi per poter calcolare il loro numero di ossidazione."
+
+#: ../../bkchem/interactors.py:475
+msgid "Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."
+msgstr "Gruppi non espansi o atomi di solo testo possono causare l'incorretto calcolo del numero di ossidazione."
+
+#: ../../bkchem/interactors.py:488
+msgid "You can move and delete the created oxidation numbers in the mark mode"
+msgstr "Puoi muovere o cancellare i numeri di ossidazione nel modo segnatura."
+
+#: ../../bkchem/logger.py:34
+msgid "Error"
+msgstr "Errore"
+
+#: ../../bkchem/logger.py:35
+msgid "Debug"
+msgstr "Correzione"
+
+#: ../../bkchem/logger.py:36
+msgid "Warning"
+msgstr "Attenzione"
+
+#: ../../bkchem/logger.py:37
+msgid "Hint"
+msgstr "Hint"
+
+#: ../../bkchem/logger.py:39
+msgid "Status bar"
+msgstr "Barra di stato"
+
+#: ../../bkchem/logger.py:40
+msgid "Dialog"
+msgstr "Dialogo"
+
+#: ../../bkchem/logger.py:41
+msgid "Console"
+msgstr "Console"
+
+#: ../../bkchem/logger.py:42
+msgid "Ignore"
+msgstr "Ignora"
+
+#: ../../bkchem/main.py:181
+msgid "Open, save, export and import files"
+msgstr "Apri, salva, esporta e importa file"
+
+#: ../../bkchem/main.py:181 ../../bkchem/main.py:183 ../../bkchem/main.py:184
+#: ../../bkchem/main.py:185 ../../bkchem/main.py:186 ../../bkchem/main.py:187
+#: ../../bkchem/main.py:188 ../../bkchem/main.py:189 ../../bkchem/main.py:190
+#: ../../bkchem/main.py:192 ../../bkchem/main.py:194 ../../bkchem/main.py:195
+#: ../../bkchem/main.py:196 ../../bkchem/main.py:197 ../../bkchem/main.py:198
+#: ../../bkchem/main.py:199 ../../bkchem/main.py:200
+msgid "File"
+msgstr "File"
+
+#: ../../bkchem/main.py:183
+msgid "Create a new file in a new tab"
+msgstr "Crea un nuovo file in una nuova scheda"
+
+#: ../../bkchem/main.py:183
+msgid "New"
+msgstr "Nuovo"
+
+#: ../../bkchem/main.py:184
+msgid "Save the file"
+msgstr "Salva il file"
+
+#: ../../bkchem/main.py:185
+msgid "Save As.."
+msgstr "Salva come.."
+
+#: ../../bkchem/main.py:185
+msgid "Save the file under different name"
+msgstr "Salva il file con un diverso nome"
+
+#: ../../bkchem/main.py:186
+msgid "Save As Template"
+msgstr "Salva come Template"
+
+#: ../../bkchem/main.py:186
+msgid "Save the file as template, certain criteria must be met for this to work"
+msgstr "Salva il file come, certi criteri di verifica devono essere soddisfatti affinchè funzionino"
+
+#: ../../bkchem/main.py:187
+msgid "Load (open) a file in a new tab"
+msgstr "Carica(apri) un file in una nuova scheda"
+
+#: ../../bkchem/main.py:187 ../../bkchem/main.py:819 ../../bkchem/main.py:1014
+msgid "Load"
+msgstr "Carica"
+
+#: ../../bkchem/main.py:188
+msgid "Load a file replacing the current one"
+msgstr "Carica un file sostituendo il corrente"
+
+#: ../../bkchem/main.py:188
+msgid "Load to the same tab"
+msgstr "Carica alla stessa scheda"
+
+#: ../../bkchem/main.py:189
+msgid "The most recently used files"
+msgstr "I file più recenti"
+
+#: ../../bkchem/main.py:189 ../../bkchem/main.py:443
+msgid "Recent files"
+msgstr "File recenti"
+
+#: ../../bkchem/main.py:192
+msgid "Export the current file"
+msgstr "Esporta il file corrente"
+
+#: ../../bkchem/main.py:192 ../../bkchem/main.py:193 ../../bkchem/main.py:400
+#: ../../bkchem/main.py:1077
+msgid "Export"
+msgstr "Esporta"
+
+#: ../../bkchem/main.py:193
+msgid "Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"
+msgstr "Esporta a semplice SVG - Scalable Vector Graphics - senza includere all'interno i dati di BKchem "
+
+#: ../../bkchem/main.py:193
+msgid "SVG"
+msgstr "SVG"
+
+#: ../../bkchem/main.py:194
+msgid "Import a non-native file format"
+msgstr "Importa un formtato file non nativo"
+
+#: ../../bkchem/main.py:194 ../../bkchem/main.py:396
+msgid "Import"
+msgstr "Importa"
+
+#: ../../bkchem/main.py:196
+msgid "Set the papers size and other properties of the document"
+msgstr "Imposta la dimensione della carta e altre proprietà del documento"
+
+#: ../../bkchem/main.py:198
+msgid "Close tab"
+msgstr "Chiudi scheda"
+
+#: ../../bkchem/main.py:198
+msgid "Close the current tab, exit when there is only one tab"
+msgstr "Chiudi la corrente scheda, esci quando c'è solo una scheda"
+
+#: ../../bkchem/main.py:200
+msgid "Exit"
+msgstr "Esci"
+
+#: ../../bkchem/main.py:200
+msgid "Exit BKchem"
+msgstr "Esci da BKchem"
+
+#: ../../bkchem/main.py:203
+msgid "Undo, Copy, Paste etc."
+msgstr "Annulla, Copia, Incolla etc."
+
+#: ../../bkchem/main.py:203 ../../bkchem/main.py:204 ../../bkchem/main.py:205
+#: ../../bkchem/main.py:206 ../../bkchem/main.py:207 ../../bkchem/main.py:208
+#: ../../bkchem/main.py:209 ../../bkchem/main.py:210 ../../bkchem/main.py:211
+#: ../../bkchem/main.py:212 ../../bkchem/main.py:213
+msgid "Edit"
+msgstr "Edita"
+
+#: ../../bkchem/main.py:204
+msgid "Revert the last change made"
+msgstr "Ritorna all'ultimo cambiamento fatto"
+
+#: ../../bkchem/main.py:204
+msgid "Undo"
+msgstr "Annulla"
+
+#: ../../bkchem/main.py:205
+msgid "Redo"
+msgstr "Ripeti"
+
+#: ../../bkchem/main.py:205
+msgid "Revert the last undo action"
+msgstr "Ritorna all'ultimo annullamento"
+
+#: ../../bkchem/main.py:207
+msgid "Copy the selected objects to clipboard and delete them"
+msgstr "Copia gli oggetti selezionati alla e cancellali"
+
+#: ../../bkchem/main.py:207
+msgid "Cut"
+msgstr "Taglia"
+
+#: ../../bkchem/main.py:208
+msgid "Copy"
+msgstr "Copia"
+
+#: ../../bkchem/main.py:208
+msgid "Copy the selected objects to clipboard"
+msgstr "Copia i selezionati oggetti agli Appunti"
+
+#: ../../bkchem/main.py:209
+msgid "Paste"
+msgstr "Incolla"
+
+#: ../../bkchem/main.py:209
+msgid "Paste the content of clipboard to current paper"
+msgstr "Incolla il contenuto degli Appunti al foglio corrente"
+
+#: ../../bkchem/main.py:211
+msgid "Create SVG for the selected objects and place it to clipboard in text form"
+msgstr "Crea un SVG per gli oggetti selezionati e copialo negli Appunti in forma testuale"
+
+#: ../../bkchem/main.py:211
+msgid "Selected to clipboard as SVG"
+msgstr "Selezione agli Appunti come SVG"
+
+#: ../../bkchem/main.py:213
+msgid "Select all"
+msgstr "Seleziona tutto"
+
+#: ../../bkchem/main.py:213
+msgid "Select everything on the paper"
+msgstr "Seleziona tutto nel foglio"
+
+#: ../../bkchem/main.py:216
+msgid "Aligning of selected objects"
+msgstr "Allineamento degli oggetti selezionati"
+
+#: ../../bkchem/main.py:216 ../../bkchem/main.py:217 ../../bkchem/main.py:218
+#: ../../bkchem/main.py:219 ../../bkchem/main.py:220 ../../bkchem/main.py:221
+#: ../../bkchem/main.py:222 ../../bkchem/main.py:223
+msgid "Align"
+msgstr "Allineare"
+
+#: ../../bkchem/main.py:217
+msgid "Align the tops of selected objects"
+msgstr "Allinea la cima degli oggetti selezionati"
+
+#: ../../bkchem/main.py:217
+msgid "Top"
+msgstr "Cima"
+
+#: ../../bkchem/main.py:218
+msgid "Align the bottoms of selected objects"
+msgstr "Allinea il fondo degli oggettti selezionati "
+
+#: ../../bkchem/main.py:218
+msgid "Bottom"
+msgstr "Fondo"
+
+#: ../../bkchem/main.py:219
+msgid "Align the left sides of selected objects"
+msgstr "Allinea la parte sinistra degli oggetti selezionati"
+
+#: ../../bkchem/main.py:219
+msgid "Left"
+msgstr "Sinistra"
+
+#: ../../bkchem/main.py:220
+msgid "Align the rights sides of selected objects"
+msgstr "Allinea la destra degli oggetti selezionati"
+
+#: ../../bkchem/main.py:220
+msgid "Right"
+msgstr "Destra"
+
+#: ../../bkchem/main.py:222
+msgid "Align the horizontal centers of selected objects"
+msgstr "Allinea orizzontalmente il centro gli oggetti selezionati"
+
+#: ../../bkchem/main.py:222
+msgid "Center horizontally"
+msgstr "Centra orizzontalmente"
+
+#: ../../bkchem/main.py:223
+msgid "Align the vertical centers of selected objects"
+msgstr "Allinea verticalmente il centro degli oggetti selezionati"
+
+#: ../../bkchem/main.py:223
+msgid "Center vertically"
+msgstr "Centra verticalmente"
+
+#: ../../bkchem/main.py:226
+msgid "Set properties of selected objects"
+msgstr "Imposta le proprietà degli oggetti selezionati"
+
+#: ../../bkchem/main.py:226 ../../bkchem/main.py:227 ../../bkchem/main.py:228
+#: ../../bkchem/main.py:229 ../../bkchem/main.py:230 ../../bkchem/main.py:231
+#: ../../bkchem/main.py:232 ../../bkchem/main.py:233 ../../bkchem/main.py:236
+#: ../../bkchem/main.py:239 ../../bkchem/main.py:240
+msgid "Object"
+msgstr "Oggetto"
+
+#: ../../bkchem/main.py:227
+msgid "Scale selected objects"
+msgstr "Dimensiona gli oggetti selezionati"
+
+#: ../../bkchem/main.py:229
+msgid "Bring to front"
+msgstr "Porta di fronte"
+
+#: ../../bkchem/main.py:229
+msgid "Lift selected objects to the top of the stack"
+msgstr "Sposta gli oggetti selezionati in cima alla pila"
+
+#: ../../bkchem/main.py:230
+msgid "Lower the selected objects to the bottom of the stack"
+msgstr "Sposta gli oggetti selezionati in fondo alla pila"
+
+#: ../../bkchem/main.py:230
+msgid "Send back"
+msgstr "Porta dietro"
+
+#: ../../bkchem/main.py:231
+msgid "Reverse the ordering of the selected objects on the stack"
+msgstr "Inverta l'ordine degli oggetti selezionati nella pila"
+
+#: ../../bkchem/main.py:231
+msgid "Swap on stack"
+msgstr "Scambia nella pila"
+
+#: ../../bkchem/main.py:233
+msgid "Vertical mirror"
+msgstr "Rispecchia verticalmente"
+
+#: ../../bkchem/main.py:234
+msgid "Creates a reflection of the selected objects, the reflection axis is the common vertical axis of all the selected objects"
+msgstr "Genera una riflessione degli oggetti selezionati, l'asse di riflessione è l'asse verticale comune di tutti gli oggetti selezionati"
+
+#: ../../bkchem/main.py:236
+msgid "Horizontal mirror"
+msgstr "Rispecchia orizzontalmente"
+
+#: ../../bkchem/main.py:237
+msgid "Creates a reflection of the selected objects, the reflection axis is the common horizontal axis of all the selected objects"
+msgstr "Genera una riflessione degli oggetti selezionati, l'asse di riflessione è l'asse orizzontale comune di tutti gli oggetti selezionati"
+
+#: ../../bkchem/main.py:240
+msgid "Configure"
+msgstr "Configura"
+
+#: ../../bkchem/main.py:240
+msgid "Set the properties of the object, such as color, font size etc."
+msgstr "Imposta le proprietà degli oggetti, come colore, dimensione carattere etc."
+
+#: ../../bkchem/main.py:244
+msgid "Information about molecules, group expansion and other chemistry related stuff"
+msgstr "Informazione su molecole, gruppo espanso e la relativa chimica" 
+
+#: ../../bkchem/main.py:245
+msgid "Display summary formula and other info on all selected molecules"
+msgstr "Visualizza la formula sommaria e le altre Info su tutte le molecole selezionate"
+
+#: ../../bkchem/main.py:246
+msgid "Check if the selected objects have chemical meaning"
+msgstr "Controlla se gli oggetti selezionati hanno un significato chimico"
+
+#: ../../bkchem/main.py:247
+msgid "Expand all selected groups to their structures"
+msgstr "Espandi tutti i gruppi selezionati e le loro strutture"
+
+#: ../../bkchem/main.py:247
+msgid "Expand groups"
+msgstr "Espandi gruppi"
+
+#: ../../bkchem/main.py:249
+msgid "Compute and display the oxidation number of selected atoms"
+msgstr "Calcola e visualizza i numeri di ossidazione degli atomi selezionati"
+
+#: ../../bkchem/main.py:249
+msgid "Compute oxidation number"
+msgstr "Calcola il numero di ossidazione"
+
+#: ../../bkchem/main.py:251
+msgid "Read SMILES"
+msgstr "Leggi SMILES"
+
+#: ../../bkchem/main.py:251
+msgid "Read a SMILES string and convert it to structure"
+msgstr "Leggi una stringa SMILES e convertila in struttura"
+
+#: ../../bkchem/main.py:252
+msgid "Read INChI"
+msgstr "Leggi INChI"
+
+#: ../../bkchem/main.py:252
+msgid "Read an INChI string and convert it to structure"
+msgstr "Leggi una stringa INChI e convertila in struttura"
+
+#: ../../bkchem/main.py:254
+msgid "Generate SMILES"
+msgstr "Genera SMILES"
+
+#: ../../bkchem/main.py:254
+msgid "Generate SMILES for the selected structure"
+msgstr "Genera SMILES per la struttura selezionata"
+
+#: ../../bkchem/main.py:255
+msgid "Generate an INChI for the selected structure by calling the INChI program"
+msgstr "Genera un INChI fper la struttura selezionata richiamando il programma INChI"
+
+#: ../../bkchem/main.py:258
+msgid "Set display form"
+msgstr "Imposta modo visione"
+
+#: ../../bkchem/main.py:259
+msgid "The display form is stored in the saved file and tells how the molecule should be displayed in text"
+msgstr "Il modo di visualizzazione è archiviato nel file salvato e dice come le molecole dovrebbero essere visualizzate nel testo"
+
+#: ../../bkchem/main.py:261
+msgid "Set molecule name"
+msgstr "Imposta il nome delle molcole"
+
+#: ../../bkchem/main.py:261
+msgid "Set the name of the selected molecule"
+msgstr "Imposta il nome delle molecole selezionate"
+
+#: ../../bkchem/main.py:262
+msgid "Set molecule ID"
+msgstr "Imposta ID delle molecole"
+
+#: ../../bkchem/main.py:262
+msgid "Set the ID of the selected molecule"
+msgstr "Imposta ID delle molecole selezionate"
+
+#: ../../bkchem/main.py:264
+msgid "Create a fragment from the selected part of the molecule"
+msgstr "Crea un frammento dalla parte selezionata della molecola"
+
+#: ../../bkchem/main.py:264
+msgid "Create fragment"
+msgstr "Crea frammento"
+
+#: ../../bkchem/main.py:265
+msgid "Show already defined fragments"
+msgstr "Mostra i frammenti già definiti"
+
+#: ../../bkchem/main.py:265
+msgid "View fragments"
+msgstr "Vedi i frammenti"
+
+#: ../../bkchem/main.py:267
+msgid "Convert selected part of chain to linear fragment. The selected chain must not be split."
+msgstr "Converti la parte selezionata della catena a frammento lineare. La catena selezioanta non deve essere divisa."
+
+#: ../../bkchem/main.py:267
+msgid "Convert selection to linear form"
+msgstr "Converti la selezione alla forma lineare"
+
+#: ../../bkchem/main.py:271
+msgid "Settings that affect how BKchem works"
+msgstr "Regolazioni che interessano come BKchem funziona"
+
+#: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:273
+#: ../../bkchem/main.py:274
+msgid "Options"
+msgstr "Opzioni"
+
+#: ../../bkchem/main.py:272
+msgid "Set the default drawing style here"
+msgstr "Imposta stile default di disegno qui"
+
+#: ../../bkchem/main.py:272
+msgid "Standard"
+msgstr "Standard"
+
+#: ../../bkchem/main.py:273
+msgid "Set the language used after next restart"
+msgstr "Imposta la lingua usata dopo il prossimo riavvio"
+
+#: ../../bkchem/main.py:274
+msgid "INChI program path"
+msgstr "Percorso programma INChI"
+
+#: ../../bkchem/main.py:274
+msgid "To use INChI in BKchem you must first give it a path to the INChI program here"
+msgstr "Come usare INChI in BKchem prima tu devi dare un percorso al programma INChI"
+
+#: ../../bkchem/main.py:278
+msgid "Help and information about the program"
+msgstr "Aiuto e informazioni sul programma"
+
+#: ../../bkchem/main.py:278 ../../bkchem/main.py:279
+msgid "Help"
+msgstr "Aiuto"
+
+#: ../../bkchem/main.py:279
+msgid "About"
+msgstr "About"
+
+#: ../../bkchem/main.py:279
+msgid "General information about BKchem"
+msgstr "Informazione generale su BKchem"
+
+#: ../../bkchem/main.py:282
+msgid "Small additional scripts"
+msgstr "Piccoli script addizionali"
+
+#: ../../bkchem/main.py:282 ../../bkchem/main.py:324
+msgid "Plugins"
+msgstr "Plugins"
+
+#: ../../bkchem/main.py:539
+msgid "About BKchem"
+msgstr "About BKchem"
+
+#: ../../bkchem/main.py:541
+msgid "version"
+msgstr "versione"
+
+#: ../../bkchem/main.py:650
+msgid "Sorry but I cannot open the same file twice."
+msgstr "Mi spice ma non posso aprire lo stesso file due volte."
+
+#: ../../bkchem/main.py:700
+msgid "Really close?"
+msgstr "Veramente chiuso?"
+
+#: ../../bkchem/main.py:701
+msgid "There are unsaved changes in file %s, what should I do?"
+msgstr "Ci sono dei cambiamenti non salvati nel file %s, Cosa dovrei fare?"
+
+#: ../../bkchem/main.py:702 ../../bkchem/main.py:703
+msgid "Close"
+msgstr "Chiudi"
+
+#: ../../bkchem/main.py:747
+msgid "Save As..."
+msgstr "Salav come..."
+
+#: ../../bkchem/main.py:748 ../../bkchem/main.py:822
+msgid "CD-SVG file"
+msgstr "CD-SVG file"
+
+#: ../../bkchem/main.py:749 ../../bkchem/main.py:823
+msgid "Gzipped CD-SVG file"
+msgstr "Gzipped CD-SVG file"
+
+#: ../../bkchem/main.py:750 ../../bkchem/main.py:824
+msgid "CDML file"
+msgstr "CDML file"
+
+#: ../../bkchem/main.py:751
+msgid "Gzipped CDML file"
+msgstr "Gzipped CDML file"
+
+#: ../../bkchem/main.py:756
+msgid "File already opened!"
+msgstr "File già aperto!"
+
+#: ../../bkchem/main.py:756
+msgid "Sorry but you are already editing a file with this name (%s), please choose a different name or close the other file."
+msgstr "Spiacente ma sto già modificando un file con questo nome (%s), perfavore scegli un differente nome o chiudi il file."
+
+#: ../../bkchem/main.py:776
+msgid "gzipped CDML"
+msgstr "gzipped CDML"
+
+#: ../../bkchem/main.py:779
+msgid "CDML"
+msgstr "CDML"
+
+#: ../../bkchem/main.py:782
+msgid "gzipped CD-SVG"
+msgstr "gzipped CD-SVG"
+
+#: ../../bkchem/main.py:785
+msgid "CD-SVG"
+msgstr "CD-SVG"
+
+#: ../../bkchem/main.py:788
+msgid "saved to %s file: %s"
+msgstr "salvato a %s file: %s"
+
+#: ../../bkchem/main.py:793
+msgid "failed to save to %s file: %s"
+msgstr "Errore nel salvare a %s file: %s"
+
+#: ../../bkchem/main.py:815 ../../bkchem/main.py:1004
+msgid "Forget changes in currently visiting file?"
+msgstr "Dimentichi i cambiamenti nel file attualmente in uso?"
+
+#: ../../bkchem/main.py:815 ../../bkchem/main.py:1004
+msgid "Forget changes?"
+msgstr "Dimentichi i cambiamenti?"
+
+#: ../../bkchem/main.py:821
+msgid "All native formats"
+msgstr "Tutti i formati nativi"
+
+#: ../../bkchem/main.py:825
+msgid "CDGZ file"
+msgstr "CDGZ file"
+
+#: ../../bkchem/main.py:826
+msgid "Gzipped files"
+msgstr "Gzipped files"
+
+#: ../../bkchem/main.py:827 ../../bkchem/main.py:1010
+#: ../../bkchem/main.py:1072
+msgid "All files"
+msgstr "Tutti i file"
+
+#: ../../bkchem/main.py:852
+msgid "cannot open file "
+msgstr "Non posso aprire il file "
+
+#: ../../bkchem/main.py:866 ../../bkchem/main.py:878
+msgid "error reading file"
+msgstr "errore nella lettura del file"
+
+#: ../../bkchem/main.py:888
+msgid "File was not loaded"
+msgstr "Il file non è stato caricato"
+
+#: ../../bkchem/main.py:897
+msgid "Proceed?"
+msgstr "Procedere?"
+
+#: ../../bkchem/main.py:898
+msgid "CDML data seem present in SVG but have wrong namespace. Proceed?"
+msgstr "I dati CDML sembrano presenti in SVG ma hanno namespace errato. Procedere?"
+
+#: ../../bkchem/main.py:904
+msgid "file not loaded"
+msgstr "file non caricato"
+
+#: ../../bkchem/main.py:908
+msgid "cdml data are not present in SVG or are corrupted!"
+msgstr "I dati CDML non sono presenti in SVG o sono corrotti!"
+
+#: ../../bkchem/main.py:914 ../../bkchem/main.py:1056
+msgid "loaded file: "
+msgstr "File caricato: "
+
+#: ../../bkchem/main.py:924
+msgid "Export SVG"
+msgstr "Esporta a SVG"
+
+#: ../../bkchem/main.py:924
+msgid "SVG file"
+msgstr "SVG file"
+
+#: ../../bkchem/main.py:938
+msgid "exported to SVG file: "
+msgstr "esportato a SVG file: "
+
+#: ../../bkchem/main.py:1009 ../../bkchem/main.py:1071
+msgid "file"
+msgstr "file"
+
+#: ../../bkchem/main.py:1035 ../../bkchem/main.py:1043
+msgid "Import error"
+msgstr "Errore di importazione"
+
+#: ../../bkchem/main.py:1035 ../../bkchem/main.py:1043
+msgid ""
+"Plugin failed to import with following error:\n"
+" %s"
+msgstr ""
+"Il plugin non è riuscito a importare e notifica il seguente errore:\n"
+" %s"
+
+#: ../../bkchem/main.py:1087
+msgid "Export error"
+msgstr "Errore di esportazione"
+
+#: ../../bkchem/main.py:1087
+msgid ""
+"Plugin failed to export with following error:\n"
+" %s"
+msgstr ""
+"Il plugin non è riuscito a esportare e notifica il seguente errore:\n"
+" %s"
+
+#: ../../bkchem/main.py:1091
+msgid "exported file: "
+msgstr "file esportato: "
+
+#: ../../bkchem/main.py:1138
+msgid ""
+"Before you use this tool, be warned that not all features of SMILES are currently supported.\n"
+"There is no support for stereo-related information, for the square brackets [] and a few more things.\n"
+"\n"
+"Enter SMILES:"
+msgstr ""
+"Prima di usare questo strumento, occorre informare che non tutti i tratti di SMILES sono correntemente supportati.\n"
+"Non c'è nessun supporto per le informazioni relative agli stereo isomeri, per le parentesi quadre [] e altro.\n"
+"\n"
+"Enter SMILES:"
+
+#: ../../bkchem/main.py:1175
+msgid ""
+"Before you use his tool, be warned that not all features of INChI are currently supported.\n"
+"There is no support for stereo-related information, isotopes and a few more things.\n"
+"The INChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
+"\n"
+"Enter INChI:"
+msgstr ""
+"Prima di usare questo strumento, occorre informare che non tutti i tratti di InChI sono correntemente supportati.\n"
+"Non c'è nessun supporto per le informazioni relative agli stereo isomeri, isotopi e altro.\n"
+"Il INChI dovrebbe essere digitato in semplice forma testuale, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
+"\n"
+"Inserisci INChI:"
+
+#: ../../bkchem/main.py:1202 ../../bkchem/main.py:1209
+#: ../../bkchem/main.py:1216 ../../bkchem/main.py:1224
+msgid "Error processing %s"
+msgstr "Errore in elaborazione %s"
+
+#: ../../bkchem/main.py:1203
+msgid ""
+"Some feature of the submitted InChI is not supported.\n"
+"\n"
+"You have most probaly submitted a multicomponent structure (having a . in the sumary layer"
+msgstr ""
+"Alcuni tratti in InChI non sono supportati.\n"
+"\n"
+"Tu hai molto probabilmente presentato una struttura multicomponente (avendo un . nel layer sommario"
+
+#: ../../bkchem/main.py:1210
+msgid ""
+"There was an error reading the submitted InChI.\n"
+"\n"
+"If you are sure it is a valid InChI, please send me a bug report."
+msgstr ""
+"C'è stato un errore in lettura nel InChI presentato.\n"
+"\n"
+"Se tu sei sicuro che sia un valido InChI, spedisci un rapporto degli errori."
+
+#: ../../bkchem/main.py:1217
+msgid ""
+"The submitted InChI has unsupported version '%s'.\n"
+"\n"
+"You migth try resubmitting with the version string (the first part of InChI) changed to '1'."
+msgstr ""
+"Il InChI presentato è una versione non supportata '%s'.\n"
+"\n"
+"Potresti provare a ripresentare la versione della stringa (la prima parte del InChI) cambiata a '1'."
+
+#: ../../bkchem/main.py:1225
+msgid ""
+"The reading of InChI failed with following error:\n"
+"\n"
+"'%s'\n"
+"\n"
+"If you are sure you have submitted a valid InChI, please send me a bug report."
+msgstr ""
+"La lettura del InChI è fallito col seguente errore:\n"
+"\n"
+"'%s'\n"
+"\n"
+"Se sei sicuro che hai presentato un valido InChI, spedisci un rapporto degli errori."
+
+#: ../../bkchem/main.py:1382
+msgid "The file was saved as a template %s"
+msgstr "Il file è stato salvato come template %s"
+
+#: ../../bkchem/messages.py:26
+msgid ""
+"click on atom to add a new single bond, click on bond to change its order (or change direction)\n"
+"Shift+click on a double bond to move the position of the second line"
+msgstr ""
+"click su un atomo e aggiungi un nuovo legame singolo, click su un legame per cambiare il suo ordine (o cambia direzione)\n"
+"Shift+click su un doppio legame per muovere la posizione della seconda linea"
+
+#: ../../bkchem/messages.py:27
+msgid "length of the drawn bond is fixed to a preset value"
+msgstr "la lunghezza del legame disegnato è fissata al valore preimpostasto"
+
+#: ../../bkchem/messages.py:28
+msgid "freestyle drawing - no bond length or angle restrictions are applied"
+msgstr "disegno in stile libero - nessuna restrizione è applicata alla lunghezza o angolo di legame"
+
+#: ../../bkchem/messages.py:33
+msgid "length of the drawn arrow (arrow part) is fixed to a preset value"
+msgstr "lunghezza della freccia disegnata (parte della freccia) è fissata al valore preimpostato"
+
+#: ../../bkchem/messages.py:34
+msgid "freestyle drawing - no arrow length or angle restrictions are applied"
+msgstr "disegno in stile libero - nessuna restrizione è applicata alla lunghezza o angolo della freccia"
+
+#: ../../bkchem/messages.py:35
+msgid "arrow is composed of straight lines"
+msgstr "la freccia è composta da linee dritte"
+
+#: ../../bkchem/messages.py:36
+msgid "arrow is drawn as a b-spline"
+msgstr "la freccia è disegnata come curva"
+
+#: ../../bkchem/messages.py:41
+msgid "drag an atom or a bond to 2D-rotate a molecule around its geometrical center"
+msgstr "trascina un atomo o un legame per la rotazione 2D di una molecola attorno al suo centro geometrico"
+
+#: ../../bkchem/messages.py:42
+msgid ""
+"drag an atom or a bond to 3D-rotate a molecule around its geometrical center \n"
+"Please note that it is not possible to add a template to an atom with z-coordinate other than 0"
+msgstr ""
+"trascina un atomo o un legame per la rotazione 3D di una molecola attorno al suo centro geometrico \n"
+"Prego nota che non è possibile aggiungere un template a un atomo con z-coordinate tranne 0"
+
+#: ../../bkchem/messages.py:47 ../../bkchem/messages.py:48
+#: ../../bkchem/messages.py:49 ../../bkchem/messages.py:50
+msgid "click and drag to draw the corresponding shape"
+msgstr "click e trascina per disegnare la corrispondente forma"
+
+#: ../../bkchem/messages.py:51
+msgid "each left-button click creates one point of the polygon, right click closes it"
+msgstr "ogni click col pulsante sinistro crea un punto del poligono, click a destra lo chiude"
+
+#: ../../bkchem/messages.py:56
+msgid "click an atom to add a radical mark to it, it will be removed in case it is already present"
+msgstr "click su un atomo per aggiungere un radicale a esso, sarà rimosso nel caso sia già presente"
+
+#: ../../bkchem/messages.py:57
+msgid "click an atom to add a biradical mark to it, it will be removed in case it is already present"
+msgstr "click su un atomo per aggiungere un biradicale a esso, sarà rimosso nel caso sia già presente"
+
+#: ../../bkchem/messages.py:58
+msgid "click an atom to add a free electron pair mark to it, it will be removed in case it is already present"
+msgstr "click su un atomo per aggiungere una coppia di elettroni cerchiati a esso, sarà rimosso nel caso sia già presente"
+
+#: ../../bkchem/messages.py:59
+msgid "click an atom to add a plus mark to it, it will be removed in case it is already present"
+msgstr "click su un atomo per aggiungere un simbolo + cerchiato a esso, sarà rimosso nel caso sia già presente"
+
+#: ../../bkchem/messages.py:60
+msgid "click an atom to add a minus mark to it, it will be removed in case it is already present"
+msgstr "click su un atomo per aggiungere un simbolo - cerchiato a esso, sarà rimosso nel caso sia già presente"
+
+#: ../../bkchem/messages.py:65
+msgid "click a bond or two atoms to align the specified line into vertical position"
+msgstr "click un legame o due atomi per allinearli alla specificata linea in posizione verticale"
+
+#: ../../bkchem/messages.py:66
+msgid "click a bond or two atoms to align the specified line into horizontal position"
+msgstr "click un legame o due atomi per allinearli alla specificata linea in posizione orizzontale"
+
+#: ../../bkchem/messages.py:67
+msgid "click an atom or bond to perform an inversion of the molecule through this atom (center of the bond)"
+msgstr "click su atomo o un legame per eseguire l'inversione della molecola attraverso quest'atomo (centro del legame)"
+
+#: ../../bkchem/messages.py:68
+msgid "click a bond or two atoms to mirror the molecule through the specified line"
+msgstr "click su un legame o due atomi per riflettere la molecola attraverso la specificata linea"
+
+#: ../../bkchem/messages.py:76
+msgid ""
+"BKchem was concieved and written by BK\n"
+"and is performed by Python, Pmw & (optionaly :) PIL.\n"
+"\n"
+"BKchem is free software and is distributed under GNU GPL.\n"
+"BKchem is provided as is without warranty of any kind.\n"
+"- see the file 'gpl.txt' in distribution directory for more info.\n"
+"\n"
+"Among other things GNU GPL allows you to study, modify\n"
+"and redistribute BKchem as long as you do it under GNU GPL."
+msgstr ""
+"BKchem è stato concepito e scritto da BK\n"
+"è stato eseguito per mezzo di Python, Pmw & (optionaly :) PIL.\n"
+"\n"
+"BKchem è software libero e distribuito con licenza GNU GPL.\n"
+"BKchem è fornito come è senza garanzia di ogni genere.\n"
+"- vedi il file 'gpl.txt' nella cartella principale per più informazioni.\n"
+"\n"
+"tra le altre cose GNU GPL ti permette di studiare, modificare\n"
+"e distribuire BKchem finchè lo fate sotto licenza GNU GPL."
+
+#: ../../bkchem/messages.py:87
+msgid ""
+"UNABLE TO IMPORT PMW\n"
+"\n"
+"Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.\n"
+"(for more info on Pmw see documentation)"
+msgstr ""
+"UNABLE TO IMPORT PMW\n"
+"\n"
+"Spiacente, ma BKchem dipende troppo da Pmw per usarlo senza. Prego installa Pmw e prova ancora.\n"
+"(per più informazioni su Pmw vedi la documentazione)"
+
+#: ../../bkchem/messages.py:93
+msgid ""
+"UNABLE TO IMPORT OASA\n"
+"\n"
+"Sorry, but from version 0.10 BKchem uses the OASA library internally and therefor cannot run without it."
+msgstr ""
+"INCAPACE DI IMPORTARE OASA\n"
+"\n"
+"Spiacente, ma dalla versione 0.10 BKchem usa la libreria OASA e perciò non può essere caricato senza."
+
+#: ../../bkchem/messages.py:98
+msgid ""
+"Python version too low!\n"
+"\n"
+"From version 0.10 BKchem needs Python 2.3 or higher to run properly. You only have Python version %s.\n"
+"Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem."
+msgstr ""
+"Versione di Python obsoleta!\n"
+"\n"
+"Dalla versione 0.10 BKchem necessita di Python 2.3 o maggiore per caricare correttamente.  Hai solo la versione Python %s.\n"
+"Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem."
+
+#: ../../bkchem/messages.py:105
+msgid ""
+"BKchem is starting.\n"
+"\n"
+"Unfortunatelly,\n"
+"the splash image was not found :("
+msgstr ""
+"BKchem sta caricando.\n"
+"\n"
+"Sfortunatamente,\n"
+"L'immagine di avvio non è stata trovata :("
+
+#: ../../bkchem/messages.py:111
+msgid ""
+"This CDML document was created using different standard values than you are currently using. To retain the same drawing style it could be more convenient to use these new values for this file. Your global preferences will be unaffected. \n"
+"\n"
+"Do you want set these new standard values?"
+msgstr ""
+"Questo documento CDML è stato creato usando diversi valori di riferimento che stai attuelmente usando. Per mantenere lo stesso stile dell'illustrazione potrebbe essere più conveniente usare questi nuovi valori per questo file. Le vostre preferenze globali saranno inalterate. \n"
+"\n"
+"Vuoi impostare questi nuovi valori di riferimento?"
+
+#: ../../bkchem/modes.py:338
+msgid "edit"
+msgstr "edita"
+
+#: ../../bkchem/modes.py:653
+msgid ""
+"Unable to parse the text-\n"
+"probably error with input encoding!"
+msgstr ""
+"Incapace di analizzare il testo-\n"
+"probabilmente un errore nella codifica dell'input!"
+
+#: ../../bkchem/modes.py:717
+msgid "draw"
+msgstr "disegna"
+
+#: ../../bkchem/modes.py:725 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2190
+msgid "1"
+msgstr "1"
+
+#: ../../bkchem/modes.py:725 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2190
+msgid "18"
+msgstr "18"
+
+#: ../../bkchem/modes.py:725 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2190
+msgid "30"
+msgstr "30"
+
+#: ../../bkchem/modes.py:725 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2190
+msgid "6"
+msgstr "6"
+
+#: ../../bkchem/modes.py:726
+msgid "double"
+msgstr "doppio"
+
+#: ../../bkchem/modes.py:726
+msgid "single"
+msgstr "singolo"
+
+#: ../../bkchem/modes.py:726
+msgid "triple"
+msgstr "triplo"
+
+#: ../../bkchem/modes.py:727
+msgid "adder"
+msgstr "sinuoso" 
+
+#: ../../bkchem/modes.py:727
+msgid "bold"
+msgstr "grassetto"
+
+#: ../../bkchem/modes.py:727
+msgid "dash"
+msgstr "tratteggiato"
+
+#: ../../bkchem/modes.py:727
+msgid "dotted"
+msgstr "punteggiato"
+
+#: ../../bkchem/modes.py:727
+msgid "hatch"
+msgstr "barrato"
+
+#: ../../bkchem/modes.py:727
+msgid "wedge"
+msgstr "cuneo"
+
+#: ../../bkchem/modes.py:727 ../../bkchem/modes.py:938
+msgid "normal"
+msgstr "normale"
+
+#: ../../bkchem/modes.py:728 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2191
+msgid "fixed length"
+msgstr "lunghezza fissata"
+
+#: ../../bkchem/modes.py:728 ../../bkchem/modes.py:937
+#: ../../bkchem/modes.py:2191
+msgid "freestyle"
+msgstr "stile libero"
+
+#: ../../bkchem/modes.py:729
+msgid "normal double bonds for wedge/hatch"
+msgstr "doppi legami normali cuneo/barrato"
+
+#: ../../bkchem/modes.py:729
+msgid "simple double bonds for wedge/hatch"
+msgstr "doppi legami semplici cuneo/barrato"
+
+#: ../../bkchem/modes.py:760 ../../bkchem/modes.py:807
+#: ../../bkchem/modes.py:838 ../../bkchem/modes.py:1144
+#: ../../bkchem/modes.py:1146
+msgid "maximum valency exceeded!"
+msgstr "superata la massima valenza!"
+
+#: ../../bkchem/modes.py:771 ../../bkchem/modes.py:820
+msgid "Groups could have valency of 1 only! It was transformed to text!"
+msgstr "I gruppi potrebbero avere valenza solo di 1! È stato trasformato a testo!"
+
+#: ../../bkchem/modes.py:932 ../../bkchem/modes.py:1835
+msgid "arrow"
+msgstr "freccia"
+
+#: ../../bkchem/modes.py:938
+msgid "spline"
+msgstr "curva"
+
+#: ../../bkchem/modes.py:1051 ../../bkchem/modes.py:1616
+#: ../../bkchem/modes.py:1835
+msgid "plus"
+msgstr "più"
+
+#: ../../bkchem/modes.py:1092
+msgid "template"
+msgstr "template"
+
+#: ../../bkchem/modes.py:1102
+msgid "No template is available"
+msgstr "Nessun template disponibile"
+
+#: ../../bkchem/modes.py:1110
+msgid "Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."
+msgstr "Spiacente, non è possibile aggiungere un template a un atomo con coordinata Z non zero."
+
+#: ../../bkchem/modes.py:1158
+msgid "focused atom marked as 'template atom'"
+msgstr "Evidenziato atomo contrassegnato come 'template Atomo'"
+
+#: ../../bkchem/modes.py:1161
+msgid "focused bond marked as 'template bond'"
+msgstr "Evidenziato atomo contrassegnato come 'template legame'"
+
+#: ../../bkchem/modes.py:1183
+msgid "text"
+msgstr "testo"
+
+#: ../../bkchem/modes.py:1235
+msgid "The text mode can no longer be used to edit atoms, use atom mode."
+msgstr "Il modo testo non può più essere usato per editare atomi, usa il modo Atomo."
+
+#: ../../bkchem/modes.py:1255
+msgid "rotate"
+msgstr "ruota"
+
+#: ../../bkchem/modes.py:1258
+msgid "2D"
+msgstr "2D"
+
+#: ../../bkchem/modes.py:1258
+msgid "3D"
+msgstr "3D"
+
+#: ../../bkchem/modes.py:1332
+msgid "transformation mode"
+msgstr "Modo trasformazione"
+
+#: ../../bkchem/modes.py:1336
+msgid "free rotation around bond"
+msgstr "libera rotazione attorno al legame"
+
+#: ../../bkchem/modes.py:1336
+msgid "horizontal align"
+msgstr "allineamento orizzontale"
+
+#: ../../bkchem/modes.py:1336
+msgid "invert through a point"
+msgstr "simmetria centrale"
+
+#: ../../bkchem/modes.py:1336
+msgid "mirror through a line"
+msgstr "simmetria assiale"
+
+#: ../../bkchem/modes.py:1336
+msgid "vertical align"
+msgstr "allineamento verticale"
+
+#: ../../bkchem/modes.py:1354
+msgid "select the second atom, please."
+msgstr "seleziona il secondo atomo."
+
+#: ../../bkchem/modes.py:1375
+msgid "atoms must be in the same molecule!"
+msgstr "Gli atomi devono essere nella stessa molecola!"
+
+#: ../../bkchem/modes.py:1378
+msgid "atoms must be different!"
+msgstr "Gli atomi devono essere differenti!"
+
+#: ../../bkchem/modes.py:1486
+msgid "Bond is part of a ring, there is no possiblity for rotation!"
+msgstr "Il legame è parte di un anello, non c'è nessuna possibilità di ruotare!"
+
+#: ../../bkchem/modes.py:1517
+msgid "vector graphics"
+msgstr "disegni vettoriali"
+
+#: ../../bkchem/modes.py:1519
+msgid "circle"
+msgstr "cerchio"
+
+#: ../../bkchem/modes.py:1519
+msgid "oval"
+msgstr "ellisse"
+
+#: ../../bkchem/modes.py:1519
+msgid "polygon"
+msgstr "poligono"
+
+#: ../../bkchem/modes.py:1519
+msgid "polyline"
+msgstr "polilinea"
+
+#: ../../bkchem/modes.py:1519
+msgid "rectangle"
+msgstr "retteangolo"
+
+#: ../../bkchem/modes.py:1519
+msgid "square"
+msgstr "quadrato"
+
+#: ../../bkchem/modes.py:1612
+msgid "mark"
+msgstr "contrassegno"
+
+#: ../../bkchem/modes.py:1615
+msgid "biradical"
+msgstr "biradicale"
+
+#: ../../bkchem/modes.py:1615
+msgid "dotted electron pair"
+msgstr "coppia di elettroni punteggiata"
+
+#: ../../bkchem/modes.py:1615
+msgid "electron pair"
+msgstr "coppia di elettroni"
+
+#: ../../bkchem/modes.py:1615
+msgid "radical"
+msgstr "radicale"
+
+#: ../../bkchem/modes.py:1616
+msgid "minus"
+msgstr "meno"
+
+#: ../../bkchem/modes.py:1616
+msgid "pz orbital"
+msgstr "orbitale pz"
+
+#: ../../bkchem/modes.py:1617
+msgid "add"
+msgstr "aggiungi"
+
+#: ../../bkchem/modes.py:1617
+msgid "remove"
+msgstr "rimuovi"
+
+#: ../../bkchem/modes.py:1642
+msgid "This mark type is not allowed for this object"
+msgstr "Questo tipo di segno non è permesso per questo oggetto"
+
+#: ../../bkchem/modes.py:1657
+msgid "There are no marks of type %s on the focused atom"
+msgstr "Non c'è nessun segno tipo %s sull'Atomo evidenziato"
+
+#: ../../bkchem/modes.py:1745 ../../bkchem/modes.py:1979
+msgid "atom"
+msgstr "Atomo"
+
+#: ../../bkchem/modes.py:1833
+msgid "reaction"
+msgstr "reazione"
+
+#: ../../bkchem/modes.py:1835
+msgid "condition"
+msgstr "condizione"
+
+#: ../../bkchem/modes.py:1835
+msgid "product"
+msgstr "prodotto"
+
+#: ../../bkchem/modes.py:1835
+msgid "reactant"
+msgstr "reagente"
+
+#: ../../bkchem/modes.py:1845
+msgid "No arrow present"
+msgstr "Nessuna freccia presente"
+
+#: ../../bkchem/modes.py:1846
+msgid "The reaction information in bkchem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."
+msgstr "Le informazioni di reazione in bkchem sono associate con le freccie, perciò devi avere almeno una freccia prima di costruire qualche reazione."
+
+#: ../../bkchem/modes.py:1960
+msgid "users templates"
+msgstr "template personali"
+
+#: ../../bkchem/modes.py:1977
+msgid "External data management"
+msgstr "Gestione dati esterni"
+
+#: ../../bkchem/modes.py:1979
+msgid "bond"
+msgstr "legame"
+
+#: ../../bkchem/modes.py:1979
+msgid "molecule"
+msgstr "molecola"
+
+#: ../../bkchem/modes.py:2061
+msgid "The data were set to the active item"
+msgstr "I dati furono impostati per l'oggetto attivo"
+
+#: ../../bkchem/modes.py:2083
+msgid "Set"
+msgstr "Imposta"
+
+#: ../../bkchem/modes.py:2183
+msgid "Rapid drawing"
+msgstr "Disegno veloce"
+
+#: ../../bkchem/modes.py:2192
+msgid "auto clean after drawing is finished"
+msgstr "auto pulitura dopo il completamento del disegno"
+
+#: ../../bkchem/modes.py:2192
+msgid "do nothing after drawing is done"
+msgstr "non fare niente dopo il completamento del disegno"
+
+#: ../../bkchem/modes.py:2348
+msgid "Brackets"
+msgstr "Quadre"
+
+#: ../../bkchem/modes.py:2377
+msgid "Miscelanous small modes"
+msgstr "Vari piccoli modi"
+
+#: ../../bkchem/modes.py:2379
+msgid "Numbering"
+msgstr "Numerazione"
+
+#: ../../bkchem/paper.py:581
+msgid "Proceed"
+msgstr "Procedi"
+
+#: ../../bkchem/paper.py:582
+msgid ""
+"This CDML document does not seem to have supported version.\n"
+"\t\t\t\t       \n"
+" Do you want to proceed reading this document?"
+msgstr ""
+"Questo documento CDML non sembra essere una versione supportata.\n"
+"\t\t\t\t       \n"
+" Vuoi prodecedere con la lettura del documento?"
+
+#: ../../bkchem/paper.py:638
+msgid "Replace standard values"
+msgstr "Sostituisci i valori di riferimento"
+
+#: ../../bkchem/paper.py:831
+msgid "concatenated overlaping atoms"
+msgstr "concatenated overlaping Atomos"
+
+#: ../../bkchem/paper.py:1060
+msgid "killed %s object(s) to clipboard"
+msgstr "cancellato %s oggetto(i) negli appunti"
+
+#: ../../bkchem/paper.py:1063
+msgid "copied %s object(s) to clipboard"
+msgstr "copiato %s oggetto(i) negli appunti"
+
+#: ../../bkchem/paper.py:1100
+msgid "pasted from clipboard"
+msgstr "incollato dagli appunti"
+
+#: ../../bkchem/paper.py:1261
+msgid "undo (%d further undos available)"
+msgstr "annulla (%d ulteriori annullamenti disponibili)"
+
+#: ../../bkchem/paper.py:1263
+msgid "no further undo"
+msgstr "nessun ulteriore annullamento"
+
+#: ../../bkchem/paper.py:1274
+msgid "redo (%d further redos available)"
+msgstr "ripeti (%d ulteriori ripetizioni disponibili)"
+
+#: ../../bkchem/paper.py:1276
+msgid "no further redo"
+msgstr "nessuna ulteriore ripetizione"
+
+#: ../../bkchem/paper.py:1360
+msgid "selected top_levels were exported to clipboard in SVG"
+msgstr "i livelli superiori selezionati sono stati esportati agli appunti in SVG"
+
+#: ../../bkchem/paper.py:1402
+msgid "Info on selected molecules"
+msgstr "Info sulle molecole selezionate"
+
+#: ../../bkchem/paper.py:1410
+msgid "Name: %s"
+msgstr "Nome: %s"
+
+#: ../../bkchem/paper.py:1412
+msgid "Id: %s"
+msgstr "Id: %s"
+
+#: ../../bkchem/paper.py:1414 ../../bkchem/paper.py:1427
+msgid "Formula: %s"
+msgstr "Formula: %s"
+
+#: ../../bkchem/paper.py:1416 ../../bkchem/paper.py:1429
+msgid "Weight: %4.3f"
+msgstr "Peso: %4.3f"
+
+#: ../../bkchem/paper.py:1418 ../../bkchem/paper.py:1431
+msgid "Composition: %s"
+msgstr "Composizione: %s"
+
+#: ../../bkchem/paper.py:1422
+msgid "Individual molecules:"
+msgstr "Molecole individuali:"
+
+#: ../../bkchem/paper.py:1425
+msgid "Summary for all selected molecules:"
+msgstr "Sommario per tutte le molecole selezionate:"
+
+#: ../../bkchem/paper.py:1447
+msgid "Chemistry check of selected molecules"
+msgstr "Controllo della chimica per le molecole selezionate"
+
+#: ../../bkchem/paper.py:1552
+msgid "selected items were lifted"
+msgstr "gli oggetti selezionati sono stati alzati"
+
+#: ../../bkchem/paper.py:1565
+msgid "selected items were put back"
+msgstr "gli articoli selezionati sono stati abbassati"
+
+#: ../../bkchem/paper.py:1579
+msgid "selected items were swapped"
+msgstr "gli articoli selezionati sono stati scambiati"
+
+#: ../../bkchem/splash.py:35
+msgid "BKchem is starting..."
+msgstr "BKchem sta caricando..."
+
+#: ../../bkchem/validator.py:92
+msgid "%d text only atom(s) (chemical interpretation is unknown)"
+msgstr "%d Atomo(i) solo testo (l'interpretazione chimica è sconosciuta)"
+
+#: ../../bkchem/validator.py:95
+msgid "%d atom(s) with exceeded valency"
+msgstr "%d Atomo(i) con valenza eccedente"
+
+#: ../../bkchem/validator.py:98
+msgid "%d group(s) (groups need to be expanded for some export formats)"
+msgstr "%d gruppo(i) (per alcuni formati di esportazione gruppi necessari per essere espanso)"
+
+#: ../../bkchem/validator.py:101
+msgid "%d zero order bond(s) (such bonds will not be exported into chemical formats)"
+msgstr "%d legame(i) di ordine zero (tali legami non saranno esportati nei formati chimici)"
+
+#: ../../bkchem/widgets.py:204
+msgid "Font family"
+msgstr "Famiglia di caratteri"
+
+#: ../../bkchem/widgets.py:217
+msgid "Width"
+msgstr "Larghezza"
+
+#: ../../bkchem/widgets.py:232
+msgid "Length"
+msgstr "Lunghezza"
+
+#: ../../bkchem/widgets.py:247
+msgid "Ratio"
+msgstr "Rapporto"
+
+#: ../../bkchem/widgets.py:338
+msgid "Browse"
+msgstr "Esplorare"
+
+#: ../../bkchem/widgets.py:347
+msgid "Select the file"
+msgstr "Seleziona il file"
+
+#: ../../bkchem/widgets.py:353
+msgid "File to create"
+msgstr "File da creare"
+
+#: ../../bkchem/widgets.py:413
+msgid "Subscript numbers"
+msgstr "Numeri a pedice"
+
+#: ../../bkchem/widgets.py:428
+msgid "Superscript charges"
+msgstr "Cariche ad apice"
+
+#: ../../bkchem/widgets.py:431
+msgid "Sup charges"
+msgstr "Cariche a pedice"
+

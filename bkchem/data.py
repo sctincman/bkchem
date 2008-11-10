@@ -131,6 +131,7 @@ languages = {'en': 'English',
              'fr': 'French',
              'pl': 'Polish',
              'tw': 'Traditional Chinese',
+             'it': 'Italian',
              }
 
 

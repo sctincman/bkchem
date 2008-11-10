@@ -97,7 +97,7 @@ class CML2_atom( CML.CML_atom):
                                    ('z3', str( self.z)),
                                    ('elementType', self.symbol)))
     if self.charge:
-      out.setAttribute( 'formalCharge', self.charge)
+      out.setAttribute( 'formalCharge', str( self.charge))
     return out
 
   #def not_enough_data( self):
