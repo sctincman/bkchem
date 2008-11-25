@@ -1291,6 +1291,7 @@ def showbusycursor():
     if not _havebltbusy(root):
         # No busy command, so don't call busy hold on any windows.
         return
+    return
 
     for (window, winInfo) in _toplevelBusyInfo.items():
 	if (window.state() != 'withdrawn' and not winInfo['isBusy']
