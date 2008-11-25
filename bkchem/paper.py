@@ -1461,6 +1461,8 @@ class chem_paper( Canvas, object):
       dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Weight: %4.3f") % comp.get_molecular_weight())
       dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Monoisotopic mass: %12.8f") % comp.get_exact_molecular_mass())
+      dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Composition: %s") % PT.dict_to_composition( comp))
       dialog.insert( 'end', "\n\n")
     if len( s_mols) > 1:
@@ -1473,6 +1475,8 @@ class chem_paper( Canvas, object):
       dialog.insert( "end", _("Formula: %s") % comps)
       dialog.insert( 'end', "\n")
       dialog.insert( "end", _("Weight: %4.3f") % comps.get_molecular_weight())
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Monoisotopic mass: %12.8f") % comps.get_exact_molecular_mass())
       dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Composition: %s") % PT.dict_to_composition( comps))
     dialog.tag_config( 'headline', underline=1)

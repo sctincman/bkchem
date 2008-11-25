@@ -94,7 +94,7 @@ class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
     self.transparent = Tkinter.IntVar()
     self.transparent.set( color == '' and 1 or 0)
     self.checker = Tkinter.Checkbutton( self,
-                                        text="Transparent",
+                                        text=_("Transparent"),
                                         variable=self.transparent,
                                         command=self._set_trasparency)
     self._set_trasparency()

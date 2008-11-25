@@ -100,6 +100,6 @@ class validator_report:
     if self.zero_order_bonds:
       out += _("%d zero order bond(s) (such bonds will not be exported into chemical formats)") % len( self.zero_order_bonds)
     if not out:
-      out = "OK"
+      out = _("OK")
     return out
 

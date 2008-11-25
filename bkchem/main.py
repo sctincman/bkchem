@@ -562,6 +562,7 @@ class BKchem( Tk):
     dialog = Pmw.MessageDialog(self,
                                title = _('About BKchem'),
                                defaultbutton = 0,
+                               buttons=(_("OK"),),
                                message_text = "BKchem " + _("version") + " " + config.current_BKchem_version + "\n\n" + messages.about_text)
     dialog.iconname('BKchem')
     dialog.activate()
@@ -1289,7 +1290,7 @@ Enter InChI:""")
         #  return
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,
-                           title='Generated SMILES',
+                           title=_('Generated SMILES'),
                            buttons=(_('OK'),))
     dial.insert( 'end', text)
     dial.activate()
@@ -1403,7 +1404,7 @@ Enter InChI:""")
     self.paper.swap_sides_of_selected("horizontal")
     text = '\n\n'.join( sms)
     dial = Pmw.TextDialog( self,
-                           title='Generated InChIs',
+                           title=_('Generated InChIs'),
                            buttons=(_('OK'),))
     dial.insert( 'end', text)
     dial.activate()
