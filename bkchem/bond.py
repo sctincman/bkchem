@@ -89,7 +89,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.center = None
     self.auto_bond_sign = 1
     self.simple_double = simple_double
-    self.equithick = 1
+    self.equithick = 0
 
     if package:
       self.read_package( package)
