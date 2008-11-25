@@ -132,6 +132,7 @@ languages = {'en': 'English',
              'pl': 'Polish',
              'tw': 'Traditional Chinese',
              'it': 'Italian',
+             'es': 'Spanish',
              }
 
 

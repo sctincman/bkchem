@@ -16,7 +16,7 @@ msgstr ""
 
 #: ../../bkchem/../plugins/angle_between_bonds.py:10
 msgid "You have to have 2 bonds selected"
-msgstr ""
+msgstr "Devi avere 2 legami sezionati"
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:14
 #: ../../bkchem/../plugins/fetch_name_from_webbook.py:87
@@ -25,15 +25,15 @@ msgstr ""
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:16
 msgid "Connecting to WebBook..."
-msgstr ""
+msgstr "Connessione a WebBook..."
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:22
 msgid "Searching for the compound..."
-msgstr ""
+msgstr "Sto cercando il composto..."
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:30
 msgid "Reading the molfile..."
-msgstr ""
+msgstr "Sto Leggendo il molfile "
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:47
 #: ../../bkchem/interactors.py:50
@@ -43,7 +43,7 @@ msgstr "Nome"
 #: ../../bkchem/../plugins/fetch_from_webbook.py:48
 #, fuzzy
 msgid "Give the name of a molecule to fetch:"
-msgstr "Imposta il nome delle molecole selezionate"
+msgstr "Imposta il nome della molecola selezionata"
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:50
 #: ../../bkchem/../plugins/fetch_from_webbook.py:52
@@ -94,57 +94,57 @@ msgstr "Annulla"
 
 #: ../../bkchem/../plugins/fetch_from_webbook.py:73
 msgid "Sorry, molecule with name %s was not found"
-msgstr ""
+msgstr "Spiacente, molecola con nome %s non è stata trovata"
 
 #: ../../bkchem/../plugins/fetch_name_from_webbook.py:58
-msgid "The molekule was not found"
-msgstr ""
+msgid "The molecule was not found"
+msgstr "La molecola non è stata trovata"
 
 #: ../../bkchem/../plugins/fragment_search.py:15
 msgid "Search progress"
-msgstr ""
+msgstr "Ricerca in corso"
 
 #: ../../bkchem/../plugins/fragment_search.py:21
 msgid "Found: %d matching"
-msgstr ""
+msgstr "Trovato: %d corrispondenza"
 
 #: ../../bkchem/../plugins/fragment_search.py:61
 #, fuzzy
 msgid "Select only one molecule"
-msgstr "Imposta ID delle molecole"
+msgstr "Seleziona solo una molecola"
 
 #: ../../bkchem/../plugins/fragment_search.py:64
 msgid "Draw a molecule that you want to use as the fragment for search"
-msgstr ""
+msgstr "Estrarre una molecola che vuoi usare come frammento per la ricerca"
 
 #: ../../bkchem/../plugins/fragment_search.py:82
 msgid "Searched %d files, %.2fs, %.2fms per file"
-msgstr ""
+msgstr "Ricercati %d files, %.2fs, %.2fms per file"
 
 #: ../../bkchem/../plugins/fragment_search.py:84
 msgid "No files to search in were found"
-msgstr ""
+msgstr "Nessun file da ricercare è stato trovato"
 
 #: ../../bkchem/../plugins/text_to_group.py:24
 msgid "%d textatoms were converted to groups"
-msgstr ""
+msgstr "%d atomi testuali sono stati convertiti a gruppi"
 
 #: ../../bkchem/arrow.py:47
 #, fuzzy
 msgid "electron transfer"
-msgstr "coppia di elettroni"
+msgstr "trasferimento dell'elettrone"
 
 #: ../../bkchem/arrow.py:47
 msgid "equilibrium"
-msgstr ""
+msgstr "equilibrio"
 
 #: ../../bkchem/arrow.py:47
 msgid "equilibrium simple"
-msgstr ""
+msgstr "equilibrio semplice"
 
 #: ../../bkchem/arrow.py:47
 msgid "retrosynthetic"
-msgstr ""
+msgstr "retrosintetico"
 
 #: ../../bkchem/arrow.py:47 ../../bkchem/modes.py:737
 #: ../../bkchem/modes.py:948
@@ -153,7 +153,7 @@ msgstr "normale"
 
 #: ../../bkchem/checks.py:43
 msgid "The linear form was no longer consistent - it has been removed"
-msgstr ""
+msgstr "La forma lineare non era più coerente - è stata rimossa"
 
 #: ../../bkchem/context_menu.py:91
 msgid "Center bond"
@@ -200,17 +200,17 @@ msgstr "Dimensione segno"
 #: ../../bkchem/context_menu.py:231
 #, fuzzy
 msgid "Mark as template atom"
-msgstr "Evidenziato atomo contrassegnato come 'template Atomo'"
+msgstr "Evidenziato come atomo template"
 
 #: ../../bkchem/context_menu.py:240
 #, fuzzy
 msgid "Mark as template bond"
-msgstr "Evidenziato atomo contrassegnato come 'template legame'"
+msgstr "Evidenziato come legame template"
 
 #: ../../bkchem/context_menu.py:250
 #, fuzzy
 msgid "Show symbol"
-msgstr "Simbolo atomico"
+msgstr "Mostra simbolo "
 
 #: ../../bkchem/context_menu.py:252 ../../bkchem/dialogs.py:219
 msgid "Hydrogens"
@@ -241,7 +241,7 @@ msgstr "Larghezza legame"
 #: ../../bkchem/context_menu.py:257 ../../bkchem/dialogs.py:251
 #: ../../bkchem/dialogs.py:689
 msgid "Wedge/Hatch width"
-msgstr "Larghezza Cresta/Trogolo"
+msgstr "Larghezza Cuneo/Tratteggio"
 
 #: ../../bkchem/context_menu.py:258
 msgid "Symbol positioning"
@@ -456,11 +456,11 @@ msgstr "Margini per immagini ritagliate (in pixels):"
 
 #: ../../bkchem/dialogs.py:589 ../../bkchem/dialogs.py:881
 msgid "Use real minus character (instead of hyphen)?"
-msgstr ""
+msgstr "Usa il vero carattere meno (invece del trattino)?"
 
 #: ../../bkchem/dialogs.py:597
 msgid "Replace hyphens with minus in SVG export?"
-msgstr ""
+msgstr "Sostituisci il trattino con il meno nell'esportazione a SVG?"
 
 #: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:788
 #: ../../bkchem/main.py:184 ../../bkchem/main.py:736 ../../bkchem/main.py:739
@@ -481,7 +481,7 @@ msgstr "Colore"
 
 #: ../../bkchem/dialogs.py:680
 msgid "Show hydrogens on visible atoms"
-msgstr ""
+msgstr "Mostra gli idrogeni sugli atomi visibili"
 
 #: ../../bkchem/dialogs.py:692
 msgid "Bond length"
@@ -517,7 +517,7 @@ msgstr "alle immagini selezionate e nuove (no ridimensionamento)"
 
 #: ../../bkchem/dialogs.py:778
 msgid "to the whole drawing (no resize)"
-msgstr "all'intera immagine (no ridimensionameto)"
+msgstr "all'intera immagine (no ridimensionamento)"
 
 #: ../../bkchem/dialogs.py:791
 msgid "Standard saved"
@@ -532,6 +532,12 @@ msgid ""
 "You can still apply the changes to the current drawing from the dialog "
 "window."
 msgstr ""
+"Lo standard è stato salvato con successo come standard personale a %s\n"
+"\n"
+"non si applica automaticamente all'immagine corrente e sarà attivato "
+"al prossimo riavvio di BKchem.\n"
+"Puoi ancora applicare i cambiamenti all'immagine corrente dalla finestra di "
+"dialogo."
 
 #: ../../bkchem/dialogs.py:794
 msgid "Standard not saved"
@@ -551,7 +557,7 @@ msgstr ""
 
 #: ../../bkchem/dialogs.py:860 ../../bkchem/main.py:277
 msgid "Preferences"
-msgstr ""
+msgstr "Preferenze"
 
 #: ../../bkchem/dialogs.py:916 ../../bkchem/dialogs.py:981
 msgid "Delete"
@@ -567,7 +573,7 @@ msgstr "Frammenti"
 
 #: ../../bkchem/dialogs.py:1005
 msgid "Logging"
-msgstr "Logging"
+msgstr "Sta registrando"
 
 #: ../../bkchem/dialogs.py:1037 ../../bkchem/main.py:273
 msgid "Language"
@@ -579,17 +585,17 @@ msgstr "Linguaggi disponibili"
 
 #: ../../bkchem/edit_pool.py:38
 msgid "italic"
-msgstr ""
+msgstr "corsivo"
 
 #: ../../bkchem/edit_pool.py:38
 #, fuzzy
 msgid "subscript"
-msgstr "Numeri a pedice"
+msgstr "pedice"
 
 #: ../../bkchem/edit_pool.py:38
 #, fuzzy
 msgid "superscript"
-msgstr "Cariche ad apice"
+msgstr "apice"
 
 #: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:737
 msgid "bold"
@@ -621,11 +627,11 @@ msgstr "Converti numeri a pedice"
 
 #: ../../bkchem/edit_pool.py:115
 msgid "Special Character"
-msgstr ""
+msgstr "Carattere speciale"
 
 #: ../../bkchem/edit_pool.py:119
 msgid "Insert a special character"
-msgstr ""
+msgstr "Inserisci un carattere speciale"
 
 #: ../../bkchem/edit_pool.py:244 ../../bkchem/modes.py:1640
 msgid "minus"
@@ -672,7 +678,7 @@ msgid ""
 "ID must be unique value, therefore it is obviously possible to set it to one "
 "molecule only. Please select only one molecule"
 msgstr ""
-"ID deve essere un unico valore, perciò è possibile impostarlo per un'unica "
+"ID deve essere un unico valore, perciò è possibile impostarlo per una sola"
 "molecola. Perfavore seleziona un'unica molecola."
 
 #: ../../bkchem/interactors.py:90
@@ -733,7 +739,7 @@ msgstr "Controlla la chimica"
 #: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
 #: ../../bkchem/plugins/CML.py:204 ../../bkchem/plugins/CML.py:210
 msgid "For details check the chemistry with '%s/%s'."
-msgstr "Per dettagli controlla la chimica '%s/%s'."
+msgstr "Per dettagli controlla la chimica con '%s/%s'."
 
 #: ../../bkchem/interactors.py:134
 msgid "Validity warning"
@@ -757,7 +763,7 @@ msgid ""
 "expansion could be undone afterwards."
 msgstr ""
 "Questi devono essere espansi per ottenere un'immagine chimicamente valida. "
-"L'espansione può essere rifatta in seguito."
+"L'espansione potrebbe essere rifatta in seguito."
 
 #: ../../bkchem/interactors.py:142 ../../bkchem/plugins/CML.py:216
 msgid "Proceed with expansion?"
@@ -766,12 +772,12 @@ msgstr "Procedi con l'espansione?"
 #: ../../bkchem/interactors.py:157
 #, fuzzy
 msgid "The InChI program path"
-msgstr "Il percorso del programma INChI"
+msgstr "Percorso del programma InChI"
 
 #: ../../bkchem/interactors.py:158
 #, fuzzy
 msgid "Select the InChI program executable: "
-msgstr "Seleziona l'eseguibile del programma INChI: "
+msgstr "Seleziona l'eseguibile del programma InChI: "
 
 #: ../../bkchem/interactors.py:160
 msgid "Executable files"
@@ -780,7 +786,7 @@ msgstr "File eseguibili"
 #: ../../bkchem/interactors.py:165 ../../bkchem/main.py:255
 #, fuzzy
 msgid "Generate InChI"
-msgstr "Genera INChI"
+msgstr "Genera InChI"
 
 #: ../../bkchem/interactors.py:181
 msgid "Display Form"
@@ -802,11 +808,11 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:213
 msgid "Display form %s was set to molecule(s)"
-msgstr "Visualizza da %s è stato impostato per la molecola(e)"
+msgstr "Visualizza formula %s è stato impostato per la molecola(e)"
 
 #: ../../bkchem/interactors.py:233
 msgid "Template summary"
-msgstr " Sommario template"
+msgstr "Sommario template"
 
 #: ../../bkchem/interactors.py:237
 msgid "Errors"
@@ -837,12 +843,12 @@ msgid ""
 "A tutorial on how to prepare a template can be found in the file doc/"
 "custom_templates_en.html"
 msgstr ""
-"Le istruzioni come creare un file template possono essere trovate nel file "
+"Le istruzioni come creare un template possono essere trovate nel file "
 "doc/custom_templates_en.html"
 
 #: ../../bkchem/interactors.py:272
 msgid "Directory creation failed."
-msgstr "Creazione cartella fallita"
+msgstr "Creazione cartella fallita."
 
 #: ../../bkchem/interactors.py:273
 msgid "It was not possible to create the personal directory %s."
@@ -866,7 +872,7 @@ msgid ""
 "Should I rewrite it?"
 msgstr ""
 "Il Template con questo nome già esiste (percorso %s).\n"
-"Dovrei riscriverlo?"
+"Dovrei sovracriverlo?"
 
 #: ../../bkchem/interactors.py:308
 msgid "The selected items must be part of exactly one molecule."
@@ -884,9 +890,7 @@ msgstr "Inserisci nome del frammento:"
 #: ../../bkchem/interactors.py:325
 #, fuzzy
 msgid "The bonds and atoms were used for creation of a new molecular fragment."
-msgstr ""
-"I legami sono stati usati per creare il nome di un nuovo frammento "
-"molecolare."
+msgstr "Gli atomi e i legami sono stati usati per creare un nuovo frammento molecolare."
 
 #: ../../bkchem/interactors.py:327
 #, fuzzy
@@ -895,7 +899,7 @@ msgid ""
 "fragment, they are probably not defining a connected subgraph of the "
 "molecular graph."
 msgstr ""
-"I legami potrebbero non essere stati usati per la creazione di nuovo "
+"Gli atomi e ilegami potrebbero non essere stati usati per la creazione di nuovo "
 "frammento molecolare, probabilmente non stanno definendo un subgrafico "
 "collegato al grafico molecolare."
 
@@ -923,7 +927,7 @@ msgstr ""
 msgid ""
 "BKchem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
-"BKchem non ha potuto interpretare il testo digitato come qualche cosa con il "
+"BKchem non ha potuto interpretare il testo digitato come qualcosa con "
 "significato chimico"
 
 #: ../../bkchem/interactors.py:372 ../../bkchem/logger.py:33
@@ -933,16 +937,15 @@ msgstr "Info"
 
 #: ../../bkchem/interactors.py:373
 msgid "The selected language will be used the next time you start BKchem."
-msgstr ""
-"Il linguaggio selezionato sarà usato la prossima volta che riparte BKchem."
+msgstr "Il linguaggio selezionato sarà usato alla prossima esecuzione di BKchem."
 
 #: ../../bkchem/interactors.py:388
 msgid "The selection does not define connected subgraph"
-msgstr ""
+msgstr "La selezione non definisce il subgraph collegato"
 
 #: ../../bkchem/interactors.py:416
 msgid "The selection is not linear - there are some splittings."
-msgstr ""
+msgstr "La selezione non è lineare - ci sono alcune interruzioni."
 
 #: ../../bkchem/interactors.py:426
 msgid ""
@@ -968,7 +971,7 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:494
 msgid "You can move and delete the created oxidation numbers in the mark mode"
-msgstr "Puoi muovere o cancellare i numeri di ossidazione nel modo segnatura."
+msgstr "Puoi muovere o cancellare i numeri di ossidazione creati nel modo segnatura"
 
 #: ../../bkchem/logger.py:34
 msgid "Error"
@@ -980,7 +983,7 @@ msgstr "Correzione"
 
 #: ../../bkchem/logger.py:36
 msgid "Warning"
-msgstr "Attenzione"
+msgstr "Avviso"
 
 #: ../../bkchem/logger.py:37
 msgid "Hint"
@@ -1005,7 +1008,7 @@ msgstr "Ignora"
 #: ../../bkchem/main.py:181
 #, fuzzy
 msgid "Open, save, export, and import files"
-msgstr "Apri, salva, esporta e importa file"
+msgstr "Apri, salva, esporta, e importa file"
 
 #: ../../bkchem/main.py:181 ../../bkchem/main.py:183 ../../bkchem/main.py:184
 #: ../../bkchem/main.py:185 ../../bkchem/main.py:186 ../../bkchem/main.py:187
@@ -1049,7 +1052,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:187
 msgid "Load (open) a file in a new tab"
-msgstr "Carica(apri) un file in una nuova scheda"
+msgstr "Carica (apri) un file in una nuova scheda"
 
 #: ../../bkchem/main.py:187 ../../bkchem/main.py:853 ../../bkchem/main.py:1049
 msgid "Load"
@@ -1094,7 +1097,7 @@ msgstr "SVG"
 
 #: ../../bkchem/main.py:194
 msgid "Import a non-native file format"
-msgstr "Importa un formtato file non nativo"
+msgstr "Importa un formato file non nativo"
 
 #: ../../bkchem/main.py:194 ../../bkchem/main.py:406
 msgid "Import"
@@ -1234,7 +1237,7 @@ msgstr "Destra"
 
 #: ../../bkchem/main.py:222
 msgid "Align the horizontal centers of selected objects"
-msgstr "Allinea orizzontalmente il centro gli oggetti selezionati"
+msgstr "Allinea orizzontalmente il centro degli oggetti selezionati"
 
 #: ../../bkchem/main.py:222
 msgid "Center horizontally"
@@ -1281,7 +1284,7 @@ msgstr "Porta dietro"
 
 #: ../../bkchem/main.py:231
 msgid "Reverse the ordering of the selected objects on the stack"
-msgstr "Inverta l'ordine degli oggetti selezionati nella fila"
+msgstr "Inverte l'ordine degli oggetti selezionati nella fila"
 
 #: ../../bkchem/main.py:231
 msgid "Swap on stack"
@@ -1324,7 +1327,7 @@ msgstr ""
 msgid ""
 "Information about molecules, group expansion and other chemistry related "
 "stuff"
-msgstr "Informazione su molecole, espansione gruppo e la relativa chimica"
+msgstr "Informazione sulle molecole, espansione gruppo e altro relativo alla chimica"
 
 #: ../../bkchem/main.py:245
 msgid "Display summary formula and other info on all selected molecules"
@@ -1357,17 +1360,17 @@ msgstr "Leggi SMILES"
 
 #: ../../bkchem/main.py:251
 msgid "Read a SMILES string and convert it to structure"
-msgstr "Leggi una stringa SMILES e convertila in struttura"
+msgstr "Leggi una stringa SMILES e convertila a struttura"
 
 #: ../../bkchem/main.py:252
 #, fuzzy
 msgid "Read InChI"
-msgstr "Leggi INChI"
+msgstr "Leggi InChI"
 
 #: ../../bkchem/main.py:252
 #, fuzzy
 msgid "Read an InChI string and convert it to structure"
-msgstr "Leggi una stringa INChI e convertila in struttura"
+msgstr "Leggi una stringa InChI e convertila in struttura"
 
 #: ../../bkchem/main.py:254
 msgid "Generate SMILES"
@@ -1382,23 +1385,23 @@ msgstr "Genera SMILES per la struttura selezionata"
 msgid ""
 "Generate an InChI for the selected structure by calling the InChI program"
 msgstr ""
-"Genera un INChI per la struttura selezionata richiamando il programma INChI"
+"Genera un InChI per la struttura selezionata richiamando il programma InChI"
 
 #: ../../bkchem/main.py:261
 msgid "Set molecule name"
-msgstr "Imposta il nome delle molcole"
+msgstr "Imposta il nome della molcola"
 
 #: ../../bkchem/main.py:261
 msgid "Set the name of the selected molecule"
-msgstr "Imposta il nome delle molecole selezionate"
+msgstr "Imposta il nome della molecola selezionata"
 
 #: ../../bkchem/main.py:262
 msgid "Set molecule ID"
-msgstr "Imposta ID delle molecole"
+msgstr "Imposta ID della molecola"
 
 #: ../../bkchem/main.py:262
 msgid "Set the ID of the selected molecule"
-msgstr "Imposta ID delle molecole selezionate"
+msgstr "Imposta ID della molecola selezionata"
 
 #: ../../bkchem/main.py:264
 msgid "Create a fragment from the selected part of the molecule"
@@ -1439,7 +1442,7 @@ msgstr "Opzioni"
 
 #: ../../bkchem/main.py:272
 msgid "Set the default drawing style here"
-msgstr "Imposta lo stile predefinito del disegno"
+msgstr "Imposta qui lo stile predefinito del disegno"
 
 #: ../../bkchem/main.py:272
 msgid "Standard"
@@ -1452,7 +1455,7 @@ msgstr "Imposta la lingua usata dopo il prossimo riavvio"
 #: ../../bkchem/main.py:274
 #, fuzzy
 msgid "InChI program path"
-msgstr "Percorso programma INChI"
+msgstr "Percorso programma InChI"
 
 #: ../../bkchem/main.py:274
 #, fuzzy
@@ -1460,7 +1463,7 @@ msgid ""
 "To use InChI in BKchem you must first give it a path to the InChI program "
 "here"
 msgstr ""
-"Per usare INChI in BKchem prima occorre dare un percorso al programma INChI"
+"Per usare InChI in BKchem prima devi dare un percorso al programma InChI"
 
 #: ../../bkchem/main.py:280
 msgid "Help and information about the program"
@@ -1484,7 +1487,7 @@ msgstr "Piccoli script addizionali"
 
 #: ../../bkchem/main.py:284 ../../bkchem/main.py:326
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Plugin"
 
 #: ../../bkchem/main.py:563
 msgid "About BKchem"
@@ -1497,7 +1500,7 @@ msgstr "versione"
 #: ../../bkchem/main.py:682
 #, fuzzy
 msgid "Sorry but I cannot open the same file twice: "
-msgstr "Mi spice ma non posso aprire lo stesso file due volte."
+msgstr "Spiacente ma non posso aprire lo stesso file due volte."
 
 #: ../../bkchem/main.py:734
 msgid "Really close?"
@@ -1513,7 +1516,7 @@ msgstr "Chiudi"
 
 #: ../../bkchem/main.py:781
 msgid "Save As..."
-msgstr "Salav come..."
+msgstr "Salva come..."
 
 #: ../../bkchem/main.py:782 ../../bkchem/main.py:856
 msgid "CD-SVG file"
@@ -1561,11 +1564,11 @@ msgstr "CD-SVG"
 
 #: ../../bkchem/main.py:822
 msgid "saved to %s file: %s"
-msgstr "salvato a %s file: %s"
+msgstr "salvato nel file %s: %s"
 
 #: ../../bkchem/main.py:827
 msgid "failed to save to %s file: %s"
-msgstr "Errore nel salvare a %s file: %s"
+msgstr "Errore nel salvare nel file %s: %s"
 
 #: ../../bkchem/main.py:849 ../../bkchem/main.py:1039
 msgid "Forget changes in currently visiting file?"
@@ -1581,7 +1584,7 @@ msgstr "Tutti i formati nativi"
 
 #: ../../bkchem/main.py:859
 msgid "CDGZ file"
-msgstr "CDGZ file"
+msgstr "Documento CDGZ"
 
 #: ../../bkchem/main.py:860
 msgid "Gzipped files"
@@ -1686,7 +1689,6 @@ msgstr ""
 "Inserisci SMILES:"
 
 #: ../../bkchem/main.py:1213
-#, fuzzy
 msgid ""
 "Before you use his tool, be warned that not all features of InChI are "
 "currently supported.\n"
@@ -1701,10 +1703,10 @@ msgstr ""
 "InChI sono correntemente supportati.\n"
 "Non c'è nessun supporto per le informazioni relative agli stereo isomeri, "
 "isotopi e altro.\n"
-"Il INChI dovrebbe essere digitato in semplice forma testuale, e.g.- 1/C7H8/1-"
+"Il InChI dovrebbe essere digitato in semplice forma testuale, e.g.- 1/C7H8/1-"
 "7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
-"Inserisci INChI:"
+"Inserisci InChI:"
 
 #: ../../bkchem/main.py:1240 ../../bkchem/main.py:1247
 #: ../../bkchem/main.py:1254 ../../bkchem/main.py:1262
@@ -1766,32 +1768,36 @@ msgstr ""
 #: ../../bkchem/main.py:1293
 #, fuzzy
 msgid "Generated SMILES"
-msgstr "Genera SMILES"
+msgstr "SMILES generato"
 
 #: ../../bkchem/main.py:1401
 msgid "InChI generation failed,"
-msgstr ""
+msgstr "Generazione InChI fallita,"
 
 #: ../../bkchem/main.py:1401
 msgid ""
 "make sure the path to the InChI program is correct in 'Options/InChI program "
 "path'"
 msgstr ""
+"assicurarsi che il percorso del programma InChI sia corretto "
+"in 'Opzioni/Percorso programma InChI"
 
 #: ../../bkchem/main.py:1403
 msgid ""
 "Please, try to make sure the path to the InChI program is correct in "
 "'Options/InChI program path'"
 msgstr ""
+"Perfavore, assicurarsi che il percorso del programma InChI sia corretto in "
+"'Opzioni/Percorso programma InChI"
 
 #: ../../bkchem/main.py:1403
 msgid "Unknown error occured during InChI generation, sorry."
-msgstr ""
+msgstr "Spiacente, è avvenuto un errore durante la generazione dell'InChI."
 
 #: ../../bkchem/main.py:1407
 #, fuzzy
 msgid "Generated InChIs"
-msgstr "Genera INChI"
+msgstr "Generato InChIs"
 
 #: ../../bkchem/main.py:1435
 msgid "The file was saved as a template %s"
@@ -1952,10 +1958,10 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKchem as long as you do it under GNU GPL."
 msgstr ""
-"BKchem è stato concepito e scritto da BK\n"
-"è stato eseguito per mezzo di Python, Pmw & (opzionalmente :) PIL.\n"
+"BKchem è stato concepito e scritto da Beda Kosata\n"
+"è eseguito per mezzo di Python, Pmw & (opzionalmente) Cairo.\n"
 "\n"
-"BKchem è software libero e distribuito con licenza GNU GPL.\n"
+"BKchem è un software libero e distribuito con licenza GNU GPL.\n"
 "BKchem è fornito come è senza garanzia di ogni genere.\n"
 "- per più informazioni vedi il file 'gpl.txt' nella cartella principale.\n"
 "\n"
@@ -1972,7 +1978,7 @@ msgid ""
 msgstr ""
 "INCAPACE DI IMPORTARE PMW\n"
 "\n"
-"Spiacente, ma BKchem dipende troppo da Pmw per usarlo senza. Prego installa "
+"Spiacente, ma BKchem dipende troppo da Pmw per funzionare senza. Prego installa "
 "Pmw e prova ancora.\n"
 "(per più informazioni su Pmw vedi la documentazione)"
 
@@ -2027,7 +2033,7 @@ msgid ""
 "Do you want set these new standard values?"
 msgstr ""
 "Questo documento CDML è stato creato usando diversi valori di riferimento "
-"che stai attuelmente usando. Per mantenere lo stesso stile "
+"che stai attualmente usando. Per mantenere lo stesso stile "
 "dell'illustrazione potrebbe essere più conveniente usare questi nuovi valori "
 "per questo file. Le vostre preferenze globali rimangono inalterate. \n"
 "\n"
@@ -2046,6 +2052,16 @@ msgid ""
 " -b SCRIPT       start BKChem in batch mode, run SCRIPT and exit\n"
 " -v, --version   show program version and exit\n"
 msgstr ""
+"usa; bkchem [opzione] [nome del file]\n"
+"\n"
+"opzioni:\n"
+"\n"
+" -h, --help       mostra questo messaggio di aiuto ed esci\n"
+" -H DIR           non considera la cartella proncipale di BKchem\n"
+"                  (dove le impostazioni standard di disegno, i template personali "
+"ecc. sono salvati.)\n"
+" -b SCRIPT        carica BKchem in batch mode, carica lo SCRIPT ed esce\n"
+" -v, --version    mostra la versione del programma ed esce\n"
 
 #: ../../bkchem/modes.py:339
 msgid "edit"
@@ -2118,7 +2134,7 @@ msgstr "cuneo"
 #: ../../bkchem/modes.py:738 ../../bkchem/modes.py:947
 #: ../../bkchem/modes.py:2215
 msgid "fixed length"
-msgstr "lunghezza fissata"
+msgstr "lunghezza fissa"
 
 #: ../../bkchem/modes.py:738 ../../bkchem/modes.py:947
 #: ../../bkchem/modes.py:2215
@@ -2127,11 +2143,11 @@ msgstr "stile libero"
 
 #: ../../bkchem/modes.py:739
 msgid "normal double bonds for wedge/hatch"
-msgstr "doppi legami normali cresta/trogolo"
+msgstr "doppi legami normali cuneo/tratteggio"
 
 #: ../../bkchem/modes.py:739
 msgid "simple double bonds for wedge/hatch"
-msgstr "doppi legami semplici cresta/trogolo"
+msgstr "doppi legami semplici cuneo/tratteggio"
 
 #: ../../bkchem/modes.py:770 ../../bkchem/modes.py:817
 #: ../../bkchem/modes.py:848 ../../bkchem/modes.py:1155
@@ -2175,11 +2191,11 @@ msgstr ""
 
 #: ../../bkchem/modes.py:1169
 msgid "focused atom marked as 'template atom'"
-msgstr "Evidenziato atomo contrassegnato come 'template Atomo'"
+msgstr "Evidenziato atomo contrassegnato come 'atomo template'"
 
 #: ../../bkchem/modes.py:1172
 msgid "focused bond marked as 'template bond'"
-msgstr "Evidenziato atomo contrassegnato come 'template legame'"
+msgstr "Evidenziato atomo contrassegnato come 'legame template'"
 
 #: ../../bkchem/modes.py:1194
 msgid "text"
@@ -2205,19 +2221,19 @@ msgstr "3D"
 #: ../../bkchem/modes.py:1293
 #, fuzzy
 msgid "Sorry but you can only rotate molecules in 3D."
-msgstr "Mi spice ma non posso aprire lo stesso file due volte."
+msgstr "Spiacente ma puoi solo ruotare le molecole in 3D."
 
 #: ../../bkchem/modes.py:1293
 msgid "You can only rotate molecules in 3D!"
-msgstr ""
+msgstr "Puoi solo ruotare le molecole in 3D!"
 
 #: ../../bkchem/modes.py:1295
 msgid "Sorry but you can only rotate molecules and arrows in 2D."
-msgstr ""
+msgstr "Spiacente ma puoi solo ruotare le molecole e le frecce in 2D."
 
 #: ../../bkchem/modes.py:1295
 msgid "You can only rotate molecules and arrows in 2D!"
-msgstr ""
+msgstr "Puoi solo ruotare le molecole e le frecce in 2D!"
 
 #: ../../bkchem/modes.py:1356
 msgid "transformation mode"
@@ -2245,7 +2261,7 @@ msgstr "allineamento verticale"
 
 #: ../../bkchem/modes.py:1378
 msgid "select the second atom, please."
-msgstr "seleziona il secondo atomo."
+msgstr "seleziona il secondo atomo, prego."
 
 #: ../../bkchem/modes.py:1399
 msgid "atoms must be in the same molecule!"
@@ -2330,7 +2346,7 @@ msgstr "Non c'è nessun segno tipo %s sull'Atomo evidenziato"
 
 #: ../../bkchem/modes.py:1769 ../../bkchem/modes.py:2003
 msgid "atom"
-msgstr "Atomo"
+msgstr "atomo"
 
 #: ../../bkchem/modes.py:1857
 msgid "reaction"
@@ -2378,7 +2394,7 @@ msgstr "molecola"
 
 #: ../../bkchem/modes.py:2085
 msgid "The data were set to the active item"
-msgstr "I dati furono impostati per l'oggetto attivo"
+msgstr "I dati sono stati impostati per l'oggetto attivo"
 
 #: ../../bkchem/modes.py:2107
 msgid "Set"
@@ -2390,7 +2406,7 @@ msgstr "Disegno veloce"
 
 #: ../../bkchem/modes.py:2216
 msgid "auto clean after drawing is finished"
-msgstr "auto pulitura dopo il completamento del disegno"
+msgstr "auto-pulitura dopo il completamento del disegno"
 
 #: ../../bkchem/modes.py:2216
 msgid "do nothing after drawing is done"
@@ -2401,8 +2417,8 @@ msgid "Brackets"
 msgstr "Quadre"
 
 #: ../../bkchem/modes.py:2403
-msgid "Miscelanous small modes"
-msgstr "Vari piccoli modi"
+msgid "Miscellaneous small modes"
+msgstr "Varie modifiche"
 
 #: ../../bkchem/modes.py:2405
 msgid "Numbering"
@@ -2410,7 +2426,7 @@ msgstr "Numerazione"
 
 #: ../../bkchem/modes.py:2405
 msgid "Wavy line"
-msgstr ""
+msgstr "Linea ondulata"
 
 #: ../../bkchem/paper.py:597
 msgid "Proceed"
@@ -2436,11 +2452,11 @@ msgstr "concatenato sovrapponendo gli atomi"
 
 #: ../../bkchem/paper.py:1070
 msgid "killed %s object(s) to clipboard"
-msgstr "cancellato %s oggetto(i) negli appunti"
+msgstr "oggetto(i) %s cancellato(i) negli appunti"
 
 #: ../../bkchem/paper.py:1073
 msgid "copied %s object(s) to clipboard"
-msgstr "copiato %s oggetto(i) negli appunti"
+msgstr "oggetto(i) %s copiato(i) negli appunti"
 
 #: ../../bkchem/paper.py:1110
 msgid "pasted from clipboard"
@@ -2520,17 +2536,21 @@ msgid ""
 "Imports a CML (Chemical Markup Language) document, uses version 1.0 of the "
 "CML standard."
 msgstr ""
+"Importa un documento CML (Chemical Markup Language), usa la versione 1.0 "
+"dello standard CML."
 
 #: ../../bkchem/plugins/CML.py:172
 msgid ""
 "Exports a CML (Chemical Markup Language) document, uses version 1.0 of the "
 "CML standard."
 msgstr ""
+"Esporta un documento CML (Chemical Markup Language), usa la versione 1.0 "
+"dello standard CML."
 
 #: ../../bkchem/plugins/CML.py:185
 #, fuzzy
 msgid "Normalize bond length?"
-msgstr "Rapporto lunghezze nel doppio legame"
+msgstr "Normalizzo lunghezza legame?"
 
 #: ../../bkchem/plugins/CML.py:186
 msgid ""
@@ -2539,20 +2559,24 @@ msgid ""
 "normal chemical bonds. Do you want to do this? It will influence only the "
 "exported CML file, not the drawing."
 msgstr ""
+"Se tu stai esportando a qualche genere di software computazionale potrebbe essere "
+"importante ridimensionare la molecola, così che le lunghezze dei legami rimangano " 
+"nel campo di normali legami chimici. Vuoi fare questo? Influenzerà solo il file "
+"CML esportato, non il disegno"
 
 #: ../../bkchem/plugins/CML.py:201
 #, fuzzy
 msgid "CML export error"
-msgstr "Errore di esportazione"
+msgstr "Errore di esportazione CML"
 
 #: ../../bkchem/plugins/CML.py:203
 #, fuzzy
 msgid "It is not possible to export it to valid CML."
-msgstr "Non è possibile esportarli."
+msgstr "Non è possibile esportarlo a un valido CML."
 
 #: ../../bkchem/plugins/CML.py:208
 msgid "CML export warning"
-msgstr ""
+msgstr "Avviso di esportazione CML"
 
 #: ../../bkchem/plugins/CML.py:215
 #, fuzzy
@@ -2560,30 +2584,34 @@ msgid ""
 "These must be expanded in order to export to valid CML. The expansion could "
 "be undone with undo after the export"
 msgstr ""
-"Questi devono essere espansi per ottenere un'immagine chimicamente valida. "
-"L'espansione può essere rifatta in seguito."
+"Questi devono essere espansi per esportare a un valido CML. L'espansione " 
+"potrebbe essere annullata col comando annulla dopo l'esportazione"
 
 #: ../../bkchem/plugins/CML.py:261
 #, fuzzy
 msgid "CML"
-msgstr "CDML"
+msgstr "CML"
 
 #: ../../bkchem/plugins/CML2.py:35
 msgid ""
 "Imports a CML (Chemical Markup Language) document, uses version 2.0 of the "
 "CML standard."
 msgstr ""
+"Importa un documento CML (Chemical Markup Language), usa la versione 2.0 "
+"dello standard CML."
 
 #: ../../bkchem/plugins/CML2.py:45
 msgid ""
 "Exports a CML (Chemical Markup Language) document, uses version 2.0 of the "
 "CML standard."
 msgstr ""
+"Esporta un documento CML (Chemical Markup Language), usa la versione 2.0 "
+"dello standard CML."
 
 #: ../../bkchem/plugins/CML2.py:58
 #, fuzzy
 msgid "CML2"
-msgstr "CDML"
+msgstr "CML2"
 
 #: ../../bkchem/plugins/cairo_lowlevel.py:69
 #: ../../bkchem/plugins/piddle_lowlevel.py:52
@@ -2591,47 +2619,51 @@ msgid ""
 "There is nothing to export. If you want to export an empty paper disable "
 "cropping of the drawing in the File/Properties menu."
 msgstr ""
+"Non c'è niente da esportare. Se vuoi esportare un foglio vuoto disabilita "
+"il ritaglio del disegno nel menu File/Proprietà."
 
 #: ../../bkchem/plugins/molfile.py:39
 #, fuzzy
 msgid "Imports a molfile document."
-msgstr "Importa un formtato file non nativo"
+msgstr "Importa un documento molfile."
 
 #: ../../bkchem/plugins/molfile.py:59
 msgid "Exports to molfile document."
-msgstr ""
+msgstr "Esporta un documento molfile."
 
 #: ../../bkchem/plugins/molfile.py:70 ../../bkchem/plugins/molfile.py:75
 msgid "You have to select exactly one molecule (any atom or bond will do)."
-msgstr ""
+msgstr "Hai selezionato esattamente una molecola (basterà qualche atomo o legame)."
 
 #: ../../bkchem/plugins/molfile.py:74
 #, fuzzy
 msgid "%d molecules selected."
-msgstr "Nessuna molecola selezionata."
+msgstr "%d molecole selezionate."
 
 #: ../../bkchem/plugins/molfile.py:112
 #, fuzzy
 msgid "Molfile"
-msgstr "file"
+msgstr "Molfile"
 
 #: ../../bkchem/plugins/odf.py:47 ../../bkchem/plugins/openoffice.py:47
 msgid ""
 "Exports the drawing into OpenOffice Draw format (native for OO prior to "
 "2.0), note that this is not an ODF (Open Document Format) export."
 msgstr ""
+"Esporta il disegno nel formato Openoffice disegno (nativo per OO alla "
+"2.0), nota che questa non è un'esportazione a ODF (Open Document Format)."
 
 #: ../../bkchem/plugins/odf.py:133 ../../bkchem/plugins/openoffice.py:123
 msgid "The manifest file not found in the plugin directory"
-msgstr ""
+msgstr "il file non si trova nella cartella plugin"
 
 #: ../../bkchem/plugins/odf.py:660
 msgid "ODF (OpenOffice 2.0)"
-msgstr ""
+msgstr "ODF (Openoffice 2.0)"
 
 #: ../../bkchem/plugins/openoffice.py:628
 msgid "OpenOffice 1.0 Draw"
-msgstr ""
+msgstr "Disegno Openoffice 1.0"
 
 #: ../../bkchem/plugins/pdf_cairo.py:32
 msgid ""
@@ -2639,42 +2671,49 @@ msgid ""
 "output plugin as it supports unicode strings and the output is of very good "
 "quality."
 msgstr ""
+"Esporta PDF via libreria Cairo (pycairo). Questo è il plugin preferito di "
+"output del PDF in quanto supporta stringhe unicode e l'output ha una maggiore qualità."
 
 #: ../../bkchem/plugins/pdf_cairo.py:59
 msgid "PDF (Cairo)"
-msgstr ""
+msgstr "PDF (Cairo)"
 
 #: ../../bkchem/plugins/pdf_piddle.py:30
 msgid ""
 "Exports PDF files via the Piddle library. It does a pretty good job, however "
 "does not support unicode strings (ASCII only) and the position of the text "
 "may be slightly off, depending on the fonts used."
-msgstr ""
+msgstr "Esporta i file PDF via libreria Piddle. E' comunque un'operazione ben eseguita "
+"anche se non supporta le stringhe unicode (solo ASCII) e la posizione del testo "
+" può essere leggermente spostata, a seconda dei tipi di carattere usati"
 
 #: ../../bkchem/plugins/pdf_piddle.py:46
 msgid "PDF (Piddle)"
-msgstr ""
+msgstr "PDF (Piddle)"
 
 #: ../../bkchem/plugins/png_cairo.py:30
 msgid ""
 "Exports PNG files via the Cairo (pycairo) library. The output is usually "
 "quite good, with unicode support and antialiased fonts. The output should "
 "look the same as the PDF (Cairo) export."
-msgstr ""
+msgstr "Esporta file PNG via libreria Cairo (pycairo). L'output è di solito "
+"abbastanza buono, col supporto unicode e caratteri con antialias. L'output dovrebbe "
+" essere lo stesso dell'esportazione a PDF (Cairo)."
 
 #: ../../bkchem/plugins/png_cairo.py:75
 msgid "PNG (Cairo)"
-msgstr ""
+msgstr "PNG (Cairo)"
 
 #: ../../bkchem/plugins/png_cairo.py:93
 msgid "PNG resolution and background color"
-msgstr ""
+msgstr "Risoluzione PNG e colore di sfondo"
 
 #: ../../bkchem/plugins/png_cairo.py:96
 msgid ""
 "Set the PNG picture resolution and background color using one of the "
 "criteria below."
 msgstr ""
+"Imposta la risoluzione dell'immagine e il colore di sfondo usando uno dei criteri sotto."
 
 #: ../../bkchem/plugins/png_cairo.py:128
 #, fuzzy
@@ -2688,11 +2727,11 @@ msgstr "Scala Y (in %):"
 
 #: ../../bkchem/plugins/png_cairo.py:155
 msgid "Resolution (dpi):"
-msgstr ""
+msgstr "Risoluzione (dpi):"
 
 #: ../../bkchem/plugins/png_cairo.py:171
 msgid "Background color"
-msgstr ""
+msgstr "Colore sfondo"
 
 #: ../../bkchem/plugins/povray.py:37
 #, fuzzy
@@ -2701,17 +2740,19 @@ msgstr "Veramente chiuso?"
 
 #: ../../bkchem/plugins/povray.py:38
 msgid "This plugin is not finished and will probably not work correctly."
-msgstr ""
+msgstr "Questo plugin non è completo e probabilmente non funziona correttamente."
 
 #: ../../bkchem/plugins/ps_builtin.py:32
 msgid ""
 "Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS "
 "export. The results vary with the system, problems are usually font-related."
 msgstr ""
+"Esporta file Encapsulated Postscript. Usa le funzioni di builtin (Tk) per esportare PS. "
+"Il risultato varia con il sistema, i problemi sono di solito dovuti ai font."
 
 #: ../../bkchem/plugins/ps_builtin.py:63
 msgid "PostScript (builtin)"
-msgstr ""
+msgstr "PostScript (builtin)"
 
 #: ../../bkchem/plugins/ps_cairo.py:32
 msgid ""
@@ -2719,10 +2760,13 @@ msgid ""
 "output plugin as it supports unicode strings and the output is of very good "
 "quality."
 msgstr ""
+"Esporta Postscript via libreria Cairo (pycairo). Questo è l'output preferito "
+"del plugin PS in quanto supporta stringhe unicode e l'output è di qualità "
+"molto buona."
 
 #: ../../bkchem/plugins/ps_cairo.py:72
 msgid "Postscript (Cairo)"
-msgstr ""
+msgstr "Postscript (Cairo)"
 
 #: ../../bkchem/plugins/ps_piddle.py:30
 msgid ""
@@ -2730,20 +2774,25 @@ msgid ""
 "better results than the builtin method, but does not support unicode and the "
 "texts might be slightly misplaced."
 msgstr ""
+"Esporta Postscript via libreria Piddle. Solitamente da migliori risultati "
+"del metodo builtin, ma non supporta unicode e i testi potrebbero essere "
+"leggermente malriposti."
 
 #: ../../bkchem/plugins/ps_piddle.py:45
 msgid "PostScript (Piddle)"
-msgstr ""
+msgstr "PostScript (Piddle)"
 
 #: ../../bkchem/plugins/svg_cairo.py:32
 msgid ""
 "Exports SVG via the Cairo (pycairo) library. This SVG does not embed BKChem "
 "data and is simpler than the default one used by BKChem."
 msgstr ""
+"Esporta SVG via libreria Cairo(pycairo). Questo SVG non aggiunge informazioni "
+"di BKchem ed è più semplice di quello usato da BKchem."
 
 #: ../../bkchem/plugins/svg_cairo.py:59
 msgid "SVG (Cairo)"
-msgstr ""
+msgstr "SVG (Cairo)"
 
 #: ../../bkchem/splash.py:35
 msgid "BKchem is starting..."
@@ -2760,8 +2809,8 @@ msgstr "%d Atomo(i) con valenza eccedente"
 #: ../../bkchem/validator.py:98
 msgid "%d group(s) (groups need to be expanded for some export formats)"
 msgstr ""
-"%d gruppo(i) (gruppi necessari per essere espansi per alcuni formati di "
-"esportazione )"
+"%d gruppo(i) (gruppi necessari per l'espansione per alcuni formati "
+"esportati)"
 
 #: ../../bkchem/validator.py:101
 msgid ""
@@ -2828,5 +2877,5 @@ msgstr "Cariche a pedice"
 #~ "The display form is stored in the saved file and tells how the molecule "
 #~ "should be displayed in text"
 #~ msgstr ""
-#~ "Il modo di visualizzazione è archiviato nel file salvato e dice come le "
-#~ "molecole dovrebbero essere visualizzate nel testo"
+#~ "Il modo di visualizzazione è archiviato nel file salvato e dice come la "
+#~ "molecola dovrebbe essere visualizzata nel testo"
