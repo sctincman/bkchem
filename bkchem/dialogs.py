@@ -1045,12 +1045,14 @@ class language_dialog( Pmw.Dialog):
   def init_list( self):
     langs = []
     import gettext
-    
+    self.languages = {}
     for lang, language in data.languages.iteritems():
       system = gettext.find( 'BKchem', '/usr/share/locale', [lang])
       local = gettext.find( 'BKchem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
       if system or local or lang == "en":
-        langs.append( lang)
+        lang_text = "%s (%s)" % (language, lang)
+        langs.append( lang_text)
+        self.languages[lang_text] = lang
 
     self.list = Pmw.ScrolledListBox( self.interior(),
                                      #selectioncommand=self.select,

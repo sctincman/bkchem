@@ -125,14 +125,14 @@ FROM_STRING = 0
 TO_STRING = 1
 
 
-languages = {'en': 'English',
-             'cs': 'Czech',
-             'de': 'German',
-             'fr': 'French',
-             'pl': 'Polish',
-             'tw': 'Traditional Chinese',
-             'it': 'Italian',
-             'es': 'Spanish',
+languages = {'en': _('English'),
+             'cs': _('Czech'),
+             'de': _('German'),
+             'fr': _('French'),
+             'pl': _('Polish'),
+             'tw': _('Traditional Chinese'),
+             'it': _('Italian'),
+             'es': _('Spanish'),
              }
 
 
