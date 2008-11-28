@@ -1,3 +1,26 @@
+RELEASE 0.12.5
+----------------------------------------
+ * bugfixes - Segmentation fault on Ubuntu 8.10 caused by some glitch in the BLT library
+   	      was fixed (sidestepped)
+	    - CML generation for charged atoms was fixed
+	    - some missed strings were made translatable
+	      (thanks to Angel Herráez and Alan Mangiaferro)
+	    - polylines were missing in ODF export
+
+ * changes - dashed stereo bonds are no longer by default "rectangular", but
+   	     triangular instead
+	   - BKchem.pot file for translators is not part of the source-code distribution
+
+ * enhancements - monoisotopic mass is calculated as part of the Chemistry->Info output
+
+ * translations - Italian translation was added (thanks to Alan Mangiaferro)
+   		- Spanish translation was added (thanks to Angel Herráez)
+
+	  
+ * acknowledgments - Alan Mangiaferro and Angel Herráez for great work on Italian
+   		     and Spanish translations
+
+
 RELEASE 0.12.4
 ----------------------------------------
  * bugfixes - an error preventing new users (those without saved personal standard)
