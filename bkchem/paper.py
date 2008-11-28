@@ -208,7 +208,7 @@ class chem_paper( Canvas, object):
   selected_atoms = property( _get_selected_atoms)
 
   def _get_selected_bonds( self):
-    return [o for o in self.selected if isinstance( o, bond)]
+    return [o for o in self.selected if isinstance( o, oasa.graph.edge)]
 
   selected_bonds = property( _get_selected_bonds)
 
@@ -1232,7 +1232,19 @@ class chem_paper( Canvas, object):
     # locate all selected top_levels, filter them to be unique
     cp, unique = self.selected_to_unique_top_levels()
     # now find center of bbox of all objects in cp
-    xmin, ymin, xmax, ymax = self.common_bbox( cp)
+    self.place_next_to_bbox( mode, align, dist, obj, self.common_bbox( cp))
+    self.start_new_undo_record()
+
+
+
+  def place_next_to_bbox( self, mode, align, dist, obj, bbox):
+    """Places an object (obj) in a distance (dist) next to the bbox,
+    by changing the x or the y value of the object according to the mode.
+    Modes: l= left r=right a=above b=below
+    Align: t=top b=bottom l=left r=right h=horizontal v=vertical
+    align or mode can be set to "" to use only one function"""
+    # now find center of bbox of all objects in cp
+    xmin, ymin, xmax, ymax = bbox
     x1o,y1o,x2o,y2o = obj.bbox()
     if mode == "l":
         obj.move(xmin-x2o-dist, 0)
@@ -1254,7 +1266,6 @@ class chem_paper( Canvas, object):
         obj.move ((xmax+xmin)/2-(x1o+x2o)/2,0)
     elif align == "h":
         obj.move (0,(ymax+ymin)/2-(y1o+y2o)/2)
-    self.start_new_undo_record()
 
 
 
@@ -1461,6 +1472,8 @@ class chem_paper( Canvas, object):
       dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Weight: %4.3f") % comp.get_molecular_weight())
       dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Monoisotopic mass: %12.8f") % comp.get_exact_molecular_mass())
+      dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Composition: %s") % PT.dict_to_composition( comp))
       dialog.insert( 'end', "\n\n")
     if len( s_mols) > 1:
@@ -1473,6 +1486,8 @@ class chem_paper( Canvas, object):
       dialog.insert( "end", _("Formula: %s") % comps)
       dialog.insert( 'end', "\n")
       dialog.insert( "end", _("Weight: %4.3f") % comps.get_molecular_weight())
+      dialog.insert( 'end', "\n")
+      dialog.insert( 'end', _("Monoisotopic mass: %12.8f") % comps.get_exact_molecular_mass())
       dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Composition: %s") % PT.dict_to_composition( comps))
     dialog.tag_config( 'headline', underline=1)
