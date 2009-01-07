@@ -6,21 +6,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: Thu Oct 26 18:43:38 2006\n"
-"PO-Revision-Date: 2007-05-17 10:13-0500\n"
-"Last-Translator: I-Yuan Chiang <oenococcus7@yahoo.com.tw>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-12-30 17:42-0500\n"
+"Last-Translator: I-Yuan Chiang <iychiang1809@gmail.com>\n"
+"Language-Team: Traditional Chinese (zh-l10n@linux.org.tw, tryneeds@gmail.com)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Country: TAIWAN\n"
 
 #: ../../bkchem/context_menu.py:91
 msgid "Center bond"
-msgstr ""
+msgstr "把鍵置中"
 
 #: ../../bkchem/context_menu.py:92
 msgid "Expand group"
-msgstr ""
+msgstr "展開官能基"
 
 #: ../../bkchem/context_menu.py:93
 msgid "Set atom number"
@@ -28,7 +29,7 @@ msgstr "設定所選物件的性質"
 
 #: ../../bkchem/context_menu.py:102
 msgid "Properties"
-msgstr ""
+msgstr "性質"
 
 #: ../../bkchem/context_menu.py:196
 msgid "Circle around mark"
@@ -38,45 +39,45 @@ msgstr ""
 #: ../../bkchem/context_menu.py:204
 #: ../../bkchem/context_menu.py:250
 msgid "yes"
-msgstr ""
+msgstr "yes"
 
 #: ../../bkchem/context_menu.py:196
 #: ../../bkchem/context_menu.py:204
 #: ../../bkchem/context_menu.py:251
 msgid "no"
-msgstr ""
+msgstr "yes"
 
 #: ../../bkchem/context_menu.py:204
 msgid "Show number"
-msgstr ""
+msgstr "Show number"
 
 #: ../../bkchem/context_menu.py:213
 msgid "Atom valency"
-msgstr ""
+msgstr "原子價"
 
 #: ../../bkchem/context_menu.py:220
 #: ../../bkchem/context_menu.py:262
 msgid "Mark size"
-msgstr ""
+msgstr "標記字型大小"
 
 #: ../../bkchem/context_menu.py:250
 msgid "Show"
-msgstr ""
+msgstr "顯示原子?"
 
 #: ../../bkchem/context_menu.py:252
 #: ../../bkchem/dialogs.py:221
 msgid "Hydrogens"
-msgstr "氫"
+msgstr "要顯示氫嗎?"
 
 #: ../../bkchem/context_menu.py:252
 #: ../../bkchem/dialogs.py:222
 msgid "on"
-msgstr ""
+msgstr "開啟"
 
 #: ../../bkchem/context_menu.py:253
 #: ../../bkchem/dialogs.py:222
 msgid "off"
-msgstr ""
+msgstr "關閉"
 
 #: ../../bkchem/context_menu.py:254
 #: ../../bkchem/widgets.py:180
@@ -95,35 +96,35 @@ msgstr "線的寬度"
 #: ../../bkchem/dialogs.py:648
 #: ../../bkchem/dialogs.py:852
 msgid "Bond width"
-msgstr "鍵的寬度"
+msgstr "鍵與鍵的寬度"
 
 #: ../../bkchem/context_menu.py:257
 msgid "Symbol positioning"
-msgstr ""
+msgstr "符號位置"
 
 #: ../../bkchem/context_menu.py:257
 msgid "center first"
-msgstr ""
+msgstr "優先置中"
 
 #: ../../bkchem/context_menu.py:258
 msgid "center last"
-msgstr ""
+msgstr "不優先置中"
 
 #: ../../bkchem/context_menu.py:259
 msgid "Bond positioning"
-msgstr ""
+msgstr "鍵的位置"
 
 #: ../../bkchem/context_menu.py:259
 msgid "auto"
-msgstr ""
+msgstr "自動處理"
 
 #: ../../bkchem/context_menu.py:260
 msgid "anti-auto"
-msgstr ""
+msgstr "非自動處理"
 
 #: ../../bkchem/context_menu.py:261
 msgid "Bond order"
-msgstr ""
+msgstr "鍵級"
 
 #: ../../bkchem/context_menu.py:263
 #: ../../bkchem/interactors.py:341
@@ -140,7 +141,7 @@ msgstr "透明"
 #: ../../bkchem/dialogs.py:642
 #: ../../bkchem/dialogs.py:846
 msgid "Area color"
-msgstr ""
+msgstr "區域的顏色"
 
 #: ../../bkchem/context_menu.py:265
 #: ../../bkchem/context_menu.py:272
@@ -150,34 +151,34 @@ msgstr "白色"
 #: ../../bkchem/context_menu.py:266
 #: ../../bkchem/context_menu.py:273
 msgid "yellow"
-msgstr ""
+msgstr "黃色"
 
 #: ../../bkchem/context_menu.py:267
 #: ../../bkchem/context_menu.py:274
 msgid "green"
-msgstr ""
+msgstr "綠色"
 
 #: ../../bkchem/context_menu.py:268
 #: ../../bkchem/context_menu.py:275
 msgid "blue"
-msgstr ""
+msgstr "藍色"
 
 #: ../../bkchem/context_menu.py:269
 #: ../../bkchem/context_menu.py:276
 msgid "red"
-msgstr ""
+msgstr "紅色"
 
 #: ../../bkchem/context_menu.py:270
 #: ../../bkchem/context_menu.py:277
 msgid "black"
-msgstr ""
+msgstr "黑色"
 
 #: ../../bkchem/context_menu.py:271
 #: ../../bkchem/dialogs.py:365
 #: ../../bkchem/dialogs.py:639
 #: ../../bkchem/dialogs.py:843
 msgid "Line color"
-msgstr ""
+msgstr "線的顏色"
 
 #: ../../bkchem/context_menu.py:278
 msgid "Free sites"
@@ -189,7 +190,7 @@ msgstr "原子符號"
 
 #: ../../bkchem/context_menu.py:280
 msgid "Group"
-msgstr ""
+msgstr "官能基"
 
 #: ../../bkchem/dialogs.py:44
 #: ../../bkchem/dialogs.py:45
@@ -234,7 +235,7 @@ msgstr ""
 #: ../../bkchem/main.py:1355
 #: ../../bkchem/widgets.py:378
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: ../../bkchem/dialogs.py:44
 #: ../../bkchem/dialogs.py:98
@@ -257,24 +258,24 @@ msgstr ""
 #: ../../bkchem/main.py:1186
 #: ../../bkchem/widgets.py:378
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ../../bkchem/dialogs.py:46
 #: ../../bkchem/main.py:227
 msgid "Scale"
-msgstr ""
+msgstr "比例"
 
 #: ../../bkchem/dialogs.py:51
 msgid "Scale X (in %):"
-msgstr ""
+msgstr "X 比例 (%)"
 
 #: ../../bkchem/dialogs.py:62
 msgid "Scale Y (in %):"
-msgstr ""
+msgstr "Y 比例 (%"
 
 #: ../../bkchem/dialogs.py:73
 msgid "Preserve aspect ratio?"
-msgstr ""
+msgstr "保持長寬比例?"
 
 #: ../../bkchem/dialogs.py:81
 msgid "Fix position of centers of objects?"
@@ -294,43 +295,43 @@ msgstr "元素符號"
 
 #: ../../bkchem/dialogs.py:176
 msgid "Charge"
-msgstr ""
+msgstr "電荷"
 
 #: ../../bkchem/dialogs.py:191
 msgid "Atom name"
-msgstr ""
+msgstr "原子名稱"
 
 #: ../../bkchem/dialogs.py:192
 msgid "don't show"
-msgstr ""
+msgstr "不顯示"
 
 #: ../../bkchem/dialogs.py:192
 msgid "show"
-msgstr ""
+msgstr "顯示"
 
 #: ../../bkchem/dialogs.py:208
 msgid "Atom positioning"
-msgstr ""
+msgstr "原子的位置"
 
 #: ../../bkchem/dialogs.py:209
 msgid "center first letter"
-msgstr ""
+msgstr "第1字母置中"
 
 #: ../../bkchem/dialogs.py:209
 msgid "center last letter"
-msgstr ""
+msgstr "最後字母置中"
 
 #: ../../bkchem/dialogs.py:233
 #: ../../bkchem/dialogs.py:646
 #: ../../bkchem/dialogs.py:850
 msgid "Bond"
-msgstr ""
+msgstr "鍵"
 
 #: ../../bkchem/dialogs.py:253
 #: ../../bkchem/dialogs.py:651
 #: ../../bkchem/dialogs.py:855
 msgid "Wedge/Hatch width"
-msgstr ""
+msgstr "楔形/陰線 寬度"
 
 #: ../../bkchem/dialogs.py:265
 #: ../../bkchem/dialogs.py:659
@@ -344,15 +345,15 @@ msgstr "箭頭"
 
 #: ../../bkchem/dialogs.py:285
 msgid "Arrow-head on start"
-msgstr ""
+msgstr "箭頭端在前"
 
 #: ../../bkchem/dialogs.py:298
 msgid "Arrow-head on end"
-msgstr ""
+msgstr "箭頭端在後"
 
 #: ../../bkchem/dialogs.py:311
 msgid "Spline arrow"
-msgstr ""
+msgstr "曲線箭頭"
 
 #: ../../bkchem/dialogs.py:325
 #: ../../bkchem/dialogs.py:663
@@ -369,7 +370,7 @@ msgstr "一般"
 #: ../../bkchem/dialogs.py:518
 #: ../../bkchem/main.py:196
 msgid "File properties"
-msgstr ""
+msgstr "頁面設定"
 
 #: ../../bkchem/dialogs.py:531
 #: ../../bkchem/dialogs.py:585
@@ -378,13 +379,13 @@ msgstr ""
 #: ../../bkchem/dialogs.py:880
 #: ../../bkchem/dialogs.py:986
 msgid "Custom"
-msgstr ""
+msgstr "自訂"
 
 #: ../../bkchem/dialogs.py:538
 #: ../../bkchem/dialogs.py:683
 #: ../../bkchem/dialogs.py:887
 msgid "Paper size"
-msgstr ""
+msgstr "紙張大小"
 
 #: ../../bkchem/dialogs.py:546
 #: ../../bkchem/dialogs.py:580
@@ -393,25 +394,26 @@ msgstr ""
 #: ../../bkchem/dialogs.py:895
 #: ../../bkchem/dialogs.py:990
 msgid "Portrait"
-msgstr "橫式"
+msgstr "直式"
 
 #: ../../bkchem/dialogs.py:547
 #: ../../bkchem/dialogs.py:692
 #: ../../bkchem/dialogs.py:896
 msgid "Landscape"
-msgstr "直式"
+msgstr "橫式"
 
 #: ../../bkchem/dialogs.py:559
 msgid ""
 "Auto crop image in SVG?\n"
 "(applies to some other exports as well)"
-msgstr ""
-
+msgstr 
+"自動裁切 SVG 影像? \n"
+"(也套用到其他匯出的格式)"
 #: ../../bkchem/dialogs.py:567
 #: ../../bkchem/dialogs.py:708
 #: ../../bkchem/dialogs.py:912
 msgid "Margin for cropped image (in pixels):"
-msgstr ""
+msgstr "裁切影像的邊緣 (像素)"
 
 #: ../../bkchem/dialogs.py:614
 #: ../../bkchem/dialogs.py:748
@@ -431,12 +433,12 @@ msgstr "設定值"
 #: ../../bkchem/dialogs.py:630
 #: ../../bkchem/dialogs.py:834
 msgid "Line"
-msgstr ""
+msgstr "線"
 
 #: ../../bkchem/dialogs.py:636
 #: ../../bkchem/dialogs.py:840
 msgid "Color"
-msgstr ""
+msgstr "顏色"
 
 #: ../../bkchem/dialogs.py:654
 #: ../../bkchem/dialogs.py:858
@@ -451,7 +453,7 @@ msgstr "頁面"
 #: ../../bkchem/dialogs.py:702
 #: ../../bkchem/dialogs.py:906
 msgid "Auto crop image in SVG?"
-msgstr ""
+msgstr "自動裁切 SVG 影像?"
 
 #: ../../bkchem/dialogs.py:719
 #: ../../bkchem/dialogs.py:923
@@ -461,27 +463,27 @@ msgstr "套用"
 #: ../../bkchem/dialogs.py:727
 #: ../../bkchem/dialogs.py:931
 msgid "changed values only"
-msgstr ""
+msgstr "只限改變的數值"
 
 #: ../../bkchem/dialogs.py:728
 #: ../../bkchem/dialogs.py:932
 msgid "all values"
-msgstr ""
+msgstr "所有數值"
 
 #: ../../bkchem/dialogs.py:736
 #: ../../bkchem/dialogs.py:940
 msgid "to new drawings only"
-msgstr ""
+msgstr "只對新繪製的"
 
 #: ../../bkchem/dialogs.py:737
 #: ../../bkchem/dialogs.py:941
 msgid "to selected and new drawings (no resize)"
-msgstr ""
+msgstr "只對所選的及新繪製的 (不含調整大小的)"
 
 #: ../../bkchem/dialogs.py:738
 #: ../../bkchem/dialogs.py:942
 msgid "to the whole drawing (no resize)"
-msgstr ""
+msgstr "對所有新繪製的 (不含調整大小的)"
 
 #: ../../bkchem/dialogs.py:751
 #: ../../bkchem/dialogs.py:955
@@ -508,7 +510,7 @@ msgstr ""
 #: ../../bkchem/dialogs.py:1018
 #: ../../bkchem/dialogs.py:1083
 msgid "Delete"
-msgstr ""
+msgstr "刪除"
 
 #: ../../bkchem/dialogs.py:1026
 msgid "Fragment overview"
@@ -561,29 +563,29 @@ msgstr "數字轉成下標"
 #: ../../bkchem/interactors.py:79
 #: ../../bkchem/interactors.py:178
 msgid "No molecule selected."
-msgstr ""
+msgstr "尚未選取分子"
 
 #: ../../bkchem/interactors.py:48
 #: ../../bkchem/interactors.py:80
 #: ../../bkchem/interactors.py:179
 msgid "At least one molecule must be selected. Please select it."
-msgstr ""
+msgstr "您至少需要選取一個分子. 請選取."
 
 #: ../../bkchem/interactors.py:52
 msgid "Name"
-msgstr ""
+msgstr "名稱"
 
 #: ../../bkchem/interactors.py:53
 msgid "Name:"
-msgstr ""
+msgstr "名稱:"
 
 #: ../../bkchem/interactors.py:67
 msgid "Name %s was set to molecule(s)"
-msgstr ""
+msgstr "分子設定為名稱 %s "
 
 #: ../../bkchem/interactors.py:84
 msgid "Only one molecule should be selected."
-msgstr ""
+msgstr "只能選取一個分子"
 
 #: ../../bkchem/interactors.py:85
 msgid "ID must be unique value, therefore it is obviously possible to set it to one molecule only. Please select only one molecule"
@@ -618,16 +620,17 @@ msgid ""
 "Sorry but your drawing includes 'text atoms'\n"
 " - atoms with no chemical sense."
 msgstr ""
+"抱歉, 您所繪製的包含文字原子 \n"
+"這些原子不帶有化學意義"
 
 #: ../../bkchem/interactors.py:131
 msgid "It is not possible to export them."
-msgstr ""
+msgstr "可能無法匯出"
 
 #: ../../bkchem/interactors.py:132
 #: ../../bkchem/interactors.py:138
 msgid "For details check the chemistry with '%s/%s'."
-msgstr ""
-
+msgstr "詳細檢查請見 %s/%s"
 #: ../../bkchem/interactors.py:132
 #: ../../bkchem/interactors.py:138
 #: ../../bkchem/interactors.py:167
@@ -659,59 +662,58 @@ msgstr "化學"
 #: ../../bkchem/interactors.py:138
 #: ../../bkchem/main.py:246
 msgid "Check chemistry"
-msgstr ""
+msgstr "檢查化學式"
 
 #: ../../bkchem/interactors.py:136
 msgid "Validity warning"
-msgstr ""
+msgstr "正確性警告"
 
 #: ../../bkchem/interactors.py:137
 msgid "Your drawing includes some atoms with exceeded valency."
-msgstr ""
+msgstr "部份原子已經超過該有的價數"
 
 #: ../../bkchem/interactors.py:141
 msgid "Expand groups?"
-msgstr ""
+msgstr "展開官能基"
 
 #: ../../bkchem/interactors.py:142
 msgid "Your drawing includes some groups."
-msgstr ""
+msgstr "您所繪製的分子包含數個官能基"
 
 #: ../../bkchem/interactors.py:143
 msgid "These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards."
-msgstr ""
+msgstr "這些官能基必須先展開才能得到有效的化學式. 之後展開的官能基可以回復成縮寫式"
 
 #: ../../bkchem/interactors.py:144
 msgid "Proceed with expansion?"
-msgstr ""
+msgstr "要進行展開嗎?"
 
 #: ../../bkchem/interactors.py:159
 msgid "The INChI program path"
-msgstr ""
+msgstr "INChI 程式的路徑"
 
 #: ../../bkchem/interactors.py:160
 msgid "Select the INChI program executable: "
-msgstr ""
+msgstr "請選擇可執行的 INChI 程式"
 
 #: ../../bkchem/interactors.py:162
 msgid "Executable files"
-msgstr ""
+msgstr "可執行檔"
 
 #: ../../bkchem/interactors.py:167
 #: ../../bkchem/main.py:255
 msgid "Generate INChI"
-msgstr ""
-
+msgstr "產生 INChI 文字化學式"
 #: ../../bkchem/interactors.py:183
 msgid "Display Form"
-msgstr ""
+msgstr "顯示格式"
 
 #: ../../bkchem/interactors.py:207
 #: ../../bkchem/modes.py:653
 #: ../../bkchem/modes.py:1216
 #: ../../bkchem/modes.py:1778
 msgid "Parse Error"
-msgstr ""
+msgstr "語法錯誤"
 
 #: ../../bkchem/interactors.py:207
 #: ../../bkchem/modes.py:1216
@@ -727,11 +729,11 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:235
 msgid "Template summary"
-msgstr ""
+msgstr "範本摘要"
 
 #: ../../bkchem/interactors.py:239
 msgid "Errors"
-msgstr ""
+msgstr "錯誤"
 
 #: ../../bkchem/interactors.py:242
 msgid "%d molecules have no template atom specified"
@@ -743,7 +745,7 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:249
 msgid "Warnings"
-msgstr ""
+msgstr "警告"
 
 #: ../../bkchem/interactors.py:251
 msgid "%d molecules have no template bond specified"
@@ -751,19 +753,19 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:256
 msgid "Please correct the above errors first"
-msgstr ""
+msgstr "請先修正當前的錯誤"
 
 #: ../../bkchem/interactors.py:258
 msgid "A tutorial on how to prepare a template can be found in the file doc/custom_templates_en.html"
-msgstr ""
+msgstr "在 doc/custom_templates_en.html 有如何製作範本的教學指引"
 
 #: ../../bkchem/interactors.py:274
 msgid "Directory creation failed."
-msgstr ""
+msgstr "無法新增子目錄"
 
 #: ../../bkchem/interactors.py:275
 msgid "It was not possible to create the personal directory %s."
-msgstr ""
+msgstr "無法新增個人的子目錄 %s"
 
 #: ../../bkchem/interactors.py:282
 msgid "Template file name"
@@ -771,17 +773,19 @@ msgstr "圖形範本檔名"
 
 #: ../../bkchem/interactors.py:283
 msgid "File name for the template:"
-msgstr ""
+msgstr "給範本的檔名"
 
 #: ../../bkchem/interactors.py:295
 msgid "The file already exists."
-msgstr ""
+msgstr "這檔名已經存在"
 
 #: ../../bkchem/interactors.py:296
 msgid ""
 "Template with this name already exists (path %s).\n"
 "Should I rewrite it?"
 msgstr ""
+"同檔名的範本已經存在 (path %s) .\n"
+"可以覆蓋既有的範本嗎?"
 
 #: ../../bkchem/interactors.py:310
 msgid "The selected items must be part of exactly one molecule."
@@ -827,51 +831,51 @@ msgstr ""
 #: ../../bkchem/logger.py:33
 #: ../../bkchem/main.py:245
 msgid "Info"
-msgstr ""
+msgstr "相關訊息"
 
 #: ../../bkchem/interactors.py:373
 msgid "The selected language will be used the next time you start BKchem."
-msgstr ""
+msgstr "變更語文介面, 在重新開啟 BKchem 後生效"
 
 #: ../../bkchem/interactors.py:424
 msgid "The selected part of a molecule is a whole ring, there is no way to linearize it"
-msgstr ""
+msgstr "您所選擇的部份含有環, 因此無法化成直線化學式"
 
 #: ../../bkchem/interactors.py:469
 msgid "Groups must be expanded to compute oxidation number for them."
-msgstr ""
+msgstr "官能基必須先展開才能計算原子的氧化數"
 
 #: ../../bkchem/interactors.py:475
 msgid "Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."
-msgstr ""
+msgstr "無法展開的官能基或是純文字可能無法得到正確的氧化數"
 
 #: ../../bkchem/interactors.py:488
 msgid "You can move and delete the created oxidation numbers in the mark mode"
-msgstr ""
+msgstr "您可以移動或是刪除氧化數"
 
 #: ../../bkchem/logger.py:34
 msgid "Error"
-msgstr ""
+msgstr "錯誤"
 
 #: ../../bkchem/logger.py:35
 msgid "Debug"
-msgstr ""
+msgstr "除錯"
 
 #: ../../bkchem/logger.py:36
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: ../../bkchem/logger.py:37
 msgid "Hint"
-msgstr ""
+msgstr "提示"
 
 #: ../../bkchem/logger.py:39
 msgid "Status bar"
-msgstr ""
+msgstr "狀態列"
 
 #: ../../bkchem/logger.py:40
 msgid "Dialog"
-msgstr ""
+msgstr "對話"
 
 #: ../../bkchem/logger.py:41
 msgid "Console"
@@ -879,7 +883,7 @@ msgstr ""
 
 #: ../../bkchem/logger.py:42
 msgid "Ignore"
-msgstr ""
+msgstr "忽略"
 
 #: ../../bkchem/main.py:181
 msgid "Open, save, export and import files"
@@ -907,7 +911,7 @@ msgstr "檔案"
 
 #: ../../bkchem/main.py:183
 msgid "Create a new file in a new tab"
-msgstr ""
+msgstr "在新分頁中新增檔案"
 
 #: ../../bkchem/main.py:183
 msgid "New"
@@ -915,7 +919,7 @@ msgstr "開啟新檔"
 
 #: ../../bkchem/main.py:184
 msgid "Save the file"
-msgstr ""
+msgstr "存檔"
 
 #: ../../bkchem/main.py:185
 msgid "Save As.."
@@ -923,7 +927,7 @@ msgstr "另存新檔"
 
 #: ../../bkchem/main.py:185
 msgid "Save the file under different name"
-msgstr ""
+msgstr "使用別的名稱存檔"
 
 #: ../../bkchem/main.py:186
 msgid "Save As Template"
@@ -941,7 +945,7 @@ msgstr ""
 #: ../../bkchem/main.py:819
 #: ../../bkchem/main.py:1014
 msgid "Load"
-msgstr "載入檔案"
+msgstr "開啟檔案"
 
 #: ../../bkchem/main.py:188
 msgid "Load a file replacing the current one"
@@ -949,11 +953,11 @@ msgstr ""
 
 #: ../../bkchem/main.py:188
 msgid "Load to the same tab"
-msgstr "載入檔案到相同分頁"
+msgstr "開啟檔案到相同分頁"
 
 #: ../../bkchem/main.py:189
 msgid "The most recently used files"
-msgstr ""
+msgstr "最近最常使用的檔案"
 
 #: ../../bkchem/main.py:189
 #: ../../bkchem/main.py:443
@@ -962,14 +966,14 @@ msgstr "最近使用過的檔案"
 
 #: ../../bkchem/main.py:192
 msgid "Export the current file"
-msgstr ""
+msgstr "匯出目前的檔案"
 
 #: ../../bkchem/main.py:192
 #: ../../bkchem/main.py:193
 #: ../../bkchem/main.py:400
 #: ../../bkchem/main.py:1077
 msgid "Export"
-msgstr ""
+msgstr "匯出"
 
 #: ../../bkchem/main.py:193
 msgid "Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"
@@ -977,7 +981,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:193
 msgid "SVG"
-msgstr ""
+msgstr "SVG"
 
 #: ../../bkchem/main.py:194
 msgid "Import a non-native file format"
@@ -986,11 +990,11 @@ msgstr ""
 #: ../../bkchem/main.py:194
 #: ../../bkchem/main.py:396
 msgid "Import"
-msgstr ""
+msgstr "匯入"
 
 #: ../../bkchem/main.py:196
 msgid "Set the papers size and other properties of the document"
-msgstr ""
+msgstr "設定紙張大小及檔案性質"
 
 #: ../../bkchem/main.py:198
 msgid "Close tab"
@@ -998,19 +1002,19 @@ msgstr "關閉分頁"
 
 #: ../../bkchem/main.py:198
 msgid "Close the current tab, exit when there is only one tab"
-msgstr ""
+msgstr "關閉此分頁. "
 
 #: ../../bkchem/main.py:200
 msgid "Exit"
-msgstr "離開"
+msgstr "結束離開"
 
 #: ../../bkchem/main.py:200
 msgid "Exit BKchem"
-msgstr ""
+msgstr "離開 Bkchem"
 
 #: ../../bkchem/main.py:203
 msgid "Undo, Copy, Paste etc."
-msgstr "恢復上一步, 複製, 貼上等"
+msgstr "復原, 複製, 貼上等"
 
 #: ../../bkchem/main.py:203
 #: ../../bkchem/main.py:204
@@ -1032,11 +1036,11 @@ msgstr ""
 
 #: ../../bkchem/main.py:204
 msgid "Undo"
-msgstr ""
+msgstr "復原"
 
 #: ../../bkchem/main.py:205
 msgid "Redo"
-msgstr ""
+msgstr "復原"
 
 #: ../../bkchem/main.py:205
 msgid "Revert the last undo action"
@@ -1048,11 +1052,11 @@ msgstr ""
 
 #: ../../bkchem/main.py:207
 msgid "Cut"
-msgstr ""
+msgstr "剪下"
 
 #: ../../bkchem/main.py:208
 msgid "Copy"
-msgstr ""
+msgstr "複製"
 
 #: ../../bkchem/main.py:208
 msgid "Copy the selected objects to clipboard"
@@ -1060,7 +1064,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:209
 msgid "Paste"
-msgstr ""
+msgstr "貼上"
 
 #: ../../bkchem/main.py:209
 msgid "Paste the content of clipboard to current paper"
@@ -1076,7 +1080,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:213
 msgid "Select all"
-msgstr ""
+msgstr "全選"
 
 #: ../../bkchem/main.py:213
 msgid "Select everything on the paper"
@@ -1099,55 +1103,55 @@ msgstr "排列"
 
 #: ../../bkchem/main.py:217
 msgid "Align the tops of selected objects"
-msgstr ""
+msgstr "將所選的物件頂端對齊"
 
 #: ../../bkchem/main.py:217
 msgid "Top"
-msgstr ""
+msgstr "上方對齊"
 
 #: ../../bkchem/main.py:218
 msgid "Align the bottoms of selected objects"
-msgstr ""
+msgstr "將所選的物件底端對齊"
 
 #: ../../bkchem/main.py:218
 msgid "Bottom"
-msgstr ""
+msgstr "下方對齊"
 
 #: ../../bkchem/main.py:219
 msgid "Align the left sides of selected objects"
-msgstr ""
+msgstr "將所選的物件左側對齊"
 
 #: ../../bkchem/main.py:219
 msgid "Left"
-msgstr ""
+msgstr "向左對齊"
 
 #: ../../bkchem/main.py:220
 msgid "Align the rights sides of selected objects"
-msgstr ""
+msgstr "將所選的物件右側對齊"
 
 #: ../../bkchem/main.py:220
 msgid "Right"
-msgstr ""
+msgstr "向右對齊"
 
 #: ../../bkchem/main.py:222
 msgid "Align the horizontal centers of selected objects"
-msgstr ""
+msgstr "將所選的物件依水平中心對齊"
 
 #: ../../bkchem/main.py:222
 msgid "Center horizontally"
-msgstr ""
+msgstr "中間水平對齊"
 
 #: ../../bkchem/main.py:223
 msgid "Align the vertical centers of selected objects"
-msgstr ""
+msgstr "將所選的物件依垂直中心對齊"
 
 #: ../../bkchem/main.py:223
 msgid "Center vertically"
-msgstr ""
+msgstr "中間垂直對齊"
 
 #: ../../bkchem/main.py:226
 msgid "Set properties of selected objects"
-msgstr ""
+msgstr "設定所選物件的性質"
 
 #: ../../bkchem/main.py:226
 #: ../../bkchem/main.py:227
@@ -1169,7 +1173,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:229
 msgid "Bring to front"
-msgstr ""
+msgstr "移到前方"
 
 #: ../../bkchem/main.py:229
 msgid "Lift selected objects to the top of the stack"
@@ -1181,7 +1185,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:230
 msgid "Send back"
-msgstr ""
+msgstr "移到後方"
 
 #: ../../bkchem/main.py:231
 msgid "Reverse the ordering of the selected objects on the stack"
@@ -1193,51 +1197,51 @@ msgstr ""
 
 #: ../../bkchem/main.py:233
 msgid "Vertical mirror"
-msgstr ""
+msgstr "垂直鏡像"
 
 #: ../../bkchem/main.py:234
 msgid "Creates a reflection of the selected objects, the reflection axis is the common vertical axis of all the selected objects"
-msgstr ""
+msgstr "沿著垂直軸產生一個鏡像結構式"
 
 #: ../../bkchem/main.py:236
 msgid "Horizontal mirror"
-msgstr ""
+msgstr "水平鏡像"
 
 #: ../../bkchem/main.py:237
 msgid "Creates a reflection of the selected objects, the reflection axis is the common horizontal axis of all the selected objects"
-msgstr ""
+msgstr "沿著水平軸產生一個鏡像結構式"
 
 #: ../../bkchem/main.py:240
 msgid "Configure"
-msgstr ""
+msgstr "物件設定"
 
 #: ../../bkchem/main.py:240
 msgid "Set the properties of the object, such as color, font size etc."
-msgstr ""
+msgstr "設定物件的特性, 如顏色字型等"
 
 #: ../../bkchem/main.py:244
 msgid "Information about molecules, group expansion and other chemistry related stuff"
-msgstr ""
+msgstr "有關分子的訊息, 展開官能基 及其他化學相關功能"
 
 #: ../../bkchem/main.py:245
 msgid "Display summary formula and other info on all selected molecules"
-msgstr ""
+msgstr "顯示所選取分子的化學式其相關訊息"
 
 #: ../../bkchem/main.py:246
 msgid "Check if the selected objects have chemical meaning"
-msgstr ""
+msgstr "檢查所畫的化學是否合理"
 
 #: ../../bkchem/main.py:247
 msgid "Expand all selected groups to their structures"
-msgstr ""
+msgstr "展開所選的官能基成結構式"
 
 #: ../../bkchem/main.py:247
 msgid "Expand groups"
-msgstr ""
+msgstr "展開官能基"
 
 #: ../../bkchem/main.py:249
 msgid "Compute and display the oxidation number of selected atoms"
-msgstr ""
+msgstr "計算及顯示所選定原子的氧化數"
 
 #: ../../bkchem/main.py:249
 msgid "Compute oxidation number"
@@ -1245,79 +1249,79 @@ msgstr "計算氧化數"
 
 #: ../../bkchem/main.py:251
 msgid "Read SMILES"
-msgstr ""
+msgstr "輸入 SMILES 化學式"
 
 #: ../../bkchem/main.py:251
 msgid "Read a SMILES string and convert it to structure"
-msgstr ""
+msgstr "輸入 SMILES 式並轉換成結構式"
 
 #: ../../bkchem/main.py:252
 msgid "Read INChI"
-msgstr ""
+msgstr "輸入 INCHI 化學式"
 
 #: ../../bkchem/main.py:252
 msgid "Read an INChI string and convert it to structure"
-msgstr ""
+msgstr "輸入 INCHI 式並轉換成結構式"
 
 #: ../../bkchem/main.py:254
 msgid "Generate SMILES"
-msgstr ""
+msgstr "產生 SMILES 化學式"
 
 #: ../../bkchem/main.py:254
 msgid "Generate SMILES for the selected structure"
-msgstr ""
+msgstr "將為選取的結構產生一個 SMILES 化學式"
 
 #: ../../bkchem/main.py:255
 msgid "Generate an INChI for the selected structure by calling the INChI program"
-msgstr ""
+msgstr "呼叫 INCHI 程式, 把選取的結構轉換成 INCHI 式"
 
 #: ../../bkchem/main.py:258
 msgid "Set display form"
-msgstr ""
+msgstr "設定顯示模式"
 
 #: ../../bkchem/main.py:259
 msgid "The display form is stored in the saved file and tells how the molecule should be displayed in text"
-msgstr ""
+msgstr "已將顯示模式儲存到本檔案"
 
 #: ../../bkchem/main.py:261
 msgid "Set molecule name"
-msgstr ""
+msgstr "設定分子的化學名稱"
 
 #: ../../bkchem/main.py:261
 msgid "Set the name of the selected molecule"
-msgstr ""
+msgstr "設定所選取分子的名稱"
 
 #: ../../bkchem/main.py:262
 msgid "Set molecule ID"
-msgstr ""
+msgstr "設定分子的 ID"
 
 #: ../../bkchem/main.py:262
 msgid "Set the ID of the selected molecule"
-msgstr ""
+msgstr "設定所選取分子的 ID"
 
 #: ../../bkchem/main.py:264
 msgid "Create a fragment from the selected part of the molecule"
-msgstr ""
+msgstr "將選擇自分子一部分產生記錄為片段"
 
 #: ../../bkchem/main.py:264
 msgid "Create fragment"
-msgstr ""
+msgstr "產生一個片段"
 
 #: ../../bkchem/main.py:265
 msgid "Show already defined fragments"
-msgstr ""
+msgstr "顯示已經定義的片段"
 
 #: ../../bkchem/main.py:265
 msgid "View fragments"
-msgstr ""
+msgstr "顯示片段"
 
 #: ../../bkchem/main.py:267
 msgid "Convert selected part of chain to linear fragment. The selected chain must not be split."
-msgstr ""
+msgstr "將所選的鍊狀結構轉成直線式. 所選的部份必須是連續的, 不能分開"
 
 #: ../../bkchem/main.py:267
 msgid "Convert selection to linear form"
-msgstr ""
+msgstr "將化學結構以直線式表示"
 
 #: ../../bkchem/main.py:271
 msgid "Settings that affect how BKchem works"
@@ -1332,7 +1336,7 @@ msgstr "選項"
 
 #: ../../bkchem/main.py:272
 msgid "Set the default drawing style here"
-msgstr ""
+msgstr "在此設定繪圖預設值"
 
 #: ../../bkchem/main.py:272
 msgid "Standard"
@@ -1340,32 +1344,32 @@ msgstr "標準設定"
 
 #: ../../bkchem/main.py:273
 msgid "Set the language used after next restart"
-msgstr ""
+msgstr "設定使用的語言介面, 將在下次啟動時生效"
 
 #: ../../bkchem/main.py:274
 msgid "INChI program path"
-msgstr ""
+msgstr "INCHI 程式的路徑"
 
 #: ../../bkchem/main.py:274
 msgid "To use INChI in BKchem you must first give it a path to the INChI program here"
-msgstr ""
+msgstr "必須先在設定 INCHI 程式的路徑才能在 BKchem 中使用相關功能"
 
 #: ../../bkchem/main.py:278
 msgid "Help and information about the program"
-msgstr ""
+msgstr "有關 BKchem 的說明及相關資訊"
 
 #: ../../bkchem/main.py:278
 #: ../../bkchem/main.py:279
 msgid "Help"
-msgstr "求助"
+msgstr "說明"
 
 #: ../../bkchem/main.py:279
 msgid "About"
-msgstr ""
+msgstr "有關 BKchem"
 
 #: ../../bkchem/main.py:279
 msgid "General information about BKchem"
-msgstr ""
+msgstr "BKchem 相關訊息"
 
 #: ../../bkchem/main.py:282
 msgid "Small additional scripts"
@@ -1374,46 +1378,46 @@ msgstr ""
 #: ../../bkchem/main.py:282
 #: ../../bkchem/main.py:324
 msgid "Plugins"
-msgstr ""
+msgstr "外掛程式"
 
 #: ../../bkchem/main.py:539
 msgid "About BKchem"
-msgstr ""
+msgstr "有關 BKchem"
 
 #: ../../bkchem/main.py:541
 msgid "version"
-msgstr ""
+msgstr "版本"
 
 #: ../../bkchem/main.py:650
 msgid "Sorry but I cannot open the same file twice."
-msgstr ""
+msgstr "抱歉, 無法開啟同一檔案兩次"
 
 #: ../../bkchem/main.py:700
 msgid "Really close?"
-msgstr ""
+msgstr "確定要關閉?"
 
 #: ../../bkchem/main.py:701
 msgid "There are unsaved changes in file %s, what should I do?"
-msgstr ""
+msgstr "有變更但尚未存檔 %s, 您將要如何處理?"
 
 #: ../../bkchem/main.py:702
 #: ../../bkchem/main.py:703
 msgid "Close"
-msgstr ""
+msgstr "關閉"
 
 #: ../../bkchem/main.py:747
 msgid "Save As..."
-msgstr ""
+msgstr "另存新檔"
 
 #: ../../bkchem/main.py:748
 #: ../../bkchem/main.py:822
 msgid "CD-SVG file"
-msgstr ""
+msgstr "CD-SVG 檔"
 
 #: ../../bkchem/main.py:749
 #: ../../bkchem/main.py:823
 msgid "Gzipped CD-SVG file"
-msgstr ""
+msgstr "Gzipped CD-SCG 檔"
 
 #: ../../bkchem/main.py:750
 #: ../../bkchem/main.py:824
@@ -1426,11 +1430,11 @@ msgstr ""
 
 #: ../../bkchem/main.py:756
 msgid "File already opened!"
-msgstr ""
+msgstr "檔案已經開啟"
 
 #: ../../bkchem/main.py:756
 msgid "Sorry but you are already editing a file with this name (%s), please choose a different name or close the other file."
-msgstr ""
+msgstr "Sorry, 您正在編輯相同名稱的檔案, 請使用不同的檔名或是關閉另一個檔案"
 
 #: ../../bkchem/main.py:776
 msgid "gzipped CDML"
@@ -1446,7 +1450,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:785
 msgid "CD-SVG"
-msgstr ""
+msgstr "CD-SVG"
 
 #: ../../bkchem/main.py:788
 msgid "saved to %s file: %s"
@@ -1459,12 +1463,12 @@ msgstr ""
 #: ../../bkchem/main.py:815
 #: ../../bkchem/main.py:1004
 msgid "Forget changes in currently visiting file?"
-msgstr ""
+msgstr "是否放棄在這檔案更動的部份?"
 
 #: ../../bkchem/main.py:815
 #: ../../bkchem/main.py:1004
 msgid "Forget changes?"
-msgstr ""
+msgstr "放棄更動部份?"
 
 #: ../../bkchem/main.py:821
 msgid "All native formats"
@@ -1472,7 +1476,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:825
 msgid "CDGZ file"
-msgstr ""
+msgstr "CDGZ 檔"
 
 #: ../../bkchem/main.py:826
 msgid "Gzipped files"
@@ -1482,24 +1486,24 @@ msgstr ""
 #: ../../bkchem/main.py:1010
 #: ../../bkchem/main.py:1072
 msgid "All files"
-msgstr ""
+msgstr "所有的檔案"
 
 #: ../../bkchem/main.py:852
 msgid "cannot open file "
-msgstr ""
+msgstr "無法開啟檔案"
 
 #: ../../bkchem/main.py:866
 #: ../../bkchem/main.py:878
 msgid "error reading file"
-msgstr ""
+msgstr "載入檔案時發生錯誤"
 
 #: ../../bkchem/main.py:888
 msgid "File was not loaded"
-msgstr ""
+msgstr "檔案無法讀取, 沒有載入"
 
 #: ../../bkchem/main.py:897
 msgid "Proceed?"
-msgstr ""
+msgstr "要執行嗎?"
 
 #: ../../bkchem/main.py:898
 msgid "CDML data seem present in SVG but have wrong namespace. Proceed?"
@@ -1507,59 +1511,59 @@ msgstr ""
 
 #: ../../bkchem/main.py:904
 msgid "file not loaded"
-msgstr ""
+msgstr "檔案無法讀取, 沒有載入"
 
 #: ../../bkchem/main.py:908
 msgid "cdml data are not present in SVG or are corrupted!"
-msgstr ""
+msgstr "SVG 檔案不含 cdml 數據或是檔案已經損毀"
 
 #: ../../bkchem/main.py:914
 #: ../../bkchem/main.py:1056
 msgid "loaded file: "
-msgstr ""
+msgstr "讀取文件"
 
 #: ../../bkchem/main.py:924
 msgid "Export SVG"
-msgstr ""
+msgstr "匯出 SVG"
 
 #: ../../bkchem/main.py:924
 msgid "SVG file"
-msgstr ""
+msgstr "SVG 檔"
 
 #: ../../bkchem/main.py:938
 msgid "exported to SVG file: "
-msgstr ""
+msgstr "匯出成 SVG 檔"
 
 #: ../../bkchem/main.py:1009
 #: ../../bkchem/main.py:1071
 msgid "file"
-msgstr ""
+msgstr "檔案"
 
 #: ../../bkchem/main.py:1035
 #: ../../bkchem/main.py:1043
 msgid "Import error"
-msgstr ""
+msgstr "匯入錯誤"
 
 #: ../../bkchem/main.py:1035
 #: ../../bkchem/main.py:1043
 msgid ""
 "Plugin failed to import with following error:\n"
 " %s"
-msgstr ""
+msgstr "無法匯入 Plugin, 錯誤訊息如下 %s"
 
 #: ../../bkchem/main.py:1087
 msgid "Export error"
-msgstr ""
+msgstr "匯出錯誤"
 
 #: ../../bkchem/main.py:1087
 msgid ""
 "Plugin failed to export with following error:\n"
 " %s"
-msgstr ""
+msgstr "無法匯出 Plugin, 錯誤訊息如下 %s"
 
 #: ../../bkchem/main.py:1091
 msgid "exported file: "
-msgstr ""
+msgstr "匯出檔案: "
 
 #: ../../bkchem/main.py:1138
 msgid ""
@@ -1568,6 +1572,10 @@ msgid ""
 "\n"
 "Enter SMILES:"
 msgstr ""
+"在使用這功能前, 請務必了解, 目前可能無法完全支援 SMILES 所有的功能.\n"
+"目前沒有支援立體結構, 中括號 [ ] 及部份功能.\n"
+"\n"
+"請輸入 SMILES 式"
 
 #: ../../bkchem/main.py:1175
 msgid ""
@@ -1577,13 +1585,18 @@ msgid ""
 "\n"
 "Enter INChI:"
 msgstr ""
+"在使用這功能前, 請務必了解, 目前可能無法完全支援 INCHI 所有的功能.\n"
+"目前沒有支援立體結構, 同位素及部份功能.\n"
+"INCHI 可以接受的文字模式, 例如: - 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
+"\n"
+"請輸入 INCHI 化學式"
 
 #: ../../bkchem/main.py:1202
 #: ../../bkchem/main.py:1209
 #: ../../bkchem/main.py:1216
 #: ../../bkchem/main.py:1224
 msgid "Error processing %s"
-msgstr ""
+msgstr "錯誤訊息處理中"
 
 #: ../../bkchem/main.py:1203
 msgid ""
@@ -1591,6 +1604,8 @@ msgid ""
 "\n"
 "You have most probaly submitted a multicomponent structure (having a . in the sumary layer"
 msgstr ""
+"部份 INCHI 的功能無法支援\n"
+"您可能輸入了多組成結構"
 
 #: ../../bkchem/main.py:1210
 msgid ""
@@ -1598,13 +1613,14 @@ msgid ""
 "\n"
 "If you are sure it is a valid InChI, please send me a bug report."
 msgstr ""
+"您所輸入的 INCHI 式有個錯誤如果您確定所輸入的 INCHI是正確的, 煩請回報臭蟲 (bug) "
 
 #: ../../bkchem/main.py:1217
 msgid ""
 "The submitted InChI has unsupported version '%s'.\n"
 "\n"
 "You migth try resubmitting with the version string (the first part of InChI) changed to '1'."
-msgstr ""
+msgstr "您所輸入的 INCHI 可能是不支援的版本您可以試試輸入 INCHI 式的第一部份"
 
 #: ../../bkchem/main.py:1225
 msgid ""
@@ -1614,97 +1630,102 @@ msgid ""
 "\n"
 "If you are sure you have submitted a valid InChI, please send me a bug report."
 msgstr ""
+"讀取 INCHI 有錯誤, 請見下方訊息\n"
+"'%s'\n"
+"\n"
+"如果您確定所輸入的 INCHI是正確的, 煩請回報臭蟲 (bug) 給我"
 
 #: ../../bkchem/main.py:1382
 msgid "The file was saved as a template %s"
-msgstr ""
+msgstr "這檔案以存成範本"
 
 #: ../../bkchem/messages.py:26
 msgid ""
 "click on atom to add a new single bond, click on bond to change its order (or change direction)\n"
 "Shift+click on a double bond to move the position of the second line"
 msgstr ""
+"請點擊原子可以畫單鍵, 點擊鍵可以改變鍵級或方向按著 shift, 同時用滑鼠點擊雙鍵, 可以雙鍵的位置"
 
 #: ../../bkchem/messages.py:27
 msgid "length of the drawn bond is fixed to a preset value"
-msgstr ""
+msgstr "鍵的長度是固定的 (預設值)"
 
 #: ../../bkchem/messages.py:28
 msgid "freestyle drawing - no bond length or angle restrictions are applied"
-msgstr ""
+msgstr "自由, 不限制鍵的長度及角度"
 
 #: ../../bkchem/messages.py:33
 msgid "length of the drawn arrow (arrow part) is fixed to a preset value"
-msgstr ""
+msgstr "箭頭的長度是固定的 (預設值)"
 
 #: ../../bkchem/messages.py:34
 msgid "freestyle drawing - no arrow length or angle restrictions are applied"
-msgstr ""
+msgstr "自由, 不限制箭頭的長度及角度"
 
 #: ../../bkchem/messages.py:35
 msgid "arrow is composed of straight lines"
-msgstr ""
+msgstr "直線箭頭"
 
 #: ../../bkchem/messages.py:36
 msgid "arrow is drawn as a b-spline"
-msgstr ""
+msgstr "曲線箭頭"
 
 #: ../../bkchem/messages.py:41
 msgid "drag an atom or a bond to 2D-rotate a molecule around its geometrical center"
-msgstr ""
+msgstr "按住原子或鍵可以繞著幾和中心作平面旋轉"
 
 #: ../../bkchem/messages.py:42
 msgid ""
 "drag an atom or a bond to 3D-rotate a molecule around its geometrical center \n"
 "Please note that it is not possible to add a template to an atom with z-coordinate other than 0"
-msgstr ""
+msgstr "按住原子或鍵可以繞著幾和中心作立體旋轉請注意, 經過立體旋轉後的結構式無法加入範本內的圖形, 只能自行繪製"
 
 #: ../../bkchem/messages.py:47
 #: ../../bkchem/messages.py:48
 #: ../../bkchem/messages.py:49
 #: ../../bkchem/messages.py:50
 msgid "click and drag to draw the corresponding shape"
-msgstr ""
+msgstr "點選及繪製適當圖形"
 
 #: ../../bkchem/messages.py:51
 msgid "each left-button click creates one point of the polygon, right click closes it"
-msgstr ""
+msgstr "畫多邊形時, 每次滑鼠左鍵點擊代表多邊形的點, 最後以點擊滑鼠右鍵完成圖型"
 
 #: ../../bkchem/messages.py:56
 msgid "click an atom to add a radical mark to it, it will be removed in case it is already present"
-msgstr ""
+msgstr "在原子上點擊就會加入單電子. 若要移除, 先選移除鈕, 再點擊原子就會移除"
 
 #: ../../bkchem/messages.py:57
 msgid "click an atom to add a biradical mark to it, it will be removed in case it is already present"
-msgstr ""
+msgstr "在原子上點擊就會加入雙電子. 若要移除, 先選移除鈕, 再點擊原子就會移除"
 
 #: ../../bkchem/messages.py:58
 msgid "click an atom to add a free electron pair mark to it, it will be removed in case it is already present"
-msgstr ""
+msgstr "在原子上點擊就會加入電子對. 若要移除, 先選移除鈕, 再點擊原子就會移除"
 
 #: ../../bkchem/messages.py:59
 msgid "click an atom to add a plus mark to it, it will be removed in case it is already present"
-msgstr ""
+msgstr "在原子上點擊就會加入負電符號. 若要移除, 先選移除鈕, 再點擊原子就會移除"
 
 #: ../../bkchem/messages.py:60
 msgid "click an atom to add a minus mark to it, it will be removed in case it is already present"
-msgstr ""
+msgstr "在原子上點擊就會加入負電符號. 若要移除, 先選移除鈕, 再點擊原子就會移除"
 
 #: ../../bkchem/messages.py:65
 msgid "click a bond or two atoms to align the specified line into vertical position"
-msgstr ""
+msgstr "選轉分子, 使選取的鍵或是兩原子之間變成水平排列"
 
 #: ../../bkchem/messages.py:66
 msgid "click a bond or two atoms to align the specified line into horizontal position"
-msgstr ""
+msgstr "選轉分子, 使選取的鍵或是兩原子之間變成垂直排列"
 
 #: ../../bkchem/messages.py:67
 msgid "click an atom or bond to perform an inversion of the molecule through this atom (center of the bond)"
-msgstr ""
+msgstr "結構旋轉, 分子將會依照所選的原子或是鍵為中心, 選轉 180 度"
 
 #: ../../bkchem/messages.py:68
 msgid "click a bond or two atoms to mirror the molecule through the specified line"
-msgstr ""
+msgstr "鏡像結構, 依照所選的原子或是鍵產生鏡像結構"
 
 #: ../../bkchem/messages.py:76
 msgid ""
@@ -1718,6 +1739,16 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKchem as long as you do it under GNU GPL."
 msgstr ""
+"BKchem 是由 BK 所創作\n"
+"並以 Python, PmW 及 PIL (optionaly) 為基礎\n"
+"\n"
+"BKchem 是自由軟體並採用 GNU GPL 授權\n"
+"BKchem 不提供任何擔保\n"
+"有關 GPL 條文, 請見 gpl.txt\n"
+"\n"
+"在 GNU GPL 授權下,  您可以自由的研究, 散佈及重新散佈本程式\n"
+"\n"
+"中文化作者   江易原, 劉彥均"
 
 #: ../../bkchem/messages.py:87
 msgid ""
@@ -1726,6 +1757,9 @@ msgid ""
 "Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.\n"
 "(for more info on Pmw see documentation)"
 msgstr ""
+"無法匯入 PMW\n"
+"\n"
+"Sorry, BKchem 非常需要 Pmw 才能正常運作. 請安裝 Pmw 後再試一次(相關訊息請見 Pmw 相關文件)"
 
 #: ../../bkchem/messages.py:93
 msgid ""
@@ -1733,6 +1767,9 @@ msgid ""
 "\n"
 "Sorry, but from version 0.10 BKchem uses the OASA library internally and therefor cannot run without it."
 msgstr ""
+"無法匯入 OASA\n"
+"\n"
+"Sorry, 從 Bkcehm 0.10 版就開始用 OASA 函式庫, 若沒有 OASA, BKchem 就無法執行"
 
 #: ../../bkchem/messages.py:98
 msgid ""
@@ -1741,6 +1778,10 @@ msgid ""
 "From version 0.10 BKchem needs Python 2.3 or higher to run properly. You only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem."
 msgstr ""
+"Python 版本太舊!\n"
+"\n"
+"從 Bkcehm 0.10 版起就需要 Python 2.3 或更新版本才能正常運作. 您的 Python 是 %s\n"
+"抱歉對您造成不便, 煩請升級 Python 才能執行 BKchem"
 
 #: ../../bkchem/messages.py:105
 msgid ""
@@ -1749,6 +1790,8 @@ msgid ""
 "Unfortunatelly,\n"
 "the splash image was not found :("
 msgstr ""
+"BKchem 啟動中\n"
+"抱歉找不到啟動畫面 :("
 
 #: ../../bkchem/messages.py:111
 msgid ""
@@ -1756,16 +1799,20 @@ msgid ""
 "\n"
 "Do you want set these new standard values?"
 msgstr ""
+"這 CDML 文件使用不同預設值, 跟您目前的預設值不同. 為了保持相同的繪圖風格, 建議您在這文件使用新的設定值. 這不會影響您的偏好設定\n"
+"您想要使用新的設定值嗎?"
 
 #: ../../bkchem/modes.py:338
 msgid "edit"
-msgstr ""
+msgstr "編輯"
 
 #: ../../bkchem/modes.py:653
 msgid ""
 "Unable to parse the text-\n"
 "probably error with input encoding!"
 msgstr ""
+"無法分析所輸入的文字-\n"
+"可能是輸入的編碼錯誤"
 
 #: ../../bkchem/modes.py:717
 msgid "draw"
@@ -1809,32 +1856,32 @@ msgstr "三鍵"
 
 #: ../../bkchem/modes.py:727
 msgid "adder"
-msgstr ""
+msgstr "加入"
 
 #: ../../bkchem/modes.py:727
 msgid "bold"
-msgstr ""
+msgstr "粗線"
 
 #: ../../bkchem/modes.py:727
 msgid "dash"
-msgstr ""
+msgstr "虛線"
 
 #: ../../bkchem/modes.py:727
 msgid "dotted"
-msgstr ""
+msgstr "點線"
 
 #: ../../bkchem/modes.py:727
 msgid "hatch"
-msgstr ""
+msgstr "陰影, 沒入"
 
 #: ../../bkchem/modes.py:727
 msgid "wedge"
-msgstr ""
+msgstr "楔形, 凸出"
 
 #: ../../bkchem/modes.py:727
 #: ../../bkchem/modes.py:938
 msgid "normal"
-msgstr ""
+msgstr "一般"
 
 #: ../../bkchem/modes.py:728
 #: ../../bkchem/modes.py:937
@@ -1846,15 +1893,15 @@ msgstr "固定長度"
 #: ../../bkchem/modes.py:937
 #: ../../bkchem/modes.py:2191
 msgid "freestyle"
-msgstr "自由, 不固定長度"
+msgstr "不固定長度"
 
 #: ../../bkchem/modes.py:729
 msgid "normal double bonds for wedge/hatch"
-msgstr ""
+msgstr "一般凸出/沒入的雙鍵"
 
 #: ../../bkchem/modes.py:729
 msgid "simple double bonds for wedge/hatch"
-msgstr ""
+msgstr "簡單凸出/沒入的雙鍵"
 
 #: ../../bkchem/modes.py:760
 #: ../../bkchem/modes.py:807
@@ -1862,12 +1909,12 @@ msgstr ""
 #: ../../bkchem/modes.py:1144
 #: ../../bkchem/modes.py:1146
 msgid "maximum valency exceeded!"
-msgstr ""
+msgstr "已超過最大價數"
 
 #: ../../bkchem/modes.py:771
 #: ../../bkchem/modes.py:820
 msgid "Groups could have valency of 1 only! It was transformed to text!"
-msgstr ""
+msgstr "官能基只能當作一價! 將換成文字  "
 
 #: ../../bkchem/modes.py:932
 #: ../../bkchem/modes.py:1835
@@ -1876,13 +1923,13 @@ msgstr "箭頭"
 
 #: ../../bkchem/modes.py:938
 msgid "spline"
-msgstr ""
+msgstr "曲線"
 
 #: ../../bkchem/modes.py:1051
 #: ../../bkchem/modes.py:1616
 #: ../../bkchem/modes.py:1835
 msgid "plus"
-msgstr "加號"
+msgstr "加號或正電"
 
 #: ../../bkchem/modes.py:1092
 msgid "template"
@@ -1890,19 +1937,19 @@ msgstr "圖形範本"
 
 #: ../../bkchem/modes.py:1102
 msgid "No template is available"
-msgstr ""
+msgstr "沒有範本可用"
 
 #: ../../bkchem/modes.py:1110
 msgid "Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."
-msgstr ""
+msgstr "Sorry, 無法在經立體旋轉後的原子加上範本"
 
 #: ../../bkchem/modes.py:1158
 msgid "focused atom marked as 'template atom'"
-msgstr ""
+msgstr "把選取的原子標示做 '範本原子'"
 
 #: ../../bkchem/modes.py:1161
 msgid "focused bond marked as 'template bond'"
-msgstr ""
+msgstr "把選取的鍵標示做 '範本鍵"
 
 #: ../../bkchem/modes.py:1183
 msgid "text"
@@ -1910,7 +1957,7 @@ msgstr "輸入文字"
 
 #: ../../bkchem/modes.py:1235
 msgid "The text mode can no longer be used to edit atoms, use atom mode."
-msgstr ""
+msgstr "文字無法當作原子來編輯, 請使用輸入原子的功能"
 
 #: ../../bkchem/modes.py:1255
 msgid "rotate"
@@ -1918,19 +1965,19 @@ msgstr "旋轉"
 
 #: ../../bkchem/modes.py:1258
 msgid "2D"
-msgstr ""
+msgstr "2D 平面旋轉"
 
 #: ../../bkchem/modes.py:1258
 msgid "3D"
-msgstr ""
+msgstr "3D 立體旋轉"
 
 #: ../../bkchem/modes.py:1332
 msgid "transformation mode"
-msgstr ""
+msgstr "轉換模式"
 
 #: ../../bkchem/modes.py:1336
 msgid "free rotation around bond"
-msgstr ""
+msgstr "繞著鍵自由旋轉"
 
 #: ../../bkchem/modes.py:1336
 msgid "horizontal align"
@@ -1938,11 +1985,11 @@ msgstr "水平排列"
 
 #: ../../bkchem/modes.py:1336
 msgid "invert through a point"
-msgstr ""
+msgstr "繞著點旋轉"
 
 #: ../../bkchem/modes.py:1336
 msgid "mirror through a line"
-msgstr ""
+msgstr "依選取的線產生鏡像結構"
 
 #: ../../bkchem/modes.py:1336
 msgid "vertical align"
@@ -1950,19 +1997,19 @@ msgstr "垂直排列"
 
 #: ../../bkchem/modes.py:1354
 msgid "select the second atom, please."
-msgstr ""
+msgstr "請選擇第二個原子"
 
 #: ../../bkchem/modes.py:1375
 msgid "atoms must be in the same molecule!"
-msgstr ""
+msgstr "選取的原子必須在同一個分子"
 
 #: ../../bkchem/modes.py:1378
 msgid "atoms must be different!"
-msgstr ""
+msgstr "請選取不同原子"
 
 #: ../../bkchem/modes.py:1486
 msgid "Bond is part of a ring, there is no possiblity for rotation!"
-msgstr ""
+msgstr "選取的鍵是環的一部份, 無法旋轉"
 
 #: ../../bkchem/modes.py:1517
 msgid "vector graphics"
@@ -1998,39 +2045,39 @@ msgstr "標記 (電荷及電子等)"
 
 #: ../../bkchem/modes.py:1615
 msgid "biradical"
-msgstr ""
+msgstr "雙自由基"
 
 #: ../../bkchem/modes.py:1615
 msgid "dotted electron pair"
-msgstr ""
+msgstr "電子對"
 
 #: ../../bkchem/modes.py:1615
 msgid "electron pair"
-msgstr ""
+msgstr "電子對"
 
 #: ../../bkchem/modes.py:1615
 msgid "radical"
-msgstr ""
+msgstr "單電子, 自由基"
 
 #: ../../bkchem/modes.py:1616
 msgid "minus"
-msgstr ""
+msgstr "負電"
 
 #: ../../bkchem/modes.py:1616
 msgid "pz orbital"
-msgstr ""
+msgstr "pz 軌域"
 
 #: ../../bkchem/modes.py:1617
 msgid "add"
-msgstr ""
+msgstr "加入"
 
 #: ../../bkchem/modes.py:1617
 msgid "remove"
-msgstr ""
+msgstr "移除"
 
 #: ../../bkchem/modes.py:1642
 msgid "This mark type is not allowed for this object"
-msgstr ""
+msgstr "這標記無法是用在這物件"
 
 #: ../../bkchem/modes.py:1657
 msgid "There are no marks of type %s on the focused atom"
@@ -2059,11 +2106,11 @@ msgstr "反應物"
 
 #: ../../bkchem/modes.py:1845
 msgid "No arrow present"
-msgstr ""
+msgstr "箭頭不存在"
 
 #: ../../bkchem/modes.py:1846
 msgid "The reaction information in bkchem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."
-msgstr ""
+msgstr "在 BKchem 中必需要有箭頭才能編輯反應, 所以請您至少要有個箭頭"
 
 #: ../../bkchem/modes.py:1960
 msgid "users templates"
@@ -2071,15 +2118,15 @@ msgstr "使用者自訂圖型範本"
 
 #: ../../bkchem/modes.py:1977
 msgid "External data management"
-msgstr ""
+msgstr "外部資料管理"
 
 #: ../../bkchem/modes.py:1979
 msgid "bond"
-msgstr ""
+msgstr "鍵"
 
 #: ../../bkchem/modes.py:1979
 msgid "molecule"
-msgstr ""
+msgstr "分子"
 
 #: ../../bkchem/modes.py:2061
 msgid "The data were set to the active item"
@@ -2091,15 +2138,15 @@ msgstr ""
 
 #: ../../bkchem/modes.py:2183
 msgid "Rapid drawing"
-msgstr ""
+msgstr "快速繪圖"
 
 #: ../../bkchem/modes.py:2192
 msgid "auto clean after drawing is finished"
-msgstr ""
+msgstr "完成繪圖後將自動清除"
 
 #: ../../bkchem/modes.py:2192
 msgid "do nothing after drawing is done"
-msgstr ""
+msgstr "完成繪圖後不做任何變更"
 
 #: ../../bkchem/modes.py:2348
 msgid "Brackets"
@@ -2107,15 +2154,15 @@ msgstr "括號"
 
 #: ../../bkchem/modes.py:2377
 msgid "Miscelanous small modes"
-msgstr ""
+msgstr "其他雜項"
 
 #: ../../bkchem/modes.py:2379
 msgid "Numbering"
-msgstr ""
+msgstr "加入編號"
 
 #: ../../bkchem/paper.py:581
 msgid "Proceed"
-msgstr ""
+msgstr "進行中"
 
 #: ../../bkchem/paper.py:582
 msgid ""
@@ -2123,42 +2170,44 @@ msgid ""
 "\t\t\t\t       \n"
 " Do you want to proceed reading this document?"
 msgstr ""
+"CDML 似乎是不支援的版本\t\t\t\t       \n"
+"您要繼續讀取這文件嗎?"
 
 #: ../../bkchem/paper.py:638
 msgid "Replace standard values"
-msgstr ""
+msgstr "取代預設值"
 
 #: ../../bkchem/paper.py:831
 msgid "concatenated overlaping atoms"
-msgstr ""
+msgstr "連結重疊的原子"
 
 #: ../../bkchem/paper.py:1060
 msgid "killed %s object(s) to clipboard"
-msgstr ""
+msgstr "從剪貼簿刪除 %s"
 
 #: ../../bkchem/paper.py:1063
 msgid "copied %s object(s) to clipboard"
-msgstr ""
+msgstr "複製 %s 到剪貼簿"
 
 #: ../../bkchem/paper.py:1100
 msgid "pasted from clipboard"
-msgstr ""
+msgstr "貼上"
 
 #: ../../bkchem/paper.py:1261
 msgid "undo (%d further undos available)"
-msgstr ""
+msgstr "回到上一步 (%d 還可再恢復)"
 
 #: ../../bkchem/paper.py:1263
 msgid "no further undo"
-msgstr ""
+msgstr "無法再回到上一步"
 
 #: ../../bkchem/paper.py:1274
 msgid "redo (%d further redos available)"
-msgstr ""
+msgstr "重製 (%d 還可再重製)"
 
 #: ../../bkchem/paper.py:1276
 msgid "no further redo"
-msgstr ""
+msgstr "沒有重製"
 
 #: ../../bkchem/paper.py:1360
 msgid "selected top_levels were exported to clipboard in SVG"
@@ -2166,11 +2215,11 @@ msgstr ""
 
 #: ../../bkchem/paper.py:1402
 msgid "Info on selected molecules"
-msgstr ""
+msgstr "有關這個分子"
 
 #: ../../bkchem/paper.py:1410
 msgid "Name: %s"
-msgstr ""
+msgstr "名稱: %s"
 
 #: ../../bkchem/paper.py:1412
 msgid "Id: %s"
@@ -2179,29 +2228,29 @@ msgstr ""
 #: ../../bkchem/paper.py:1414
 #: ../../bkchem/paper.py:1427
 msgid "Formula: %s"
-msgstr ""
+msgstr "化學式"
 
 #: ../../bkchem/paper.py:1416
 #: ../../bkchem/paper.py:1429
 msgid "Weight: %4.3f"
-msgstr ""
+msgstr "分子量"
 
 #: ../../bkchem/paper.py:1418
 #: ../../bkchem/paper.py:1431
 msgid "Composition: %s"
-msgstr ""
+msgstr "組成"
 
 #: ../../bkchem/paper.py:1422
 msgid "Individual molecules:"
-msgstr ""
+msgstr "分子個別訊息"
 
 #: ../../bkchem/paper.py:1425
 msgid "Summary for all selected molecules:"
-msgstr ""
+msgstr "綜合訊息"
 
 #: ../../bkchem/paper.py:1447
 msgid "Chemistry check of selected molecules"
-msgstr ""
+msgstr "檢查結果"
 
 #: ../../bkchem/paper.py:1552
 msgid "selected items were lifted"
@@ -2217,7 +2266,7 @@ msgstr ""
 
 #: ../../bkchem/splash.py:35
 msgid "BKchem is starting..."
-msgstr ""
+msgstr "正在啟動 BKchem"
 
 #: ../../bkchem/validator.py:92
 msgid "%d text only atom(s) (chemical interpretation is unknown)"
@@ -2225,7 +2274,7 @@ msgstr ""
 
 #: ../../bkchem/validator.py:95
 msgid "%d atom(s) with exceeded valency"
-msgstr ""
+msgstr "%d 原子超出該有的價數"
 
 #: ../../bkchem/validator.py:98
 msgid "%d group(s) (groups need to be expanded for some export formats)"
@@ -2237,23 +2286,23 @@ msgstr ""
 
 #: ../../bkchem/widgets.py:204
 msgid "Font family"
-msgstr ""
+msgstr "所有字型"
 
 #: ../../bkchem/widgets.py:217
 msgid "Width"
-msgstr ""
+msgstr "寬度"
 
 #: ../../bkchem/widgets.py:232
 msgid "Length"
-msgstr ""
+msgstr "長度"
 
 #: ../../bkchem/widgets.py:247
 msgid "Ratio"
-msgstr ""
+msgstr "比例"
 
 #: ../../bkchem/widgets.py:338
 msgid "Browse"
-msgstr ""
+msgstr "瀏覽"
 
 #: ../../bkchem/widgets.py:347
 msgid "Select the file"
@@ -2265,11 +2314,11 @@ msgstr ""
 
 #: ../../bkchem/widgets.py:413
 msgid "Subscript numbers"
-msgstr ""
+msgstr "下標數字"
 
 #: ../../bkchem/widgets.py:428
 msgid "Superscript charges"
-msgstr ""
+msgstr "上標電荷"
 
 #: ../../bkchem/widgets.py:431
 msgid "Sup charges"
