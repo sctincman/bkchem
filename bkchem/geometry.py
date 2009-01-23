@@ -1,6 +1,6 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     This file is part of BKChem - a free chemical python library
+#     Copyright (C) 2003-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -148,7 +148,7 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
   ldx = lx1 - lx0
   ldy = ly1 - ly0
 
-  if abs( ldx) > 0:
+  if abs( ldx) > 0.0001:
     # we calculate using y = f(x)
     k = ldy/ldx
     q = ly0 - k*lx0
@@ -159,14 +159,14 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
     xy = k*xx + q
     # the result must be in the rectangle boundaries
     # but sometimes is not because rounding problems
-    if not ry0 < xy < ry1:
+    if not ry0 <= xy <= ry1:
       xx = lx0
       xy = ly0
   else:
     xx = lx0
     xy = ly0
     
-  if abs( ldy) > 0:
+  if abs( ldy) > 0.0001:
     # we calculate using x = f(y)
     k = ldx/ldy
     q = lx0 - k*ly0
@@ -177,7 +177,7 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
     yx = k*yy + q
     # the result must be in the rectangle boundaries
     # but sometimes is not because rounding problems
-    if not rx0 < yx < rx1:
+    if not rx0 <= yx <= rx1:
       yy = ly0
       yx = lx0
   else:
@@ -194,6 +194,9 @@ def intersection_of_line_and_rect( line, rect, round_edges=0):
 def point_distance( x1, y1, x2, y2):
   return sqrt( (x2-x1)**2 + (y2-y1)**2)
 
+
+def line_length( (x1,y1,x2,y2)):
+  return point_distance( x1, y1, x2, y2)
 
 
 def rectangle_intersection( rect1, rect2):
@@ -453,4 +456,68 @@ def is_point_beween_points_of_line( line, point):
   if point_distance( x1,y1,x,y) + point_distance( x2,y2,x,y) > 1.02 * point_distance( x1,y1,x2,y2):
     return False
   return True
-  
+
+
+def plane_normal_from_3_points( point1, point2, point3):
+  for point in (point1,point2,point3):
+    if None in point:
+      return None  # some coords are missing
+  import transform
+  x1,y1,z1 = point1
+  x2,y2,z2 = point2
+  x3,y3,z3 = point3
+  m0 = transform.matrix( [[x1,y1,z1],[x2,y2,z2],[x3,y3,z3]])
+  m1 = transform.matrix( [[1,y1,z1],[1,y2,z2],[1,y3,z3]])
+  m2 = transform.matrix( [[x1,1,z1],[x2,1,z2],[x3,1,z3]])
+  m3 = transform.matrix( [[x1,y1,1],[x2,y2,1],[x3,y3,1]])
+  #d0 = 1.0*m0.get_determinant()
+  d1 = 1.0*m1.get_determinant()
+  d2 = 1.0*m2.get_determinant()
+  d3 = 1.0*m3.get_determinant()
+  a = d1 #/d0
+  b = d2 #/d0
+  c = d3 #/d0
+  return a,b,c
+
+def angle_between_planes( plane1, plane2):
+  a1,b1,c1 = plane1
+  a2,b2,c2 = plane2
+  cos = (a1*a2 + b1*b2 + c1*c2) / sqrt( a1**2+b1**2+c1**2) / sqrt( a2**2+b2**2+c2**2)
+  return cos
+
+def same_or_oposite_side( plane1,plane2):
+  a1,b1,c1 = plane1
+  a2,b2,c2 = plane2
+  a = a1+a2
+  b = b1+b2
+  c = c1+c2
+  if (a**2 + b**2 + c**2) > (a1**2 + b1**2 + c1**2):
+    return 1
+  else:
+    return -1
+
+
+def expand_rectangle( coords, d):
+  x1,y1,x2,y2 = coords
+  return x1-d,y1-d,x2+d,y2+d
+
+
+def create_transformation_to_coincide_point_with_z_axis( mov, point):
+  """takes 3d coordinates 'point' (vector (0,0,0)->point) and returns 3d transform object
+  (transform3d.transform3d) that performs rotation to get 'point' onto z axis (x,y)=(0,0)
+  with positive 'z'.
+  NOTE: this is probably far from efficient, but it works
+  """
+  from transform3d import transform3d
+  t = transform3d()
+  a,b,c = mov
+  t.set_move( -a, -b, -c)
+  t.set_rotation_y( atan2( point[0], point[2]))
+  x,y,z = t.transform_xyz( *point)
+  t.set_rotation_x( -atan2( y, sqrt(x**2+z**2)))
+  x,y,z = t.transform_xyz( *point)
+  if z < 0:
+      t.set_rotation_x( pi)
+  t.set_move( *mov)
+  return t
+
