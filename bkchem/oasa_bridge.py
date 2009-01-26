@@ -61,7 +61,11 @@ def mol_to_inchi( mol, program):
 
 def read_molfile( file, paper):
   mol = oasa.molfile.file_to_mol( file)
-  return oasa_mol_to_bkchem_mol( mol, paper)
+  if not mol.is_connected():
+    mols = mol.get_disconnected_subgraphs()
+    return [oasa_mol_to_bkchem_mol( mol, paper) for mol in mols]
+  else:
+    return [oasa_mol_to_bkchem_mol( mol, paper)]
 
 
 def write_molfile( mol, file):

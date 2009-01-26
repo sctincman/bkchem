@@ -21,7 +21,7 @@
 #
 #--------------------------------------------------------------------------
 
-"""PostScript Export plugin"""
+"""Molfile Export plugin"""
 
 import plugin
 import oasa_bridge
@@ -47,10 +47,10 @@ class molfile_importer( plugin.importer):
 
   def get_molecules( self, name):
     file = open( name, 'r')
-    mol = oasa_bridge.read_molfile( file, self.paper)
-    invert_coords( mol)
+    mols = oasa_bridge.read_molfile( file, self.paper)
     file.close()
-    return [mol]
+    [invert_coords( mol) for mol in mols]
+    return mols
 
 
 class molfile_exporter( plugin.exporter):
