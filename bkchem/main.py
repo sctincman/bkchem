@@ -45,11 +45,8 @@ from temp_manager import template_manager
 import modes
 import interactors
 import os_support
-import popen2
 from id_manager import id_manager
 import string
-
-
 
 import oasa_bridge
 import plugins.plugin

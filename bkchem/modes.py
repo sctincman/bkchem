@@ -1265,18 +1265,34 @@ class rotate_mode( edit_mode):
     edit_mode.__init__( self)
     self.name = _('rotate')
     self._rotated_mol = None
-    self.submodes = [['2D','3D']] #,['one','all']]
-    self.submodes_names = [[_('2D'),_('3D')]] #,['one object','all objects']]
-    self.submode = [0]
+    self._rotated_atoms = []
+    self.submodes = [['2D','3D'],['normal3d','fixsomething']]
+    self.submodes_names = [[_('2D'),_('3D')],[_('normal 3D rotation'),_('fix selected bond in 3D')]]
+    self.submode = [0,0]
+    self._fixed = None
 
 
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
     # blocking is not necessary in rotate mode
     self._block_leave_event = 0
+    self._fixed = None
+    self._rotated_atoms = []
+    if self.get_submode(0) == "3D" and self.get_submode(1) == "fixsomething":
+      if len( Store.app.paper.selected) == 1:
+        sel = Store.app.paper.selected[0]
+        if isinstance( sel, bond):
+          self._fixed = sel
+        else:
+          Store.log( _("The selected item must be a bond."), message_type="warn")
+      else:
+        Store.log( _("Exactly one item should be selected to fixed rotation to work, normal rotation will be used."), message_type="hint")
     Store.app.paper.unselect_all()
     if self.focused and (isinstance( self.focused, oasa.graph.vertex) or isinstance(self.focused, bond)):
       self._rotated_mol = self.focused.molecule
+      if self._fixed:
+        # 3D rotation around a bond
+        self._rotated_atoms = self._get_objs_to_rotate()
       x1, y1, x2, y2 = Store.app.paper.list_bbox( [o.item for o in self._rotated_mol.atoms])
       self._centerx = x1+(x2-x1)/2.0
       self._centery = y1+(y2-y1)/2.0
@@ -1288,14 +1304,12 @@ class rotate_mode( edit_mode):
       x1, y1, x2, y2 = self._rotated_mol.bbox()
       self._centerx = x1+(x2-x1)/2.0
       self._centery = y1+(y2-y1)/2.0
-    else:
+    elif self.focused:
       if self.get_submode(0) == '3D':
         tkMessageBox.showerror( _("You can only rotate molecules in 3D!"), _("Sorry but you can only rotate molecules in 3D."))
       else:
         tkMessageBox.showerror( _("You can only rotate molecules and arrows in 2D!"), _("Sorry but you can only rotate molecules and arrows in 2D."))
-    if self.focused:
-      self.focused.unfocus()
-      self.focused = None
+
     
   def mouse_up( self, event):
     if not self._dragging:
@@ -1309,9 +1323,14 @@ class rotate_mode( edit_mode):
           [a.reposition_marks() for a in self._rotated_mol.atoms]
         self._rotated_mol = None
         Store.app.paper.start_new_undo_record()
+      if self._fixed:
+        Store.app.paper.select( [self._fixed])
     Store.app.paper.add_bindings()
 
   def mouse_drag( self, event):
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
     if not self._dragging:
       self._dragging = 1
     if self._rotated_mol:
@@ -1331,22 +1350,61 @@ class rotate_mode( edit_mode):
         self._rotated_mol.transform( tr)
       else:
         # 3D rotation
-        angle1 = round( dx1 / 50.0, 2)
-        angle2 = round( dy1 / 50.0, 2)
-        tr = transform3d.transform3d()
-        tr.set_move( -self._centerx, -self._centery, 0)
-        tr.set_rotation( -angle2, angle1, 0)
-        tr.set_move( self._centerx, self._centery, 0)
-        for a in self._rotated_mol.atoms:
-          x, y, z = a.x, a.y, a.z
-          x, y, z = tr.transform_xyz( x, y, z)
-          a.move_to( x, y)
-          a.z = z
-        for a in self._rotated_mol.bonds:
-          a.simple_redraw()
+        if self.get_submode(1) == "fixsomething" and self._fixed and isinstance( self._fixed, bond):
+          # we have a fixed part
+          if self._fixed.molecule != self._rotated_mol:
+            Store.log( _("You can only rotate the molecule for which you fixed a bond."), message_type="error")
+            return 
+          sig = abs(dx1) > abs(dy1) and misc.signum(dx1) or misc.signum(dy1)
+          angle = round( sig * math.sqrt(dx1**2 +dy1**2) / 50.0, 3)
+          t = geometry.create_transformation_to_rotate_around_particular_axis( self._fixed.atom2.get_xyz(), self._fixed.atom1.get_xyz(), angle)
+          for a in self._rotated_atoms:
+            x, y, z = a.x, a.y, a.z
+            x, y, z = t.transform_xyz( x, y, z)
+            a.move_to( x, y)
+            a.z = z
+          for a in self._rotated_mol.bonds:
+            a.simple_redraw()
+        else:
+          # normal rotation
+          angle1 = round( dx1 / 50.0, 2)
+          angle2 = round( dy1 / 50.0, 2)
+          tr = transform3d.transform3d()
+          tr.set_move( -self._centerx, -self._centery, 0)
+          tr.set_rotation( -angle2, angle1, 0)
+          tr.set_move( self._centerx, self._centery, 0)
+          for a in self._rotated_mol.atoms:
+            x, y, z = a.x, a.y, a.z
+            x, y, z = tr.transform_xyz( x, y, z)
+            a.move_to( x, y)
+            a.z = z
+          for a in self._rotated_mol.bonds:
+            a.simple_redraw()
 
-  def mouse_click( self, even):
-    pass
+  def mouse_click( self, event):
+    edit_mode.mouse_click( self, event)
+
+  def _get_objs_to_rotate( self):
+    if not self._shift:
+      return self._fixed.molecule.atoms
+    b = self._fixed
+    mol = b.molecule
+    mol.temporarily_disconnect_edge( b)
+    cc = list( mol.get_connected_components())
+    mol.reconnect_temporarily_disconnected_edge( b)
+    if len( cc) == 1:
+      return cc[0]
+    else:
+      if isinstance( self.focused, oasa.graph.vertex):
+        to_use = self.focused in cc[0] and cc[0] or cc[1]
+      elif isinstance( self.focused, bond):
+        if self.focused in mol.vertex_subgraph_to_edge_subgraph( cc[0]):
+          to_use = cc[0]
+        else:
+          to_use = cc[1]
+      else:
+        assert isinstance( self.focused, oasa.graph.vertex) or isinstance( self.focused, bond)
+      return to_use
 
 
 class bond_align_mode( edit_mode):

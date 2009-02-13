@@ -40,7 +40,7 @@ arrow_mode_spline = _("arrow is drawn as a b-spline")
 
 rotate_mode_2D = _("drag an atom or a bond to 2D-rotate a molecule around its geometrical center")
 rotate_mode_3D = _("drag an atom or a bond to 3D-rotate a molecule around its geometrical center \nPlease note that it is not possible to add a template to an atom with z-coordinate other than 0")
-
+rotate_mode_fixsomething = _("select a bond and then start rotating - the molecule will rotate around the selected bond \nby holding shift, you will trigger rotation only of one part of the molecule.")
 
 # VECTOR
 

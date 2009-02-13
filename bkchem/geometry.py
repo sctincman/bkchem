@@ -503,7 +503,7 @@ def expand_rectangle( coords, d):
 
 
 def create_transformation_to_coincide_point_with_z_axis( mov, point):
-  """takes 3d coordinates 'point' (vector (0,0,0)->point) and returns 3d transform object
+  """takes 3d coordinates 'point' (vector mov->point) and returns 3d transform object
   (transform3d.transform3d) that performs rotation to get 'point' onto z axis (x,y)=(0,0)
   with positive 'z'.
   NOTE: this is probably far from efficient, but it works
@@ -521,3 +521,48 @@ def create_transformation_to_coincide_point_with_z_axis( mov, point):
   t.set_move( *mov)
   return t
 
+
+def create_transformation_to_rotate_around_particular_axis( line_start, line_end, theta):
+  """
+  taken from http://inside.mines.edu/~gmurray/ArbitraryAxisRotation/ArbitraryAxisRotation.html
+  """
+  a,b,c = line_start
+  u,v,w = line_end
+  u -= a
+  v -= b
+  w -= c
+  u2 = u*u;
+  v2 = v*v;
+  w2 = w*w;
+  cosT = cos(theta);
+  sinT = sin(theta);
+  l2 = u2 + v2 + w2;
+  l =  sqrt(l2);
+
+  if (l2 < 0.000000001):
+      raise ValueError("RotationMatrix: direction vector too short!")
+
+  m11 = (u2 + (v2 + w2) * cosT)/l2;
+  m12 = (u*v * (1 - cosT) - w*l*sinT)/l2;
+  m13 = (u*w * (1 - cosT) + v*l*sinT)/l2;
+  m14 = (a*(v2 + w2) - u*(b*v + c*w) 
+      + (u*(b*v + c*w) - a*(v2 + w2))*cosT + (b*w - c*v)*l*sinT)/l2;
+
+  m21 = (u*v * (1 - cosT) + w*l*sinT)/l2;
+  m22 = (v2 + (u2 + w2) * cosT)/l2;
+  m23 = (v*w * (1 - cosT) - u*l*sinT)/l2;
+  m24 = (b*(u2 + w2) - v*(a*u + c*w) 
+      + (v*(a*u + c*w) - b*(u2 + w2))*cosT + (c*u - a*w)*l*sinT)/l2;
+
+  m31 = (u*w * (1 - cosT) - v*l*sinT)/l2;
+  m32 = (v*w * (1 - cosT) + u*l*sinT)/l2;
+  m33 = (w2 + (u2 + v2) * cosT)/l2;
+  m34 = (c*(u2 + v2) - w*(a*u + b*v) 
+      + (w*(a*u + b*v) - c*(u2 + v2))*cosT + (a*v - b*u)*l*sinT)/l2;
+  from transform3d import transform3d
+  t = transform3d( [[m11,m12,m13,m14],[m21,m22,m23,m24],[m31,m32,m33,m34],[0,0,0,1]])
+  return t
+
+
+  
+  
