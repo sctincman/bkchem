@@ -1391,15 +1391,17 @@ Enter InChI:""")
     try:
       for m in u:
         if m.object_type == 'molecule':
-            inchi, warning = oasa_bridge.mol_to_inchi( m, program)
+            inchi, key, warning = oasa_bridge.mol_to_inchi( m, program)
             sms = sms + warning
-	    sms.append(inchi)
+            sms.append(inchi)
+            sms.append("InChIKey="+key)
+            sms.append("")
     except oasa.oasa_exceptions.oasa_inchi_error, e:
       sms = [_("InChI generation failed,"),_("make sure the path to the InChI program is correct in 'Options/InChI program path'"), "", str( e)]
     except:
       sms = [_("Unknown error occured during InChI generation, sorry."), _("Please, try to make sure the path to the InChI program is correct in 'Options/InChI program path'")]
     self.paper.swap_sides_of_selected("horizontal")
-    text = '\n\n'.join( sms)
+    text = '\n'.join( sms)
     dial = Pmw.TextDialog( self,
                            title=_('Generated InChIs'),
                            buttons=(_('OK'),))

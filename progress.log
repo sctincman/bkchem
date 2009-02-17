@@ -1,3 +1,21 @@
+RELEASE 0.12.6
+----------------------------------------
+ * bugfixes - Spanish and Italian translations were not packaged with last release
+   	    - import of Molfiles containing disconnected molecules no longer crashes
+	    - when a bond was drawn under precisely 45 degree angle, it disappeared
+
+ * enhancements - new 3D rotation options - it is possible to fix a bond an rotate around it;
+   		  when Shift key is held, only one part of the molecule will rotate, allowing
+		  for conformation adjustments
+		- InChI code updated to work with standard InChI
+		- InChIKey is generated alongside InChI
+
+ * translations - German updated by Bernhard Radzio
+   		- traditional Chinese updated by I-Yuan Chiang
+
+ * info - this version is shipped with OASA 0.12.7
+
+
 RELEASE 0.12.5
 ----------------------------------------
  * bugfixes - Segmentation fault on Ubuntu 8.10 caused by some glitch in the BLT library
@@ -16,7 +34,6 @@ RELEASE 0.12.5
  * translations - Italian translation was added (thanks to Alan Mangiaferro)
    		- Spanish translation was added (thanks to Angel Herráez)
 
-	  
  * acknowledgments - Alan Mangiaferro and Angel Herráez for great work on Italian
    		     and Spanish translations
 
