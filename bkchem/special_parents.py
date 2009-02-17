@@ -21,7 +21,7 @@
 import misc
 import marks
 
-import geometry
+from oasa import geometry
 from math import sin, cos, sqrt, pi
 import types
 import oasa

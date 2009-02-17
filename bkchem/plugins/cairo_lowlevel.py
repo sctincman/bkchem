@@ -20,7 +20,7 @@
 
 import plugin
 from tk2cairo import tk2cairo
-import transform
+from oasa import transform
 import cairo
 
 

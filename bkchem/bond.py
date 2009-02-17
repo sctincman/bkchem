@@ -24,7 +24,7 @@ from __future__ import division
 
 from math import sqrt
 import misc
-import geometry
+from oasa import geometry
 from warnings import warn
 from ftext import ftext
 import dom_extensions

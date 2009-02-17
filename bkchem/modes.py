@@ -23,9 +23,10 @@
 import misc
 from warnings import warn
 import operator
-import geometry
+from oasa import geometry
 import math
-import transform, transform3d
+from oasa import transform3d
+from oasa import transform
 import time
 import data
 import config

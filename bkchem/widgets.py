@@ -26,7 +26,7 @@ import Tkinter
 import tkColorChooser
 import tkFont
 import math
-import geometry
+from oasa import geometry
 import Pmw
 import data
 import config

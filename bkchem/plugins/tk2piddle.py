@@ -20,8 +20,8 @@
 
 from piddle import piddle
 import tkFont
-import transform
-import geometry
+from oasa import transform
+from oasa import geometry
 
 
 class tk2piddle:

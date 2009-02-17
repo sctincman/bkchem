@@ -27,7 +27,7 @@ from math import atan2, sin, cos, pi, sqrt
 import operator
 import misc
 import time
-import geometry
+from oasa import geometry
 from warnings import warn
 import dom_extensions
 import xml.dom.minidom as dom

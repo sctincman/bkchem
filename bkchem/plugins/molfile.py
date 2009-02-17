@@ -26,7 +26,7 @@
 import plugin
 import oasa_bridge
 import types
-import transform
+from oasa import transform
 
 
 

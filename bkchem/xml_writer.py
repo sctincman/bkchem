@@ -20,7 +20,7 @@
 
 """provides exporters to XML formats (SVG for now)"""
 
-import geometry
+from oasa import geometry
 import xml.dom.minidom as dom
 from xml.dom.minidom import Document
 import re

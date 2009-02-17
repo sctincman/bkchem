@@ -31,7 +31,8 @@ from parents import meta_enabled, container, with_line, line_colored
 from parents import point_drawable, interactive, drawable, top_level
 from reaction import reaction
 from singleton_store import Screen
-import geometry, misc
+from oasa import geometry
+import misc
 
 import debug
 

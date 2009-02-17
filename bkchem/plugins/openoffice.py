@@ -33,7 +33,7 @@ import dom_extensions
 import math
 import operator
 import os_support
-import geometry
+from oasa import geometry
 
 from singleton_store import Screen
 

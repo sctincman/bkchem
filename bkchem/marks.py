@@ -21,7 +21,7 @@
 """set of marks such as charges, radicals etc."""
 
 from __future__ import division
-import geometry
+from oasa import geometry
 import xml.dom.minidom as dom
 import dom_extensions
 import warnings
@@ -31,7 +31,7 @@ import data
 import tkFont
 import math
 import debug
-import transform
+from oasa import transform
 
 
 class mark( simple_parent):

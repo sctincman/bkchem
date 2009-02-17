@@ -20,8 +20,8 @@
 
 import cairo
 import tkFont
-import transform
-import geometry
+from oasa import transform
+from oasa import geometry
 import math
 import misc
 import string

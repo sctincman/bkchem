@@ -31,7 +31,7 @@ import math
 import operator
 
 from singleton_store import Screen
-import transform3d
+from oasa import transform3d
 
 
 def read_smiles( text, paper):

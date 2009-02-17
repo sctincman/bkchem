@@ -20,7 +20,7 @@
 
 import plugin
 from tk2piddle import tk2piddle
-import transform
+from oasa import transform
 
 from singleton_store import Screen, Store
 

@@ -26,7 +26,7 @@ from atom import atom
 from bond import bond
 from classes import plus, arrow
 from reaction import reaction
-from transform import transform
+from oasa.oasa.transform import transform
 
 import math
 import xml.sax

@@ -27,8 +27,8 @@ import tkFont, tkMessageBox
 import classes
 import arrow
 from molecule import molecule
-from transform import transform 
-from transform3d import transform3d
+from oasa.oasa.transform import transform 
+from oasa.oasa.transform3d import transform3d
 import misc
 from temp_manager import template_manager
 import string
@@ -60,7 +60,7 @@ from group import group
 from atom import atom
 from textatom import textatom
 import oasa
-import geometry
+from oasa import geometry
 from id_manager import id_manager
 import interactors
 import exceptions
