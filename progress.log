@@ -1,3 +1,8 @@
+RELEASE 0.12.7
+----------------------------------------
+ * bugfixes - InChI generation is now compatibile with old InChI versions (1.0 and 1.0.1)
+   	      (thanks to Michal Bozon for reporting this)
+
 RELEASE 0.12.6
 ----------------------------------------
  * bugfixes - Spanish and Italian translations were not packaged with last release

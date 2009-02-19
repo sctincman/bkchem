@@ -35,7 +35,6 @@ from tuning import Tuning
 import operator
 
 
-
 class vertex_common( object):
   """implements some properties and methods common for all vertices
   (children of oasa.chem_vertex), such as numbering and mark support"""
@@ -674,11 +673,11 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
 
 
   def transform( self, tr):
-    x, y = tr.transform_xy( self.x, self.y)
+    x, y, z = tr.transform_xyz( self.x, self.y, self.z)
     self.move_to( x, y, dont_move_marks=1)
+    self.z = z
     for m in self.marks:
       m.transform( tr)
-
 
 
 

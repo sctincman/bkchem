@@ -22,7 +22,7 @@
 
 from __future__ import division
 
-from math import sqrt
+import math
 import misc
 from oasa import geometry
 from warnings import warn
@@ -302,8 +302,31 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
       if automatic == "both":
         self.center = center
+    # the following lines ensure proper drawing in case 3D coordinates are involved
+    transform = None
+    self._transform = oasa.transform3d.transform3d()
+    if self.order != 1:
+      for n in self.atom1.neighbors + self.atom2.neighbors:
+        # self.atom1 and self.atom2 are in this list as well
+        if n.z != 0:
+          # engage 3d transform prior to detection of where to draw
+          transform = self._get_3dtransform_for_drawing()
+          break
+      if transform:
+        for n in self.atom1.neighbors + self.atom2.neighbors:
+          n.transform( transform)
+        #[n.transform( transform) for n in self.molecule.atoms]
+        self._transform = transform.get_inverse()
+    # / end of 3D
+    # we call the draw method
     self.__class__.__dict__[ method]( self)
-
+    # we have to cleanup after 3D stuff
+    if self._transform:
+      # if transform was used, we need to transform back
+      for n in self.atom1.neighbors + self.atom2.neighbors:
+        n.transform( self._transform)
+      #[n.transform( inv) for n in self.molecule.atoms]
+      self._transform = None
 
 
   # THE DRAW HELPER METHODS
@@ -337,14 +360,13 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       # the bond is too short to draw it
       return None
     x1, y1, x2, y2 = where
-
     # decide the capstyle
     if self.atom1.show or self.atom2.show:
       capstyle = "butt"
     else:
       capstyle = "round"
-
-    self.item = self.paper.create_line( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle=capstyle)
+    # draw the item
+    self.item = self._create_line_with_transform( (x1, y1, x2, y2), tags=('bond',), width=self.line_width, fill=self.line_color, capstyle=capstyle)
     # draw helper items
     self.second = self.third = []
     self.paper.register_id( self.item, self)
@@ -456,7 +478,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
     xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0) 
-    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     if d == 0:  
       return []  # to prevent division by zero
     dx1 = (x0 - xa)/d 
@@ -499,7 +521,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
             coords[0] += 1
           else:
             coords[1] += 1
-      items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
+      items.append( self._create_line_with_transform( coords, width=self.line_width, fill=self.line_color))
 
     return items
 
@@ -588,7 +610,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x1, y1, x2, y2 = coords
     # main item
     dashing = (5, 5) # pixels full, pixels empty
-    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     # we adjust the dashing lengths
     _d = dashing[0]
     while not _d > d:
@@ -606,11 +628,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       xn = x + dx*dashing[0]
       yn = y + dy*dashing[0]
       coords = (x, y, xn, yn)
-      items.append( self.paper.create_line( coords, width=self.line_width, fill=self.line_color))
+      items.append( self._create_line_with_transform( coords, width=self.line_width, fill=self.line_color))
       x = xn + dx*dashing[1]
       y = yn + dy*dashing[1]
     return items
-
 
 
   def _draw_second_line( self, coords):
@@ -646,8 +667,31 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         else:
           # parallel
           pass
-    return [self.paper.create_line( x, y, x0, y0, width=self.line_width, fill=self.line_color)]
+    return [self._create_line_with_transform( (x, y, x0, y0), width=self.line_width, fill=self.line_color)]
 
+
+
+  def _get_3dtransform_for_drawing( self):
+    """this is a helper method that returns a transform3d which rotates
+    self to coincide with the z-axis and rotates neighbors to be in (x,y)
+    plane."""
+    x1,y1,z1 = self.atom1.get_xyz()
+    x2,y2,z2 = self.atom2.get_xyz()
+    t = geometry.create_transformation_to_coincide_point_with_z_axis( [x1,y1,z1],[x2,y2,z2])
+    x,y,z = t.transform_xyz( x2,y2,z2)
+    # now rotate to make the plane of neighbor atoms coincide with x,y plane
+    angs = []
+    for n in self.atom1.neighbors + self.atom2.neighbors:
+      if n is not self.atom1 and n is not self.atom2:
+        nx,ny,nz = t.transform_xyz( *n.get_xyz())
+        ang = math.atan2( ny, nx)
+        if ang < -0.00001:
+          ang += math.pi
+        angs.append( ang)
+    ang = sum( angs) / len( angs)
+    t.set_rotation_z( ang + math.pi/2.0)
+    t.set_rotation_y( math.pi/2.0)
+    return t
 
   # wedge bonds
 
@@ -714,7 +758,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
     xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0) 
-    return [self.paper.create_polygon( (xa, ya, x0, y0, 2*x2-x0, 2*y2-y0, 2*x1-xa, 2*y1-ya), width=0, fill=self.line_color, joinstyle="miter")] 
+    return [self._create_polygon_with_transform( (xa, ya, x0, y0, 2*x2-x0, 2*y2-y0, 2*x1-xa, 2*y1-ya), width=0, fill=self.line_color, joinstyle="miter")] 
 
 
   def _draw_a1( self):
@@ -782,7 +826,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x1, y1, x2, y2 = coords
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
-    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     if self.equithick:
       step_size = 1.8*self.line_width
     else:
@@ -816,9 +860,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         coords2.extend((coords[2], coords[3]))
     coords2.extend((x2, y2)) 
     if self.equithick:
-      return [self.paper.create_line( coords2, width=self.line_width, fill=self.line_color, smooth=1)]
+      return [self._create_line_with_transform( coords2, width=self.line_width, fill=self.line_color, smooth=1)]
     else:
-      return [self.paper.create_line( coords2, width=self.line_width, fill=self.line_color)]
+      return [self._create_line_with_transform( coords2, width=self.line_width, fill=self.line_color)]
 
   def _draw_b1( self):
     where = self._draw_n1()
@@ -934,7 +978,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # main item
     diameter = self.line_width
     spacing = 2*self.line_width
-    d = sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
+    d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     # we adjust the spacing
     _d = spacing + diameter
     i = 1.0
@@ -956,7 +1000,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     radius = 0.5*diameter
     while min(x1,x2) <= x <= max(x1, x2) and min(y1,y2) <= y <= max(y1,y2):
       coords = (x-radius, y-radius, x+radius, y+radius)
-      items.append( self.paper.create_oval( coords, width=self.line_width, fill=self.line_color))
+      items.append( self._create_oval_with_transform( coords, width=self.line_width, fill=self.line_color))
       x += dx*( diameter + spacing)
       y += dy*( diameter + spacing)
     return items
@@ -964,13 +1008,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
 
-
-
-
-
   ## // DRAW HELPER METHODS
-
-
 
   def redraw( self, recalc_side=0):
     if not self.__dirty:
@@ -1295,8 +1333,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
 
-
-
   def _decide_distance_and_center( self):
     """according to molecular geometry decide what bond.center and bond.bond_width should be"""
     line = self.atom1.get_xy() + self.atom2.get_xy()
@@ -1313,24 +1349,30 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
 
-
-
   def _compute_sign_and_center( self):
     """returns tuple of (sign, center) where sign is the default sign of the self.bond_width"""
+    # check if we need to transform 3D before computation
+    transform = None
+    for n in self.atom1.neighbors + self.atom2.neighbors:
+      # self.atom1 and self.atom2 are in this list as well
+      if n.z != 0:
+        # engage 3d transform prior to detection of where to draw
+        transform = self._get_3dtransform_for_drawing()
+        break
+    if transform:
+      for n in self.atom1.neighbors + self.atom2.neighbors:
+        n.transform( transform)
+    # /end of check
     line = self.atom1.get_xy() + self.atom2.get_xy()
     atms = self.atom1.get_neighbors() + self.atom2.get_neighbors()
     atms = misc.difference( atms, [self.atom1, self.atom2])
     coords = [a.get_xy() for a in atms]
-
     # searching for circles
-
     circles = 0
-
     for ring in self.molecule.get_smallest_independent_cycles_dangerous_and_cached():
       if self.atom1 in ring and self.atom2 in ring:
         on_which_side = lambda xy: geometry.on_which_side_is_point( line, xy)
         circles += reduce( operator.add, map( on_which_side, [a.get_xy() for a in ring if a not in self.atoms]))
-
     if circles:
       side = circles
     else:
@@ -1340,7 +1382,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if side == 0 and (len( self.atom1.get_neighbors()) == 1 or
                       len( self.atom2.get_neighbors()) == 1):
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
-      return (1 ,1)
+      ret = (1 ,1)
     else:
       if not circles:
         # we center when both atoms have visible symbol and are not in circle
@@ -1355,9 +1397,16 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
               sides[i] *= 0.2 # this makes "non C" less then C but more then H
           side = reduce( operator.add, sides, 0)
       if side < 0:
-        return (-1, 0)
+        ret = (-1, 0)
       else:
-        return (1, 0)
+        ret = (1, 0)
+    # transform back if necessary
+    if transform:
+      inv = transform.get_inverse()
+      for n in self.atom1.neighbors + self.atom2.neighbors:
+        n.transform( inv)
+    # /end of back transform
+    return ret
     
 
 
@@ -1405,6 +1454,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def transform( self, tr):
+    print ":AAAAA"
     if not self.item:
       return 
     for i in [self.item] + self.second + self.third + self.items:
@@ -1414,7 +1464,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.selector:
       self.unselect()
       self.select()
-    # we need to check if the sing of double bond width has not changed
+    # we need to check if the sign of double bond width has not changed
     # this happens during 3d rotation
     if self.order == 2 and not self.center:
       line = list( self.atom1.get_xy())
@@ -1433,7 +1483,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     items are items that are exported according to the bond type;
     as this code is a ugly mix of conditionals it makes sense to put it into one
     place co that the exporters do not have to reinvent it themself."""
-
     # items to be exported
     if self.type == 'd':
       # d is a little bit twisted
@@ -1466,5 +1515,30 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         line_items = []
       else:
         line_items = self.second + self.third
-
     return line_items, items
+
+
+  def _create_line_with_transform( self, coords, **kw):
+    """this is a private method intended to pass things to self.paper.create_line,
+    but ensuring that a proper transformation takes place in case it is needed.
+    It is used during drawing of bonds in 3D"""
+    if self._transform:
+      coords = self._transform.transform_xy_flat_list( coords)
+    return self.paper.create_line( coords, **kw)
+
+  def _create_oval_with_transform( self, coords, **kw):
+    """this is a private method intended to pass things to self.paper.create_oval,
+    but ensuring that a proper transformation takes place in case it is needed.
+    It is used during drawing of bonds in 3D"""
+    if self._transform:
+      coords = self._transform.transform_xy_flat_list( coords)
+    return self.paper.create_oval( coords, **kw)
+
+  def _create_polygon_with_transform( self, coords, **kw):
+    """this is a private method intended to pass things to self.paper.create_polygon,
+    but ensuring that a proper transformation takes place in case it is needed.
+    It is used during drawing of bonds in 3D"""
+    if self._transform:
+      coords = self._transform.transform_xy_flat_list( coords)
+    return self.paper.create_polygon( coords, **kw)
+
