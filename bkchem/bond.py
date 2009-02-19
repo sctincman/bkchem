@@ -1039,10 +1039,15 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
     x1, y1, x2, y2 = map( round, [x1, y1, x2, y2])
+    if self.item and not self.paper.type( self.item) == "line":
+      self.paper.unregister_id( self.item)
+      self.paper.delete( self.item)
+      self.item = None
     if not self.item:
       # the bond might not be drawn because it was too short
-      self.draw()
-    if self.item:
+      self.item = self.paper.create_line( (x1,y1,x2,y2))
+      self.paper.register_id( self.item, self)
+    else:
       self.paper.coords( self.item, x1, y1, x2, y2)
     self.paper.itemconfig( self.item, width = self.line_width, fill=self.line_color)
     
