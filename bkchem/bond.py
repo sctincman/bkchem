@@ -305,7 +305,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # the following lines ensure proper drawing in case 3D coordinates are involved
     transform = None
     self._transform = oasa.transform3d.transform3d()
-    if self.order != 1:
+    if self.order != 1 or self.type != 'n':
       for n in self.atom1.neighbors + self.atom2.neighbors:
         # self.atom1 and self.atom2 are in this list as well
         if n.z != 0:
@@ -313,9 +313,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
           transform = self._get_3dtransform_for_drawing()
           break
       if transform:
-        for n in self.atom1.neighbors + self.atom2.neighbors:
+        for n in self.molecule.atoms:
           n.transform( transform)
-        #[n.transform( transform) for n in self.molecule.atoms]
         self._transform = transform.get_inverse()
     # / end of 3D
     # we call the draw method
@@ -323,9 +322,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # we have to cleanup after 3D stuff
     if self._transform:
       # if transform was used, we need to transform back
-      for n in self.atom1.neighbors + self.atom2.neighbors:
+      for n in self.molecule.atoms:
         n.transform( self._transform)
-      #[n.transform( inv) for n in self.molecule.atoms]
       self._transform = None
 
 
