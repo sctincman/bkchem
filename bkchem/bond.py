@@ -671,7 +671,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def _get_3dtransform_for_drawing( self):
     """this is a helper method that returns a transform3d which rotates
-    self to coincide with the z-axis and rotates neighbors to be in (x,y)
+    self to coincide with the x-axis and rotates neighbors to be in (x,y)
     plane."""
     x1,y1,z1 = self.atom1.get_xyz()
     x2,y2,z2 = self.atom2.get_xyz()
@@ -1457,7 +1457,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def transform( self, tr):
-    print ":AAAAA"
     if not self.item:
       return 
     for i in [self.item] + self.second + self.third + self.items:
