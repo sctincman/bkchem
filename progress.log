@@ -1,7 +1,13 @@
-RELEASE 0.12.7
+RELEASE 0.13.0
 ----------------------------------------
  * bugfixes - InChI generation is now compatibile with old InChI versions (1.0 and 1.0.1)
    	      (thanks to Michal Bozon for reporting this)
+
+ * enhancements - double bonds in 3D rotated molecules look much better now
+   		  (z-coordinate is taken into account when the bond is drawn)
+
+ * info - this version is shipped with OASA 0.13.0
+
 
 RELEASE 0.12.6
 ----------------------------------------
