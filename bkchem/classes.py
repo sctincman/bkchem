@@ -461,7 +461,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if package:
       self.read_package( package)
     self.focus_item = None
-
+    self.justify = 'right'
 
   # public methods
 
@@ -473,7 +473,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     "draws text"
     self.update_font()
     name = '<ftext>%s</ftext>' % self.xml_ftext
-    self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, fill=self.line_color)
+    self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, fill=self.line_color, justify=self.justify)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text'))

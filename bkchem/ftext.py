@@ -34,7 +34,7 @@ import tuning
 class ftext:
 
 
-  def __init__( self, canvas, xy, text, font=None, pos="center-first", fill='#000', big_charges=True):
+  def __init__( self, canvas, xy, text, font=None, pos="center-first", fill='#000', big_charges=True, justify='right'):
     self.big_charges = big_charges  # should +- in <sup> be drawn in bigger font (not scaled down)?
     self.canvas = canvas
     self.items = []
@@ -51,7 +51,7 @@ class ftext:
     self._font_size = int( self.font.actual('size'))
     self.pos = pos
     self.fill = fill
-
+    self.justify = justify
 
     
   def draw( self):
@@ -113,18 +113,18 @@ class ftext:
                                  y+tuning.Tuning.Screen.pick_best_value("subscript_y_shift",self._font_size),
                                  tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
-                                 anchor="nw", justify="right", fill=self.fill)
+                                 anchor="nw", justify=self.justify, fill=self.fill)
     elif 'sup' in chunk.attrs:
       item = canvas.create_text( x+tuning.Tuning.Screen.pick_best_value("supsubscript_x_shift",self._font_size),
                                  y,
                                  tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
-                                 anchor="sw", justify="right", fill=self.fill)
+                                 anchor="sw", justify=self.justify, fill=self.fill)
     else:
       item = canvas.create_text( x, y, tags=self.tags, text=chunk.text,
                                  font=(self._font_family, int( round( self._font_size*scale)), weight),
                                  anchor="w",
-                                 justify="right",
+                                 justify=self.justify,
                                  fill=self.fill)
     bbox = canvas.bbox( item)
     chunk.item = item
