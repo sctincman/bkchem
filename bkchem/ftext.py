@@ -61,6 +61,7 @@ class ftext:
 
     self.items = []
     self._current_x = self.x
+    self._current_y = self.y
 
     self.items = chs
     last_attrs = set()
@@ -80,7 +81,10 @@ class ftext:
           self._current_x = last_x
       last_x = self._current_x
       last_attrs = ch.attrs
-      self._draw_chunk( ch, scale=scale)
+      bbox = self._draw_chunk( ch, scale=scale)
+      if ch.newline_after:
+        self._current_y = bbox[3]
+
 
     #does not work when 1. character is not regular
     if self.pos == 'center-first':
@@ -99,7 +103,7 @@ class ftext:
     weight = ''
     canvas = self.canvas
     x = self._current_x
-    y = self.y
+    y = self._current_y
 
     if 'b' in chunk.attrs:
       weight = "bold"
@@ -130,13 +134,26 @@ class ftext:
     chunk.item = item
     chunk.dx = abs( bbox[0] - bbox[2])
     self._current_x = bbox[2]
+    return bbox
 
 
 
   def get_chunks( self):
     handler = FtextHandler()
     xml.sax.parseString( self.text, handler)
-    return handler.chunks
+    chunks = []
+    for ch in handler.chunks:
+      parts = ch.text.split("\n")
+      if len( parts) > 1:
+        for i,part in enumerate( parts):
+          if i < len( parts)-1:
+            new_ch = text_chunk( text=part, attrs=ch.attrs, newline_after=True)
+          else:
+            new_ch = text_chunk( text=part, attrs=ch.attrs)
+          chunks.append( new_ch)
+      else:
+        chunks.append( ch)
+    return chunks
 
 
     
@@ -180,13 +197,14 @@ class ftext:
 
 class text_chunk:
 
-  def __init__( self, text, attrs=None):
+  def __init__( self, text, attrs=None, newline_after=False):
     self.text = text
     self.attrs = attrs or set()
     self.item = None
     self.dx = 0
     self.ignore_y = False
     self.ignore_x = False
+    self.newline_after = newline_after
 
 
 class FtextHandler ( xml.sax.ContentHandler):
