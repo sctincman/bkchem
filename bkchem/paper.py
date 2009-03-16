@@ -27,8 +27,12 @@ import tkFont, tkMessageBox
 import classes
 import arrow
 from molecule import molecule
-from oasa.oasa.transform import transform 
-from oasa.oasa.transform3d import transform3d
+try:
+  from oasa.oasa.transform import transform 
+  from oasa.oasa.transform3d import transform3d
+except ImportError:
+  from oasa.transform import transform
+  from oasa.transform3d import transform3d
 import misc
 from temp_manager import template_manager
 import string

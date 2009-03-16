@@ -196,5 +196,5 @@ def get_bkchem_run_dir():
   if not os.path.isdir( path):
     # this happens on windows when running from bkchem.exe
     path = os.path.split( path)[0]
-  return path
+  return path.decode(sys.getfilesystemencoding())
 

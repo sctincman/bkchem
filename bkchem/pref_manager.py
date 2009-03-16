@@ -99,6 +99,9 @@ class pref_manager( object):
         if type( v) == types.__dict__[ tn]:
           itype = tn
           break
+      if itype == "StringType":
+        v = v.decode('utf-8')
+        itype = 'UnicodeType'
       el = dom_extensions.textOnlyElementUnder( top, k, unicode( v),
                                                 attributes = (("type", itype),))
     return doc

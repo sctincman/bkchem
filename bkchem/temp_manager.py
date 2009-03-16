@@ -24,7 +24,10 @@
 """template manager resides here"""
 
 import math
-from oasa.oasa.transform import transform
+try:
+  from oasa.oasa.transform import transform
+except ImportError:
+  from oasa.transform import transform
 from molecule import molecule
 import xml.dom.minidom as dom
 from warnings import warn

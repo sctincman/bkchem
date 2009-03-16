@@ -446,7 +446,7 @@ class BKchem( Tk):
     # the same as the installation directory and the install was really performed
     # this is very common on windows, where you mostly start the program via an icon
     # it is not easy to guess when the right situation occured
-    if os.path.abspath( os_support.get_bkchem_run_dir()) == os.path.abspath( os.getcwd()):
+    if os.path.abspath( os_support.get_bkchem_run_dir()) == os.path.abspath( os.getcwdu()):
       # we are running from the installation directory
       if os_support.site_config != None:
         # we are probably on Linux after install, go ahead

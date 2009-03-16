@@ -86,8 +86,14 @@ class plugin_manager( object):
 
     if handler.type == "script":
       filename = handler.filename
+      dirname = handler.get_directory_name()
+      import sys
+      sys.path.append( dirname)
       the_globals = {'App': Store.app}
-      execfile( filename, the_globals)
+      try:
+        execfile( filename, the_globals)
+      finally:
+        del sys.path[-1]
     else:
       raise ValueError, "Wrong type of plugin %s" % name
 
