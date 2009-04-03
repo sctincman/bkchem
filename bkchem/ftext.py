@@ -55,6 +55,7 @@ class ftext:
 
     
   def draw( self):
+    # split text to chunks
     chs = self.get_chunks()
     if not chs:
       return None
@@ -83,7 +84,8 @@ class ftext:
       last_attrs = ch.attrs
       bbox = self._draw_chunk( ch, scale=scale)
       if ch.newline_after:
-        self._current_y = bbox[3]
+        self._current_y = bbox[3] + self.font.metrics()['linespace'] / 2.0
+        self._current_x = self.x
 
 
     #does not work when 1. character is not regular
