@@ -287,7 +287,7 @@ class area_colored( line_colored):
 
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
-    simple_parent.copy_settings( self, other)
+    line_colored.copy_settings( self, other)
     other.area_color = self.area_color
 
 

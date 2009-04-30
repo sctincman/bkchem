@@ -25,8 +25,12 @@ from warnings import warn
 import operator
 from oasa import geometry
 import math
-from oasa import transform3d
-from oasa import transform
+try:
+  from oasa.oasa.transform import transform 
+  from oasa.oasa.transform3d import transform3d
+except ImportError:
+  from oasa.transform import transform
+  from oasa.transform3d import transform3d
 import time
 import data
 import config
@@ -1344,7 +1348,7 @@ class rotate_mode( edit_mode):
       if self.submode[0] == 0:
         # 2D rotation
         angle = round( sig * (abs( dx1) +abs( dy1)) / 50.0, 2)
-        tr = transform.transform()
+        tr = transform()
         tr.set_move( -self._centerx, -self._centery)
         tr.set_rotation( angle)
         tr.set_move( self._centerx, self._centery)
@@ -1370,7 +1374,7 @@ class rotate_mode( edit_mode):
           # normal rotation
           angle1 = round( dx1 / 50.0, 2)
           angle2 = round( dy1 / 50.0, 2)
-          tr = transform3d.transform3d()
+          tr = transform3d()
           tr.set_move( -self._centerx, -self._centery, 0)
           tr.set_rotation( -angle2, angle1, 0)
           tr.set_move( self._centerx, self._centery, 0)
@@ -1498,7 +1502,7 @@ class bond_align_mode( edit_mode):
       angle = -angle0
     else: # pi/2 < angle < pi
       angle = math.pi - angle0
-    tr = transform.transform()
+    tr = transform()
     tr.set_move( -centerx, -centery)
     tr.set_rotation( angle)
     tr.set_move(centerx, centery)
@@ -1518,7 +1522,7 @@ class bond_align_mode( edit_mode):
       angle = math.pi
     else:
       angle = math.pi/2 - angle0
-    tr = transform.transform()
+    tr = transform()
     tr.set_move( -centerx, -centery)
     tr.set_rotation( angle)
     tr.set_move(centerx, centery)
@@ -1531,7 +1535,7 @@ class bond_align_mode( edit_mode):
       y = ( y1 +y2) /2.0
     else:
       x, y = coords
-    tr = transform.transform()
+    tr = transform()
     tr.set_move( -x, -y)
     tr.set_scaling_xy( -1, -1)
     tr.set_move( x, y)
@@ -1544,7 +1548,7 @@ class bond_align_mode( edit_mode):
     angle0 = geometry.clockwise_angle_from_east( x2 - x1, y2 - y1)
     if angle0 >= math.pi :
       angle0 = angle0 - math.pi
-    tr = transform.transform()
+    tr = transform()
     tr.set_move( -centerx, -centery)
     tr.set_rotation( -angle0)
     tr.set_scaling_xy( 1, -1)

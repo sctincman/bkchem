@@ -630,6 +630,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       v.set_name( text)
       return v
     val = old and old.occupied_valency or 0
+    # if it seems like a known group, try it first
+    if val==1 and group.is_known_group( text):
+      v = self.create_vertex( vertex_class=group)
+      if v.set_name( text, occupied_valency=val):
+        return v
     for cls in (atom, queryatom, group, textatom):
       v = self.create_vertex( vertex_class=cls)
       if v.set_name( text, occupied_valency=val):

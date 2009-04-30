@@ -25,6 +25,10 @@ from __future__ import division
 from warnings import warn
 import dom_extensions
 from oasa import periodic_table as PT
+try:
+  from oasa.oasa.known_groups import name_to_smiles
+except ImportError:
+  from oasa.known_groups import name_to_smiles
 import groups_table as GT
 from special_parents import drawable_chem_vertex
 import data
@@ -68,7 +72,13 @@ class group( drawable_chem_vertex):
       self.read_package( package)
 
 
+  ## -------------------------------------- CLASS METHODS ------------------------------
 
+  @classmethod
+  def is_known_group( cls, text):
+    if (text in name_to_smiles): # or (text.capitalize() in name_to_smiles):
+      return True
+    return False
 
   ## ---------------------------------------- PROPERTIES ------------------------------
       
