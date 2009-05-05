@@ -655,16 +655,7 @@ class edit_mode( basic_mode):
 	name = Store.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
-      # i really don't know if I should call the unicode first
-      # i also don't understand how could it have worked without the encode
       name = unicode( name).encode('utf-8')
-##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
-##         name = xml.sax.saxutils.escape( name)
-##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
-##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
-##           Store.app.paper.bell()
-##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
-##           return
       self.set_given_name_to_selected( name, interpret=Store.app.editPool.interpret)
 
 
@@ -1216,15 +1207,7 @@ class text_mode( edit_mode):
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
-      ## catch not well-formed text
-##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
-##         name = xml.sax.saxutils.escape( name)
-##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
-##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
-##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-##           Store.app.paper.bell()
-##           return
-      print name, dom_extensions.isOnlyTags( name)
+      # LOPOOK
       Store.app.paper.set_name_to_selected( name)
 
       if name and not dom_extensions.isOnlyTags( name):
@@ -1845,15 +1828,6 @@ class atom_mode( edit_mode):
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
-##       ## catch not well-formed text
-##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
-##         name = xml.sax.saxutils.escape( name)
-##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
-##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
-##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-##           Store.app.paper.bell()
-##           return
-
       if name and not dom_extensions.isOnlyTags( name):
         mol = Store.app.paper.new_molecule()
         a = mol.create_vertex_according_to_text( None, name, interpret=Store.app.editPool.interpret)
