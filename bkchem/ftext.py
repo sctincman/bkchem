@@ -199,6 +199,7 @@ class ftext:
   def sanitized_text( self):
     return self.__class__.sanitize_text( self.text)
 
+
   @classmethod
   def sanitize_text( cls, text):
     text = unescape_html_entity_references( text).encode('utf-8')
