@@ -1207,9 +1207,10 @@ class text_mode( edit_mode):
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
-      # LOPOOK
+      # there is either something selected or a new thing is added
+      # the unselecting code before does ensure that nothing is selected
+      # when we click outside to create something new
       Store.app.paper.set_name_to_selected( name)
-
       if name and not dom_extensions.isOnlyTags( name):
         txt = Store.app.paper.new_text( event.x, event.y, text=name)
         txt.draw()
