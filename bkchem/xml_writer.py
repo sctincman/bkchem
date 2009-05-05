@@ -30,6 +30,7 @@ import operator
 import dom_extensions
 import os
 from tuning import Tuning
+from ftext import ftext as ftext_class
 
 from singleton_store import Screen
 
@@ -288,7 +289,7 @@ class SVG_writer( XML_writer):
                                     ( 'stroke', self.cc( t.area_color))))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
-    text = ftext_dom_to_svg_dom( t.get_parsed_text(), self.document, replace_minus=t.paper.get_paper_property('replace_minus'))
+    text = ftext_dom_to_svg_dom( dom.parseString( t.ftext.sanitized_text()), self.document, replace_minus=t.paper.get_paper_property('replace_minus'))
     dom_extensions.setAttributes( text, (( "x", self.convert( x)),
                                          ( "y", self.convert( y1)),
                                          ( "font-family", t.font_family),
@@ -418,7 +419,7 @@ def list_to_svg_points( l):
 
 
 def ftext_to_svg_dom( ftext):
-  fd = dom.parseString( '<ftext>%s</ftext>' % ftext).childNodes[0]
+  fd = dom.parseString( ftext_class.sanitize_text( ftext)).childNodes[0]
   svg = dom.Document()
   return ftext_dom_to_svg_dom( fd, svg)
 

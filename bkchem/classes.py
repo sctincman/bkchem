@@ -472,8 +472,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    name = '<ftext>%s</ftext>' % self.xml_ftext
-    self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, fill=self.line_color, justify=self.justify)
+    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, fill=self.line_color, justify=self.justify)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text'))
@@ -515,8 +514,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self._selected = 0
 
 
-
-
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
     self.x += dx
@@ -526,8 +523,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
       self.ftext.move( dx, dy)
-
-
 
 
   def move_to( self, x, y):
@@ -541,22 +536,16 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.ftext.move_to( x, y)
 
 
-
   def get_x( self):
     return self.x
-
 
 
   def get_y( self):
     return self.y
 
 
-
-
   def get_xy( self):
     return self.x, self.y
-
-
 
 
   def delete( self):
@@ -573,8 +562,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return self
 
 
-
-
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
     if package.getAttribute( 'id'):
@@ -584,7 +571,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.set_xy( x, y)
     ft = package.getElementsByTagName('ftext')
     try:
-      self.xml_ftext = reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '')
+      self.xml_ftext = reduce( operator.add, [e.nodeValue for e in ft[0].childNodes if isinstance( e, dom.Text)], '')
     except IndexError:
       self.xml_ftext = "?"
 
@@ -616,7 +603,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
         font.setAttribute( 'color', self.line_color)
     x, y = Screen.px_to_text_with_unit( (self.x, self.y))
     dom_extensions.elementUnder( a, 'point', attributes=(('x', x),('y', y)))
-    a.appendChild( self.get_parsed_text())
+    ftext = dom_extensions.elementUnder( a, 'ftext')
+    ftext.appendChild( doc.createTextNode( self.xml_ftext))
     return a
 
 
@@ -664,6 +652,3 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.paper.lift( self.item)
 
 
-
-  def get_parsed_text( self):
-    return dom.parseString( "<ftext>%s</ftext>" % self.xml_ftext).childNodes[0]    

@@ -57,6 +57,7 @@ import interactors
 import marks
 import types
 from arrow import arrow
+from ftext import ftext
 
 from singleton_store import Store, Screen
 
@@ -657,17 +658,13 @@ class edit_mode( basic_mode):
       # i really don't know if I should call the unicode first
       # i also don't understand how could it have worked without the encode
       name = unicode( name).encode('utf-8')
-      try:
-        xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-      except xml.sax.SAXParseException:
-        name = xml.sax.saxutils.escape( name)
-        # the second round of try: except: should catch problems not related to XML wellfomedness but rather to encoding
-        try:
-          xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-        except xml.sax.SAXParseException:        
-          Store.app.paper.bell()
-          tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
-          return
+##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
+##         name = xml.sax.saxutils.escape( name)
+##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
+##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
+##           Store.app.paper.bell()
+##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably error with input encoding!"))
+##           return
       self.set_given_name_to_selected( name, interpret=Store.app.editPool.interpret)
 
 
@@ -1220,18 +1217,14 @@ class text_mode( edit_mode):
         return
       name = unicode( name).encode( 'utf-8')
       ## catch not well-formed text
-      try:
-        xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-      except xml.sax.SAXParseException:
-        name = xml.sax.saxutils.escape( name)
-        # the second round of try: except: should catch problems not
-        # related to XML wellfomedness but rather to encoding
-        try:
-          xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-        except xml.sax.SAXParseException:        
-          tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-          Store.app.paper.bell()
-          return
+##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
+##         name = xml.sax.saxutils.escape( name)
+##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
+##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
+##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
+##           Store.app.paper.bell()
+##           return
+      print name, dom_extensions.isOnlyTags( name)
       Store.app.paper.set_name_to_selected( name)
 
       if name and not dom_extensions.isOnlyTags( name):
@@ -1852,19 +1845,14 @@ class atom_mode( edit_mode):
       if not name:
         return
       name = unicode( name).encode( 'utf-8')
-      ## catch not well-formed text
-      try:
-        xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-      except xml.sax.SAXParseException:
-        name = xml.sax.saxutils.escape( name)
-        # the second round of try: except: should catch problems not
-        # related to XML wellfomedness but rather to encoding
-        try:
-          xml.sax.parseString( "<a>%s</a>" % name, xml.sax.ContentHandler())
-        except xml.sax.SAXParseException:        
-          tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
-          Store.app.paper.bell()
-          return
+##       ## catch not well-formed text
+##       if not ftext.is_text_parseable( "<a>%s</a>" % name):
+##         name = xml.sax.saxutils.escape( name)
+##         # the second round: should catch problems not related to XML wellfomedness but rather to encoding
+##         if not ftext.is_text_parseable( "<a>%s</a>" % name):        
+##           tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
+##           Store.app.paper.bell()
+##           return
 
       if name and not dom_extensions.isOnlyTags( name):
         mol = Store.app.paper.new_molecule()

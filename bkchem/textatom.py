@@ -143,7 +143,7 @@ class textatom( drawable_chem_vertex):
     self.y = y
     ft = package.getElementsByTagName('ftext')
     if ft:
-      self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'))
+      self.set_name( reduce( operator.add, [e.nodeValue for e in ft[0].childNodes if isinstance( e, dom.Text)], '').encode('utf-8'))
     else:
       raise TypeError, "not text atom"
     # font and fill color
@@ -183,7 +183,8 @@ class textatom( drawable_chem_vertex):
       if self.line_color != self.paper.standard.line_color:
         font.setAttribute( 'color', self.line_color)
     # the text
-    a.appendChild( dom.parseString( '<ftext>%s</ftext>' % self.symbol).childNodes[0])
+    ftext = dom_extensions.elementUnder( a, 'ftext')
+    ftext.appendChild( doc.createTextNode( self.symbol))
     # area color
     if self.area_color != self.paper.standard.area_color:
       a.setAttribute( 'background-color', self.area_color)

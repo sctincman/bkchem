@@ -141,8 +141,9 @@ class ftext:
 
 
   def get_chunks( self):
+    text = self.sanitized_text()
     handler = FtextHandler()
-    xml.sax.parseString( self.text, handler)
+    xml.sax.parseString( text, handler)
     chunks = []
     for ch in handler.chunks:
       parts = ch.text.split("\n")
@@ -195,6 +196,21 @@ class ftext:
       self.canvas.delete( i.item)
 
       
+  def sanitized_text( self):
+    return self.__class__.sanitize_text( self.text)
+
+  @classmethod
+  def sanitize_text( cls, text):
+    text = unescape_html_entity_references( text).encode('utf-8')
+    x = "<ftext>%s</ftext>" % text
+    try:
+      xml.sax.parseString( x, xml.sax.ContentHandler())
+    except xml.sax.SAXParseException:
+      text = xml.sax.saxutils.escape( text)
+      x = "<ftext>%s</ftext>" % text
+    return x
+    
+    
 
 
 class text_chunk:
@@ -238,4 +254,16 @@ class FtextHandler ( xml.sax.ContentHandler):
 
 
 
+from htmlentitydefs import name2codepoint
+import re
 
+def unescape_html_entity_references( text):
+  return re.sub( "&([a-zA-Z]+);", _unescape_one_html_entity_reference, text)
+
+def _unescape_one_html_entity_reference( m):
+  """we will use this function inside a regexp to replace entities"""
+  hit = m.group(1)
+  if hit not in ["amp","gt","lt"] and hit in name2codepoint:
+    return unichr( name2codepoint[hit])
+  else:
+    return "&"+hit+";"

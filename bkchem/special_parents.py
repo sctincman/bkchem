@@ -478,8 +478,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
-    name = '<ftext>%s</ftext>' % self.xml_ftext
-    self.ftext = ftext( self.paper, (self.x, self.y), name, font=self.font, pos=self.pos, fill=self.line_color)
+    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, pos=self.pos, fill=self.line_color)
     self.ftext.draw()
     # should we want a complete bbox? (yes only for atoms in linear form)
     if len( [x for x in self.molecule.get_fragments_with_vertex( self) if x.type=="linear_form" and x.properties.get('bond_length',0)>20]):

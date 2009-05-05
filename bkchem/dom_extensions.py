@@ -126,7 +126,7 @@ def isOnlyTags( text):
   try:
     doc = dom.parseString( '<a>%s</a>' % text)
   except:
-    return 0
+    return not len( text)
   if getAllTextFromElement( doc):
     return 0
   return 1

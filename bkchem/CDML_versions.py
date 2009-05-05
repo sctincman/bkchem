@@ -195,7 +195,22 @@ class CDML_transformer_14_15:
         a.setAttribute( "multiplicity", multiplicity)
 
 
+class CDML_transformer_15_16:
 
+  """CDML version 0.16 stores rich text as escaped value, not directly in XML -
+  that is '&lt;i>x&lt;/i>' instead of '<i>x</i>'
+  """
+
+  output_version = '0.16'
+  input_version = '0.15'
+
+  def tranform_dom( self, dom):
+    for a in dom.getElementsByTagName( 'ftext'):
+      text = ""
+      for ch in a.childNodes[:]:
+        text += ch.toxml()
+        a.removeChild( ch)
+      a.appendChild( dom.ownerDocument.createTextNode( text))
 
 
 # LIST OF AVAILABLE TRANSFORMERS
@@ -208,7 +223,9 @@ transformers = { '0.6': CDML_transformer_06_07,
                  '0.11': CDML_transformer_11_12,
                  '0.12': CDML_transformer_12_13,
                  '0.13': CDML_transformer_13_14,
-                 '0.14': CDML_transformer_14_15}
+                 '0.14': CDML_transformer_14_15,
+                 '0.15': CDML_transformer_15_16,
+                 }
 
 # TRANSFORMING FUNCTION
 

@@ -200,6 +200,3 @@ some_apply = lambda func, vals: something_true( map( func, vals))
 # some results
 
 isinstance_of_one = lambda obj, parents: some_apply( lambda x: isinstance( obj, x), parents)
-
-
-  

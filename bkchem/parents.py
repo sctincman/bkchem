@@ -26,7 +26,7 @@ import misc
 from singleton_store import Store
 import xml.dom.minidom as dom
 import dom_extensions
-
+import ftext
 
 
 class simple_parent( object):
@@ -346,7 +346,7 @@ class text_like( with_font):
 
   # text
   def _get_text( self):
-    doc = dom.parseString( "<ftext>%s</ftext>" % self.xml_ftext)
+    doc = dom.parseString( ftext.ftext.sanitize_text( self.xml_ftext))
     return dom_extensions.getAllTextFromElement( doc)
 
   text = property( _get_text, None, None,

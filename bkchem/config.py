@@ -21,7 +21,7 @@
 debug = 1
 devel = 0
 
-current_CDML_version = '0.15'
+current_CDML_version = '0.16'
 
 current_BKchem_version = '0.13.0'
 
