@@ -1460,7 +1460,7 @@ class chem_paper( Canvas, object):
     if not s_mols:
       return
 
-    dialog = Pmw.TextDialog( self, title=_("Info on selected molecules"))
+    dialog = Pmw.TextDialog( self, title=_("Info on selected molecules"), defaultbutton=0)
     dialog.withdraw()
 
     ws = 0
@@ -1509,7 +1509,7 @@ class chem_paper( Canvas, object):
     if not s_mols:
       return
 
-    dialog = Pmw.TextDialog( self, title=_("Chemistry check of selected molecules"))
+    dialog = Pmw.TextDialog( self, title=_("Chemistry check of selected molecules"), defaultbutton=0)
     dialog.withdraw()
 
     val.validate( s_mols)
