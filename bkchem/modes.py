@@ -105,7 +105,7 @@ class mode( object):
     pass
 
   def key_pressed( self, event):
-    key = event_to_key( event)
+    key = event_to_key( event) # Note: event.state can be used to query CAMS
     # first filter off specials (CAMS)
     if len( key) == 1 and key in 'CAMS':
       self._specials_pressed[ key] = 1
@@ -203,13 +203,17 @@ class mode( object):
     # the registration
     self._key_sequences[ sequence] = function
 
-  def register_key_sequence_ending_with_number_range( self, sequence_base, function, numbers=[]):
+  def register_key_sequence_ending_with_number_range( self, sequence_base, function, numbers=None, attrs=None):
+    if not numbers:
+      numbers = []
     for i in numbers:
-      if sequence_base and sequence_base[-1] != ' ':
+      if sequence_base and sequence_base.endswith( "-"):
+        b = sequence_base
+      elif sequence_base and not sequence_base.endswith( ' '):
         b = sequence_base+' '
       else:
         b = sequence_base
-      self.register_key_sequence( b+str(i), misc.lazy_apply( function, (i,)))
+      self.register_key_sequence( b+str(i), misc.lazy_apply( function, (i,), attrs=attrs))
 
 
   def unregister_all_sequences( self):
@@ -218,7 +222,9 @@ class mode( object):
 
   def cleanup( self):
     """called when switching to another mode"""
+    #self._recent_key_seq = ''
     pass
+  
 
   def startup( self):
     """called when switching to this mode"""
@@ -233,6 +239,9 @@ class mode( object):
     """called when paper is switched"""
     pass
 
+  def copy_settings( self, old_mode):
+    """called when modes are changed, enables new mode to copy settings from old_mode"""
+    self._specials_pressed = dict( old_mode._specials_pressed)
 
 
 ## -------------------- BASIC MODE --------------------
@@ -314,8 +323,9 @@ class basic_mode( simple_mode):
     self.register_key_sequence( 'C-o C-f', lambda : Store.app.paper.lift_selected_to_top())
     self.register_key_sequence( 'C-o C-b', lambda : Store.app.paper.lower_selected_to_bottom())
     self.register_key_sequence( 'C-o C-s', lambda : Store.app.paper.swap_selected_on_stack())
-    # chains (C-d as draw)
-
+    # mode switching
+    self.register_key_sequence_ending_with_number_range( 'C-', self.switch_mode, numbers=range(1,10))
+    self.register_key_sequence_ending_with_number_range( 'C-A-', self.switch_mode, numbers=range(1,10), attrs={"add":9})
 
   def undo( self):
     Store.app.paper.undo()
@@ -329,7 +339,11 @@ class basic_mode( simple_mode):
       # focused object was deleted
       self.focused = None
   
-
+  def switch_mode( self, n, add=0):
+    index = n+add-1
+    if index < len( Store.app.modes_sort):
+      self.cleanup()
+      Store.app.radiobuttons.invoke( index) #change_mode( Store.app.modes_sort[n-1])
 
 
 ## /// -------------------- PARENT MODES --------------------

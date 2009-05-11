@@ -109,15 +109,17 @@ def split_number_and_unit( txt):
   return None, None
 
 
-def lazy_apply( function, arguments):
+def lazy_apply( function, arguments, attrs=None):
   """similar to apply but returns a callable (lambda) that performs the apply when called."""
-  return lambda: apply( function, arguments)
+  if not attrs:
+    attrs = {}
+  return lambda: function( *arguments, **attrs)
 
 
 def lazy_apply_ignorant( function, arguments):
   """similar to apply but returns a callable (lambda) that performs the apply when called.
   the returned lambda can be called with any arguments which are ignored"""
-  return lambda *x: apply( function, arguments)
+  return lambda *x: function( *arguments)
 
 
 

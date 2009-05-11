@@ -485,8 +485,8 @@ class BKchem( Tk):
                    #'externaldata': modes.external_data_mode(),
                    #'rapiddraw': modes.rapid_draw_mode()
                    }
-    self.modes_sort = [ 'edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
-                        'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'misc']#  'reaction', 'externaldata'] #, 'rapiddraw']
+    self.modes_sort = ['edit', 'draw', 'template', 'usertemplate', 'atom', 'mark', 'arrow',
+                       'plus', 'text', 'bracket', 'rotate', 'bondalign', 'vector', 'misc']#  'reaction', 'externaldata'] #, 'rapiddraw']
 
     # import plugin modes
     import imp
@@ -570,9 +570,11 @@ class BKchem( Tk):
 
 
   def change_mode( self, tag):
-    if type( self.mode) != types.StringType:
-      self.mode.cleanup()
+    old_mode = self.mode
     self.mode = self.modes[ tag]
+    if type( old_mode) != types.StringType:
+      old_mode.cleanup()
+      self.mode.copy_settings( old_mode)
 
     if self.subbuttons:
       for butts in self.subbuttons:
