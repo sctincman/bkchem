@@ -486,10 +486,10 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     else:
       complete = False
     x1, y1, x2, y2 = self.ftext.bbox( complete=complete)
-    self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom'))
+    self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom','no_export'))
     ## shrink the selector according to the font size and properties
     hack_y = self.font.metrics()['descent'] - 1
-    self.selector = self.paper.create_rectangle( x1, y1, x2, y2-hack_y, fill=self.area_color, outline='',tags='helper_a')
+    self.selector = self.paper.create_rectangle( x1, y1, x2, y2-hack_y, fill=self.area_color, outline='',tags=('helper_a','no_export'))
     if not redraw:
       [m.draw() for m in self.marks]
 

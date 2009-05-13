@@ -38,6 +38,7 @@ as it supports unicode strings and the output is of very good quality."""
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
     surf = cairo.PSSurface( self.filename, w, h)
+    surf.set_eps( True)
     return surf
 
 

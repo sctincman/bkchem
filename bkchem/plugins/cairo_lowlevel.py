@@ -29,9 +29,11 @@ from singleton_store import Screen, Store
 
 class cairo_exporter( plugin.exporter):
 
-  def __init__( self, paper, converter_class=None):
-    """converter_class is the class used for convert, it is tk2piddle or its derivative"""
+  def __init__( self, paper, converter_class=None, attrs=None):
+    """converter_class is the class used for convert, it is tk2piddle or its derivative;
+    attrs are passed to converter_class on init"""
     self.paper = paper
+    self.attrs = attrs or {}
     if not converter_class:
       self.converter_class = tk2piddle
     else:
@@ -93,7 +95,8 @@ class cairo_exporter( plugin.exporter):
 
     x1, y1, x2, y2 = self.transformer.transform_4( (0, 0, dx, dy))
     self.pagesize = tuple( map( round, (x2-x1, y2-y1)))
-    self.converter = self.converter_class()
+    self.attrs['text_to_curves'] = False
+    self.converter = self.converter_class( **self.attrs)
     return 1
 
 

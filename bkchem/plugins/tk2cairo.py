@@ -45,8 +45,8 @@ class tk2cairo:
   _font_size_remap_cache = {}
 
 
-  def __init__( self):
-    pass
+  def __init__( self, text_to_curves=False):
+    self.text_to_curves = text_to_curves
 
 
   def export_to_cairo( self, tk_canvas, cairo_context, transformer=None):
@@ -64,11 +64,12 @@ class tk2cairo:
 
   def set_cairo_color( self, color):
     if not color:
-      self.context.set_source_rgba( 0,0,0,0)
+      self.context.set_source_rgba( 0,0,0,1)
+      return False
     else:
       colors = self.paper.winfo_rgb( color)
       self.context.set_source_rgb( *map( lambda x: x/65535.0, colors))
-
+      return True
 
 
   def prepare_dumb_transformer( self):
@@ -128,7 +129,7 @@ class tk2cairo:
       join = self.paper.itemcget( item, 'joinstyle')
       self.context.set_line_join( self._joins[ join])
       # color
-      self.set_cairo_color( self.paper.itemcget( item, 'fill'))
+      is_visible = self.set_cairo_color( self.paper.itemcget( item, 'fill'))
       # line width
       width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
       self.context.set_line_width( width)
@@ -143,7 +144,8 @@ class tk2cairo:
       else:
         self._create_cairo_path( cs, closed=False)
       # stroke it
-      self.context.stroke()
+      if is_visible:
+        self.context.stroke()
     else:
       pass #transparent things
 
@@ -159,7 +161,7 @@ class tk2cairo:
     weight = 'bold' in conf['weight'] and cairo.FONT_WEIGHT_BOLD or cairo.FONT_WEIGHT_NORMAL
 
     # color
-    self.set_cairo_color( self.paper.itemcget( item, 'fill'))
+    is_visible = self.set_cairo_color( self.paper.itemcget( item, 'fill'))
     # helvetica which is often used does not work for me - therefore I use remap
     font_name = self._font_remap.get( font_family, font_family)
     self.context.select_font_face( font_name, slant, weight)
@@ -176,9 +178,12 @@ class tk2cairo:
     y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent'] # * cairo_size / conf['size']
     self.context.new_path()
     self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
-    self.context.text_path( text)
-    self.context.fill()
-
+    if is_visible:
+      if self.text_to_curves:
+        self.context.text_path( text)
+        self.context.fill()
+      else:
+        self.context.show_text( text)
 
 
 
@@ -191,11 +196,13 @@ class tk2cairo:
     x1, y1, x2, y2 = coords
     self.context.set_line_join( cairo.LINE_JOIN_MITER)
     self.context.rectangle( x1, y1, x2-x1, y2-y1)
-    self.set_cairo_color( fill)
-    self.context.fill_preserve()
-    self.context.set_line_width( width)
-    self.set_cairo_color( outline)
-    self.context.stroke()
+    is_visible = self.set_cairo_color( fill)
+    if is_visible:
+      self.context.fill_preserve()
+    is_visible = self.set_cairo_color( outline)
+    if is_visible:
+      self.context.set_line_width( width)
+      self.context.stroke()
 
     
     
@@ -211,11 +218,13 @@ class tk2cairo:
     self.context.set_line_join( self._joins[ join])
 
     self._create_cairo_path( cs, closed=True)
-    self.set_cairo_color( fill)
-    self.context.fill_preserve()
-    self.set_cairo_color( outline)
-    self.context.set_line_width( width)
-    self.context.stroke()
+    is_visible = self.set_cairo_color( fill)
+    if is_visible:
+      self.context.fill_preserve()
+    is_visible = self.set_cairo_color( outline)
+    if is_visible:
+      self.context.set_line_width( width)
+      self.context.stroke()
     
     
 
@@ -233,11 +242,13 @@ class tk2cairo:
     self.context.arc( 0, 0, 1, 0, 2 * math.pi)
     self.context.restore()
 
-    self.set_cairo_color( fill)
-    self.context.fill_preserve()
-    self.context.set_line_width( width)
-    self.set_cairo_color( outline)
-    self.context.stroke()
+    is_visible = self.set_cairo_color( fill)
+    if is_visible:
+      self.context.fill_preserve()
+    is_visible = self.set_cairo_color( outline)
+    if is_visible:
+      self.context.set_line_width( width)
+      self.context.stroke()
 
     
 
@@ -260,8 +271,9 @@ class tk2cairo:
 
     self.context.set_line_join( cairo.LINE_JOIN_MITER)
     self._create_cairo_path( points, closed=True)
-    self.set_cairo_color( color)
-    self.context.fill()
+    is_visible = self.set_cairo_color( color)
+    if is_visible:
+      self.context.fill()
 
     return points[1]
 
