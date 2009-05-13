@@ -77,7 +77,7 @@ class textatom( drawable_chem_vertex):
       t = unicode( symbol)
     except UnicodeDecodeError:
       t = symbol.decode( 'utf-8')
-    self._symbol = t.encode('utf-8')
+    self._symbol = t
     self.dirty = 1
 
   symbol = property( _get_symbol, _set_symbol)

@@ -42,7 +42,7 @@ class ftext:
     if xy:
       self.x, self.y = xy
     if text:
-      self.text = str(text)
+      self.text = unicode(text)
     if font:
       self.font = font
     else:
@@ -202,6 +202,8 @@ class ftext:
 
   @classmethod
   def sanitize_text( cls, text):
+    if type( text) != unicode:
+      text = text.decode('utf-8')
     text = unescape_html_entity_references( text).encode('utf-8')
     x = "<ftext>%s</ftext>" % text
     try:

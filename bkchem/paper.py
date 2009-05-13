@@ -868,6 +868,8 @@ class chem_paper( Canvas, object):
   def set_name_to_selected( self, name, interpret=1):
     """sets name to all selected atoms and texts,
     also records it in an undo !!!"""
+    if type( name) != unicode:
+      name = name.decode('utf-8')
     vtype = None
     for item in self.selected[:]:
       if isinstance( item, oasa.graph.vertex):

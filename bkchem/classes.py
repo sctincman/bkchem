@@ -613,11 +613,9 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return self._ftext
 
   def _set_xml_ftext( self, text):
-    try:
-      t = unicode( text)
-    except UnicodeDecodeError:
-      t = text.decode( 'utf-8')
-    self._ftext = t.encode('utf-8')
+    if not type( text) == unicode:
+      text = text.decode( 'utf-8')
+    self._ftext = text
 
   xml_ftext = property( _get_xml_ftext, _set_xml_ftext, None, "the text used for rendering using the ftext class")
 
