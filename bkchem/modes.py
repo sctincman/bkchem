@@ -220,10 +220,11 @@ class mode( object):
     self._key_sequences = {}
 
 
-  def cleanup( self):
+  def cleanup( self, paper=None):
     """called when switching to another mode"""
-    #self._recent_key_seq = ''
-    pass
+    if self.focused:
+      self.focused.unfocus()
+      self.focused = None
   
 
   def startup( self):
@@ -1570,6 +1571,7 @@ class bond_align_mode( edit_mode):
 
 
   def cleanup( self):
+    edit_mode.cleanup( self)
     if self.first_atom_selected:
       self.first_atom_selected.unselect()
       self.first_atom_selected = None
@@ -1787,6 +1789,7 @@ class mark_mode( edit_mode):
 
 
   def cleanup( self, paper=None):
+    edit_mode.cleanup( self, paper=paper)
     pap = paper or Store.app.paper
     self._unregister_all_marks( pap)
     pap.remove_bindings()
@@ -1999,6 +2002,7 @@ class reaction_mode( basic_mode):
 
 
   def cleanup( self, paper=None):
+    basic_mode.cleanup( self, paper=paper)
     pap = paper or Store.app.paper
     for i in self._items:
       pap.delete( i)
@@ -2205,6 +2209,7 @@ class external_data_mode( basic_mode):
 
 
   def cleanup( self, paper=None):
+    basic_mode.cleanup( self, paper=paper)
     pap = paper or Store.app.paper
     self._delete_table( pap)
     pap.add_bindings()
@@ -2509,6 +2514,7 @@ class misc_mode( edit_mode):
       
 
   def cleanup( self):
+    edit_mode.cleanup( self)
     Store.app.paper.remove_bindings()
     Store.app.paper.add_bindings()
 
