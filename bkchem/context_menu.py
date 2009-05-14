@@ -64,7 +64,7 @@ class context_menu( Tkinter.Menu):
 
         if vals and attr not in already_there:
           items[ vals[ I18N_NAME]] = []
-          self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [ attr] 
+          self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [attr] 
           for v in vals[ VALUES]:
             if type( v) == types.TupleType:
               items[ vals[ I18N_NAME]].append( (v[1], attr, objs, v[0]))
@@ -72,6 +72,9 @@ class context_menu( Tkinter.Menu):
               items[ vals[ I18N_NAME]].append( (v, attr, objs, v))
           # to know what is already there
           already_there.append( attr)
+        elif vals: # attr is already there
+          for tup in items[ vals[ I18N_NAME]]:
+            tup[2].extend( objs)
 
     # then sort the items and polulate the menu
     keys = items.keys()
