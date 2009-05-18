@@ -42,11 +42,10 @@ class tk2cairo:
             'miter': cairo.LINE_JOIN_MITER,
             'bevel': cairo.LINE_JOIN_BEVEL}
 
-  _font_size_remap_cache = {}
-
 
   def __init__( self, text_to_curves=False):
     self.text_to_curves = text_to_curves
+    self._font_size_remap_cache = {}
 
 
   def export_to_cairo( self, tk_canvas, cairo_context, transformer=None):
