@@ -489,6 +489,7 @@ class atom( drawable_chem_vertex, oasa.atom):
   # overrides special_parents.drawable_chem_vertex method
   def _set_mark_helper( self, mark, sign=1):
     drawable_chem_vertex._set_mark_helper( self, mark, sign=sign)
+    mark, _ = self._mark_to_name_and_class( mark)
     if mark == 'plus':
       self.charge += 1*sign
     elif mark == 'minus':
@@ -497,7 +498,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.multiplicity += 1*sign
     elif mark == "biradical":
       self.multiplicity += 2*sign
-
     
 
 
