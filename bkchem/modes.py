@@ -47,7 +47,7 @@ from group import group
 from textatom import textatom
 from context_menu import context_menu
 from reaction import reaction
-import parents
+import parents, special_parents
 import oasa
 import Pmw, Tkinter
 from oasa import periodic_table as PT
@@ -1715,7 +1715,7 @@ class mark_mode( edit_mode):
       mark_name = recode[ mark_name]
     if self.get_submode( 1) == 'add':
       # we are adding a mark
-      if self.focused and (isinstance( self.focused, atom) or isinstance( self.focused, textatom)):
+      if self.focused and (isinstance( self.focused, special_parents.drawable_chem_vertex)):
         try:
           m = self.focused.set_mark( mark=mark_name)
         except ValueError:

@@ -51,8 +51,7 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
                           ( 'free_sites',)
 
   # only number marks are allowed for query atoms
-  meta__allowed_marks = ("atom_number","free_sites")
-
+  #meta__allowed_marks = () #"atom_number","free_sites")
 
 
   def __init__( self, standard=None, xy=(), package=None, molecule=None):
