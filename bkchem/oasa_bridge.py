@@ -179,7 +179,8 @@ def bkchem_atom_to_oasa_atom( a):
   ret.charge = a.charge
   ret.multiplicity = a.multiplicity
   ret.valency = a.valency
-  ret.isotope = a.isotope
+  if hasattr(a,'isotope'):
+    ret.isotope = a.isotope
   return ret
 
 def bkchem_bond_to_oasa_bond( b):

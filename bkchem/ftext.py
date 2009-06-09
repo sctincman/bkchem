@@ -42,7 +42,7 @@ class ftext:
     if xy:
       self.x, self.y = xy
     if text:
-      self.text = unicode(text)
+      self.text = text
     if font:
       self.font = font
     else:

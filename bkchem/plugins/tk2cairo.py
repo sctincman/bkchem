@@ -175,13 +175,14 @@ class tk2cairo:
 
     xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( text)
     y = max(y1,y2)- self.transformer.get_scaling_xy()[1] * afont.metrics()['descent'] # * cairo_size / conf['size']
-    self.context.new_path()
-    self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
     if is_visible:
       if self.text_to_curves:
+        self.context.new_path()
+        self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
         self.context.text_path( text)
         self.context.fill()
       else:
+        self.context.move_to( x1 - (width - x2 + x1)/2 - xbearing, y)
         self.context.show_text( text)
 
 
@@ -235,11 +236,10 @@ class tk2cairo:
     x1, y1, x2, y2 = coords
     w = x2 - x1
     h = y2 - y1
-    self.context.save()
+    self.context.new_path()
     self.context.translate( x1+w/2, y1+h/2)
     self.context.scale( w/2.0, h/2.0)
     self.context.arc( 0, 0, 1, 0, 2 * math.pi)
-    self.context.restore()
 
     is_visible = self.set_cairo_color( fill)
     if is_visible:
