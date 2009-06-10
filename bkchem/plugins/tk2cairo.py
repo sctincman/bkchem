@@ -203,6 +203,8 @@ class tk2cairo:
     if is_visible:
       self.context.set_line_width( width)
       self.context.stroke()
+    else:
+      self.context.new_path()
 
     
     
@@ -225,7 +227,8 @@ class tk2cairo:
     if is_visible:
       self.context.set_line_width( width)
       self.context.stroke()
-    
+    else:
+      self.context.new_path()
     
 
   def _draw_oval( self, item):
@@ -252,6 +255,8 @@ class tk2cairo:
     if is_visible:
       self.context.set_line_width( width)
       self.context.stroke()
+    else:
+      self.context.new_path()
 
     
 
