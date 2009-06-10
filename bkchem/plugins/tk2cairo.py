@@ -236,11 +236,15 @@ class tk2cairo:
     x1, y1, x2, y2 = coords
     w = x2 - x1
     h = y2 - y1
+    # save the context - we are going to use custom transform for the oval
+    self.context.save()
     self.context.new_path()
     self.context.translate( x1+w/2, y1+h/2)
     self.context.scale( w/2.0, h/2.0)
     self.context.arc( 0, 0, 1, 0, 2 * math.pi)
-
+    # restore the context to its previous state
+    self.context.restore()
+    # draw it
     is_visible = self.set_cairo_color( fill)
     if is_visible:
       self.context.fill_preserve()
