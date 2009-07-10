@@ -997,7 +997,8 @@ class fragment_dialog( Pmw.Dialog):
 
 class logging_dialog( Pmw.Dialog):
 
-  def __init__( self, paper):
+  def __init__( self, paper, logger):
+    self.logger = logger
     Pmw.Dialog.__init__( self,
                          Store.app,
                          buttons=(_('OK'), _('Cancel')),
@@ -1005,20 +1006,36 @@ class logging_dialog( Pmw.Dialog):
                          title=_('Logging'),
                          command=self.done,
                          master='parent')
+    self.init_list()
 
 
   def init_list( self):
-    self.list = Pmw.ScrolledListBox( self.interior(),
-                                     selectioncommand=self.select,
-                                     labelpos = "n",
-                                     label_text=_("Fragments"),
-                                     listbox_selectmode="single",
-                                     listbox_width=30,
-                                     items=self.get_all_fragments())
-    self.list.pack()
+    root = self.interior()
+    self.choosers = {}
+    Tkinter.Label( root, text=_("Choose how each type of message is to be shown:"), font=("Helvetica", 12, "bold")).pack( pady=10)
+    for message_type in self.logger.type_order:
+      f = Tkinter.Frame( root)
+      label = Tkinter.Label( f, text=self.logger.type_to_text[message_type], font=("Helvetica", 12, "bold"))
+      label.pack( side='left', anchor="w")
+      chooser = Pmw.RadioSelect( f,
+                                 buttontype='radiobutton',
+                                 orient='horizontal',
+                                 pady=0)
+      self.choosers[message_type] = chooser                                         
+      for handle_type in self.logger.handle_order:
+        chooser.add( self.logger.handle_to_text[handle_type])
+      chooser.invoke( self.logger.handle_order.index( self.logger.handling[message_type]))
+      chooser.pack( side='right', anchor='e', padx=5, pady=5)
+      f.pack( fill="x")
+    Tkinter.Label( root, text=_("The setting will be immediately applied and saved on application exit.")).pack( pady=10)
 
 
   def done( self, button):
+    if button == _("OK"):
+      self.proceed = True
+      for message_type,chooser in self.choosers.iteritems():
+        index = chooser.index( chooser.getvalue())
+        self.logger.set_handling( message_type, self.logger.handle_order[index])
     self.deactivate()
 
 

@@ -268,6 +268,7 @@ class BKchem( Tk):
       ( _('Options'), 'menu',    _("Settings that affect how BKchem works"), 'left'),
       ( _("Options"), 'command', _('Standard'), None, _("Set the default drawing style here"), self.standard_values, None),
       ( _("Options"), 'command', _('Language'), None, _("Set the language used after next restart"), lambda : interactors.select_language( self.paper), None),
+      ( _("Options"), 'command', _('Logging'), None, _("Set how messages in BKChem are displayed to you"), lambda : interactors.set_logging( self.paper, Store.logger), None),
       ( _("Options"), 'command', _('InChI program path'), None, _("To use InChI in BKchem you must first give it a path to the InChI program here"),
         interactors.ask_inchi_program_path, None),
       ( _("Options"), 'separator'),      
@@ -463,6 +464,12 @@ class BKchem( Tk):
         self._recent_files.append( path)
         self.menu.addmenuitem( _("Recent files"), 'command', label=path,
                                command=misc.lazy_apply( self.load_CDML, (path,)))
+    if not self.in_batch_mode:
+      # we do not load (or save) handling info when in batch mode
+      for key in Store.logger.handling:
+        value = Store.pm.get_preference( "logging_%s"%key)
+        if value:
+          Store.logger.set_handling( key, value)
 
 
 
@@ -1413,6 +1420,11 @@ Enter InChI:""")
 
   def save_configuration( self):
     Store.pm.add_preference( 'geometry', self.winfo_geometry())
+    # store logging settings
+    if not self.in_batch_mode:
+      # we do not save (or load) handling info when in batch mode
+      for key,value in Store.logger.handling.iteritems():
+        Store.pm.add_preference( "logging_%s"%key, value)
     f = os_support.get_opened_config_file( "prefs.xml", level="personal", mode="w")
     if f:
       Store.pm.write_to_file( f)

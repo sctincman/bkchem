@@ -41,6 +41,8 @@ class logger:
                     'console': _('Console'),
                     'ignore': _('Ignore')}
 
+  type_order = ["debug","info","hint","warning","error"]
+  handle_order = ['ignore','console','status_bar','dialog']
 
 
   def __init__( self):
@@ -51,7 +53,7 @@ class logger:
   def log( self, message, message_type="info", delay=4):
     """message_type is one of (info, warning, error, debug, hint),
     delay means the amount of time for which the text should be visible (for 'status-bar' only)""" 
-    if message_type not in ('info', 'warning', 'error', 'debug', 'hint'):
+    if message_type not in logger.type_to_text:
       raise ValueError, "unknown message type %s" % message_type
 
     handle = self.handling[ message_type]
@@ -84,16 +86,20 @@ class logger:
     elif message_type == "hint":
       tkMessageBox.showinfo( heading, message)
       
-  
+
+  def set_handling( self, what, how):
+    assert what in logger.type_to_text
+    assert how in logger.handle_to_text
+    self.handling[what] = how
 
 
 # logging strategies
 
 batch_mode = {'info': 'ignore',
-               'warning': 'console',
-               'error': 'console',
-               'debug': 'ignore',
-               'hint': 'ignore'}
+              'warning': 'console',
+              'error': 'console',
+              'debug': 'ignore',
+              'hint': 'ignore'}
 
 
 ignorant = {'info': 'ignore',

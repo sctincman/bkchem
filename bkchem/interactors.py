@@ -492,3 +492,8 @@ def compute_oxidation_number( paper):
   paper.start_new_undo_record()
   if not logged:
     Store.log( _("You can move and delete the created oxidation numbers in the mark mode"), message_type="hint")
+
+
+def set_logging( paper, logger):
+  d = dialogs.logging_dialog( paper, logger)
+  d.activate()
