@@ -21,6 +21,8 @@
 
 # -------------------- HELP MESSAGES FOR MODES --------------------
 
+edit_mode_startup = _("use SHIFT to drag only in X, CTRL to drag only in Y")
+
 # DRAW
 
 draw_mode_single = _("click on atom to add a new single bond, click on bond to change its order (or change direction)\nShift+click on a double bond to move the position of the second line")

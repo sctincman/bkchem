@@ -77,13 +77,13 @@ class mode( object):
     self._recent_key_seq = ''
     self._specials_pressed = { 'C':0, 'A':0, 'M':0, 'S':0} # C-A-M-S
     
-  def mouse_down( self, event, modifiers = []):
+  def mouse_down( self, event, modifiers=[]):
     pass
 
-  def mouse_down3( self, event, modifiers = []):
+  def mouse_down3( self, event, modifiers=[]):
     pass
 
-  def mouse_down2( self, event, modifiers = []):    
+  def mouse_down2( self, event, modifiers=[]):    
     pass
 
   def mouse_up( self, event):
@@ -229,7 +229,11 @@ class mode( object):
 
   def startup( self):
     """called when switching to this mode"""
-    pass
+    txt_name = self.__class__.__name__+"_startup"
+    message = messages.__dict__.get( txt_name, "")
+    if message:
+      Store.log( message, delay=20, message_type="hint")
+    
 
   def on_submode_switch( self, submode_index, name=''):
     """called when submode is switched"""
@@ -522,10 +526,16 @@ class edit_mode( basic_mode):
 
 
   def mouse_drag( self, event):
+    if self._ctrl:
+      dx = 0
+    else:
+      dx = event.x-self._startx
+    if self._shift: # shift to move only in x
+      dy = 0
+    else:
+      dy = event.y-self._starty
     if not self._dragging:
       # drag threshhold
-      dx = event.x-self._startx
-      dy = event.y-self._starty
       self._move_sofar += math.sqrt( dx**2 + dy**2)
       if self._move_sofar <= 1.0:
         return
@@ -567,8 +577,6 @@ class edit_mode( basic_mode):
         ### don't do anything
         self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
-      dx = event.x-self._startx
-      dy = event.y-self._starty
       [o.move( dx, dy) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
         self._moving_selected_arrow.move( dx, dy)
@@ -576,7 +584,7 @@ class edit_mode( basic_mode):
       [o.redraw() for o in self._arrows_to_update]
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 2:
-      self._dragged_molecule.move( event.x-self._startx, event.y-self._starty)
+      self._dragged_molecule.move( dx, dy)
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 3:
       Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
@@ -586,7 +594,7 @@ class edit_mode( basic_mode):
       if whole:
         self._startx, self._starty = event.x, event.y
       else:
-        Store.log( '%i, %i' % ( event.x-self._startx, event.y-self._starty))
+        Store.log( '%i, %i' % ( dx, dy))
       
   def enter_object( self, object, event):
     if not self._dragging:
