@@ -401,16 +401,29 @@ class SVG_writer( XML_writer):
 
 
   def add_polyline( self, o):
-    ps = ''
-    for (x,y) in [p.get_xy() for p in o.points]:
-      ps += '%.2f,%.2f ' % (x,y)
-    poly = dom_extensions.elementUnder( self.group, 'polyline',
-                                        (( 'points', ps),
-                                         ( 'stroke-width', str( o.line_width)),
-                                         ( 'fill', 'none')))
-
-    poly.setAttribute( 'stroke', self.cc( o.line_color))
-
+    # the item
+    points = [p.get_xy() for p in o.points]
+    if o.spline and len( o.points) > 2:
+      # spline
+      beziers = geometry.tkspline_to_quadratic_bezier( points)
+      ps = 'M%.2f,%.2f Q%.2f,%.2f %.2f,%.2f' % (beziers[0])
+      for bez in beziers[1:]:
+        ps += 'Q%.2f,%.2f %.2f,%.2f ' % (bez[2:])
+      line = dom_extensions.elementUnder( self.group, 'path',
+                                          (( 'd', ps),
+                                           ( 'stroke-width', str( o.line_width)),
+                                           ( 'fill', 'none'),
+                                           ( 'stroke', self.cc( o.line_color))))
+    else:
+      # normal line
+      ps = ''
+      for (x,y) in points:
+        ps += '%.2f,%.2f ' % (x,y)
+      poly = dom_extensions.elementUnder( self.group, 'polyline',
+                                          (( 'points', ps),
+                                           ( 'stroke-width', str( o.line_width)),
+                                           ( 'fill', 'none'),
+                                           ( 'stroke', self.cc( o.line_color))))
 
 
 

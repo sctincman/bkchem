@@ -443,14 +443,16 @@ class polyline( vector_graphics_item, container, line_colored):
   object_type = 'polyline'
   # undo related metas
   meta__undo_properties = vector_graphics_item.meta__undo_properties + \
-                          line_colored.meta__undo_properties
+                          line_colored.meta__undo_properties + \
+                          ('spline',)
 
   meta__undo_copy = ('points',)
   meta__undo_children_to_record = ('points',)
 
 
 
-  def __init__( self, paper, coords=(), package=None, width=1):
+  def __init__( self, paper, coords=(), package=None, width=1, spline=False):
+    self.spline = spline
     line_colored.__init__( self)
     vector_graphics_item.__init__( self, paper, coords=coords, package=package, width=width)
     del self.coords # polygon does use points for storage of coord information
@@ -469,7 +471,8 @@ class polyline( vector_graphics_item, container, line_colored):
     self.item = self.paper.create_line( tuple( coords),
                                         fill=self.line_color,
                                         width=self.line_width,
-                                        tags=("polyline","vector"))
+                                        tags=("polyline","vector"),
+                                        smooth=self.spline)
     self.paper.register_id( self.item, self)
 
 
@@ -484,7 +487,7 @@ class polyline( vector_graphics_item, container, line_colored):
     else:
       coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
       self.paper.coords( self.item, tuple( coords))
-      self.paper.itemconfig( self.item, width=self.line_width, fill=self.line_color)
+      self.paper.itemconfig( self.item, width=self.line_width, fill=self.line_color, smooth=self.spline)
 
 
   def select( self):
@@ -507,7 +510,9 @@ class polyline( vector_graphics_item, container, line_colored):
     (the returned element is not inserted into the document)"""
     pack = doc.createElement( 'polyline')
     dom_extensions.setAttributes( pack, (('line_color', self.line_color),
-                                         ('width', str( self.line_width))))
+                                         ('width', str( self.line_width)),
+                                         ('spline', str( int( self.spline))),
+                                         ))
     for p in self.points:
       pack.appendChild( p.get_package( doc))
     return pack
@@ -528,6 +533,11 @@ class polyline( vector_graphics_item, container, line_colored):
       self.line_width = float( w)
     else:
       self.line_width = 1.0
+    spline = pack.getAttribute( 'spline')
+    if spline:
+      self.spline = bool( int( spline))
+    else:
+      self.spline = False
 
       
   def lift( self):
