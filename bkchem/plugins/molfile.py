@@ -79,7 +79,7 @@ class molfile_exporter( plugin.exporter):
       return 1
 
   def write_to_file( self, name):
-    if type( name) == types.StringType:
+    if type( name) == types.StringType or type( name) == types.UnicodeType:
       file = open( name, 'w')
     else:
       file = name
