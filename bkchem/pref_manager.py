@@ -41,6 +41,9 @@ class pref_manager( object):
     self.data[ name] = value
 
 
+  def remove_preference( self, name):
+    if name in self.data:
+      del self.data[ name]
 
 
   def get_preference( self, name):

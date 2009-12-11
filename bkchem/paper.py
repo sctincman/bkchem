@@ -1413,9 +1413,14 @@ class chem_paper( Canvas, object):
     """exports selected top_levels as SVG to system clipboard"""
     cont, unique = self.selected_to_unique_top_levels()
     exporter = xml_writer.SVG_writer( self)
+    exporter.full_size = False
     exporter.construct_dom_tree( cont)
     self.clipboard_clear()
-    self.clipboard_append( exporter.get_nicely_formated_document())
+    xml = exporter.get_nicely_formated_document()
+    first_line = xml.splitlines()[0]
+    if first_line.startswith("<?") and first_line.endswith("?>"):
+      xml = "\n".join( xml.splitlines()[1:])
+    self.clipboard_append( xml)
     Store.log( _("selected top_levels were exported to clipboard in SVG"))
 
 

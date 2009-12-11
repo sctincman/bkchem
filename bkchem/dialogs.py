@@ -1064,12 +1064,16 @@ class language_dialog( Pmw.Dialog):
     import gettext
     self.languages = {}
     for lang, language in data.languages.iteritems():
-      system = gettext.find( 'BKchem', '/usr/share/locale', [lang])
+      system = gettext.find( 'BKchem', None, [lang])
       local = gettext.find( 'BKchem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
       if system or local or lang == "en":
         lang_text = "%s (%s)" % (language, lang)
         langs.append( lang_text)
         self.languages[lang_text] = lang
+    # default
+    default = "%s (default)"%_("System default")
+    self.languages[default] = "default"
+    langs.append( default)
 
     self.list = Pmw.ScrolledListBox( self.interior(),
                                      #selectioncommand=self.select,

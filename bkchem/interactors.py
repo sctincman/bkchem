@@ -368,7 +368,10 @@ def select_language( paper):
   if a.proceed:
     lang = a.list.getvalue()
     if lang:
-      Store.pm.add_preference( "lang", a.languages[lang[0]])
+      if a.languages[lang[0]] == "default":
+        Store.pm.remove_preference( "lang")
+      else:
+        Store.pm.add_preference( "lang", a.languages[lang[0]])
       tkMessageBox.showinfo( _("Info"),
                              _("The selected language will be used the next time you start BKchem."))
 

@@ -133,6 +133,8 @@ languages = {'en': _('English'),
              'tw': _('Traditional Chinese'),
              'it': _('Italian'),
              'es': _('Spanish'),
+             'ja': _('Japanese'),
+             'lv': _('Latvian'),
              }
 
 
