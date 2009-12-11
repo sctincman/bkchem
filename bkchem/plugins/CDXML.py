@@ -2,7 +2,7 @@
 
 #--------------------------------------------------------------------------
 #     This file is part of BKchem - a chemical drawing program
-#     Copyright (C) 2002-2004 Beda Kosata <beda@zirael.org>
+#     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This plugin was create for BKchem by Simona Pourová
 #     Copyright (C) 2009 Simona Pourová
