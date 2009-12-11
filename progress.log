@@ -1,3 +1,49 @@
+RELEASE 0.14.0-pre1
+----------------------------------------
+ * bugfixes - an error in Molfile export with newer Python versions was fixed
+   	    - export via cairo stroked even invisible paths - for example wedge bonds were
+	      slightly thicker
+	    - not all types of marks were allowed on atoms marked as "query atoms"
+	    - removal of charge marks from atoms now updates its charge
+	    - two successive cairo exports with different magnifications led to
+	      wrong font sizes
+	    - when font-size was set using context menu on both texts and atoms, only text
+	      was actually updated, not atoms
+	    - when a "focus circle" around atom is not properly removed, it will no longer
+	      become stuck after mode switch
+	    - cairo PostScript export created fallback bitmaps instead of proper curves
+	      most of the time because of translucency issues
+	    - BKChem should no longer crash when installed into a directory with non-ASCII
+	      characters in its name
+	    - plugins should not have problems finding additional modules residing in the plugin
+	      directory - this allows for multifile plugins
+	    - import of OASA fixed in case when it is installed separately rather than as part
+	      of the BKChem tree 
+
+ * enhancements - logging dialog - it is now possible to set logging preference for different
+   		  	  	   levels of message importance
+		- round brackets - *work in progress*
+		- one axis dragging - it is now possible to move an object only in one 
+		      	   	      direction by holding either Shift or Ctrl when dragging
+   		- it is now possible to set the system default language in the Language menu
+		- HTML entities are interpreted in text - you can now use &alpha;
+		  when entering text
+		- an *experimental* support for the CDXML (Chem Draw XML) format was added
+		  (contributed by Simona Pourová)
+
+ * changes - cairo exports now export text as text instead of converting it to curves
+   	     (where available)
+	   - internal changes were made in the CDML format for storing of rich-text. Files
+	     from this version might not be properly readable in older versions of BKChem.
+	     Backward compatibility is preserved.
+	   - alignment of multiline text has changed
+
+ * translations - lv translation added (thanks to Reinis Danne)
+     		- ja translation added (thanks to anonymous benefactor)
+		- tw translation was updated (thanks to I-Yuan Chiang)
+		- pl translation was updated (thanks to Piotr Wawrzyniak)
+
+
 RELEASE 0.13.0
 ----------------------------------------
  * bugfixes - InChI generation is now compatibile with old InChI versions (1.0 and 1.0.1)
