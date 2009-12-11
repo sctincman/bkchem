@@ -1070,6 +1070,7 @@ class language_dialog( Pmw.Dialog):
         lang_text = "%s (%s)" % (language, lang)
         langs.append( lang_text)
         self.languages[lang_text] = lang
+    langs.sort()
     # default
     default = "%s (default)"%_("System default")
     self.languages[default] = "default"
