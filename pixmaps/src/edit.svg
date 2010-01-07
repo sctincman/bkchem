@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="22"
+   height="22"
+   id="svg3808"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="Nouveau document 2">
+  <defs
+     id="defs3810">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3816" />
+    <inkscape:perspective
+       id="perspective3826"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter3612"
+       x="-0.12491946"
+       width="1.2498389"
+       y="-0.11545332"
+       height="1.2309066"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.83553061"
+         id="feGaussianBlur3614" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="11"
+     inkscape:cy="11"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1020"
+     inkscape:window-height="701"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3813">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1030.3622)">
+    <path
+       style="fill:#999999;stroke:#cccccc;stroke-width:0.61666524;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter3612)"
+       d="m 114.03268,362.0705 -6.32154,15.32889 4.94352,-2.31099 0,9.25992 2.75603,0 0,-9.25992 4.93388,2.31099 -6.3119,-15.32889 0,0 z"
+       id="path2818"
+       sodipodi:nodetypes="ccccccccc"
+       transform="matrix(-0.71134256,0.65063351,0.65063351,0.71134256,-151.36641,701.18663)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccccc"
+       d="m 3.53686,1033.4171 13.63925,6.4011 -4.73184,1.4822 5.6788,6.2087 -1.84789,1.6902 -5.67881,-6.2087 -1.89085,4.5753 -5.16866,-14.1488 0,0 z"
+       style="fill:#ffffff;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path12041"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="22"
+   height="22"
+   id="svg3808"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="edit.svg">
+  <defs
+     id="defs3810">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3816" />
+    <inkscape:perspective
+       id="perspective3826"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter3612"
+       x="-0.12491946"
+       width="1.2498389"
+       y="-0.11545332"
+       height="1.2309066"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.83553061"
+         id="feGaussianBlur3614" />
+    </filter>
+    <inkscape:perspective
+       id="perspective3902"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5723"
+       id="linearGradient5292"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.97978042,0,0,0.81802353,-100.67272,736.54701)"
+       x1="108.03226"
+       y1="381.87067"
+       x2="105.84201"
+       y2="381.1954" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient5723">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop5725" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop5727" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5490"
+       id="linearGradient5295"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98887042,1.0177763,-0.67481991,0.65565436,37.140959,1051.3834)"
+       x1="-21.307003"
+       y1="4.8124108"
+       x2="-14.643123"
+       y2="4.8125" />
+    <linearGradient
+       id="linearGradient5490"
+       gradientUnits="userSpaceOnUse"
+       x1="566.41412"
+       y1="753.85248"
+       x2="573.6073"
+       y2="745.28009"
+       gradientTransform="translate(-484,-665)">
+      <stop
+         offset="0"
+         style="stop-color:#EFD3BF"
+         id="stop5492" />
+      <stop
+         offset="0"
+         style="stop-color:#EBC8AE"
+         id="stop5494" />
+      <stop
+         offset="0.09151213"
+         style="stop-color:#E2AB81"
+         id="stop5496" />
+      <stop
+         offset="0.1010159"
+         style="stop-color:#D37D39"
+         id="stop5498" />
+      <stop
+         offset="0.3204681"
+         style="stop-color:#CC691A"
+         id="stop5500" />
+      <stop
+         offset="0.41861963"
+         style="stop-color:#D27B35"
+         id="stop5502" />
+      <stop
+         offset="0.51651537"
+         style="stop-color:#DB955F"
+         id="stop5504" />
+      <stop
+         offset="0.59874135"
+         style="stop-color:#E2AC82"
+         id="stop5506" />
+      <stop
+         offset="0.6658"
+         style="stop-color:#E8BD9D"
+         id="stop5508" />
+      <stop
+         offset="0.7735"
+         style="stop-color:#ECC9B0"
+         id="stop5510" />
+      <stop
+         offset="0.8836"
+         style="stop-color:#EED1BB"
+         id="stop5512" />
+      <stop
+         offset="1"
+         style="stop-color:#EFD3BF"
+         id="stop5514" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#SVGID_20_"
+       id="linearGradient5298"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.27634115,0.70474942,-0.69538195,-0.29366957,371.26862,865.00839)"
+       x1="577.0498"
+       y1="757.53711"
+       x2="575.65912"
+       y2="758.98828" />
+    <linearGradient
+       gradientTransform="translate(-484,-665)"
+       y2="758.98828"
+       x2="575.65912"
+       y1="757.53711"
+       x1="577.0498"
+       gradientUnits="userSpaceOnUse"
+       id="SVGID_20_">
+      <stop
+         id="stop4206"
+         style="stop-color:#333333"
+         offset="0" />
+      <stop
+         id="stop4208"
+         style="stop-color:#050505"
+         offset="0.9895" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5615"
+       id="linearGradient5301"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-102.25478,667.20052)"
+       x1="104.71219"
+       y1="379.37033"
+       x2="111.60183"
+       y2="379.37033" />
+    <linearGradient
+       id="linearGradient5615">
+      <stop
+         style="stop-color:#e8cb51;stop-opacity:1;"
+         offset="0"
+         id="stop5617" />
+      <stop
+         id="stop5625"
+         offset="0.25"
+         style="stop-color:#ebd478;stop-opacity:1;" />
+      <stop
+         id="stop5623"
+         offset="0.61425745"
+         style="stop-color:#ffeeaa;stop-opacity:1;" />
+      <stop
+         style="stop-color:#fff6d5;stop-opacity:1"
+         offset="1"
+         id="stop5619" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5516"
+       id="linearGradient5304"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.66223566,0.68159359,-0.68159359,0.66223566,211.05511,733.65668)"
+       x1="80.461449"
+       y1="379.58716"
+       x2="90.729912"
+       y2="379.58716" />
+    <linearGradient
+       gradientTransform="translate(-484,-665)"
+       y2="711.0022"
+       x2="538.17792"
+       y1="719.30658"
+       x1="529.87299"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient5516">
+      <stop
+         id="stop5518"
+         style="stop-color:#89a02c;stop-opacity:1"
+         offset="0.2815845" />
+      <stop
+         id="stop5520"
+         style="stop-color:#abc837;stop-opacity:1"
+         offset="0.5167405" />
+      <stop
+         id="stop5522"
+         style="stop-color:#bcd35f;stop-opacity:1"
+         offset="0.63764405" />
+      <stop
+         id="stop5524"
+         style="stop-color:#dde9af;stop-opacity:1"
+         offset="0.732472" />
+      <stop
+         id="stop5526"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="0.80867201" />
+      <stop
+         id="stop5528"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="0.9239" />
+      <stop
+         id="stop5530"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter5579"
+       x="-0.20017916"
+       width="1.4003583"
+       y="-0.085681424"
+       height="1.1713628">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.77427123"
+         id="feGaussianBlur5581" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4"
+     inkscape:cx="11"
+     inkscape:cy="11"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1020"
+     inkscape:window-height="701"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3813">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1030.3622)">
+    <path
+       style="fill:#9a9a9a;fill-opacity:0.99607843;stroke:#9a9a9a;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none;filter:url(#filter5579)"
+       d="m 85.479542,366.51181 c -2.565732,0 -4.625,0.68278 -4.625,1.5625 0,0.0192 -0.0019,0.0434 0,0.0625 l 0,3.78125 0.03125,0 0,11.59375 1.34375,1.1875 0.84375,0.78125 c -0.168213,0.0522 -0.334139,0.0924 -0.5,0.15625 l 1.96875,2 c 0,0 0.414491,0.54258 0.96875,0.5625 0.532998,0.018 1,-0.5625 1,-0.5625 l 1.9375,-1.96875 c -0.189208,-0.0622 -0.378464,-0.13616 -0.5625,-0.1875 l 2.09375,-1.84375 0.15625,-0.125 0,-11.59375 0,-1.9375 0,-1.84375 c 0.0019,-0.0191 0,-0.0433 0,-0.0625 0,-0.87972 -2.090516,-1.5625 -4.65625,-1.5625 z"
+       id="path5558"
+       transform="matrix(0.65463741,0.67663607,-0.67377324,0.65741893,208.39233,736.34311)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient5304);fill-opacity:1;stroke:#0b280b;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 2.7310788,1043.3397 9.2285402,-8.9664 6.13791,6.3173 -9.2285398,8.9665 -5.8666804,-0.4404 -0.27123,-5.877 z"
+       id="polygon4172"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       d="m 2.9156388,1048.0911 1.13391,1.1671 4.6207304,0.367 c -0.17468,-2.6212 -3.4746704,-5.9449 -5.8896404,-6.1087 l 0.13499,4.5746 z"
+       id="path5431"
+       style="fill:url(#linearGradient5301);fill-opacity:1;stroke:#2b2200;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient5298);stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path4210"
+       d="m 2.4074288,1045.9049 -0.0651,2.6644 c 0,0 -0.087,0.6387 0.26651,1.0297 0.3407,0.3752 1.035,0.3098 1.035,0.3098 l 2.62859,0.02 c -0.63339,-2.3621 -1.95499,-3.558 -3.86492,-4.0244 l -3e-5,1e-4 z"
+       sodipodi:nodetypes="ccscccc"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient5295);fill-opacity:1;stroke:#22280b;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 17.377219,1035.2191 c -1.69912,-1.7488 -3.5352,-2.6864 -4.13481,-2.1038 -0.0131,0.013 -0.0304,0.027 -0.0421,0.041 l -1.20201,1.1679 6.14953,6.3293 1.20202,-1.1679 c 0.0143,-0.011 0.029,-0.028 0.0421,-0.041 0.59962,-0.5826 -0.3156,-2.4767 -2.01472,-4.2255 z"
+       id="rect5377"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient5292);fill-opacity:1;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 5.2354988,1049.1982 c -0.0114,-0.318 -0.33771,-1.0287 -1.17051,-1.7184 l -1.03578,1.7068 c 0.74559,0.1398 1.41967,0.069 2.20629,0.012 z"
+       id="path5416"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="22"
+   height="22"
+   id="svg3808"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="draw.svg"
+   inkscape:export-filename="/media/Disque local/Romanov/BKchem_icons/PNG/draw.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs3810">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3816" />
+    <inkscape:perspective
+       id="perspective3826"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3902"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       id="linearGradient5490"
+       gradientUnits="userSpaceOnUse"
+       x1="566.41412"
+       y1="753.85248"
+       x2="573.6073"
+       y2="745.28009"
+       gradientTransform="translate(-484,-665)">
+      <stop
+         offset="0"
+         style="stop-color:#EFD3BF"
+         id="stop5492" />
+      <stop
+         offset="0"
+         style="stop-color:#EBC8AE"
+         id="stop5494" />
+      <stop
+         offset="0.09151213"
+         style="stop-color:#E2AB81"
+         id="stop5496" />
+      <stop
+         offset="0.1010159"
+         style="stop-color:#D37D39"
+         id="stop5498" />
+      <stop
+         offset="0.3204681"
+         style="stop-color:#CC691A"
+         id="stop5500" />
+      <stop
+         offset="0.41861963"
+         style="stop-color:#D27B35"
+         id="stop5502" />
+      <stop
+         offset="0.51651537"
+         style="stop-color:#DB955F"
+         id="stop5504" />
+      <stop
+         offset="0.59874135"
+         style="stop-color:#E2AC82"
+         id="stop5506" />
+      <stop
+         offset="0.6658"
+         style="stop-color:#E8BD9D"
+         id="stop5508" />
+      <stop
+         offset="0.7735"
+         style="stop-color:#ECC9B0"
+         id="stop5510" />
+      <stop
+         offset="0.8836"
+         style="stop-color:#EED1BB"
+         id="stop5512" />
+      <stop
+         offset="1"
+         style="stop-color:#EFD3BF"
+         id="stop5514" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(-484,-665)"
+       y2="758.98828"
+       x2="575.65912"
+       y1="757.53711"
+       x1="577.0498"
+       gradientUnits="userSpaceOnUse"
+       id="SVGID_20_">
+      <stop
+         id="stop4206"
+         style="stop-color:#333333"
+         offset="0" />
+      <stop
+         id="stop4208"
+         style="stop-color:#050505"
+         offset="0.9895" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5615">
+      <stop
+         style="stop-color:#e8cb51;stop-opacity:1;"
+         offset="0"
+         id="stop5617" />
+      <stop
+         id="stop5625"
+         offset="0.25"
+         style="stop-color:#ebd478;stop-opacity:1;" />
+      <stop
+         id="stop5623"
+         offset="0.61425745"
+         style="stop-color:#ffeeaa;stop-opacity:1;" />
+      <stop
+         style="stop-color:#fff6d5;stop-opacity:1"
+         offset="1"
+         id="stop5619" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(-484,-665)"
+       y2="711.0022"
+       x2="538.17792"
+       y1="719.30658"
+       x1="529.87299"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient5516">
+      <stop
+         id="stop5518"
+         style="stop-color:#89a02c;stop-opacity:1"
+         offset="0.2815845" />
+      <stop
+         id="stop5520"
+         style="stop-color:#abc837;stop-opacity:1"
+         offset="0.5167405" />
+      <stop
+         id="stop5522"
+         style="stop-color:#bcd35f;stop-opacity:1"
+         offset="0.63764405" />
+      <stop
+         id="stop5524"
+         style="stop-color:#dde9af;stop-opacity:1"
+         offset="0.732472" />
+      <stop
+         id="stop5526"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="0.80867201" />
+      <stop
+         id="stop5528"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="0.9239" />
+      <stop
+         id="stop5530"
+         style="stop-color:#eef4d7;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <inkscape:perspective
+       id="perspective4080"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5615-0"
+       id="linearGradient5313"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98938707,0,0,0.97735326,-100.8785,675.59226)"
+       x1="116.62407"
+       y1="367.71326"
+       x2="119.58557"
+       y2="370.85349" />
+    <linearGradient
+       id="linearGradient5615-0">
+      <stop
+         style="stop-color:#e8cb51;stop-opacity:1;"
+         offset="0"
+         id="stop5617-4" />
+      <stop
+         id="stop5625-9"
+         offset="0.25"
+         style="stop-color:#ebd478;stop-opacity:1;" />
+      <stop
+         id="stop5623-4"
+         offset="0.61425745"
+         style="stop-color:#ffeeaa;stop-opacity:1;" />
+      <stop
+         style="stop-color:#fff6d5;stop-opacity:1"
+         offset="1"
+         id="stop5619-6" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6419-3"
+       id="linearGradient5332"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0002193,0,0,0.97709052,-102.11138,675.68887)"
+       x1="104.69714"
+       y1="383.40222"
+       x2="113.52798"
+       y2="374.05637" />
+    <linearGradient
+       id="linearGradient6419-3">
+      <stop
+         id="stop6421-6"
+         offset="0"
+         style="stop-color:#e8cb51;stop-opacity:1;" />
+      <stop
+         style="stop-color:#ebd478;stop-opacity:1;"
+         offset="0.11114165"
+         id="stop6423-2" />
+      <stop
+         style="stop-color:#ffeeaa;stop-opacity:1;"
+         offset="0.2665619"
+         id="stop6425-4" />
+      <stop
+         id="stop6427-5"
+         offset="1"
+         style="stop-color:#fff6d5;stop-opacity:1" />
+    </linearGradient>
+    <filter
+       color-interpolation-filters="sRGB"
+       inkscape:collect="always"
+       id="filter6433"
+       x="-0.12265923"
+       width="1.2453185"
+       y="-0.11745362"
+       height="1.2349072">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.98396625"
+         id="feGaussianBlur6435" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4"
+     inkscape:cx="11"
+     inkscape:cy="0.99999999"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1020"
+     inkscape:window-height="701"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3813">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1030.3622)">
+    <path
+       sodipodi:nodetypes="cccccccccccccccccc"
+       id="path6429"
+       d="m 103.90164,364.00337 4.81317,0 4.81317,0 2.40656,0 1.20331,0 6.01647,6.28309 0,1.25663 0,2.51326 0,5.02649 0,5.0265 -4.81317,0 -4.81317,0 -4.81317,0 -4.81317,0 0,-5.0265 0,-5.02649 0,-5.02649 0,-5.02649 z"
+       style="fill:#808080;fill-opacity:0.99607843;stroke:none;filter:url(#filter6433)"
+       transform="matrix(0.95596335,0,0,0.92055613,-97.778588,697.27233)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient5332);fill-opacity:0.99607843;stroke:#aa8800;stroke-width:1;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none"
+       d="m 2.608702,1032.044 4.41639,0 4.41638,0 2.20819,0 1.10411,0 5.52048,5.7073 0,1.1415 0,2.2829 0,4.5659 0,4.5659 -4.41638,0 -4.4164,0 -4.41638,0 -4.41639,0 0,-4.5659 0,-4.5659 0,-4.5658 0,-4.5659 z"
+       id="rect5733"
+       sodipodi:nodetypes="cccccccccccccccccc"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g6302"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="M 32.099998,34.77 55,48"
+         id="line6304" />
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="m 31.959999,41.619999 17.18,9.920002"
+         id="line6306" />
+    </g>
+    <g
+       id="g6308"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="M 9.1899996,48 32.099998,34.77"
+         id="line6310" />
+    </g>
+    <g
+       id="g6312"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="m 9.1899996,48 0,26.410004"
+         id="line6314" />
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="m 15.19,51.299999 0,19.810002"
+         id="line6316" />
+    </g>
+    <g
+       id="g6318"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="M 9.1899996,74.410004 32.099998,87.639999"
+         id="line6320" />
+    </g>
+    <g
+       id="g6322"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="m 55,48 0,26.410004"
+         id="line6324" />
+    </g>
+    <g
+       id="g6326"
+       style="font-size:15px;fill:#333333;stroke:#008000;stroke-width:3.69087052;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;font-family:Helvetica"
+       transform="matrix(0.27252742,0,0,0.26935941,2.570472,1024.818)"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="M 55,74.410004 32.099998,87.639999"
+         id="line6328" />
+      <path
+         style="fill:#333333;stroke:#008000"
+         d="m 49.139999,70.870003 -17.18,9.919998"
+         id="line6330" />
+    </g>
+    <path
+       style="fill:url(#linearGradient5313);fill-opacity:1;stroke:#aa8800;stroke-width:1;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:0.99607843;stroke-dasharray:none"
+       d="m 14.708742,1037.8996 -0.0534,-5.8432 5.56513,5.8432 -5.51161,0 z"
+       id="path6250"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/media/disk/Documents and Settings/Yassine/Bureau/bkchemicons/flowRoot7463-8-8.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
