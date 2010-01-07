@@ -30,6 +30,7 @@ RELEASE 0.14.0-pre1
 		  when entering text
 		- an *experimental* support for the CDXML (Chem Draw XML) format was added
 		  (contributed by Simona Pourová)
+		- a new and much nicer icon-set was contributed by Yassine Mrabet (many thanks)
 
  * changes - cairo exports now export text as text instead of converting it to curves
    	     (where available)
