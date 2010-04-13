@@ -1289,7 +1289,7 @@ class rotate_mode( edit_mode):
         if isinstance( sel, bond):
           self._fixed = sel
         else:
-          Store.log( _("The selected item must be a bond."), message_type="warn")
+          Store.log( _("The selected item must be a bond."), message_type="warning")
       else:
         Store.log( _("Exactly one item should be selected to fixed rotation to work, normal rotation will be used."), message_type="hint")
     Store.app.paper.unselect_all()

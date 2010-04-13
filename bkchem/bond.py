@@ -686,7 +686,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         if ang < -0.00001:
           ang += math.pi
         angs.append( ang)
-    ang = sum( angs) / len( angs)
+    if angs:
+      ang = sum( angs) / len( angs)
+    else:
+      ang = 0
     t.set_rotation_z( ang + math.pi/2.0)
     t.set_rotation_y( math.pi/2.0)
     return t
@@ -1387,22 +1390,25 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
       ret = (1 ,1)
     else:
+      ret = None
       if not circles:
         # we center when both atoms have visible symbol and are not in circle
         if self.atom1.show and self.atom2.show:
-          return (1, 1)
+          ret = (1, 1)
         # recompute side with weighting of atom types
-        for i in range( len( sides)):
-          if sides[i] and atms[i].__class__.__name__ == "atom":
-            if atms[i].symbol == 'H':
-              sides[i] *= 0.1 # this discriminates H
-            elif atms[i].symbol != 'C':
-              sides[i] *= 0.2 # this makes "non C" less then C but more then H
-          side = reduce( operator.add, sides, 0)
-      if side < 0:
-        ret = (-1, 0)
-      else:
-        ret = (1, 0)
+        else:
+          for i in range( len( sides)):
+            if sides[i] and atms[i].__class__.__name__ == "atom":
+              if atms[i].symbol == 'H':
+                sides[i] *= 0.1 # this discriminates H
+              elif atms[i].symbol != 'C':
+                sides[i] *= 0.2 # this makes "non C" less then C but more then H
+            side = reduce( operator.add, sides, 0)
+      if not ret:
+        if side < 0:
+          ret = (-1, 0)
+        else:
+          ret = (1, 0)
     # transform back if necessary
     if transform:
       inv = transform.get_inverse()
