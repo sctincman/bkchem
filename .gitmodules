@@ -1,0 +1,9 @@
+[submodule "bkchem/oasa"]
+	path = bkchem/oasa
+	url = git://bkchem.zirael.org/oasa.git
+[submodule "bkchem/plugins/piddle"]
+	path = bkchem/plugins/piddle
+	url = git://bkchem.zirael.org/piddle.git
+[submodule "plugins"]
+	path = plugins
+	url = git://bkchem.zirael.org/bkchem-plugins.git
