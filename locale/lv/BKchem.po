@@ -1,0 +1,2898 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BKChem-0.13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-09 12:10+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Reinis Danne <rei4dan@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2)\n"
+"X-Poedit-Language: Latvian\n"
+"X-Poedit-Country: LATVIA\n"
+
+#: ../bkchem/arrow.py:47
+#: ../bkchem/modes.py:737
+#: ../bkchem/modes.py:948
+msgid "normal"
+msgstr "normāla"
+
+#: ../bkchem/arrow.py:47
+msgid "electron transfer"
+msgstr "elektronu pārnese"
+
+#: ../bkchem/arrow.py:47
+msgid "retrosynthetic"
+msgstr "retrosintēze"
+
+#: ../bkchem/arrow.py:47
+msgid "equilibrium"
+msgstr "līdzsvars"
+
+#: ../bkchem/arrow.py:47
+msgid "equilibrium simple"
+msgstr "vienkāršs līdzsvars"
+
+#: ../bkchem/checks.py:43
+msgid "The linear form was no longer consistent - it has been removed"
+msgstr "Lineārā forma vairs nebija atbilstoša - tā tika izņemta"
+
+#: ../bkchem/context_menu.py:91
+msgid "Center bond"
+msgstr "Centrēt saiti"
+
+#: ../bkchem/context_menu.py:92
+msgid "Expand group"
+msgstr "Izvērst grupu"
+
+#: ../bkchem/context_menu.py:93
+msgid "Set atom number"
+msgstr "Iestatīt atoma numuru"
+
+#: ../bkchem/context_menu.py:102
+msgid "Properties"
+msgstr "Īpašības"
+
+#: ../bkchem/context_menu.py:196
+msgid "Circle around mark"
+msgstr "Aplis ap iezīmi"
+
+#: ../bkchem/context_menu.py:196
+#: ../bkchem/context_menu.py:204
+#: ../bkchem/context_menu.py:250
+msgid "yes"
+msgstr "jā"
+
+#: ../bkchem/context_menu.py:196
+#: ../bkchem/context_menu.py:204
+#: ../bkchem/context_menu.py:251
+msgid "no"
+msgstr "nē"
+
+#: ../bkchem/context_menu.py:204
+msgid "Show number"
+msgstr "Rādīt numuru"
+
+#: ../bkchem/context_menu.py:213
+msgid "Atom valency"
+msgstr "Atoma valence"
+
+#: ../bkchem/context_menu.py:220
+#: ../bkchem/context_menu.py:263
+msgid "Mark size"
+msgstr "Iezīmes izmērs"
+
+#: ../bkchem/context_menu.py:231
+msgid "Mark as template atom"
+msgstr "Atzīmēt izvēlēto atomu kā 'veidnes atomu'"
+
+#: ../bkchem/context_menu.py:240
+msgid "Mark as template bond"
+msgstr "Atzīmēt izvēlēto saiti kā 'veidnes saiti'"
+
+#: ../bkchem/context_menu.py:250
+msgid "Show symbol"
+msgstr "Rādīt simbolu"
+
+#: ../bkchem/context_menu.py:252
+#: ../bkchem/dialogs.py:219
+msgid "Hydrogens"
+msgstr "Ūdeņraži"
+
+#: ../bkchem/context_menu.py:252
+#: ../bkchem/dialogs.py:220
+msgid "on"
+msgstr "ieslēgt"
+
+#: ../bkchem/context_menu.py:253
+#: ../bkchem/dialogs.py:220
+msgid "off"
+msgstr "izslēgt"
+
+#: ../bkchem/context_menu.py:254
+#: ../bkchem/widgets.py:180
+msgid "Font size"
+msgstr "Teksta izmērs"
+
+#: ../bkchem/context_menu.py:255
+#: ../bkchem/dialogs.py:353
+#: ../bkchem/dialogs.py:664
+msgid "Line width"
+msgstr "Līnijas platums"
+
+#: ../bkchem/context_menu.py:256
+#: ../bkchem/dialogs.py:240
+#: ../bkchem/dialogs.py:686
+msgid "Bond width"
+msgstr "Saites platums"
+
+#: ../bkchem/context_menu.py:257
+#: ../bkchem/dialogs.py:251
+#: ../bkchem/dialogs.py:689
+msgid "Wedge/Hatch width"
+msgstr "Ķīļveida/svītrotas saites platums"
+
+#: ../bkchem/context_menu.py:258
+msgid "Symbol positioning"
+msgstr "Simbola novietojums"
+
+#: ../bkchem/context_menu.py:258
+msgid "center first"
+msgstr "centrēt pirmo"
+
+#: ../bkchem/context_menu.py:259
+msgid "center last"
+msgstr "centrēt pēdējo"
+
+#: ../bkchem/context_menu.py:260
+msgid "Bond positioning"
+msgstr "Saites novietojums"
+
+#: ../bkchem/context_menu.py:260
+msgid "auto"
+msgstr "automātiskis"
+
+#: ../bkchem/context_menu.py:261
+msgid "anti-auto"
+msgstr "anti-automātisks"
+
+#: ../bkchem/context_menu.py:262
+msgid "Bond order"
+msgstr "Saites kārta"
+
+#: ../bkchem/context_menu.py:264
+#: ../bkchem/interactors.py:341
+msgid "Atom number"
+msgstr "Atoma numurs"
+
+#: ../bkchem/context_menu.py:265
+#: ../bkchem/dialogs.py:373
+#: ../bkchem/dialogs.py:673
+msgid "Area color"
+msgstr "Apgabala krāsa"
+
+#: ../bkchem/context_menu.py:265
+#: ../bkchem/context_menu.py:272
+#: ../bkchem/plugins/png_cairo.py:174
+msgid "transparent"
+msgstr "caurspīdīgs"
+
+#: ../bkchem/context_menu.py:266
+#: ../bkchem/context_menu.py:273
+#: ../bkchem/plugins/png_cairo.py:173
+#: ../bkchem/plugins/png_cairo.py:188
+msgid "white"
+msgstr "balts"
+
+#: ../bkchem/context_menu.py:267
+#: ../bkchem/context_menu.py:274
+msgid "yellow"
+msgstr "dzeltens"
+
+#: ../bkchem/context_menu.py:268
+#: ../bkchem/context_menu.py:275
+msgid "green"
+msgstr "zaļš"
+
+#: ../bkchem/context_menu.py:269
+#: ../bkchem/context_menu.py:276
+msgid "blue"
+msgstr "zils"
+
+#: ../bkchem/context_menu.py:270
+#: ../bkchem/context_menu.py:277
+msgid "red"
+msgstr "sarkans"
+
+#: ../bkchem/context_menu.py:271
+#: ../bkchem/context_menu.py:278
+msgid "black"
+msgstr "melns"
+
+#: ../bkchem/context_menu.py:272
+#: ../bkchem/dialogs.py:363
+#: ../bkchem/dialogs.py:670
+msgid "Line color"
+msgstr "Līnijas krāsa"
+
+#: ../bkchem/context_menu.py:279
+msgid "Free sites"
+msgstr "Brīvas vietas"
+
+#: ../bkchem/context_menu.py:280
+msgid "Atom symbol"
+msgstr "Atoma simbols"
+
+#: ../bkchem/context_menu.py:281
+msgid "Group"
+msgstr "Grupa"
+
+#: ../bkchem/data.py:128
+msgid "English"
+msgstr "Angļu"
+
+#: ../bkchem/data.py:129
+msgid "Czech"
+msgstr "Čehu"
+
+#: ../bkchem/data.py:130
+msgid "German"
+msgstr "Vācu"
+
+#: ../bkchem/data.py:131
+msgid "French"
+msgstr "Franču"
+
+#: ../bkchem/data.py:132
+msgid "Polish"
+msgstr "Poļu"
+
+#: ../bkchem/data.py:133
+msgid "Traditional Chinese"
+msgstr "Ķīniešu Tradicionālā"
+
+#: ../bkchem/data.py:134
+msgid "Italian"
+msgstr "Itāļu"
+
+#: ../bkchem/data.py:135
+msgid "Spanish"
+msgstr "Spāņu"
+
+#: ../bkchem/dialogs.py:42
+#: ../bkchem/dialogs.py:43
+#: ../bkchem/dialogs.py:138
+#: ../bkchem/dialogs.py:139
+#: ../bkchem/dialogs.py:385
+#: ../bkchem/dialogs.py:514
+#: ../bkchem/dialogs.py:515
+#: ../bkchem/dialogs.py:608
+#: ../bkchem/dialogs.py:645
+#: ../bkchem/dialogs.py:646
+#: ../bkchem/dialogs.py:798
+#: ../bkchem/dialogs.py:858
+#: ../bkchem/dialogs.py:859
+#: ../bkchem/dialogs.py:897
+#: ../bkchem/dialogs.py:916
+#: ../bkchem/dialogs.py:918
+#: ../bkchem/dialogs.py:923
+#: ../bkchem/dialogs.py:1003
+#: ../bkchem/dialogs.py:1004
+#: ../bkchem/dialogs.py:1035
+#: ../bkchem/dialogs.py:1036
+#: ../bkchem/dialogs.py:1069
+#: ../bkchem/interactors.py:53
+#: ../bkchem/interactors.py:58
+#: ../bkchem/interactors.py:93
+#: ../bkchem/interactors.py:99
+#: ../bkchem/interactors.py:163
+#: ../bkchem/interactors.py:183
+#: ../bkchem/interactors.py:192
+#: ../bkchem/interactors.py:283
+#: ../bkchem/interactors.py:285
+#: ../bkchem/interactors.py:320
+#: ../bkchem/interactors.py:321
+#: ../bkchem/interactors.py:323
+#: ../bkchem/interactors.py:344
+#: ../bkchem/interactors.py:346
+#: ../bkchem/main.py:565
+#: ../bkchem/main.py:1185
+#: ../bkchem/main.py:1187
+#: ../bkchem/main.py:1224
+#: ../bkchem/main.py:1226
+#: ../bkchem/main.py:1294
+#: ../bkchem/main.py:1408
+#: ../bkchem/validator.py:103
+#: ../bkchem/widgets.py:378
+#: ../bkchem/plugins/png_cairo.py:91
+#: ../bkchem/plugins/png_cairo.py:92
+#: ../bkchem/../plugins/fetch_from_webbook.py:50
+#: ../bkchem/../plugins/fetch_from_webbook.py:52
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:56
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:57
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:128
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:129
+msgid "OK"
+msgstr "Labi"
+
+#: ../bkchem/dialogs.py:42
+#: ../bkchem/dialogs.py:96
+#: ../bkchem/dialogs.py:138
+#: ../bkchem/dialogs.py:514
+#: ../bkchem/dialogs.py:645
+#: ../bkchem/dialogs.py:858
+#: ../bkchem/dialogs.py:916
+#: ../bkchem/dialogs.py:918
+#: ../bkchem/dialogs.py:1003
+#: ../bkchem/dialogs.py:1035
+#: ../bkchem/interactors.py:53
+#: ../bkchem/interactors.py:93
+#: ../bkchem/interactors.py:183
+#: ../bkchem/interactors.py:283
+#: ../bkchem/interactors.py:320
+#: ../bkchem/interactors.py:344
+#: ../bkchem/main.py:736
+#: ../bkchem/main.py:741
+#: ../bkchem/main.py:1185
+#: ../bkchem/main.py:1224
+#: ../bkchem/widgets.py:378
+#: ../bkchem/plugins/png_cairo.py:91
+#: ../bkchem/plugins/png_cairo.py:184
+#: ../bkchem/../plugins/fetch_from_webbook.py:50
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:56
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: ../bkchem/dialogs.py:44
+#: ../bkchem/main.py:227
+msgid "Scale"
+msgstr "Mērogot"
+
+#: ../bkchem/dialogs.py:49
+#: ../bkchem/plugins/png_cairo.py:102
+msgid "Scale X (in %):"
+msgstr "Mērogot X (%):"
+
+#: ../bkchem/dialogs.py:60
+#: ../bkchem/plugins/png_cairo.py:113
+msgid "Scale Y (in %):"
+msgstr "Mērogot Y (%):"
+
+#: ../bkchem/dialogs.py:71
+msgid "Preserve aspect ratio?"
+msgstr "Saglabāt proporcijas?"
+
+#: ../bkchem/dialogs.py:79
+msgid "Fix position of centers of objects?"
+msgstr "Saglabāt objektu viduspunktu novietojumu?"
+
+#: ../bkchem/dialogs.py:85
+msgid "Scale font and mark sizes?"
+msgstr "Mērogot fontu un zīmju izmēru?"
+
+#: ../bkchem/dialogs.py:140
+msgid "Configuration"
+msgstr "Konfigurācija"
+
+#: ../bkchem/dialogs.py:165
+#: ../bkchem/dialogs.py:677
+msgid "Atom"
+msgstr "Atoms"
+
+#: ../bkchem/dialogs.py:174
+msgid "Charge"
+msgstr "Lādiņš"
+
+#: ../bkchem/dialogs.py:189
+msgid "Atom name"
+msgstr "Atoma nosaukums"
+
+#: ../bkchem/dialogs.py:190
+msgid "don't show"
+msgstr "nerādīt"
+
+#: ../bkchem/dialogs.py:190
+msgid "show"
+msgstr "rādīt"
+
+#: ../bkchem/dialogs.py:206
+msgid "Atom positioning"
+msgstr "Atoma novietojums"
+
+#: ../bkchem/dialogs.py:207
+msgid "center first letter"
+msgstr "centrēt pirmo burtu"
+
+#: ../bkchem/dialogs.py:207
+msgid "center last letter"
+msgstr "centrēt pēdējo burtu"
+
+#: ../bkchem/dialogs.py:231
+#: ../bkchem/dialogs.py:684
+msgid "Bond"
+msgstr "Saite"
+
+#: ../bkchem/dialogs.py:263
+#: ../bkchem/dialogs.py:697
+msgid "Double-bond length ratio"
+msgstr "Dubultsaites garuma attiecība"
+
+#: ../bkchem/dialogs.py:270
+msgid "Arrow"
+msgstr "Bulta"
+
+#: ../bkchem/dialogs.py:283
+msgid "Arrow-head on start"
+msgstr "Bulta sākumā"
+
+#: ../bkchem/dialogs.py:296
+msgid "Arrow-head on end"
+msgstr "Buta beigās"
+
+#: ../bkchem/dialogs.py:309
+msgid "Spline arrow"
+msgstr "Splaina bulta"
+
+#: ../bkchem/dialogs.py:323
+#: ../bkchem/dialogs.py:701
+msgid "Font"
+msgstr "Fonti"
+
+#: ../bkchem/dialogs.py:343
+#: ../bkchem/dialogs.py:659
+#: ../bkchem/dialogs.py:879
+msgid "Common"
+msgstr "Vispārējie"
+
+#: ../bkchem/dialogs.py:516
+#: ../bkchem/main.py:196
+msgid "File properties"
+msgstr "Faila iestatījumi"
+
+#: ../bkchem/dialogs.py:530
+#: ../bkchem/dialogs.py:614
+#: ../bkchem/dialogs.py:714
+#: ../bkchem/dialogs.py:822
+msgid "Custom"
+msgstr "Pielāgotie"
+
+#: ../bkchem/dialogs.py:539
+#: ../bkchem/dialogs.py:723
+msgid "Paper size"
+msgstr "Papīra izmērs"
+
+#: ../bkchem/dialogs.py:547
+#: ../bkchem/dialogs.py:609
+#: ../bkchem/dialogs.py:731
+#: ../bkchem/dialogs.py:826
+msgid "Portrait"
+msgstr "Portreta"
+
+#: ../bkchem/dialogs.py:548
+#: ../bkchem/dialogs.py:732
+msgid "Landscape"
+msgstr "Ainavas"
+
+#: ../bkchem/dialogs.py:566
+msgid ""
+"Auto crop image in SVG?\n"
+"(applies to some other exports as well)"
+msgstr ""
+"Automātiski apcirst attēlu SVG formātā?\n"
+"(attiecināms arī uz dažiem citiem eksporta veidiem)"
+
+#: ../bkchem/dialogs.py:574
+#: ../bkchem/dialogs.py:748
+msgid "Margin for cropped image (in pixels):"
+msgstr "Apcirstā attēla malas (pikseļos):"
+
+#: ../bkchem/dialogs.py:589
+#: ../bkchem/dialogs.py:881
+msgid "Use real minus character (instead of hyphen)?"
+msgstr "Lietot īstu mīnusa zīmi (nevis domu zīmi)?"
+
+#: ../bkchem/dialogs.py:597
+msgid "Replace hyphens with minus in SVG export?"
+msgstr "Aizvietot domu zīmes ar mīnusa zīmēm SVG eksportā?"
+
+#: ../bkchem/dialogs.py:645
+#: ../bkchem/dialogs.py:788
+#: ../bkchem/main.py:184
+#: ../bkchem/main.py:736
+#: ../bkchem/main.py:739
+msgid "Save"
+msgstr "Saglabāt"
+
+#: ../bkchem/dialogs.py:647
+msgid "Standard values"
+msgstr "Standarta vērtības"
+
+#: ../bkchem/dialogs.py:661
+msgid "Line"
+msgstr "Līnija"
+
+#: ../bkchem/dialogs.py:667
+msgid "Color"
+msgstr "Krāsa"
+
+#: ../bkchem/dialogs.py:680
+msgid "Show hydrogens on visible atoms"
+msgstr "Rādīt ūdeņražus uz redzamajiem atomiem"
+
+#: ../bkchem/dialogs.py:692
+msgid "Bond length"
+msgstr "Saites garums"
+
+#: ../bkchem/dialogs.py:712
+msgid "Paper"
+msgstr "Papīrs"
+
+#: ../bkchem/dialogs.py:742
+msgid "Auto crop image in SVG?"
+msgstr "Automātiski apcirst attēlu SVG formātā?"
+
+#: ../bkchem/dialogs.py:759
+msgid "Apply"
+msgstr "Pielietot"
+
+#: ../bkchem/dialogs.py:767
+msgid "changed values only"
+msgstr "mainīt tikai vērtības"
+
+#: ../bkchem/dialogs.py:768
+msgid "all values"
+msgstr "visas vērtības"
+
+#: ../bkchem/dialogs.py:776
+msgid "to new drawings only"
+msgstr "tikai jauniem zīmējumiem"
+
+#: ../bkchem/dialogs.py:777
+msgid "to selected and new drawings (no resize)"
+msgstr "izvēlētajiem un jauniem zīmējumiem (nemainīt izmēru)"
+
+#: ../bkchem/dialogs.py:778
+msgid "to the whole drawing (no resize)"
+msgstr "visam zīmējumam (nemainīt izmēru)"
+
+#: ../bkchem/dialogs.py:791
+msgid "Standard saved"
+msgstr "Standarts saglabāts"
+
+#: ../bkchem/dialogs.py:792
+#, python-format
+msgid ""
+"The standard was successfully saved as personal standard to %s\n"
+"\n"
+"It is not automatically applied to the current drawing and will be activated after you restart BKChem.\n"
+"You can still apply the changes to the current drawing from the dialog window."
+msgstr ""
+"Noklusētie iestatījumi veiksmīgi saglabāti, kā personālais standarts failā %s\n"
+"\n"
+"Tie nav automātiski pielietoti pašreizējā zīmējumā, bet tiks aktivizēti pēc \"BKChem\" restarta.\n"
+"Jūs joprojām varat pielietot izmaiņas pašreizējam zīmējumam no dialoga loga."
+
+#: ../bkchem/dialogs.py:794
+msgid "Standard not saved"
+msgstr "Standarts netika saglabāts"
+
+#: ../bkchem/dialogs.py:795
+msgid "For some reason the standard couldn't be saved. Probably the right location for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."
+msgstr "Nezināmu iemeslu dēļ standartu neizdevās saglabāt. Iespējams, ka pareizā lietotāja profila atrašanās vietu neizdevās atrast vai tajā neizdevās ierakstīt."
+
+#: ../bkchem/dialogs.py:860
+#: ../bkchem/main.py:277
+msgid "Preferences"
+msgstr "Iestatījumi"
+
+#: ../bkchem/dialogs.py:916
+#: ../bkchem/dialogs.py:981
+msgid "Delete"
+msgstr "Izdzēst"
+
+#: ../bkchem/dialogs.py:924
+msgid "Fragment overview"
+msgstr "Fragmenta pārskats"
+
+#: ../bkchem/dialogs.py:938
+#: ../bkchem/dialogs.py:1014
+msgid "Fragments"
+msgstr "Fragmenti"
+
+#: ../bkchem/dialogs.py:1005
+msgid "Logging"
+msgstr "Žurnāla turēšana"
+
+#: ../bkchem/dialogs.py:1037
+#: ../bkchem/main.py:273
+msgid "Language"
+msgstr "Valoda"
+
+#: ../bkchem/dialogs.py:1060
+msgid "Available Languages"
+msgstr "Pieejamās valodas"
+
+#: ../bkchem/edit_pool.py:38
+msgid "italic"
+msgstr "slīpraksts"
+
+#: ../bkchem/edit_pool.py:38
+#: ../bkchem/modes.py:737
+msgid "bold"
+msgstr "trekna"
+
+#: ../bkchem/edit_pool.py:38
+msgid "subscript"
+msgstr "apakšraksts"
+
+#: ../bkchem/edit_pool.py:38
+msgid "superscript"
+msgstr "augšraksts"
+
+#: ../bkchem/edit_pool.py:63
+msgid "Interpret"
+msgstr "Interpretēt"
+
+#: ../bkchem/edit_pool.py:68
+msgid "Interpret text (where applicable)"
+msgstr "Interpretēt tekstu (kur pielietojams)"
+
+#: ../bkchem/edit_pool.py:77
+msgid "As is"
+msgstr "Kā ir"
+
+#: ../bkchem/edit_pool.py:81
+msgid "Leave text as is - do not interpret"
+msgstr "Atstāt tekstu kā ir - neinterpretēt"
+
+#: ../bkchem/edit_pool.py:90
+#: ../bkchem/widgets.py:416
+msgid "Sub numbers"
+msgstr "Apakšnumuri"
+
+#: ../bkchem/edit_pool.py:94
+msgid "Convert numbers to subscript"
+msgstr "Pārveidot numurus apakšrakstā"
+
+#: ../bkchem/edit_pool.py:115
+msgid "Special Character"
+msgstr "Speciālās rakstu zīmes"
+
+#: ../bkchem/edit_pool.py:119
+msgid "Insert a special character"
+msgstr "Ievietot speciālu rakstzīmi"
+
+#: ../bkchem/edit_pool.py:244
+#: ../bkchem/modes.py:1640
+msgid "minus"
+msgstr "mīnuss"
+
+#: ../bkchem/edit_pool.py:245
+msgid "arrow-left"
+msgstr "kreisā bulta"
+
+#: ../bkchem/edit_pool.py:246
+msgid "arrow-right"
+msgstr "labā bulta"
+
+#: ../bkchem/edit_pool.py:247
+msgid "nu"
+msgstr "nī"
+
+#: ../bkchem/interactors.py:45
+#: ../bkchem/interactors.py:77
+#: ../bkchem/interactors.py:176
+#: ../bkchem/plugins/molfile.py:69
+msgid "No molecule selected."
+msgstr "Neviena molekula nav izvēlēta."
+
+#: ../bkchem/interactors.py:46
+#: ../bkchem/interactors.py:78
+#: ../bkchem/interactors.py:177
+msgid "At least one molecule must be selected. Please select it."
+msgstr "Vismaz vienai molekulai jābūt izvēlētai. Lūdzu izvēlieties to."
+
+#: ../bkchem/interactors.py:50
+#: ../bkchem/../plugins/fetch_from_webbook.py:47
+msgid "Name"
+msgstr "Nosaukums"
+
+#: ../bkchem/interactors.py:51
+msgid "Name:"
+msgstr "Nosaukums:"
+
+#: ../bkchem/interactors.py:65
+#, python-format
+msgid "Name %s was set to molecule(s)"
+msgstr "Molekulas nosaukums iestatīts uz %s"
+
+#: ../bkchem/interactors.py:82
+msgid "Only one molecule should be selected."
+msgstr "Tikai vienai molekulai vajadzētu būt izvēlētai."
+
+#: ../bkchem/interactors.py:83
+msgid "ID must be unique value, therefore it is obviously possible to set it to one molecule only. Please select only one molecule"
+msgstr "ID vērtībai jābūt unikālai, tādēļ to iespējams iestatīt tikai vienai molekulai. Lūdzu izvēlieties tikai vienu molekulu"
+
+#: ../bkchem/interactors.py:90
+msgid "Id"
+msgstr "Id"
+
+#: ../bkchem/interactors.py:91
+msgid "Id:"
+msgstr "Id:"
+
+#: ../bkchem/interactors.py:107
+msgid "ID collision"
+msgstr "ID pārklāšanās"
+
+#: ../bkchem/interactors.py:108
+msgid "This ID is already used, use a different one"
+msgstr "Šis ID jau tiek izmantots, izmantojiet citu"
+
+#: ../bkchem/interactors.py:115
+#, python-format
+msgid "ID %s was set to molecule"
+msgstr "Molekulas ID iestatīts uz %s"
+
+#: ../bkchem/interactors.py:127
+msgid "Validity error"
+msgstr "Pareizības kļūda"
+
+#: ../bkchem/interactors.py:128
+#: ../bkchem/plugins/CML.py:202
+msgid ""
+"Sorry but your drawing includes 'text atoms'\n"
+" - atoms with no chemical sense."
+msgstr ""
+"Atvainojiet, bet jūsu zīmējumā ir 'teksta atomi'\n"
+" - atomi bez ķīmiskās jēgas."
+
+#: ../bkchem/interactors.py:129
+msgid "It is not possible to export them."
+msgstr "Tos nav iespējams eksportēt."
+
+#: ../bkchem/interactors.py:130
+#: ../bkchem/interactors.py:136
+#: ../bkchem/plugins/CML.py:204
+#: ../bkchem/plugins/CML.py:210
+#, python-format
+msgid "For details check the chemistry with '%s/%s'."
+msgstr "Sīkākai informācijai pārbaudiet ķīmiju izmantojot '%s/%s'."
+
+#: ../bkchem/interactors.py:130
+#: ../bkchem/interactors.py:136
+#: ../bkchem/interactors.py:165
+#: ../bkchem/main.py:244
+#: ../bkchem/main.py:245
+#: ../bkchem/main.py:246
+#: ../bkchem/main.py:247
+#: ../bkchem/main.py:248
+#: ../bkchem/main.py:249
+#: ../bkchem/main.py:250
+#: ../bkchem/main.py:251
+#: ../bkchem/main.py:252
+#: ../bkchem/main.py:253
+#: ../bkchem/main.py:254
+#: ../bkchem/main.py:255
+#: ../bkchem/main.py:257
+#: ../bkchem/main.py:261
+#: ../bkchem/main.py:262
+#: ../bkchem/main.py:263
+#: ../bkchem/main.py:264
+#: ../bkchem/main.py:265
+#: ../bkchem/main.py:266
+#: ../bkchem/main.py:267
+#: ../bkchem/plugins/CML.py:204
+#: ../bkchem/plugins/CML.py:210
+msgid "Chemistry"
+msgstr "Ķīmija"
+
+#: ../bkchem/interactors.py:130
+#: ../bkchem/interactors.py:136
+#: ../bkchem/main.py:246
+#: ../bkchem/plugins/CML.py:204
+#: ../bkchem/plugins/CML.py:210
+msgid "Check chemistry"
+msgstr "Pārbaudīt ķīmiju"
+
+#: ../bkchem/interactors.py:134
+msgid "Validity warning"
+msgstr "Pareizības brīdinājums"
+
+#: ../bkchem/interactors.py:135
+#: ../bkchem/plugins/CML.py:209
+msgid "Your drawing includes some atoms with exceeded valency."
+msgstr "Jūsu zīmējumā ir atomi ar pārsniegtu valenci."
+
+#: ../bkchem/interactors.py:139
+#: ../bkchem/plugins/CML.py:213
+msgid "Expand groups?"
+msgstr "Izvērst grupas"
+
+#: ../bkchem/interactors.py:140
+#: ../bkchem/plugins/CML.py:214
+msgid "Your drawing includes some groups."
+msgstr "Jūsu zīmējumā ir atomu grupas."
+
+#: ../bkchem/interactors.py:141
+msgid "These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards."
+msgstr "Tās ir jāizvērš, lai iegūtu ķīmiski pareizu zīmējumu. Vēlāk izvēršana var tikt atdarīta."
+
+#: ../bkchem/interactors.py:142
+#: ../bkchem/plugins/CML.py:216
+msgid "Proceed with expansion?"
+msgstr "Turpināt izvēršanu?"
+
+#: ../bkchem/interactors.py:157
+msgid "The InChI program path"
+msgstr "Ceļš pie \"InChI\" programmas"
+
+#: ../bkchem/interactors.py:158
+msgid "Select the InChI program executable: "
+msgstr "Izvēlieties \"InChI\" programmas izpildāmo failu:"
+
+#: ../bkchem/interactors.py:160
+msgid "Executable files"
+msgstr "Izpildāmie faili"
+
+#: ../bkchem/interactors.py:165
+#: ../bkchem/main.py:255
+msgid "Generate InChI"
+msgstr "Izveidot InChI"
+
+#: ../bkchem/interactors.py:181
+msgid "Display Form"
+msgstr "Attēlošanas forma"
+
+#: ../bkchem/interactors.py:205
+#: ../bkchem/modes.py:664
+#: ../bkchem/modes.py:1227
+#: ../bkchem/modes.py:1802
+msgid "Parse Error"
+msgstr "Parsēšanas kļūda"
+
+#: ../bkchem/interactors.py:205
+#: ../bkchem/modes.py:1227
+#: ../bkchem/modes.py:1802
+msgid ""
+"Unable to parse the text-\n"
+"probably problem with input encoding!"
+msgstr ""
+"Neizdevās parsēt tekstu-\n"
+"iespējams, ka problēma ar ievades kodējumu!"
+
+#: ../bkchem/interactors.py:213
+#, python-format
+msgid "Display form %s was set to molecule(s)"
+msgstr "Molekulas attēlošanas forma tika iestatīta uz \"%s\""
+
+#: ../bkchem/interactors.py:233
+msgid "Template summary"
+msgstr "Veidnes kopsavilkums"
+
+#: ../bkchem/interactors.py:237
+msgid "Errors"
+msgstr "Kļūdas"
+
+#: ../bkchem/interactors.py:240
+#, python-format
+msgid "%d molecules have no template atom specified"
+msgstr "%d molekulām nav norādīts veidnes atoms"
+
+#: ../bkchem/interactors.py:243
+#, python-format
+msgid "%d molecules have no name specified"
+msgstr "%d molekulām nav norādīts nosaukums"
+
+#: ../bkchem/interactors.py:247
+msgid "Warnings"
+msgstr "Brīdinājumi"
+
+#: ../bkchem/interactors.py:249
+#, python-format
+msgid "%d molecules have no template bond specified"
+msgstr "%d molekulām nav norādīta veidnes saite"
+
+#: ../bkchem/interactors.py:254
+msgid "Please correct the above errors first"
+msgstr "Lūdzu vispirms izlabojiet augstāk minētās kļūdas"
+
+#: ../bkchem/interactors.py:256
+msgid "A tutorial on how to prepare a template can be found in the file doc/custom_templates_en.html"
+msgstr "Pamācība veidņu sagatavošanai ir atrodama failā \"doc/custom_templates_en.html\""
+
+#: ../bkchem/interactors.py:272
+msgid "Directory creation failed."
+msgstr "Neizdevās izveidot mapi."
+
+#: ../bkchem/interactors.py:273
+#, python-format
+msgid "It was not possible to create the personal directory %s."
+msgstr "Neizdevās izveidot lietotāja mapi \"%s\"."
+
+#: ../bkchem/interactors.py:280
+msgid "Template file name"
+msgstr "Veidnes faila nosaukums"
+
+#: ../bkchem/interactors.py:281
+msgid "File name for the template:"
+msgstr "Veidnes faila nosaukums:"
+
+#: ../bkchem/interactors.py:293
+msgid "The file already exists."
+msgstr "Fails jau eksistē."
+
+#: ../bkchem/interactors.py:294
+#, python-format
+msgid ""
+"Template with this name already exists (path %s).\n"
+"Should I rewrite it?"
+msgstr ""
+"Veidne ar šādu nosaukumu jau eksistē (%s).\n"
+"Pārrakstīt to?"
+
+#: ../bkchem/interactors.py:308
+msgid "The selected items must be part of exactly one molecule."
+msgstr "Izvēlētajām lietām jābūt daļai no tieši vienas molekulas."
+
+#: ../bkchem/interactors.py:317
+msgid "Fragment name"
+msgstr "Fragmenta nosaukums"
+
+#: ../bkchem/interactors.py:318
+msgid "Enter fragment name:"
+msgstr "Ierakstiet fragmenta nosaukumu:"
+
+#: ../bkchem/interactors.py:325
+msgid "The bonds and atoms were used for creation of a new molecular fragment."
+msgstr "Saites un atomi tika izmantoti jauna molekulārā fragmenta izveidošanai."
+
+#: ../bkchem/interactors.py:327
+msgid "The bonds and atoms could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."
+msgstr "Saites un atomus neizdevās izmantot jauna molekulas fragmenta izveidošanai, iespējams, ka tie neveido nepārtrauktu apakšgrafu visas molekulas grafā."
+
+#: ../bkchem/interactors.py:342
+msgid "Enter atom number:"
+msgstr "Ievadiet atoma numuru:"
+
+#: ../bkchem/interactors.py:349
+#, python-format
+msgid "Number %s was set to atom(s)."
+msgstr "Uzstatīts atoma numurs %s."
+
+#: ../bkchem/interactors.py:357
+msgid "BKchem interpreted the entered text as an atom"
+msgstr "\"BKChem\" interpretēja ievadīto tekstu kā atomu"
+
+#: ../bkchem/interactors.py:359
+msgid "BKchem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."
+msgstr "\"BKChem\" domā, ka ievadīto tekstu var interpretēt kā atomu grupu, mēģiniet to izvērst, lai redzētu, kā tas tika interpretēts."
+
+#: ../bkchem/interactors.py:361
+msgid "BKchem could not interpret the entered text as anything with chemical meaning"
+msgstr "\"BKChem\" neizdevās interpretēt ievadīto tekstu, kā kaut ko ar ķīmijas nozīmi"
+
+#: ../bkchem/interactors.py:372
+#: ../bkchem/logger.py:33
+#: ../bkchem/main.py:245
+msgid "Info"
+msgstr "Informācija"
+
+#: ../bkchem/interactors.py:373
+msgid "The selected language will be used the next time you start BKchem."
+msgstr "Izvēlētā valoda tiks izmantota, kad nākamreiz startēsiet \"BKChem\"."
+
+#: ../bkchem/interactors.py:388
+msgid "The selection does not define connected subgraph"
+msgstr "Izvēlētās daļas neveido savienotu apakšgrafu"
+
+#: ../bkchem/interactors.py:416
+msgid "The selection is not linear - there are some splittings."
+msgstr "Izvēlētā daļa nav lineāra - tajā ir atzarojumi."
+
+#: ../bkchem/interactors.py:426
+msgid "The selected part of a molecule is a whole ring, there is no way to linearize it"
+msgstr "Izvēlētā molekulas daļa ir vesels gredzens, to nav iespējams liniarizēt"
+
+#: ../bkchem/interactors.py:475
+msgid "Groups must be expanded to compute oxidation number for them."
+msgstr "Gupām ir jābūt izvērstām, lai varētu izskaitļot to oksidēšanās pakāpi."
+
+#: ../bkchem/interactors.py:481
+msgid "Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."
+msgstr "Neizvērstas gruas vai 'teksta atomi' var izraisīt nepareizu oksidēšanās pakāpju aprēķināšanu."
+
+#: ../bkchem/interactors.py:494
+msgid "You can move and delete the created oxidation numbers in the mark mode"
+msgstr "Izveidotos oksidēšanās pakāpju numurus iespējams pārvietot un izdzēst izmantojot zīmju režīmu"
+
+#: ../bkchem/logger.py:34
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:129
+msgid "Error"
+msgstr "Kļūda"
+
+#: ../bkchem/logger.py:35
+msgid "Debug"
+msgstr "Atkļūdot"
+
+#: ../bkchem/logger.py:36
+msgid "Warning"
+msgstr "Brīdinājums"
+
+#: ../bkchem/logger.py:37
+msgid "Hint"
+msgstr "Padoms"
+
+#: ../bkchem/logger.py:39
+msgid "Status bar"
+msgstr "Stāvokļa josla"
+
+#: ../bkchem/logger.py:40
+msgid "Dialog"
+msgstr "Dialogs"
+
+#: ../bkchem/logger.py:41
+msgid "Console"
+msgstr "Konsole"
+
+#: ../bkchem/logger.py:42
+msgid "Ignore"
+msgstr "Ignorēt"
+
+#: ../bkchem/main.py:181
+#: ../bkchem/main.py:183
+#: ../bkchem/main.py:184
+#: ../bkchem/main.py:185
+#: ../bkchem/main.py:186
+#: ../bkchem/main.py:187
+#: ../bkchem/main.py:188
+#: ../bkchem/main.py:189
+#: ../bkchem/main.py:190
+#: ../bkchem/main.py:192
+#: ../bkchem/main.py:194
+#: ../bkchem/main.py:195
+#: ../bkchem/main.py:196
+#: ../bkchem/main.py:197
+#: ../bkchem/main.py:198
+#: ../bkchem/main.py:199
+#: ../bkchem/main.py:200
+msgid "File"
+msgstr "Fails"
+
+#: ../bkchem/main.py:181
+msgid "Open, save, export, and import files"
+msgstr "Atvērt, saglabāt, eksportēt un importēt failus"
+
+#: ../bkchem/main.py:183
+msgid "New"
+msgstr "Jauns"
+
+#: ../bkchem/main.py:183
+msgid "Create a new file in a new tab"
+msgstr "Izveidot jaunu failu jaunā cilnē"
+
+#: ../bkchem/main.py:184
+msgid "Save the file"
+msgstr "Saglabāt failu"
+
+#: ../bkchem/main.py:185
+msgid "Save As.."
+msgstr "Saglabāt kā.."
+
+#: ../bkchem/main.py:185
+msgid "Save the file under different name"
+msgstr "Saglabāt failu ar citu nosaukumu"
+
+#: ../bkchem/main.py:186
+msgid "Save As Template"
+msgstr "Saglabāt kā veidni"
+
+#: ../bkchem/main.py:186
+msgid "Save the file as template, certain criteria must be met for this to work"
+msgstr "Saglabā failu kā veidni, zināmiem nosacījumiem jābūt izpildītiem, lai šīs strādātu"
+
+#: ../bkchem/main.py:187
+#: ../bkchem/main.py:853
+#: ../bkchem/main.py:1049
+msgid "Load"
+msgstr "Atvērt"
+
+#: ../bkchem/main.py:187
+msgid "Load (open) a file in a new tab"
+msgstr "Atvērt failu jaunā cilnē"
+
+#: ../bkchem/main.py:188
+msgid "Load to the same tab"
+msgstr "Atvērt tajā pašā cilnē"
+
+#: ../bkchem/main.py:188
+msgid "Load a file replacing the current one"
+msgstr "Atvērt failu aizvietojot pašreizējo"
+
+#: ../bkchem/main.py:189
+#: ../bkchem/main.py:467
+msgid "Recent files"
+msgstr "Nesenie faili"
+
+#: ../bkchem/main.py:189
+msgid "The most recently used files"
+msgstr "Nesen lietotie faili"
+
+#: ../bkchem/main.py:192
+#: ../bkchem/main.py:193
+#: ../bkchem/main.py:411
+#: ../bkchem/main.py:1115
+msgid "Export"
+msgstr "Eksportēt"
+
+#: ../bkchem/main.py:192
+msgid "Export the current file"
+msgstr "Eksportē pašreizējo failu"
+
+#: ../bkchem/main.py:193
+msgid "SVG"
+msgstr "SVG"
+
+#: ../bkchem/main.py:193
+msgid "Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"
+msgstr "Eksportē vienkāršu SVG - Scalable Vector Graphics - neievietojot tajā \"BKChem\" datus"
+
+#: ../bkchem/main.py:194
+#: ../bkchem/main.py:406
+msgid "Import"
+msgstr "Importēt"
+
+#: ../bkchem/main.py:194
+msgid "Import a non-native file format"
+msgstr "Importēt kādu ārējo failu formātu"
+
+#: ../bkchem/main.py:196
+msgid "Set the papers size and other properties of the document"
+msgstr "Iestatīt papīra izmēru un citas dokumenta īpašības"
+
+#: ../bkchem/main.py:198
+msgid "Close tab"
+msgstr "Aizvērt cilni"
+
+#: ../bkchem/main.py:198
+msgid "Close the current tab, exit when there is only one tab"
+msgstr "Aizver pašreizējo cilni, iziet, kad tā ir vienīgā cilne"
+
+#: ../bkchem/main.py:200
+msgid "Exit"
+msgstr "Iziet"
+
+#: ../bkchem/main.py:200
+msgid "Exit BKchem"
+msgstr "Iziet no \"BKChem\""
+
+#: ../bkchem/main.py:203
+#: ../bkchem/main.py:204
+#: ../bkchem/main.py:205
+#: ../bkchem/main.py:206
+#: ../bkchem/main.py:207
+#: ../bkchem/main.py:208
+#: ../bkchem/main.py:209
+#: ../bkchem/main.py:210
+#: ../bkchem/main.py:211
+#: ../bkchem/main.py:212
+#: ../bkchem/main.py:213
+msgid "Edit"
+msgstr "Rediģēt"
+
+#: ../bkchem/main.py:203
+msgid "Undo, Copy, Paste etc."
+msgstr "Atdarīt, kopēt, ielīmēt utt."
+
+#: ../bkchem/main.py:204
+msgid "Undo"
+msgstr "Atsaukt"
+
+#: ../bkchem/main.py:204
+msgid "Revert the last change made"
+msgstr "Atdara pēdējo izmaiņu"
+
+#: ../bkchem/main.py:205
+msgid "Redo"
+msgstr "Pārdarīt"
+
+#: ../bkchem/main.py:205
+msgid "Revert the last undo action"
+msgstr "Atgriezt pēdējo atsaukto darbību"
+
+#: ../bkchem/main.py:207
+msgid "Cut"
+msgstr "Izgriezt"
+
+#: ../bkchem/main.py:207
+msgid "Copy the selected objects to clipboard and delete them"
+msgstr "Kopē izvēlētos objektus uz starpliktuvi un izdzēš tos"
+
+#: ../bkchem/main.py:208
+msgid "Copy"
+msgstr "Kopēt"
+
+#: ../bkchem/main.py:208
+msgid "Copy the selected objects to clipboard"
+msgstr "Kopē izvēlētos objektus uz starpliktuvi"
+
+#: ../bkchem/main.py:209
+msgid "Paste"
+msgstr "Ievietot"
+
+#: ../bkchem/main.py:209
+msgid "Paste the content of clipboard to current paper"
+msgstr "Ielīmēt starpliktuves saturu pašreizējā lapā"
+
+#: ../bkchem/main.py:211
+msgid "Selected to clipboard as SVG"
+msgstr "Izvēlēto uz starpliktuvi kā SVG"
+
+#: ../bkchem/main.py:211
+msgid "Create SVG for the selected objects and place it to clipboard in text form"
+msgstr "Izveidot SVG izvēlētajiem objektiem un novietot to starpliktuvē teksta formā"
+
+#: ../bkchem/main.py:213
+msgid "Select all"
+msgstr "Iezīmēt visu"
+
+#: ../bkchem/main.py:213
+msgid "Select everything on the paper"
+msgstr "Izvēlas visu pašreizējā lapā"
+
+#: ../bkchem/main.py:216
+#: ../bkchem/main.py:217
+#: ../bkchem/main.py:218
+#: ../bkchem/main.py:219
+#: ../bkchem/main.py:220
+#: ../bkchem/main.py:221
+#: ../bkchem/main.py:222
+#: ../bkchem/main.py:223
+msgid "Align"
+msgstr "Novietojums"
+
+#: ../bkchem/main.py:216
+msgid "Aligning of selected objects"
+msgstr "Izvēlēto objektu novietojums"
+
+#: ../bkchem/main.py:217
+msgid "Top"
+msgstr "Augšā"
+
+#: ../bkchem/main.py:217
+msgid "Align the tops of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu augšas"
+
+#: ../bkchem/main.py:218
+msgid "Bottom"
+msgstr "Apakšā"
+
+#: ../bkchem/main.py:218
+msgid "Align the bottoms of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu apakšas"
+
+#: ../bkchem/main.py:219
+msgid "Left"
+msgstr "Pa kreisi"
+
+#: ../bkchem/main.py:219
+msgid "Align the left sides of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu kreisās malas"
+
+#: ../bkchem/main.py:220
+msgid "Right"
+msgstr "Pa labi"
+
+#: ../bkchem/main.py:220
+msgid "Align the rights sides of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu labās malas"
+
+#: ../bkchem/main.py:222
+msgid "Center horizontally"
+msgstr "Centrēt horizontāli"
+
+#: ../bkchem/main.py:222
+msgid "Align the horizontal centers of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu viduspunktus horizontāli"
+
+#: ../bkchem/main.py:223
+msgid "Center vertically"
+msgstr "Centrēt vertikāli"
+
+#: ../bkchem/main.py:223
+msgid "Align the vertical centers of selected objects"
+msgstr "Izlīdzināt izvēlēto objektu viduspunktus vertikāli"
+
+#: ../bkchem/main.py:226
+#: ../bkchem/main.py:227
+#: ../bkchem/main.py:228
+#: ../bkchem/main.py:229
+#: ../bkchem/main.py:230
+#: ../bkchem/main.py:231
+#: ../bkchem/main.py:232
+#: ../bkchem/main.py:233
+#: ../bkchem/main.py:236
+#: ../bkchem/main.py:239
+#: ../bkchem/main.py:240
+msgid "Object"
+msgstr "Objekts"
+
+#: ../bkchem/main.py:226
+msgid "Set properties of selected objects"
+msgstr "Iestata izvēlēto objektu īpašības"
+
+#: ../bkchem/main.py:227
+msgid "Scale selected objects"
+msgstr "Mērogot izvēlētos objektus"
+
+#: ../bkchem/main.py:229
+msgid "Bring to front"
+msgstr "Iznest priekšā"
+
+#: ../bkchem/main.py:229
+msgid "Lift selected objects to the top of the stack"
+msgstr "Paceļ izvēlētos objektus kaudzes virspusē"
+
+#: ../bkchem/main.py:230
+msgid "Send back"
+msgstr "Aiznest aizmugurē"
+
+#: ../bkchem/main.py:230
+msgid "Lower the selected objects to the bottom of the stack"
+msgstr "Pārvieto izvēlētos objektus kaudzes apakšā"
+
+#: ../bkchem/main.py:231
+msgid "Swap on stack"
+msgstr "Apmainīt kaudzē"
+
+#: ../bkchem/main.py:231
+msgid "Reverse the ordering of the selected objects on the stack"
+msgstr "Apgriezt izvēlēto objektu izkārtojumu kaudzē"
+
+#: ../bkchem/main.py:233
+msgid "Vertical mirror"
+msgstr "Vertikālais spoguļattēls"
+
+#: ../bkchem/main.py:234
+msgid "Creates a reflection of the selected objects, the reflection axis is the common vertical axis of all the selected objects"
+msgstr "Izveido izvēlēto objektu attēlu, spoguļa ass ir visiem izvēlētajiem objektiem kopējā vertikālā ass"
+
+#: ../bkchem/main.py:236
+msgid "Horizontal mirror"
+msgstr "Horizontālais spoguļattēls"
+
+#: ../bkchem/main.py:237
+msgid "Creates a reflection of the selected objects, the reflection axis is the common horizontal axis of all the selected objects"
+msgstr "Izveido izvēlēto objektu attēlu, spoguļa ass ir visiem izvēlētajiem objektiem kopējā horizontālā ass"
+
+#: ../bkchem/main.py:240
+msgid "Configure"
+msgstr "Konfigurēt"
+
+#: ../bkchem/main.py:240
+msgid "Set the properties of the object, such as color, font size etc."
+msgstr "Iestatīt objekta īpašības, piem., krāsu, fontu izmēru u.c."
+
+#: ../bkchem/main.py:244
+msgid "Information about molecules, group expansion and other chemistry related stuff"
+msgstr "Informācija par molekulām, grupu izvēršanu un citām ar ķīmiju saistītām lietām"
+
+#: ../bkchem/main.py:245
+msgid "Display summary formula and other info on all selected molecules"
+msgstr "Parāda molekulformulas un citu informāciju par visām izvēlētajām molekulām"
+
+#: ../bkchem/main.py:246
+msgid "Check if the selected objects have chemical meaning"
+msgstr "Pārbauda vai izvēlētajiem objektiem ir ķīmijas nozīme"
+
+#: ../bkchem/main.py:247
+msgid "Expand groups"
+msgstr "Izvērst grupas"
+
+#: ../bkchem/main.py:247
+msgid "Expand all selected groups to their structures"
+msgstr "Izvērš visu izvēlēto grupu struktūras"
+
+#: ../bkchem/main.py:249
+msgid "Compute oxidation number"
+msgstr "Izskaitļot oksidēšanās pakāpes"
+
+#: ../bkchem/main.py:249
+msgid "Compute and display the oxidation number of selected atoms"
+msgstr "Izskaitļo un attēlo oksidēšanās pakāpes izvēlētajiem atomiem"
+
+#: ../bkchem/main.py:251
+msgid "Read SMILES"
+msgstr "Lasīt SMILES"
+
+#: ../bkchem/main.py:251
+msgid "Read a SMILES string and convert it to structure"
+msgstr "Lasa SMILES virkni un pārveido par struktūru"
+
+#: ../bkchem/main.py:252
+msgid "Read InChI"
+msgstr "Lasīt InChI"
+
+#: ../bkchem/main.py:252
+msgid "Read an InChI string and convert it to structure"
+msgstr "Lasa InChI virkni un pārveido par struktūru"
+
+#: ../bkchem/main.py:254
+msgid "Generate SMILES"
+msgstr "Izveidot SMILES"
+
+#: ../bkchem/main.py:254
+msgid "Generate SMILES for the selected structure"
+msgstr "Izveidot SMILES izvēlētajai struktūrai"
+
+#: ../bkchem/main.py:255
+msgid "Generate an InChI for the selected structure by calling the InChI program"
+msgstr "Izveido InChI izvēlētajai struktūrai, izmantojot \"InChI\" programmu"
+
+#: ../bkchem/main.py:261
+msgid "Set molecule name"
+msgstr "Iestatīt molekulas nosaukumu"
+
+#: ../bkchem/main.py:261
+msgid "Set the name of the selected molecule"
+msgstr "Iestata nosaukumu izvēlētajai molekulai"
+
+#: ../bkchem/main.py:262
+msgid "Set molecule ID"
+msgstr "Iestatīt molekulas ID"
+
+#: ../bkchem/main.py:262
+msgid "Set the ID of the selected molecule"
+msgstr "Iestata ID izvēlētajai molekulai"
+
+#: ../bkchem/main.py:264
+msgid "Create fragment"
+msgstr "Izveidot fragmentu"
+
+#: ../bkchem/main.py:264
+msgid "Create a fragment from the selected part of the molecule"
+msgstr "Izveido fragmentu no izvēlētās molekulas daļas"
+
+#: ../bkchem/main.py:265
+msgid "View fragments"
+msgstr "Skatīt fragmentus"
+
+#: ../bkchem/main.py:265
+msgid "Show already defined fragments"
+msgstr "Parāda definētos fragmentus"
+
+#: ../bkchem/main.py:267
+msgid "Convert selection to linear form"
+msgstr "Pārvērst iezīmēto daļu lineārā formā"
+
+#: ../bkchem/main.py:267
+msgid "Convert selected part of chain to linear fragment. The selected chain must not be split."
+msgstr "Pārvērst izvēlēto ķēdes daļu lineārā fragmentā. Izvēlētā ķēdē nedrīkst būt atzarojumi."
+
+#: ../bkchem/main.py:271
+#: ../bkchem/main.py:272
+#: ../bkchem/main.py:273
+#: ../bkchem/main.py:274
+#: ../bkchem/main.py:276
+#: ../bkchem/main.py:277
+msgid "Options"
+msgstr "Iespējas"
+
+#: ../bkchem/main.py:271
+msgid "Settings that affect how BKchem works"
+msgstr "Iestatījumi, kas ietekmē \"BKChem\" uzvedību"
+
+#: ../bkchem/main.py:272
+msgid "Standard"
+msgstr "Standarta"
+
+#: ../bkchem/main.py:272
+msgid "Set the default drawing style here"
+msgstr "Noklusēto zīmēšanas stilu iestatiet šeit"
+
+#: ../bkchem/main.py:273
+msgid "Set the language used after next restart"
+msgstr "Iestatiet valodu, kura tiks lietota pēc nākamā restarta"
+
+#: ../bkchem/main.py:274
+msgid "InChI program path"
+msgstr "Ceļš pie \"InChI\" programmas"
+
+#: ../bkchem/main.py:274
+msgid "To use InChI in BKchem you must first give it a path to the InChI program here"
+msgstr "Lai lietotu \"InChI\" programmā \"BKChem\", vispirms šeit jānorāda ceļš pie \"InChI\" programmas"
+
+#: ../bkchem/main.py:280
+#: ../bkchem/main.py:281
+msgid "Help"
+msgstr "Palīdzība"
+
+#: ../bkchem/main.py:280
+msgid "Help and information about the program"
+msgstr "Palīdzība un informācija par programmu"
+
+#: ../bkchem/main.py:281
+msgid "About"
+msgstr "Par"
+
+#: ../bkchem/main.py:281
+msgid "General information about BKchem"
+msgstr "Vispārīga informācija par \"BKChem\""
+
+#: ../bkchem/main.py:284
+#: ../bkchem/main.py:326
+msgid "Plugins"
+msgstr "Spraudņi"
+
+#: ../bkchem/main.py:284
+msgid "Small additional scripts"
+msgstr "Mazi papildus scripti"
+
+#: ../bkchem/main.py:563
+msgid "About BKchem"
+msgstr "Par \"BKChem\""
+
+#: ../bkchem/main.py:566
+msgid "version"
+msgstr "versija"
+
+#: ../bkchem/main.py:682
+msgid "Sorry but I cannot open the same file twice: "
+msgstr "Atvainojie, bet nevaru atvērt to pašu failu divreiz:"
+
+#: ../bkchem/main.py:734
+msgid "Really close?"
+msgstr "Tiešām aizvērt?"
+
+#: ../bkchem/main.py:735
+#, python-format
+msgid "There are unsaved changes in file %s, what should I do?"
+msgstr "Failā \"%s\" ir nesaglabātas izmaiņas. Ko darīt?"
+
+#: ../bkchem/main.py:736
+#: ../bkchem/main.py:737
+msgid "Close"
+msgstr "Aizvērt"
+
+#: ../bkchem/main.py:781
+msgid "Save As..."
+msgstr "Saglabāt kā..."
+
+#: ../bkchem/main.py:782
+#: ../bkchem/main.py:856
+msgid "CD-SVG file"
+msgstr "CD-SVG fails"
+
+#: ../bkchem/main.py:783
+#: ../bkchem/main.py:857
+msgid "Gzipped CD-SVG file"
+msgstr "Gzipsaspiests CD-SVG fails"
+
+#: ../bkchem/main.py:784
+#: ../bkchem/main.py:858
+msgid "CDML file"
+msgstr "CDML fails"
+
+#: ../bkchem/main.py:785
+msgid "Gzipped CDML file"
+msgstr "Gzipsaspiests CDML fails"
+
+#: ../bkchem/main.py:790
+msgid "File already opened!"
+msgstr "Fails jau ir atvērts!"
+
+#: ../bkchem/main.py:790
+#, python-format
+msgid "Sorry but you are already editing a file with this name (%s), please choose a different name or close the other file."
+msgstr "Atvainojiet, bet jūs jau rediģējiet failu ar šādu nosaukumu (%s), lūdzu izvēlieties citu nosaukumu vai aizveriet otro failu."
+
+#: ../bkchem/main.py:810
+msgid "gzipped CDML"
+msgstr "gzipsaspiests CDML"
+
+#: ../bkchem/main.py:813
+msgid "CDML"
+msgstr "CDML"
+
+#: ../bkchem/main.py:816
+msgid "gzipped CD-SVG"
+msgstr "gzipsaspiests CD-SVG"
+
+#: ../bkchem/main.py:819
+msgid "CD-SVG"
+msgstr "CD-SVG"
+
+#: ../bkchem/main.py:822
+#, python-format
+msgid "saved to %s file: %s"
+msgstr "saglabāts failā %s: %s"
+
+#: ../bkchem/main.py:827
+#, python-format
+msgid "failed to save to %s file: %s"
+msgstr "neizdevās saglabāt failā %s: %s"
+
+#: ../bkchem/main.py:849
+#: ../bkchem/main.py:1039
+msgid "Forget changes?"
+msgstr "Aizmirst izmaiņas?"
+
+#: ../bkchem/main.py:849
+#: ../bkchem/main.py:1039
+msgid "Forget changes in currently visiting file?"
+msgstr "Aizmirst izmaiņas pašreiz atvērtajā failā?"
+
+#: ../bkchem/main.py:855
+msgid "All native formats"
+msgstr "Visi iekšējie formāti"
+
+#: ../bkchem/main.py:859
+msgid "CDGZ file"
+msgstr "CDGZ fails"
+
+#: ../bkchem/main.py:860
+msgid "Gzipped files"
+msgstr "Gzipsaspiesti faili"
+
+#: ../bkchem/main.py:861
+#: ../bkchem/main.py:1045
+#: ../bkchem/main.py:1110
+msgid "All files"
+msgstr "Visi faili"
+
+#: ../bkchem/main.py:886
+msgid "cannot open file "
+msgstr "neizdevās atvērt failu"
+
+#: ../bkchem/main.py:900
+#: ../bkchem/main.py:912
+msgid "error reading file"
+msgstr "kļūda lasot failu"
+
+#: ../bkchem/main.py:922
+msgid "File was not loaded"
+msgstr "Fails netika atvērts"
+
+#: ../bkchem/main.py:931
+#: ../bkchem/plugins/povray.py:39
+msgid "Proceed?"
+msgstr "Turpināt?"
+
+#: ../bkchem/main.py:932
+msgid "CDML data seem present in SVG but have wrong namespace. Proceed?"
+msgstr "Izskatās, ka CDML dati ir atrodami iekš SVG, bet tie ir nepareizā vārdtelpā. Turpināt?"
+
+#: ../bkchem/main.py:938
+msgid "file not loaded"
+msgstr "fails nav atvērts"
+
+#: ../bkchem/main.py:942
+msgid "cdml data are not present in SVG or are corrupted!"
+msgstr "CDML dati nav atrodami iekš SVG vai arī tie ir sabojāti!"
+
+#: ../bkchem/main.py:948
+#: ../bkchem/main.py:1091
+msgid "loaded file: "
+msgstr "ielādets fails:"
+
+#: ../bkchem/main.py:958
+msgid "Export SVG"
+msgstr "Eksprtēt SVG"
+
+#: ../bkchem/main.py:958
+msgid "SVG file"
+msgstr "SVG fails"
+
+#: ../bkchem/main.py:972
+msgid "exported to SVG file: "
+msgstr "eksportēt SVG failā:"
+
+#: ../bkchem/main.py:1044
+#: ../bkchem/main.py:1109
+msgid "file"
+msgstr "fails"
+
+#: ../bkchem/main.py:1070
+#: ../bkchem/main.py:1078
+msgid "Import error"
+msgstr "Importēšanas kļūda"
+
+#: ../bkchem/main.py:1070
+#: ../bkchem/main.py:1078
+#, python-format
+msgid ""
+"Plugin failed to import with following error:\n"
+" %s"
+msgstr ""
+"Neizdevās importēt spraudni, tas deva šādu kļūdu:\n"
+" %s"
+
+#: ../bkchem/main.py:1125
+msgid "Export error"
+msgstr "Eksportēšanas kļūda"
+
+#: ../bkchem/main.py:1125
+#, python-format
+msgid ""
+"Plugin failed to export with following error:\n"
+" %s"
+msgstr ""
+"Neizdevās eksportēt spraudni, tas deva šādu kļūdu:\n"
+" %s"
+
+#: ../bkchem/main.py:1129
+msgid "exported file: "
+msgstr "eksportētais fails:"
+
+#: ../bkchem/main.py:1176
+msgid ""
+"Before you use this tool, be warned that not all features of SMILES are currently supported.\n"
+"There is no support for stereo-related information, for the square brackets [] and a few more things.\n"
+"\n"
+"Enter SMILES:"
+msgstr ""
+"Pirms lietojiet šo rīku, pievērsiet uzmanību tam, ka ne visas SMILES iespējas tiek pašreiz atbalstītas.\n"
+"Pagaidām nav atbalsts stereoķīmijas informācijai, kvadrātiekavām [] un vēl dažām lietām.\n"
+"\n"
+"Ievadiet SMILES:"
+
+#: ../bkchem/main.py:1213
+msgid ""
+"Before you use his tool, be warned that not all features of InChI are currently supported.\n"
+"There is no support for stereo-related information, isotopes and a few more things.\n"
+"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
+"\n"
+"Enter InChI:"
+msgstr ""
+"Pirms lietojiet šo rīku, pievērsiet uzmanību tam, ka ne visas InChI iespējas pašreiz tiek atbalstītas.\n"
+"Pagaidām nav atbalsts stereoķīmijas informācijai, izotopiem un vēl dažām lietām.\n"
+"InChI jāievada teksta formā, piem., /C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
+"\n"
+"Ievadiet InChI:"
+
+#: ../bkchem/main.py:1240
+#: ../bkchem/main.py:1247
+#: ../bkchem/main.py:1254
+#: ../bkchem/main.py:1262
+#, python-format
+msgid "Error processing %s"
+msgstr "Kļūda apstrādājot %s"
+
+#: ../bkchem/main.py:1241
+msgid ""
+"Some feature of the submitted InChI is not supported.\n"
+"\n"
+"You have most probaly submitted a multicomponent structure (having a . in the sumary layer"
+msgstr ""
+"Dažas ievadītā InChI īpašības nav atbalstītas.\n"
+"\n"
+"Visticamāk jūs ievadījāt daudzkomponentu struktūru (ar \".\" kopsavilkuma slānī)."
+
+#: ../bkchem/main.py:1248
+msgid ""
+"There was an error reading the submitted InChI.\n"
+"\n"
+"If you are sure it is a valid InChI, please send me a bug report."
+msgstr ""
+"Kļūda lasot ievadīto InChI.\n"
+"\n"
+"Ja esat pārliecināti, ka tas ir pareizs InChI, lūdzu atsūtiet man kļūdas ziņojumu."
+
+#: ../bkchem/main.py:1255
+#, python-format
+msgid ""
+"The submitted InChI has unsupported version '%s'.\n"
+"\n"
+"You migth try resubmitting with the version string (the first part of InChI) changed to '1'."
+msgstr ""
+"Ievadītajam InChI ir neatbalstīta versija '%s'.\n"
+"\n"
+"Varat mēģināt ievadīt atkārtoti ar versijas virkni (pirmā daļa no InChI) nomainītu uz '1'."
+
+#: ../bkchem/main.py:1263
+#, python-format
+msgid ""
+"The reading of InChI failed with following error:\n"
+"\n"
+"'%s'\n"
+"\n"
+"If you are sure you have submitted a valid InChI, please send me a bug report."
+msgstr ""
+"InChI laslišana beidzās ar šādu kļūdu:\n"
+"\n"
+"'%s'\n"
+"\n"
+"Ja esat pārliecināti, ka ievadījāt pareizu InChI, lūdzu atsūtiet man kļūdas ziņojumu."
+
+#: ../bkchem/main.py:1293
+msgid "Generated SMILES"
+msgstr "Izveidoja SMILES"
+
+#: ../bkchem/main.py:1401
+msgid "InChI generation failed,"
+msgstr "Neizdevās izveidot InChI,"
+
+#: ../bkchem/main.py:1401
+msgid "make sure the path to the InChI program is correct in 'Options/InChI program path'"
+msgstr "pārliecinieties, ka ceļš pie \"InChI\" programmas izvēlnē 'Iespējas/Ceļš pie \"InChI\" programmas' ir pareizs"
+
+#: ../bkchem/main.py:1403
+msgid "Unknown error occured during InChI generation, sorry."
+msgstr "Nezināmas kļūdas dēļ InChI izveidošana neizdevās."
+
+#: ../bkchem/main.py:1403
+msgid "Please, try to make sure the path to the InChI program is correct in 'Options/InChI program path'"
+msgstr "Lūdzu pārliecinieties, ka ceļš pie \"InChI\" programmas izvēlnē 'Iespējas/Ceļš pie \"InChI\" programmas' ir pareizs"
+
+#: ../bkchem/main.py:1407
+msgid "Generated InChIs"
+msgstr "Izveidotie InChI"
+
+#: ../bkchem/main.py:1435
+#, python-format
+msgid "The file was saved as a template %s"
+msgstr "Fails tika saglabāts kā veidne %s"
+
+#: ../bkchem/messages.py:26
+msgid ""
+"click on atom to add a new single bond, click on bond to change its order (or change direction)\n"
+"Shift+click on a double bond to move the position of the second line"
+msgstr ""
+"klikšķiniet uz atoma, lai pievienotu jaunu vienkāršo saiti, klikšķiniet uz saites, lai mainītu tās kārtu (vai virzienu)\n"
+"Shift+klikšķis uz dubultsaites, lai mainītu otrās saites novietojumu"
+
+#: ../bkchem/messages.py:27
+msgid "length of the drawn bond is fixed to a preset value"
+msgstr "Uzzīmētās saites garums ir fiksēts uz iepriekš noteiktu vērtību"
+
+#: ../bkchem/messages.py:28
+msgid "freestyle drawing - no bond length or angle restrictions are applied"
+msgstr "brīvā stila zīmēšana - netiek pielietoti nekādi saišu garumu un leņķu ierobežojumi"
+
+#: ../bkchem/messages.py:33
+msgid "length of the drawn arrow (arrow part) is fixed to a preset value"
+msgstr "zīmētās bultas garums (bultas daļas) ir fiksēts uz iepriekš noteiktu vērtību"
+
+#: ../bkchem/messages.py:34
+msgid "freestyle drawing - no arrow length or angle restrictions are applied"
+msgstr "brīvā stila zīmēšana - netiek piemēroti ne bultas garuma, ne leņķa ierobežojumi"
+
+#: ../bkchem/messages.py:35
+msgid "arrow is composed of straight lines"
+msgstr "bultu veido taisnas līnijas"
+
+#: ../bkchem/messages.py:36
+msgid "arrow is drawn as a b-spline"
+msgstr "bulta tiek zīmēta kā b-splains"
+
+#: ../bkchem/messages.py:41
+msgid "drag an atom or a bond to 2D-rotate a molecule around its geometrical center"
+msgstr "velciet atomu vai saiti, lai rotētu molekulu 2D ap tās ģeometrisko centru"
+
+#: ../bkchem/messages.py:42
+msgid ""
+"drag an atom or a bond to 3D-rotate a molecule around its geometrical center \n"
+"Please note that it is not possible to add a template to an atom with z-coordinate other than 0"
+msgstr ""
+"velciet atomu vai saiti, lai rotētu molekulu 3D ap tās ģeometrisko centru \n"
+"Lūdzu ievērojiet, ka nav iespējams pievienot veidni pie atoma, kura z koordināte atšķiras no 0"
+
+#: ../bkchem/messages.py:47
+#: ../bkchem/messages.py:48
+#: ../bkchem/messages.py:49
+#: ../bkchem/messages.py:50
+msgid "click and drag to draw the corresponding shape"
+msgstr "klikšķiniet un velciet, lai uzzīmētu atbilstošo figūru"
+
+#: ../bkchem/messages.py:51
+msgid "each left-button click creates one point of the polygon, right click closes it"
+msgstr "katrs kreisā peles taustiņa klikšķis izveido vienu daudzstūra punktu, labais klikšķis to noslēdz"
+
+#: ../bkchem/messages.py:56
+msgid "click an atom to add a radical mark to it, it will be removed in case it is already present"
+msgstr "klikšķiniet uz atoma, lai uz tā uzliktu radikāļa zīmi, bet tā tiks noņemta, ja tā jau tur ir"
+
+#: ../bkchem/messages.py:57
+msgid "click an atom to add a biradical mark to it, it will be removed in case it is already present"
+msgstr "klikšķiniet uz atoma, lai uz tā uzliktu biradikāļa zīmi, bet tā tiks noņemtam ja tā jau tur ir"
+
+#: ../bkchem/messages.py:58
+msgid "click an atom to add a free electron pair mark to it, it will be removed in case it is already present"
+msgstr "klikšķiniet uz atoma, lai uz tā uzliktu brīvā elektrona pāra zīmi, bet tā tiks noņemta, ja tā jau tur ir"
+
+#: ../bkchem/messages.py:59
+msgid "click an atom to add a plus mark to it, it will be removed in case it is already present"
+msgstr "klikšķiniet uz atoma, lai uz tā uzliktu plusa zīmi, bet tā tiks noņemta, ja tā jau tur ir"
+
+#: ../bkchem/messages.py:60
+msgid "click an atom to add a minus mark to it, it will be removed in case it is already present"
+msgstr "klikšķiniet uz atoma, lai uz tā uzliktu mīnusa zīmi, bet tā tiks noņemta, ja tā jau tur ir"
+
+#: ../bkchem/messages.py:65
+msgid "click a bond or two atoms to align the specified line into vertical position"
+msgstr "klikšķiniet uz saiti vai diviem atomiem, lai novietotu norādīto līniju vertikāli"
+
+#: ../bkchem/messages.py:66
+msgid "click a bond or two atoms to align the specified line into horizontal position"
+msgstr "klikšķiniet uz saiti vai diviem atomiem, lai novietotu norādīto līniju horizontāli"
+
+#: ../bkchem/messages.py:67
+msgid "click an atom or bond to perform an inversion of the molecule through this atom (center of the bond)"
+msgstr "klikšķiniet uz atomu vai saiti, lai veiktu molekulas inversiju caur šo atomu (saites centru)"
+
+#: ../bkchem/messages.py:68
+msgid "click a bond or two atoms to mirror the molecule through the specified line"
+msgstr "klikšķiniet uz saites vai diviem atomiem, lai apgrieztu molekulu caur norādīto spoguļasi"
+
+#: ../bkchem/messages.py:76
+msgid ""
+"BKchem was conceived and written by Beda Kosata\n"
+"and is performed by Python, Pmw & (optionally) Cairo.\n"
+"\n"
+"BKchem is free software and is distributed under GNU GPL.\n"
+"BKchem is provided as is without warranty of any kind.\n"
+"- see the file 'gpl.txt' in distribution directory for more info.\n"
+"\n"
+"Among other things GNU GPL allows you to study, modify\n"
+"and redistribute BKchem as long as you do it under GNU GPL."
+msgstr ""
+"\"BKChem\" izdomāja un uzrakstīja Beda Kosata\n"
+"un tas darbojas izmantojot \"Python\", \"Pmw\" un (ne obligāti) \"Cairo\".\n"
+"\n"
+"\"BKChem\" ir brīvā programmatūra un tiek izplatīta ar GNU GPL licenci.\n"
+"\"BKChem\" ir pieejams \"kāds ir\" bez jebkādām garantijām.\n"
+"- sīkākai informācijai skatiet failu 'gpl.txt', kas tiek izplatīts kopā ar šo programmu.\n"
+"\n"
+"Starp citām lietām GNU GPL atļauj jums arī studēt, modificēt\n"
+"un izplatīt \"BKChem\", kamēr tas tiek darīts ar GNU GPL licenci."
+
+#: ../bkchem/messages.py:87
+msgid ""
+"UNABLE TO IMPORT PMW\n"
+"\n"
+"Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.\n"
+"(for more info on Pmw see documentation)"
+msgstr ""
+"NEIZDEVĀS IMPORTĒT PMW\n"
+"\n"
+"Atvainojiet, bet \"BKChem\" darbības nodrošināšanai tam ir nepieciešama \"Pmw\". Lūdzu uzinstalējiet \"Pmw\" un mēģiniet vēlreiz.\n"
+"(sīkākai informācijai par \"Pmw\" skatieties dokumentāciju)"
+
+#: ../bkchem/messages.py:93
+msgid ""
+"UNABLE TO IMPORT OASA\n"
+"\n"
+"Sorry, but from version 0.10 BKchem uses the OASA library internally and therefor cannot run without it."
+msgstr ""
+"NEIZDEVĀS IMPORTĒT OASA\n"
+"\n"
+"Atvainojiet, bet sākot ar versiju 0.10 \"BKChem\" iekšēji izmanto \"OASA\" bibliotēku un tādēļ nespēj darboties bez tās."
+
+#: ../bkchem/messages.py:98
+#, python-format
+msgid ""
+"Python version too low!\n"
+"\n"
+"From version 0.10 BKchem needs Python 2.3 or higher to run properly. You only have Python version %s.\n"
+"Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem."
+msgstr ""
+"Pārāk veca \"Python\" versija!\n"
+"\n"
+"Sākot ar versiju 0.10 \"BKChem\" nepieciešams \"Python\" 2.3 vai jaunāks, lai darbotos kārtīgi. Jūsu \"Python\" versija ir tikai %s.\n"
+"Atvainojiet par neērtībām, bet jums nepieciešams atjaunināt \"Python\", lai varētu darbināt \"BKChem\"."
+
+#: ../bkchem/messages.py:105
+msgid ""
+"BKchem is starting.\n"
+"\n"
+"Unfortunately,\n"
+"the splash image was not found :("
+msgstr ""
+"\"BKChem\" startējas.\n"
+"\n"
+"Diemžel,\n"
+"Uzplaiksnījuma attēls netika atrasts :("
+
+#: ../bkchem/messages.py:111
+msgid ""
+"This CDML document was created using different standard values than you are currently using. To retain the same drawing style it could be more convenient to use these new values for this file. Your global preferences will be unaffected. \n"
+"\n"
+"Do you want set these new standard values?"
+msgstr ""
+"Šis CDML dokuments tika izveidots izmantojot savādākas noklusētās vērtības nekā pašlaik tiek izmantots. Lai saglabātu vienotu zīmējuma stilu, varētu būt ērtāk izmantot šīs jaunās vērtības šim failam. Jūsu globālie iestatījumi netiks ietekmēti.\n"
+"\n"
+"Vai vēlaties uzstatīt šīs jaunās noklusētās vērtības?"
+
+#: ../bkchem/messages.py:114
+msgid ""
+"usage: bkchem [options] [filenames]\n"
+"\n"
+"options:\n"
+"\n"
+" -h, --help      show this help message and exit\n"
+" -H DIR          overrides the BKChem home dir\n"
+"                 (where standard drawing setting, user-defined templates etc. are stored.)\n"
+" -b SCRIPT       start BKChem in batch mode, run SCRIPT and exit\n"
+" -v, --version   show program version and exit\n"
+msgstr ""
+"lietošana: bkchem [opcijas] [failu nosaukumi]\n"
+"\n"
+"opcijas:\n"
+"\n"
+" -h, --help      parāda šo palīdzības ziņojumu un iziet\n"
+" -H DIR          norāda \"BKChem\" mājas mapi\n"
+"                 (kur tiek glabāti noklusētie lietotāja iestatījumi, lietotāja izveidotās veidnes u.c.)\n"
+" -b SCRIPT       sākt \"BKChem\" komandu režīmā, izpilda failu \"SCRIPT\" un iziet\n"
+" -v, --version   parāda programmas versiju un iziet\n"
+
+#: ../bkchem/modes.py:339
+msgid "edit"
+msgstr "rediģēt"
+
+#: ../bkchem/modes.py:664
+msgid ""
+"Unable to parse the text-\n"
+"probably error with input encoding!"
+msgstr ""
+"Neizdevās parsēt tekstu-\n"
+"iespējams, ka problēma ar ievades kodējumu!"
+
+#: ../bkchem/modes.py:727
+msgid "draw"
+msgstr "zīmēt"
+
+#: ../bkchem/modes.py:735
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2214
+msgid "30"
+msgstr "30"
+
+#: ../bkchem/modes.py:735
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2214
+msgid "18"
+msgstr "18"
+
+#: ../bkchem/modes.py:735
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2214
+msgid "6"
+msgstr "6"
+
+#: ../bkchem/modes.py:735
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2214
+msgid "1"
+msgstr "1"
+
+#: ../bkchem/modes.py:736
+msgid "single"
+msgstr "vienkāršā"
+
+#: ../bkchem/modes.py:736
+msgid "double"
+msgstr "divkāršā"
+
+#: ../bkchem/modes.py:736
+msgid "triple"
+msgstr "trīskāršā"
+
+#: ../bkchem/modes.py:737
+msgid "wedge"
+msgstr "ķīļveida"
+
+#: ../bkchem/modes.py:737
+msgid "hatch"
+msgstr "svītrota"
+
+#: ../bkchem/modes.py:737
+msgid "adder"
+msgstr "zig-zag"
+
+#: ../bkchem/modes.py:737
+msgid "dash"
+msgstr "raustīta"
+
+#: ../bkchem/modes.py:737
+msgid "dotted"
+msgstr "punktēta"
+
+#: ../bkchem/modes.py:738
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2215
+msgid "fixed length"
+msgstr "fiksēta garuma"
+
+#: ../bkchem/modes.py:738
+#: ../bkchem/modes.py:947
+#: ../bkchem/modes.py:2215
+msgid "freestyle"
+msgstr "brīva stila"
+
+#: ../bkchem/modes.py:739
+msgid "normal double bonds for wedge/hatch"
+msgstr "normālas divkāršās saites ķīļveid/svītrotām saitēm"
+
+#: ../bkchem/modes.py:739
+msgid "simple double bonds for wedge/hatch"
+msgstr "vienkāršotas divkāršās saites ķīļveida/svītrotām saitēm"
+
+#: ../bkchem/modes.py:770
+#: ../bkchem/modes.py:817
+#: ../bkchem/modes.py:848
+#: ../bkchem/modes.py:1155
+#: ../bkchem/modes.py:1157
+msgid "maximum valency exceeded!"
+msgstr "pārsniegta maksimālā atoma valence!"
+
+#: ../bkchem/modes.py:781
+#: ../bkchem/modes.py:830
+msgid "Groups could have valency of 1 only! It was transformed to text!"
+msgstr "Grupām var būt tikai valence 1! Tā tika pārvērsta tekstā!"
+
+#: ../bkchem/modes.py:942
+#: ../bkchem/modes.py:1859
+msgid "arrow"
+msgstr "bulta"
+
+#: ../bkchem/modes.py:948
+msgid "spline"
+msgstr "splains"
+
+#: ../bkchem/modes.py:1062
+#: ../bkchem/modes.py:1640
+#: ../bkchem/modes.py:1859
+msgid "plus"
+msgstr "pluss"
+
+#: ../bkchem/modes.py:1103
+msgid "template"
+msgstr "veidne"
+
+#: ../bkchem/modes.py:1113
+msgid "No template is available"
+msgstr "Neviena veidne nav pieejama"
+
+#: ../bkchem/modes.py:1121
+msgid "Sorry, it is not possible to append a template to an atom with non-zero Z coordinate, yet."
+msgstr "Atvainojiet, pagaidām vēl nav iespējams pievienot veidni pie atoma ar Z koordināti, kas nav 0."
+
+#: ../bkchem/modes.py:1169
+msgid "focused atom marked as 'template atom'"
+msgstr "izvēlētais atoms iezīmēts kā 'veidnes atoms'"
+
+#: ../bkchem/modes.py:1172
+msgid "focused bond marked as 'template bond'"
+msgstr "izvēlētā saite iezīmēta kā 'veidnes saite'"
+
+#: ../bkchem/modes.py:1194
+msgid "text"
+msgstr "teksts"
+
+#: ../bkchem/modes.py:1246
+msgid "The text mode can no longer be used to edit atoms, use atom mode."
+msgstr "Teksta režīms vairs nevar tikt izmantots, lai rediģētu atomus, izmantojiet atomu režīmu."
+
+#: ../bkchem/modes.py:1266
+msgid "rotate"
+msgstr "rotēt"
+
+#: ../bkchem/modes.py:1269
+msgid "2D"
+msgstr "2D"
+
+#: ../bkchem/modes.py:1269
+msgid "3D"
+msgstr "3D"
+
+#: ../bkchem/modes.py:1293
+msgid "You can only rotate molecules in 3D!"
+msgstr "Molekulu var rotēt tikai 3D!"
+
+#: ../bkchem/modes.py:1293
+msgid "Sorry but you can only rotate molecules in 3D."
+msgstr "Atvainojiet, bet molekulu iespējams rotēt tikai 3D."
+
+#: ../bkchem/modes.py:1295
+msgid "You can only rotate molecules and arrows in 2D!"
+msgstr "Molekulas un bultas var rotēt tikai 2D!"
+
+#: ../bkchem/modes.py:1295
+msgid "Sorry but you can only rotate molecules and arrows in 2D."
+msgstr "Atvainojiet, bet molekulas un būltas var rotēt tikai 2D."
+
+#: ../bkchem/modes.py:1356
+msgid "transformation mode"
+msgstr "transformāciju režīms"
+
+#: ../bkchem/modes.py:1360
+msgid "horizontal align"
+msgstr "izlīdzināt jorizontāli"
+
+#: ../bkchem/modes.py:1360
+msgid "vertical align"
+msgstr "izlīdzināt vertikāli"
+
+#: ../bkchem/modes.py:1360
+msgid "invert through a point"
+msgstr "invertēt caur punktu"
+
+#: ../bkchem/modes.py:1360
+msgid "mirror through a line"
+msgstr "spoguļattēls caur līniju"
+
+#: ../bkchem/modes.py:1360
+msgid "free rotation around bond"
+msgstr "brīva rotācija ap saiti"
+
+#: ../bkchem/modes.py:1378
+msgid "select the second atom, please."
+msgstr "lūdzu izvēlieties otru atomu."
+
+#: ../bkchem/modes.py:1399
+msgid "atoms must be in the same molecule!"
+msgstr "atomiem jābūt vienā molekulā!"
+
+#: ../bkchem/modes.py:1402
+msgid "atoms must be different!"
+msgstr "atomiem jābūt dažādiem!"
+
+#: ../bkchem/modes.py:1510
+msgid "Bond is part of a ring, there is no possiblity for rotation!"
+msgstr "Saite ir gredzena sastāvā, rotācija nav iespējama!"
+
+#: ../bkchem/modes.py:1541
+msgid "vector graphics"
+msgstr "vektorgrafika"
+
+#: ../bkchem/modes.py:1543
+msgid "rectangle"
+msgstr "taisnstūris"
+
+#: ../bkchem/modes.py:1543
+msgid "square"
+msgstr "kvadrāts"
+
+#: ../bkchem/modes.py:1543
+msgid "oval"
+msgstr "ovāls"
+
+#: ../bkchem/modes.py:1543
+msgid "circle"
+msgstr "riņķis"
+
+#: ../bkchem/modes.py:1543
+msgid "polygon"
+msgstr "daudzstūris"
+
+#: ../bkchem/modes.py:1543
+msgid "polyline"
+msgstr "lauzta līnija"
+
+#: ../bkchem/modes.py:1636
+msgid "mark"
+msgstr "zīme"
+
+#: ../bkchem/modes.py:1639
+msgid "radical"
+msgstr "radikālis"
+
+#: ../bkchem/modes.py:1639
+msgid "biradical"
+msgstr "biradikālis"
+
+#: ../bkchem/modes.py:1639
+msgid "electron pair"
+msgstr "elektronu pāris"
+
+#: ../bkchem/modes.py:1639
+msgid "dotted electron pair"
+msgstr "punktēts elektronu pāris"
+
+#: ../bkchem/modes.py:1640
+msgid "pz orbital"
+msgstr "pz orbitāle"
+
+#: ../bkchem/modes.py:1641
+msgid "add"
+msgstr "pievienot"
+
+#: ../bkchem/modes.py:1641
+msgid "remove"
+msgstr "noņemt"
+
+#: ../bkchem/modes.py:1666
+msgid "This mark type is not allowed for this object"
+msgstr "Šis zīmes tips nav atļauts šim objektam"
+
+#: ../bkchem/modes.py:1681
+#, python-format
+msgid "There are no marks of type %s on the focused atom"
+msgstr "Uz izvēlētā atoma nav %s tipa zīmes"
+
+#: ../bkchem/modes.py:1769
+#: ../bkchem/modes.py:2003
+msgid "atom"
+msgstr "atoms"
+
+#: ../bkchem/modes.py:1857
+msgid "reaction"
+msgstr "reakcija"
+
+#: ../bkchem/modes.py:1859
+msgid "reactant"
+msgstr "reaģents"
+
+#: ../bkchem/modes.py:1859
+msgid "condition"
+msgstr "apstākļi"
+
+#: ../bkchem/modes.py:1859
+msgid "product"
+msgstr "produkts"
+
+#: ../bkchem/modes.py:1869
+msgid "No arrow present"
+msgstr "Nav bultas"
+
+#: ../bkchem/modes.py:1870
+msgid "The reaction information in bkchem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."
+msgstr "Reakciju informācija programmā \"BKChem\" ir saistīta ar bultām, tādēļ ir jābūt vismaz vienai bultai, lai varētu veidot reakciju."
+
+#: ../bkchem/modes.py:1984
+msgid "users templates"
+msgstr "lietotāju veidnes"
+
+#: ../bkchem/modes.py:2001
+msgid "External data management"
+msgstr "Ārējo datu pārvaldība"
+
+#: ../bkchem/modes.py:2003
+msgid "molecule"
+msgstr "molekula"
+
+#: ../bkchem/modes.py:2003
+msgid "bond"
+msgstr "saite"
+
+#: ../bkchem/modes.py:2085
+msgid "The data were set to the active item"
+msgstr "Tika iestatīti aktīvā priekšmeta dati"
+
+#: ../bkchem/modes.py:2107
+msgid "Set"
+msgstr "Iestatīt"
+
+#: ../bkchem/modes.py:2207
+msgid "Rapid drawing"
+msgstr "Ātrā zīmēšana"
+
+#: ../bkchem/modes.py:2216
+msgid "do nothing after drawing is done"
+msgstr "nedarīt neko, kad zīmēšana ir pabeigta"
+
+#: ../bkchem/modes.py:2216
+msgid "auto clean after drawing is finished"
+msgstr "automātiski uzkopt, kad zīmēšana ir pabeigta"
+
+#: ../bkchem/modes.py:2372
+msgid "Brackets"
+msgstr "Iekavas"
+
+#: ../bkchem/modes.py:2403
+msgid "Miscelanous small modes"
+msgstr "Dažādi papildrīki"
+
+#: ../bkchem/modes.py:2405
+msgid "Numbering"
+msgstr "Numerācija"
+
+#: ../bkchem/modes.py:2405
+msgid "Wavy line"
+msgstr "Viļņota līnija"
+
+#: ../bkchem/paper.py:597
+msgid "Proceed"
+msgstr "Turpināt"
+
+#: ../bkchem/paper.py:598
+msgid ""
+"This CDML document does not seem to have supported version.\n"
+"\t\t\t\t       \n"
+" Do you want to proceed reading this document?"
+msgstr ""
+"Šim CDML dokumentam nav atbalstītā versija.\n"
+"\t\t\t\t       \n"
+" Vai vēlaties turpināt lasīt šo dokumentu?"
+
+#: ../bkchem/paper.py:657
+msgid "Replace standard values"
+msgstr "Aizvietot standarta vērtības"
+
+#: ../bkchem/paper.py:852
+msgid "concatenated overlaping atoms"
+msgstr "apvienoja pārklājušos atomus"
+
+#: ../bkchem/paper.py:1070
+#, python-format
+msgid "killed %s object(s) to clipboard"
+msgstr "izgrieza %s objektu(s) un ielika starpliktuvē"
+
+#: ../bkchem/paper.py:1073
+#, python-format
+msgid "copied %s object(s) to clipboard"
+msgstr "iekopēja %s objektu(s) starpliktuvē"
+
+#: ../bkchem/paper.py:1110
+msgid "pasted from clipboard"
+msgstr "ievietoja no starpliktuves"
+
+#: ../bkchem/paper.py:1314
+#, python-format
+msgid "undo (%d further undos available)"
+msgstr "atsaukt (%d tālākas atsaukšanas iespējamas)"
+
+#: ../bkchem/paper.py:1316
+msgid "no further undo"
+msgstr "tālāk atsaukt nav iespējams"
+
+#: ../bkchem/paper.py:1327
+#, python-format
+msgid "redo (%d further redos available)"
+msgstr "atdarīt (%d tālākas atdarīšanas iespējamas)"
+
+#: ../bkchem/paper.py:1329
+msgid "no further redo"
+msgstr "tālāku pārdarīšanu nav"
+
+#: ../bkchem/paper.py:1413
+msgid "selected top_levels were exported to clipboard in SVG"
+msgstr "izvēlētie \"top_levels\" tika eksportēti uz starpliktuvi kā SVG"
+
+#: ../bkchem/paper.py:1459
+msgid "Info on selected molecules"
+msgstr "Informācija par izvēlētajām molekulām"
+
+#: ../bkchem/paper.py:1467
+#, python-format
+msgid "Name: %s"
+msgstr "Nosaukums: %s"
+
+#: ../bkchem/paper.py:1469
+#, python-format
+msgid "Id: %s"
+msgstr "Id: %s"
+
+#: ../bkchem/paper.py:1471
+#: ../bkchem/paper.py:1486
+#, python-format
+msgid "Formula: %s"
+msgstr "Formula: %s"
+
+#: ../bkchem/paper.py:1473
+#: ../bkchem/paper.py:1488
+#, python-format
+msgid "Weight: %4.3f"
+msgstr "Masa: %4.3f"
+
+#: ../bkchem/paper.py:1475
+#: ../bkchem/paper.py:1490
+#, python-format
+msgid "Monoisotopic mass: %12.8f"
+msgstr "Monoizotopiskā masa: %12.8f"
+
+#: ../bkchem/paper.py:1477
+#: ../bkchem/paper.py:1492
+#, python-format
+msgid "Composition: %s"
+msgstr "Sastāvs: %s"
+
+#: ../bkchem/paper.py:1481
+msgid "Individual molecules:"
+msgstr "Atsevišķas molekulas:"
+
+#: ../bkchem/paper.py:1484
+msgid "Summary for all selected molecules:"
+msgstr "Kopsavilkums par visām izvēlētajām molekulām:"
+
+#: ../bkchem/paper.py:1508
+msgid "Chemistry check of selected molecules"
+msgstr "Izvēlēto molekulu ķīmijas pārbaude"
+
+#: ../bkchem/paper.py:1613
+msgid "selected items were lifted"
+msgstr "izvēlētie priekšmeti tika pacelti"
+
+#: ../bkchem/paper.py:1626
+msgid "selected items were put back"
+msgstr "izvēlētie priekšmeti tika nolikti atpakaļ"
+
+#: ../bkchem/paper.py:1640
+msgid "selected items were swapped"
+msgstr "izvēlētie priekšmeti tika apmainīti"
+
+#: ../bkchem/splash.py:35
+msgid "BKchem is starting..."
+msgstr "BKChem startējas..."
+
+#: ../bkchem/validator.py:92
+#, python-format
+msgid "%d text only atom(s) (chemical interpretation is unknown)"
+msgstr "%d 'teksta atomi' (ķīmiskā interpretācija nezināma)"
+
+#: ../bkchem/validator.py:95
+#, python-format
+msgid "%d atom(s) with exceeded valency"
+msgstr "%d atomi ar pārsniegtu valenci"
+
+#: ../bkchem/validator.py:98
+#, python-format
+msgid "%d group(s) (groups need to be expanded for some export formats)"
+msgstr "%d grupa(s) (dažiem eksporta formātiem grupas ir jāizvērš)"
+
+#: ../bkchem/validator.py:101
+#, python-format
+msgid "%d zero order bond(s) (such bonds will not be exported into chemical formats)"
+msgstr "%d nultās kārtas saite(s) (šādas saites netiks eksportētas ķīmijas failu formātos)"
+
+#: ../bkchem/widgets.py:97
+msgid "Transparent"
+msgstr "Caurspīdīgs"
+
+#: ../bkchem/widgets.py:204
+msgid "Font family"
+msgstr "Fontu saime"
+
+#: ../bkchem/widgets.py:217
+msgid "Width"
+msgstr "Platums"
+
+#: ../bkchem/widgets.py:232
+msgid "Length"
+msgstr "Garums"
+
+#: ../bkchem/widgets.py:247
+msgid "Ratio"
+msgstr "Attiecība"
+
+#: ../bkchem/widgets.py:338
+msgid "Browse"
+msgstr "Pārlūkot"
+
+#: ../bkchem/widgets.py:347
+msgid "Select the file"
+msgstr "Izvēlēties failu"
+
+#: ../bkchem/widgets.py:353
+msgid "File to create"
+msgstr "Izveidojamais fails"
+
+#: ../bkchem/widgets.py:413
+msgid "Subscript numbers"
+msgstr "Apakšraksta numuri"
+
+#: ../bkchem/widgets.py:428
+msgid "Superscript charges"
+msgstr "Augšrakstīt lādiņus"
+
+#: ../bkchem/widgets.py:431
+msgid "Sup charges"
+msgstr "Augšraksta lādiņi"
+
+#: ../bkchem/plugins/cairo_lowlevel.py:69
+#: ../bkchem/plugins/piddle_lowlevel.py:52
+msgid "There is nothing to export. If you want to export an empty paper disable cropping of the drawing in the File/Properties menu."
+msgstr "Nav ko eksportēt. Ja vēlaties eksportēt tukšu lapu, atslēdziet zīmējuma apciršanu izvēlnē 'Fails/Faila iestatījumi'."
+
+#: ../bkchem/plugins/CML2.py:35
+msgid "Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
+msgstr "Importē CML (Chemical Markup Language) dokumentu, izmantojot CML standarta 2.0 versiju."
+
+#: ../bkchem/plugins/CML2.py:45
+msgid "Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."
+msgstr "Eksportē CML (Chemical Markup Language) dokumentu, izmantojot CML standarta 2.0 versiju."
+
+#: ../bkchem/plugins/CML2.py:58
+msgid "CML2"
+msgstr "CML2"
+
+#: ../bkchem/plugins/CML.py:35
+msgid "Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."
+msgstr "Importē CML (Chemical Markup Language) dokumentu, izmantojot CML standarta 1.0 versiju."
+
+#: ../bkchem/plugins/CML.py:172
+msgid "Exports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."
+msgstr "Eksportē CML (Chemical Markup Language) dokumentu, izmantojot CML standarta 1.0 versiju."
+
+#: ../bkchem/plugins/CML.py:185
+msgid "Normalize bond length?"
+msgstr "Normalizēt saišu garumus?"
+
+#: ../bkchem/plugins/CML.py:186
+msgid "If you are exporting to some kind of computational software it might be important to rescale the molecule, so that the bond lengths are in range of normal chemical bonds. Do you want to do this? It will influence only the exported CML file, not the drawing."
+msgstr "Ja jūs eksportējat uz kādu skaitļošanas programmatūru, var būt svarīgi mērogot molekulu tā, lai saišu garumi ir normālu ķīmisko saišu robežās. Vai vēlaties to darīt? Tas ietekmēs tikai eksportēto CML failu, bet ne zīmējumu."
+
+#: ../bkchem/plugins/CML.py:201
+msgid "CML export error"
+msgstr "CML eksportēšanas kļūda"
+
+#: ../bkchem/plugins/CML.py:203
+msgid "It is not possible to export it to valid CML."
+msgstr "Nav iespējams to eksportēt uz pareizu CML."
+
+#: ../bkchem/plugins/CML.py:208
+msgid "CML export warning"
+msgstr "CML eksportēšanas brīdinājums"
+
+#: ../bkchem/plugins/CML.py:215
+msgid "These must be expanded in order to export to valid CML. The expansion could be undone with undo after the export"
+msgstr "Šiem jābūt izvērstiem, lai varētu eksportēt pareizā CML formātā. Izvēršanu var atgriest ar \"Atdarīt\" pēc eksporta"
+
+#: ../bkchem/plugins/CML.py:261
+msgid "CML"
+msgstr "CML"
+
+#: ../bkchem/plugins/molfile.py:39
+msgid "Imports a molfile document."
+msgstr "Importēt molfile dokumentu."
+
+#: ../bkchem/plugins/molfile.py:59
+msgid "Exports to molfile document."
+msgstr "Eksportēt uz molfile dokumentu."
+
+#: ../bkchem/plugins/molfile.py:70
+#: ../bkchem/plugins/molfile.py:75
+msgid "You have to select exactly one molecule (any atom or bond will do)."
+msgstr "Jāizvēlas tieši viena molekula (pietiek norādīt jebkuru atomu vai saiti)."
+
+#: ../bkchem/plugins/molfile.py:74
+#, python-format
+msgid "%d molecules selected."
+msgstr "%d molekulas izvēlētas"
+
+#: ../bkchem/plugins/molfile.py:112
+msgid "Molfile"
+msgstr "Molfile"
+
+#: ../bkchem/plugins/odf.py:47
+#: ../bkchem/plugins/openoffice.py:47
+msgid "Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0), note that this is not an ODF (Open Document Format) export."
+msgstr "Eksportē zīmējumu \"OpenOffice Draw\" formātā (iekšēji izmantots OO līdz versijai 2.0), ievērojiet, ka šis nav ODF (Open Document Format) eksports."
+
+#: ../bkchem/plugins/odf.py:133
+#: ../bkchem/plugins/openoffice.py:123
+msgid "The manifest file not found in the plugin directory"
+msgstr "Manifest fails netika atrasts spraudņa mapē."
+
+#: ../bkchem/plugins/odf.py:660
+msgid "ODF (OpenOffice 2.0)"
+msgstr "ODF (OpenOffice 2.0)"
+
+#: ../bkchem/plugins/openoffice.py:628
+msgid "OpenOffice 1.0 Draw"
+msgstr "OpenOffice 1.0 Draw"
+
+#: ../bkchem/plugins/pdf_cairo.py:32
+msgid "Exports PDF via the Cairo (pycairo) library. This is the preferred PDF output plugin as it supports unicode strings and the output is of very good quality."
+msgstr "Eksportē PDF izmantojot \"Cairo\" (pycairo) bibliotēku. Šis ir ieteiktais PDF izvades spraudnis, jo tas atbalsta unikoda virknes un tā izvadei ir ļoti laba kvalitāte."
+
+#: ../bkchem/plugins/pdf_cairo.py:59
+msgid "PDF (Cairo)"
+msgstr "PDF (Cairo)"
+
+#: ../bkchem/plugins/pdf_piddle.py:30
+msgid "Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used."
+msgstr "Eksportē PDF izmantojot \"Piddle\" bibliotēku. Strādā diezgan labi, bet neatbalsta unikoda virknes (tikai ASCII) un teksta novietojums var būt neprecīzs atkarībā no izmantotajiem fontiem."
+
+#: ../bkchem/plugins/pdf_piddle.py:46
+msgid "PDF (Piddle)"
+msgstr "PDF (Piddle)"
+
+#: ../bkchem/plugins/png_cairo.py:30
+msgid "Exports PNG files via the Cairo (pycairo) library. The output is usually quite good, with unicode support and antialiased fonts. The output should look the same as the PDF (Cairo) export."
+msgstr "Eksportē PNG failus izmantojot \"Cairo\" (pycairo) bibliotēku. Rezultāts parasti ir diezgan labs, ar unikoda atbalstu un \"antialiased\" fontiem. Recultātam vajadzētu izskatīties tā pat kā PDF (Cairo) eksportam."
+
+#: ../bkchem/plugins/png_cairo.py:75
+msgid "PNG (Cairo)"
+msgstr "PNG (Cairo)"
+
+#: ../bkchem/plugins/png_cairo.py:93
+msgid "PNG resolution and background color"
+msgstr "PNG izšķirtspēja un fona krāsa"
+
+#: ../bkchem/plugins/png_cairo.py:96
+msgid "Set the PNG picture resolution and background color using one of the criteria below."
+msgstr "Iestatīt PNG bildes izšķirtspēju un fona krāsu izmantojot vienu no zemākminētajiem kritērijiem."
+
+#: ../bkchem/plugins/png_cairo.py:128
+msgid "Size X (in px):"
+msgstr "Izmērs X (pikseļos):"
+
+#: ../bkchem/plugins/png_cairo.py:139
+msgid "Size Y (in px):"
+msgstr "Izmērs Y (pikseļos):"
+
+#: ../bkchem/plugins/png_cairo.py:155
+msgid "Resolution (dpi):"
+msgstr "Izšķirtspēja (dpi):"
+
+#: ../bkchem/plugins/png_cairo.py:171
+msgid "Background color"
+msgstr "Fona krāsa"
+
+#: ../bkchem/plugins/povray.py:37
+msgid "Really export?"
+msgstr "Tiešām eksportēt?"
+
+#: ../bkchem/plugins/povray.py:38
+msgid "This plugin is not finished and will probably not work correctly."
+msgstr "Šis spraudnis nav pabeigts un droši vien nestrādās pareizi."
+
+#: ../bkchem/plugins/ps_builtin.py:32
+msgid "Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS export. The results vary with the system, problems are usually font-related."
+msgstr "Eksportē EPS failus, izmantojot \"Tk\" iebūvētās PS eksporta funkcijas. Rezultāti mainās atkarībā no sistēmas, problēmas parasti ir saistītas ar fontiem."
+
+#: ../bkchem/plugins/ps_builtin.py:63
+msgid "PostScript (builtin)"
+msgstr "PostScript (builtin)"
+
+#: ../bkchem/plugins/ps_cairo.py:32
+msgid "Exports Postscript via the Cairo (pycairo) library. This is the preferred PS output plugin as it supports unicode strings and the output is of very good quality."
+msgstr "Eksportē PS izmantojot \"Cairo\" (pycairo) bibliotēku. Šis ir ieteiktais PS izvades spraudnis, jo tas atbalsta unkoda virknes un rezultātam ir ļoti laba kvalitāte."
+
+#: ../bkchem/plugins/ps_cairo.py:72
+msgid "Postscript (Cairo)"
+msgstr "Postscript (Cairo)"
+
+#: ../bkchem/plugins/ps_piddle.py:30
+msgid "Exports Encapsulated PostScript files via the Piddle library. Usually gives better results than the builtin method, but does not support unicode and the texts might be slightly misplaced."
+msgstr "Eksportē EPS failus, izmantojot \"Piddle\" bibliotēku. Parasti dod labākus rezultātus kā iebūvētā metode, bet neatbalsta unikodu un tekstu novietojums var būt neprecīzs."
+
+#: ../bkchem/plugins/ps_piddle.py:45
+msgid "PostScript (Piddle)"
+msgstr "PostScript (Piddle)"
+
+#: ../bkchem/plugins/svg_cairo.py:32
+msgid "Exports SVG via the Cairo (pycairo) library. This SVG does not embed BKChem data and is simpler than the default one used by BKChem."
+msgstr "Eksportē SVG izmantojot \"Cairo\" (pycairo) bibliotēku. Šis spraudnis neiekļauj \"BKChem\" datus SVG failos un ir vienkāršāks par noklusēto."
+
+#: ../bkchem/plugins/svg_cairo.py:59
+msgid "SVG (Cairo)"
+msgstr "SVG (Cairo)"
+
+#: ../bkchem/../plugins/angle_between_bonds.py:10
+msgid "You have to have 2 bonds selected"
+msgstr "Jābūt izvēlētām 2 saitēm"
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:14
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:87
+msgid "Fetching progress"
+msgstr "Saņemšanas progress"
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:16
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:88
+msgid "Connecting to WebBook..."
+msgstr "Savienojas ar WebBook..."
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:22
+msgid "Searching for the compound..."
+msgstr "Meklē savienojumu..."
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:30
+msgid "Reading the molfile..."
+msgstr "Lasa molfile failu..."
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:48
+msgid "Give the name of a molecule to fetch:"
+msgstr "Norādiet saņemamās molekulas nosaukumu:"
+
+#: ../bkchem/../plugins/fetch_from_webbook.py:73
+#, python-format
+msgid "Sorry, molecule with name %s was not found"
+msgstr "Molekula ar nosaukumu \"%s\" netika atrasta"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:26
+msgid "oasa plugin error"
+msgstr "oasa spraudņa kļūda"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:30
+msgid "validity Error"
+msgstr "pareizības kļūda"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:36
+msgid "Unknown error occured during INChI generation, sorry"
+msgstr "Nezināmas kļūdas dēļ neizdevās izveidot InChI"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:36
+msgid "Please, try to make sure the path to the InChI program is correct in 'Options/INChI program path'"
+msgstr "Lūdzu, pārliecinieties, ka ceļš pie \"InChI\" programmas ir pareizs 'Iespējas/Ceļš pie \"InChI\" programas' izvēlnē"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:58
+msgid "The molekule was not found"
+msgstr "Molekula netika atrasta"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:59
+msgid "These Stereoisomers were found"
+msgstr "Šie stereoizomēri tika atrasti"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:94
+msgid "Nist could not be reached."
+msgstr "Neizdevās sasniegt Nist."
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:95
+msgid "Please check your internet connection"
+msgstr "Lūdzu pārbaudiet savu interneta savienojumu"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:99
+msgid "Reading the webbook..."
+msgstr "Lasa webbook..."
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:108
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:119
+msgid "The molecule was not found"
+msgstr "Molekula netika atrasta"
+
+#: ../bkchem/../plugins/fetch_name_from_webbook.py:206
+msgid "Please select a molecule"
+msgstr "Lūdzu izvēlieties molekulu"
+
+#: ../bkchem/../plugins/fragment_search.py:15
+msgid "Search progress"
+msgstr "Meklēšanas progress"
+
+#: ../bkchem/../plugins/fragment_search.py:21
+#, python-format
+msgid "Found: %d matching"
+msgstr "Atrasts: %d atbilstoši"
+
+#: ../bkchem/../plugins/fragment_search.py:61
+msgid "Select only one molecule"
+msgstr "Izvēlieties tikai vienu molekulu"
+
+#: ../bkchem/../plugins/fragment_search.py:64
+msgid "Draw a molecule that you want to use as the fragment for search"
+msgstr "Uzzīmējiet molekulu, kuru vēlaties izmantot kā fragmentu meklēšanai"
+
+#: ../bkchem/../plugins/fragment_search.py:82
+#, python-format
+msgid "Searched %d files, %.2fs, %.2fms per file"
+msgstr "Pārmeklēja %d failus, %.2fs, %.2fms uz faila"
+
+#: ../bkchem/../plugins/fragment_search.py:84
+msgid "No files to search in were found"
+msgstr "Netika atrasts neviens fails, kurā meklēt"
+
+#: ../bkchem/../plugins/mass_scissors_mode.py:12
+msgid "Mass Scissors mode"
+msgstr "Masas šķēru režīms"
+
+#: ../bkchem/../plugins/mass_scissors_mode.py:39
+msgid "Exact mass"
+msgstr "Precīza masa"
+
+#: ../bkchem/../plugins/mass_scissors_mode.py:49
+#, python-format
+msgid "Fragment: %s"
+msgstr "Fragments: %s"
+
+#: ../bkchem/../plugins/mass_scissors_mode.py:50
+#, python-format
+msgid "Exact mass\t: %.8f Da"
+msgstr "Precīza masa\t: %.8f Da"
+
+#: ../bkchem/../plugins/mass_scissors_mode.py:55
+#, python-format
+msgid "%-12s\t: %.8f Da"
+msgstr "%-12s\t: %.8f Da"
+
+#: ../bkchem/../plugins/text_to_group.py:24
+#, python-format
+msgid "%d textatoms were converted to groups"
+msgstr "%d teksta atomi tika pārvērsti par grupām"
+
+#~ msgid "Show"
+#~ msgstr "Rādīt"
+
