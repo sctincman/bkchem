@@ -828,6 +828,7 @@ class draw_mode( edit_mode):
         # update atom text
         if hasattr( self.focused, 'update_after_valency_change'):
           self.focused.update_after_valency_change()
+          self.reposition_bonds_around_atom(self.focused)
         # warn when valency is exceeded
         if self.focused.free_valency < 0:
           Store.log( _("maximum valency exceeded!"), message_type="warning")
