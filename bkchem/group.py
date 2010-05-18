@@ -122,6 +122,8 @@ class group( drawable_chem_vertex):
     elif self.group_type in ("implicit","chain"):
       x = re.sub( "\d+", '<sub>\g<0></sub>', self.symbol)
       x = re.sub( "[+-]", '<sup>\g<0></sup>', x)
+      if self.paper.get_paper_property('use_real_minus'):
+        x = re.sub("-", unichr(8722), x)
       return x
 
 
