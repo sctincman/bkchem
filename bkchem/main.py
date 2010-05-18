@@ -1484,6 +1484,10 @@ Enter InChI:""")
 
   def ask_preferences( self):
     pd = dialogs.preferences_dialog( self, Store.pm)
+    if pd.result == 1:
+      for i in self.papers:
+        i._paper_properties['use_real_minus'] = Store.pm.get_preference("use_real_minus")
+        [j.redraw() for j in i.stack]
 
 
 

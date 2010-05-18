@@ -866,6 +866,8 @@ class preferences_dialog:
     self.replace_minus.set( self.preferences.get_preference( "replace_minus") or 0)
     self.use_real_minus = Tkinter.IntVar()
     self.use_real_minus.set( self.preferences.get_preference( "use_real_minus") or 0)
+    self.use_real_minus_old = self.use_real_minus.get()
+    self.result = 0
 
     self.draw()
     self.dialog.activate()
@@ -897,6 +899,8 @@ class preferences_dialog:
     if button == _('OK'):
       #self.preferences.add_preference( "replace_minus", self.replace_minus.get())
       self.preferences.add_preference( "use_real_minus", self.use_real_minus.get())
+      if self.use_real_minus.get() != self.use_real_minus_old:
+        self.result = 1
     else:
       pass
 
