@@ -3169,7 +3169,7 @@ class EntryField(MegaWidget):
 	valid = self._getValidity()
 	oldValidity = valid
 
-	if valid == ERROR:
+	if valid == ERROR or valid == PARTIAL:
 	    # The entry is invalid.
 	    cmd = self['invalidcommand']
 	    if callable(cmd):
