@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -191,7 +191,7 @@ def get_bkchem_private_dir():
 
 
 def get_bkchem_run_dir():
-  """returns directory from which bkchem is run"""
+  """returns directory from which BKChem is run"""
   path = sys.path[0]
   if not os.path.isdir( path):
     # this happens on windows when running from bkchem.exe

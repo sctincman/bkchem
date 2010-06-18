@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -56,14 +56,14 @@ else:
   Store.lang = None
   for lang in langs:
     for localedir in (None, os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale'))):
-      if gettext.find( 'BKchem', localedir=localedir, languages=lang):
+      if gettext.find( 'BKChem', localedir=localedir, languages=lang):
         # at first try if locale is in its standard location
         # find what language was loaded
-        rest = gettext.find( 'BKchem', localedir=localedir, languages=lang)
+        rest = gettext.find( 'BKChem', localedir=localedir, languages=lang)
         for i in range( 3):
           rest, Store.lang = os.path.split( rest)
 
-        tr = gettext.translation( 'BKchem', localedir=localedir, languages=lang)
+        tr = gettext.translation( 'BKChem', localedir=localedir, languages=lang)
         tr.install( unicode=True)
         break
     if Store.lang:
@@ -103,11 +103,11 @@ if not config.debug:
 
   
 #import Tkinter
-from main import BKchem
+from main import BKChem
 from splash import Splash
 from singleton_store import Store
 
-myapp = BKchem()
+myapp = BKChem()
 myapp.withdraw()
 
 if __name__ == '__main__':
@@ -116,7 +116,7 @@ if __name__ == '__main__':
   opts = sys.argv[1:]
 
   if "-v" in opts or "--version" in opts:
-    print "BKChem", config.current_BKchem_version
+    print "BKChem", config.current_BKChem_version
     sys.exit()
   if "-h" in opts or "--help" in opts:
     print messages.usage_text
@@ -193,7 +193,7 @@ if __name__ == '__main__':
   myapp.mainloop()
   #import profile
   #profile.run( 'myapp.mainloop()')
-  #print "BKchem finished"
+  #print "BKChem finished"
   myapp.destroy()
 
 # the module was imported from outside

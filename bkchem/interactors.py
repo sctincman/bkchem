@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -354,11 +354,11 @@ def set_atom_number( atoms):
 def log_atom_type( vtype):
   """according to vtype tells the user how an atom text was interpreted"""
   if  vtype == "atom":
-    Store.log( _("BKchem interpreted the entered text as an atom"))
+    Store.log( _("BKChem interpreted the entered text as an atom"))
   elif vtype == "group":
-    Store.log( _("BKchem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."))
+    Store.log( _("BKChem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."))
   elif vtype == "textatom":
-    Store.log( _("BKchem could not interpret the entered text as anything with chemical meaning"))
+    Store.log( _("BKChem could not interpret the entered text as anything with chemical meaning"))
 
 
 
@@ -373,7 +373,7 @@ def select_language( paper):
       else:
         Store.pm.add_preference( "lang", a.languages[lang[0]])
       tkMessageBox.showinfo( _("Info"),
-                             _("The selected language will be used the next time you start BKchem."))
+                             _("The selected language will be used the next time you start BKChem."))
 
 
 

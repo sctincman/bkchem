@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #
 #--------------------------------------------------------------------------
 
-"""module containing miscelanous functions used in BKchem that don't
+"""module containing miscelanous functions used in BKChem that don't
 fit anywhere else. Does not contain any objects"""
 
 import math

@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 #--------------------------------------------------------------------------
 
 
-"""chem_paper - the main drawing part for BKchem resides here"""
+"""chem_paper - the main drawing part for BKChem resides here"""
 
 from __future__ import division
 
@@ -707,7 +707,7 @@ class chem_paper( Canvas, object):
     root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', config.current_CDML_version),
                                                                    ( 'xmlns', data.cdml_namespace)))
     info = dom_extensions.elementUnder( root, 'info')
-    dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',config.current_BKchem_version),))
+    dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKChem', attributes = (('version',config.current_BKChem_version),))
     paper = dom_extensions.elementUnder( root, 'paper',
                                          attributes = (('type', self._paper_properties['type']),
                                                        ('orientation', self._paper_properties['orientation']),
@@ -1845,7 +1845,7 @@ class chem_paper( Canvas, object):
       root = dom_extensions.elementUnder( doc, 'cdml', attributes = (('version', config.current_CDML_version),
                                                                      ( 'xmlns', data.cdml_namespace)))
       info = dom_extensions.elementUnder( root, 'info')
-      dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKchem', attributes = (('version',config.current_BKchem_version),))
+      dom_extensions.textOnlyElementUnder( info, 'author_program', 'BKChem', attributes = (('version',config.current_BKChem_version),))
       root.appendChild( st.get_package( doc))
       dom_extensions.safe_indent( root)
       try:

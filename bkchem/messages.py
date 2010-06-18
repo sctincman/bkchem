@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -75,36 +75,36 @@ bond_align_mode_mirrorthrough = _("click a bond or two atoms to mirror the molec
 # -------------------- OTHER MESSAGES --------------------
 
 
-about_text = _("""BKchem was conceived and written by Beda Kosata
+about_text = _("""BKChem was conceived and written by Beda Kosata
 and is performed by Python, Pmw & (optionally) Cairo.
 
-BKchem is free software and is distributed under GNU GPL.
-BKchem is provided as is without warranty of any kind.
+BKChem is free software and is distributed under GNU GPL.
+BKChem is provided as is without warranty of any kind.
 - see the file 'gpl.txt' in distribution directory for more info.
 
 Among other things GNU GPL allows you to study, modify
-and redistribute BKchem as long as you do it under GNU GPL.""")
+and redistribute BKChem as long as you do it under GNU GPL.""")
 
 
 no_pmw_text = _("""UNABLE TO IMPORT PMW
 
-Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.
+Sorry, but BKChem relies too heavily on Pmw to be usable without it. Please install Pmw and try again.
 (for more info on Pmw see documentation)""")
 
 
 no_oasa_text = _("""UNABLE TO IMPORT OASA
 
-Sorry, but from version 0.10 BKchem uses the OASA library internally and therefor cannot run without it.""")
+Sorry, but from version 0.10 BKChem uses the OASA library internally and therefor cannot run without it.""")
 
 
 low_python_version_text = _("""Python version too low!
 
-From version 0.10 BKchem needs Python 2.3 or higher to run properly. You only have Python version %s.
-Sorry for the inconvenience, but you would need to upgrade Python in order to run BKchem.""")
+From version 0.10 BKChem needs Python 2.3 or higher to run properly. You only have Python version %s.
+Sorry for the inconvenience, but you would need to upgrade Python in order to run BKChem.""")
 
 
 
-splash_text = _("""BKchem is starting.
+splash_text = _("""BKChem is starting.
 
 Unfortunately,
 the splash image was not found :(""")

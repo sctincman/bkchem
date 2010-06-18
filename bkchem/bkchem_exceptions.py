@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,7 @@ class bkchem_graph_error( bkchem_error):
 
 
   def __str__( self):
-    print "BKchem graph error, id=%s, value=%s" % (self.id, self.value)
+    print "BKChem graph error, id=%s, value=%s" % (self.id, self.value)
 
 
 
@@ -51,7 +51,7 @@ class bkchem_fragment_error( bkchem_error):
 
 
   def __str__( self):
-    print "BKchem fragments error, id=%s, value=%s" % (self.id, self.value)
+    print "BKChem fragments error, id=%s, value=%s" % (self.id, self.value)
 
 
   

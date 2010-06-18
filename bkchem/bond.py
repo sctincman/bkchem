@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -1029,7 +1029,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def simple_redraw( self):
     """very fast redraw that draws only a simple line instead of the bond,
-    used in 3d rotation only (as for bkchem 0.5.0)"""
+    used in 3d rotation only (as for BKChem 0.5.0)"""
     [self.paper.delete( i) for i in self.second]
     self.second = []
     [self.paper.delete( i) for i in self.third]

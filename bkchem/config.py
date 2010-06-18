@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@ devel = 0
 
 current_CDML_version = '0.16'
 
-current_BKchem_version = '0.14.0-pre1'
+current_BKChem_version = '0.14.0-pre1'
 
 
 

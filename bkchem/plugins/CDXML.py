@@ -1,10 +1,10 @@
 # encoding: utf-8
 
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
-#     This plugin was create for BKchem by Simona Pourová
+#     This plugin was create for BKChem by Simona Pourová
 #     Copyright (C) 2009 Simona Pourová
 
 #     This program is free software; you can redistribute it and/or modify
@@ -111,7 +111,7 @@ class CDXML_importer( plugin.importer):
             atom_id_to_atom[ elem2.getAttribute('id')] = atom
           
           # bond
-          #{"v BKchemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
+          #{"v BKChemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
           bondType2={"WedgeBegin":"w",
           "WedgedHashBegin":"h",
           "Wavy":"a",
@@ -246,7 +246,7 @@ class CDXML_exporter( plugin.exporter):
     
 
   def write_to_file( self, name):
-     #{"v BKchemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
+     #{"v BKChemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
     bondType={"w":"WedgeBegin",
           "h":"WedgedHashBegin",
           "a":"Wavy",
@@ -255,7 +255,7 @@ class CDXML_exporter( plugin.exporter):
           "o":"Dash"
           }
 
-    #{"arrow.type v BKchemu":["graphic/ArrowType","arrow/ArrowheadHead","arrow/   ArrowheadTail","arrow/ArrowheadType"]}
+    #{"arrow.type v BKChemu":["graphic/ArrowType","arrow/ArrowheadHead","arrow/   ArrowheadTail","arrow/ArrowheadType"]}
     #"retro":["RetroSynthetic","Full","","Angle"] - nefunguje, potrebuje dalsi povinne atributy
     arrowType={"equilibrium":["Equilibrium","HalfLeft","HalfLeft","Solid"],
            "equilibrium2":["Equilibrium","HalfLeft","HalfLeft","Solid"],

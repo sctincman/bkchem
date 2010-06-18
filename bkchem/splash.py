@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@ class Splash( Tkinter.Toplevel):
   def __init__( self):
     Tkinter.Toplevel.__init__( self)
 
-    self.title(_('BKchem is starting...'))
+    self.title(_('BKChem is starting...'))
 
     # splash image
     splash_image_path = 'logo.ppm'

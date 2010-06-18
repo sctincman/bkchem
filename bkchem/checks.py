@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 
 
 """this module contains functions used for various checks and maintanence
-throughout bkchem - mainly from paper and modules"""
+throughout BKChem - mainly from paper and modules"""
 
 
 

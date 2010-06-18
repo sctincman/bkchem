@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -1919,7 +1919,7 @@ class reaction_mode( basic_mode):
     if self.focused:
       if not self.arrow:
         tkMessageBox.showerror( _("No arrow present"),
-                                _("""The reaction information in bkchem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."""))
+                                _("""The reaction information in BKChem are associated with arrows, therefore you have to have at least one arrow before you can construct any reaction."""))
         return
 
       sm = self.get_submode(0)

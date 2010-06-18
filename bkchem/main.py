@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,7 @@ import molecule
 
 
 
-class BKchem( Tk):
+class BKChem( Tk):
 
 
   def __init__( self):
@@ -187,14 +187,14 @@ class BKchem( Tk):
       ( _("File"),  'separator'),
       # export cascade
       ( _("File"),  'cascade',  _('Export'),     _("Export the current file")),
-      ( _("Export"), 'command',  _('SVG'),  None, _("Export to plain SVG - Scalable Vector Graphics - without embedding BKchem data inside"), self.save_SVG, None),
+      ( _("Export"), 'command',  _('SVG'),  None, _("Export to plain SVG - Scalable Vector Graphics - without embedding BKChem data inside"), self.save_SVG, None),
       ( _("File"),  'cascade',  _('Import'),     _("Import a non-native file format")),
       ( _("File"),  'separator'),
       ( _("File"),  'command',  _('File properties'), None, _("Set the papers size and other properties of the document"), self.change_properties, None),
       ( _("File"),  'separator'),
       ( _("File"),  'command',  _('Close tab'), '(C-x C-t)', _("Close the current tab, exit when there is only one tab"), self.close_current_paper, None),
       ( _("File"),  'separator'),
-      ( _("File"),  'command',  _('Exit'),      '(C-x C-c)', _("Exit BKchem"), self._quit, None),
+      ( _("File"),  'command',  _('Exit'),      '(C-x C-c)', _("Exit BKChem"), self._quit, None),
 
       # edit menu
       ( _('Edit'),  'menu',     _("Undo, Copy, Paste etc."),   'left'),
@@ -265,18 +265,18 @@ class BKchem( Tk):
       #
       
       # options
-      ( _('Options'), 'menu',    _("Settings that affect how BKchem works"), 'left'),
+      ( _('Options'), 'menu',    _("Settings that affect how BKChem works"), 'left'),
       ( _("Options"), 'command', _('Standard'), None, _("Set the default drawing style here"), self.standard_values, None),
       ( _("Options"), 'command', _('Language'), None, _("Set the language used after next restart"), lambda : interactors.select_language( self.paper), None),
       ( _("Options"), 'command', _('Logging'), None, _("Set how messages in BKChem are displayed to you"), lambda : interactors.set_logging( self.paper, Store.logger), None),
-      ( _("Options"), 'command', _('InChI program path'), None, _("To use InChI in BKchem you must first give it a path to the InChI program here"),
+      ( _("Options"), 'command', _('InChI program path'), None, _("To use InChI in BKChem you must first give it a path to the InChI program here"),
         interactors.ask_inchi_program_path, None),
       ( _("Options"), 'separator'),      
       ( _("Options"), 'command', _('Preferences'), None, _("Preferences"), self.ask_preferences, None),
 
       # help menu
       ( _('Help'), 'menu', _("Help and information about the program"), "right"),
-      ( _("Help"), 'command', _('About'), None, _("General information about BKchem"), self.about, None),
+      ( _("Help"), 'command', _('About'), None, _("General information about BKChem"), self.about, None),
 
       # plugins menu
       ( _("Plugins"), 'menu', _("Small additional scripts"), "right")
@@ -347,7 +347,7 @@ class BKchem( Tk):
     # colors
     #self.option_add( "*background", "#d0d0d0")
     #self.option_add( "*borderwidth", config.border_width)
-    self.title( "BKchem")
+    self.title( "BKChem")
     self.stat= StringVar()
     self.cursor_position = StringVar()
     self.stat.set( "Idle")
@@ -564,11 +564,11 @@ class BKchem( Tk):
 
   def about( self):
     dialog = Pmw.MessageDialog(self,
-                               title = _('About BKchem'),
+                               title = _('About BKChem'),
                                defaultbutton = 0,
                                buttons=(_("OK"),),
-                               message_text = "BKchem " + _("version") + " " + config.current_BKchem_version + "\n\n" + messages.about_text)
-    dialog.iconname('BKchem')
+                               message_text = "BKChem " + _("version") + " " + config.current_BKChem_version + "\n\n" + messages.about_text)
+    dialog.iconname('BKChem')
     dialog.activate()
 
 

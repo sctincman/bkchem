@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 
 #--------------------------------------------------------------------------
 
-"""set of dialogs used by BKchem"""
+"""set of dialogs used by BKChem"""
 
 import Tkinter
 import tkFont
@@ -1068,8 +1068,8 @@ class language_dialog( Pmw.Dialog):
     import gettext
     self.languages = {}
     for lang, language in data.languages.iteritems():
-      system = gettext.find( 'BKchem', None, [lang])
-      local = gettext.find( 'BKchem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
+      system = gettext.find( 'BKChem', None, [lang])
+      local = gettext.find( 'BKChem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
       if system or local or lang == "en":
         lang_text = "%s (%s)" % (language, lang)
         langs.append( lang_text)

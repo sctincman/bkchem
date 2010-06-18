@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -282,7 +282,7 @@ class vertex_common( object):
 
 
 class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_drawable, text_like, child_with_paper, vertex_common):
-  """this is a common ancestor for all children of oasa.chem_vertex in bkchem. It adds some
+  """this is a common ancestor for all children of oasa.chem_vertex in BKChem. It adds some
   basic functionality to the chem_vertex so that it is not needed to add it every child;
   all the methods are tuned for always shown texts; atoms need to override something"""
 

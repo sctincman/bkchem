@@ -1,5 +1,5 @@
 #--------------------------------------------------------------------------
-#     This file is part of BKchem - a chemical drawing program
+#     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
 
 #     This program is free software; you can redistribute it and/or modify
@@ -24,12 +24,12 @@ class Tuning:
     class Screen:
         # how to shift subscript in relation to the baseline (y)
         # it lets you select different values for different font sizes
-        # BKchem will inteligently(?) pick the nearest one
+        # BKChem will inteligently(?) pick the nearest one
         subscript_y_shift = {7:0, 8:1, 9:1, 11:1, 12:1, 18:3}
     
         # when placing subscript or superscript after a letter, how to tweak the x position
         # it lets you select different values for different font sizes
-        # BKchem will inteligently(?) pick the nearest one
+        # BKChem will inteligently(?) pick the nearest one
         supsubscript_x_shift = {7:-1, 8:-1, 9:-1, 11:-1, 12:-1}
 
         # how to modify the bbox of atoms etc. when substraction of font descent is used
