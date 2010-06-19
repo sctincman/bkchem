@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.6.0\n"
-"POT-Creation-Date: 2008-11-19 07:55+CET\n"
+"POT-Creation-Date: 2010-06-19 17:11+EEST\n"
 "PO-Revision-Date: 2007-08-02 10:13+0200\n"
 "Last-Translator: Béda Košata <beda@zirael.org>\n"
 "Language-Team: CZ <LL@li.org>\n"
@@ -14,141 +14,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.4\n"
 
-#: ../../bkchem/../plugins/angle_between_bonds.py:10
-msgid "You have to have 2 bonds selected"
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:14
-#: ../../bkchem/../plugins/fetch_name_from_webbook.py:87
-msgid "Fetching progress"
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:16
-msgid "Connecting to WebBook..."
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:22
-msgid "Searching for the compound..."
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:30
-msgid "Reading the molfile..."
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:47
-#: ../../bkchem/interactors.py:50
-#, fuzzy
-msgid "Name"
-msgstr "název"
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:48
-#, fuzzy
-msgid "Give the name of a molecule to fetch:"
-msgstr "Kontrola chemie pro všechny vybrané molekuly:"
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:50
-#: ../../bkchem/../plugins/fetch_from_webbook.py:52
-#: ../../bkchem/../plugins/fetch_name_from_webbook.py:56
-#: ../../bkchem/../plugins/fetch_name_from_webbook.py:57
-#: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
-#: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
-#: ../../bkchem/dialogs.py:385 ../../bkchem/dialogs.py:514
-#: ../../bkchem/dialogs.py:515 ../../bkchem/dialogs.py:608
-#: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:646
-#: ../../bkchem/dialogs.py:798 ../../bkchem/dialogs.py:858
-#: ../../bkchem/dialogs.py:859 ../../bkchem/dialogs.py:897
-#: ../../bkchem/dialogs.py:916 ../../bkchem/dialogs.py:918
-#: ../../bkchem/dialogs.py:923 ../../bkchem/dialogs.py:1003
-#: ../../bkchem/dialogs.py:1004 ../../bkchem/dialogs.py:1035
-#: ../../bkchem/dialogs.py:1036 ../../bkchem/dialogs.py:1067
-#: ../../bkchem/interactors.py:53 ../../bkchem/interactors.py:58
-#: ../../bkchem/interactors.py:93 ../../bkchem/interactors.py:99
-#: ../../bkchem/interactors.py:163 ../../bkchem/interactors.py:183
-#: ../../bkchem/interactors.py:192 ../../bkchem/interactors.py:283
-#: ../../bkchem/interactors.py:285 ../../bkchem/interactors.py:320
-#: ../../bkchem/interactors.py:321 ../../bkchem/interactors.py:323
-#: ../../bkchem/interactors.py:344 ../../bkchem/interactors.py:346
-#: ../../bkchem/main.py:565 ../../bkchem/main.py:1185
-#: ../../bkchem/main.py:1187 ../../bkchem/main.py:1224
-#: ../../bkchem/main.py:1226 ../../bkchem/main.py:1294
-#: ../../bkchem/main.py:1408 ../../bkchem/plugins/png_cairo.py:91
-#: ../../bkchem/plugins/png_cairo.py:92 ../../bkchem/validator.py:103
-#: ../../bkchem/widgets.py:378
-msgid "OK"
-msgstr "OK"
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:50
-#: ../../bkchem/../plugins/fetch_name_from_webbook.py:56
-#: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:96
-#: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:514
-#: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:858
-#: ../../bkchem/dialogs.py:916 ../../bkchem/dialogs.py:918
-#: ../../bkchem/dialogs.py:1003 ../../bkchem/dialogs.py:1035
-#: ../../bkchem/interactors.py:53 ../../bkchem/interactors.py:93
-#: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:283
-#: ../../bkchem/interactors.py:320 ../../bkchem/interactors.py:344
-#: ../../bkchem/main.py:736 ../../bkchem/main.py:741 ../../bkchem/main.py:1185
-#: ../../bkchem/main.py:1224 ../../bkchem/plugins/png_cairo.py:91
-#: ../../bkchem/plugins/png_cairo.py:184 ../../bkchem/widgets.py:378
-msgid "Cancel"
-msgstr "Zrušit"
-
-#: ../../bkchem/../plugins/fetch_from_webbook.py:73
-msgid "Sorry, molecule with name %s was not found"
-msgstr ""
-
-#: ../../bkchem/../plugins/fetch_name_from_webbook.py:58
-msgid "The molekule was not found"
-msgstr ""
-
-#: ../../bkchem/../plugins/fragment_search.py:15
-msgid "Search progress"
-msgstr ""
-
-#: ../../bkchem/../plugins/fragment_search.py:21
-msgid "Found: %d matching"
-msgstr ""
-
-#: ../../bkchem/../plugins/fragment_search.py:61
-#, fuzzy
-msgid "Select only one molecule"
-msgstr "Informace o vybraných molekulách"
-
-#: ../../bkchem/../plugins/fragment_search.py:64
-msgid "Draw a molecule that you want to use as the fragment for search"
-msgstr ""
-
-#: ../../bkchem/../plugins/fragment_search.py:82
-msgid "Searched %d files, %.2fs, %.2fms per file"
-msgstr ""
-
-#: ../../bkchem/../plugins/fragment_search.py:84
-msgid "No files to search in were found"
-msgstr ""
-
-#: ../../bkchem/../plugins/text_to_group.py:24
-msgid "%d textatoms were converted to groups"
-msgstr ""
-
-#: ../../bkchem/arrow.py:47
+#: ../../bkchem/arrow.py:48
 #, fuzzy
 msgid "electron transfer"
 msgstr "elektronový pár"
 
-#: ../../bkchem/arrow.py:47
+#: ../../bkchem/arrow.py:48
 msgid "equilibrium"
 msgstr ""
 
-#: ../../bkchem/arrow.py:47
+#: ../../bkchem/arrow.py:48
 msgid "equilibrium simple"
 msgstr ""
 
-#: ../../bkchem/arrow.py:47
+#: ../../bkchem/arrow.py:48
 msgid "retrosynthetic"
 msgstr ""
 
-#: ../../bkchem/arrow.py:47 ../../bkchem/modes.py:737
-#: ../../bkchem/modes.py:948
+#: ../../bkchem/arrow.py:48 ../../bkchem/modes.py:753
+#: ../../bkchem/modes.py:965
 msgid "normal"
 msgstr "normální"
 
@@ -156,202 +40,284 @@ msgstr "normální"
 msgid "The linear form was no longer consistent - it has been removed"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:91
+#: ../../bkchem/context_menu.py:94
 #, fuzzy
 msgid "Center bond"
 msgstr "Centrovat horizontálně"
 
-#: ../../bkchem/context_menu.py:92
+#: ../../bkchem/context_menu.py:95
 #, fuzzy
 msgid "Expand group"
 msgstr "Expandovat skupiny"
 
 # Sub čísla
-#: ../../bkchem/context_menu.py:93
+#: ../../bkchem/context_menu.py:96
 #, fuzzy
 msgid "Set atom number"
 msgstr "Sub čísla"
 
-#: ../../bkchem/context_menu.py:102
+#: ../../bkchem/context_menu.py:105
 #, fuzzy
 msgid "Properties"
 msgstr "Vlastnosti"
 
-#: ../../bkchem/context_menu.py:196
+#: ../../bkchem/context_menu.py:199
 msgid "Circle around mark"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:196 ../../bkchem/context_menu.py:204
-#: ../../bkchem/context_menu.py:250
+#: ../../bkchem/context_menu.py:199 ../../bkchem/context_menu.py:207
+#: ../../bkchem/context_menu.py:253
 msgid "yes"
 msgstr "ano"
 
-#: ../../bkchem/context_menu.py:196 ../../bkchem/context_menu.py:204
-#: ../../bkchem/context_menu.py:251
+#: ../../bkchem/context_menu.py:199 ../../bkchem/context_menu.py:207
+#: ../../bkchem/context_menu.py:254
 #, fuzzy
 msgid "no"
 msgstr "Informace"
 
 # Sub čísla
-#: ../../bkchem/context_menu.py:204
+#: ../../bkchem/context_menu.py:207
 #, fuzzy
 msgid "Show number"
 msgstr "Sub čísla"
 
-#: ../../bkchem/context_menu.py:213
+#: ../../bkchem/context_menu.py:216
 #, fuzzy
 msgid "Atom valency"
 msgstr "Název atomu"
 
-#: ../../bkchem/context_menu.py:220 ../../bkchem/context_menu.py:263
+#: ../../bkchem/context_menu.py:223 ../../bkchem/context_menu.py:266
 #, fuzzy
 msgid "Mark size"
 msgstr "Velikost papíru"
 
 #
-#: ../../bkchem/context_menu.py:231
+#: ../../bkchem/context_menu.py:234
 #, fuzzy
 msgid "Mark as template atom"
 msgstr "zaměřený atom byl označen jako 'šablonový atom'"
 
-#: ../../bkchem/context_menu.py:240
+#: ../../bkchem/context_menu.py:243
 #, fuzzy
 msgid "Mark as template bond"
 msgstr "zaměřená vazba byla označena jako 'šablonová vazba'"
 
-#: ../../bkchem/context_menu.py:250
+#: ../../bkchem/context_menu.py:253
 #, fuzzy
 msgid "Show symbol"
 msgstr "Název atomu"
 
-#: ../../bkchem/context_menu.py:252 ../../bkchem/dialogs.py:219
+#: ../../bkchem/context_menu.py:255 ../../bkchem/dialogs.py:219
 msgid "Hydrogens"
 msgstr "Vodíky"
 
-#: ../../bkchem/context_menu.py:252 ../../bkchem/dialogs.py:220
+#: ../../bkchem/context_menu.py:255 ../../bkchem/dialogs.py:220
 msgid "on"
 msgstr "zapnout"
 
-#: ../../bkchem/context_menu.py:253 ../../bkchem/dialogs.py:220
+#: ../../bkchem/context_menu.py:256 ../../bkchem/dialogs.py:220
 msgid "off"
 msgstr "vypnout"
 
-#: ../../bkchem/context_menu.py:254 ../../bkchem/widgets.py:180
+#: ../../bkchem/context_menu.py:257 ../../bkchem/widgets.py:180
 msgid "Font size"
 msgstr "Velikost fontu"
 
-#: ../../bkchem/context_menu.py:255 ../../bkchem/dialogs.py:353
+#: ../../bkchem/context_menu.py:258 ../../bkchem/dialogs.py:353
 #: ../../bkchem/dialogs.py:664
 msgid "Line width"
 msgstr "Šířka čáry"
 
-#: ../../bkchem/context_menu.py:256 ../../bkchem/dialogs.py:240
+#: ../../bkchem/context_menu.py:259 ../../bkchem/dialogs.py:240
 #: ../../bkchem/dialogs.py:686
 msgid "Bond width"
 msgstr "Šířka vazby"
 
-#: ../../bkchem/context_menu.py:257 ../../bkchem/dialogs.py:251
+#: ../../bkchem/context_menu.py:260 ../../bkchem/dialogs.py:251
 #: ../../bkchem/dialogs.py:689
 msgid "Wedge/Hatch width"
 msgstr "Šířka klínku"
 
-#: ../../bkchem/context_menu.py:258
+#: ../../bkchem/context_menu.py:261
 #, fuzzy
 msgid "Symbol positioning"
 msgstr "Posice atomu"
 
-#: ../../bkchem/context_menu.py:258
+#: ../../bkchem/context_menu.py:261
 #, fuzzy
 msgid "center first"
 msgstr "vycentrovat první písmeno"
 
-#: ../../bkchem/context_menu.py:259
+#: ../../bkchem/context_menu.py:262
 #, fuzzy
 msgid "center last"
 msgstr "vycentrovat poslední písmeno"
 
-#: ../../bkchem/context_menu.py:260
+#: ../../bkchem/context_menu.py:263
 #, fuzzy
 msgid "Bond positioning"
 msgstr "Posice atomu"
 
-#: ../../bkchem/context_menu.py:260
+#: ../../bkchem/context_menu.py:263
 #, fuzzy
 msgid "auto"
 msgstr "Poměr"
 
-#: ../../bkchem/context_menu.py:261
+#: ../../bkchem/context_menu.py:264
 msgid "anti-auto"
 msgstr "anti-auto"
 
-#: ../../bkchem/context_menu.py:262
+#: ../../bkchem/context_menu.py:265
 #, fuzzy
 msgid "Bond order"
 msgstr "Vzdálenost vazby"
 
-#: ../../bkchem/context_menu.py:264 ../../bkchem/interactors.py:341
+#: ../../bkchem/context_menu.py:267 ../../bkchem/interactors.py:341
 #, fuzzy
 msgid "Atom number"
 msgstr "Název atomu"
 
-#: ../../bkchem/context_menu.py:265 ../../bkchem/context_menu.py:272
+#: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
 #: ../../bkchem/plugins/png_cairo.py:174
 #, fuzzy
 msgid "transparent"
 msgstr "Interpretovat"
 
-#: ../../bkchem/context_menu.py:265 ../../bkchem/dialogs.py:373
+#: ../../bkchem/context_menu.py:268 ../../bkchem/dialogs.py:373
 #: ../../bkchem/dialogs.py:673
 msgid "Area color"
 msgstr "Barva plochy"
 
-#: ../../bkchem/context_menu.py:266 ../../bkchem/context_menu.py:273
+#: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
 #: ../../bkchem/plugins/png_cairo.py:173 ../../bkchem/plugins/png_cairo.py:188
 msgid "white"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:267 ../../bkchem/context_menu.py:274
+#: ../../bkchem/context_menu.py:270 ../../bkchem/context_menu.py:277
 msgid "yellow"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
+#: ../../bkchem/context_menu.py:271 ../../bkchem/context_menu.py:278
 msgid "green"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
+#: ../../bkchem/context_menu.py:272 ../../bkchem/context_menu.py:279
 #, fuzzy
 msgid "blue"
 msgstr "dvojná"
 
-#: ../../bkchem/context_menu.py:270 ../../bkchem/context_menu.py:277
+#: ../../bkchem/context_menu.py:273 ../../bkchem/context_menu.py:280
 #, fuzzy
 msgid "red"
 msgstr "Pokračovat"
 
-#: ../../bkchem/context_menu.py:271 ../../bkchem/context_menu.py:278
+#: ../../bkchem/context_menu.py:274 ../../bkchem/context_menu.py:281
 msgid "black"
 msgstr ""
 
-#: ../../bkchem/context_menu.py:272 ../../bkchem/dialogs.py:363
+#: ../../bkchem/context_menu.py:275 ../../bkchem/dialogs.py:363
 #: ../../bkchem/dialogs.py:670
 msgid "Line color"
 msgstr "Barva čáry"
 
-#: ../../bkchem/context_menu.py:279
+#: ../../bkchem/context_menu.py:282
 #, fuzzy
 msgid "Free sites"
 msgstr "volný styl"
 
-#: ../../bkchem/context_menu.py:280
+#: ../../bkchem/context_menu.py:283
 #, fuzzy
 msgid "Atom symbol"
 msgstr "Název atomu"
 
-#: ../../bkchem/context_menu.py:281
+#: ../../bkchem/context_menu.py:284
 msgid "Group"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:44 ../../bkchem/main.py:227
+#: ../../bkchem/data.py:128
+msgid "English"
+msgstr ""
+
+#: ../../bkchem/data.py:129
+msgid "Czech"
+msgstr ""
+
+#: ../../bkchem/data.py:130
+msgid "German"
+msgstr ""
+
+#: ../../bkchem/data.py:131
+msgid "French"
+msgstr ""
+
+#: ../../bkchem/data.py:132
+#, fuzzy
+msgid "Polish"
+msgstr "Pluginy"
+
+#: ../../bkchem/data.py:133
+msgid "Traditional Chinese"
+msgstr ""
+
+#: ../../bkchem/data.py:134
+msgid "Italian"
+msgstr ""
+
+#: ../../bkchem/data.py:135
+msgid "Spanish"
+msgstr ""
+
+#: ../../bkchem/data.py:136
+msgid "Japanese"
+msgstr ""
+
+#: ../../bkchem/data.py:137
+msgid "Latvian"
+msgstr ""
+
+#: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
+#: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
+#: ../../bkchem/dialogs.py:385 ../../bkchem/dialogs.py:514
+#: ../../bkchem/dialogs.py:515 ../../bkchem/dialogs.py:608
+#: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:646
+#: ../../bkchem/dialogs.py:798 ../../bkchem/dialogs.py:858
+#: ../../bkchem/dialogs.py:859 ../../bkchem/dialogs.py:899
+#: ../../bkchem/dialogs.py:920 ../../bkchem/dialogs.py:922
+#: ../../bkchem/dialogs.py:927 ../../bkchem/dialogs.py:1008
+#: ../../bkchem/dialogs.py:1009 ../../bkchem/dialogs.py:1038
+#: ../../bkchem/dialogs.py:1056 ../../bkchem/dialogs.py:1057
+#: ../../bkchem/dialogs.py:1095 ../../bkchem/interactors.py:53
+#: ../../bkchem/interactors.py:58 ../../bkchem/interactors.py:93
+#: ../../bkchem/interactors.py:99 ../../bkchem/interactors.py:163
+#: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:192
+#: ../../bkchem/interactors.py:283 ../../bkchem/interactors.py:285
+#: ../../bkchem/interactors.py:320 ../../bkchem/interactors.py:321
+#: ../../bkchem/interactors.py:323 ../../bkchem/interactors.py:344
+#: ../../bkchem/interactors.py:346 ../../bkchem/main.py:569
+#: ../../bkchem/main.py:1191 ../../bkchem/main.py:1193
+#: ../../bkchem/main.py:1230 ../../bkchem/main.py:1232
+#: ../../bkchem/main.py:1300 ../../bkchem/main.py:1416
+#: ../../bkchem/plugins/png_cairo.py:91 ../../bkchem/plugins/png_cairo.py:92
+#: ../../bkchem/validator.py:103 ../../bkchem/widgets.py:378
+msgid "OK"
+msgstr "OK"
+
+#: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:96
+#: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:514
+#: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:858
+#: ../../bkchem/dialogs.py:920 ../../bkchem/dialogs.py:922
+#: ../../bkchem/dialogs.py:1008 ../../bkchem/dialogs.py:1056
+#: ../../bkchem/interactors.py:53 ../../bkchem/interactors.py:93
+#: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:283
+#: ../../bkchem/interactors.py:320 ../../bkchem/interactors.py:344
+#: ../../bkchem/main.py:742 ../../bkchem/main.py:747 ../../bkchem/main.py:1191
+#: ../../bkchem/main.py:1230 ../../bkchem/plugins/png_cairo.py:91
+#: ../../bkchem/plugins/png_cairo.py:184 ../../bkchem/widgets.py:378
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: ../../bkchem/dialogs.py:44 ../../bkchem/main.py:224
 msgid "Scale"
 msgstr "Velikost"
 
@@ -441,11 +407,11 @@ msgid "Font"
 msgstr "Font"
 
 #: ../../bkchem/dialogs.py:343 ../../bkchem/dialogs.py:659
-#: ../../bkchem/dialogs.py:879
+#: ../../bkchem/dialogs.py:881
 msgid "Common"
 msgstr "Obecné"
 
-#: ../../bkchem/dialogs.py:516 ../../bkchem/main.py:196
+#: ../../bkchem/dialogs.py:516 ../../bkchem/main.py:193
 msgid "File properties"
 msgstr "Vlastnosti"
 
@@ -477,7 +443,7 @@ msgstr ""
 msgid "Margin for cropped image (in pixels):"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:589 ../../bkchem/dialogs.py:881
+#: ../../bkchem/dialogs.py:589 ../../bkchem/dialogs.py:883
 msgid "Use real minus character (instead of hyphen)?"
 msgstr ""
 
@@ -486,7 +452,7 @@ msgid "Replace hyphens with minus in SVG export?"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:645 ../../bkchem/dialogs.py:788
-#: ../../bkchem/main.py:184 ../../bkchem/main.py:736 ../../bkchem/main.py:739
+#: ../../bkchem/main.py:181 ../../bkchem/main.py:742 ../../bkchem/main.py:745
 msgid "Save"
 msgstr "Uložit"
 
@@ -572,31 +538,43 @@ msgstr ""
 "lokace pro osobní profil nebo do ní nebylo možno zapisovat. Omlouvám se za "
 "tuto nepříjemnost."
 
-#: ../../bkchem/dialogs.py:860 ../../bkchem/main.py:277
+#: ../../bkchem/dialogs.py:860 ../../bkchem/main.py:275
 msgid "Preferences"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:916 ../../bkchem/dialogs.py:981
+#: ../../bkchem/dialogs.py:920 ../../bkchem/dialogs.py:985
 msgid "Delete"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:924
+#: ../../bkchem/dialogs.py:928
 msgid "Fragment overview"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:938 ../../bkchem/dialogs.py:1014
+#: ../../bkchem/dialogs.py:942
 msgid "Fragments"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:1005
+#: ../../bkchem/dialogs.py:1010 ../../bkchem/main.py:271
 msgid "Logging"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:1037 ../../bkchem/main.py:273
+#: ../../bkchem/dialogs.py:1019
+msgid "Choose how each type of message is to be shown:"
+msgstr ""
+
+#: ../../bkchem/dialogs.py:1034
+msgid "The setting will be immediately applied and saved on application exit."
+msgstr ""
+
+#: ../../bkchem/dialogs.py:1058 ../../bkchem/main.py:270
 msgid "Language"
 msgstr ""
 
-#: ../../bkchem/dialogs.py:1058
+#: ../../bkchem/dialogs.py:1079
+msgid "System default"
+msgstr ""
+
+#: ../../bkchem/dialogs.py:1086
 msgid "Available Languages"
 msgstr ""
 
@@ -616,7 +594,7 @@ msgstr "Převeď čísla na dolní index"
 msgid "superscript"
 msgstr "Převeď čísla na dolní index"
 
-#: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:737
+#: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:753
 msgid "bold"
 msgstr "tučná"
 
@@ -653,7 +631,7 @@ msgstr ""
 msgid "Insert a special character"
 msgstr ""
 
-#: ../../bkchem/edit_pool.py:244 ../../bkchem/modes.py:1640
+#: ../../bkchem/edit_pool.py:244 ../../bkchem/modes.py:1705
 msgid "minus"
 msgstr "mínus"
 
@@ -671,6 +649,10 @@ msgstr "šipka"
 msgid "nu"
 msgstr ""
 
+#: ../../bkchem/edit_pool.py:248
+msgid "new line"
+msgstr ""
+
 #: ../../bkchem/interactors.py:45 ../../bkchem/interactors.py:77
 #: ../../bkchem/interactors.py:176 ../../bkchem/plugins/molfile.py:69
 msgid "No molecule selected."
@@ -680,6 +662,11 @@ msgstr "Nebyla vybrána žádná molekula."
 #: ../../bkchem/interactors.py:177
 msgid "At least one molecule must be selected. Please select it."
 msgstr "Musí být vybrána alespoň jedna molekula. Vyberte ji, prosím."
+
+#: ../../bkchem/interactors.py:50
+#, fuzzy
+msgid "Name"
+msgstr "název"
 
 #: ../../bkchem/interactors.py:51
 #, fuzzy
@@ -742,20 +729,20 @@ msgid "It is not possible to export them."
 msgstr "Je nemožné je exportovat."
 
 #: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
-#: ../../bkchem/interactors.py:165 ../../bkchem/main.py:244
+#: ../../bkchem/interactors.py:165 ../../bkchem/main.py:241
+#: ../../bkchem/main.py:242 ../../bkchem/main.py:243 ../../bkchem/main.py:244
 #: ../../bkchem/main.py:245 ../../bkchem/main.py:246 ../../bkchem/main.py:247
 #: ../../bkchem/main.py:248 ../../bkchem/main.py:249 ../../bkchem/main.py:250
-#: ../../bkchem/main.py:251 ../../bkchem/main.py:252 ../../bkchem/main.py:253
-#: ../../bkchem/main.py:254 ../../bkchem/main.py:255 ../../bkchem/main.py:257
+#: ../../bkchem/main.py:251 ../../bkchem/main.py:252 ../../bkchem/main.py:254
+#: ../../bkchem/main.py:258 ../../bkchem/main.py:259 ../../bkchem/main.py:260
 #: ../../bkchem/main.py:261 ../../bkchem/main.py:262 ../../bkchem/main.py:263
-#: ../../bkchem/main.py:264 ../../bkchem/main.py:265 ../../bkchem/main.py:266
-#: ../../bkchem/main.py:267 ../../bkchem/plugins/CML.py:204
+#: ../../bkchem/main.py:264 ../../bkchem/plugins/CML.py:204
 #: ../../bkchem/plugins/CML.py:210
 msgid "Chemistry"
 msgstr "Chemie"
 
 #: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
-#: ../../bkchem/main.py:246 ../../bkchem/plugins/CML.py:204
+#: ../../bkchem/main.py:243 ../../bkchem/plugins/CML.py:204
 #: ../../bkchem/plugins/CML.py:210
 msgid "Check chemistry"
 msgstr "Zkontrolovat chemii"
@@ -809,7 +796,7 @@ msgstr "Vyberte spustitelný soubor INChI programu: "
 msgid "Executable files"
 msgstr "Spustitelné soubory"
 
-#: ../../bkchem/interactors.py:165 ../../bkchem/main.py:255
+#: ../../bkchem/interactors.py:165 ../../bkchem/main.py:252
 #, fuzzy
 msgid "Generate InChI"
 msgstr "Generuj SMILES"
@@ -818,13 +805,11 @@ msgstr "Generuj SMILES"
 msgid "Display Form"
 msgstr "Forma pro zobrazení"
 
-#: ../../bkchem/interactors.py:205 ../../bkchem/modes.py:664
-#: ../../bkchem/modes.py:1227 ../../bkchem/modes.py:1802
+#: ../../bkchem/interactors.py:205
 msgid "Parse Error"
 msgstr "Chyba zpracování"
 
-#: ../../bkchem/interactors.py:205 ../../bkchem/modes.py:1227
-#: ../../bkchem/modes.py:1802
+#: ../../bkchem/interactors.py:205
 msgid ""
 "Unable to parse the text-\n"
 "probably problem with input encoding!"
@@ -932,54 +917,54 @@ msgid "Number %s was set to atom(s)."
 msgstr "molekule bylo nastaveno %s %s"
 
 #: ../../bkchem/interactors.py:357
-msgid "BKchem interpreted the entered text as an atom"
+msgid "BKChem interpreted the entered text as an atom"
 msgstr ""
 
 #: ../../bkchem/interactors.py:359
 msgid ""
-"BKchem thinks it can interpret the entered text as a group, try to expand it "
+"BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
 
 #: ../../bkchem/interactors.py:361
 msgid ""
-"BKchem could not interpret the entered text as anything with chemical meaning"
+"BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
 
-#: ../../bkchem/interactors.py:372 ../../bkchem/logger.py:33
-#: ../../bkchem/main.py:245
+#: ../../bkchem/interactors.py:375 ../../bkchem/logger.py:33
+#: ../../bkchem/main.py:242
 msgid "Info"
 msgstr "Informace"
 
-#: ../../bkchem/interactors.py:373
-msgid "The selected language will be used the next time you start BKchem."
+#: ../../bkchem/interactors.py:376
+msgid "The selected language will be used the next time you start BKChem."
 msgstr ""
 
-#: ../../bkchem/interactors.py:388
+#: ../../bkchem/interactors.py:391
 msgid "The selection does not define connected subgraph"
 msgstr ""
 
-#: ../../bkchem/interactors.py:416
+#: ../../bkchem/interactors.py:419
 msgid "The selection is not linear - there are some splittings."
 msgstr ""
 
-#: ../../bkchem/interactors.py:426
+#: ../../bkchem/interactors.py:429
 msgid ""
 "The selected part of a molecule is a whole ring, there is no way to "
 "linearize it"
 msgstr ""
 
-#: ../../bkchem/interactors.py:475
+#: ../../bkchem/interactors.py:478
 msgid "Groups must be expanded to compute oxidation number for them."
 msgstr ""
 
-#: ../../bkchem/interactors.py:481
+#: ../../bkchem/interactors.py:484
 msgid ""
 "Unexpanded groups or text-only atoms may cause incorrect computation of "
 "oxidation number."
 msgstr ""
 
-#: ../../bkchem/interactors.py:494
+#: ../../bkchem/interactors.py:497
 msgid "You can move and delete the created oxidation numbers in the mark mode"
 msgstr ""
 
@@ -1019,649 +1004,655 @@ msgstr "Barva"
 msgid "Ignore"
 msgstr "Informace"
 
-#: ../../bkchem/main.py:181
+#: ../../bkchem/main.py:178
 msgid "Open, save, export, and import files"
 msgstr ""
 
-#: ../../bkchem/main.py:181 ../../bkchem/main.py:183 ../../bkchem/main.py:184
+#: ../../bkchem/main.py:178 ../../bkchem/main.py:180 ../../bkchem/main.py:181
+#: ../../bkchem/main.py:182 ../../bkchem/main.py:183 ../../bkchem/main.py:184
 #: ../../bkchem/main.py:185 ../../bkchem/main.py:186 ../../bkchem/main.py:187
-#: ../../bkchem/main.py:188 ../../bkchem/main.py:189 ../../bkchem/main.py:190
-#: ../../bkchem/main.py:192 ../../bkchem/main.py:194 ../../bkchem/main.py:195
-#: ../../bkchem/main.py:196 ../../bkchem/main.py:197 ../../bkchem/main.py:198
-#: ../../bkchem/main.py:199 ../../bkchem/main.py:200
+#: ../../bkchem/main.py:189 ../../bkchem/main.py:191 ../../bkchem/main.py:192
+#: ../../bkchem/main.py:193 ../../bkchem/main.py:194 ../../bkchem/main.py:195
+#: ../../bkchem/main.py:196 ../../bkchem/main.py:197
 msgid "File"
 msgstr "Soubor"
 
-#: ../../bkchem/main.py:183
+#: ../../bkchem/main.py:180
 msgid "Create a new file in a new tab"
 msgstr ""
 
-#: ../../bkchem/main.py:183
+#: ../../bkchem/main.py:180
 msgid "New"
 msgstr "Nový"
 
-#: ../../bkchem/main.py:184
+#: ../../bkchem/main.py:181
 #, fuzzy
 msgid "Save the file"
 msgstr "Vybrat vše"
 
-#: ../../bkchem/main.py:185
+#: ../../bkchem/main.py:182
 #, fuzzy
 msgid "Save As.."
 msgstr "Uložit jako..."
 
-#: ../../bkchem/main.py:185
+#: ../../bkchem/main.py:182
 msgid "Save the file under different name"
 msgstr ""
 
-#: ../../bkchem/main.py:186
+#: ../../bkchem/main.py:183
 msgid "Save As Template"
 msgstr ""
 
-#: ../../bkchem/main.py:186
+#: ../../bkchem/main.py:183
 msgid ""
 "Save the file as template, certain criteria must be met for this to work"
 msgstr ""
 
-#: ../../bkchem/main.py:187
+#: ../../bkchem/main.py:184
 msgid "Load (open) a file in a new tab"
 msgstr ""
 
-#: ../../bkchem/main.py:187 ../../bkchem/main.py:853 ../../bkchem/main.py:1049
+#: ../../bkchem/main.py:184 ../../bkchem/main.py:859 ../../bkchem/main.py:1055
 msgid "Load"
 msgstr "Otevřít"
 
-#: ../../bkchem/main.py:188
+#: ../../bkchem/main.py:185
 msgid "Load a file replacing the current one"
 msgstr ""
 
-#: ../../bkchem/main.py:188
+#: ../../bkchem/main.py:185
 msgid "Load to the same tab"
 msgstr ""
 
-#: ../../bkchem/main.py:189
+#: ../../bkchem/main.py:186
 msgid "The most recently used files"
 msgstr ""
 
-#: ../../bkchem/main.py:189 ../../bkchem/main.py:467
+#: ../../bkchem/main.py:186 ../../bkchem/main.py:465
 #, fuzzy
 msgid "Recent files"
 msgstr "vycentrovat první písmeno"
 
-#: ../../bkchem/main.py:192
+#: ../../bkchem/main.py:189
 msgid "Export the current file"
 msgstr ""
 
-#: ../../bkchem/main.py:192 ../../bkchem/main.py:193 ../../bkchem/main.py:411
-#: ../../bkchem/main.py:1115
+#: ../../bkchem/main.py:189 ../../bkchem/main.py:190 ../../bkchem/main.py:409
+#: ../../bkchem/main.py:1121
 msgid "Export"
 msgstr "Exportovat"
 
-#: ../../bkchem/main.py:193
+#: ../../bkchem/main.py:190
 msgid ""
-"Export to plain SVG - Scalable Vector Graphics - without embedding BKchem "
+"Export to plain SVG - Scalable Vector Graphics - without embedding BKChem "
 "data inside"
 msgstr ""
 
-#: ../../bkchem/main.py:193
+#: ../../bkchem/main.py:190
 msgid "SVG"
 msgstr "SVG"
 
-#: ../../bkchem/main.py:194
+#: ../../bkchem/main.py:191
 msgid "Import a non-native file format"
 msgstr ""
 
-#: ../../bkchem/main.py:194 ../../bkchem/main.py:406
+#: ../../bkchem/main.py:191 ../../bkchem/main.py:404
 msgid "Import"
 msgstr "Import"
 
-#: ../../bkchem/main.py:196
+#: ../../bkchem/main.py:193
 msgid "Set the papers size and other properties of the document"
 msgstr ""
 
-#: ../../bkchem/main.py:198
+#: ../../bkchem/main.py:195
 msgid "Close tab"
 msgstr ""
 
-#: ../../bkchem/main.py:198
+#: ../../bkchem/main.py:195
 msgid "Close the current tab, exit when there is only one tab"
 msgstr ""
 
-#: ../../bkchem/main.py:200
+#: ../../bkchem/main.py:197
 msgid "Exit"
 msgstr "Konec"
 
-#: ../../bkchem/main.py:200
+#: ../../bkchem/main.py:197
 #, fuzzy
-msgid "Exit BKchem"
+msgid "Exit BKChem"
 msgstr "O BKchemu"
 
-#: ../../bkchem/main.py:203
+#: ../../bkchem/main.py:200
 msgid "Undo, Copy, Paste etc."
 msgstr ""
 
+#: ../../bkchem/main.py:200 ../../bkchem/main.py:201 ../../bkchem/main.py:202
 #: ../../bkchem/main.py:203 ../../bkchem/main.py:204 ../../bkchem/main.py:205
 #: ../../bkchem/main.py:206 ../../bkchem/main.py:207 ../../bkchem/main.py:208
-#: ../../bkchem/main.py:209 ../../bkchem/main.py:210 ../../bkchem/main.py:211
-#: ../../bkchem/main.py:212 ../../bkchem/main.py:213
+#: ../../bkchem/main.py:209 ../../bkchem/main.py:210
 msgid "Edit"
 msgstr "Edit"
 
-#: ../../bkchem/main.py:204
+#: ../../bkchem/main.py:201
 msgid "Revert the last change made"
 msgstr ""
 
-#: ../../bkchem/main.py:204
+#: ../../bkchem/main.py:201
 msgid "Undo"
 msgstr "Zpět"
 
-#: ../../bkchem/main.py:205
+#: ../../bkchem/main.py:202
 msgid "Redo"
 msgstr "Opakovat"
 
-#: ../../bkchem/main.py:205
+#: ../../bkchem/main.py:202
 msgid "Revert the last undo action"
 msgstr ""
 
-#: ../../bkchem/main.py:207
+#: ../../bkchem/main.py:204
 #, fuzzy
 msgid "Copy the selected objects to clipboard and delete them"
 msgstr "%s objektů zkopírováno do schránky"
 
-#: ../../bkchem/main.py:207
+#: ../../bkchem/main.py:204
 msgid "Cut"
 msgstr "Vyjmout"
 
-#: ../../bkchem/main.py:208
+#: ../../bkchem/main.py:205
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: ../../bkchem/main.py:208
+#: ../../bkchem/main.py:205
 #, fuzzy
 msgid "Copy the selected objects to clipboard"
 msgstr "%s objektů zkopírováno do schránky"
 
-#: ../../bkchem/main.py:209
+#: ../../bkchem/main.py:206
 msgid "Paste"
 msgstr "Vložit"
 
-#: ../../bkchem/main.py:209
+#: ../../bkchem/main.py:206
 msgid "Paste the content of clipboard to current paper"
 msgstr ""
 
-#: ../../bkchem/main.py:211
+#: ../../bkchem/main.py:208
 msgid ""
 "Create SVG for the selected objects and place it to clipboard in text form"
 msgstr ""
 
-#: ../../bkchem/main.py:211
+#: ../../bkchem/main.py:208
 msgid "Selected to clipboard as SVG"
 msgstr "Vybrané do schránky jako SVG"
 
-#: ../../bkchem/main.py:213
+#: ../../bkchem/main.py:210
 msgid "Select all"
 msgstr "Vybrat vše"
 
-#: ../../bkchem/main.py:213
+#: ../../bkchem/main.py:210
 msgid "Select everything on the paper"
 msgstr ""
 
-#: ../../bkchem/main.py:216
+#: ../../bkchem/main.py:213
 #, fuzzy
 msgid "Aligning of selected objects"
 msgstr "Informace o vybraných molekulách"
 
+#: ../../bkchem/main.py:213 ../../bkchem/main.py:214 ../../bkchem/main.py:215
 #: ../../bkchem/main.py:216 ../../bkchem/main.py:217 ../../bkchem/main.py:218
-#: ../../bkchem/main.py:219 ../../bkchem/main.py:220 ../../bkchem/main.py:221
-#: ../../bkchem/main.py:222 ../../bkchem/main.py:223
+#: ../../bkchem/main.py:219 ../../bkchem/main.py:220
 msgid "Align"
 msgstr "Zarovnat"
 
-#: ../../bkchem/main.py:217
+#: ../../bkchem/main.py:214
 #, fuzzy
 msgid "Align the tops of selected objects"
 msgstr "Informace o vybraných molekulách"
 
-#: ../../bkchem/main.py:217
+#: ../../bkchem/main.py:214
 msgid "Top"
 msgstr "Nahoru"
 
-#: ../../bkchem/main.py:218
+#: ../../bkchem/main.py:215
 msgid "Align the bottoms of selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:218
+#: ../../bkchem/main.py:215
 msgid "Bottom"
 msgstr "Dolů"
 
-#: ../../bkchem/main.py:219
+#: ../../bkchem/main.py:216
 msgid "Align the left sides of selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:219
+#: ../../bkchem/main.py:216
 msgid "Left"
 msgstr "Doleva"
 
-#: ../../bkchem/main.py:220
+#: ../../bkchem/main.py:217
 msgid "Align the rights sides of selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:220
+#: ../../bkchem/main.py:217
 msgid "Right"
 msgstr "Doprava"
 
-#: ../../bkchem/main.py:222
+#: ../../bkchem/main.py:219
 msgid "Align the horizontal centers of selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:222
+#: ../../bkchem/main.py:219
 #, fuzzy
 msgid "Center horizontally"
 msgstr "Centrovat horizontálně"
 
-#: ../../bkchem/main.py:223
+#: ../../bkchem/main.py:220
 msgid "Align the vertical centers of selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:223
+#: ../../bkchem/main.py:220
 #, fuzzy
 msgid "Center vertically"
 msgstr "Centrovat vertikálně"
 
-#: ../../bkchem/main.py:226
+#: ../../bkchem/main.py:223
 msgid "Set properties of selected objects"
 msgstr ""
 
+#: ../../bkchem/main.py:223 ../../bkchem/main.py:224 ../../bkchem/main.py:225
 #: ../../bkchem/main.py:226 ../../bkchem/main.py:227 ../../bkchem/main.py:228
-#: ../../bkchem/main.py:229 ../../bkchem/main.py:230 ../../bkchem/main.py:231
-#: ../../bkchem/main.py:232 ../../bkchem/main.py:233 ../../bkchem/main.py:236
-#: ../../bkchem/main.py:239 ../../bkchem/main.py:240
+#: ../../bkchem/main.py:229 ../../bkchem/main.py:230 ../../bkchem/main.py:233
+#: ../../bkchem/main.py:236 ../../bkchem/main.py:237
 msgid "Object"
 msgstr "Objekt"
 
-#: ../../bkchem/main.py:227
+#: ../../bkchem/main.py:224
 msgid "Scale selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:229
+#: ../../bkchem/main.py:226
 msgid "Bring to front"
 msgstr "Přenést dopředu"
 
-#: ../../bkchem/main.py:229
+#: ../../bkchem/main.py:226
 msgid "Lift selected objects to the top of the stack"
 msgstr ""
 
-#: ../../bkchem/main.py:230
+#: ../../bkchem/main.py:227
 msgid "Lower the selected objects to the bottom of the stack"
 msgstr ""
 
-#: ../../bkchem/main.py:230
+#: ../../bkchem/main.py:227
 msgid "Send back"
 msgstr "Poslat dozadu"
 
-#: ../../bkchem/main.py:231
+#: ../../bkchem/main.py:228
 msgid "Reverse the ordering of the selected objects on the stack"
 msgstr ""
 
-#: ../../bkchem/main.py:231
+#: ../../bkchem/main.py:228
 msgid "Swap on stack"
 msgstr "Zaměnit na stacku"
 
-#: ../../bkchem/main.py:233
+#: ../../bkchem/main.py:230
 msgid "Vertical mirror"
 msgstr "Vertikální zrcadlo"
 
-#: ../../bkchem/main.py:234
+#: ../../bkchem/main.py:231
 msgid ""
 "Creates a reflection of the selected objects, the reflection axis is the "
 "common vertical axis of all the selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:236
+#: ../../bkchem/main.py:233
 msgid "Horizontal mirror"
 msgstr "Horizontální zrcadlo"
 
-#: ../../bkchem/main.py:237
+#: ../../bkchem/main.py:234
 msgid ""
 "Creates a reflection of the selected objects, the reflection axis is the "
 "common horizontal axis of all the selected objects"
 msgstr ""
 
-#: ../../bkchem/main.py:240
+#: ../../bkchem/main.py:237
 msgid "Configure"
 msgstr "Konfigurovat"
 
-#: ../../bkchem/main.py:240
+#: ../../bkchem/main.py:237
 msgid "Set the properties of the object, such as color, font size etc."
 msgstr ""
 
-#: ../../bkchem/main.py:244
+#: ../../bkchem/main.py:241
 msgid ""
 "Information about molecules, group expansion and other chemistry related "
 "stuff"
 msgstr ""
 
-#: ../../bkchem/main.py:245
+#: ../../bkchem/main.py:242
 #, fuzzy
 msgid "Display summary formula and other info on all selected molecules"
 msgstr "Souhrn pro všechny vybrané molekuly:"
 
-#: ../../bkchem/main.py:246
+#: ../../bkchem/main.py:243
 msgid "Check if the selected objects have chemical meaning"
 msgstr ""
 
-#: ../../bkchem/main.py:247
+#: ../../bkchem/main.py:244
 msgid "Expand all selected groups to their structures"
 msgstr ""
 
-#: ../../bkchem/main.py:247
+#: ../../bkchem/main.py:244
 msgid "Expand groups"
 msgstr "Expandovat skupiny"
 
-#: ../../bkchem/main.py:249
+#: ../../bkchem/main.py:246
 msgid "Compute and display the oxidation number of selected atoms"
 msgstr ""
 
 # Sub čísla
-#: ../../bkchem/main.py:249
+#: ../../bkchem/main.py:246
 #, fuzzy
 msgid "Compute oxidation number"
 msgstr "Sub čísla"
 
-#: ../../bkchem/main.py:251
+#: ../../bkchem/main.py:248
 msgid "Read SMILES"
 msgstr "Čti SMILES"
 
-#: ../../bkchem/main.py:251
+#: ../../bkchem/main.py:248
 msgid "Read a SMILES string and convert it to structure"
 msgstr ""
 
-#: ../../bkchem/main.py:252
+#: ../../bkchem/main.py:249
 #, fuzzy
 msgid "Read InChI"
 msgstr "Read IChI"
 
-#: ../../bkchem/main.py:252
+#: ../../bkchem/main.py:249
 msgid "Read an InChI string and convert it to structure"
 msgstr ""
 
-#: ../../bkchem/main.py:254
+#: ../../bkchem/main.py:251
 msgid "Generate SMILES"
 msgstr "Generuj SMILES"
 
-#: ../../bkchem/main.py:254
+#: ../../bkchem/main.py:251
 msgid "Generate SMILES for the selected structure"
 msgstr ""
 
-#: ../../bkchem/main.py:255
+#: ../../bkchem/main.py:252
 msgid ""
 "Generate an InChI for the selected structure by calling the InChI program"
 msgstr ""
 
-#: ../../bkchem/main.py:261
+#: ../../bkchem/main.py:258
 msgid "Set molecule name"
 msgstr ""
 
-#: ../../bkchem/main.py:261
+#: ../../bkchem/main.py:258
 #, fuzzy
 msgid "Set the name of the selected molecule"
 msgstr "Kontrola chemie pro všechny vybrané molekuly:"
 
-#: ../../bkchem/main.py:262
+#: ../../bkchem/main.py:259
 msgid "Set molecule ID"
 msgstr ""
 
-#: ../../bkchem/main.py:262
+#: ../../bkchem/main.py:259
 #, fuzzy
 msgid "Set the ID of the selected molecule"
 msgstr "Kontrola chemie pro všechny vybrané molekuly:"
 
-#: ../../bkchem/main.py:264
+#: ../../bkchem/main.py:261
 msgid "Create a fragment from the selected part of the molecule"
 msgstr ""
 
-#: ../../bkchem/main.py:264
+#: ../../bkchem/main.py:261
 #, fuzzy
 msgid "Create fragment"
 msgstr "obdélník"
 
-#: ../../bkchem/main.py:265
+#: ../../bkchem/main.py:262
 msgid "Show already defined fragments"
 msgstr ""
 
-#: ../../bkchem/main.py:265
+#: ../../bkchem/main.py:262
 msgid "View fragments"
 msgstr ""
 
-#: ../../bkchem/main.py:267
+#: ../../bkchem/main.py:264
 msgid ""
 "Convert selected part of chain to linear fragment. The selected chain must "
 "not be split."
 msgstr ""
 
-#: ../../bkchem/main.py:267
+#: ../../bkchem/main.py:264
 msgid "Convert selection to linear form"
 msgstr ""
 
-#: ../../bkchem/main.py:271
-msgid "Settings that affect how BKchem works"
+#: ../../bkchem/main.py:268
+msgid "Settings that affect how BKChem works"
 msgstr ""
 
-#: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:273
-#: ../../bkchem/main.py:274 ../../bkchem/main.py:276 ../../bkchem/main.py:277
+#: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
+#: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
+#: ../../bkchem/main.py:275
 msgid "Options"
 msgstr "Volby"
 
-#: ../../bkchem/main.py:272
+#: ../../bkchem/main.py:269
 msgid "Set the default drawing style here"
 msgstr ""
 
-#: ../../bkchem/main.py:272
+#: ../../bkchem/main.py:269
 msgid "Standard"
 msgstr "Standard"
 
-#: ../../bkchem/main.py:273
+#: ../../bkchem/main.py:270
 msgid "Set the language used after next restart"
 msgstr ""
 
-#: ../../bkchem/main.py:274
+#: ../../bkchem/main.py:271
+msgid "Set how messages in BKChem are displayed to you"
+msgstr ""
+
+#: ../../bkchem/main.py:272
 #, fuzzy
 msgid "InChI program path"
 msgstr "Cesta k INChI programu"
 
-#: ../../bkchem/main.py:274
+#: ../../bkchem/main.py:272
 msgid ""
-"To use InChI in BKchem you must first give it a path to the InChI program "
+"To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
 msgstr ""
 
-#: ../../bkchem/main.py:280
+#: ../../bkchem/main.py:278
 msgid "Help and information about the program"
 msgstr ""
 
-#: ../../bkchem/main.py:280 ../../bkchem/main.py:281
+#: ../../bkchem/main.py:278 ../../bkchem/main.py:279
 msgid "Help"
 msgstr "Nápověda"
 
-#: ../../bkchem/main.py:281
+#: ../../bkchem/main.py:279
 msgid "About"
 msgstr "O programu"
 
-#: ../../bkchem/main.py:281
-msgid "General information about BKchem"
+#: ../../bkchem/main.py:279
+msgid "General information about BKChem"
 msgstr ""
 
-#: ../../bkchem/main.py:284
+#: ../../bkchem/main.py:282
 msgid "Small additional scripts"
 msgstr ""
 
-#: ../../bkchem/main.py:284 ../../bkchem/main.py:326
+#: ../../bkchem/main.py:282 ../../bkchem/main.py:324
 msgid "Plugins"
 msgstr "Pluginy"
 
-#: ../../bkchem/main.py:563
-msgid "About BKchem"
+#: ../../bkchem/main.py:567
+#, fuzzy
+msgid "About BKChem"
 msgstr "O BKchemu"
 
-#: ../../bkchem/main.py:566
+#: ../../bkchem/main.py:570
 msgid "version"
 msgstr ""
 
-#: ../../bkchem/main.py:682
+#: ../../bkchem/main.py:688
 #, fuzzy
 msgid "Sorry but I cannot open the same file twice: "
 msgstr "nelze otevřít soubor "
 
-#: ../../bkchem/main.py:734
+#: ../../bkchem/main.py:740
 #, fuzzy
 msgid "Really close?"
 msgstr "Opravdu skončit?"
 
-#: ../../bkchem/main.py:735
+#: ../../bkchem/main.py:741
 #, fuzzy
 msgid "There are unsaved changes in file %s, what should I do?"
 msgstr "Existují neuložené změny, chcete opravdu ukončit program?"
 
-#: ../../bkchem/main.py:736 ../../bkchem/main.py:737
+#: ../../bkchem/main.py:742 ../../bkchem/main.py:743
 #, fuzzy
 msgid "Close"
 msgstr "Barva"
 
-#: ../../bkchem/main.py:781
+#: ../../bkchem/main.py:787
 msgid "Save As..."
 msgstr "Uložit jako..."
 
-#: ../../bkchem/main.py:782 ../../bkchem/main.py:856
+#: ../../bkchem/main.py:788 ../../bkchem/main.py:862
 msgid "CD-SVG file"
 msgstr "soubor CD-SVG"
 
-#: ../../bkchem/main.py:783 ../../bkchem/main.py:857
+#: ../../bkchem/main.py:789 ../../bkchem/main.py:863
 msgid "Gzipped CD-SVG file"
 msgstr "Komprimovaný soubor CD-SVG"
 
-#: ../../bkchem/main.py:784 ../../bkchem/main.py:858
+#: ../../bkchem/main.py:790 ../../bkchem/main.py:864
 msgid "CDML file"
 msgstr "Soubor CDML"
 
-#: ../../bkchem/main.py:785
+#: ../../bkchem/main.py:791
 msgid "Gzipped CDML file"
 msgstr "Komprimovaný soubor CDML"
 
-#: ../../bkchem/main.py:790
+#: ../../bkchem/main.py:796
 msgid "File already opened!"
 msgstr ""
 
-#: ../../bkchem/main.py:790
+#: ../../bkchem/main.py:796
 msgid ""
 "Sorry but you are already editing a file with this name (%s), please choose "
 "a different name or close the other file."
 msgstr ""
 
-#: ../../bkchem/main.py:810
+#: ../../bkchem/main.py:816
 msgid "gzipped CDML"
 msgstr "komprimovaný CDML"
 
-#: ../../bkchem/main.py:813
+#: ../../bkchem/main.py:819
 msgid "CDML"
 msgstr "CDML"
 
-#: ../../bkchem/main.py:816
+#: ../../bkchem/main.py:822
 msgid "gzipped CD-SVG"
 msgstr "komprimované CD-SVG"
 
-#: ../../bkchem/main.py:819
+#: ../../bkchem/main.py:825
 msgid "CD-SVG"
 msgstr "CD-SVG"
 
-#: ../../bkchem/main.py:822
+#: ../../bkchem/main.py:828
 msgid "saved to %s file: %s"
 msgstr "uloženo do %s souboru: %s"
 
-#: ../../bkchem/main.py:827
+#: ../../bkchem/main.py:833
 msgid "failed to save to %s file: %s"
 msgstr "neúspěch při ukládání do %s souboru: %s"
 
-#: ../../bkchem/main.py:849 ../../bkchem/main.py:1039
+#: ../../bkchem/main.py:855 ../../bkchem/main.py:1045
 msgid "Forget changes in currently visiting file?"
 msgstr "Zapomenout změny v právě otevřeném souboru?"
 
-#: ../../bkchem/main.py:849 ../../bkchem/main.py:1039
+#: ../../bkchem/main.py:855 ../../bkchem/main.py:1045
 msgid "Forget changes?"
 msgstr "Zapomenout změny?"
 
-#: ../../bkchem/main.py:855
+#: ../../bkchem/main.py:861
 msgid "All native formats"
 msgstr "Všechny nativní formáty"
 
-#: ../../bkchem/main.py:859
+#: ../../bkchem/main.py:865
 msgid "CDGZ file"
 msgstr "Soubor CDGZ"
 
-#: ../../bkchem/main.py:860
+#: ../../bkchem/main.py:866
 msgid "Gzipped files"
 msgstr "Soubory komprimované gzipem"
 
-#: ../../bkchem/main.py:861 ../../bkchem/main.py:1045
-#: ../../bkchem/main.py:1110
+#: ../../bkchem/main.py:867 ../../bkchem/main.py:1051
+#: ../../bkchem/main.py:1116
 msgid "All files"
 msgstr "Všechny soubory"
 
-#: ../../bkchem/main.py:886
+#: ../../bkchem/main.py:892
 msgid "cannot open file "
 msgstr "nelze otevřít soubor "
 
-#: ../../bkchem/main.py:900 ../../bkchem/main.py:912
+#: ../../bkchem/main.py:906 ../../bkchem/main.py:918
 msgid "error reading file"
 msgstr "chyba při čtení souboru"
 
-#: ../../bkchem/main.py:922
+#: ../../bkchem/main.py:928
 #, fuzzy
 msgid "File was not loaded"
 msgstr "soubor nebyl načten"
 
-#: ../../bkchem/main.py:931 ../../bkchem/plugins/povray.py:39
+#: ../../bkchem/main.py:937 ../../bkchem/plugins/povray.py:39
 msgid "Proceed?"
 msgstr "Pokračovat?"
 
-#: ../../bkchem/main.py:932
+#: ../../bkchem/main.py:938
 msgid "CDML data seem present in SVG but have wrong namespace. Proceed?"
 msgstr ""
 "Zdá se, že SVG obsahuje CDML data, ale mají přiřazen špatný prostor jmen. "
 "Pokračovat?"
 
-#: ../../bkchem/main.py:938
+#: ../../bkchem/main.py:944
 msgid "file not loaded"
 msgstr "soubor nebyl načten"
 
-#: ../../bkchem/main.py:942
+#: ../../bkchem/main.py:948
 msgid "cdml data are not present in SVG or are corrupted!"
 msgstr "SVG neobsahuje cdml data nebo jsou poškozena!"
 
-#: ../../bkchem/main.py:948 ../../bkchem/main.py:1091
+#: ../../bkchem/main.py:954 ../../bkchem/main.py:1097
 msgid "loaded file: "
 msgstr "načten soubor: "
 
-#: ../../bkchem/main.py:958
+#: ../../bkchem/main.py:964
 msgid "Export SVG"
 msgstr "Exportovat SVG"
 
-#: ../../bkchem/main.py:958
+#: ../../bkchem/main.py:964
 msgid "SVG file"
 msgstr "soubor SVG"
 
-#: ../../bkchem/main.py:972
+#: ../../bkchem/main.py:978
 msgid "exported to SVG file: "
 msgstr "exportováno do SVG souboru: "
 
-#: ../../bkchem/main.py:1044 ../../bkchem/main.py:1109
+#: ../../bkchem/main.py:1050 ../../bkchem/main.py:1115
 msgid "file"
 msgstr "soubor"
 
-#: ../../bkchem/main.py:1070 ../../bkchem/main.py:1078
+#: ../../bkchem/main.py:1076 ../../bkchem/main.py:1084
 msgid "Import error"
 msgstr "Chyba importu"
 
-#: ../../bkchem/main.py:1070 ../../bkchem/main.py:1078
+#: ../../bkchem/main.py:1076 ../../bkchem/main.py:1084
 msgid ""
 "Plugin failed to import with following error:\n"
 " %s"
@@ -1669,11 +1660,11 @@ msgstr ""
 "Plugin při importu selhal s následující chybou:\n"
 " %s"
 
-#: ../../bkchem/main.py:1125
+#: ../../bkchem/main.py:1131
 msgid "Export error"
 msgstr "Chyba exportu"
 
-#: ../../bkchem/main.py:1125
+#: ../../bkchem/main.py:1131
 msgid ""
 "Plugin failed to export with following error:\n"
 " %s"
@@ -1681,11 +1672,11 @@ msgstr ""
 "Plugin při exportu selhal s následující chybou:\n"
 " %s"
 
-#: ../../bkchem/main.py:1129
+#: ../../bkchem/main.py:1135
 msgid "exported file: "
 msgstr "exportován soubor: "
 
-#: ../../bkchem/main.py:1176
+#: ../../bkchem/main.py:1182
 msgid ""
 "Before you use this tool, be warned that not all features of SMILES are "
 "currently supported.\n"
@@ -1700,7 +1691,7 @@ msgstr ""
 "\n"
 "Zadejte SMILES:"
 
-#: ../../bkchem/main.py:1213
+#: ../../bkchem/main.py:1219
 #, fuzzy
 msgid ""
 "Before you use his tool, be warned that not all features of InChI are "
@@ -1719,12 +1710,12 @@ msgstr ""
 "\n"
 "Zadejte IChI:"
 
-#: ../../bkchem/main.py:1240 ../../bkchem/main.py:1247
-#: ../../bkchem/main.py:1254 ../../bkchem/main.py:1262
+#: ../../bkchem/main.py:1246 ../../bkchem/main.py:1253
+#: ../../bkchem/main.py:1260 ../../bkchem/main.py:1268
 msgid "Error processing %s"
 msgstr "Chyba při zpracování %s"
 
-#: ../../bkchem/main.py:1241
+#: ../../bkchem/main.py:1247
 msgid ""
 "Some feature of the submitted InChI is not supported.\n"
 "\n"
@@ -1732,14 +1723,14 @@ msgid ""
 "the sumary layer"
 msgstr ""
 
-#: ../../bkchem/main.py:1248
+#: ../../bkchem/main.py:1254
 msgid ""
 "There was an error reading the submitted InChI.\n"
 "\n"
 "If you are sure it is a valid InChI, please send me a bug report."
 msgstr ""
 
-#: ../../bkchem/main.py:1255
+#: ../../bkchem/main.py:1261
 msgid ""
 "The submitted InChI has unsupported version '%s'.\n"
 "\n"
@@ -1747,7 +1738,7 @@ msgid ""
 "changed to '1'."
 msgstr ""
 
-#: ../../bkchem/main.py:1263
+#: ../../bkchem/main.py:1269
 msgid ""
 "The reading of InChI failed with following error:\n"
 "\n"
@@ -1757,41 +1748,45 @@ msgid ""
 "report."
 msgstr ""
 
-#: ../../bkchem/main.py:1293
+#: ../../bkchem/main.py:1299
 #, fuzzy
 msgid "Generated SMILES"
 msgstr "Generuj SMILES"
 
-#: ../../bkchem/main.py:1401
+#: ../../bkchem/main.py:1409
 msgid "InChI generation failed,"
 msgstr ""
 
-#: ../../bkchem/main.py:1401
+#: ../../bkchem/main.py:1409
 msgid ""
 "make sure the path to the InChI program is correct in 'Options/InChI program "
 "path'"
 msgstr ""
 
-#: ../../bkchem/main.py:1403
+#: ../../bkchem/main.py:1411
 msgid ""
 "Please, try to make sure the path to the InChI program is correct in "
 "'Options/InChI program path'"
 msgstr ""
 
-#: ../../bkchem/main.py:1403
+#: ../../bkchem/main.py:1411
 msgid "Unknown error occured during InChI generation, sorry."
 msgstr ""
 
-#: ../../bkchem/main.py:1407
+#: ../../bkchem/main.py:1415
 #, fuzzy
 msgid "Generated InChIs"
 msgstr "Generuj SMILES"
 
-#: ../../bkchem/main.py:1435
+#: ../../bkchem/main.py:1448
 msgid "The file was saved as a template %s"
 msgstr ""
 
-#: ../../bkchem/messages.py:26
+#: ../../bkchem/messages.py:24
+msgid "use SHIFT to drag only in X, CTRL to drag only in Y"
+msgstr ""
+
+#: ../../bkchem/messages.py:28
 msgid ""
 "click on atom to add a new single bond, click on bond to change its order "
 "(or change direction)\n"
@@ -1801,39 +1796,39 @@ msgstr ""
 "řád (nebo směr)\n"
 "Shift+kliknutí na dvojné vazbě změní pozici druhé vazby"
 
-#: ../../bkchem/messages.py:27
+#: ../../bkchem/messages.py:29
 msgid "length of the drawn bond is fixed to a preset value"
 msgstr "délka kreslené vazby je zafixována na přednastavenou hodnotu"
 
-#: ../../bkchem/messages.py:28
+#: ../../bkchem/messages.py:30
 msgid "freestyle drawing - no bond length or angle restrictions are applied"
 msgstr "freestyle kreslení - délka vazby ani její úhel nejsou nijak omezeny"
 
-#: ../../bkchem/messages.py:33
+#: ../../bkchem/messages.py:35
 msgid "length of the drawn arrow (arrow part) is fixed to a preset value"
 msgstr ""
 "délka kreslené šipky (části šipky) je zafixována na přednastavenou hodnotu"
 
-#: ../../bkchem/messages.py:34
+#: ../../bkchem/messages.py:36
 msgid "freestyle drawing - no arrow length or angle restrictions are applied"
 msgstr "freestyle kreslení - délka šipky ani její úhel nejsou nijak omezeny<"
 
-#: ../../bkchem/messages.py:35
+#: ../../bkchem/messages.py:37
 msgid "arrow is composed of straight lines"
 msgstr "šipka je složena z rovných čar"
 
-#: ../../bkchem/messages.py:36
+#: ../../bkchem/messages.py:38
 msgid "arrow is drawn as a b-spline"
 msgstr "šipka je vykreslena jako b-spline"
 
-#: ../../bkchem/messages.py:41
+#: ../../bkchem/messages.py:43
 msgid ""
 "drag an atom or a bond to 2D-rotate a molecule around its geometrical center"
 msgstr ""
 "tažením atomu či vazby lze otáčet molekulu okolo jejího geometrického středu "
 "(2D)"
 
-#: ../../bkchem/messages.py:42
+#: ../../bkchem/messages.py:44
 msgid ""
 "drag an atom or a bond to 3D-rotate a molecule around its geometrical "
 "center \n"
@@ -1845,19 +1840,26 @@ msgstr ""
 "Prosím vezměte na vědomí, že není možné připojit šablonu k atomu s nenulovou "
 "z souřadnicí"
 
-#: ../../bkchem/messages.py:47 ../../bkchem/messages.py:48
+#: ../../bkchem/messages.py:45
+msgid ""
+"select a bond and then start rotating - the molecule will rotate around the "
+"selected bond \n"
+"by holding shift, you will trigger rotation only of one part of the molecule."
+msgstr ""
+
 #: ../../bkchem/messages.py:49 ../../bkchem/messages.py:50
+#: ../../bkchem/messages.py:51 ../../bkchem/messages.py:52
 msgid "click and drag to draw the corresponding shape"
 msgstr "kliknutím a tažení vytvoříte odpovídající tvar"
 
-#: ../../bkchem/messages.py:51
+#: ../../bkchem/messages.py:53
 msgid ""
 "each left-button click creates one point of the polygon, right click closes "
 "it"
 msgstr ""
 "každé kliknutí pravým tlačítkem vytvoří jeden bod polygonu, pravé ho uzavře"
 
-#: ../../bkchem/messages.py:56
+#: ../../bkchem/messages.py:58
 msgid ""
 "click an atom to add a radical mark to it, it will be removed in case it is "
 "already present"
@@ -1865,7 +1867,7 @@ msgstr ""
 "kliknutím na atom přidáte značku radikálu, značka bude odstaněna v případě "
 "že již existuje"
 
-#: ../../bkchem/messages.py:57
+#: ../../bkchem/messages.py:59
 msgid ""
 "click an atom to add a biradical mark to it, it will be removed in case it "
 "is already present"
@@ -1873,7 +1875,7 @@ msgstr ""
 "kliknutím na atom přidáte značku biradikálu, značka bude odstaněna v případě "
 "že již existuje"
 
-#: ../../bkchem/messages.py:58
+#: ../../bkchem/messages.py:60
 msgid ""
 "click an atom to add a free electron pair mark to it, it will be removed in "
 "case it is already present"
@@ -1881,7 +1883,7 @@ msgstr ""
 "kliknutím na atom přidáte značku volného elektronového páru, značka bude "
 "odstaněna v případě že již existuje"
 
-#: ../../bkchem/messages.py:59
+#: ../../bkchem/messages.py:61
 msgid ""
 "click an atom to add a plus mark to it, it will be removed in case it is "
 "already present"
@@ -1889,7 +1891,7 @@ msgstr ""
 "kliknutím na atom přidáte značku kladného náboje, značka bude odstaněna v "
 "případě že již existuje"
 
-#: ../../bkchem/messages.py:60
+#: ../../bkchem/messages.py:62
 msgid ""
 "click an atom to add a minus mark to it, it will be removed in case it is "
 "already present"
@@ -1897,14 +1899,14 @@ msgstr ""
 "kliknutím na atom přidáte značku záporného náboje, značka bude odstaněna v "
 "případě že již existuje"
 
-#: ../../bkchem/messages.py:65
+#: ../../bkchem/messages.py:67
 msgid ""
 "click a bond or two atoms to align the specified line into vertical position"
 msgstr ""
 "kliknutím na vazbu či dva atomy zarovnáte specifikovanou přímku do "
 "vertikální pozice"
 
-#: ../../bkchem/messages.py:66
+#: ../../bkchem/messages.py:68
 msgid ""
 "click a bond or two atoms to align the specified line into horizontal "
 "position"
@@ -1912,7 +1914,7 @@ msgstr ""
 "kliknutím na vazbu či dva atomy zarovnáte specifikovanou přímku do "
 "horizontální pozice"
 
-#: ../../bkchem/messages.py:67
+#: ../../bkchem/messages.py:69
 msgid ""
 "click an atom or bond to perform an inversion of the molecule through this "
 "atom (center of the bond)"
@@ -1920,25 +1922,25 @@ msgstr ""
 "kliknutím na atom či vazby provedete inverzi molekuly s centrem v zadaném "
 "atomu (středu vazby)"
 
-#: ../../bkchem/messages.py:68
+#: ../../bkchem/messages.py:70
 msgid ""
 "click a bond or two atoms to mirror the molecule through the specified line"
 msgstr ""
 "kliknutím na vazbu či dva atomy provedete zrcadlení molekuly podél této "
 "přímky"
 
-#: ../../bkchem/messages.py:76
+#: ../../bkchem/messages.py:78
 #, fuzzy
 msgid ""
-"BKchem was conceived and written by Beda Kosata\n"
+"BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
 "\n"
-"BKchem is free software and is distributed under GNU GPL.\n"
-"BKchem is provided as is without warranty of any kind.\n"
+"BKChem is free software and is distributed under GNU GPL.\n"
+"BKChem is provided as is without warranty of any kind.\n"
 "- see the file 'gpl.txt' in distribution directory for more info.\n"
 "\n"
 "Among other things GNU GPL allows you to study, modify\n"
-"and redistribute BKchem as long as you do it under GNU GPL."
+"and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
 "BKchem vymyslel a sepsal BK\n"
 "a Vám ho přináší Python, Pmw & (volitelně :) PIL.\n"
@@ -1950,11 +1952,12 @@ msgstr ""
 "Kromě jiného Vám GNU GPL dovoluje studovat, upravovat\n"
 "a redistribuovat BKchem jestliže tak učiníte pod GNU GPL."
 
-#: ../../bkchem/messages.py:87
+#: ../../bkchem/messages.py:89
+#, fuzzy
 msgid ""
 "UNABLE TO IMPORT PMW\n"
 "\n"
-"Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please "
+"Sorry, but BKChem relies too heavily on Pmw to be usable without it. Please "
 "install Pmw and try again.\n"
 "(for more info on Pmw see documentation)"
 msgstr ""
@@ -1963,28 +1966,28 @@ msgstr ""
 "Bohužel, BKchem je příliš závislý na Pmw, než aby mohl pracovat bez něj.\n"
 "Nainstalujte prosím Pmw a zkuste to znovu."
 
-#: ../../bkchem/messages.py:93
+#: ../../bkchem/messages.py:95
 msgid ""
 "UNABLE TO IMPORT OASA\n"
 "\n"
-"Sorry, but from version 0.10 BKchem uses the OASA library internally and "
+"Sorry, but from version 0.10 BKChem uses the OASA library internally and "
 "therefor cannot run without it."
 msgstr ""
 
-#: ../../bkchem/messages.py:98
+#: ../../bkchem/messages.py:100
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKchem needs Python 2.3 or higher to run properly. You "
+"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
-"to run BKchem."
+"to run BKChem."
 msgstr ""
 
-#: ../../bkchem/messages.py:105
+#: ../../bkchem/messages.py:107
 #, fuzzy
 msgid ""
-"BKchem is starting.\n"
+"BKChem is starting.\n"
 "\n"
 "Unfortunately,\n"
 "the splash image was not found :("
@@ -1994,7 +1997,7 @@ msgstr ""
 "Bohužel,\n"
 "uvodní obrázek nebyl nalezen :("
 
-#: ../../bkchem/messages.py:111
+#: ../../bkchem/messages.py:113
 msgid ""
 "This CDML document was created using different standard values than you are "
 "currently using. To retain the same drawing style it could be more "
@@ -2012,7 +2015,7 @@ msgstr ""
 "\n"
 "Chcete použít tyto nové standardní hodnoty?"
 
-#: ../../bkchem/messages.py:114
+#: ../../bkchem/messages.py:116
 msgid ""
 "usage: bkchem [options] [filenames]\n"
 "\n"
@@ -2026,126 +2029,118 @@ msgid ""
 " -v, --version   show program version and exit\n"
 msgstr ""
 
-#: ../../bkchem/modes.py:339
+#: ../../bkchem/modes.py:364
 msgid "edit"
 msgstr "editace"
 
-#: ../../bkchem/modes.py:664
-msgid ""
-"Unable to parse the text-\n"
-"probably error with input encoding!"
-msgstr ""
-"Nelze zpracovat text-\n"
-"pravděpodobně je problém v kódování!"
-
-#: ../../bkchem/modes.py:727
+#: ../../bkchem/modes.py:743
 msgid "draw"
 msgstr "kreslení"
 
-#: ../../bkchem/modes.py:735 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2214
+#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2268
 msgid "1"
 msgstr "1"
 
-#: ../../bkchem/modes.py:735 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2214
+#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2268
 msgid "18"
 msgstr "18"
 
-#: ../../bkchem/modes.py:735 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2214
+#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2268
 msgid "30"
 msgstr "30"
 
-#: ../../bkchem/modes.py:735 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2214
+#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2268
 msgid "6"
 msgstr "6"
 
-#: ../../bkchem/modes.py:736
+#: ../../bkchem/modes.py:752
 msgid "double"
 msgstr "dvojná"
 
-#: ../../bkchem/modes.py:736
+#: ../../bkchem/modes.py:752
 msgid "single"
 msgstr "jednoduchá"
 
-#: ../../bkchem/modes.py:736
+#: ../../bkchem/modes.py:752
 msgid "triple"
 msgstr "trojná"
 
-#: ../../bkchem/modes.py:737
+#: ../../bkchem/modes.py:753
 msgid "adder"
 msgstr "klikatá"
 
-#: ../../bkchem/modes.py:737
+#: ../../bkchem/modes.py:753
 msgid "dash"
 msgstr ""
 
-#: ../../bkchem/modes.py:737
+#: ../../bkchem/modes.py:753
 #, fuzzy
 msgid "dotted"
 msgstr "rotace"
 
-#: ../../bkchem/modes.py:737
+#: ../../bkchem/modes.py:753
 msgid "hatch"
 msgstr "čárkovaná"
 
-#: ../../bkchem/modes.py:737
+#: ../../bkchem/modes.py:753
 msgid "wedge"
 msgstr "klín"
 
-#: ../../bkchem/modes.py:738 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2215
+#: ../../bkchem/modes.py:754 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2269
 msgid "fixed length"
 msgstr "pevná délka"
 
-#: ../../bkchem/modes.py:738 ../../bkchem/modes.py:947
-#: ../../bkchem/modes.py:2215
+#: ../../bkchem/modes.py:754 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2269
 msgid "freestyle"
 msgstr "volný styl"
 
-#: ../../bkchem/modes.py:739
+#: ../../bkchem/modes.py:755
 msgid "normal double bonds for wedge/hatch"
 msgstr "normální klínkové dvojné vazby"
 
-#: ../../bkchem/modes.py:739
+#: ../../bkchem/modes.py:755
 msgid "simple double bonds for wedge/hatch"
 msgstr "jednoduché klínkové dvojné vazby"
 
-#: ../../bkchem/modes.py:770 ../../bkchem/modes.py:817
-#: ../../bkchem/modes.py:848 ../../bkchem/modes.py:1155
-#: ../../bkchem/modes.py:1157
+#: ../../bkchem/modes.py:786 ../../bkchem/modes.py:834
+#: ../../bkchem/modes.py:865 ../../bkchem/modes.py:1172
+#: ../../bkchem/modes.py:1174
 msgid "maximum valency exceeded!"
 msgstr "překročena maximální vaznost!"
 
-#: ../../bkchem/modes.py:781 ../../bkchem/modes.py:830
+#: ../../bkchem/modes.py:797 ../../bkchem/modes.py:847
 #, fuzzy
 msgid "Groups could have valency of 1 only! It was transformed to text!"
 msgstr "skupiny mohou mít vaznost pouze 1! Atom byl převeden na text!"
 
-#: ../../bkchem/modes.py:942 ../../bkchem/modes.py:1859
+#: ../../bkchem/modes.py:959 ../../bkchem/modes.py:1911
 msgid "arrow"
 msgstr "šipka"
 
-#: ../../bkchem/modes.py:948
+#: ../../bkchem/modes.py:965
 msgid "spline"
 msgstr "spline"
 
-#: ../../bkchem/modes.py:1062 ../../bkchem/modes.py:1640
-#: ../../bkchem/modes.py:1859
+#: ../../bkchem/modes.py:1079 ../../bkchem/modes.py:1705
+#: ../../bkchem/modes.py:1911
 msgid "plus"
 msgstr "plus"
 
-#: ../../bkchem/modes.py:1103
+#: ../../bkchem/modes.py:1120
 msgid "template"
 msgstr "šablona"
 
-#: ../../bkchem/modes.py:1113
+#: ../../bkchem/modes.py:1130
 msgid "No template is available"
 msgstr ""
 
-#: ../../bkchem/modes.py:1121
+#: ../../bkchem/modes.py:1138
 msgid ""
 "Sorry, it is not possible to append a template to an atom with non-zero Z "
 "coordinate, yet."
@@ -2154,257 +2149,291 @@ msgstr ""
 "souřadnicí."
 
 #
-#: ../../bkchem/modes.py:1169
+#: ../../bkchem/modes.py:1186
 msgid "focused atom marked as 'template atom'"
 msgstr "zaměřený atom byl označen jako 'šablonový atom'"
 
-#: ../../bkchem/modes.py:1172
+#: ../../bkchem/modes.py:1189
 msgid "focused bond marked as 'template bond'"
 msgstr "zaměřená vazba byla označena jako 'šablonová vazba'"
 
-#: ../../bkchem/modes.py:1194
+#: ../../bkchem/modes.py:1211
 msgid "text"
 msgstr "text"
 
-#: ../../bkchem/modes.py:1246
+#: ../../bkchem/modes.py:1252
 msgid "The text mode can no longer be used to edit atoms, use atom mode."
 msgstr ""
 
-#: ../../bkchem/modes.py:1266
+#: ../../bkchem/modes.py:1272
 msgid "rotate"
 msgstr "rotace"
 
-#: ../../bkchem/modes.py:1269
+#: ../../bkchem/modes.py:1276
 msgid "2D"
 msgstr "2D"
 
-#: ../../bkchem/modes.py:1269
+#: ../../bkchem/modes.py:1276
 msgid "3D"
 msgstr "3D"
 
+#: ../../bkchem/modes.py:1276
+msgid "fix selected bond in 3D"
+msgstr ""
+
+#: ../../bkchem/modes.py:1276
+msgid "normal 3D rotation"
+msgstr ""
+
 #: ../../bkchem/modes.py:1293
+#, fuzzy
+msgid "The selected item must be a bond."
+msgstr "vybrané objekty byly zaměněny"
+
+#: ../../bkchem/modes.py:1295
+msgid ""
+"Exactly one item should be selected to fixed rotation to work, normal "
+"rotation will be used."
+msgstr ""
+
+#: ../../bkchem/modes.py:1315
 #, fuzzy
 msgid "Sorry but you can only rotate molecules in 3D."
 msgstr "nelze otevřít soubor "
 
-#: ../../bkchem/modes.py:1293
+#: ../../bkchem/modes.py:1315
 #, fuzzy
 msgid "You can only rotate molecules in 3D!"
 msgstr "Informace o vybraných molekulách"
 
-#: ../../bkchem/modes.py:1295
+#: ../../bkchem/modes.py:1317
 msgid "Sorry but you can only rotate molecules and arrows in 2D."
 msgstr ""
 
-#: ../../bkchem/modes.py:1295
+#: ../../bkchem/modes.py:1317
 msgid "You can only rotate molecules and arrows in 2D!"
 msgstr ""
 
-#: ../../bkchem/modes.py:1356
+#: ../../bkchem/modes.py:1362
+#, fuzzy
+msgid "You can only rotate the molecule for which you fixed a bond."
+msgstr "Informace o vybraných molekulách"
+
+#: ../../bkchem/modes.py:1420
 msgid "transformation mode"
 msgstr "transformační mód"
 
-#: ../../bkchem/modes.py:1360
+#: ../../bkchem/modes.py:1424
 msgid "free rotation around bond"
 msgstr ""
 
-#: ../../bkchem/modes.py:1360
+#: ../../bkchem/modes.py:1424
 msgid "horizontal align"
 msgstr "horizontální zarovnání"
 
-#: ../../bkchem/modes.py:1360
+#: ../../bkchem/modes.py:1424
 msgid "invert through a point"
 msgstr "inverze skrz bod"
 
-#: ../../bkchem/modes.py:1360
+#: ../../bkchem/modes.py:1424
 msgid "mirror through a line"
 msgstr "zrcadlení skrz přímku"
 
-#: ../../bkchem/modes.py:1360
+#: ../../bkchem/modes.py:1424
 msgid "vertical align"
 msgstr "vertikální zarovnání"
 
-#: ../../bkchem/modes.py:1378
+#: ../../bkchem/modes.py:1442
 msgid "select the second atom, please."
 msgstr "vyberte druhý atom, prosím."
 
-#: ../../bkchem/modes.py:1399
+#: ../../bkchem/modes.py:1463
 msgid "atoms must be in the same molecule!"
 msgstr "atomy musí být ve stejné molekule"
 
-#: ../../bkchem/modes.py:1402
+#: ../../bkchem/modes.py:1466
 msgid "atoms must be different!"
 msgstr "atomy musí být různé!"
 
-#: ../../bkchem/modes.py:1510
+#: ../../bkchem/modes.py:1574
 msgid "Bond is part of a ring, there is no possiblity for rotation!"
 msgstr ""
 
-#: ../../bkchem/modes.py:1541
+#: ../../bkchem/modes.py:1606
 msgid "vector graphics"
 msgstr "vektorová grafika"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 msgid "circle"
 msgstr "kruh"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 msgid "oval"
 msgstr "ovál"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 msgid "polygon"
 msgstr "polygon"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 #, fuzzy
 msgid "polyline"
 msgstr "spline"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 msgid "rectangle"
 msgstr "obdélník"
 
-#: ../../bkchem/modes.py:1543
+#: ../../bkchem/modes.py:1608
 msgid "square"
 msgstr "čtverec"
 
-#: ../../bkchem/modes.py:1636
+#: ../../bkchem/modes.py:1701
 msgid "mark"
 msgstr "značka"
 
-#: ../../bkchem/modes.py:1639
+#: ../../bkchem/modes.py:1704
 msgid "biradical"
 msgstr "biradikál"
 
-#: ../../bkchem/modes.py:1639
+#: ../../bkchem/modes.py:1704
 #, fuzzy
 msgid "dotted electron pair"
 msgstr "elektronový pár"
 
-#: ../../bkchem/modes.py:1639
+#: ../../bkchem/modes.py:1704
 msgid "electron pair"
 msgstr "elektronový pár"
 
-#: ../../bkchem/modes.py:1639
+#: ../../bkchem/modes.py:1704
 msgid "radical"
 msgstr "radikál"
 
-#: ../../bkchem/modes.py:1640
+#: ../../bkchem/modes.py:1705
 msgid "pz orbital"
 msgstr ""
 
-#: ../../bkchem/modes.py:1641
+#: ../../bkchem/modes.py:1706
 #, fuzzy
 msgid "add"
 msgstr "klikatá"
 
-#: ../../bkchem/modes.py:1641
+#: ../../bkchem/modes.py:1706
 msgid "remove"
 msgstr ""
 
-#: ../../bkchem/modes.py:1666
+#: ../../bkchem/modes.py:1731
 msgid "This mark type is not allowed for this object"
 msgstr ""
 
-#: ../../bkchem/modes.py:1681
+#: ../../bkchem/modes.py:1746
 msgid "There are no marks of type %s on the focused atom"
 msgstr ""
 
-#: ../../bkchem/modes.py:1769 ../../bkchem/modes.py:2003
+#: ../../bkchem/modes.py:1835 ../../bkchem/modes.py:2056
 #, fuzzy
 msgid "atom"
 msgstr "Atom"
 
-#: ../../bkchem/modes.py:1857
+#: ../../bkchem/modes.py:1909
 #, fuzzy
 msgid "reaction"
 msgstr "Poměr"
 
-#: ../../bkchem/modes.py:1859
+#: ../../bkchem/modes.py:1911
 #, fuzzy
 msgid "condition"
 msgstr "Konfigurace"
 
-#: ../../bkchem/modes.py:1859
+#: ../../bkchem/modes.py:1911
 msgid "product"
 msgstr ""
 
-#: ../../bkchem/modes.py:1859
+#: ../../bkchem/modes.py:1911
 #, fuzzy
 msgid "reactant"
 msgstr "obdélník"
 
-#: ../../bkchem/modes.py:1869
+#: ../../bkchem/modes.py:1921
 msgid "No arrow present"
 msgstr ""
 
-#: ../../bkchem/modes.py:1870
+#: ../../bkchem/modes.py:1922
 msgid ""
-"The reaction information in bkchem are associated with arrows, therefore you "
+"The reaction information in BKChem are associated with arrows, therefore you "
 "have to have at least one arrow before you can construct any reaction."
 msgstr ""
 
-#: ../../bkchem/modes.py:1984
+#: ../../bkchem/modes.py:2037
 #, fuzzy
 msgid "users templates"
 msgstr "šablona"
 
-#: ../../bkchem/modes.py:2001
+#: ../../bkchem/modes.py:2054
 msgid "External data management"
 msgstr ""
 
-#: ../../bkchem/modes.py:2003
+#: ../../bkchem/modes.py:2056
 #, fuzzy
 msgid "bond"
 msgstr "Vazba"
 
-#: ../../bkchem/modes.py:2003
+#: ../../bkchem/modes.py:2056
 msgid "molecule"
 msgstr ""
 
-#: ../../bkchem/modes.py:2085
+#: ../../bkchem/modes.py:2138
 msgid "The data were set to the active item"
 msgstr ""
 
-#: ../../bkchem/modes.py:2107
+#: ../../bkchem/modes.py:2160
 msgid "Set"
 msgstr ""
 
-#: ../../bkchem/modes.py:2207
+#: ../../bkchem/modes.py:2261
 msgid "Rapid drawing"
 msgstr ""
 
-#: ../../bkchem/modes.py:2216
+#: ../../bkchem/modes.py:2270
 msgid "auto clean after drawing is finished"
 msgstr ""
 
-#: ../../bkchem/modes.py:2216
+#: ../../bkchem/modes.py:2270
 #, fuzzy
 msgid "do nothing after drawing is done"
 msgstr "jen na nové kresby"
 
-#: ../../bkchem/modes.py:2372
+#: ../../bkchem/modes.py:2426
 msgid "Brackets"
 msgstr ""
 
-#: ../../bkchem/modes.py:2403
+#: ../../bkchem/modes.py:2428
+#, fuzzy
+msgid "Rectangular"
+msgstr "obdélník"
+
+#: ../../bkchem/modes.py:2428
+#, fuzzy
+msgid "Round"
+msgstr "Vazba"
+
+#: ../../bkchem/modes.py:2475
 msgid "Miscelanous small modes"
 msgstr ""
 
-#: ../../bkchem/modes.py:2405
+#: ../../bkchem/modes.py:2477
 msgid "Numbering"
 msgstr ""
 
-#: ../../bkchem/modes.py:2405
+#: ../../bkchem/modes.py:2477
 msgid "Wavy line"
 msgstr ""
 
-#: ../../bkchem/paper.py:597
+#: ../../bkchem/paper.py:601
 msgid "Proceed"
 msgstr "Pokračovat"
 
-#: ../../bkchem/paper.py:598
+#: ../../bkchem/paper.py:602
 #, fuzzy
 msgid ""
 "This CDML document does not seem to have supported version.\n"
@@ -2415,94 +2444,112 @@ msgstr ""
 "\n"
 "Chcete pokračovat ve čtení tohoto dokumentu?"
 
-#: ../../bkchem/paper.py:657
+#: ../../bkchem/paper.py:661
 msgid "Replace standard values"
 msgstr "Nahradit standardní hodnoty"
 
-#: ../../bkchem/paper.py:852
+#: ../../bkchem/paper.py:856
 msgid "concatenated overlaping atoms"
 msgstr "překrývající se atomy byly spojeny"
 
-#: ../../bkchem/paper.py:1070
+#: ../../bkchem/paper.py:1076
 msgid "killed %s object(s) to clipboard"
 msgstr "%s objektů přesunuto do schránky"
 
-#: ../../bkchem/paper.py:1073
+#: ../../bkchem/paper.py:1079
 msgid "copied %s object(s) to clipboard"
 msgstr "%s objektů zkopírováno do schránky"
 
-#: ../../bkchem/paper.py:1110
+#: ../../bkchem/paper.py:1116
 msgid "pasted from clipboard"
 msgstr "vloženo ze schránky"
 
-#: ../../bkchem/paper.py:1303
+#: ../../bkchem/paper.py:1320
 msgid "undo (%d further undos available)"
 msgstr "zpět (%d dalších zpětných kroků k disposici)"
 
-#: ../../bkchem/paper.py:1305
+#: ../../bkchem/paper.py:1322
 msgid "no further undo"
 msgstr "nelze vrátit zpět"
 
-#: ../../bkchem/paper.py:1316
+#: ../../bkchem/paper.py:1333
 msgid "redo (%d further redos available)"
 msgstr "opakovat (%d dalších opakování k disposici)"
 
-#: ../../bkchem/paper.py:1318
+#: ../../bkchem/paper.py:1335
 msgid "no further redo"
 msgstr "nelze opakovat"
 
-#: ../../bkchem/paper.py:1402
+#: ../../bkchem/paper.py:1424
 #, fuzzy
 msgid "selected top_levels were exported to clipboard in SVG"
 msgstr "vybrané objekty byli exportovány do schránky v SVG"
 
-#: ../../bkchem/paper.py:1448
+#: ../../bkchem/paper.py:1470
 msgid "Info on selected molecules"
 msgstr "Informace o vybraných molekulách"
 
-#: ../../bkchem/paper.py:1456
+#: ../../bkchem/paper.py:1478
 msgid "Name: %s"
 msgstr "Název: %s"
 
-#: ../../bkchem/paper.py:1458
+#: ../../bkchem/paper.py:1480
 msgid "Id: %s"
 msgstr "Id: %s"
 
-#: ../../bkchem/paper.py:1460 ../../bkchem/paper.py:1473
+#: ../../bkchem/paper.py:1482 ../../bkchem/paper.py:1497
 msgid "Formula: %s"
 msgstr "Vzorec: %s"
 
-#: ../../bkchem/paper.py:1462 ../../bkchem/paper.py:1475
-msgid "Weight: %4.3f"
+#: ../../bkchem/paper.py:1484 ../../bkchem/paper.py:1499
+#, fuzzy
+msgid "Weight: %4.4f"
 msgstr "Hmotnost: %4.3f"
 
-#: ../../bkchem/paper.py:1464 ../../bkchem/paper.py:1477
+#: ../../bkchem/paper.py:1486 ../../bkchem/paper.py:1501
+msgid "Monoisotopic mass: %12.8f"
+msgstr ""
+
+#: ../../bkchem/paper.py:1488 ../../bkchem/paper.py:1503
 msgid "Composition: %s"
 msgstr "Složení: %s"
 
-#: ../../bkchem/paper.py:1468
+#: ../../bkchem/paper.py:1492
 msgid "Individual molecules:"
 msgstr "Jednotlivé molekuly:"
 
-#: ../../bkchem/paper.py:1471
+#: ../../bkchem/paper.py:1495
 msgid "Summary for all selected molecules:"
 msgstr "Souhrn pro všechny vybrané molekuly:"
 
-#: ../../bkchem/paper.py:1493
+#: ../../bkchem/paper.py:1519
 msgid "Chemistry check of selected molecules"
 msgstr "Kontrola chemie pro všechny vybrané molekuly:"
 
-#: ../../bkchem/paper.py:1598
+#: ../../bkchem/paper.py:1624
 msgid "selected items were lifted"
 msgstr "vybrané objekty byly vyzvednuty"
 
-#: ../../bkchem/paper.py:1611
+#: ../../bkchem/paper.py:1637
 msgid "selected items were put back"
 msgstr "vybrané objekty byly převedeny do pozadí"
 
-#: ../../bkchem/paper.py:1625
+#: ../../bkchem/paper.py:1651
 msgid "selected items were swapped"
 msgstr "vybrané objekty byly zaměněny"
+
+#: ../../bkchem/plugins/CDXML.py:42
+msgid "Imports a CDXML (ChemDraw XML format) document."
+msgstr ""
+
+#: ../../bkchem/plugins/CDXML.py:237
+msgid "Exports a CDXML (ChemDraw XML) document"
+msgstr ""
+
+#: ../../bkchem/plugins/CDXML.py:502
+#, fuzzy
+msgid "CDXML"
+msgstr "CDML"
 
 #: ../../bkchem/plugins/CML.py:35
 msgid ""
@@ -2574,7 +2621,7 @@ msgstr ""
 msgid "CML2"
 msgstr "CDML"
 
-#: ../../bkchem/plugins/cairo_lowlevel.py:69
+#: ../../bkchem/plugins/cairo_lowlevel.py:71
 #: ../../bkchem/plugins/piddle_lowlevel.py:52
 msgid ""
 "There is nothing to export. If you want to export an empty paper disable "
@@ -2719,7 +2766,7 @@ msgstr ""
 "pro export do PDF\n"
 "protože podporuje unicodové řetězce a výstup je velmi kvalitní."
 
-#: ../../bkchem/plugins/ps_cairo.py:72
+#: ../../bkchem/plugins/ps_cairo.py:73
 #, fuzzy
 msgid "Postscript (Cairo)"
 msgstr "Soubor PostScriptu"
@@ -2749,7 +2796,7 @@ msgstr "PDF (Cairo)"
 
 #: ../../bkchem/splash.py:35
 #, fuzzy
-msgid "BKchem is starting..."
+msgid "BKChem is starting..."
 msgstr "BKchem startuje..."
 
 #: ../../bkchem/validator.py:92
@@ -2822,6 +2869,21 @@ msgstr "Převeď čísla na dolní index"
 #: ../../bkchem/widgets.py:431
 msgid "Sup charges"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Give the name of a molecule to fetch:"
+#~ msgstr "Kontrola chemie pro všechny vybrané molekuly:"
+
+#, fuzzy
+#~ msgid "Select only one molecule"
+#~ msgstr "Informace o vybraných molekulách"
+
+#~ msgid ""
+#~ "Unable to parse the text-\n"
+#~ "probably error with input encoding!"
+#~ msgstr ""
+#~ "Nelze zpracovat text-\n"
+#~ "pravděpodobně je problém v kódování!"
 
 #~ msgid "Show"
 #~ msgstr "Zobrazit"
