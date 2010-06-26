@@ -33,12 +33,11 @@ as it supports unicode strings and the output is of very good quality."""
 
   def __init__( self, paper, attrs=None):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo, attrs=attrs)
-    
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    return cairo.PDFSurface( self.filename, w, h)
-
+    f = open(self.filename, 'w')
+    return cairo.PDFSurface(f, w, h)
 
   def get_scaling( self, x, y):
     sc = self._get_scaling_ratio()

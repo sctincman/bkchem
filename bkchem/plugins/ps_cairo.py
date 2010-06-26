@@ -33,14 +33,13 @@ as it supports unicode strings and the output is of very good quality."""
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
-    
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    surf = cairo.PSSurface( self.filename, w, h)
+    f = open(self.filename, 'w')
+    surf = cairo.PSSurface(f, w, h)
     surf.set_eps( True)
     return surf
-
 
   def get_scaling( self, x, y):
     sc = self._get_scaling_ratio()
@@ -52,18 +51,6 @@ as it supports unicode strings and the output is of very good quality."""
 
   def save( self):
     self.surface.finish()
-    # here we process the exported PostScript to include PageSize
-    import re
-    f = file( self.filename, "rb")
-    text = f.read()
-    f.close()
-    f = file( self.filename, "wb")
-    for line in text.splitlines():
-      f.write( line+"\n")
-      m = re.match( "^%%PageBoundingBox: \d+ \d+ (\d+) (\d+)$", line)
-      if m:
-        f.write( "<</PageSize[%s %s]>>setpagedevice\n" % (m.group(1),m.group(2)))
-    f.close()
 
 
 # PLUGIN INTERFACE SPECIFICATION

@@ -63,8 +63,10 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
 
 
   def save( self):
-    self.surface.write_to_png( self.filename)
+    f = open(self.filename, 'w')
+    self.surface.write_to_png(f)
     self.surface.finish()
+    f.close()
 
 
 

@@ -33,12 +33,11 @@ class svg_cairo_exporter( cairo_exporter):
 
   def __init__( self, paper):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo)
-    
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    return cairo.SVGSurface( self.filename, w, h)
-
+    f = open(self.filename, 'w')
+    return cairo.SVGSurface(f, w, h)
 
   def get_scaling( self, x, y):
     sc = self._get_scaling_ratio()
