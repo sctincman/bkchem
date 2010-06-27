@@ -78,12 +78,9 @@ class pref_manager( object):
       if itype in ("ListType", "TupleType", "DictType"):
         value = eval( dom_extensions.getAllTextFromElement( child))
       else:
-        jtype = types.__dict__[itype]
+        itype = types.__dict__[ itype]
         try:
-          if itype == 'UnicodeType':
-            value = jtype(dom_extensions.getAllTextFromElement(child)).encode('utf-8')
-          else:
-            value = jtype(dom_extensions.getAllTextFromElement(child))
+          value = itype( dom_extensions.getAllTextFromElement( child))
         except:
           print >> sys.stderr, "Preference manager: ignoring value %s of type %s" % (dom_extensions.getAllTextFromElement( child), itype)
           break
