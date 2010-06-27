@@ -499,7 +499,7 @@ msgstr ""
 "Lo standard è stato salvato con successo come standard personale a %s\n"
 "\n"
 "non si applica automaticamente all'immagine corrente e sarà attivato al "
-"prossimo riavvio di BKchem.\n"
+"prossimo riavvio di BKChem.\n"
 "Puoi ancora applicare i cambiamenti all'immagine corrente dalla finestra di "
 "dialogo."
 
@@ -888,7 +888,7 @@ msgstr "Il %s è stato impostato per l'Atomo(i)."
 #: ../../bkchem/interactors.py:357
 #, fuzzy
 msgid "BKChem interpreted the entered text as an atom"
-msgstr "BKchem ha interpretato il testo inserito come un atomo"
+msgstr "BKChem ha interpretato il testo inserito come un atomo"
 
 #: ../../bkchem/interactors.py:359
 #, fuzzy
@@ -896,7 +896,7 @@ msgid ""
 "BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
-"BKchem crede di interpretare il testo inserito come un gruppo , provi a "
+"BKChem crede di interpretare il testo inserito come un gruppo , provi a "
 "espanderlo per scoprire come è stato interpretato."
 
 #: ../../bkchem/interactors.py:361
@@ -904,7 +904,7 @@ msgstr ""
 msgid ""
 "BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
-"BKchem non ha potuto interpretare il testo digitato come qualcosa con "
+"BKChem non ha potuto interpretare il testo digitato come qualcosa con "
 "significato chimico"
 
 #: ../../bkchem/interactors.py:375 ../../bkchem/logger.py:33
@@ -916,7 +916,7 @@ msgstr "Info"
 #, fuzzy
 msgid "The selected language will be used the next time you start BKChem."
 msgstr ""
-"Il linguaggio selezionato sarà usato alla prossima esecuzione di BKchem."
+"Il linguaggio selezionato sarà usato alla prossima esecuzione di BKChem."
 
 #: ../../bkchem/interactors.py:391
 msgid "The selection does not define connected subgraph"
@@ -1069,7 +1069,7 @@ msgid ""
 "data inside"
 msgstr ""
 "Esporta a semplice SVG - Scalable Vector Graphics - senza includere "
-"all'interno i dati di BKchem "
+"all'interno i dati di BKChem "
 
 #: ../../bkchem/main.py:190
 msgid "SVG"
@@ -1102,7 +1102,7 @@ msgstr "Esci"
 #: ../../bkchem/main.py:197
 #, fuzzy
 msgid "Exit BKChem"
-msgstr "Esci da BKchem"
+msgstr "Esci da BKChem"
 
 #: ../../bkchem/main.py:200
 msgid "Undo, Copy, Paste etc."
@@ -1413,7 +1413,7 @@ msgstr "Converti la selezione alla forma lineare"
 #: ../../bkchem/main.py:268
 #, fuzzy
 msgid "Settings that affect how BKChem works"
-msgstr "Regolazioni che interessano il funzionamento di BKchem"
+msgstr "Regolazioni che interessano il funzionamento di BKChem"
 
 #: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
@@ -1447,7 +1447,7 @@ msgid ""
 "To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
 msgstr ""
-"Per usare InChI in BKchem prima devi dare un percorso al programma InChI"
+"Per usare InChI in BKChem prima devi dare un percorso al programma InChI"
 
 #: ../../bkchem/main.py:278
 msgid "Help and information about the program"
@@ -1464,7 +1464,7 @@ msgstr "Info"
 #: ../../bkchem/main.py:279
 #, fuzzy
 msgid "General information about BKChem"
-msgstr "Informazione generale su BKchem"
+msgstr "Informazione generale su BKChem"
 
 #: ../../bkchem/main.py:282
 msgid "Small additional scripts"
@@ -1477,7 +1477,7 @@ msgstr "Plugin"
 #: ../../bkchem/main.py:567
 #, fuzzy
 msgid "About BKChem"
-msgstr "Info su BKchem"
+msgstr "Info su BKChem"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1951,15 +1951,15 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKchem è stato concepito e scritto da Beda Kosata\n"
+"BKChem è stato concepito e scritto da Beda Kosata\n"
 "è eseguito per mezzo di Python, Pmw & (opzionalmente) Cairo.\n"
 "\n"
-"BKchem è un software libero e distribuito con licenza GNU GPL.\n"
-"BKchem è fornito come è senza garanzia di ogni genere.\n"
+"BKChem è un software libero e distribuito con licenza GNU GPL.\n"
+"BKChem è fornito come è senza garanzia di ogni genere.\n"
 "- per più informazioni vedi il file 'gpl.txt' nella cartella principale.\n"
 "\n"
 "tra le altre cose GNU GPL ti permette di studiare, modificare\n"
-"e distribuire BKchem finchè lo fate sotto licenza GNU GPL."
+"e distribuire BKChem finchè lo fate sotto licenza GNU GPL."
 
 #: ../../bkchem/messages.py:89
 #, fuzzy
@@ -1972,7 +1972,7 @@ msgid ""
 msgstr ""
 "INCAPACE DI IMPORTARE PMW\n"
 "\n"
-"Spiacente, ma BKchem dipende troppo da Pmw per funzionare senza. Prego "
+"Spiacente, ma BKChem dipende troppo da Pmw per funzionare senza. Prego "
 "installa Pmw e prova ancora.\n"
 "(per più informazioni su Pmw vedi la documentazione)"
 
@@ -1986,7 +1986,7 @@ msgid ""
 msgstr ""
 "INCAPACE DI IMPORTARE OASA\n"
 "\n"
-"Spiacente, ma dalla versione 0.10 BKchem usa la libreria OASA e perciò non "
+"Spiacente, ma dalla versione 0.10 BKChem usa la libreria OASA e perciò non "
 "può essere caricato senza."
 
 #: ../../bkchem/messages.py:100
@@ -2001,9 +2001,9 @@ msgid ""
 msgstr ""
 "Versione di Python obsoleta!\n"
 "\n"
-"Dalla versione 0.10 BKchem necessita di Python 2.3 o maggiore per caricare "
+"Dalla versione 0.10 BKChem necessita di Python 2.3 o maggiore per caricare "
 "correttamente.  Hai solo la versione Python %s.\n"
-"Mi spiace per l'inconveniente, ma per caricare BKchem hai bisogno di "
+"Mi spiace per l'inconveniente, ma per caricare BKChem hai bisogno di "
 "aggiornare Phyton."
 
 #: ../../bkchem/messages.py:107
@@ -2014,7 +2014,7 @@ msgid ""
 "Unfortunately,\n"
 "the splash image was not found :("
 msgstr ""
-"BKchem sta caricando.\n"
+"BKChem sta caricando.\n"
 "\n"
 "Sfortunatamente,\n"
 "L'immagine di avvio non è stata trovata :("
@@ -2053,10 +2053,10 @@ msgstr ""
 "opzioni:\n"
 "\n"
 " -h, --help       mostra questo messaggio di aiuto ed esci\n"
-" -H DIR           non considera la cartella proncipale di BKchem\n"
+" -H DIR           non considera la cartella proncipale di BKChem\n"
 "                  (dove le impostazioni standard di disegno, i template "
 "personali ecc. sono salvati.)\n"
-" -b SCRIPT        carica BKchem in batch mode, carica lo SCRIPT ed esce\n"
+" -b SCRIPT        carica BKChem in batch mode, carica lo SCRIPT ed esce\n"
 " -v, --version    mostra la versione del programma ed esce\n"
 
 #: ../../bkchem/modes.py:364
@@ -2826,7 +2826,7 @@ msgid ""
 "data and is simpler than the default one used by BKChem."
 msgstr ""
 "Esporta SVG via libreria Cairo(pycairo). Questo SVG non aggiunge "
-"informazioni di BKchem ed è più semplice di quello usato da BKchem."
+"informazioni di BKChem ed è più semplice di quello usato da BKChem."
 
 #: ../../bkchem/plugins/svg_cairo.py:59
 msgid "SVG (Cairo)"
@@ -2835,7 +2835,7 @@ msgstr "SVG (Cairo)"
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "BKchem sta caricando..."
+msgstr "BKChem sta caricando..."
 
 #: ../../bkchem/validator.py:92
 msgid "%d text only atom(s) (chemical interpretation is unknown)"

@@ -8,7 +8,7 @@
 
   <xsd:element name="cdml">
     <xsd:annotation>
-      <xsd:documentation>The root element of all BKchem CDML documents</xsd:documentation>
+      <xsd:documentation>The root element of all BKChem CDML documents</xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>

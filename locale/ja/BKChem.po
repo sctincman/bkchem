@@ -1059,7 +1059,7 @@ msgstr "終了"
 #: ../../bkchem/main.py:197
 #, fuzzy
 msgid "Exit BKChem"
-msgstr "BKchemを終了"
+msgstr "BKChemを終了"
 
 #: ../../bkchem/main.py:200
 msgid "Undo, Copy, Paste etc."
@@ -1358,7 +1358,7 @@ msgstr "一直線にして表示"
 #: ../../bkchem/main.py:268
 #, fuzzy
 msgid "Settings that affect how BKChem works"
-msgstr "BKchemの動作についての設定"
+msgstr "BKChemの動作についての設定"
 
 #: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
@@ -1402,12 +1402,12 @@ msgstr "ヘルプ"
 
 #: ../../bkchem/main.py:279
 msgid "About"
-msgstr "BKchemについて"
+msgstr "BKChemについて"
 
 #: ../../bkchem/main.py:279
 #, fuzzy
 msgid "General information about BKChem"
-msgstr "BKchemに関する一般情報"
+msgstr "BKChemに関する一般情報"
 
 #: ../../bkchem/main.py:282
 msgid "Small additional scripts"
@@ -1420,7 +1420,7 @@ msgstr "プラグイン"
 #: ../../bkchem/main.py:567
 #, fuzzy
 msgid "About BKChem"
-msgstr "BKchemについて"
+msgstr "BKChemについて"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1842,12 +1842,12 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKchemは Beda Kosataによって作られたPython上で動くプログラムです\n"
+"BKChemは Beda Kosataによって作られたPython上で動くプログラムです\n"
 "本ソフトはGNU GPLの下で配布されているフリーソフトです．\n"
 "本ソフトの使用によるいかなる損失に対しても、責任を負いません．\n"
-"更に知りたい場合はBKchemフォルダ内のgpl.txtを見てください．\n"
+"更に知りたい場合はBKChemフォルダ内のgpl.txtを見てください．\n"
 "\n"
-"BKchemの改変，再配布はGNU GPLの下であれば可能です．"
+"BKChemの改変，再配布はGNU GPLの下であれば可能です．"
 
 #: ../../bkchem/messages.py:89
 msgid ""
@@ -2634,7 +2634,7 @@ msgstr "SVG (汎用形式)"
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "BKchemを起動しています"
+msgstr "BKChemを起動しています"
 
 #: ../../bkchem/validator.py:92
 msgid "%d text only atom(s) (chemical interpretation is unknown)"

@@ -1,4 +1,4 @@
-# BKchem
+# BKChem
 # Copyright (C) 2001,2002,2003,2004 Beda Kosata
 # Beda Kosata <beda@zirael.org>, 2001.
 #
@@ -745,18 +745,18 @@ msgid "Number %s was set to atom(s)."
 msgstr "Atomu bylo nastaveno èíslo %s"
 
 #: ../../bkchem/interactors.py:357
-msgid "BKchem interpreted the entered text as an atom"
+msgid "BKChem interpreted the entered text as an atom"
 msgstr ""
 
 #: ../../bkchem/interactors.py:359
 msgid ""
-"BKchem thinks it can interpret the entered text as a group, try to expand it "
+"BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
 
 #: ../../bkchem/interactors.py:361
 msgid ""
-"BKchem could not interpret the entered text as anything with chemical meaning"
+"BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
 
 #: ../../bkchem/interactors.py:372 ../../bkchem/logger.py:33
@@ -765,7 +765,7 @@ msgid "Info"
 msgstr "Informace"
 
 #: ../../bkchem/interactors.py:373
-msgid "The selected language will be used the next time you start BKchem."
+msgid "The selected language will be used the next time you start BKChem."
 msgstr ""
 
 #: ../../bkchem/interactors.py:424
@@ -904,7 +904,7 @@ msgstr "Exportovat"
 
 #: ../../bkchem/main.py:193
 msgid ""
-"Export to plain SVG - Scalable Vector Graphics - without embedding BKchem "
+"Export to plain SVG - Scalable Vector Graphics - without embedding BKChem "
 "data inside"
 msgstr ""
 
@@ -938,8 +938,8 @@ msgstr "Konec"
 
 #: ../../bkchem/main.py:200
 #, fuzzy
-msgid "Exit BKchem"
-msgstr "O BKchemu"
+msgid "Exit BKChem"
+msgstr "O BKChemu"
 
 #: ../../bkchem/main.py:203
 msgid "Undo, Copy, Paste etc."
@@ -1257,7 +1257,7 @@ msgid "Convert selection to linear form"
 msgstr ""
 
 #: ../../bkchem/main.py:271
-msgid "Settings that affect how BKchem works"
+msgid "Settings that affect how BKChem works"
 msgstr ""
 
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:273
@@ -1283,7 +1283,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:274
 msgid ""
-"To use INChI in BKchem you must first give it a path to the INChI program "
+"To use INChI in BKChem you must first give it a path to the INChI program "
 "here"
 msgstr ""
 
@@ -1300,7 +1300,7 @@ msgid "About"
 msgstr "O programu"
 
 #: ../../bkchem/main.py:279
-msgid "General information about BKchem"
+msgid "General information about BKChem"
 msgstr ""
 
 #: ../../bkchem/main.py:282
@@ -1312,8 +1312,8 @@ msgid "Plugins"
 msgstr "Pluginy"
 
 #: ../../bkchem/main.py:539
-msgid "About BKchem"
-msgstr "O BKchemu"
+msgid "About BKChem"
+msgstr "O BKChemu"
 
 #: ../../bkchem/main.py:541
 msgid "version"
@@ -1709,44 +1709,44 @@ msgstr ""
 
 #: ../../bkchem/messages.py:76
 msgid ""
-"BKchem was concieved and written by BK\n"
+"BKChem was concieved and written by BK\n"
 "and is performed by Python, Pmw & (optionaly :) PIL.\n"
 "\n"
-"BKchem is free software and is distributed under GNU GPL.\n"
-"BKchem is provided as is without warranty of any kind.\n"
+"BKChem is free software and is distributed under GNU GPL.\n"
+"BKChem is provided as is without warranty of any kind.\n"
 "- see the file 'gpl.txt' in distribution directory for more info.\n"
 "\n"
 "Among other things GNU GPL allows you to study, modify\n"
-"and redistribute BKchem as long as you do it under GNU GPL."
+"and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKchem vymyslel a sepsal BK\n"
+"BKChem vymyslel a sepsal BK\n"
 "a Vám ho pøiná¹í Python, Pmw & (volitelnì :) PIL.\n"
 "\n"
-"BKchem je svobodný software a je distribuován pod licencí GNU GPL.\n"
-"BKchem je dodáván \"jak je\", bez jakékoli záruky.\n"
+"BKChem je svobodný software a je distribuován pod licencí GNU GPL.\n"
+"BKChem je dodáván \"jak je\", bez jakékoli záruky.\n"
 "- dal¹í informace viz soubor GPL v hlavním adresáøi programu\n"
 "\n"
 "Kromì jiného Vám GNU GPL dovoluje studovat, upravovat\n"
-"a redistribuovat BKchem jestli¾e tak uèiníte pod GNU GPL."
+"a redistribuovat BKChem jestli¾e tak uèiníte pod GNU GPL."
 
 #: ../../bkchem/messages.py:87
 msgid ""
 "UNABLE TO IMPORT PMW\n"
 "\n"
-"Sorry, but BKchem relies too heavily on Pmw to be usable without it. Please "
+"Sorry, but BKChem relies too heavily on Pmw to be usable without it. Please "
 "install Pmw and try again.\n"
 "(for more info on Pmw see documentation)"
 msgstr ""
 "NELZE IMPORTOVAT PMW\n"
 "\n"
-"Bohu¾el, BKchem je pøíli¹ závislý na Pmw, ne¾ aby mohl pracovat bez nìj.\n"
+"Bohu¾el, BKChem je pøíli¹ závislý na Pmw, ne¾ aby mohl pracovat bez nìj.\n"
 "Nainstalujte prosím Pmw a zkuste to znovu."
 
 #: ../../bkchem/messages.py:93
 msgid ""
 "UNABLE TO IMPORT OASA\n"
 "\n"
-"Sorry, but from version 0.10 BKchem uses the OASA library internally and "
+"Sorry, but from version 0.10 BKChem uses the OASA library internally and "
 "therefor cannot run without it."
 msgstr ""
 
@@ -1754,20 +1754,20 @@ msgstr ""
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKchem needs Python 2.3 or higher to run properly. You "
+"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
-"to run BKchem."
+"to run BKChem."
 msgstr ""
 
 #: ../../bkchem/messages.py:105
 msgid ""
-"BKchem is starting.\n"
+"BKChem is starting.\n"
 "\n"
 "Unfortunatelly,\n"
 "the splash image was not found :("
 msgstr ""
-"BKchem startuje.\n"
+"BKChem startuje.\n"
 "\n"
 "Bohu¾el,\n"
 "uvodní obrázek nebyl nalezen :("
@@ -2260,8 +2260,8 @@ msgstr "vybrané objekty byly zamìnìny"
 
 #: ../../bkchem/splash.py:35
 #, fuzzy
-msgid "BKchem is starting..."
-msgstr "BKchem startuje..."
+msgid "BKChem is starting..."
+msgstr "BKChem startuje..."
 
 #: ../../bkchem/validator.py:92
 #, fuzzy
@@ -2371,13 +2371,13 @@ msgstr ""
 #~ msgstr "Experimentální export"
 
 #~ msgid ""
-#~ "BKchem is starting.\n"
+#~ "BKChem is starting.\n"
 #~ "\n"
 #~ "Install PIL and you will see\n"
 #~ "a nice splash image\n"
 #~ "instead of this boring text :)"
 #~ msgstr ""
-#~ "BKchem startuje\n"
+#~ "BKChem startuje\n"
 #~ "\n"
 #~ "Nainstalujte PIL a uvidíte\n"
 #~ "hezký úvodní obrázek :)"

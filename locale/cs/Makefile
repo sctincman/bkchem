@@ -1,5 +1,5 @@
-# makefile that updates the current string definitions from BKchem source (make update)
-# and after you edit the BKchem.po file it installs it (make || make install)
+# makefile that updates the current string definitions from BKChem source (make update)
+# and after you edit the BKChem.po file it installs it (make || make install)
 
 # source to pot translator
 S2POT = pygettext.py

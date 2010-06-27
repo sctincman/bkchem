@@ -897,7 +897,7 @@ msgstr "相關訊息"
 #: ../../bkchem/interactors.py:376
 #, fuzzy
 msgid "The selected language will be used the next time you start BKChem."
-msgstr "變更語文介面, 在重新開啟 BKchem 後生效"
+msgstr "變更語文介面, 在重新開啟 BKChem 後生效"
 
 #: ../../bkchem/interactors.py:391
 msgid "The selection does not define connected subgraph"
@@ -1374,7 +1374,7 @@ msgstr "將化學結構以直線式表示"
 #: ../../bkchem/main.py:268
 #, fuzzy
 msgid "Settings that affect how BKChem works"
-msgstr "有關 BKchem 的設定"
+msgstr "有關 BKChem 的設定"
 
 #: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
@@ -1408,11 +1408,11 @@ msgstr "INCHI 程式的路徑"
 msgid ""
 "To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
-msgstr "必須先在設定 INCHI 程式的路徑才能在 BKchem 中使用相關功能"
+msgstr "必須先在設定 INCHI 程式的路徑才能在 BKChem 中使用相關功能"
 
 #: ../../bkchem/main.py:278
 msgid "Help and information about the program"
-msgstr "有關 BKchem 的說明及相關資訊"
+msgstr "有關 BKChem 的說明及相關資訊"
 
 #: ../../bkchem/main.py:278 ../../bkchem/main.py:279
 msgid "Help"
@@ -1420,12 +1420,12 @@ msgstr "說明"
 
 #: ../../bkchem/main.py:279
 msgid "About"
-msgstr "有關 BKchem"
+msgstr "有關 BKChem"
 
 #: ../../bkchem/main.py:279
 #, fuzzy
 msgid "General information about BKChem"
-msgstr "BKchem 相關訊息"
+msgstr "BKChem 相關訊息"
 
 #: ../../bkchem/main.py:282
 msgid "Small additional scripts"
@@ -1438,7 +1438,7 @@ msgstr "外掛程式"
 #: ../../bkchem/main.py:567
 #, fuzzy
 msgid "About BKChem"
-msgstr "有關 BKchem"
+msgstr "有關 BKChem"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1859,11 +1859,11 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKchem 是由 BK 所創作\n"
+"BKChem 是由 BK 所創作\n"
 "並以 Python, PmW 及 PIL (optionaly) 為基礎\n"
 "\n"
-"BKchem 是自由軟體並採用 GNU GPL 授權\n"
-"BKchem 不提供任何擔保\n"
+"BKChem 是自由軟體並採用 GNU GPL 授權\n"
+"BKChem 不提供任何擔保\n"
 "有關 GPL 條文, 請見 gpl.txt\n"
 "\n"
 "在 GNU GPL 授權下,  您可以自由的研究, 散佈及重新散佈本程式\n"
@@ -1881,7 +1881,7 @@ msgid ""
 msgstr ""
 "無法匯入 PMW\n"
 "\n"
-"Sorry, BKchem 非常需要 Pmw 才能正常運作. 請安裝 Pmw 後再試一次(相關訊息請見 "
+"Sorry, BKChem 非常需要 Pmw 才能正常運作. 請安裝 Pmw 後再試一次(相關訊息請見 "
 "Pmw 相關文件)"
 
 #: ../../bkchem/messages.py:95
@@ -1894,7 +1894,7 @@ msgid ""
 msgstr ""
 "無法匯入 OASA\n"
 "\n"
-"Sorry, 從 Bkcehm 0.10 版就開始用 OASA 函式庫, 若沒有 OASA, BKchem 就無法執行"
+"Sorry, 從 Bkcehm 0.10 版就開始用 OASA 函式庫, 若沒有 OASA, BKChem 就無法執行"
 
 #: ../../bkchem/messages.py:100
 #, fuzzy
@@ -1910,7 +1910,7 @@ msgstr ""
 "\n"
 "從 Bkcehm 0.10 版起就需要 Python 2.3 或更新版本才能正常運作. 您的 Python 是 %"
 "s\n"
-"抱歉對您造成不便, 煩請升級 Python 才能執行 BKchem"
+"抱歉對您造成不便, 煩請升級 Python 才能執行 BKChem"
 
 #: ../../bkchem/messages.py:107
 #, fuzzy
@@ -1920,7 +1920,7 @@ msgid ""
 "Unfortunately,\n"
 "the splash image was not found :("
 msgstr ""
-"BKchem 啟動中\n"
+"BKChem 啟動中\n"
 "抱歉找不到啟動畫面 :("
 
 #: ../../bkchem/messages.py:113
@@ -2269,7 +2269,7 @@ msgstr "箭頭不存在"
 msgid ""
 "The reaction information in BKChem are associated with arrows, therefore you "
 "have to have at least one arrow before you can construct any reaction."
-msgstr "在 BKchem 中必需要有箭頭才能編輯反應, 所以請您至少要有個箭頭"
+msgstr "在 BKChem 中必需要有箭頭才能編輯反應, 所以請您至少要有個箭頭"
 
 #: ../../bkchem/modes.py:2037
 msgid "users templates"
@@ -2680,7 +2680,7 @@ msgstr ""
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "正在啟動 BKchem"
+msgstr "正在啟動 BKChem"
 
 #: ../../bkchem/validator.py:92
 msgid "%d text only atom(s) (chemical interpretation is unknown)"

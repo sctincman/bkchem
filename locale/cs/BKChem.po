@@ -1,4 +1,4 @@
-# BKchem
+# BKChem
 # Copyright (C) 2001,2002,2003,2004 Beda Kosata
 # Beda Kosata <beda@zirael.org>, 2001.
 #
@@ -1119,7 +1119,7 @@ msgstr "Konec"
 #: ../../bkchem/main.py:197
 #, fuzzy
 msgid "Exit BKChem"
-msgstr "O BKchemu"
+msgstr "O BKChemu"
 
 #: ../../bkchem/main.py:200
 msgid "Undo, Copy, Paste etc."
@@ -1492,7 +1492,7 @@ msgstr "Pluginy"
 #: ../../bkchem/main.py:567
 #, fuzzy
 msgid "About BKChem"
-msgstr "O BKchemu"
+msgstr "O BKChemu"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1942,15 +1942,15 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKchem vymyslel a sepsal BK\n"
+"BKChem vymyslel a sepsal BK\n"
 "a Vám ho přináší Python, Pmw & (volitelně :) PIL.\n"
 "\n"
-"BKchem je svobodný software a je distribuován pod licencí GNU GPL.\n"
-"BKchem je dodáván \"jak je\", bez jakékoli záruky.\n"
+"BKChem je svobodný software a je distribuován pod licencí GNU GPL.\n"
+"BKChem je dodáván \"jak je\", bez jakékoli záruky.\n"
 "- další informace viz soubor GPL v hlavním adresáři programu\n"
 "\n"
 "Kromě jiného Vám GNU GPL dovoluje studovat, upravovat\n"
-"a redistribuovat BKchem jestliže tak učiníte pod GNU GPL."
+"a redistribuovat BKChem jestliže tak učiníte pod GNU GPL."
 
 #: ../../bkchem/messages.py:89
 #, fuzzy
@@ -1963,7 +1963,7 @@ msgid ""
 msgstr ""
 "NELZE IMPORTOVAT PMW\n"
 "\n"
-"Bohužel, BKchem je příliš závislý na Pmw, než aby mohl pracovat bez něj.\n"
+"Bohužel, BKChem je příliš závislý na Pmw, než aby mohl pracovat bez něj.\n"
 "Nainstalujte prosím Pmw a zkuste to znovu."
 
 #: ../../bkchem/messages.py:95
@@ -1992,7 +1992,7 @@ msgid ""
 "Unfortunately,\n"
 "the splash image was not found :("
 msgstr ""
-"BKchem startuje.\n"
+"BKChem startuje.\n"
 "\n"
 "Bohužel,\n"
 "uvodní obrázek nebyl nalezen :("
@@ -2797,7 +2797,7 @@ msgstr "PDF (Cairo)"
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "BKchem startuje..."
+msgstr "BKChem startuje..."
 
 #: ../../bkchem/validator.py:92
 #, fuzzy
@@ -2933,13 +2933,13 @@ msgstr ""
 #~ msgstr "Experimentální export"
 
 #~ msgid ""
-#~ "BKchem is starting.\n"
+#~ "BKChem is starting.\n"
 #~ "\n"
 #~ "Install PIL and you will see\n"
 #~ "a nice splash image\n"
 #~ "instead of this boring text :)"
 #~ msgstr ""
-#~ "BKchem startuje\n"
+#~ "BKChem startuje\n"
 #~ "\n"
 #~ "Nainstalujte PIL a uvidíte\n"
 #~ "hezký úvodní obrázek :)"

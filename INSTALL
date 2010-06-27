@@ -1,14 +1,14 @@
-Note: This file describes the installation of source release of BKchem. If you have
+Note: This file describes the installation of source release of BKChem. If you have
       downloaded the binary release, please read the INSTALL.binary file instead.
 
 
 
-Installation of BKchem is very simple. But before you can run the program you
+Installation of BKChem is very simple. But before you can run the program you
 must install the following:
 
 1/ Python.
    On www.python.org get a distribution of Python for your platform. Note that
-   BKchem will run only on Python 2.3 or newer.
+   BKChem will run only on Python 2.3 or newer.
 2/ pycairo
    This library is optional and is available only for Linux. It enables high quality
    export to PDF and PNG formats with support for antialiased unicode texts.
@@ -19,17 +19,17 @@ must install the following:
 
 --- Single directory deployment ---
 
-No installation is needed to run BKchem. This means that you can run the program
+No installation is needed to run BKChem. This means that you can run the program
 directly after unpacking the downloaded sources.
 Simply run the bkchem.py located in the 'bkchem-X.Y.Z/bkchem' directory, where X,Y,Z
-are version numbers of BKchem release.
+are version numbers of BKChem release.
 
 
 example:
 on Unix do
->cd "the dir where you have downloaded the BKchem package"
->tar -xzf bkchem-X.X.X.tgz -C "the dir where you want to unpack BKchem"
->cd "the dir where you have unpacked BKchem"/bkchem-X.Y.Z/bkchem
+>cd "the dir where you have downloaded the BKChem package"
+>tar -xzf bkchem-X.X.X.tgz -C "the dir where you want to unpack BKChem"
+>cd "the dir where you have unpacked BKChem"/bkchem-X.Y.Z/bkchem
 >python bkchem.py
 
 
@@ -39,7 +39,7 @@ on Unix do
 Under Linux and other Unix systems you have the possibility to use a 'classic'
 way of installing software. Major advantage of doing this is that it you will have
 a "bkchem" program in your path, thus easily startable from any path.
-For the purpose of installation BKchem uses a standard for installation of
+For the purpose of installation BKChem uses a standard for installation of
 python modules - distutils. The installation is accomplished by simply running
 the setup.py script from the bkchem directory with 'install' argument:
 

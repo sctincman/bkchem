@@ -1,17 +1,17 @@
-BKchem is a free molecular drawing program.
+BKChem is a free molecular drawing program.
 
 For more info on program capabilities, install instructions etc. see
-documentation in directory "doc" in the main BKchem directory or the BKchem
+documentation in directory "doc" in the main BKChem directory or the BKChem
 website on http://zirael.org/bkchem/
 
 ---
-BKchem is free software and is distributed under GNU GPL. The program is
+BKChem is free software and is distributed under GNU GPL. The program is
 provided as is without warranty of any kind. For details see the
 file "gpl.txt" in main bkchem directory.
 
 
 ---
-For installation instructions see the file INSTALL in main BKchem directory.
+For installation instructions see the file INSTALL in main BKChem directory.
  
 
 
@@ -30,7 +30,7 @@ license and seems to be dead I have decided to put it inside bkchem sources and
 distribute the fixed version this way.
 
 NOTE: I bundle the official InChI software from IUPAC in a binary form together
-with BKchem in my Windows binary builds. All the credit for this nice piece of
+with BKChem in my Windows binary builds. All the credit for this nice piece of
 software goes to its creators.
 This information comes with the software:
 

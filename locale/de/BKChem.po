@@ -1,7 +1,7 @@
-# translation of BKchem.po to
+# translation of BKChem.po to
 msgid ""
 msgstr ""
-"Project-Id-Version: BKchem\n"
+"Project-Id-Version: BKChem\n"
 "POT-Creation-Date: 2010-06-19 17:11+EEST\n"
 "PO-Revision-Date: 2009-01-09 12:12+0100\n"
 "Last-Translator: Bernhard Radzio\n"

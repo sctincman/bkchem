@@ -14,15 +14,15 @@
 
     <h3>Foreword</h3>
 
-    <p>Even if the possibility to create custom templates in BKchem existed from the version 0.1.0, there was no way
-    how to actually use them afterwards and therefore it was not documented. Starting from BKchem version 0.9.0-pre1 a special mode
+    <p>Even if the possibility to create custom templates in BKChem existed from the version 0.1.0, there was no way
+    how to actually use them afterwards and therefore it was not documented. Starting from BKChem version 0.9.0-pre1 a special mode
     for custom templates was added and here is the documentation how to use it.</p>
 
     <h3>How to do it?</h3>
     <p>Creating a new template is straightforward and easy, however not so easy as you might think :).
     Even if it would be possible for the program to guess how to attach the template to another molecule
     when you use it, I did not implement anything like this, because explicit is usually better than
-    implicit. Therefore you have to tell BKchem which position you would like to use for attaching a template
+    implicit. Therefore you have to tell BKChem which position you would like to use for attaching a template
     to a new molecule and which bond should be used when you click on a bond in an existing molecule.</p>
 
     <p>I will demonstrate the process on creating a template of naphthalene-2-yl. To do so, you have to draw naphthalene
@@ -31,7 +31,7 @@
 
     <!--<img src="../img/custom_templates-1.png" alt="screenshot 1"/>-->
 
-    <p>Now we have to tell BKchem which atom is the <i>template atom</i> - the atom that marks the position of
+    <p>Now we have to tell BKChem which atom is the <i>template atom</i> - the atom that marks the position of
     molecule concatenation. To do it, you have to switch to the <i>template mode</i> (click on the
     cyclohexane icon in the upper button menu), focus the atom you want to mark (put the cursor above it so
     that a circle appears around it) and hit the keys <b>C-t</b> (press <b>t</b> while holding the
@@ -54,17 +54,17 @@
    will be able to access the prepared template.</p>
 
 
-    <p>The only thing that remains now, is to store the newly created template in a directory where BKchem can find it.
+    <p>The only thing that remains now, is to store the newly created template in a directory where BKChem can find it.
     This directory is site-dependent - on Unix systems its <i>~/.bkchem/templates/</i> on Windows <i>.bkchem/templates</i> in
-    the directory where BKchem is installed. You can do it either by hand, or use the command <i>Save As Template</i> in the 
+    the directory where BKChem is installed. You can do it either by hand, or use the command <i>Save As Template</i> in the 
     <i>File</i> menu, which will also check the content of the file and warn you when there is some problem with your template(s).</p>
 
-    <p>Now, when everything went OK, you can restart BKchem and you should see your newly created templates in the menu of the
+    <p>Now, when everything went OK, you can restart BKChem and you should see your newly created templates in the menu of the
     <i>Custom templates mode</i>.</p>
 
     <h3>Last word</h3>
 
-    <p>I welcome any suggestions and bug reports related to this text, the procedures described here or BKchem in general
+    <p>I welcome any suggestions and bug reports related to this text, the procedures described here or BKChem in general
     on my <a href="mailto:beda@zirael.org">email address</a>.</p>
 
   </body>

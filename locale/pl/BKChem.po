@@ -1,11 +1,11 @@
-# translation of BKchem-pl.po to Polish
-# translation of BKchem.po to Polish
+# translation of BKChem-pl.po to Polish
+# translation of BKChem.po to Polish
 # Copyright (C) YEAR ORGANIZATION.
 # Nikodem Kuznik <nkuznik@yahoo.com>, 2005.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: BKchem-pl\n"
+"Project-Id-Version: BKChem-pl\n"
 "POT-Creation-Date: 2010-06-19 17:11+EEST\n"
 "PO-Revision-Date: 2005-06-11 13:19-0400\n"
 "Last-Translator: Nikodem Kuznik <nkuznik@yahoo.com>\n"
@@ -1071,7 +1071,7 @@ msgid ""
 "Export to plain SVG - Scalable Vector Graphics - without embedding BKChem "
 "data inside"
 msgstr ""
-"Eksport do prostego formatu SVG - dane programu BKchem nie zostaną dołączone "
+"Eksport do prostego formatu SVG - dane programu BKChem nie zostaną dołączone "
 "do pliku"
 
 #: ../../bkchem/main.py:190
@@ -1458,7 +1458,7 @@ msgid ""
 "To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
 msgstr ""
-"Aby zaimplementować program INChI w BKchem, należy najpierw podać ścieżkę do "
+"Aby zaimplementować program INChI w BKChem, należy najpierw podać ścieżkę do "
 "programu INChI "
 
 #: ../../bkchem/main.py:278
@@ -1471,7 +1471,7 @@ msgstr "Pomoc"
 
 #: ../../bkchem/main.py:279
 msgid "About"
-msgstr "O programie BKchem..."
+msgstr "O programie BKChem..."
 
 #: ../../bkchem/main.py:279
 #, fuzzy
@@ -1489,7 +1489,7 @@ msgstr "Wtyczki"
 #: ../../bkchem/main.py:567
 #, fuzzy
 msgid "About BKChem"
-msgstr "O programie BKchem"
+msgstr "O programie BKChem"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1939,12 +1939,12 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"Program BKchem został przygotowany i napisany przez BK\n"
+"Program BKChem został przygotowany i napisany przez BK\n"
 "Program ten działa w środowisku Python, Pmw i opcjonalnie PIL.\n"
 "\n"
-"BKchem jest darmowym programem i jest rozpowszechniany na zasadzie licencji "
+"BKChem jest darmowym programem i jest rozpowszechniany na zasadzie licencji "
 "GNU GPL.\n"
-"BKchem jest udostępniany bez żadnej gwarancji dla użytkownika\n"
+"BKChem jest udostępniany bez żadnej gwarancji dla użytkownika\n"
 "- więcej informacji na ten temat w pliku 'gpl.txt' w katalogu programu.\n"
 "\n"
 "Licencja GNU GPL pozwala na przeglądanie programu, modyfikację i "
@@ -1963,9 +1963,9 @@ msgid ""
 msgstr ""
 "NIE MOŻNA ZAIMPORTOWAĆ PMW\n"
 "\n"
-"Niestety, BKchem bazuje na pakiecie Pmw i nie może zostać uruchomiony bez "
+"Niestety, BKChem bazuje na pakiecie Pmw i nie może zostać uruchomiony bez "
 "niego.\n"
-"Należy zainstalować pakiet Pmw i uruchomić BKchem ponownie."
+"Należy zainstalować pakiet Pmw i uruchomić BKChem ponownie."
 
 #: ../../bkchem/messages.py:95
 #, fuzzy
@@ -1994,7 +1994,7 @@ msgstr ""
 "\n"
 "Niestety, program od wersji 0.10 potrzebuje Pythona w wersji 2.3 lub "
 "wyższej. Wersja na tym komputerze, to %s\n"
-"Aby uruchomić program BKchem, należy zaktualizować wersję Pythona."
+"Aby uruchomić program BKChem, należy zaktualizować wersję Pythona."
 
 #: ../../bkchem/messages.py:107
 #, fuzzy
@@ -2004,7 +2004,7 @@ msgid ""
 "Unfortunately,\n"
 "the splash image was not found :("
 msgstr ""
-"Uruchamianie BKchem.\n"
+"Uruchamianie BKChem.\n"
 "\n"
 "Niestety \n"
 " nie odnaleziono obrazu."
@@ -2788,7 +2788,7 @@ msgstr ""
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "Uruchamianie programu BKchem..."
+msgstr "Uruchamianie programu BKChem..."
 
 #: ../../bkchem/validator.py:92
 #, fuzzy

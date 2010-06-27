@@ -892,7 +892,7 @@ msgstr "Le numéro %s a été appliqué à (aux) atome(s)"
 #: ../../bkchem/interactors.py:357
 #, fuzzy
 msgid "BKChem interpreted the entered text as an atom"
-msgstr "BKchem a interprété le texte saisi comme un atome."
+msgstr "BKChem a interprété le texte saisi comme un atome."
 
 #: ../../bkchem/interactors.py:359
 #, fuzzy
@@ -900,7 +900,7 @@ msgid ""
 "BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
-"BKchem pense qu'il peut interprêter le texte saisi comme un group, essayez "
+"BKChem pense qu'il peut interprêter le texte saisi comme un group, essayez "
 "de l'étendre pour voir comment il a été interprêté."
 
 #: ../../bkchem/interactors.py:361
@@ -908,7 +908,7 @@ msgstr ""
 msgid ""
 "BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
-"BKchem n'a pas pu interprêter le texte saisi comme ayant un quelconque sens "
+"BKChem n'a pas pu interprêter le texte saisi comme ayant un quelconque sens "
 "chimique"
 
 #: ../../bkchem/interactors.py:375 ../../bkchem/logger.py:33
@@ -921,7 +921,7 @@ msgstr "Infos"
 msgid "The selected language will be used the next time you start BKChem."
 msgstr ""
 "La langue sélectionnée sera utilisée la prochaine fois que vous lancerez "
-"BKchem."
+"BKChem."
 
 #: ../../bkchem/interactors.py:391
 msgid "The selection does not define connected subgraph"
@@ -1075,7 +1075,7 @@ msgid ""
 "data inside"
 msgstr ""
 "Exporte en SVG pur - Scalable Vector Graphics - sans les données propres à "
-"BKchem"
+"BKChem"
 
 #: ../../bkchem/main.py:190
 msgid "SVG"
@@ -1424,7 +1424,7 @@ msgstr "Convertit la sélection en forme linéaire"
 #: ../../bkchem/main.py:268
 #, fuzzy
 msgid "Settings that affect how BKChem works"
-msgstr "Réglages définissant le fonctionnement de BKchem"
+msgstr "Réglages définissant le fonctionnement de BKChem"
 
 #: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
@@ -1459,7 +1459,7 @@ msgid ""
 "To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
 msgstr ""
-"Pour utiliser INChI dans BKchem, vous devez préalablement définir le chamin "
+"Pour utiliser INChI dans BKChem, vous devez préalablement définir le chamin "
 "d'accès au programme INChI ici"
 
 #: ../../bkchem/main.py:278
@@ -1477,7 +1477,7 @@ msgstr "À propos"
 #: ../../bkchem/main.py:279
 #, fuzzy
 msgid "General information about BKChem"
-msgstr "Informations générales concernant BKchem"
+msgstr "Informations générales concernant BKChem"
 
 #: ../../bkchem/main.py:282
 msgid "Small additional scripts"
@@ -1999,7 +1999,7 @@ msgid ""
 msgstr ""
 "IMPOSSIBLE D'IMPORTER OASA\n"
 "\n"
-"Depuis la version 0.10 BKchem utilise en interne la bibliothèque OASA et ne "
+"Depuis la version 0.10 BKChem utilise en interne la bibliothèque OASA et ne "
 "peut fonctionner sans."
 
 #: ../../bkchem/messages.py:100
@@ -2014,9 +2014,9 @@ msgid ""
 msgstr ""
 "Version de Python trop ancienne!\n"
 "\n"
-"Depuis la version 0.10 BKchem nécessite Python 2.3 ou sup. pour fonctionner "
+"Depuis la version 0.10 BKChem nécessite Python 2.3 ou sup. pour fonctionner "
 "correctement. Vous avez la version %s.\n"
-"Désolé pour l'inconfort, vous devez mettre à jour Python pour lancer BKchem."
+"Désolé pour l'inconfort, vous devez mettre à jour Python pour lancer BKChem."
 
 #: ../../bkchem/messages.py:107
 #, fuzzy
@@ -2389,7 +2389,7 @@ msgid ""
 "The reaction information in BKChem are associated with arrows, therefore you "
 "have to have at least one arrow before you can construct any reaction."
 msgstr ""
-"Les informations de réaction dans BKchem sont liées au flèches, vous devez "
+"Les informations de réaction dans BKChem sont liées au flèches, vous devez "
 "donc avoir au moins une flêche pour constituer une réaction."
 
 #: ../../bkchem/modes.py:2037
@@ -2809,7 +2809,7 @@ msgstr ""
 #: ../../bkchem/splash.py:35
 #, fuzzy
 msgid "BKChem is starting..."
-msgstr "Démarrage de BKchem.."
+msgstr "Démarrage de BKChem.."
 
 #: ../../bkchem/validator.py:92
 #, fuzzy

@@ -3,7 +3,7 @@
  "/home/beda/xml/docbook/docbookx.dtd">
 <book>
   <bookinfo revision="0.1.1">
-    <title>BKchem</title>
+    <title>BKChem</title>
     <author>
       <firstname>Beda</firstname>
       <surname>Kosata</surname>
@@ -28,15 +28,15 @@
   <preface>
     <title>Foreword and Warning</title>
     <para>I am not a programmer by training. Programming is just my hobby and I am doing it for fun.
-    Therefor you should not expect BKchem to be perfect or even usable. The coding style is probably horrible and trying 
+    Therefor you should not expect BKChem to be perfect or even usable. The coding style is probably horrible and trying 
     to read the code may seriously affect your mental health :)</para>
     <para>You are however welcome to read the code, modify it and send me suggestions or patches. I'm still learning. On the other
     hand don't flame me about the style - you have been warned.</para>
     <para>Any reports on bugs are also welcome (especially those with suggestions on their sources or
     solutions).</para>
-    <para>Before you start to use BKchem, you should read the license. BKchem is distributed under
+    <para>Before you start to use BKChem, you should read the license. BKChem is distributed under
     GNU GPL (see the file gpl.txt in the main distribution directory). This license gives you
-    freedom to study and modify BKchem as you wish. On the other hand you should be warned that
+    freedom to study and modify BKChem as you wish. On the other hand you should be warned that
     <emphasis> "This program is distributed in the hope that it will be useful, but WITHOUT ANY
     WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
     PURPOSE"</emphasis></para>
@@ -46,7 +46,7 @@
     <title>Users Guide</title>
     <chapter>
       <title>Introduction</title>
-      <para>BKchem is a chemical drawing program written in Python. The documentation as well as the
+      <para>BKChem is a chemical drawing program written in Python. The documentation as well as the
 	program itself are in constant development. Therefor this manual is not meant to be
 	complete, but rather tries to cover the very basics and the things that are not easy to find
 	out without help. On the other hand many things are so self-evident that it would be useless
@@ -102,7 +102,7 @@
 
 		<row>
 		  <entry>mode</entry>
-		  <entry>BKchem has several modes for different operations (e.g. for drawing
+		  <entry>BKChem has several modes for different operations (e.g. for drawing
 		  molecules, drawing arrow, text, rotating existing objects). You select the mode by
 		  selecting one of the buttons on the top of the application window. You can find more on
 		  individual modes in the following chapters.</entry>
@@ -117,7 +117,7 @@
 	<title>Simple drawing</title>
 	<sect2>
 	  <title>Bond-by-bond drawing</title>
-	  <para>The bond-by-bond drawing in BKchem is performed in the "draw mode".</para>
+	  <para>The bond-by-bond drawing in BKChem is performed in the "draw mode".</para>
 	  <para>The drawing is realized in a very intuitive way. You can just click on the
 	    drawing canvas and two atoms with a single bond between them will appear. By default the
 	    atoms are carbons and their symbol is not drawn. When you change the atom symbol to
@@ -141,7 +141,7 @@
 	</sect2>
 	<sect2>
 	  <title>Templates</title>
-	  <para>BKchem comes with set of ready-to-use templates of common rings. To use them just
+	  <para>BKChem comes with set of ready-to-use templates of common rings. To use them just
 	    select the "template mode" and then select a template.</para>
 	  <para>The behavior of template depends on where you place it. Clicking on the canvas
 	    just creates the molecule from the template. Clicking on atoms or bonds attaches the
@@ -191,9 +191,9 @@
 	    one of the buttons on side of "edit pool". To cancel the action hit "Escape". The three
 	    buttons are used for setting text in different modes. The "Set" button serves for
 	    applying the text just as it was entered, "Set &amp; Interpret" will search the inner
-	    database of BKchem to find if the entered text has some known interpretation. The
+	    database of BKChem to find if the entered text has some known interpretation. The
 	    "Sub-numbers" is used to turn all numbers in subscript and is useful for molecular
-	    formulas that are not known to BKchem.</para>
+	    formulas that are not known to BKChem.</para>
 	  </sect3>
 	</sect2>
       </sect1>
@@ -267,7 +267,7 @@
 	before you press the "f" you must release the "Control" (otherwise you will end up with "C-x
 	C-f"). It is also possible to have more modifiers in one keystroke - e.g. "C-M-S-k" means
 	that you have to press "k" while holding simultaneously "Control", "Meta" and "Shift"
-	keys. The best way to get used to this concept is by practice. So try it inside of BKchem
+	keys. The best way to get used to this concept is by practice. So try it inside of BKChem
 	or get Emacs.</para>
       </sect1>
     </chapter>
@@ -276,21 +276,21 @@
       <title>Saving files</title>
       <sect1>
 	<title>Native formats</title>
-	<para>Native format of BKchem is based on XML and is called CDML (chemical drawing markup
+	<para>Native format of BKChem is based on XML and is called CDML (chemical drawing markup
 	  language). This format is, on contrary to CML (chemical markup language) which is designed
 	  to describe the chemistry from the semantic point of view, designed to describe the
 	  chemical drawing from the perspective of representation.</para>
-	<para>CDML is however just internal format of BKchem and does not have any broad
-	  acceptance. To use the graphical output of BKchem it was necessary to export the data into
+	<para>CDML is however just internal format of BKChem and does not have any broad
+	  acceptance. To use the graphical output of BKChem it was necessary to export the data into
 	  some standard graphical format, preferentially SVG. This approach has however disadvantage
-	  that it forces users to maintain two versions of each document, one with data for BKchem
+	  that it forces users to maintain two versions of each document, one with data for BKChem
 	  and one with their graphical representation. Fortunately it is possible to embed foreign
 	  data into SVG and because SVG is ideal format for vector graphics I have
 	  embedded CDML into it. This way we have format (available from version 0.1.1) that
 	  can be immediately viewed in 
 	  SVG enabled programs and still has the data necessary for right interpretation by
-	  BKchem. To distinguish this new format from normal SVG I use the term CD-SVG.</para>
-	<para>This means that you can store the drawings you create in BKchem in two formats - CDML
+	  BKChem. To distinguish this new format from normal SVG I use the term CD-SVG.</para>
+	<para>This means that you can store the drawings you create in BKChem in two formats - CDML
 	  and CD-SVG. Both these formats are also available in their gzipped form (compression by
 	  gzip is almost standard way to make XML files smaller) which needs usually only 10-25% of
 	  the space needed by the unzipped form. Preferred file format is CD-SVG or if you need
@@ -299,8 +299,8 @@
       </sect1>
       <sect1>
 	<title>Export formats</title>
-	<para>In time of writing of this paragraph BKchem supports export only to SVG (see the
-	  section above for more information on BKchem and SVG). There are other exports available
+	<para>In time of writing of this paragraph BKChem supports export only to SVG (see the
+	  section above for more information on BKChem and SVG). There are other exports available
 	  which are only experimental and incomplete. These are PNG (cannot export text), PostScript
 	  (problems with right postscript font selection) and PovRay (just a funny export not
 	  intended for something serious (the rendered scenes can however be very nice)) - see
@@ -311,7 +311,7 @@
 
 <chapter>
   <title>Modes</title>
-  <para>Central part of the functionality of BKchem is provided by the so called modes. There is
+  <para>Central part of the functionality of BKChem is provided by the so called modes. There is
   always one active mode, which determines how the objects respond to user actions. You can choose
   the mode on the <xref linkend="pict.modes-all"/>.</para>
 
@@ -336,7 +336,7 @@
     <title>Programmers Guide</title>
     <chapter>
       <title>Intro</title>
-      <para>Well, sure there will be some info on BKchem structure somewhere in the future. But
+      <para>Well, sure there will be some info on BKChem structure somewhere in the future. But
       for now I am too busy with other more interesting and important things.</para>
     </chapter>
   </part>

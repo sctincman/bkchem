@@ -7,35 +7,35 @@
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Using BKchem in batch mode</title>
+    <title>Using BKChem in batch mode</title>
   </head>
   <body>
-    <h2>Using BKchem in batch mode</h2>
+    <h2>Using BKChem in batch mode</h2>
 
     <h3>Foreword</h3>
 
-    <p>In version <b>0.9.0</b> of BKchem I have introduced an undocumented batch mode.
-    Depending on command line switches BKchem converted all given files of one type to another etc.
+    <p>In version <b>0.9.0</b> of BKChem I have introduced an undocumented batch mode.
+    Depending on command line switches BKChem converted all given files of one type to another etc.
     The problem of this approach was that it would be necessary to implement a huge number of 
     command line switches to give the user at least some power to do what he wants.</p>
 
     <p>From version <b>0.10.0-pre1</b> I have decided to use a completely different approach, based on my
     experience with custom plugins. In this version, there is only one command line switch (-b) that
-    tells BKchem to start in batch mode. The following argument is a name of a Python script to run.
+    tells BKChem to start in batch mode. The following argument is a name of a Python script to run.
     </p>
 
 
     <h3>How does a batch script work</h3>
 
-    <p>When you start BKchem in batch mode it at first starts all its vital parts and
+    <p>When you start BKChem in batch mode it at first starts all its vital parts and
     then gives control to the Python script given on command line. All this happens without actually
-    displaying a BKchem window (even though the window is in fact created, so it does not work
+    displaying a BKChem window (even though the window is in fact created, so it does not work
     without X on Unix). After the script has finished its work and the control returns back
-    to BKchem, the program simply terminates.</p>
+    to BKChem, the program simply terminates.</p>
 
     <p>The anatomy of a batch script is very similar to that of a
     <a href="custom_plugins_en.html">custom plugin</a>. The script receives a global variable
-    <i>App</i>, which is the actual BKchem instance. In case some further arguments are given on the
+    <i>App</i>, which is the actual BKChem instance. In case some further arguments are given on the
     command line on startup, they are passed as a list in a global variable <i>Args</i>.
     The script can use these variables in any way it wants, it can also use any standard Python
     functions and modules.</p>
@@ -44,7 +44,7 @@
     <h3>Sample batch script</h3>
 
     <p>In this <a href="scripts/batch_demo1.py">file</a> you will find complete code of the example
-    discussed bellow. It is a simple batch script that loads all BKchem files in all directories
+    discussed bellow. It is a simple batch script that loads all BKChem files in all directories
     specified on command line, sets font size of all atoms to 12 and re-saves the files.
     The most important parts of the batch script are discussed bellow.
     </p>
@@ -74,7 +74,7 @@ else:
     </pre>
 
     <p><i>App.load_CDML</i> returns true when a file is successfully loaded. The replace argument
-    tells BKchem to load the file replacing the current one (instead of opening a new tab), thus we
+    tells BKChem to load the file replacing the current one (instead of opening a new tab), thus we
     don't have to deal with closing tabs.</p>
 
     <p>From the few lines presented above (and the whole script) in fact only 4 or 5 are really

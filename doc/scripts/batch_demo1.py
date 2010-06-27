@@ -31,7 +31,7 @@ def update_svgs_in_path( dir):
 
 
 def update_svg( f):
-  """tries to open a file in BKchem, in case of success sets font size of
+  """tries to open a file in BKChem, in case of success sets font size of
   all atoms to 12 and resaves the file."""
 
   print f, "...",
