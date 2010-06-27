@@ -5,7 +5,7 @@ locale_dir = "../locale"
 
 for lang in os.listdir( locale_dir):
     print "-- language:", lang
-    filename = os.path.join( locale_dir, lang, 'BKchem.po')
+    filename = os.path.join( locale_dir, lang, 'BKChem.po')
     try:
         f = file( filename, 'r')
     except:

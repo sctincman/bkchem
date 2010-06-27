@@ -5,7 +5,7 @@
 S2POT = pygettext.py
 
 # domain
-DOMAIN = BKchem
+DOMAIN = BKChem
 
 # recoding options
 RECODEBACK = iso2utf.py

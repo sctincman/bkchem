@@ -23,10 +23,10 @@ if os.name != 'posix':
 apidocs = [('share/doc/bkchem/'+path[4:], map( os.path.join, len( filenames)*[path], filenames)) for (path, dirnames, filenames) in os.walk( 'doc/api')]
 
 # available languages to pack
-langs = [l for l in os.listdir( 'locale') if os.path.isdir( 'locale/'+l) and os.path.exists( 'locale/'+l+'/LC_MESSAGES/BKchem.mo')]
+langs = [l for l in os.listdir( 'locale') if os.path.isdir( 'locale/'+l) and os.path.exists( 'locale/'+l+'/LC_MESSAGES/BKChem.mo')]
 
 print "found languages:", langs
-localizations = [('share/locale/'+lang+'/LC_MESSAGES', ['locale/'+lang+'/LC_MESSAGES/BKchem.mo']) for lang in langs]
+localizations = [('share/locale/'+lang+'/LC_MESSAGES', ['locale/'+lang+'/LC_MESSAGES/BKChem.mo']) for lang in langs]
 
 
 # should we strip something from in the scripts from the installation path (used in gentoo sandboxing etc.)
@@ -49,14 +49,14 @@ def strip_path( path):
 
 set = setup(
   name = 'bkchem',
-  version = config.current_BKchem_version,
-  description = "BKchem is a chemical drawing program written in Python",
+  version = config.current_BKChem_version,
+  description = "BKChem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
   url = "http://bkchem.zirael.org",
   license = "GNU GPL",
   platforms = ["Unix", "Windows", "hopefully other OSes able to run Python"],
-  long_description = "BKchem is a chemical drawing program written in Python",
+  long_description = "BKChem is a chemical drawing program written in Python",
   
   packages=[ 'bkchem', 'bkchem/plugins', 'bkchem/oasa', 'bkchem/oasa/oasa', 'bkchem/oasa/oasa/graph', 'bkchem/plugins/piddle'],
 
