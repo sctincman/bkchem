@@ -1,6 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1.2//EN"
- "/home/beda/xml/docbook/docbookx.dtd">
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "docbookx.dtd">
 <book>
   <bookinfo revision="0.1.1">
     <title>BKChem</title>
@@ -62,7 +61,8 @@
         <table frame="all">
 	    <title>Used terms</title>
 	    <tgroup cols="2">
-	      <colspec colnum="2" colwidth="4*"/>
+	      <colspec colnum="1" colwidth="60pt"/>
+	      <colspec colnum="2" colwidth="360pt"/>
 	      <thead>
 		<row>
 		  <entry>Term</entry>
@@ -318,7 +318,7 @@
   <figure id="pict.modes-all">
     <title>Mode selection panel</title>
     <screenshot>
-      <graphic fileref="../img/modes-all.png"/>
+      <graphic fileref="img/modes-all.png"/>
     </screenshot>
   </figure>
 
