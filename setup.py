@@ -1,21 +1,14 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 
 import sys
 from distutils.core import setup
 import glob
 import os
 import operator
-try:
-  import py2exe
-except:
-  pass
 from bkchem import config
 
 
-
 ## A few pre-setup hacks
-
-
 if os.name != 'posix':
   sys.path.insert( 0, 'bkchem')
 
@@ -27,7 +20,6 @@ langs = [l for l in os.listdir( 'locale') if os.path.isdir( 'locale/'+l) and os.
 
 print "found languages:", langs
 localizations = [('share/locale/'+lang+'/LC_MESSAGES', ['locale/'+lang+'/LC_MESSAGES/BKChem.mo']) for lang in langs]
-
 
 # should we strip something from in the scripts from the installation path (used in gentoo sandboxing etc.)
 strip = ""
@@ -46,13 +38,14 @@ def strip_path( path):
 
 
 # the setup itself
-
 set = setup(
   name = 'bkchem',
   version = config.current_BKChem_version,
   description = "BKChem is a chemical drawing program written in Python",
   author = "Beda Kosata",
   author_email = "beda@zirael.org",
+  maintainer = "Reinis Danne",
+  maintainer_email = "rei4dan@gmail.com",
   url = "http://bkchem.zirael.org",
   license = "GNU GPL",
   platforms = ["Unix", "Windows", "hopefully other OSes able to run Python"],
@@ -66,14 +59,11 @@ set = setup(
                ('share/bkchem/dtd', glob.glob( 'dtd/*.dtd') + glob.glob( 'dtd/*.xsd')),
                ('share/bkchem/plugins', glob.glob( 'plugins/*.py')+glob.glob( 'plugins/*.xml')),
                ('share/doc/bkchem', glob.glob( 'doc/*.xml') + glob.glob( 'doc/*.html') + ['README', 'INSTALL', 'progress.log']),
-               #('share/doc/bkchem/ps', glob.glob( 'doc/ps/*')),
                #('share/doc/bkchem/pdf', glob.glob( 'doc/pdf/*')),
                ('share/doc/bkchem/html', glob.glob( 'doc/html/*')),
                ('share/doc/bkchem/scripts', glob.glob( 'doc/scripts/*')),
                ('share/doc/bkchem/img', glob.glob( 'doc/img/*')),
                ] + localizations + apidocs,
-  windows=['bkchem/bkchem.py'],
-  options = {"py2exe": {"packages": ["encodings"]}}
   )
 
 
@@ -124,5 +114,3 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
     print "ERROR: failed to make %s executable" % exec_name
     sys.exit( 201)
   print "file %s made executable" % exec_name
-  
-
