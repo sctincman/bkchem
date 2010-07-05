@@ -237,16 +237,25 @@ def save_as_template( paper):
       dialog.insert( 'end', _("Errors"), 'headline')
       dialog.insert( 'end', "\n")
     if missing.has_key( 'atom'):
-      dialog.insert( 'end', _("%d molecules have no template atom specified") % missing['atom'])
+      dialog.insert('end', ngettext(
+        "%d molecule have no template atom specified",
+        "%d molecules have no template atom specified",
+        int(missing['atom'])) % missing['atom'])
       dialog.insert( 'end', "\n")
     if missing.has_key('name'):
-      dialog.insert( 'end', _("%d molecules have no name specified") % missing['name'])
+      dialog.insert('end', ngettext(
+        "%d molecule have no name specified",
+        "%d molecules have no name specified",
+        int(missing['name'])) % missing['name'])
       dialog.insert( 'end', "\n")
     if missing.has_key( 'bond'):
       dialog.insert( 'end', "\n")
       dialog.insert( 'end', _("Warnings"), 'headline')
       dialog.insert( 'end', "\n")
-      dialog.insert( 'end', _("%d molecules have no template bond specified") % missing['bond'])
+      dialog.insert('end', ngettext(
+        "%d molecule have no template bond specified",
+        "%d molecules have no template bond specified",
+        int(missing['bond'])) % missing['bond'])
       dialog.insert( 'end', "\n")
 
     if errors:

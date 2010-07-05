@@ -71,8 +71,11 @@ class molfile_exporter( plugin.exporter):
       return 0
     elif len( mols) > 1:
       import tkMessageBox
-      tkMessageBox.showerror( _("%d molecules selected.") % len( mols),
-                              _('You have to select exactly one molecule (any atom or bond will do).'))
+      tkMessageBox.showerror(
+        ngettext("%d molecules selected.",
+                 "%d molecules selected.",
+                 len(mols)) % len(mols),
+        _('You have to select exactly one molecule (any atom or bond will do).'))
       return 0
     else:
       self.molecule = mols[0]

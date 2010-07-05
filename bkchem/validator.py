@@ -89,17 +89,29 @@ class validator_report:
   def get_summary( self):
     out = ""
     if self.text_atoms:
-      out += _("%d text only atom(s) (chemical interpretation is unknown)") % len( self.text_atoms)
+      out += ngettext(
+        "%d text only atom (chemical interpretation is unknown)",
+        "%d text only atoms (chemical interpretation is unknown)",
+        len(self.text_atoms)) % len(self.text_atoms)
       out += "\n"
     if self.exceeded_valency:
-      out += _("%d atom(s) with exceeded valency") % len( self.exceeded_valency)
+      out += ngettext("%d atom with exceeded valency",
+                      "%d atoms with exceeded valency",
+                      len(self.exceeded_valency)) % len(self.exceeded_valency)
       out += "\n"
     if self.group_atoms:
-      out += _("%d group(s) (groups need to be expanded for some export formats)") % len( self.group_atoms)
+      out += ngettext(
+        "%d group(s) (groups need to be expanded for some export formats)",
+        "%d group(s) (groups need to be expanded for some export formats)",
+        len(self.group_atoms)) % len(self.group_atoms)
       out += "\n"
     if self.zero_order_bonds:
-      out += _("%d zero order bond(s) (such bonds will not be exported into chemical formats)") % len( self.zero_order_bonds)
+      out += ngettext(
+        "%d zero order bond "
+        "(such bond will not be exported into chemical formats)",
+        "%d zero order bonds "
+        "(such bonds will not be exported into chemical formats)",
+        len(self.zero_order_bonds)) % len(self.zero_order_bonds)
     if not out:
       out = _("OK")
     return out
-

@@ -1317,7 +1317,9 @@ class chem_paper( Canvas, object):
     i = self.um.undo()
     self.changes_made = 1
     if i > 0:
-      Store.log( _("undo (%d further undos available)") % i)
+      Store.log(ngettext("undo (%d further undo available)",
+                         "undo (%d further undos available)",
+                         i) % i)
     else:
       Store.log( _("no further undo"))
     self.event_generate( "<<undo>>")    
@@ -1330,7 +1332,9 @@ class chem_paper( Canvas, object):
     i = self.um.redo()
     self.changes_made = 1
     if i > 0:
-      Store.log( _("redo (%d further redos available)") % i)
+      Store.log(ngettext("redo (%d further redo available)",
+                         "redo (%d further redos available)",
+                         i) % i)
     else:
       Store.log( _("no further redo"))
     self.event_generate( "<<redo>>")

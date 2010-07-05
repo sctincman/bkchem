@@ -64,7 +64,7 @@ else:
           rest, Store.lang = os.path.split( rest)
 
         tr = gettext.translation( 'BKChem', localedir=localedir, languages=lang)
-        tr.install( unicode=True)
+        tr.install(unicode=True, names=['ngettext'])
         break
     if Store.lang:
       break
