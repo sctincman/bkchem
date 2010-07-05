@@ -53,7 +53,7 @@ except ImportError:
 
 python_version_ok = 1
 import sys
-if not (sys.version_info[0] > 2 or (sys.version_info[0] == 2 and sys.version_info[1] >= 3)):
+if not (sys.version_info[0] > 2 or (sys.version_info[0] == 2 and sys.version_info[1] >= 5)):
   python_version_ok = 0
 
 python_version = "%d.%d.%d" % sys.version_info[0:3]

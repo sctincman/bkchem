@@ -8,7 +8,7 @@ must install the following:
 
 1/ Python.
    On www.python.org get a distribution of Python for your platform. Note that
-   BKChem will run only on Python 2.3 or newer.
+   BKChem will run only on Python 2.5 or newer.
 2/ pycairo
    This library is optional and is available only for Linux. It enables high quality
    export to PDF and PNG formats with support for antialiased unicode texts.
