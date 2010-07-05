@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-19 17:11+EEST\n"
+"Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
+"POT-Creation-Date: 2010-07-05 18:47+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,9 +10,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../../bkchem/arrow.py:48 ../../bkchem/modes.py:753
+#: ../../bkchem/modes.py:965
+msgid "normal"
+msgstr "通常"
+
 #: ../../bkchem/arrow.py:48
 msgid "electron transfer"
 msgstr "電子移動"
+
+#: ../../bkchem/arrow.py:48
+msgid "retrosynthetic"
+msgstr "逆合成"
 
 #: ../../bkchem/arrow.py:48
 msgid "equilibrium"
@@ -21,15 +30,6 @@ msgstr "平衡"
 #: ../../bkchem/arrow.py:48
 msgid "equilibrium simple"
 msgstr "平衡(シンプル)"
-
-#: ../../bkchem/arrow.py:48
-msgid "retrosynthetic"
-msgstr "逆合成"
-
-#: ../../bkchem/arrow.py:48 ../../bkchem/modes.py:753
-#: ../../bkchem/modes.py:965
-msgid "normal"
-msgstr "通常"
 
 #: ../../bkchem/checks.py:43
 msgid "The linear form was no longer consistent - it has been removed"
@@ -148,22 +148,22 @@ msgstr "手動"
 msgid "Bond order"
 msgstr "結合次数"
 
-#: ../../bkchem/context_menu.py:267 ../../bkchem/interactors.py:341
+#: ../../bkchem/context_menu.py:267 ../../bkchem/interactors.py:350
 msgid "Atom number"
 msgstr "番号を振る"
-
-#: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
-#: ../../bkchem/plugins/png_cairo.py:174
-msgid "transparent"
-msgstr "透明"
 
 #: ../../bkchem/context_menu.py:268 ../../bkchem/dialogs.py:373
 #: ../../bkchem/dialogs.py:673
 msgid "Area color"
 msgstr "エリアの色"
 
+#: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
+#: ../../bkchem/plugins/png_cairo.py:176
+msgid "transparent"
+msgstr "透明"
+
 #: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
-#: ../../bkchem/plugins/png_cairo.py:173 ../../bkchem/plugins/png_cairo.py:188
+#: ../../bkchem/plugins/png_cairo.py:175 ../../bkchem/plugins/png_cairo.py:190
 msgid "white"
 msgstr "白"
 
@@ -259,15 +259,15 @@ msgstr ""
 #: ../../bkchem/interactors.py:58 ../../bkchem/interactors.py:93
 #: ../../bkchem/interactors.py:99 ../../bkchem/interactors.py:163
 #: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:192
-#: ../../bkchem/interactors.py:283 ../../bkchem/interactors.py:285
-#: ../../bkchem/interactors.py:320 ../../bkchem/interactors.py:321
-#: ../../bkchem/interactors.py:323 ../../bkchem/interactors.py:344
-#: ../../bkchem/interactors.py:346 ../../bkchem/main.py:569
+#: ../../bkchem/interactors.py:292 ../../bkchem/interactors.py:294
+#: ../../bkchem/interactors.py:329 ../../bkchem/interactors.py:330
+#: ../../bkchem/interactors.py:332 ../../bkchem/interactors.py:353
+#: ../../bkchem/interactors.py:355 ../../bkchem/main.py:569
 #: ../../bkchem/main.py:1191 ../../bkchem/main.py:1193
 #: ../../bkchem/main.py:1230 ../../bkchem/main.py:1232
 #: ../../bkchem/main.py:1300 ../../bkchem/main.py:1416
-#: ../../bkchem/plugins/png_cairo.py:91 ../../bkchem/plugins/png_cairo.py:92
-#: ../../bkchem/validator.py:103 ../../bkchem/widgets.py:378
+#: ../../bkchem/validator.py:116 ../../bkchem/widgets.py:378
+#: ../../bkchem/plugins/png_cairo.py:93 ../../bkchem/plugins/png_cairo.py:94
 msgid "OK"
 msgstr "OK"
 
@@ -277,11 +277,11 @@ msgstr "OK"
 #: ../../bkchem/dialogs.py:920 ../../bkchem/dialogs.py:922
 #: ../../bkchem/dialogs.py:1008 ../../bkchem/dialogs.py:1056
 #: ../../bkchem/interactors.py:53 ../../bkchem/interactors.py:93
-#: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:283
-#: ../../bkchem/interactors.py:320 ../../bkchem/interactors.py:344
+#: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:292
+#: ../../bkchem/interactors.py:329 ../../bkchem/interactors.py:353
 #: ../../bkchem/main.py:742 ../../bkchem/main.py:747 ../../bkchem/main.py:1191
-#: ../../bkchem/main.py:1230 ../../bkchem/plugins/png_cairo.py:91
-#: ../../bkchem/plugins/png_cairo.py:184 ../../bkchem/widgets.py:378
+#: ../../bkchem/main.py:1230 ../../bkchem/widgets.py:378
+#: ../../bkchem/plugins/png_cairo.py:93 ../../bkchem/plugins/png_cairo.py:186
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -289,11 +289,11 @@ msgstr "キャンセル"
 msgid "Scale"
 msgstr "拡大"
 
-#: ../../bkchem/dialogs.py:49 ../../bkchem/plugins/png_cairo.py:102
+#: ../../bkchem/dialogs.py:49 ../../bkchem/plugins/png_cairo.py:104
 msgid "Scale X (in %):"
 msgstr "横 (%):"
 
-#: ../../bkchem/dialogs.py:60 ../../bkchem/plugins/png_cairo.py:113
+#: ../../bkchem/dialogs.py:60 ../../bkchem/plugins/png_cairo.py:115
 msgid "Scale Y (in %):"
 msgstr "縦 (%):"
 
@@ -480,6 +480,7 @@ msgid "Standard saved"
 msgstr "環境設定の変更"
 
 #: ../../bkchem/dialogs.py:792
+#, python-format
 msgid ""
 "The standard was successfully saved as personal standard to %s\n"
 "\n"
@@ -549,6 +550,10 @@ msgstr "使用可能な言語"
 msgid "italic"
 msgstr "イタリック"
 
+#: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:753
+msgid "bold"
+msgstr "ボールド"
+
 #: ../../bkchem/edit_pool.py:38
 msgid "subscript"
 msgstr "下付き"
@@ -556,10 +561,6 @@ msgstr "下付き"
 #: ../../bkchem/edit_pool.py:38
 msgid "superscript"
 msgstr "上付き"
-
-#: ../../bkchem/edit_pool.py:38 ../../bkchem/modes.py:753
-msgid "bold"
-msgstr "ボールド"
 
 #: ../../bkchem/edit_pool.py:63
 msgid "Interpret"
@@ -632,6 +633,7 @@ msgid "Name:"
 msgstr "名称:"
 
 #: ../../bkchem/interactors.py:65
+#, python-format
 msgid "Name %s was set to molecule(s)"
 msgstr "選択された分子に%sという名称が振られました"
 
@@ -662,6 +664,7 @@ msgid "This ID is already used, use a different one"
 msgstr "このIDは既に使われています．別のIDを使用してください"
 
 #: ../../bkchem/interactors.py:115
+#, python-format
 msgid "ID %s was set to molecule"
 msgstr "IDを%sに設定しました"
 
@@ -678,6 +681,12 @@ msgstr "描かれた分子に文字が含まれています"
 #: ../../bkchem/interactors.py:129
 msgid "It is not possible to export them."
 msgstr "エクスポートできません"
+
+#: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
+#: ../../bkchem/plugins/CML.py:204 ../../bkchem/plugins/CML.py:210
+#, python-format
+msgid "For details check the chemistry with '%s/%s'."
+msgstr "メニューバーの'%s'から'%s'で詳細を確認してください"
 
 #: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
 #: ../../bkchem/interactors.py:165 ../../bkchem/main.py:241
@@ -697,11 +706,6 @@ msgstr ""
 #: ../../bkchem/plugins/CML.py:210
 msgid "Check chemistry"
 msgstr "整合性チェック"
-
-#: ../../bkchem/interactors.py:130 ../../bkchem/interactors.py:136
-#: ../../bkchem/plugins/CML.py:204 ../../bkchem/plugins/CML.py:210
-msgid "For details check the chemistry with '%s/%s'."
-msgstr "メニューバーの'%s'から'%s'で詳細を確認してください"
 
 #: ../../bkchem/interactors.py:134
 msgid "Validity warning"
@@ -760,6 +764,7 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/interactors.py:213
+#, python-format
 msgid "Display form %s was set to molecule(s)"
 msgstr ""
 
@@ -771,27 +776,36 @@ msgstr "テンプレートの概要"
 msgid "Errors"
 msgstr "エラー"
 
-#: ../../bkchem/interactors.py:240
-msgid "%d molecules have no template atom specified"
-msgstr "テンプレート原子が指定されていない分子が%d個あります"
-
-#: ../../bkchem/interactors.py:243
-msgid "%d molecules have no name specified"
-msgstr "名称が決まっていない分子が%d個あります"
+#: ../../bkchem/interactors.py:241
+#, fuzzy, python-format
+msgid "%d molecule have no template atom specified"
+msgid_plural "%d molecules have no template atom specified"
+msgstr[0] "テンプレート原子が指定されていない分子が%d個あります"
+msgstr[1] "テンプレート原子が指定されていない分子が%d個あります"
 
 #: ../../bkchem/interactors.py:247
+#, fuzzy, python-format
+msgid "%d molecule have no name specified"
+msgid_plural "%d molecules have no name specified"
+msgstr[0] "名称が決まっていない分子が%d個あります"
+msgstr[1] "名称が決まっていない分子が%d個あります"
+
+#: ../../bkchem/interactors.py:253
 msgid "Warnings"
 msgstr "警告"
 
-#: ../../bkchem/interactors.py:249
-msgid "%d molecules have no template bond specified"
-msgstr "テンプレート結合が指定されていない分子が%d個あります"
+#: ../../bkchem/interactors.py:256
+#, fuzzy, python-format
+msgid "%d molecule have no template bond specified"
+msgid_plural "%d molecules have no template bond specified"
+msgstr[0] "テンプレート結合が指定されていない分子が%d個あります"
+msgstr[1] "テンプレート結合が指定されていない分子が%d個あります"
 
-#: ../../bkchem/interactors.py:254
+#: ../../bkchem/interactors.py:263
 msgid "Please correct the above errors first"
 msgstr "上記のエラーを修正してください"
 
-#: ../../bkchem/interactors.py:256
+#: ../../bkchem/interactors.py:265
 msgid ""
 "A tutorial on how to prepare a template can be found in the file doc/"
 "custom_templates_en.html"
@@ -799,27 +813,29 @@ msgstr ""
 "テンプレートを準備するためのチュートリアルをdocフォルダのcustom_templates_en."
 "html で見ることができます"
 
-#: ../../bkchem/interactors.py:272
+#: ../../bkchem/interactors.py:281
 msgid "Directory creation failed."
 msgstr "ディレクトリの作成に失敗しました."
 
-#: ../../bkchem/interactors.py:273
+#: ../../bkchem/interactors.py:282
+#, python-format
 msgid "It was not possible to create the personal directory %s."
 msgstr ""
 
-#: ../../bkchem/interactors.py:280
+#: ../../bkchem/interactors.py:289
 msgid "Template file name"
 msgstr "テンプレートの名称"
 
-#: ../../bkchem/interactors.py:281
+#: ../../bkchem/interactors.py:290
 msgid "File name for the template:"
 msgstr "テンプレートの名称"
 
-#: ../../bkchem/interactors.py:293
+#: ../../bkchem/interactors.py:302
 msgid "The file already exists."
 msgstr "ファイルが既に存在します."
 
-#: ../../bkchem/interactors.py:294
+#: ../../bkchem/interactors.py:303
+#, python-format
 msgid ""
 "Template with this name already exists (path %s).\n"
 "Should I rewrite it?"
@@ -827,91 +843,92 @@ msgstr ""
 "そのテンプレート名は既に存在します (path %s).\n"
 "上書きしますか？"
 
-#: ../../bkchem/interactors.py:308
+#: ../../bkchem/interactors.py:317
 msgid "The selected items must be part of exactly one molecule."
 msgstr ""
 
-#: ../../bkchem/interactors.py:317
+#: ../../bkchem/interactors.py:326
 msgid "Fragment name"
 msgstr "フラグメント名"
 
-#: ../../bkchem/interactors.py:318
+#: ../../bkchem/interactors.py:327
 msgid "Enter fragment name:"
 msgstr "フラグメント名入力:"
 
-#: ../../bkchem/interactors.py:325
+#: ../../bkchem/interactors.py:334
 msgid "The bonds and atoms were used for creation of a new molecular fragment."
 msgstr "その結合または原子はフラグメントとして登録されました"
 
-#: ../../bkchem/interactors.py:327
+#: ../../bkchem/interactors.py:336
 msgid ""
 "The bonds and atoms could not have been used for creation of a new molecular "
 "fragment, they are probably not defining a connected subgraph of the "
 "molecular graph."
 msgstr ""
 
-#: ../../bkchem/interactors.py:342
+#: ../../bkchem/interactors.py:351
 msgid "Enter atom number:"
 msgstr "表示したい番号を入力:"
 
-#: ../../bkchem/interactors.py:349
+#: ../../bkchem/interactors.py:358
+#, python-format
 msgid "Number %s was set to atom(s)."
 msgstr ""
 
-#: ../../bkchem/interactors.py:357
+#: ../../bkchem/interactors.py:366
 #, fuzzy
 msgid "BKChem interpreted the entered text as an atom"
 msgstr "入力されたテキストは化学式として扱われます"
 
-#: ../../bkchem/interactors.py:359
+#: ../../bkchem/interactors.py:368
 #, fuzzy
 msgid ""
 "BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr "入力されたテキストは官能基として扱われます"
 
-#: ../../bkchem/interactors.py:361
+#: ../../bkchem/interactors.py:370
 #, fuzzy
 msgid ""
 "BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr "入力されたテキストは化学式として認識されません"
 
-#: ../../bkchem/interactors.py:375 ../../bkchem/logger.py:33
+#: ../../bkchem/interactors.py:384 ../../bkchem/logger.py:33
 #: ../../bkchem/main.py:242
 msgid "Info"
 msgstr "情報"
 
-#: ../../bkchem/interactors.py:376
+#: ../../bkchem/interactors.py:385
 #, fuzzy
 msgid "The selected language will be used the next time you start BKChem."
 msgstr "選択した言語は再起動後有効になります"
 
-#: ../../bkchem/interactors.py:391
+#: ../../bkchem/interactors.py:400
 msgid "The selection does not define connected subgraph"
 msgstr ""
 
-#: ../../bkchem/interactors.py:419
+#: ../../bkchem/interactors.py:428
 msgid "The selection is not linear - there are some splittings."
 msgstr "一直線上に表示できません．分枝が存在します"
 
-#: ../../bkchem/interactors.py:429
+#: ../../bkchem/interactors.py:438
 msgid ""
 "The selected part of a molecule is a whole ring, there is no way to "
 "linearize it"
 msgstr ""
 
-#: ../../bkchem/interactors.py:478
+#: ../../bkchem/interactors.py:487
 msgid "Groups must be expanded to compute oxidation number for them."
 msgstr "酸化数を計算するには官能基を展開してください"
 
-#: ../../bkchem/interactors.py:484
+#: ../../bkchem/interactors.py:493
 msgid ""
 "Unexpanded groups or text-only atoms may cause incorrect computation of "
 "oxidation number."
 msgstr ""
 "示性式、またはテキスト形式の原子の酸化数は間違って計算することがあります。"
 
-#: ../../bkchem/interactors.py:497
+#: ../../bkchem/interactors.py:506
 msgid "You can move and delete the created oxidation numbers in the mark mode"
 msgstr "ツールバーのマークから追加と削除で表示した酸化数を移動と削除ができます"
 
@@ -947,10 +964,6 @@ msgstr "コンソール"
 msgid "Ignore"
 msgstr "無視"
 
-#: ../../bkchem/main.py:178
-msgid "Open, save, export, and import files"
-msgstr "開く,保存,エクスポート,インポート"
-
 #: ../../bkchem/main.py:178 ../../bkchem/main.py:180 ../../bkchem/main.py:181
 #: ../../bkchem/main.py:182 ../../bkchem/main.py:183 ../../bkchem/main.py:184
 #: ../../bkchem/main.py:185 ../../bkchem/main.py:186 ../../bkchem/main.py:187
@@ -960,13 +973,17 @@ msgstr "開く,保存,エクスポート,インポート"
 msgid "File"
 msgstr "ファイル"
 
-#: ../../bkchem/main.py:180
-msgid "Create a new file in a new tab"
-msgstr "新しいタブで新規作成"
+#: ../../bkchem/main.py:178
+msgid "Open, save, export, and import files"
+msgstr "開く,保存,エクスポート,インポート"
 
 #: ../../bkchem/main.py:180
 msgid "New"
 msgstr "新規作成"
+
+#: ../../bkchem/main.py:180
+msgid "Create a new file in a new tab"
+msgstr "新しいタブで新規作成"
 
 #: ../../bkchem/main.py:181
 msgid "Save the file"
@@ -989,38 +1006,42 @@ msgid ""
 "Save the file as template, certain criteria must be met for this to work"
 msgstr ""
 
-#: ../../bkchem/main.py:184
-msgid "Load (open) a file in a new tab"
-msgstr "新規タブで開く"
-
 #: ../../bkchem/main.py:184 ../../bkchem/main.py:859 ../../bkchem/main.py:1055
 msgid "Load"
 msgstr "開く"
 
-#: ../../bkchem/main.py:185
-msgid "Load a file replacing the current one"
-msgstr ""
+#: ../../bkchem/main.py:184
+msgid "Load (open) a file in a new tab"
+msgstr "新規タブで開く"
 
 #: ../../bkchem/main.py:185
 msgid "Load to the same tab"
 msgstr "同じタブで開く"
 
-#: ../../bkchem/main.py:186
-msgid "The most recently used files"
-msgstr "最近使われたファイル"
+#: ../../bkchem/main.py:185
+msgid "Load a file replacing the current one"
+msgstr ""
 
 #: ../../bkchem/main.py:186 ../../bkchem/main.py:465
 msgid "Recent files"
 msgstr "最近開いたファイル"
 
-#: ../../bkchem/main.py:189
-msgid "Export the current file"
-msgstr "現在のファイルをエクスポート"
+#: ../../bkchem/main.py:186
+msgid "The most recently used files"
+msgstr "最近使われたファイル"
 
 #: ../../bkchem/main.py:189 ../../bkchem/main.py:190 ../../bkchem/main.py:409
 #: ../../bkchem/main.py:1121
 msgid "Export"
 msgstr "エクスポート"
+
+#: ../../bkchem/main.py:189
+msgid "Export the current file"
+msgstr "現在のファイルをエクスポート"
+
+#: ../../bkchem/main.py:190
+msgid "SVG"
+msgstr "SVG(専用形式)"
 
 #: ../../bkchem/main.py:190
 msgid ""
@@ -1028,17 +1049,13 @@ msgid ""
 "data inside"
 msgstr ""
 
-#: ../../bkchem/main.py:190
-msgid "SVG"
-msgstr "SVG(専用形式)"
+#: ../../bkchem/main.py:191 ../../bkchem/main.py:404
+msgid "Import"
+msgstr "インポート"
 
 #: ../../bkchem/main.py:191
 msgid "Import a non-native file format"
 msgstr "その他の形式でインポート"
-
-#: ../../bkchem/main.py:191 ../../bkchem/main.py:404
-msgid "Import"
-msgstr "インポート"
 
 #: ../../bkchem/main.py:193
 msgid "Set the papers size and other properties of the document"
@@ -1061,10 +1078,6 @@ msgstr "終了"
 msgid "Exit BKChem"
 msgstr "BKChemを終了"
 
-#: ../../bkchem/main.py:200
-msgid "Undo, Copy, Paste etc."
-msgstr "元に戻す,コピー,貼り付けなど"
-
 #: ../../bkchem/main.py:200 ../../bkchem/main.py:201 ../../bkchem/main.py:202
 #: ../../bkchem/main.py:203 ../../bkchem/main.py:204 ../../bkchem/main.py:205
 #: ../../bkchem/main.py:206 ../../bkchem/main.py:207 ../../bkchem/main.py:208
@@ -1072,13 +1085,17 @@ msgstr "元に戻す,コピー,貼り付けなど"
 msgid "Edit"
 msgstr "編集"
 
-#: ../../bkchem/main.py:201
-msgid "Revert the last change made"
-msgstr ""
+#: ../../bkchem/main.py:200
+msgid "Undo, Copy, Paste etc."
+msgstr "元に戻す,コピー,貼り付けなど"
 
 #: ../../bkchem/main.py:201
 msgid "Undo"
 msgstr "元に戻す"
+
+#: ../../bkchem/main.py:201
+msgid "Revert the last change made"
+msgstr ""
 
 #: ../../bkchem/main.py:202
 msgid "Redo"
@@ -1089,12 +1106,12 @@ msgid "Revert the last undo action"
 msgstr ""
 
 #: ../../bkchem/main.py:204
-msgid "Copy the selected objects to clipboard and delete them"
-msgstr "選択したオブジェクトをクリップボードにコピー後、それらを削除する"
-
-#: ../../bkchem/main.py:204
 msgid "Cut"
 msgstr "切り取り"
+
+#: ../../bkchem/main.py:204
+msgid "Copy the selected objects to clipboard and delete them"
+msgstr "選択したオブジェクトをクリップボードにコピー後、それらを削除する"
 
 #: ../../bkchem/main.py:205
 msgid "Copy"
@@ -1113,13 +1130,13 @@ msgid "Paste the content of clipboard to current paper"
 msgstr "現在のタブにクリップボードの内容を貼り付け"
 
 #: ../../bkchem/main.py:208
+msgid "Selected to clipboard as SVG"
+msgstr "SVGとしてクリップボードにコピー"
+
+#: ../../bkchem/main.py:208
 msgid ""
 "Create SVG for the selected objects and place it to clipboard in text form"
 msgstr "選択したオブジェクトのSVGを作成し、クリップボードにテキスト形式に配置"
-
-#: ../../bkchem/main.py:208
-msgid "Selected to clipboard as SVG"
-msgstr "SVGとしてクリップボードにコピー"
 
 #: ../../bkchem/main.py:210
 msgid "Select all"
@@ -1129,67 +1146,63 @@ msgstr "すべて選択"
 msgid "Select everything on the paper"
 msgstr "このページのすべてを選択"
 
-#: ../../bkchem/main.py:213
-msgid "Aligning of selected objects"
-msgstr "選択したオブジェクトを整列させます"
-
 #: ../../bkchem/main.py:213 ../../bkchem/main.py:214 ../../bkchem/main.py:215
 #: ../../bkchem/main.py:216 ../../bkchem/main.py:217 ../../bkchem/main.py:218
 #: ../../bkchem/main.py:219 ../../bkchem/main.py:220
 msgid "Align"
 msgstr "整列"
 
-#: ../../bkchem/main.py:214
-msgid "Align the tops of selected objects"
-msgstr "選択したオブジェクトを上に整列"
+#: ../../bkchem/main.py:213
+msgid "Aligning of selected objects"
+msgstr "選択したオブジェクトを整列させます"
 
 #: ../../bkchem/main.py:214
 msgid "Top"
 msgstr "上揃え"
 
-#: ../../bkchem/main.py:215
-msgid "Align the bottoms of selected objects"
-msgstr "選択したオブジェクトを下に整列"
+#: ../../bkchem/main.py:214
+msgid "Align the tops of selected objects"
+msgstr "選択したオブジェクトを上に整列"
 
 #: ../../bkchem/main.py:215
 msgid "Bottom"
 msgstr "下揃え"
 
-#: ../../bkchem/main.py:216
-msgid "Align the left sides of selected objects"
-msgstr "選択したオブジェクトを左側に整列"
+#: ../../bkchem/main.py:215
+msgid "Align the bottoms of selected objects"
+msgstr "選択したオブジェクトを下に整列"
 
 #: ../../bkchem/main.py:216
 msgid "Left"
 msgstr "左揃え"
 
-#: ../../bkchem/main.py:217
-msgid "Align the rights sides of selected objects"
-msgstr "選択したオブジェクトを右側に整列"
+#: ../../bkchem/main.py:216
+msgid "Align the left sides of selected objects"
+msgstr "選択したオブジェクトを左側に整列"
 
 #: ../../bkchem/main.py:217
 msgid "Right"
 msgstr "右揃え"
 
-#: ../../bkchem/main.py:219
-msgid "Align the horizontal centers of selected objects"
-msgstr "選択したオブジェクトを中央で水平に整列"
+#: ../../bkchem/main.py:217
+msgid "Align the rights sides of selected objects"
+msgstr "選択したオブジェクトを右側に整列"
 
 #: ../../bkchem/main.py:219
 msgid "Center horizontally"
 msgstr "中央揃え(水平)"
 
-#: ../../bkchem/main.py:220
-msgid "Align the vertical centers of selected objects"
-msgstr "選択したオブジェクトを中央で垂直に整列"
+#: ../../bkchem/main.py:219
+msgid "Align the horizontal centers of selected objects"
+msgstr "選択したオブジェクトを中央で水平に整列"
 
 #: ../../bkchem/main.py:220
 msgid "Center vertically"
 msgstr "中央揃え(垂直)"
 
-#: ../../bkchem/main.py:223
-msgid "Set properties of selected objects"
-msgstr "選択したオブジェクトのプロパティを決めます"
+#: ../../bkchem/main.py:220
+msgid "Align the vertical centers of selected objects"
+msgstr "選択したオブジェクトを中央で垂直に整列"
 
 #: ../../bkchem/main.py:223 ../../bkchem/main.py:224 ../../bkchem/main.py:225
 #: ../../bkchem/main.py:226 ../../bkchem/main.py:227 ../../bkchem/main.py:228
@@ -1197,6 +1210,10 @@ msgstr "選択したオブジェクトのプロパティを決めます"
 #: ../../bkchem/main.py:236 ../../bkchem/main.py:237
 msgid "Object"
 msgstr "配置"
+
+#: ../../bkchem/main.py:223
+msgid "Set properties of selected objects"
+msgstr "選択したオブジェクトのプロパティを決めます"
 
 #: ../../bkchem/main.py:224
 msgid "Scale selected objects"
@@ -1211,20 +1228,20 @@ msgid "Lift selected objects to the top of the stack"
 msgstr ""
 
 #: ../../bkchem/main.py:227
-msgid "Lower the selected objects to the bottom of the stack"
-msgstr ""
-
-#: ../../bkchem/main.py:227
 msgid "Send back"
 msgstr "後面に移動"
 
-#: ../../bkchem/main.py:228
-msgid "Reverse the ordering of the selected objects on the stack"
+#: ../../bkchem/main.py:227
+msgid "Lower the selected objects to the bottom of the stack"
 msgstr ""
 
 #: ../../bkchem/main.py:228
 msgid "Swap on stack"
 msgstr "配置の交換"
+
+#: ../../bkchem/main.py:228
+msgid "Reverse the ordering of the selected objects on the stack"
+msgstr ""
 
 #: ../../bkchem/main.py:230
 msgid "Vertical mirror"
@@ -1269,20 +1286,20 @@ msgid "Check if the selected objects have chemical meaning"
 msgstr ""
 
 #: ../../bkchem/main.py:244
-msgid "Expand all selected groups to their structures"
-msgstr ""
-
-#: ../../bkchem/main.py:244
 msgid "Expand groups"
 msgstr "構造式で表示"
 
-#: ../../bkchem/main.py:246
-msgid "Compute and display the oxidation number of selected atoms"
-msgstr "選択した原子の酸化数を計算して表示"
+#: ../../bkchem/main.py:244
+msgid "Expand all selected groups to their structures"
+msgstr ""
 
 #: ../../bkchem/main.py:246
 msgid "Compute oxidation number"
 msgstr "酸化数を計算"
+
+#: ../../bkchem/main.py:246
+msgid "Compute and display the oxidation number of selected atoms"
+msgstr "選択した原子の酸化数を計算して表示"
 
 #: ../../bkchem/main.py:248
 msgid "Read SMILES"
@@ -1330,20 +1347,24 @@ msgid "Set the ID of the selected molecule"
 msgstr "選択した分子にIDを付ける"
 
 #: ../../bkchem/main.py:261
+msgid "Create fragment"
+msgstr "フラグメント作成"
+
+#: ../../bkchem/main.py:261
 msgid "Create a fragment from the selected part of the molecule"
 msgstr "選択した部分からフラグメントを作成します"
 
-#: ../../bkchem/main.py:261
-msgid "Create fragment"
-msgstr "フラグメント作成"
+#: ../../bkchem/main.py:262
+msgid "View fragments"
+msgstr "フラグメントビューア"
 
 #: ../../bkchem/main.py:262
 msgid "Show already defined fragments"
 msgstr "定義されたフラグメントを表示"
 
-#: ../../bkchem/main.py:262
-msgid "View fragments"
-msgstr "フラグメントビューア"
+#: ../../bkchem/main.py:264
+msgid "Convert selection to linear form"
+msgstr "一直線にして表示"
 
 #: ../../bkchem/main.py:264
 msgid ""
@@ -1351,28 +1372,24 @@ msgid ""
 "not be split."
 msgstr ""
 
-#: ../../bkchem/main.py:264
-msgid "Convert selection to linear form"
-msgstr "一直線にして表示"
-
-#: ../../bkchem/main.py:268
-#, fuzzy
-msgid "Settings that affect how BKChem works"
-msgstr "BKChemの動作についての設定"
-
 #: ../../bkchem/main.py:268 ../../bkchem/main.py:269 ../../bkchem/main.py:270
 #: ../../bkchem/main.py:271 ../../bkchem/main.py:272 ../../bkchem/main.py:274
 #: ../../bkchem/main.py:275
 msgid "Options"
 msgstr "オプション"
 
-#: ../../bkchem/main.py:269
-msgid "Set the default drawing style here"
-msgstr ""
+#: ../../bkchem/main.py:268
+#, fuzzy
+msgid "Settings that affect how BKChem works"
+msgstr "BKChemの動作についての設定"
 
 #: ../../bkchem/main.py:269
 msgid "Standard"
 msgstr "環境設定"
+
+#: ../../bkchem/main.py:269
+msgid "Set the default drawing style here"
+msgstr ""
 
 #: ../../bkchem/main.py:270
 msgid "Set the language used after next restart"
@@ -1392,13 +1409,13 @@ msgid ""
 "here"
 msgstr ""
 
-#: ../../bkchem/main.py:278
-msgid "Help and information about the program"
-msgstr "このプログラムのヘルプと情報"
-
 #: ../../bkchem/main.py:278 ../../bkchem/main.py:279
 msgid "Help"
 msgstr "ヘルプ"
+
+#: ../../bkchem/main.py:278
+msgid "Help and information about the program"
+msgstr "このプログラムのヘルプと情報"
 
 #: ../../bkchem/main.py:279
 msgid "About"
@@ -1409,13 +1426,13 @@ msgstr "BKChemについて"
 msgid "General information about BKChem"
 msgstr "BKChemに関する一般情報"
 
-#: ../../bkchem/main.py:282
-msgid "Small additional scripts"
-msgstr "追加スクリプト"
-
 #: ../../bkchem/main.py:282 ../../bkchem/main.py:324
 msgid "Plugins"
 msgstr "プラグイン"
+
+#: ../../bkchem/main.py:282
+msgid "Small additional scripts"
+msgstr "追加スクリプト"
 
 #: ../../bkchem/main.py:567
 #, fuzzy
@@ -1435,6 +1452,7 @@ msgid "Really close?"
 msgstr "閉じてもよろしいですか？"
 
 #: ../../bkchem/main.py:741
+#, python-format
 msgid "There are unsaved changes in file %s, what should I do?"
 msgstr "このファイル%sは変更されています 。保存しますか？"
 
@@ -1467,6 +1485,7 @@ msgid "File already opened!"
 msgstr "既に開いています！"
 
 #: ../../bkchem/main.py:796
+#, python-format
 msgid ""
 "Sorry but you are already editing a file with this name (%s), please choose "
 "a different name or close the other file."
@@ -1489,19 +1508,21 @@ msgid "CD-SVG"
 msgstr "CD-SVG"
 
 #: ../../bkchem/main.py:828
+#, python-format
 msgid "saved to %s file: %s"
 msgstr ""
 
 #: ../../bkchem/main.py:833
+#, python-format
 msgid "failed to save to %s file: %s"
 msgstr ""
 
 #: ../../bkchem/main.py:855 ../../bkchem/main.py:1045
-msgid "Forget changes in currently visiting file?"
+msgid "Forget changes?"
 msgstr ""
 
 #: ../../bkchem/main.py:855 ../../bkchem/main.py:1045
-msgid "Forget changes?"
+msgid "Forget changes in currently visiting file?"
 msgstr ""
 
 #: ../../bkchem/main.py:861
@@ -1574,6 +1595,7 @@ msgid "Import error"
 msgstr "インポートエラー"
 
 #: ../../bkchem/main.py:1076 ../../bkchem/main.py:1084
+#, python-format
 msgid ""
 "Plugin failed to import with following error:\n"
 " %s"
@@ -1584,6 +1606,7 @@ msgid "Export error"
 msgstr "エクスポートエラー"
 
 #: ../../bkchem/main.py:1131
+#, python-format
 msgid ""
 "Plugin failed to export with following error:\n"
 " %s"
@@ -1628,6 +1651,7 @@ msgstr ""
 
 #: ../../bkchem/main.py:1246 ../../bkchem/main.py:1253
 #: ../../bkchem/main.py:1260 ../../bkchem/main.py:1268
+#, python-format
 msgid "Error processing %s"
 msgstr "処理中のエラー %s"
 
@@ -1647,6 +1671,7 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/main.py:1261
+#, python-format
 msgid ""
 "The submitted InChI has unsupported version '%s'.\n"
 "\n"
@@ -1655,6 +1680,7 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/main.py:1269
+#, python-format
 msgid ""
 "The reading of InChI failed with following error:\n"
 "\n"
@@ -1679,13 +1705,13 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/main.py:1411
-msgid ""
-"Please, try to make sure the path to the InChI program is correct in "
-"'Options/InChI program path'"
+msgid "Unknown error occured during InChI generation, sorry."
 msgstr ""
 
 #: ../../bkchem/main.py:1411
-msgid "Unknown error occured during InChI generation, sorry."
+msgid ""
+"Please, try to make sure the path to the InChI program is correct in "
+"'Options/InChI program path'"
 msgstr ""
 
 #: ../../bkchem/main.py:1415
@@ -1693,6 +1719,7 @@ msgid "Generated InChIs"
 msgstr "InChIs生成"
 
 #: ../../bkchem/main.py:1448
+#, python-format
 msgid "The file was saved as a template %s"
 msgstr "このテンプレートは以下の場所%sに保存されました"
 
@@ -1867,6 +1894,7 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/messages.py:100
+#, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
@@ -1923,8 +1951,8 @@ msgstr "ドロー"
 
 #: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
 #: ../../bkchem/modes.py:2268
-msgid "1"
-msgstr "1°"
+msgid "30"
+msgstr "30°"
 
 #: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
 #: ../../bkchem/modes.py:2268
@@ -1933,25 +1961,33 @@ msgstr "18°"
 
 #: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
 #: ../../bkchem/modes.py:2268
-msgid "30"
-msgstr "30°"
-
-#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
-#: ../../bkchem/modes.py:2268
 msgid "6"
 msgstr "6°"
 
-#: ../../bkchem/modes.py:752
-msgid "double"
-msgstr "2重結合"
+#: ../../bkchem/modes.py:751 ../../bkchem/modes.py:964
+#: ../../bkchem/modes.py:2268
+msgid "1"
+msgstr "1°"
 
 #: ../../bkchem/modes.py:752
 msgid "single"
 msgstr "単結合"
 
 #: ../../bkchem/modes.py:752
+msgid "double"
+msgstr "2重結合"
+
+#: ../../bkchem/modes.py:752
 msgid "triple"
 msgstr "3重結合"
+
+#: ../../bkchem/modes.py:753
+msgid "wedge"
+msgstr "くさび"
+
+#: ../../bkchem/modes.py:753
+msgid "hatch"
+msgstr "ハッチ"
 
 #: ../../bkchem/modes.py:753
 msgid "adder"
@@ -1964,14 +2000,6 @@ msgstr "ダッシュ"
 #: ../../bkchem/modes.py:753
 msgid "dotted"
 msgstr "点線"
-
-#: ../../bkchem/modes.py:753
-msgid "hatch"
-msgstr "ハッチ"
-
-#: ../../bkchem/modes.py:753
-msgid "wedge"
-msgstr "くさび"
 
 #: ../../bkchem/modes.py:754 ../../bkchem/modes.py:964
 #: ../../bkchem/modes.py:2269
@@ -2057,11 +2085,11 @@ msgid "3D"
 msgstr "3D"
 
 #: ../../bkchem/modes.py:1276
-msgid "fix selected bond in 3D"
+msgid "normal 3D rotation"
 msgstr ""
 
 #: ../../bkchem/modes.py:1276
-msgid "normal 3D rotation"
+msgid "fix selected bond in 3D"
 msgstr ""
 
 #: ../../bkchem/modes.py:1293
@@ -2076,20 +2104,20 @@ msgid ""
 msgstr ""
 
 #: ../../bkchem/modes.py:1315
+msgid "You can only rotate molecules in 3D!"
+msgstr "回転できません"
+
+#: ../../bkchem/modes.py:1315
 msgid "Sorry but you can only rotate molecules in 3D."
 msgstr "立体的に回転できるのは分子だけです"
 
-#: ../../bkchem/modes.py:1315
-msgid "You can only rotate molecules in 3D!"
+#: ../../bkchem/modes.py:1317
+msgid "You can only rotate molecules and arrows in 2D!"
 msgstr "回転できません"
 
 #: ../../bkchem/modes.py:1317
 msgid "Sorry but you can only rotate molecules and arrows in 2D."
 msgstr "平面的に回転できるのは分子と矢印だけです"
-
-#: ../../bkchem/modes.py:1317
-msgid "You can only rotate molecules and arrows in 2D!"
-msgstr "回転できません"
 
 #: ../../bkchem/modes.py:1362
 #, fuzzy
@@ -2101,12 +2129,12 @@ msgid "transformation mode"
 msgstr "反転"
 
 #: ../../bkchem/modes.py:1424
-msgid "free rotation around bond"
-msgstr "短い官能基を反転(線対称)"
-
-#: ../../bkchem/modes.py:1424
 msgid "horizontal align"
 msgstr "軸を水平にする"
+
+#: ../../bkchem/modes.py:1424
+msgid "vertical align"
+msgstr "軸を垂直にする"
 
 #: ../../bkchem/modes.py:1424
 msgid "invert through a point"
@@ -2117,8 +2145,8 @@ msgid "mirror through a line"
 msgstr "反転(線対称)"
 
 #: ../../bkchem/modes.py:1424
-msgid "vertical align"
-msgstr "軸を垂直にする"
+msgid "free rotation around bond"
+msgstr "短い官能基を反転(線対称)"
 
 #: ../../bkchem/modes.py:1442
 msgid "select the second atom, please."
@@ -2141,12 +2169,20 @@ msgid "vector graphics"
 msgstr "図形"
 
 #: ../../bkchem/modes.py:1608
-msgid "circle"
-msgstr "円"
+msgid "rectangle"
+msgstr "長方形"
+
+#: ../../bkchem/modes.py:1608
+msgid "square"
+msgstr "正方形"
 
 #: ../../bkchem/modes.py:1608
 msgid "oval"
 msgstr "楕円"
+
+#: ../../bkchem/modes.py:1608
+msgid "circle"
+msgstr "円"
 
 #: ../../bkchem/modes.py:1608
 msgid "polygon"
@@ -2156,33 +2192,25 @@ msgstr "多角形"
 msgid "polyline"
 msgstr "折れ線"
 
-#: ../../bkchem/modes.py:1608
-msgid "rectangle"
-msgstr "長方形"
-
-#: ../../bkchem/modes.py:1608
-msgid "square"
-msgstr "正方形"
-
 #: ../../bkchem/modes.py:1701
 msgid "mark"
 msgstr "マーク"
+
+#: ../../bkchem/modes.py:1704
+msgid "radical"
+msgstr "ラジカル"
 
 #: ../../bkchem/modes.py:1704
 msgid "biradical"
 msgstr "ビラジカル"
 
 #: ../../bkchem/modes.py:1704
-msgid "dotted electron pair"
-msgstr "電子対(点表示)"
-
-#: ../../bkchem/modes.py:1704
 msgid "electron pair"
 msgstr "電子対(線表示)"
 
 #: ../../bkchem/modes.py:1704
-msgid "radical"
-msgstr "ラジカル"
+msgid "dotted electron pair"
+msgstr "電子対(点表示)"
 
 #: ../../bkchem/modes.py:1705
 msgid "pz orbital"
@@ -2201,6 +2229,7 @@ msgid "This mark type is not allowed for this object"
 msgstr ""
 
 #: ../../bkchem/modes.py:1746
+#, python-format
 msgid "There are no marks of type %s on the focused atom"
 msgstr "選択された原子に%sが存在しません"
 
@@ -2213,16 +2242,16 @@ msgid "reaction"
 msgstr "反応"
 
 #: ../../bkchem/modes.py:1911
+msgid "reactant"
+msgstr "反応物"
+
+#: ../../bkchem/modes.py:1911
 msgid "condition"
 msgstr "状態"
 
 #: ../../bkchem/modes.py:1911
 msgid "product"
 msgstr "プロダクト"
-
-#: ../../bkchem/modes.py:1911
-msgid "reactant"
-msgstr "反応物"
 
 #: ../../bkchem/modes.py:1921
 msgid "No arrow present"
@@ -2243,12 +2272,12 @@ msgid "External data management"
 msgstr ""
 
 #: ../../bkchem/modes.py:2056
-msgid "bond"
-msgstr "結合"
-
-#: ../../bkchem/modes.py:2056
 msgid "molecule"
 msgstr "分子"
+
+#: ../../bkchem/modes.py:2056
+msgid "bond"
+msgstr "結合"
 
 #: ../../bkchem/modes.py:2138
 msgid "The data were set to the active item"
@@ -2263,11 +2292,11 @@ msgid "Rapid drawing"
 msgstr ""
 
 #: ../../bkchem/modes.py:2270
-msgid "auto clean after drawing is finished"
+msgid "do nothing after drawing is done"
 msgstr ""
 
 #: ../../bkchem/modes.py:2270
-msgid "do nothing after drawing is done"
+msgid "auto clean after drawing is finished"
 msgstr ""
 
 #: ../../bkchem/modes.py:2426
@@ -2316,10 +2345,12 @@ msgid "concatenated overlaping atoms"
 msgstr "重なった原子を連結しました"
 
 #: ../../bkchem/paper.py:1076
+#, python-format
 msgid "killed %s object(s) to clipboard"
 msgstr ""
 
 #: ../../bkchem/paper.py:1079
+#, python-format
 msgid "copied %s object(s) to clipboard"
 msgstr "クリップボードに%s個のオブジェクトをコピーしました"
 
@@ -2328,77 +2359,174 @@ msgid "pasted from clipboard"
 msgstr "クリップボードから貼り付け"
 
 #: ../../bkchem/paper.py:1320
-msgid "undo (%d further undos available)"
-msgstr "undo (残り%d回)"
+#, fuzzy, python-format
+msgid "undo (%d further undo available)"
+msgid_plural "undo (%d further undos available)"
+msgstr[0] "undo (残り%d回)"
+msgstr[1] "undo (残り%d回)"
 
-#: ../../bkchem/paper.py:1322
+#: ../../bkchem/paper.py:1324
 msgid "no further undo"
 msgstr "これ以上元に戻せません"
 
-#: ../../bkchem/paper.py:1333
-msgid "redo (%d further redos available)"
-msgstr "redo (残り%d回)"
-
 #: ../../bkchem/paper.py:1335
+#, fuzzy, python-format
+msgid "redo (%d further redo available)"
+msgid_plural "redo (%d further redos available)"
+msgstr[0] "redo (残り%d回)"
+msgstr[1] "redo (残り%d回)"
+
+#: ../../bkchem/paper.py:1339
 msgid "no further redo"
 msgstr "これ以上やり直しはできません"
 
-#: ../../bkchem/paper.py:1424
+#: ../../bkchem/paper.py:1428
 msgid "selected top_levels were exported to clipboard in SVG"
 msgstr "選択された範囲内に含まれるオブジェクトをSVGとしてコピーしました"
 
-#: ../../bkchem/paper.py:1470
+#: ../../bkchem/paper.py:1474
 msgid "Info on selected molecules"
 msgstr "選択した分子の情報"
 
-#: ../../bkchem/paper.py:1478
+#: ../../bkchem/paper.py:1482
+#, python-format
 msgid "Name: %s"
 msgstr "名称: %s"
 
-#: ../../bkchem/paper.py:1480
+#: ../../bkchem/paper.py:1484
+#, python-format
 msgid "Id: %s"
 msgstr "ID: %s"
 
-#: ../../bkchem/paper.py:1482 ../../bkchem/paper.py:1497
+#: ../../bkchem/paper.py:1486 ../../bkchem/paper.py:1501
+#, python-format
 msgid "Formula: %s"
 msgstr "化学式: %s"
 
-#: ../../bkchem/paper.py:1484 ../../bkchem/paper.py:1499
-#, fuzzy
+#: ../../bkchem/paper.py:1488 ../../bkchem/paper.py:1503
+#, fuzzy, python-format
 msgid "Weight: %4.4f"
 msgstr "式量: %4.3f"
 
-#: ../../bkchem/paper.py:1486 ../../bkchem/paper.py:1501
+#: ../../bkchem/paper.py:1490 ../../bkchem/paper.py:1505
+#, python-format
 msgid "Monoisotopic mass: %12.8f"
 msgstr "モノアイソトピック質量: %12.8f"
 
-#: ../../bkchem/paper.py:1488 ../../bkchem/paper.py:1503
+#: ../../bkchem/paper.py:1492 ../../bkchem/paper.py:1507
+#, python-format
 msgid "Composition: %s"
 msgstr "組成比: %s"
 
-#: ../../bkchem/paper.py:1492
+#: ../../bkchem/paper.py:1496
 msgid "Individual molecules:"
 msgstr "各分子の情報:"
 
-#: ../../bkchem/paper.py:1495
+#: ../../bkchem/paper.py:1499
 msgid "Summary for all selected molecules:"
 msgstr "全体的な情報:"
 
-#: ../../bkchem/paper.py:1519
+#: ../../bkchem/paper.py:1523
 msgid "Chemistry check of selected molecules"
 msgstr "選択した分子の整合性"
 
-#: ../../bkchem/paper.py:1624
+#: ../../bkchem/paper.py:1628
 msgid "selected items were lifted"
 msgstr "選択したアイテムを前面に移動しました"
 
-#: ../../bkchem/paper.py:1637
+#: ../../bkchem/paper.py:1641
 msgid "selected items were put back"
 msgstr "選択したアイテムを後面に移動しました"
 
-#: ../../bkchem/paper.py:1651
+#: ../../bkchem/paper.py:1655
 msgid "selected items were swapped"
 msgstr "選択したアイテムの配置を交換しました"
+
+#: ../../bkchem/splash.py:35
+#, fuzzy
+msgid "BKChem is starting..."
+msgstr "BKChemを起動しています"
+
+#: ../../bkchem/validator.py:93
+#, fuzzy, python-format
+msgid "%d text only atom (chemical interpretation is unknown)"
+msgid_plural "%d text only atoms (chemical interpretation is unknown)"
+msgstr[0] "テキストで書かれた原子，官能基が%d個あります"
+msgstr[1] "テキストで書かれた原子，官能基が%d個あります"
+
+#: ../../bkchem/validator.py:98
+#, fuzzy, python-format
+msgid "%d atom with exceeded valency"
+msgid_plural "%d atoms with exceeded valency"
+msgstr[0] "原子価を超えている原子，官能基が%d個あります"
+msgstr[1] "原子価を超えている原子，官能基が%d個あります"
+
+#: ../../bkchem/validator.py:104
+#, fuzzy, python-format
+msgid "%d group(s) (groups need to be expanded for some export formats)"
+msgid_plural "%d group(s) (groups need to be expanded for some export formats)"
+msgstr[0] "構造式で表示していない官能基が%dつあります"
+msgstr[1] "構造式で表示していない官能基が%dつあります"
+
+#: ../../bkchem/validator.py:110
+#, fuzzy, python-format
+msgid ""
+"%d zero order bond (such bond will not be exported into chemical formats)"
+msgid_plural ""
+"%d zero order bonds (such bonds will not be exported into chemical formats)"
+msgstr[0] "次数が0の結合が%dつがあります"
+msgstr[1] "次数が0の結合が%dつがあります"
+
+#: ../../bkchem/widgets.py:97
+msgid "Transparent"
+msgstr "透明"
+
+#: ../../bkchem/widgets.py:204
+msgid "Font family"
+msgstr "使用フォント"
+
+#: ../../bkchem/widgets.py:217
+msgid "Width"
+msgstr "幅"
+
+#: ../../bkchem/widgets.py:232
+msgid "Length"
+msgstr "長さ"
+
+#: ../../bkchem/widgets.py:247
+msgid "Ratio"
+msgstr "比率"
+
+#: ../../bkchem/widgets.py:338
+msgid "Browse"
+msgstr "参照"
+
+#: ../../bkchem/widgets.py:347
+msgid "Select the file"
+msgstr "ファイルを選択"
+
+#: ../../bkchem/widgets.py:353
+msgid "File to create"
+msgstr "ファイルを作成"
+
+#: ../../bkchem/widgets.py:413
+msgid "Subscript numbers"
+msgstr "添字番号"
+
+#: ../../bkchem/widgets.py:428
+msgid "Superscript charges"
+msgstr ""
+
+#: ../../bkchem/widgets.py:431
+msgid "Sup charges"
+msgstr ""
+
+#: ../../bkchem/plugins/cairo_lowlevel.py:71
+#: ../../bkchem/plugins/piddle_lowlevel.py:52
+msgid ""
+"There is nothing to export. If you want to export an empty paper disable "
+"cropping of the drawing in the File/Properties menu."
+msgstr ""
 
 #: ../../bkchem/plugins/CDXML.py:42
 msgid "Imports a CDXML (ChemDraw XML format) document."
@@ -2412,6 +2540,22 @@ msgstr ""
 #, fuzzy
 msgid "CDXML"
 msgstr "CDML"
+
+#: ../../bkchem/plugins/CML2.py:35
+msgid ""
+"Imports a CML (Chemical Markup Language) document, uses version 2.0 of the "
+"CML standard."
+msgstr ""
+
+#: ../../bkchem/plugins/CML2.py:45
+msgid ""
+"Exports a CML (Chemical Markup Language) document, uses version 2.0 of the "
+"CML standard."
+msgstr ""
+
+#: ../../bkchem/plugins/CML2.py:58
+msgid "CML2"
+msgstr ""
 
 #: ../../bkchem/plugins/CML.py:35
 msgid ""
@@ -2461,29 +2605,6 @@ msgstr ""
 msgid "CML"
 msgstr "CML"
 
-#: ../../bkchem/plugins/CML2.py:35
-msgid ""
-"Imports a CML (Chemical Markup Language) document, uses version 2.0 of the "
-"CML standard."
-msgstr ""
-
-#: ../../bkchem/plugins/CML2.py:45
-msgid ""
-"Exports a CML (Chemical Markup Language) document, uses version 2.0 of the "
-"CML standard."
-msgstr ""
-
-#: ../../bkchem/plugins/CML2.py:58
-msgid "CML2"
-msgstr ""
-
-#: ../../bkchem/plugins/cairo_lowlevel.py:71
-#: ../../bkchem/plugins/piddle_lowlevel.py:52
-msgid ""
-"There is nothing to export. If you want to export an empty paper disable "
-"cropping of the drawing in the File/Properties menu."
-msgstr ""
-
 #: ../../bkchem/plugins/molfile.py:39
 msgid "Imports a molfile document."
 msgstr ""
@@ -2492,15 +2613,18 @@ msgstr ""
 msgid "Exports to molfile document."
 msgstr ""
 
-#: ../../bkchem/plugins/molfile.py:70 ../../bkchem/plugins/molfile.py:75
+#: ../../bkchem/plugins/molfile.py:70 ../../bkchem/plugins/molfile.py:78
 msgid "You have to select exactly one molecule (any atom or bond will do)."
 msgstr ""
 
-#: ../../bkchem/plugins/molfile.py:74
+#: ../../bkchem/plugins/molfile.py:75
+#, python-format
 msgid "%d molecules selected."
-msgstr ""
+msgid_plural "%d molecules selected."
+msgstr[0] ""
+msgstr[1] ""
 
-#: ../../bkchem/plugins/molfile.py:112
+#: ../../bkchem/plugins/molfile.py:115
 msgid "Molfile"
 msgstr "Mol"
 
@@ -2529,7 +2653,7 @@ msgid ""
 "quality."
 msgstr ""
 
-#: ../../bkchem/plugins/pdf_cairo.py:59
+#: ../../bkchem/plugins/pdf_cairo.py:58
 msgid "PDF (Cairo)"
 msgstr "PDF (Acrobat 5.x 形式)"
 
@@ -2551,33 +2675,33 @@ msgid ""
 "look the same as the PDF (Cairo) export."
 msgstr ""
 
-#: ../../bkchem/plugins/png_cairo.py:75
+#: ../../bkchem/plugins/png_cairo.py:77
 msgid "PNG (Cairo)"
 msgstr "PNG"
 
-#: ../../bkchem/plugins/png_cairo.py:93
+#: ../../bkchem/plugins/png_cairo.py:95
 msgid "PNG resolution and background color"
 msgstr "解像度と背景色"
 
-#: ../../bkchem/plugins/png_cairo.py:96
+#: ../../bkchem/plugins/png_cairo.py:98
 msgid ""
 "Set the PNG picture resolution and background color using one of the "
 "criteria below."
 msgstr "PNGファイルの解像度と背景色を設定できます"
 
-#: ../../bkchem/plugins/png_cairo.py:128
+#: ../../bkchem/plugins/png_cairo.py:130
 msgid "Size X (in px):"
 msgstr "幅 (ピクセル):"
 
-#: ../../bkchem/plugins/png_cairo.py:139
+#: ../../bkchem/plugins/png_cairo.py:141
 msgid "Size Y (in px):"
 msgstr "高さ (ピクセル):"
 
-#: ../../bkchem/plugins/png_cairo.py:155
+#: ../../bkchem/plugins/png_cairo.py:157
 msgid "Resolution (dpi):"
 msgstr "解像度(dpi):"
 
-#: ../../bkchem/plugins/png_cairo.py:171
+#: ../../bkchem/plugins/png_cairo.py:173
 msgid "Background color"
 msgstr "背景色"
 
@@ -2606,7 +2730,7 @@ msgid ""
 "quality."
 msgstr ""
 
-#: ../../bkchem/plugins/ps_cairo.py:73
+#: ../../bkchem/plugins/ps_cairo.py:60
 msgid "Postscript (Cairo)"
 msgstr ""
 
@@ -2627,75 +2751,9 @@ msgid ""
 "data and is simpler than the default one used by BKChem."
 msgstr ""
 
-#: ../../bkchem/plugins/svg_cairo.py:59
+#: ../../bkchem/plugins/svg_cairo.py:58
 msgid "SVG (Cairo)"
 msgstr "SVG (汎用形式)"
-
-#: ../../bkchem/splash.py:35
-#, fuzzy
-msgid "BKChem is starting..."
-msgstr "BKChemを起動しています"
-
-#: ../../bkchem/validator.py:92
-msgid "%d text only atom(s) (chemical interpretation is unknown)"
-msgstr "テキストで書かれた原子，官能基が%d個あります"
-
-#: ../../bkchem/validator.py:95
-msgid "%d atom(s) with exceeded valency"
-msgstr "原子価を超えている原子，官能基が%d個あります"
-
-#: ../../bkchem/validator.py:98
-msgid "%d group(s) (groups need to be expanded for some export formats)"
-msgstr "構造式で表示していない官能基が%dつあります"
-
-#: ../../bkchem/validator.py:101
-msgid ""
-"%d zero order bond(s) (such bonds will not be exported into chemical formats)"
-msgstr "次数が0の結合が%dつがあります"
-
-#: ../../bkchem/widgets.py:97
-msgid "Transparent"
-msgstr "透明"
-
-#: ../../bkchem/widgets.py:204
-msgid "Font family"
-msgstr "使用フォント"
-
-#: ../../bkchem/widgets.py:217
-msgid "Width"
-msgstr "幅"
-
-#: ../../bkchem/widgets.py:232
-msgid "Length"
-msgstr "長さ"
-
-#: ../../bkchem/widgets.py:247
-msgid "Ratio"
-msgstr "比率"
-
-#: ../../bkchem/widgets.py:338
-msgid "Browse"
-msgstr "参照"
-
-#: ../../bkchem/widgets.py:347
-msgid "Select the file"
-msgstr "ファイルを選択"
-
-#: ../../bkchem/widgets.py:353
-msgid "File to create"
-msgstr "ファイルを作成"
-
-#: ../../bkchem/widgets.py:413
-msgid "Subscript numbers"
-msgstr "添字番号"
-
-#: ../../bkchem/widgets.py:428
-msgid "Superscript charges"
-msgstr ""
-
-#: ../../bkchem/widgets.py:431
-msgid "Sup charges"
-msgstr ""
 
 #~ msgid "Fetching progress"
 #~ msgstr "進捗状況の取得"
