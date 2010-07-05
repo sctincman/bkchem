@@ -77,6 +77,7 @@ bond_align_mode_mirrorthrough = _("click a bond or two atoms to mirror the molec
 
 about_text = _("""BKChem was conceived and written by Beda Kosata
 and is performed by Python, Pmw & (optionally) Cairo.
+Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.
 
 BKChem is free software and is distributed under GNU GPL.
 BKChem is provided as is without warranty of any kind.
