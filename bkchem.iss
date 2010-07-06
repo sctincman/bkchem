@@ -27,10 +27,12 @@ Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\BKChem"; Filename: "{app}\bkchem\bkchem.exe"; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\images\icon.ico"
+Name: "{group}\BKChem"; Filename: "{app}\bkchem\bkchem.exe"; WorkingDir: "{userdocs}"; IconFilename: "{app}\images\icon.ico"
 Name: "{group}\{cm:UninstallProgram,BKChem}"; Filename: "{uninstallexe}"
-Name: "{userdesktop}\BKChem"; Filename: "{app}\bkchem\bkchem.exe"; Tasks: desktopicon; WorkingDir: "{app}\bkchem"; IconFilename: "{app}\images\icon.ico"
+Name: "{userdesktop}\BKChem"; Filename: "{app}\bkchem\bkchem.exe"; Tasks: desktopicon; WorkingDir: "{userdocs}"; IconFilename: "{app}\images\icon.ico"
 
 [Run]
-Filename: "{app}\bkchem\bkchem.exe"; Description: "{cm:LaunchProgram,BKChem}"; WorkingDir: "{app}\bkchem"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\bkchem\bkchem.exe"; Description: "{cm:LaunchProgram,BKChem}"; WorkingDir: "{userdocs}"; Flags: nowait postinstall skipifsilent
 
+[UninstallDelete]
+Type: Files; Name: "{app}\bkchem\tuning.pyc"
