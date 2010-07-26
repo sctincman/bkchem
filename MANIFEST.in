@@ -1,7 +1,5 @@
-include setup.cfg
-include win_inst.py
 include INSTALL README progress.log
-include gpl.txt progress.log
+include gpl.txt
 include templates/*.cdml
 include templates/*.xml
 include plugins/*.xml
