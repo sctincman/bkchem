@@ -4,33 +4,34 @@ For more info on program capabilities, install instructions etc. see
 documentation in directory "doc" in the main BKChem directory or the BKChem
 website on http://zirael.org/bkchem/
 
+Bug reports and suggestions please fill on Savanna:
+http://savannah.nongnu.org/projects/bkchem
+or send to the current maintainer:
+Reinis Danne <rei4dan@gmail.com>
+
 ---
 BKChem is free software and is distributed under GNU GPL. The program is
 provided as is without warranty of any kind. For details see the
 file "gpl.txt" in main bkchem directory.
 
-
 ---
 For installation instructions see the file INSTALL in main BKChem directory.
  
+---
+NOTE: Starting with the version 0.9.0-pre1 Piddle sources are shipped together with
+BKChem. Piddle is a library provided under the GPL license and seems to be dead
+at least 2 years. Therefore it was decided to put it inside BKChem sources and
+distribute any eventual additions this way. In case any major changes will be made
+Piddle will be released as a standalone library.
 
-
-
-
-NOTE: Starting with the version 0.9.0-pre1 I ship piddle sources together with
-bkchem. Piddle is a library provided under the GPL license and seems to be dead
-at least 2 years. Therefore I have decided to put it inside bkchem sources and
-distribute any eventual additions this way. In case I will make any major changes
-I will release piddle as a standalone library.
-
-NOTE: Starting with the version 0.10.0-pre1 I ship Pmw (http://pmw.sourceforge.net/)
-sources (version 1.2) together with bkchem. 
-I had to make some minor fixes in Pwm and as it is a library provided under the GPL
-license and seems to be dead I have decided to put it inside bkchem sources and
+NOTE: Starting with the version 0.10.0-pre1 Pmw (http://pmw.sourceforge.net/)
+sources (version 1.2) are shipped together with BKChem.
+There were needed some minor fixes in Pwm and as it is a library provided under the
+GPL license and seems to be dead it was decided to put it inside bkchem sources and
 distribute the fixed version this way.
 
-NOTE: I bundle the official InChI software from IUPAC in a binary form together
-with BKChem in my Windows binary builds. All the credit for this nice piece of
+NOTE: The official InChI software from IUPAC is bundled in a binary form together
+with BKChem in Windows binary builds. All the credit for this nice piece of
 software goes to its creators.
 This information comes with the software:
 
