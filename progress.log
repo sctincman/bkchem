@@ -1,3 +1,34 @@
+RELEASE 0.14.0-pre2
+----------------------------------------
+ * bugfixes - redraw bonds when adding bond to -NH and it turns into -N
+            - freeze in export window, bug #23665
+            - use real minus in groups
+            - convert commandline input to Unicode
+            - import/export with Unicode filenames, bug #23686
+            - opening BKChem together with a file on Windows, bug #17256
+            - cleaner uninstallation on Windows
+            - fix assertions in Piddle
+            - fix string exceptions
+            - documentation generation
+
+ * enhancements - plural forms in translations
+                - update open documents on use_real_minus change
+                - delete unused files
+
+ * changes - new maintainer - Reinis Danne <rei4dan@gmail.com>
+           - sources are now managed using Git
+           - main source archives are now hosted on gitorious.org
+           - OASA library has separate project on Gitorious
+           - drop PS postprocessing in Cairo output
+           - increase required Python version to 2.5
+           - drop PS version of documentation
+           - open BKChem on Windows in "My Documents" by default
+
+ * translations - update strings from sources
+                - lv updated (Reinis Danne)
+                - es update (Angel Herráez)
+
+
 RELEASE 0.14.0-pre1
 ----------------------------------------
  * bugfixes - an error in Molfile export with newer Python versions was fixed
