@@ -8,7 +8,7 @@ include pixmaps/*.gif
 include images/logo.ppm
 include images/icon.ico
 include images/bkchem*.png
-recursive-include doc *.html *.py *.png
+recursive-include doc *.html *.py *.png *.pdf
 recursive-include dtd *.dtd *.xsd
 recursive-include locale LC_MESSAGES/BKChem.mo
 include locale/BKChem.pot
