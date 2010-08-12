@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.11.1\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-07-05 18:47+0300\n"
+"POT-Creation-Date: 2010-08-13 00:37+0300\n"
 "PO-Revision-Date: 2005-12-07 22:18+0100\n"
 "Last-Translator: HeadWar\n"
 "Language-Team: \n"
@@ -1980,6 +1980,7 @@ msgstr ""
 msgid ""
 "BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
+"Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.\n"
 "\n"
 "BKChem is free software and is distributed under GNU GPL.\n"
 "BKChem is provided as is without warranty of any kind.\n"
@@ -2001,7 +2002,7 @@ msgstr ""
 "modifier et redistribuer BKChem pour autant que\n"
 "vous le fassiez sous la même licence GNU GPL."
 
-#: ../../bkchem/messages.py:89
+#: ../../bkchem/messages.py:90
 #, fuzzy
 msgid ""
 "UNABLE TO IMPORT PMW\n"
@@ -2017,7 +2018,7 @@ msgstr ""
 "Pmw et réessayer.\n"
 "(pour plus d'infos sur Pmw, voir la documentation)"
 
-#: ../../bkchem/messages.py:95
+#: ../../bkchem/messages.py:96
 #, fuzzy
 msgid ""
 "UNABLE TO IMPORT OASA\n"
@@ -2030,12 +2031,12 @@ msgstr ""
 "Depuis la version 0.10 BKChem utilise en interne la bibliothèque OASA et ne "
 "peut fonctionner sans."
 
-#: ../../bkchem/messages.py:100
+#: ../../bkchem/messages.py:101
 #, fuzzy, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
+"From version 0.14 BKChem needs Python 2.5 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
 "to run BKChem."
@@ -2046,7 +2047,7 @@ msgstr ""
 "correctement. Vous avez la version %s.\n"
 "Désolé pour l'inconfort, vous devez mettre à jour Python pour lancer BKChem."
 
-#: ../../bkchem/messages.py:107
+#: ../../bkchem/messages.py:108
 #, fuzzy
 msgid ""
 "BKChem is starting.\n"
@@ -2059,7 +2060,7 @@ msgstr ""
 "Malheureusement, l'image de démarrage\n"
 "n'a pas été retrouvée :("
 
-#: ../../bkchem/messages.py:113
+#: ../../bkchem/messages.py:114
 msgid ""
 "This CDML document was created using different standard values than you are "
 "currently using. To retain the same drawing style it could be more "
@@ -2075,7 +2076,7 @@ msgstr ""
 "\n"
 "Voulez-vous prendre ces nouvelles valeurs standard?"
 
-#: ../../bkchem/messages.py:116
+#: ../../bkchem/messages.py:117
 msgid ""
 "usage: bkchem [options] [filenames]\n"
 "\n"

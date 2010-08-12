@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-07-05 18:47+0300\n"
+"POT-Creation-Date: 2010-08-13 00:37+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1861,6 +1861,7 @@ msgstr "結合または二つの原子を選択して反転(線対称)させる�
 msgid ""
 "BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
+"Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.\n"
 "\n"
 "BKChem is free software and is distributed under GNU GPL.\n"
 "BKChem is provided as is without warranty of any kind.\n"
@@ -1876,7 +1877,7 @@ msgstr ""
 "\n"
 "BKChemの改変，再配布はGNU GPLの下であれば可能です．"
 
-#: ../../bkchem/messages.py:89
+#: ../../bkchem/messages.py:90
 msgid ""
 "UNABLE TO IMPORT PMW\n"
 "\n"
@@ -1885,7 +1886,7 @@ msgid ""
 "(for more info on Pmw see documentation)"
 msgstr ""
 
-#: ../../bkchem/messages.py:95
+#: ../../bkchem/messages.py:96
 msgid ""
 "UNABLE TO IMPORT OASA\n"
 "\n"
@@ -1893,18 +1894,18 @@ msgid ""
 "therefor cannot run without it."
 msgstr ""
 
-#: ../../bkchem/messages.py:100
+#: ../../bkchem/messages.py:101
 #, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
+"From version 0.14 BKChem needs Python 2.5 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
 "to run BKChem."
 msgstr ""
 
-#: ../../bkchem/messages.py:107
+#: ../../bkchem/messages.py:108
 msgid ""
 "BKChem is starting.\n"
 "\n"
@@ -1912,7 +1913,7 @@ msgid ""
 "the splash image was not found :("
 msgstr ""
 
-#: ../../bkchem/messages.py:113
+#: ../../bkchem/messages.py:114
 msgid ""
 "This CDML document was created using different standard values than you are "
 "currently using. To retain the same drawing style it could be more "
@@ -1927,7 +1928,7 @@ msgstr ""
 "\n"
 "デフォルトの設定を使用します"
 
-#: ../../bkchem/messages.py:116
+#: ../../bkchem/messages.py:117
 msgid ""
 "usage: bkchem [options] [filenames]\n"
 "\n"

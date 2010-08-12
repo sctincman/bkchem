@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-07-05 18:47+0300\n"
+"POT-Creation-Date: 2010-08-13 00:37+0300\n"
 "PO-Revision-Date: 2008-12-30 17:42-0500\n"
 "Last-Translator: I-Yuan Chiang <iychiang1809@gmail.com>\n"
 "Language-Team: Traditional Chinese (zh-l10n@linux.org.tw, tryneeds@gmail."
@@ -1879,6 +1879,7 @@ msgstr "鏡像結構, 依照所選的原子或是鍵產生鏡像結構"
 msgid ""
 "BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
+"Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.\n"
 "\n"
 "BKChem is free software and is distributed under GNU GPL.\n"
 "BKChem is provided as is without warranty of any kind.\n"
@@ -1898,7 +1899,7 @@ msgstr ""
 "\n"
 "中文化作者   江易原, 劉彥均"
 
-#: ../../bkchem/messages.py:89
+#: ../../bkchem/messages.py:90
 #, fuzzy
 msgid ""
 "UNABLE TO IMPORT PMW\n"
@@ -1912,7 +1913,7 @@ msgstr ""
 "Sorry, BKChem 非常需要 Pmw 才能正常運作. 請安裝 Pmw 後再試一次(相關訊息請見 "
 "Pmw 相關文件)"
 
-#: ../../bkchem/messages.py:95
+#: ../../bkchem/messages.py:96
 #, fuzzy
 msgid ""
 "UNABLE TO IMPORT OASA\n"
@@ -1924,12 +1925,12 @@ msgstr ""
 "\n"
 "Sorry, 從 Bkcehm 0.10 版就開始用 OASA 函式庫, 若沒有 OASA, BKChem 就無法執行"
 
-#: ../../bkchem/messages.py:100
+#: ../../bkchem/messages.py:101
 #, fuzzy, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
+"From version 0.14 BKChem needs Python 2.5 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
 "to run BKChem."
@@ -1940,7 +1941,7 @@ msgstr ""
 "s\n"
 "抱歉對您造成不便, 煩請升級 Python 才能執行 BKChem"
 
-#: ../../bkchem/messages.py:107
+#: ../../bkchem/messages.py:108
 #, fuzzy
 msgid ""
 "BKChem is starting.\n"
@@ -1951,7 +1952,7 @@ msgstr ""
 "BKChem 啟動中\n"
 "抱歉找不到啟動畫面 :("
 
-#: ../../bkchem/messages.py:113
+#: ../../bkchem/messages.py:114
 msgid ""
 "This CDML document was created using different standard values than you are "
 "currently using. To retain the same drawing style it could be more "
@@ -1964,7 +1965,7 @@ msgstr ""
 "議您在這文件使用新的設定值. 這不會影響您的偏好設定\n"
 "您想要使用新的設定值嗎?"
 
-#: ../../bkchem/messages.py:116
+#: ../../bkchem/messages.py:117
 msgid ""
 "usage: bkchem [options] [filenames]\n"
 "\n"

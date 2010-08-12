@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BKChem-0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-07-05 18:47+0300\n"
+"POT-Creation-Date: 2010-08-13 00:37+0300\n"
 "PO-Revision-Date: 2010-07-05 17:43+0300\n"
 "Last-Translator: Reinis Danne <rei4dan@gmail.com>\n"
 "Language-Team: \n"
@@ -1951,9 +1951,11 @@ msgstr ""
 "norādīto spoguļasi"
 
 #: ../../bkchem/messages.py:78
+#, fuzzy
 msgid ""
 "BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
+"Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.\n"
 "\n"
 "BKChem is free software and is distributed under GNU GPL.\n"
 "BKChem is provided as is without warranty of any kind.\n"
@@ -1973,7 +1975,7 @@ msgstr ""
 "Starp citām lietām GNU GPL atļauj jums arī studēt, modificēt\n"
 "un izplatīt \"BKChem\", kamēr tas tiek darīts ar GNU GPL licenci."
 
-#: ../../bkchem/messages.py:89
+#: ../../bkchem/messages.py:90
 msgid ""
 "UNABLE TO IMPORT PMW\n"
 "\n"
@@ -1987,7 +1989,7 @@ msgstr ""
 "\". Lūdzu uzinstalējiet \"Pmw\" un mēģiniet vēlreiz.\n"
 "(sīkākai informācijai par \"Pmw\" skatieties dokumentāciju)"
 
-#: ../../bkchem/messages.py:95
+#: ../../bkchem/messages.py:96
 msgid ""
 "UNABLE TO IMPORT OASA\n"
 "\n"
@@ -1999,12 +2001,12 @@ msgstr ""
 "Atvainojiet, bet sākot ar versiju 0.10 \"BKChem\" iekšēji izmanto \"OASA\" "
 "bibliotēku un tādēļ nespēj darboties bez tās."
 
-#: ../../bkchem/messages.py:100
-#, python-format
+#: ../../bkchem/messages.py:101
+#, fuzzy, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
-"From version 0.10 BKChem needs Python 2.3 or higher to run properly. You "
+"From version 0.14 BKChem needs Python 2.5 or higher to run properly. You "
 "only have Python version %s.\n"
 "Sorry for the inconvenience, but you would need to upgrade Python in order "
 "to run BKChem."
@@ -2016,7 +2018,7 @@ msgstr ""
 "Atvainojiet par neērtībām, bet jums nepieciešams atjaunināt \"Python\", lai "
 "varētu darbināt \"BKChem\"."
 
-#: ../../bkchem/messages.py:107
+#: ../../bkchem/messages.py:108
 msgid ""
 "BKChem is starting.\n"
 "\n"
@@ -2028,7 +2030,7 @@ msgstr ""
 "Diemžel,\n"
 "Uzplaiksnījuma attēls netika atrasts :("
 
-#: ../../bkchem/messages.py:113
+#: ../../bkchem/messages.py:114
 msgid ""
 "This CDML document was created using different standard values than you are "
 "currently using. To retain the same drawing style it could be more "
@@ -2044,7 +2046,7 @@ msgstr ""
 "\n"
 "Vai vēlaties uzstatīt šīs jaunās noklusētās vērtības?"
 
-#: ../../bkchem/messages.py:116
+#: ../../bkchem/messages.py:117
 msgid ""
 "usage: bkchem [options] [filenames]\n"
 "\n"
