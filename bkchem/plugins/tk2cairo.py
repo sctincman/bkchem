@@ -339,7 +339,7 @@ class tk2cairo:
     else:
       test_string = string.ascii_letters + string.punctuation
     tk_length = self.p2c_width( tk_font.measure( test_string))
-    cairo_size = self.p2c_width( tk_font.config()['size'])
+    cairo_size = self.p2c_width(abs(tk_font.config()['size']))
     self.context.set_font_size( cairo_size)
     for i in range(2): # two iterations should be enough
       xbearing, ybearing, width, height, x_advance, y_advance = self.context.text_extents( test_string)
