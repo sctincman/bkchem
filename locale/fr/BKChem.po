@@ -2011,7 +2011,7 @@ msgstr ""
 "peut fonctionner sans."
 
 #: ../../bkchem/messages.py:101
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
@@ -2022,7 +2022,7 @@ msgid ""
 msgstr ""
 "Version de Python trop ancienne!\n"
 "\n"
-"Depuis la version 0.10 BKChem nécessite Python 2.3 ou supérieure. pour "
+"Depuis la version 0.14 BKChem nécessite Python 2.5 ou supérieure. pour "
 "fonctionner correctement. Vous avez la version %s.\n"
 "Désolé pour l'inconfort, vous devez mettre à jour Python pour lancer BKChem."
 
