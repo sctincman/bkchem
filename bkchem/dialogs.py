@@ -1068,7 +1068,10 @@ class language_dialog( Pmw.Dialog):
     import gettext
     self.languages = {}
     for lang, language in data.languages.iteritems():
-      system = gettext.find( 'BKChem', None, [lang])
+      system = gettext.find('BKChem', os.path.normpath(os.path.join(
+        os_support.get_bkchem_run_dir(), '../../../../share/locale')), [lang])
+      if not system:
+        system = gettext.find('BKChem', None, [lang])
       local = gettext.find( 'BKChem', os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale')), [lang])
       if system or local or lang == "en":
         lang_text = "%s (%s)" % (language, lang)

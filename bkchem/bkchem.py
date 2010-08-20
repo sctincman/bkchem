@@ -55,9 +55,13 @@ if user_lang == "en":
 else:
   Store.lang = None
   for lang in langs:
-    for localedir in (None, os.path.normpath( os.path.join( os_support.get_bkchem_run_dir(), '../locale'))):
+    for localedir in (os.path.normpath(os.path.join(
+                        os_support.get_bkchem_run_dir(),
+                        '../../../../share/locale')),
+                      os.path.normpath(os.path.join(
+                        os_support.get_bkchem_run_dir(), '../locale')),
+                      None):
       if gettext.find( 'BKChem', localedir=localedir, languages=lang):
-        # at first try if locale is in its standard location
         # find what language was loaded
         rest = gettext.find( 'BKChem', localedir=localedir, languages=lang)
         for i in range( 3):
