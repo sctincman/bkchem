@@ -21,6 +21,7 @@
 from cairo_lowlevel import cairo_exporter
 from tk2cairo import tk2cairo
 import cairo
+import sys
 
 
 class png_cairo_exporter( cairo_exporter):
@@ -63,10 +64,8 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
 
 
   def save( self):
-    f = open(self.filename, 'w')
-    self.surface.write_to_png(f)
+    self.surface.write_to_png(self.filename.encode(sys.getfilesystemencoding()))
     self.surface.finish()
-    f.close()
 
 
 

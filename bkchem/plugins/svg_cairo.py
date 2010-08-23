@@ -21,6 +21,7 @@
 from cairo_lowlevel import cairo_exporter
 from tk2cairo import tk2cairo
 import cairo
+import sys
 # try if there is SVGSurface in cairo
 _x = cairo.SVGSurface
 
@@ -36,8 +37,7 @@ class svg_cairo_exporter( cairo_exporter):
 
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
-    f = open(self.filename, 'w')
-    return cairo.SVGSurface(f, w, h)
+    return cairo.SVGSurface(self.filename.encode(sys.getfilesystemencoding()), w, h)
 
   def get_scaling( self, x, y):
     sc = self._get_scaling_ratio()
