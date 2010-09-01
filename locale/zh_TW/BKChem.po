@@ -1256,11 +1256,10 @@ msgid "Vertical mirror"
 msgstr "垂直鏡像"
 
 #: ../../bkchem/main.py:231
-#, fuzzy
 msgid ""
 "Creates a reflection of the selected objects, the reflection axis is the "
 "common vertical axis of all the selected objects"
-msgstr "沿著水平軸產生一個鏡像結構式, 以所有選取物件的共同水平軸為反射軸"
+msgstr "沿著垂直軸產生一個鏡像結構式, 以所有選取物件的共同垂直軸為反射軸"
 
 #: ../../bkchem/main.py:233
 msgid "Horizontal mirror"
@@ -1684,13 +1683,15 @@ msgstr ""
 "如果您確定所輸入的 InChI 是正確的, 煩請回報臭蟲."
 
 #: ../../bkchem/main.py:1261
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The submitted InChI has unsupported version '%s'.\n"
 "\n"
 "You migth try resubmitting with the version string (the first part of InChI) "
 "changed to '1'."
-msgstr "您所輸入的 INCHI 可能是不支援的版本您可以試試輸入 INCHI 式的第一部份"
+msgstr "您所輸入的 INCHI 是不支援的版本 '%s'.\n"
+"\n"
+"您可以試試重新輸入並加入版本編號 (INCHI 式的第一部份)"
 
 #: ../../bkchem/main.py:1269
 #, python-format
@@ -1736,9 +1737,9 @@ msgid "Generated InChIs"
 msgstr "產生 InChI 文字化學式"
 
 #: ../../bkchem/main.py:1448
-#, fuzzy, python-format
+#, python-format
 msgid "The file was saved as a template %s"
-msgstr "檔案存成範本"
+msgstr "檔案存成範本 %s"
 
 #: ../../bkchem/messages.py:24
 msgid "use SHIFT to drag only in X, CTRL to drag only in Y"
