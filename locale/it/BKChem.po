@@ -2448,7 +2448,7 @@ msgstr "auto-pulitura dopo il completamento del disegno"
 
 #: ../../bkchem/modes.py:2426
 msgid "Brackets"
-msgstr "Quadre"
+msgstr "Parentesi"
 
 #: ../../bkchem/modes.py:2428
 msgid "Rectangular"
