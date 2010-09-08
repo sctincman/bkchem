@@ -7,13 +7,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
 "POT-Creation-Date: 2010-08-13 00:37+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: ALAN MANGIAFERRO <nuvaln@alice.it>\n"
+"PO-Revision-Date: 2010-09-06 20:19+0100\n"
+"Last-Translator: Alan Mangiaferro <alan.mangiaferro@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n!=1)\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
 
 #: ../../bkchem/arrow.py:48 ../../bkchem/modes.py:753
 #: ../../bkchem/modes.py:965
@@ -84,11 +87,11 @@ msgstr "Dimensione segno"
 
 #: ../../bkchem/context_menu.py:234
 msgid "Mark as template atom"
-msgstr "Evidenziato come atomo template"
+msgstr "Evidenziato come modello di atomo"
 
 #: ../../bkchem/context_menu.py:243
 msgid "Mark as template bond"
-msgstr "Evidenziato come legame template"
+msgstr "Evidenziato come modello di legame"
 
 #: ../../bkchem/context_menu.py:253
 msgid "Show symbol"
@@ -165,7 +168,7 @@ msgstr "Colore area"
 #: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
 #: ../../bkchem/plugins/png_cairo.py:176
 msgid "transparent"
-msgstr "trasparenza"
+msgstr "trasparente"
 
 #: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
 #: ../../bkchem/plugins/png_cairo.py:175 ../../bkchem/plugins/png_cairo.py:190
@@ -178,11 +181,11 @@ msgstr "giallo"
 
 #: ../../bkchem/context_menu.py:271 ../../bkchem/context_menu.py:278
 msgid "green"
-msgstr "green"
+msgstr "verde"
 
 #: ../../bkchem/context_menu.py:272 ../../bkchem/context_menu.py:279
 msgid "blue"
-msgstr "verde"
+msgstr "blu"
 
 #: ../../bkchem/context_menu.py:273 ../../bkchem/context_menu.py:280
 msgid "red"
@@ -211,45 +214,43 @@ msgstr "Gruppo"
 
 #: ../../bkchem/data.py:128
 msgid "English"
-msgstr ""
+msgstr "Inglese"
 
 #: ../../bkchem/data.py:129
 msgid "Czech"
-msgstr ""
+msgstr "Cecoslovacco"
 
 #: ../../bkchem/data.py:130
 msgid "German"
-msgstr ""
+msgstr "Tedesco"
 
 #: ../../bkchem/data.py:131
 msgid "French"
-msgstr ""
+msgstr "Francese"
 
 #: ../../bkchem/data.py:132
-#, fuzzy
 msgid "Polish"
-msgstr "Plugin"
+msgstr "Polacco"
 
 #: ../../bkchem/data.py:133
 msgid "Traditional Chinese"
-msgstr ""
+msgstr "Cinese Trdizionale"
 
 #: ../../bkchem/data.py:134
-#, fuzzy
 msgid "Italian"
-msgstr "corsivo"
+msgstr "Italiano"
 
 #: ../../bkchem/data.py:135
 msgid "Spanish"
-msgstr ""
+msgstr "Spagnolo"
 
 #: ../../bkchem/data.py:136
 msgid "Japanese"
-msgstr ""
+msgstr "Giapponese"
 
 #: ../../bkchem/data.py:137
 msgid "Latvian"
-msgstr ""
+msgstr "Lettone"
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
 #: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
@@ -538,15 +539,17 @@ msgstr "Frammenti"
 
 #: ../../bkchem/dialogs.py:1010 ../../bkchem/main.py:271
 msgid "Logging"
-msgstr "Sta registrando"
+msgstr "Impostazioni"
 
 #: ../../bkchem/dialogs.py:1019
 msgid "Choose how each type of message is to be shown:"
-msgstr ""
+msgstr "Scegli come sarà mostrato ogni tipo di messaggio:"
 
 #: ../../bkchem/dialogs.py:1034
 msgid "The setting will be immediately applied and saved on application exit."
 msgstr ""
+"Le impostazioni saranno immediatamente applicate e salvate all'uscita "
+"dall'applicazione."
 
 #: ../../bkchem/dialogs.py:1058 ../../bkchem/main.py:270
 msgid "Language"
@@ -554,7 +557,7 @@ msgstr "Linguaggio"
 
 #: ../../bkchem/dialogs.py:1079
 msgid "System default"
-msgstr ""
+msgstr "Predefinito da sistema"
 
 #: ../../bkchem/dialogs.py:1086
 msgid "Available Languages"
@@ -622,11 +625,11 @@ msgstr "freccia"
 
 #: ../../bkchem/edit_pool.py:247
 msgid "nu"
-msgstr ""
+msgstr "nu"
 
 #: ../../bkchem/edit_pool.py:248
 msgid "new line"
-msgstr ""
+msgstr "nuova linea"
 
 #: ../../bkchem/interactors.py:45 ../../bkchem/interactors.py:77
 #: ../../bkchem/interactors.py:176 ../../bkchem/plugins/molfile.py:69
@@ -792,24 +795,24 @@ msgstr "Visualizza formula %s è stato impostato per la molecola(e)"
 
 #: ../../bkchem/interactors.py:233
 msgid "Template summary"
-msgstr "Sommario template"
+msgstr "Sommario modello"
 
 #: ../../bkchem/interactors.py:237
 msgid "Errors"
 msgstr "Errori"
 
 #: ../../bkchem/interactors.py:241
-#, fuzzy, python-format
+#, python-format
 msgid "%d molecule have no template atom specified"
 msgid_plural "%d molecules have no template atom specified"
-msgstr[0] "%d le molecole non hanno nessun template degli atomi specificato"
-msgstr[1] "%d le molecole non hanno nessun template degli atomi specificato"
+msgstr[0] "%d la molecola non ha nessun modello degli atomi specificato"
+msgstr[1] "%d le molecole non hanno nessun modello degli atomi specificato"
 
 #: ../../bkchem/interactors.py:247
-#, fuzzy, python-format
+#, python-format
 msgid "%d molecule have no name specified"
 msgid_plural "%d molecules have no name specified"
-msgstr[0] "%d le molecole non hanno nessun nome specificato"
+msgstr[0] "%d la molecola non ha nessun nome specificato"
 msgstr[1] "%d le molecole non hanno nessun nome specificato"
 
 #: ../../bkchem/interactors.py:253
@@ -817,11 +820,11 @@ msgid "Warnings"
 msgstr "Avvertimento"
 
 #: ../../bkchem/interactors.py:256
-#, fuzzy, python-format
+#, python-format
 msgid "%d molecule have no template bond specified"
 msgid_plural "%d molecules have no template bond specified"
-msgstr[0] "%d le molecole non hanno nessun template di legame specificato"
-msgstr[1] "%d le molecole non hanno nessun template di legame specificato"
+msgstr[0] "%d la molecola non ha nessun modello di legame specificato"
+msgstr[1] "%d le molecole non hanno nessun modello di legame specificato"
 
 #: ../../bkchem/interactors.py:263
 msgid "Please correct the above errors first"
@@ -832,7 +835,7 @@ msgid ""
 "A tutorial on how to prepare a template can be found in the file doc/"
 "custom_templates_en.html"
 msgstr ""
-"Le istruzioni come creare un template possono essere trovate nel file doc/"
+"Le istruzioni come creare un modello possono essere trovate nel file doc/"
 "custom_templates_en.html"
 
 #: ../../bkchem/interactors.py:281
@@ -846,11 +849,11 @@ msgstr "Non è possibile creare una cartella personale %s."
 
 #: ../../bkchem/interactors.py:289
 msgid "Template file name"
-msgstr "Nome del file template"
+msgstr "Nome del file modello"
 
 #: ../../bkchem/interactors.py:290
 msgid "File name for the template:"
-msgstr "Il nome del file per il template:"
+msgstr "Il nome del file per il modello:"
 
 #: ../../bkchem/interactors.py:302
 msgid "The file already exists."
@@ -862,7 +865,7 @@ msgid ""
 "Template with this name already exists (path %s).\n"
 "Should I rewrite it?"
 msgstr ""
-"Il Template con questo nome già esiste (percorso %s).\n"
+"Il modello con questo nome già esiste (percorso %s).\n"
 "Dovrei sovracriverlo?"
 
 #: ../../bkchem/interactors.py:317
@@ -904,26 +907,23 @@ msgid "Number %s was set to atom(s)."
 msgstr "Il %s è stato impostato per l'Atomo(i)."
 
 #: ../../bkchem/interactors.py:366
-#, fuzzy
 msgid "BKChem interpreted the entered text as an atom"
 msgstr "BKChem ha interpretato il testo inserito come un atomo"
 
 #: ../../bkchem/interactors.py:368
-#, fuzzy
 msgid ""
 "BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
-"BKChem crede di interpretare il testo inserito come un gruppo , provi a "
+"BKChem crede di interpretare il testo inserito come un gruppo , prova a "
 "espanderlo per scoprire come è stato interpretato."
 
 #: ../../bkchem/interactors.py:370
-#, fuzzy
 msgid ""
 "BKChem could not interpret the entered text as anything with chemical meaning"
 msgstr ""
-"BKChem non ha potuto interpretare il testo digitato come qualcosa con "
-"significato chimico"
+"BKChem non ha potuto interpretare il testo digitato come qualcosa di "
+"chimicamente valido"
 
 #: ../../bkchem/interactors.py:384 ../../bkchem/logger.py:33
 #: ../../bkchem/main.py:242
@@ -931,7 +931,6 @@ msgid "Info"
 msgstr "Info"
 
 #: ../../bkchem/interactors.py:385
-#, fuzzy
 msgid "The selected language will be used the next time you start BKChem."
 msgstr ""
 "Il linguaggio selezionato sarà usato alla prossima esecuzione di BKChem."
@@ -1038,13 +1037,13 @@ msgstr "Salva il file con un nome diverso"
 
 #: ../../bkchem/main.py:183
 msgid "Save As Template"
-msgstr "Salva come Template"
+msgstr "Salva Come Modello"
 
 #: ../../bkchem/main.py:183
 msgid ""
 "Save the file as template, certain criteria must be met for this to work"
 msgstr ""
-"Salva il file come template, certi criteri di verifica devono essere "
+"Salva il file come modello, certi criteri di verifica devono essere "
 "soddisfatti affinchè funzioni"
 
 #: ../../bkchem/main.py:184 ../../bkchem/main.py:859 ../../bkchem/main.py:1055
@@ -1085,13 +1084,12 @@ msgid "SVG"
 msgstr "SVG"
 
 #: ../../bkchem/main.py:190
-#, fuzzy
 msgid ""
 "Export to plain SVG - Scalable Vector Graphics - without embedding BKChem "
 "data inside"
 msgstr ""
-"Esporta a semplice SVG - Scalable Vector Graphics - senza includere "
-"all'interno i dati di BKChem "
+"Esporta a semplice SVG - Scalable Vector Graphics - senza includere i dati "
+"di BKChem "
 
 #: ../../bkchem/main.py:191 ../../bkchem/main.py:404
 msgid "Import"
@@ -1118,9 +1116,8 @@ msgid "Exit"
 msgstr "Esci"
 
 #: ../../bkchem/main.py:197
-#, fuzzy
 msgid "Exit BKChem"
-msgstr "Esci da BKChem"
+msgstr "Esci BKChem"
 
 #: ../../bkchem/main.py:200 ../../bkchem/main.py:201 ../../bkchem/main.py:202
 #: ../../bkchem/main.py:203 ../../bkchem/main.py:204 ../../bkchem/main.py:205
@@ -1435,9 +1432,8 @@ msgid "Options"
 msgstr "Opzioni"
 
 #: ../../bkchem/main.py:268
-#, fuzzy
 msgid "Settings that affect how BKChem works"
-msgstr "Regolazioni che interessano il funzionamento di BKChem"
+msgstr "Regolazioni che agiscono sul funzionamento di BKChem"
 
 #: ../../bkchem/main.py:269
 msgid "Standard"
@@ -1453,19 +1449,18 @@ msgstr "Imposta la lingua usata dopo il prossimo riavvio"
 
 #: ../../bkchem/main.py:271
 msgid "Set how messages in BKChem are displayed to you"
-msgstr ""
+msgstr "Imposta  i messaggi di BkChem come ti saranno visualizzati"
 
 #: ../../bkchem/main.py:272
 msgid "InChI program path"
 msgstr "Percorso programma InChI"
 
 #: ../../bkchem/main.py:272
-#, fuzzy
 msgid ""
 "To use InChI in BKChem you must first give it a path to the InChI program "
 "here"
 msgstr ""
-"Per usare InChI in BKChem prima devi dare un percorso al programma InChI"
+"Per usare InChI in BKChem prima devi dare un percorso al programma InChI qui"
 
 #: ../../bkchem/main.py:278 ../../bkchem/main.py:279
 msgid "Help"
@@ -1480,9 +1475,8 @@ msgid "About"
 msgstr "Info"
 
 #: ../../bkchem/main.py:279
-#, fuzzy
 msgid "General information about BKChem"
-msgstr "Informazione generale su BKChem"
+msgstr "Informazioni su BKChem"
 
 #: ../../bkchem/main.py:282 ../../bkchem/main.py:324
 msgid "Plugins"
@@ -1493,9 +1487,8 @@ msgid "Small additional scripts"
 msgstr "Piccoli script addizionali"
 
 #: ../../bkchem/main.py:567
-#, fuzzy
 msgid "About BKChem"
-msgstr "Info su BKChem"
+msgstr "Info BKChem"
 
 #: ../../bkchem/main.py:570
 msgid "version"
@@ -1692,8 +1685,8 @@ msgid ""
 msgstr ""
 "Prima di usare questo strumento, occorre informare che non tutti i tratti di "
 "SMILES sono correntemente supportati.\n"
-"Non c'è nessun supporto per le informazioni relative agli stereo isomeri, "
-"per le parentesi quadre [] e altro.\n"
+"Non c'è nessun supporto per le informazioni relative agli stereoisomeri, per "
+"le parentesi quadre [] e altro.\n"
 "\n"
 "Inserisci SMILES:"
 
@@ -1710,7 +1703,7 @@ msgid ""
 msgstr ""
 "Prima di usare questo strumento, occorre informare che non tutti i tratti di "
 "InChI sono correntemente supportati.\n"
-"Non c'è nessun supporto per le informazioni relative agli stereo isomeri, "
+"Non c'è nessun supporto per le informazioni relative agli stereoisomeri, "
 "isotopi e altro.\n"
 "Il InChI dovrebbe essere digitato in semplice forma testuale, e.g.- 1/C7H8/1-"
 "7-5-3-2-4-6-7/1H3,2-6H\n"
@@ -1811,11 +1804,11 @@ msgstr "Generato InChIs"
 #: ../../bkchem/main.py:1448
 #, python-format
 msgid "The file was saved as a template %s"
-msgstr "Il file è stato salvato come template %s"
+msgstr "Il file è stato salvato come modello %s"
 
 #: ../../bkchem/messages.py:24
 msgid "use SHIFT to drag only in X, CTRL to drag only in Y"
-msgstr ""
+msgstr "usa SHIFT per trascinare solo in X, CTRL per trascinare solo in Y"
 
 #: ../../bkchem/messages.py:28
 msgid ""
@@ -1829,7 +1822,7 @@ msgstr ""
 
 #: ../../bkchem/messages.py:29
 msgid "length of the drawn bond is fixed to a preset value"
-msgstr "la lunghezza del legame disegnato è fissata al valore preimpostasto"
+msgstr "la lunghezza del legame disegnato è fissata al valore preimpostato"
 
 #: ../../bkchem/messages.py:30
 msgid "freestyle drawing - no bond length or angle restrictions are applied"
@@ -1873,7 +1866,7 @@ msgid ""
 msgstr ""
 "trascina un atomo o un legame per la rotazione 3D di una molecola attorno al "
 "suo centro geometrico \n"
-"Nota che non è possibile aggiungere un template a un atomo con z-coordinate "
+"Nota che non è possibile aggiungere un modello a un atomo con z-coordinate "
 "tranne 0"
 
 #: ../../bkchem/messages.py:45
@@ -1882,6 +1875,9 @@ msgid ""
 "selected bond \n"
 "by holding shift, you will trigger rotation only of one part of the molecule."
 msgstr ""
+"seleziona un messaggio e poi parte la rotazione - la molecola ruoterà "
+"attorno al selezionato legame\n"
+"premendo SHIFT, innescherai la rotazione solo di una parte della molecola."
 
 #: ../../bkchem/messages.py:49 ../../bkchem/messages.py:50
 #: ../../bkchem/messages.py:51 ../../bkchem/messages.py:52
@@ -1967,7 +1963,6 @@ msgstr ""
 "specificata linea"
 
 #: ../../bkchem/messages.py:78
-#, fuzzy
 msgid ""
 "BKChem was conceived and written by Beda Kosata\n"
 "and is performed by Python, Pmw & (optionally) Cairo.\n"
@@ -1980,18 +1975,18 @@ msgid ""
 "Among other things GNU GPL allows you to study, modify\n"
 "and redistribute BKChem as long as you do it under GNU GPL."
 msgstr ""
-"BKChem è stato concepito e scritto da Beda Kosata\n"
-"è eseguito per mezzo di Python, Pmw & (opzionalmente) Cairo.\n"
+"BKChem fu concepito e scritto da Beda Kosata\n"
+"ed è eseguito per mezzo di Python, Pmw & (opzionalmente) Cairo.\n"
+"Correntemente è mantenuto da Reinis Danne  <rei4dan@gmail.com>.\n"
 "\n"
 "BKChem è un software libero e distribuito con licenza GNU GPL.\n"
 "BKChem è fornito come è senza garanzia di ogni genere.\n"
-"- per più informazioni vedi il file 'gpl.txt' nella cartella principale.\n"
+"Per più informazioni vedi il file 'gpl.txt' nella cartella principale.\n"
 "\n"
 "tra le altre cose GNU GPL ti permette di studiare, modificare\n"
 "e distribuire BKChem finchè lo fate sotto licenza GNU GPL."
 
 #: ../../bkchem/messages.py:90
-#, fuzzy
 msgid ""
 "UNABLE TO IMPORT PMW\n"
 "\n"
@@ -2006,7 +2001,6 @@ msgstr ""
 "(per più informazioni su Pmw vedi la documentazione)"
 
 #: ../../bkchem/messages.py:96
-#, fuzzy
 msgid ""
 "UNABLE TO IMPORT OASA\n"
 "\n"
@@ -2019,7 +2013,7 @@ msgstr ""
 "può essere caricato senza."
 
 #: ../../bkchem/messages.py:101
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Python version too low!\n"
 "\n"
@@ -2030,13 +2024,12 @@ msgid ""
 msgstr ""
 "Versione di Python obsoleta!\n"
 "\n"
-"Dalla versione 0.10 BKChem necessita di Python 2.3 o maggiore per caricare "
-"correttamente.  Hai solo la versione Python %s.\n"
+"Dalla versione 0.14 BKChem necessita di Python 2.5 o maggiore per caricare "
+"correttamente. Hai solo la versione Python %s.\n"
 "Mi spiace per l'inconveniente, ma per caricare BKChem hai bisogno di "
 "aggiornare Phyton."
 
 #: ../../bkchem/messages.py:108
-#, fuzzy
 msgid ""
 "BKChem is starting.\n"
 "\n"
@@ -2083,7 +2076,7 @@ msgstr ""
 "\n"
 " -h, --help       mostra questo messaggio di aiuto ed esci\n"
 " -H DIR           non considera la cartella proncipale di BKChem\n"
-"                  (dove le impostazioni standard di disegno, i template "
+"                  (dove le impostazioni standard di disegno, i modelli "
 "personali ecc. sono salvati.)\n"
 " -b SCRIPT        carica BKChem in batch mode, carica lo SCRIPT ed esce\n"
 " -v, --version    mostra la versione del programma ed esce\n"
@@ -2192,27 +2185,27 @@ msgstr "più"
 
 #: ../../bkchem/modes.py:1120
 msgid "template"
-msgstr "template"
+msgstr "modello"
 
 #: ../../bkchem/modes.py:1130
 msgid "No template is available"
-msgstr "Nessun template disponibile"
+msgstr "Nessun modello disponibile"
 
 #: ../../bkchem/modes.py:1138
 msgid ""
 "Sorry, it is not possible to append a template to an atom with non-zero Z "
 "coordinate, yet."
 msgstr ""
-"Spiacente, non è possibile aggiungere un template a un atomo con coordinata "
-"Z non zero."
+"Spiacente, non è possibile aggiungere un modello a un atomo con coordinata Z "
+"non zero."
 
 #: ../../bkchem/modes.py:1186
 msgid "focused atom marked as 'template atom'"
-msgstr "Evidenziato atomo contrassegnato come 'atomo template'"
+msgstr "Evidenziato atomo contrassegnato come 'modello di atomo'"
 
 #: ../../bkchem/modes.py:1189
 msgid "focused bond marked as 'template bond'"
-msgstr "Evidenziato atomo contrassegnato come 'legame template'"
+msgstr "Evidenziato atomo contrassegnato come 'modello di template'"
 
 #: ../../bkchem/modes.py:1211
 msgid "text"
@@ -2237,23 +2230,23 @@ msgstr "3D"
 
 #: ../../bkchem/modes.py:1276
 msgid "normal 3D rotation"
-msgstr ""
+msgstr "normale rotazione 3D"
 
 #: ../../bkchem/modes.py:1276
 msgid "fix selected bond in 3D"
-msgstr ""
+msgstr "fissa il legame selezionato in 3D"
 
 #: ../../bkchem/modes.py:1293
-#, fuzzy
 msgid "The selected item must be a bond."
-msgstr ""
-"L'oggetto selezionato dovrebbe essere esattamente parte di una molecola."
+msgstr "L'oggetto selezionato deve essere un legame."
 
 #: ../../bkchem/modes.py:1295
 msgid ""
 "Exactly one item should be selected to fixed rotation to work, normal "
 "rotation will be used."
 msgstr ""
+"Per lavorare un oggetto dovrebbe essere selezionato per la designata "
+"rotazione, altrimenti sarà usata la normale rotazione."
 
 #: ../../bkchem/modes.py:1315
 msgid "You can only rotate molecules in 3D!"
@@ -2272,9 +2265,8 @@ msgid "Sorry but you can only rotate molecules and arrows in 2D."
 msgstr "Spiacente ma puoi solo ruotare le molecole e le frecce in 2D."
 
 #: ../../bkchem/modes.py:1362
-#, fuzzy
 msgid "You can only rotate the molecule for which you fixed a bond."
-msgstr "Puoi solo ruotare le molecole in 3D!"
+msgstr "Puoi solo ruotare la molecola per la quale hai fissato un legame."
 
 #: ../../bkchem/modes.py:1420
 msgid "transformation mode"
@@ -2411,17 +2403,16 @@ msgid "No arrow present"
 msgstr "Nessuna freccia presente"
 
 #: ../../bkchem/modes.py:1922
-#, fuzzy
 msgid ""
 "The reaction information in BKChem are associated with arrows, therefore you "
 "have to have at least one arrow before you can construct any reaction."
 msgstr ""
-"Le informazioni di reazione in bkchem sono associate con le freccie, perciò "
+"Le informazioni di reazione in bkchem sono associate alle freccie, perciò "
 "devi avere almeno una freccia prima di costruire qualche reazione."
 
 #: ../../bkchem/modes.py:2037
 msgid "users templates"
-msgstr "template personali"
+msgstr "modelli personali"
 
 #: ../../bkchem/modes.py:2054
 msgid "External data management"
@@ -2460,19 +2451,16 @@ msgid "Brackets"
 msgstr "Quadre"
 
 #: ../../bkchem/modes.py:2428
-#, fuzzy
 msgid "Rectangular"
-msgstr "retteangolo"
+msgstr "Quadre"
 
 #: ../../bkchem/modes.py:2428
-#, fuzzy
 msgid "Round"
-msgstr "legame"
+msgstr "Tonde"
 
 #: ../../bkchem/modes.py:2475
-#, fuzzy
 msgid "Miscelanous small modes"
-msgstr "Varie modifiche"
+msgstr "Piccole varie modifiche"
 
 #: ../../bkchem/modes.py:2477
 msgid "Numbering"
@@ -2519,10 +2507,10 @@ msgid "pasted from clipboard"
 msgstr "incollato dagli appunti"
 
 #: ../../bkchem/paper.py:1320
-#, fuzzy, python-format
+#, python-format
 msgid "undo (%d further undo available)"
 msgid_plural "undo (%d further undos available)"
-msgstr[0] "annulla (%d ulteriori annullamenti disponibili)"
+msgstr[0] "annulla (%d ulteriore annullamento disponibile)"
 msgstr[1] "annulla (%d ulteriori annullamenti disponibili)"
 
 #: ../../bkchem/paper.py:1324
@@ -2530,10 +2518,10 @@ msgid "no further undo"
 msgstr "nessun ulteriore annullamento"
 
 #: ../../bkchem/paper.py:1335
-#, fuzzy, python-format
+#, python-format
 msgid "redo (%d further redo available)"
 msgid_plural "redo (%d further redos available)"
-msgstr[0] "ripeti (%d ulteriori ripetizioni disponibili)"
+msgstr[0] "ripeti (%d ulteriore ripetizione disponibile)"
 msgstr[1] "ripeti (%d ulteriori ripetizioni disponibili)"
 
 #: ../../bkchem/paper.py:1339
@@ -2565,14 +2553,14 @@ msgid "Formula: %s"
 msgstr "Formula: %s"
 
 #: ../../bkchem/paper.py:1488 ../../bkchem/paper.py:1503
-#, fuzzy, python-format
+#, python-format
 msgid "Weight: %4.4f"
-msgstr "Peso: %4.3f"
+msgstr "Peso: %4.4f"
 
 #: ../../bkchem/paper.py:1490 ../../bkchem/paper.py:1505
 #, python-format
 msgid "Monoisotopic mass: %12.8f"
-msgstr ""
+msgstr "Massa monoisotopica: %12.8f"
 
 #: ../../bkchem/paper.py:1492 ../../bkchem/paper.py:1507
 #, python-format
@@ -2604,44 +2592,43 @@ msgid "selected items were swapped"
 msgstr "gli articoli selezionati sono stati scambiati"
 
 #: ../../bkchem/splash.py:35
-#, fuzzy
 msgid "BKChem is starting..."
-msgstr "BKChem sta caricando..."
+msgstr "BKChem in caricamento..."
 
 #: ../../bkchem/validator.py:93
-#, fuzzy, python-format
+#, python-format
 msgid "%d text only atom (chemical interpretation is unknown)"
 msgid_plural "%d text only atoms (chemical interpretation is unknown)"
-msgstr[0] "%d Atomo(i) solo testo (l'interpretazione chimica è sconosciuta)"
-msgstr[1] "%d Atomo(i) solo testo (l'interpretazione chimica è sconosciuta)"
+msgstr[0] "%d testo solo atomo (l'interpretazione chimica è sconosciuta)"
+msgstr[1] "%d testo solo atomi (l'interpretazione chimica è sconosciuta)"
 
 #: ../../bkchem/validator.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "%d atom with exceeded valency"
 msgid_plural "%d atoms with exceeded valency"
-msgstr[0] "%d Atomo(i) con valenza eccedente"
-msgstr[1] "%d Atomo(i) con valenza eccedente"
+msgstr[0] "%d atomo con valenza eccedente"
+msgstr[1] "%d atomi con valenza eccedente"
 
 #: ../../bkchem/validator.py:104
-#, fuzzy, python-format
+#, python-format
 msgid "%d group(s) (groups need to be expanded for some export formats)"
 msgid_plural "%d group(s) (groups need to be expanded for some export formats)"
 msgstr[0] ""
-"%d gruppo(i) (gruppi necessari per l'espansione per alcuni formati esportati)"
+"%d gruppo (gruppi necessari per l'espansione di alcuni formati esportati)"
 msgstr[1] ""
-"%d gruppo(i) (gruppi necessari per l'espansione per alcuni formati esportati)"
+"%d gruppi (gruppi necessari per l'espansione per alcuni formati esportati)"
 
 #: ../../bkchem/validator.py:110
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "%d zero order bond (such bond will not be exported into chemical formats)"
 msgid_plural ""
 "%d zero order bonds (such bonds will not be exported into chemical formats)"
 msgstr[0] ""
-"%d legame(i) di ordine zero (tali legami non saranno esportati nei formati "
+"%d legame di ordine zero (tali legami non saranno esportati nei formati "
 "chimici)"
 msgstr[1] ""
-"%d legame(i) di ordine zero (tali legami non saranno esportati nei formati "
+"%d legami di ordine zero (tali legami non saranno esportati nei formati "
 "chimici)"
 
 #: ../../bkchem/widgets.py:97
@@ -2699,16 +2686,15 @@ msgstr ""
 
 #: ../../bkchem/plugins/CDXML.py:42
 msgid "Imports a CDXML (ChemDraw XML format) document."
-msgstr ""
+msgstr "Importa documento CDXML (formato ChemDraw XML)"
 
 #: ../../bkchem/plugins/CDXML.py:237
 msgid "Exports a CDXML (ChemDraw XML) document"
-msgstr ""
+msgstr "Esporta documento CDXML (formato ChemDraw XML)"
 
 #: ../../bkchem/plugins/CDXML.py:502
-#, fuzzy
 msgid "CDXML"
-msgstr "CDML"
+msgstr "CDXML"
 
 #: ../../bkchem/plugins/CML2.py:35
 msgid ""
@@ -2800,10 +2786,10 @@ msgstr ""
 "Hai selezionato esattamente una molecola (basterà qualche atomo o legame)."
 
 #: ../../bkchem/plugins/molfile.py:75
-#, fuzzy, python-format
+#, python-format
 msgid "%d molecules selected."
 msgid_plural "%d molecules selected."
-msgstr[0] "%d molecole selezionate."
+msgstr[0] "%d molecola selezionata."
 msgstr[1] "%d molecole selezionate."
 
 #: ../../bkchem/plugins/molfile.py:115
