@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
 "POT-Creation-Date: 2010-08-13 00:37+0300\n"
-"PO-Revision-Date: 2010-08-19 22:00+0800\n"
+"PO-Revision-Date: 2010-09-09 10:00+0800\n"
 "Last-Translator: I-Yuan Chiang (江易原) <iychiang1809@gmail.com>, 2007~\n"
 "Language-Team: Traditional Chinese (zh-l10n@linux.org.tw, tryneeds@gmail."
 "com)\n"
@@ -304,7 +304,7 @@ msgstr "X 比例 (%)"
 
 #: ../../bkchem/dialogs.py:60 ../../bkchem/plugins/png_cairo.py:115
 msgid "Scale Y (in %):"
-msgstr "Y 比例 (%"
+msgstr "Y 比例 (%)"
 
 #: ../../bkchem/dialogs.py:71
 msgid "Preserve aspect ratio?"
@@ -348,11 +348,11 @@ msgstr "原子的位置"
 
 #: ../../bkchem/dialogs.py:207
 msgid "center first letter"
-msgstr "第 1 字母置中"
+msgstr "第一個字母置中"
 
 #: ../../bkchem/dialogs.py:207
 msgid "center last letter"
-msgstr "最後字母置中"
+msgstr "最後一個字母置中"
 
 #: ../../bkchem/dialogs.py:231 ../../bkchem/dialogs.py:684
 msgid "Bond"
@@ -423,7 +423,7 @@ msgstr "裁切影像的邊緣 (像素)"
 
 #: ../../bkchem/dialogs.py:589 ../../bkchem/dialogs.py:883
 msgid "Use real minus character (instead of hyphen)?"
-msgstr "使用真的減號 (取代連字號)"
+msgstr "使用真的減號 (取代連字號)?"
 
 #: ../../bkchem/dialogs.py:597
 msgid "Replace hyphens with minus in SVG export?"
@@ -480,11 +480,11 @@ msgstr "只對新繪製的"
 
 #: ../../bkchem/dialogs.py:777
 msgid "to selected and new drawings (no resize)"
-msgstr "只對所選的及新繪製的 (不含調整大小的)"
+msgstr "只對所選的及新繪製的 (不調整大小)"
 
 #: ../../bkchem/dialogs.py:778
 msgid "to the whole drawing (no resize)"
-msgstr "對所有新繪製的 (不含調整大小的)"
+msgstr "對所有新繪製的 (不調整大小)"
 
 #: ../../bkchem/dialogs.py:791
 msgid "Standard saved"
@@ -500,9 +500,9 @@ msgid ""
 "You can still apply the changes to the current drawing from the dialog "
 "window."
 msgstr ""
-"此標準以成功的存為個人標準的 %s\n"
+"此標準已成功的存為個人標準的 %s\n"
 "\n"
-"將不會自動套用再目前的繪圖而再重新啟動 BKchem 才會生效.\n"
+"將不會自動套用在目前的繪圖，重新啟動 BKchem 才會生效.\n"
 "您依然可以從對話視窗中將設定套用到目前的繪圖"
 
 #: ../../bkchem/dialogs.py:794
@@ -515,8 +515,8 @@ msgid ""
 "for personal profile couldn't be found or wasn't writable. Sorry for the "
 "inconvenience."
 msgstr ""
-"因為某原因無法儲存此標準.可能是找不到個人的資料，或是無法寫入.不便之處, 非常"
-"抱歉."
+"因為某原因無法儲存此標準.可能是找不到個人的資料，或是無法寫入.不便之處非常抱"
+"歉."
 
 #: ../../bkchem/dialogs.py:860 ../../bkchem/main.py:275
 msgid "Preferences"
@@ -881,7 +881,7 @@ msgstr ""
 
 #: ../../bkchem/interactors.py:351
 msgid "Enter atom number:"
-msgstr "輸入原子編號"
+msgstr "輸入原子編號:"
 
 #: ../../bkchem/interactors.py:358
 #, python-format
@@ -897,7 +897,8 @@ msgid ""
 "BKChem thinks it can interpret the entered text as a group, try to expand it "
 "to find out how it was interpreted."
 msgstr ""
-"BKChem 認為這些輸入的文字可以判讀成官能基，正試著展開官能基以找出如何被判讀"
+"BKChem 認為這些輸入的文字可以判讀成官能基，正試著展開官能基以找出這如何被解"
+"讀."
 
 #: ../../bkchem/interactors.py:370
 msgid ""
@@ -925,7 +926,7 @@ msgstr "所選的並非是線性- 有分岔"
 msgid ""
 "The selected part of a molecule is a whole ring, there is no way to "
 "linearize it"
-msgstr "您所選擇的部份含有環, 因此無法化成直線化學式"
+msgstr "您所選擇的部份含有環, 因此無法轉換成直線化學式"
 
 #: ../../bkchem/interactors.py:487
 msgid "Groups must be expanded to compute oxidation number for them."
@@ -939,7 +940,7 @@ msgstr "無法展開的官能基或是純文字可能無法得到正確的氧化
 
 #: ../../bkchem/interactors.py:506
 msgid "You can move and delete the created oxidation numbers in the mark mode"
-msgstr "您可以移動或是刪除氧化數"
+msgstr "在標記模式下，您可以移動或是刪除所加入的氧化數"
 
 #: ../../bkchem/logger.py:34
 msgid "Error"
@@ -992,7 +993,7 @@ msgstr "開啟新檔"
 
 #: ../../bkchem/main.py:180
 msgid "Create a new file in a new tab"
-msgstr "在新分頁中新增檔案"
+msgstr "在新分頁中開啟新檔"
 
 #: ../../bkchem/main.py:181
 msgid "Save the file"
@@ -1679,7 +1680,7 @@ msgid ""
 "\n"
 "If you are sure it is a valid InChI, please send me a bug report."
 msgstr ""
-"您所輸入的 InChI 式有個錯誤\n"
+"在讀取所輸入的 InChI 式有個錯誤\n"
 "如果您確定所輸入的 InChI 是正確的, 煩請回報臭蟲."
 
 #: ../../bkchem/main.py:1261
@@ -1689,7 +1690,8 @@ msgid ""
 "\n"
 "You migth try resubmitting with the version string (the first part of InChI) "
 "changed to '1'."
-msgstr "您所輸入的 INCHI 是不支援的版本 '%s'.\n"
+msgstr ""
+"您所輸入的 INCHI 是不支援的版本 '%s'.\n"
 "\n"
 "您可以試試重新輸入並加入版本編號 (INCHI 式的第一部份)"
 
@@ -1734,7 +1736,7 @@ msgstr "請再次確認 InChI 程式的路徑設是在 'Options/InChI program pa
 
 #: ../../bkchem/main.py:1415
 msgid "Generated InChIs"
-msgstr "產生 InChI 文字化學式"
+msgstr "產生的 InChI 文字化學式"
 
 #: ../../bkchem/main.py:1448
 #, python-format
@@ -1743,7 +1745,7 @@ msgstr "檔案存成範本 %s"
 
 #: ../../bkchem/messages.py:24
 msgid "use SHIFT to drag only in X, CTRL to drag only in Y"
-msgstr "使用 SHIFT 在 X 方向拖曳, CTRL 在 Y 方向拖曳"
+msgstr "使用 SHIFT 可以只在 X 方向拖曳, CTRL 可以只在 Y 方向拖曳"
 
 #: ../../bkchem/messages.py:28
 msgid ""
@@ -1887,7 +1889,7 @@ msgstr ""
 "有關 GPL 條文, 請見 gpl.txt\n"
 "在 GNU GPL 授權規範下,  您可以自由的研究,\n"
 "修改及重新散布本程式\n"
-"中文翻譯: 江易原, <iychiang1809@gmail.com>"
+"中文翻譯 (translator): 江易原, <iychiang1809@gmail.com>"
 
 #: ../../bkchem/messages.py:90
 msgid ""
@@ -1938,7 +1940,8 @@ msgid ""
 "the splash image was not found :("
 msgstr ""
 "BKChem 啟動中\n"
-"很不幸,找不到啟動畫面 :("
+"很不幸,\n"
+"找不到啟動畫面 :("
 
 #: ../../bkchem/messages.py:114
 msgid ""
@@ -1949,8 +1952,8 @@ msgid ""
 "\n"
 "Do you want set these new standard values?"
 msgstr ""
-"這 CDML 文件使用不同預設值, 跟您目前的預設值不同. 為了保持相同的繪圖風格, 建"
-"議您在這文件使用新的設定值. 這不會影響您的偏好設定\n"
+"這 CDML 文件使用不同預設值, 跟您目前的預設值不同. 為了保持相同的繪圖風格,建議"
+"您在這文件使用新的設定值. 這不會影響您的偏好設定\n"
 "\n"
 "您想要使用新的設定值嗎?"
 
@@ -2756,7 +2759,7 @@ msgid ""
 "Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS "
 "export. The results vary with the system, problems are usually font-related."
 msgstr ""
-"匯出 Encapsulated PostScript 檔. 將使用 builtin (Tk) 的功能進行匯出 PS隨著系"
+"匯出 Encapsulated PostScript 檔. 將使用 builtin (Tk) 的功能進行匯出 PS 隨著系"
 "統的差異可能有不同的結果，經常是跟字型有關的問題."
 
 #: ../../bkchem/plugins/ps_builtin.py:63
