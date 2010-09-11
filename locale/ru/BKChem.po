@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-08-13 00:37+0300\n"
+"POT-Creation-Date: 2010-09-12 00:15+0300\n"
 "PO-Revision-Date: 2010-09-11 23:30+0300\n"
 "Last-Translator: Drobot Victor <linux776@mail.ru>\n"
 "Language-Team: RUSSIAN <linux776@mail.ru>\n"
@@ -167,12 +167,12 @@ msgid "Area color"
 msgstr "Цвет фона"
 
 #: ../../bkchem/context_menu.py:268 ../../bkchem/context_menu.py:275
-#: ../../bkchem/plugins/png_cairo.py:176
+#: ../../bkchem/plugins/png_cairo.py:175
 msgid "transparent"
 msgstr "прозрачный"
 
 #: ../../bkchem/context_menu.py:269 ../../bkchem/context_menu.py:276
-#: ../../bkchem/plugins/png_cairo.py:175 ../../bkchem/plugins/png_cairo.py:190
+#: ../../bkchem/plugins/png_cairo.py:174 ../../bkchem/plugins/png_cairo.py:189
 msgid "white"
 msgstr "белый"
 
@@ -234,7 +234,8 @@ msgid "Polish"
 msgstr "Польский"
 
 #: ../../bkchem/data.py:133
-msgid "Traditional Chinese"
+#, fuzzy
+msgid "Traditional Chinese, Taiwan"
 msgstr "Китайский традиционный"
 
 #: ../../bkchem/data.py:134
@@ -253,6 +254,10 @@ msgstr "Японский"
 msgid "Latvian"
 msgstr "Латвийский"
 
+#: ../../bkchem/data.py:138
+msgid "Russian"
+msgstr ""
+
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
 #: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
 #: ../../bkchem/dialogs.py:385 ../../bkchem/dialogs.py:514
@@ -264,7 +269,7 @@ msgstr "Латвийский"
 #: ../../bkchem/dialogs.py:927 ../../bkchem/dialogs.py:1008
 #: ../../bkchem/dialogs.py:1009 ../../bkchem/dialogs.py:1038
 #: ../../bkchem/dialogs.py:1056 ../../bkchem/dialogs.py:1057
-#: ../../bkchem/dialogs.py:1095 ../../bkchem/interactors.py:53
+#: ../../bkchem/dialogs.py:1098 ../../bkchem/interactors.py:53
 #: ../../bkchem/interactors.py:58 ../../bkchem/interactors.py:93
 #: ../../bkchem/interactors.py:99 ../../bkchem/interactors.py:163
 #: ../../bkchem/interactors.py:183 ../../bkchem/interactors.py:192
@@ -276,7 +281,7 @@ msgstr "Латвийский"
 #: ../../bkchem/main.py:1230 ../../bkchem/main.py:1232
 #: ../../bkchem/main.py:1300 ../../bkchem/main.py:1416
 #: ../../bkchem/validator.py:116 ../../bkchem/widgets.py:378
-#: ../../bkchem/plugins/png_cairo.py:93 ../../bkchem/plugins/png_cairo.py:94
+#: ../../bkchem/plugins/png_cairo.py:92 ../../bkchem/plugins/png_cairo.py:93
 msgid "OK"
 msgstr "ОК"
 
@@ -290,7 +295,7 @@ msgstr "ОК"
 #: ../../bkchem/interactors.py:329 ../../bkchem/interactors.py:353
 #: ../../bkchem/main.py:742 ../../bkchem/main.py:747 ../../bkchem/main.py:1191
 #: ../../bkchem/main.py:1230 ../../bkchem/widgets.py:378
-#: ../../bkchem/plugins/png_cairo.py:93 ../../bkchem/plugins/png_cairo.py:186
+#: ../../bkchem/plugins/png_cairo.py:92 ../../bkchem/plugins/png_cairo.py:185
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -298,11 +303,11 @@ msgstr "Отмена"
 msgid "Scale"
 msgstr "Масштаб"
 
-#: ../../bkchem/dialogs.py:49 ../../bkchem/plugins/png_cairo.py:104
+#: ../../bkchem/dialogs.py:49 ../../bkchem/plugins/png_cairo.py:103
 msgid "Scale X (in %):"
 msgstr "Масштаб X (в %):"
 
-#: ../../bkchem/dialogs.py:60 ../../bkchem/plugins/png_cairo.py:115
+#: ../../bkchem/dialogs.py:60 ../../bkchem/plugins/png_cairo.py:114
 msgid "Scale Y (in %):"
 msgstr "Масштаб Y (в %):"
 
@@ -553,11 +558,11 @@ msgstr ""
 msgid "Language"
 msgstr "Язык"
 
-#: ../../bkchem/dialogs.py:1079
+#: ../../bkchem/dialogs.py:1082
 msgid "System default"
 msgstr "Системный по умолчанию"
 
-#: ../../bkchem/dialogs.py:1086
+#: ../../bkchem/dialogs.py:1089
 msgid "Available Languages"
 msgstr "Доступные языки"
 
@@ -2776,7 +2781,7 @@ msgstr "ODF (OpenOffice 2.0)"
 msgid "OpenOffice 1.0 Draw"
 msgstr "OpenOffice 1.0 Draw"
 
-#: ../../bkchem/plugins/pdf_cairo.py:32
+#: ../../bkchem/plugins/pdf_cairo.py:33
 msgid ""
 "Exports PDF via the Cairo (pycairo) library. This is the preferred PDF "
 "output plugin as it supports unicode strings and the output is of very good "
@@ -2803,7 +2808,7 @@ msgstr ""
 msgid "PDF (Piddle)"
 msgstr "PDF (Piddle)"
 
-#: ../../bkchem/plugins/png_cairo.py:30
+#: ../../bkchem/plugins/png_cairo.py:31
 msgid ""
 "Exports PNG files via the Cairo (pycairo) library. The output is usually "
 "quite good, with unicode support and antialiased fonts. The output should "
@@ -2812,15 +2817,15 @@ msgstr ""
 "Экспортировать в PNG через библиотеку Cairo (pycairo). Поддерживает Unicode "
 "и шрифты со сглаживанием. Вывод аналогичен экспорту в PDF (Cairo)"
 
-#: ../../bkchem/plugins/png_cairo.py:77
+#: ../../bkchem/plugins/png_cairo.py:76
 msgid "PNG (Cairo)"
 msgstr "PNG (Cairo)"
 
-#: ../../bkchem/plugins/png_cairo.py:95
+#: ../../bkchem/plugins/png_cairo.py:94
 msgid "PNG resolution and background color"
 msgstr "Разрешение и цвет фона PNG"
 
-#: ../../bkchem/plugins/png_cairo.py:98
+#: ../../bkchem/plugins/png_cairo.py:97
 msgid ""
 "Set the PNG picture resolution and background color using one of the "
 "criteria below."
@@ -2828,19 +2833,19 @@ msgstr ""
 "Установите разрешение PNG-изображения и цвет фона, используя один из нижних "
 "критериев."
 
-#: ../../bkchem/plugins/png_cairo.py:130
+#: ../../bkchem/plugins/png_cairo.py:129
 msgid "Size X (in px):"
 msgstr "Размер по X (в пикселях):"
 
-#: ../../bkchem/plugins/png_cairo.py:141
+#: ../../bkchem/plugins/png_cairo.py:140
 msgid "Size Y (in px):"
 msgstr "Размер по Y (в пикселях):"
 
-#: ../../bkchem/plugins/png_cairo.py:157
+#: ../../bkchem/plugins/png_cairo.py:156
 msgid "Resolution (dpi):"
 msgstr "Разрешение (dpi):"
 
-#: ../../bkchem/plugins/png_cairo.py:173
+#: ../../bkchem/plugins/png_cairo.py:172
 msgid "Background color"
 msgstr "Цвет фона"
 
@@ -2864,7 +2869,7 @@ msgstr ""
 msgid "PostScript (builtin)"
 msgstr "PostScript (встроено)"
 
-#: ../../bkchem/plugins/ps_cairo.py:32
+#: ../../bkchem/plugins/ps_cairo.py:33
 msgid ""
 "Exports Postscript via the Cairo (pycairo) library. This is the preferred PS "
 "output plugin as it supports unicode strings and the output is of very good "
@@ -2891,7 +2896,7 @@ msgstr ""
 msgid "PostScript (Piddle)"
 msgstr "PostScript (Piddle)"
 
-#: ../../bkchem/plugins/svg_cairo.py:32
+#: ../../bkchem/plugins/svg_cairo.py:33
 msgid ""
 "Exports SVG via the Cairo (pycairo) library. This SVG does not embed BKChem "
 "data and is simpler than the default one used by BKChem."
