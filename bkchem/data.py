@@ -136,6 +136,7 @@ languages = {'en': _('English'),
              'ja': _('Japanese'),
              'lv': _('Latvian'),
              'ru': _('Russian'),
+             'tr': _('Turkish'),
              }
 
 
