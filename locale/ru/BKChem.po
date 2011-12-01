@@ -1,21 +1,23 @@
-# Translation template file for BKChem.
-# Copyright (C) 2010 Beda Kosata, Reinis Danne
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
 # This file is distributed under the same license as the BKChem package.
-# Beda Kosata <beda@zirael.org>, 2010.
 #
+# Drobot Victor <linux776@mail.ru>, 2010
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.14.0\n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: 2010-09-11 23:30+0300\n"
 "Last-Translator: Drobot Victor <linux776@mail.ru>\n"
 "Language-Team: RUSSIAN <linux776@mail.ru>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
 
@@ -256,6 +258,10 @@ msgstr "Латвийский"
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -1686,16 +1692,16 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""
 "Перед тем, как использовать его инструмент, имейте в виду, что не все "
 "возможности InChI в настоящее время поддерживаются.\n"
 "Нет поддержки стерео-информации, изотопов и ещё несколько вещей.\n"
-"InChI должны быть введены в простой текстовой форме, например,- 1/C7H8/1-7-5-"
-"3-2-4-6-7/1H3,2-6H\n"
+"InChI должны быть введены в простой текстовой форме, например,- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Введите InChI:"
 

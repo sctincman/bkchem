@@ -1,17 +1,17 @@
 # Translation template file for BKChem.
-# Copyright (C) 2010 Beda Kosata, Reinis Danne
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
 # This file is distributed under the same license as the BKChem package.
-# Beda Kosata <beda@zirael.org>, 2010.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.14.0\n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -253,6 +253,10 @@ msgstr ""
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -1625,8 +1629,8 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""

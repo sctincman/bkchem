@@ -1,11 +1,16 @@
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
+# This file is distributed under the same license as the BKChem package.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -247,6 +252,10 @@ msgstr ""
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -1641,16 +1650,16 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""
 "このツールを使う前に， InChIが現在サポートしている機能が完全ではないことに注"
 "意してください\n"
 "立体的な情報や同位体などはサポートされません\n"
-"InChIは定められた形式で入力しなければなりません．例- 1/C7H8/1-7-5-3-2-4-6-"
-"7/1H3,2-6H\n"
+"InChIは定められた形式で入力しなければなりません．例- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "InChI入力:"
 

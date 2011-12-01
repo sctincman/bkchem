@@ -1,17 +1,19 @@
-# Translation template file for BKChem.
-# Copyright (C) 2010 Beda Kosata, Reinis Danne
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
 # This file is distributed under the same license as the BKChem package.
-# Beda Kosata <beda@zirael.org>, 2010.
 #
+# I-Yuan Chiang (江易原) <iychiang1809@gmail.com>, 2007
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.14.0\n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: 2010-09-09 10:00+0800\n"
 "Last-Translator: I-Yuan Chiang (江易原) <iychiang1809@gmail.com>, 2007~\n"
 "Language-Team: Traditional Chinese (zh-l10n@linux.org.tw, tryneeds@gmail."
 "com)\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -256,6 +258,10 @@ msgstr "Latvian 拉脫維亞語"
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -1652,8 +1658,8 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""
@@ -1932,8 +1938,8 @@ msgid ""
 msgstr ""
 "Python 版本太舊!\n"
 "\n"
-"從 Bkcehm 0.14 版起就需要 Python 2.5 或更新版本才能正常運作.您的 Python 是 %"
-"s\n"
+"從 Bkcehm 0.14 版起就需要 Python 2.5 或更新版本才能正常運作.您的 Python 是 "
+"%s\n"
 "s\n"
 "抱歉, 對您造成不便, 煩請升級 Python 才能執行 BKChem"
 

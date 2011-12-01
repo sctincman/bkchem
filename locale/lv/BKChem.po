@@ -1,11 +1,18 @@
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
+# This file is distributed under the same license as the BKChem package.
+#
+# Reinis Danne <rei4dan@gmail.com>, 2010
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: BKChem-0.14.0\n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: 2010-08-13 01:03+0300\n"
 "Last-Translator: Reinis Danne <rei4dan@gmail.com>\n"
 "Language-Team: \n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -251,6 +258,10 @@ msgstr "Latviešu"
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -500,8 +511,8 @@ msgid ""
 "You can still apply the changes to the current drawing from the dialog "
 "window."
 msgstr ""
-"Noklusētie iestatījumi veiksmīgi saglabāti, kā personālais standarts failā %"
-"s\n"
+"Noklusētie iestatījumi veiksmīgi saglabāti, kā personālais standarts failā "
+"%s\n"
 "\n"
 "Tie nav automātiski pielietoti pašreizējā zīmējumā, bet tiks aktivizēti pēc "
 "\"BKChem\" restarta.\n"
@@ -1692,8 +1703,8 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""

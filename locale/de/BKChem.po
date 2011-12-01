@@ -1,12 +1,19 @@
-# translation of BKChem.po to
+# Copyright (C) 2011 Beda Kosata, Reinis Danne
+# This file is distributed under the same license as the BKChem package.
+#
+# René Genz, 2007
+# Bernhard Radzio, 2009
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: BKChem\n"
+"Project-Id-Version: BKChem 0.14.0\n"
 "Report-Msgid-Bugs-To: Reinis Danne <rei4dan@gmail.com>\n"
-"POT-Creation-Date: 2010-09-12 00:15+0300\n"
+"POT-Creation-Date: 2011-12-01 22:36+0200\n"
 "PO-Revision-Date: 2009-01-09 12:12+0100\n"
 "Last-Translator: Bernhard Radzio\n"
 "Language-Team:  <en@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -250,6 +257,10 @@ msgstr ""
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
+msgstr ""
+
+#: ../../bkchem/data.py:139
+msgid "Turkish"
 msgstr ""
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
@@ -1557,8 +1568,8 @@ msgid ""
 "Sorry but you are already editing a file with this name (%s), please choose "
 "a different name or close the other file."
 msgstr ""
-"Entschuldigung, aber Sie bearbeiten bereits eine Datei mit diesem Namen (%"
-"s), bitte wählen Sie einen anderen oder schließen Sie die andere Datei."
+"Entschuldigung, aber Sie bearbeiten bereits eine Datei mit diesem Namen "
+"(%s), bitte wählen Sie einen anderen oder schließen Sie die andere Datei."
 
 #: ../../bkchem/main.py:816
 msgid "gzipped CDML"
@@ -1711,15 +1722,15 @@ msgid ""
 "currently supported.\n"
 "There is no support for stereo-related information, isotopes and a few more "
 "things.\n"
-"The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-"
-"6-7/1H3,2-6H\n"
+"The InChI should be entered in the plain text form, e.g.- 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "Enter InChI:"
 msgstr ""
 "Leider werden derzeit noch nicht alle InChI-Features unterstützt.\n"
 "Stereoinformation, Isotope und einige andere).\n"
-"InChI sollte in Textform eingegeben werden, z.B. 1/C7H8/1-7-5-3-2-4-6-"
-"7/1H3,2-6H\n"
+"InChI sollte in Textform eingegeben werden, z.B. 1/"
+"C7H8/1-7-5-3-2-4-6-7/1H3,2-6H\n"
 "\n"
 "InChI eingeben:"
 
@@ -1760,8 +1771,8 @@ msgid ""
 "You migth try resubmitting with the version string (the first part of InChI) "
 "changed to '1'."
 msgstr ""
-"Der eingegebene InChI-String entspricht der nichtunterstützten Version '%"
-"s'.\n"
+"Der eingegebene InChI-String entspricht der nichtunterstützten Version "
+"'%s'.\n"
 "\n"
 "Eventuell haben Sie mehr Glück wenn Sie den String mit dem "
 "Versionskennzeichen (der erste Teil des InChI) '1' erneut eingeben."
