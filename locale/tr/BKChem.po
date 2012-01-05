@@ -259,7 +259,7 @@ msgstr "Rusça"
 
 #: ../../bkchem/data.py:139
 msgid "Turkish"
-msgstr ""
+msgstr "Türkçe"
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
 #: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
