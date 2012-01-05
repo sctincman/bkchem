@@ -236,9 +236,8 @@ msgid "Polish"
 msgstr "Poļu"
 
 #: ../../bkchem/data.py:133
-#, fuzzy
 msgid "Traditional Chinese, Taiwan"
-msgstr "Ķīniešu Tradicionālā"
+msgstr "Ķīniešu Tradicionālā, Taivāna"
 
 #: ../../bkchem/data.py:134
 msgid "Italian"
@@ -258,11 +257,11 @@ msgstr "Latviešu"
 
 #: ../../bkchem/data.py:138
 msgid "Russian"
-msgstr ""
+msgstr "Krievu"
 
 #: ../../bkchem/data.py:139
 msgid "Turkish"
-msgstr ""
+msgstr "Turku"
 
 #: ../../bkchem/dialogs.py:42 ../../bkchem/dialogs.py:43
 #: ../../bkchem/dialogs.py:138 ../../bkchem/dialogs.py:139
