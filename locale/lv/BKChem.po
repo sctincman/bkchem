@@ -3,7 +3,6 @@
 #
 # Reinis Danne <rei4dan@gmail.com>, 2010
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"

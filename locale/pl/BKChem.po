@@ -3,7 +3,6 @@
 #
 # Nikodem Kuznik <nkuznik@yahoo.com>, 2005
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem-pl\n"

@@ -3,7 +3,6 @@
 #
 # Barbaros Akkurt <akkurtb@itu.edu.tr>, 2011
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"

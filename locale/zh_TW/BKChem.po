@@ -3,7 +3,6 @@
 #
 # I-Yuan Chiang (江易原) <iychiang1809@gmail.com>, 2007
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"

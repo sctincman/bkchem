@@ -1,7 +1,6 @@
 # Copyright (C) 2011 Beda Kosata, Reinis Danne
 # This file is distributed under the same license as the BKChem package.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"

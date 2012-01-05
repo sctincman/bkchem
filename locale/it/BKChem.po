@@ -3,7 +3,6 @@
 #
 # FIRST AUTHOR <nuvaln2@yahoo.it>, 2008
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"

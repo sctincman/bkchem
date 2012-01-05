@@ -3,7 +3,6 @@
 #
 # Beda Kosata <beda@zirael.org>, 2001
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: BKChem 0.14.0\n"
