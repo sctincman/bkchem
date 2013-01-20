@@ -51,6 +51,7 @@ else:
 if user_lang == "en":
   import __builtin__
   __builtin__.__dict__['_'] = lambda m: m
+  __builtin__.__dict__['ngettext'] = gettext.ngettext
   Store.lang = "en"
 else:
   Store.lang = None
@@ -76,6 +77,7 @@ else:
   if not Store.lang:
     import __builtin__
     __builtin__.__dict__['_'] = lambda m: m
+    __builtin__.__dict__['ngettext'] = gettext.ngettext
     Store.lang = "en"
 
 
