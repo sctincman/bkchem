@@ -57,7 +57,7 @@ class tk2cairo:
       self.transformer = transformer
     self.width_scaling = self.transformer.get_scaling()
     self.draw_document()
-    
+
 
 
 
@@ -132,7 +132,7 @@ class tk2cairo:
       # line width
       width = self.p2c_width( float( self.paper.itemcget( item, 'width')))
       self.context.set_line_width( width)
-      # the path itself 
+      # the path itself
       cs = self._flat_list_to_list_of_tuples( coords)
       if self.paper.itemcget( item, 'smooth') != "0":
         # smooth lines
@@ -206,8 +206,8 @@ class tk2cairo:
     else:
       self.context.new_path()
 
-    
-    
+
+
   def _draw_polygon( self, item):
     coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
     outline = self.paper.itemcget( item, 'outline')
@@ -229,7 +229,7 @@ class tk2cairo:
       self.context.stroke()
     else:
       self.context.new_path()
-    
+
 
   def _draw_oval( self, item):
     coords = self.transformer.transform_4( self.paper.coords( item))
@@ -258,7 +258,7 @@ class tk2cairo:
     else:
       self.context.new_path()
 
-    
+
 
 
   # other than drawing private methods
@@ -346,8 +346,8 @@ class tk2cairo:
       cairo_size *= tk_length/width
       self.context.set_font_size( cairo_size)
     return cairo_size
-    
-    
+
+
 
 
 
