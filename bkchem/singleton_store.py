@@ -19,10 +19,7 @@
 
 """The Store class which is a manager for application wide singletons resides here"""
 
-
-import types
 import misc
-
 
 
 
@@ -32,7 +29,7 @@ class Store:
   objects are stored.
   Making them class attributes allows to loosen the coupling in the system by
   avoiding explicit linking of other objects to these singletons."""
-  
+
   app = None          # the application
   tm = None           # the template manager
   utm = None          # uset templates manager
@@ -44,11 +41,11 @@ class Store:
 
   # attrs
   lang = "en"
-  
+
   # recently unused
   clipboard = None    # the clipboard
 
-  
+
 
 
 
@@ -82,7 +79,7 @@ class Screen:
     return self.dpi * mm / 25.4
 
   mm_to_px = classmethod( mm_to_px)
-  
+
 
 
 
@@ -95,11 +92,11 @@ class Screen:
 
   read_xml_point = classmethod( read_xml_point)
 
-  
-    
+
+
 
   def any_to_px( self, xyz):
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:
+    if isinstance(xyz, (tuple, list)):
       return [self.any_to_px( i) for i in xyz]
     a, au = misc.split_number_and_unit( xyz)
     if au:
@@ -131,7 +128,7 @@ class Screen:
 
   def px_to_unit( self, xyz, unit='cm', round_to=3):
     # handle sets of values
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:
+    if isinstance(xyz, (tuple, list)):
       return [self.px_to_unit( i, unit=unit, round_to=round_to) for i in xyz]
     # handle empty queries
     if xyz == None:
@@ -151,15 +148,15 @@ class Screen:
       return xyz/dots_per_unit
     else:
       return round( xyz/dots_per_unit, round_to)
-  
+
   px_to_unit = classmethod( px_to_unit)
 
-  
+
 
 
   def px_to_text_with_unit( self, xyz, unit='cm', round_to=3):
     # handle sets of values
-    if type( xyz) == types.TupleType or type( xyz) == types.ListType:    
+    if isinstance(xyz, (tuple, list)):
       return [self.px_to_text_with_unit( i, unit=unit, round_to=round_to) for i in xyz]
     # round or not round and return
     if round_to == None:
