@@ -17,10 +17,10 @@
 
 #--------------------------------------------------------------------------
 
-
-
 import os
 import sys
+
+
 
 env_vars = {'template': 'BKCHEM_TEMPLATE_PATH',
             'pixmap': 'BKCHEM_PIXMAP_PATH',
@@ -160,8 +160,7 @@ def get_module_path():
 def get_opened_config_file( name, level="global", mode="r"):
   fname = get_config_filename( name, level=level, mode=mode)
   if fname:
-    f = file( fname, mode=mode)
-    return f
+    return open(fname, mode=mode)
 
 
 def set_bkchem_private_dir( dir):
