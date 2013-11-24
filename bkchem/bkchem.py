@@ -20,16 +20,18 @@
 
 """this is just a starter of the application"""
 
+from __future__ import print_function
+
 ## support for loading from outside of bkchem dir
 
-import os_support, sys
-sys.path.insert( 1, os_support.get_module_path())
+import os_support
 
+sys.path.insert(1, os_support.get_module_path())
 
 ### now starting for real
+import pref_manager
 
 from singleton_store import Store
-import pref_manager
 
 # at first preference manager
 Store.pm = pref_manager.pref_manager(
@@ -82,8 +84,6 @@ else:
 
 
 
-
-
 import config
 
 if not config.debug:
@@ -94,20 +94,20 @@ if not config.debug:
 
   # we need sets from the 2.3 version
   if not import_checker.python_version_ok:
-    print (messages.low_python_version_text % import_checker.python_version).encode('utf-8')
+    print((messages.low_python_version_text % import_checker.python_version).encode('utf-8'))
     sys.exit()
 
   # can't do without Pmw
   if not import_checker.Pmw_available:
-    print messages.no_pmw_text.encode( 'utf-8')
+    print(messages.no_pmw_text.encode('utf-8'))
     sys.exit()
 
   # oasa is the core now, we need it
   if not import_checker.oasa_available:
-    print messages.no_oasa_text.encode( 'utf-8')
+    print(messages.no_oasa_text.encode('utf-8'))
     sys.exit()
 
-  
+
 #import Tkinter
 from main import BKChem
 from splash import Splash
@@ -125,10 +125,10 @@ if __name__ == '__main__':
   opts = [unicode(i, encoding=enc) for i in sys.argv[1:]]
 
   if "-v" in opts or "--version" in opts:
-    print "BKChem", config.current_BKChem_version
+    print("BKChem", config.current_BKChem_version)
     sys.exit()
   if "-h" in opts or "--help" in opts:
-    print messages.usage_text
+    print(messages.usage_text)
     sys.exit()
   if "-H" in opts:
     i = opts.index("-H")
@@ -139,13 +139,13 @@ if __name__ == '__main__':
   if "-b" in opts:
     i = opts.index("-b")
     if len( opts) >= i:
-      
+
       # we are in batch mode
       #import time
       #t = time.time()
       myapp.initialize_batch()
       myapp.process_batch( opts)
-      #print " %f ms" % (1000*(time.time()-t))
+      #print(" %f ms" % (1000*(time.time()-t)))
     sys.exit()
   else:
     # normal interactive mode
@@ -202,7 +202,7 @@ if __name__ == '__main__':
   myapp.mainloop()
   #import profile
   #profile.run( 'myapp.mainloop()')
-  #print "BKChem finished"
+  #print("BKChem finished")
   myapp.destroy()
 
 # the module was imported from outside
@@ -218,4 +218,4 @@ else:
   myapp.geometry(geometry)
   myapp.update_idletasks()
   myapp.deiconify()
-  
+
