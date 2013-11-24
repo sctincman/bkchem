@@ -133,7 +133,12 @@ if __name__ == '__main__':
   enc = sys.getfilesystemencoding()
   if not enc:
     enc = sys.getdefaultencoding()
-  opts = [i.decode(enc) for i in sys.argv[1:]]
+  opts = [i.decode(enc) for i in sys.argv[1:]
+                          if ((sys.version_info[0] > 2 and isinstance(i, bytes)) or
+                              (sys.version_info[0] < 3 and isinstance(i, str)))]
+  opts.extend(i for i in sys.argv[1:]
+                  if ((sys.version_info[0] > 2 and isinstance(i, str)) or
+                      (sys.version_info[0] < 3 and isinstance(i, unicode))))
 
   if "-v" in opts or "--version" in opts:
     print("BKChem", config.current_BKChem_version)
