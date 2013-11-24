@@ -17,7 +17,10 @@
 
 #--------------------------------------------------------------------------
 
+from __future__ import print_function
+
 import xml.dom.minidom as dom
+
 import dom_extensions
 import types
 import os, sys
@@ -33,8 +36,6 @@ class pref_manager( object):
     if file_names:
       for file_name in file_names:
         self.read_pref_file( file_name)
-
-
 
 
   def add_preference( self, name, value):
@@ -53,10 +54,8 @@ class pref_manager( object):
       return None
 
 
-
   def has_preference( self, name):
     return name in self.data
-
 
 
   def read_pref_file( self, name):
@@ -64,8 +63,8 @@ class pref_manager( object):
       try:
         doc = dom.parse( name)
       except:
-        #print "corrupt preference file %s" % name
-        return 
+        #print("corrupt preference file %s" % name)
+        return
       self.read_from_dom( doc)
 
 
@@ -82,14 +81,14 @@ class pref_manager( object):
         try:
           value = itype( dom_extensions.getAllTextFromElement( child))
         except:
-          print >> sys.stderr, "Preference manager: ignoring value %s of type %s" % (dom_extensions.getAllTextFromElement( child), itype)
+          print("Preference manager: ignoring value %s of type %s"
+                % (dom_extensions.getAllTextFromElement(child), itype),
+                file=sys.stderr)
           break
       self.add_preference( name, value)
 
 
-
-
-  def write_to_dom( self, doc=None):
+  def write_to_dom(self, doc=None):
     if not doc:
       doc = dom.Document()
 
@@ -110,8 +109,8 @@ class pref_manager( object):
     return doc
 
 
-  def write_to_file( self, f):
+  def write_to_file(self, f):
     try:
-      f.write( self.write_to_dom().toxml().encode('utf-8'))
-    except:
-      print "failed to write to the personal preference file"
+      f.write(self.write_to_dom().toxml())
+    except IOError:
+      print("Failed to write to the personal preference file.")
