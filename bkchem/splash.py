@@ -23,9 +23,15 @@
 
 """the Splash class resides here"""
 
-import Tkinter
+try:
+  import tkinter as Tkinter
+except ImportError:
+  import Tkinter
+
 import messages
 import os_support
+
+
 
 class Splash( Tkinter.Toplevel):
 
