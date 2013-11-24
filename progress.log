@@ -1,3 +1,14 @@
+ * translations - update strings from sources
+                - cs updated (Jiří Pinkava)
+                - es updated (Angel Herráez)
+                - fr updated (Edouard Saintesprit)
+                - it updated (Alan Mangiaferro)
+                - lv updated (Reinis Danne)
+                - zh_TW updated (I-Yuan Chiang (江易原))
+                - ru added (Drobot Victor)
+                - tr added (Barbaros Akkurt)
+
+
 RELEASE 0.14.0-pre2
 ----------------------------------------
  * bugfixes - redraw bonds when adding bond to -NH and it turns into -N
