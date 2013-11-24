@@ -23,6 +23,7 @@
 from __future__ import print_function
 
 ## support for loading from outside of bkchem dir
+import sys
 
 import os_support
 
@@ -51,9 +52,12 @@ else:
   langs = [None]
 
 if user_lang == "en":
-  import __builtin__
-  __builtin__.__dict__['_'] = lambda m: m
-  __builtin__.__dict__['ngettext'] = gettext.ngettext
+  if sys.version_info[2] > 2:
+    import builtins
+  else:
+    import __builtin__ as builtins
+  builtins.__dict__['_'] = lambda m: m
+  builtins.__dict__['ngettext'] = gettext.ngettext
   Store.lang = "en"
 else:
   Store.lang = None
@@ -77,9 +81,12 @@ else:
       break
 
   if not Store.lang:
-    import __builtin__
-    __builtin__.__dict__['_'] = lambda m: m
-    __builtin__.__dict__['ngettext'] = gettext.ngettext
+    if sys.version_info[0] > 2:
+      import builtins
+    else:
+      import __builtin__ as builtins
+    builtins.__dict__['_'] = lambda m: m
+    builtins.__dict__['ngettext'] = gettext.ngettext
     Store.lang = "en"
 
 
