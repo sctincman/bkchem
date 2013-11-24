@@ -1,3 +1,5 @@
+ * changes - increase required Python version to 2.6
+
  * translations - update strings from sources
                 - cs updated (Jiří Pinkava)
                 - es updated (Angel Herráez)

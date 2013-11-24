@@ -8,7 +8,7 @@ must install the following:
 
 1/ Python.
    On www.python.org get a distribution of Python for your platform. Note that
-   BKChem will run only on Python 2.5 or newer.
+   BKChem will run only on Python 2.6 or newer.
 2/ pycairo
    This library is optional and is available only for Linux. It enables high quality
    export to PDF and PNG formats with support for antialiased unicode texts.
@@ -45,7 +45,7 @@ the setup.py script from the bkchem directory with 'install' argument:
 
 >python setup.py install
 
-NOTE: usually you have to be root in order to be able to perform the install! 
+NOTE: usually you have to be root in order to be able to perform the install!
 
 This way all python sources will be installed in a standard directory for
 third-party modules - usually something like '/usr/lib/python/site-packages'.
@@ -62,9 +62,9 @@ run:
 
 to see the available options.
 
-Running 
+Running
 
->python setup.py --help 
+>python setup.py --help
 
 will give you another set of options available for the install.
 

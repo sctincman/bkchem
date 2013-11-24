@@ -103,7 +103,8 @@ if not config.debug:
   import import_checker
   import messages
 
-  # we need sets from the 2.3 version
+  # At least version 2.6 is required for the new exception syntax,
+  # 'with' statement, built in next() and other future compatibility goodies
   if not import_checker.python_version_ok:
     print((messages.low_python_version_text % import_checker.python_version).encode('utf-8'))
     sys.exit()

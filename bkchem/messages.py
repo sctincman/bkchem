@@ -100,7 +100,7 @@ Sorry, but from version 0.10 BKChem uses the OASA library internally and therefo
 
 low_python_version_text = _("""Python version too low!
 
-From version 0.14 BKChem needs Python 2.5 or higher to run properly. You only have Python version %s.
+From version 0.14 BKChem needs Python 2.6 or higher to run properly. You only have Python version %s.
 Sorry for the inconvenience, but you would need to upgrade Python in order to run BKChem.""")
 
 

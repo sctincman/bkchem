@@ -16,7 +16,7 @@ file "gpl.txt" in main bkchem directory.
 
 ---
 For installation instructions see the file INSTALL in main BKChem directory.
- 
+
 ---
 NOTE: Starting with the version 0.9.0-pre1 Piddle sources are shipped together with
 BKChem. Piddle is a library provided under the GPL license and seems to be dead
