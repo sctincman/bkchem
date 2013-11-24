@@ -19,17 +19,20 @@
 
 from __future__ import print_function
 
+import os
+import sys
+import types
 import xml.dom.minidom as dom
 
 import dom_extensions
-import types
-import os, sys
 
+
+
+if sys.version_info[0] > 2:
+  unicode = str
 
 
 class pref_manager( object):
-
-
 
   def __init__( self, file_names=None):
     self.data = {}
@@ -68,44 +71,57 @@ class pref_manager( object):
       self.read_from_dom( doc)
 
 
-
-  def read_from_dom( self, doc):
-    top = doc.getElementsByTagName( "bkchem-prefs")[0]
-    for child in dom_extensions.childNodesWithoutEmptySpaces( top):
+  def read_from_dom(self, doc):
+    top = doc.getElementsByTagName("bkchem-prefs")[0]
+    for child in dom_extensions.childNodesWithoutEmptySpaces(top):
       name = child.nodeName
-      itype = child.getAttribute( 'type') or unicode
+      itype = child.getAttribute('type') or unicode
+
       if itype in ("ListType", "TupleType", "DictType"):
-        value = eval( dom_extensions.getAllTextFromElement( child))
+        value = eval(dom_extensions.getAllTextFromElement(child))
       else:
-        itype = types.__dict__[ itype]
+        if itype in ("UnicodeType"):
+          itype = unicode
+        else:
+          itype = types.__dict__[itype]
         try:
-          value = itype( dom_extensions.getAllTextFromElement( child))
+          value = itype(dom_extensions.getAllTextFromElement(child))
         except:
           print("Preference manager: ignoring value %s of type %s"
                 % (dom_extensions.getAllTextFromElement(child), itype),
                 file=sys.stderr)
           break
-      self.add_preference( name, value)
+      self.add_preference(name, value)
 
 
   def write_to_dom(self, doc=None):
     if not doc:
       doc = dom.Document()
 
-    top = doc.createElement( "bkchem-prefs")
-    doc.appendChild( top)
+    top = doc.createElement("bkchem-prefs")
+    doc.appendChild(top)
 
-    for k, v in self.data.iteritems():
+    for k, v in self.data.items():
       itype = 'UnicodeType'
       for tn in types.__dict__:
-        if type( v) == types.__dict__[ tn]:
+        if type(v) == types.__dict__[tn]:
           itype = tn
           break
-      if itype == "StringType":
-        v = v.decode('utf-8')
-        itype = 'UnicodeType'
-      el = dom_extensions.textOnlyElementUnder( top, k, unicode( v),
-                                                attributes = (("type", itype),))
+      # Deal with string types explicitly
+      if sys.version_info[0] > 2:
+        if isinstance(v, bytes):
+          v = v.decode('utf-8')
+          itype = 'UnicodeType'
+        elif isinstance(v, str):
+          itype = 'UnicodeType'
+      else:
+        if isinstance(v, str):
+          v = v.decode('utf-8')
+          itype = 'UnicodeType'
+        elif isinstance(v, unicode):
+          itype = 'UnicodeType'
+      el = dom_extensions.textOnlyElementUnder(top, k, unicode(v),
+                                               attributes = (("type", itype),))
     return doc
 
 
