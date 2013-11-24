@@ -75,7 +75,11 @@ else:
           rest, Store.lang = os.path.split( rest)
 
         tr = gettext.translation( 'BKChem', localedir=localedir, languages=lang)
-        tr.install(unicode=True, names=['ngettext'])
+        try:
+          tr.install(unicode=True, names=['ngettext'])
+        except TypeError:
+          # In newer Python unicode keyword is dropped
+          tr.install(names=['ngettext'])
         break
     if Store.lang:
       break
