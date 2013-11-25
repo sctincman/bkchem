@@ -22,14 +22,21 @@
 
 from __future__ import print_function
 
-from Tkinter import *
 from paper import chem_paper
 import Pmw
 from xml_writer import SVG_writer
-from tkFileDialog import asksaveasfilename, askopenfilename
 import os
-import tkMessageBox
 import xml.dom.minidom as dom
+
+try:
+  from tkinter import *
+  from tkinter.filedialog import asksaveasfilename, askopenfilename
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  from Tkinter import *
+  from tkFileDialog import asksaveasfilename, askopenfilename
+  import tkMessageBox
+
 import data
 import messages
 import dom_extensions
