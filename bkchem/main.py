@@ -399,8 +399,7 @@ class BKChem( Tk):
 
   def init_plugins_menu( self):
     # PLUGINS
-    names = self.plugins.keys()
-    names.sort()
+    names = sorted(self.plugins.keys())
     for name in names:
       plugin = self.plugins[ name]
       local_name = hasattr( plugin, "local_name") and getattr( plugin, "local_name") or plugin.name
