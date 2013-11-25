@@ -986,7 +986,15 @@ class BKChem( Tk):
       exporter = SVG_writer( self.paper)
       exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
-      inp.write( unicode( exporter.document.toxml()).encode('utf-8'))
+      s = exporter.document.toxml()
+      # Write decoded strings
+      if sys.version_info[0] > 2:
+        if isinstance(s, bytes):
+          s = s.decode('utf-8')
+      else:
+        if isinstance(s, str):
+          s = s.decode('utf-8')
+      inp.write(s)
       inp.close()
       Store.log( _("exported to SVG file: ")+svg_file)
 
