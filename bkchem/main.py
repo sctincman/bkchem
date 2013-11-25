@@ -900,14 +900,14 @@ class BKChem( Tk):
       # is it a gzip file?
       it_is_gzip = 1
       try:
-        str = inp.read()
+        s = inp.read()
       except IOError:
         # not a gzip file
         it_is_gzip = 0
       # if it's gzip file parse it
       if it_is_gzip:
         try:
-          doc = dom.parseString( str)
+          doc = dom.parseString(s)
         except:
           Store.log( _("error reading file"))
           inp.close()
