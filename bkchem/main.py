@@ -22,10 +22,11 @@
 
 from __future__ import print_function
 
-from paper import chem_paper
-import Pmw
-from xml_writer import SVG_writer
 import os
+import oasa
+import types
+import string
+import warnings
 import xml.dom.minidom as dom
 
 try:
@@ -37,36 +38,33 @@ except ImportError:
   from tkFileDialog import asksaveasfilename, askopenfilename
   import tkMessageBox
 
+import Pmw
 import data
+import misc
+import modes
+import config
+import export
+import logger
+import dialogs
+import pixmaps
+import plugins
 import messages
+import molecule
+import os_support
+import interactors
+import oasa_bridge
 import dom_extensions
 import non_xml_writer
 import import_checker
-import dialogs
-import export
-import warnings
-import plugins
-import misc
-from edit_pool import editPool
-import pixmaps
-import types
-from temp_manager import template_manager
-import modes
-import interactors
-import os_support
-from id_manager import id_manager
-import string
-
-import oasa_bridge
 import plugins.plugin
-import config
-import logger
+
+from paper import chem_paper
+from edit_pool import editPool
+from xml_writer import SVG_writer
+from id_manager import id_manager
+from temp_manager import template_manager
 from plugin_support import plugin_manager
-
-
 from singleton_store import Store, Screen
-import oasa
-import molecule
 
 
 
@@ -343,7 +341,6 @@ class BKChem( Tk):
 
   def init_basics( self):
     Pmw.initialise( self)
-    import pixmaps
     if os.name == 'posix':
       try:
         self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-12-*-*-*-p-*-iso10646-1"))
@@ -1173,7 +1170,6 @@ class BKChem( Tk):
 
   def request( self, type, **options):
     """used by submodules etc. for requests of application wide resources such as pixmaps etc."""
-    import pixmaps
     if type == 'pixmap':
       if 'name' in options:
         name = options['name']
