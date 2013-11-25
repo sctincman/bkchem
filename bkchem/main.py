@@ -63,7 +63,6 @@ import molecule
 
 class BKChem( Tk):
 
-
   def __init__( self):
     Tk.__init__( self)
     # setting the singleton values
@@ -80,12 +79,12 @@ class BKChem( Tk):
                         "insertBackground","#ffffff")
 
     oasa.config.Config.molecule_class = molecule.molecule
-    
+
 
   def initialize( self):
     self.in_batch_mode = 0
     self.init_basics()
-    
+
     # main drawing part
     self.papers = []
     self.notebook = Pmw.NoteBook( self.main_frame,
@@ -120,7 +119,7 @@ class BKChem( Tk):
     # init status bar
     self.init_status_bar()
 
-    # 
+    #
     self.radiobuttons.invoke( self.mode)
 
     # protocol bindings
@@ -135,7 +134,7 @@ class BKChem( Tk):
   def initialize_batch( self):
     self.in_batch_mode = 1
     self.init_basics()
-    
+
     # main drawing part
     self.papers = []
     self.notebook = Pmw.NoteBook( self.main_frame,
@@ -160,7 +159,7 @@ class BKChem( Tk):
 
     # modes initialization
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
-    
+
 
 
 
@@ -208,7 +207,7 @@ class BKChem( Tk):
       ( _("Edit"),  'command', _('Selected to clipboard as SVG'), None, _("Create SVG for the selected objects and place it to clipboard in text form"), lambda : self.paper.selected_to_real_clipboard_as_SVG(),  'selected'),
       ( _("Edit"),  'separator'),
       ( _("Edit"),  'command', _('Select all'), '(C-S-a)', _("Select everything on the paper"), lambda : self.paper.select_all(),  None),
-      
+
       # align menu
       ( _('Align'), 'menu',    _("Aligning of selected objects"), 'left'),
       ( _("Align"), 'command', _('Top'), '(C-a C-t)', _("Align the tops of selected objects"), lambda : self.paper.align_selected( 't'), 'two_or_more_selected'),
@@ -243,7 +242,7 @@ class BKChem( Tk):
       ( _("Chemistry"), 'command', _('Check chemistry'), '(C-o C-c)', _("Check if the selected objects have chemical meaning"), lambda : self.paper.check_chemistry_of_selected(), 'selected_mols'),
       ( _("Chemistry"), 'command', _('Expand groups'), '(C-o C-e)', _("Expand all selected groups to their structures"), lambda : self.paper.expand_groups(), 'groups_selected'),
       ( _("Chemistry"), 'separator'),
-      ( _("Chemistry"), 'command', _('Compute oxidation number'), None, _("Compute and display the oxidation number of selected atoms"), lambda : interactors.compute_oxidation_number( self.paper), 'selected_atoms'),      
+      ( _("Chemistry"), 'command', _('Compute oxidation number'), None, _("Compute and display the oxidation number of selected atoms"), lambda : interactors.compute_oxidation_number( self.paper), 'selected_atoms'),
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Read SMILES'), None, _("Read a SMILES string and convert it to structure"), self.read_smiles, None),
       ( _("Chemistry"), 'command', _('Read InChI'), None, _("Read an InChI string and convert it to structure"), self.read_inchi, None),
@@ -263,7 +262,7 @@ class BKChem( Tk):
       ( _("Chemistry"), 'separator'),
       ( _("Chemistry"), 'command', _('Convert selection to linear form'), None, _("Convert selected part of chain to linear fragment. The selected chain must not be split."), lambda : interactors.convert_selected_to_linear_fragment( self.paper), 'selected_mols'),
       #
-      
+
       # options
       ( _('Options'), 'menu',    _("Settings that affect how BKChem works"), 'left'),
       ( _("Options"), 'command', _('Standard'), None, _("Set the default drawing style here"), self.standard_values, None),
@@ -271,7 +270,7 @@ class BKChem( Tk):
       ( _("Options"), 'command', _('Logging'), None, _("Set how messages in BKChem are displayed to you"), lambda : interactors.set_logging( self.paper, Store.logger), None),
       ( _("Options"), 'command', _('InChI program path'), None, _("To use InChI in BKChem you must first give it a path to the InChI program here"),
         interactors.ask_inchi_program_path, None),
-      ( _("Options"), 'separator'),      
+      ( _("Options"), 'separator'),
       ( _("Options"), 'command', _('Preferences'), None, _("Preferences"), self.ask_preferences, None),
 
       # help menu
@@ -282,7 +281,7 @@ class BKChem( Tk):
       ( _("Plugins"), 'menu', _("Small additional scripts"), "right")
       ]
 
-      
+
 
 ## ##     hacksButton.pack( side= 'right')
 ## ##     hacksMenu = Menu( hacksButton, tearoff=0)
@@ -294,7 +293,7 @@ class BKChem( Tk):
 
 
     # CREATION OF THE MENU
-    
+
     menus = set() # we use this later for plugin entries addition
 
     for temp in self.menu_template:
@@ -309,13 +308,13 @@ class BKChem( Tk):
       elif temp[1] == "cascade":
         self.menu.addcascademenu( temp[0], temp[2], temp[3], tearoff=0)
 
-        
+
     # ADDITION OF PLUGINS TO THE MENU
-        
+
     added_to = set()
     for name in self.plug_man.get_names( type="script"):
       tooltip = self.plug_man.get_description( name)
-      menu = self.plug_man.get_menu( name) 
+      menu = self.plug_man.get_menu( name)
       if menu and _(menu) in menus:
         menu = _(menu)
         if not menu in added_to:
@@ -517,7 +516,7 @@ class BKChem( Tk):
 
 
   def init_mode_buttons( self):
-    # mode selection panel     
+    # mode selection panel
     radioFrame = Frame( self.main_frame)
     radioFrame.grid( row=1, sticky='we')
     self.radiobuttons = Pmw.RadioSelect(radioFrame,
@@ -529,7 +528,7 @@ class BKChem( Tk):
                                         padx = 0,
                                         pady = 0,
                                         hull_relief = 'flat',
-                                        
+
              )
     self.radiobuttons.pack( side=LEFT)
     # Add some buttons to the radiobutton RadioSelect.
@@ -727,7 +726,7 @@ class BKChem( Tk):
     if self.papers == [] and call_quit_if_no_remains:
       self._quit()
     return ret
-  
+
 
   def close_paper( self, paper=None):
     p = paper or self.paper
@@ -802,8 +801,8 @@ class BKChem( Tk):
         return None
     else:
       return None
-    
-    
+
+
 
 
   def _save_according_to_extension( self, filename, update_default_dir=1):
@@ -817,7 +816,7 @@ class BKChem( Tk):
       success = export.export_CDML( self.paper, filename, gzipped=1)
     elif ext == '.cdml':
       type = _('CDML')
-      success = export.export_CDML( self.paper, filename, gzipped=0)        
+      success = export.export_CDML( self.paper, filename, gzipped=0)
     elif ext == '.svgz':
       type = _('gzipped CD-SVG')
       success = export.export_CD_SVG( self.paper, filename, gzipped=1)
@@ -852,7 +851,7 @@ class BKChem( Tk):
     if replace == 0 the content of the file is added to the current content of the file"""
     if not file:
       if self.paper.changes_made and replace:
-	if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
+        if tkMessageBox.askokcancel( _("Forget changes?"),_("Forget changes in currently visiting file?"), default='ok', parent=self) == 0:
           return 0
       a = askopenfilename( defaultextension = "",
                            initialdir = self.save_dir,
@@ -914,7 +913,7 @@ class BKChem( Tk):
         ## try to parse it
         try:
           doc = dom.parse( a)
-        except IndexError: 
+        except IndexError:
           Store.log( _("error reading file"))
           return None
         ## if it works check if its CDML of CD-SVG file
@@ -934,10 +933,10 @@ class BKChem( Tk):
           docs = doc.getElementsByTagName( 'cdml')
           if docs:
             # ask if we should proceed with incorrect namespace
-            proceed = tkMessageBox.askokcancel( _("Proceed?"),
-						_("CDML data seem present in SVG but have wrong namespace. Proceed?"),
-						default='ok',
-						parent=self)
+            proceed = tkMessageBox.askokcancel(_("Proceed?"),
+                                               _("CDML data seem present in SVG but have wrong namespace. Proceed?"),
+                                               default='ok',
+                                               parent=self)
             if proceed:
               doc = docs[0]
             else:
@@ -995,7 +994,7 @@ class BKChem( Tk):
                                  scale_font=dialog.scale_fonts.get())
 
 
-    
+
   def get_name_dic( self, name='', local_file=0):
     if not name:
       while 1:
@@ -1037,7 +1036,7 @@ class BKChem( Tk):
     if os.name != "nt":
       sys.exit(0)
 
-      
+
   def plugin_import( self, pl_id, filename=None):
     plugin = self.plugins[ pl_id]
     if not filename:
@@ -1174,26 +1173,26 @@ class BKChem( Tk):
         else:
           return None
       return None
-    
+
 
   def read_smiles( self, smiles=None):
     if not oasa_bridge.oasa_available:
-      return 
+      return
     lt = _("""Before you use this tool, be warned that not all features of SMILES are currently supported.
 There is no support for stereo-related information, for the square brackets [] and a few more things.
 
 Enter SMILES:""")
     if not smiles:
       dial = Pmw.PromptDialog( self,
-			       title='Smiles',
-			       label_text=lt,
-			       entryfield_labelpos = 'n',
-			       buttons=(_('OK'),_('Cancel')))
+                               title='Smiles',
+                               label_text=lt,
+                               entryfield_labelpos = 'n',
+                               buttons=(_('OK'),_('Cancel')))
       res = dial.activate()
       if res == _('OK'):
-	text = dial.get()
+        text = dial.get()
       else:
-	return
+        return
     else:
       text = smiles
 
@@ -1201,10 +1200,10 @@ Enter SMILES:""")
       #      try:
       mol = oasa_bridge.read_smiles( text, self.paper)
 ##       except :
-## 	if not smiles:
-## 	  tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
-## 				  _("The oasa library ended with error:\n%s") % sys.exc_value)
-## 	return
+##      if not smiles:
+##        tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
+##                                _("The oasa library ended with error:\n%s") % sys.exc_value)
+##      return
       self.paper.stack.append( mol)
       mol.draw()
       self.paper.add_bindings()
@@ -1215,7 +1214,7 @@ Enter SMILES:""")
 
   def read_inchi( self, inchi=None):
     if not oasa_bridge.oasa_available:
-      return 
+      return
     lt = _("""Before you use his tool, be warned that not all features of InChI are currently supported.
 There is no support for stereo-related information, isotopes and a few more things.
 The InChI should be entered in the plain text form, e.g.- 1/C7H8/1-7-5-3-2-4-6-7/1H3,2-6H
@@ -1300,7 +1299,7 @@ Enter InChI:""")
                            buttons=(_('OK'),))
     dial.insert( 'end', text)
     dial.activate()
-    
+
 
   def put_to_clipboard( self, xml, pos):
     self._clipboard = xml
@@ -1329,7 +1328,7 @@ Enter InChI:""")
       if p.full_path == os.path.abspath( name):
         return p
     return None
-      
+
   def check_number_of_opened_same_names( self, name):
     """checks if there are papers with same name and returns the highest value"""
     ps = [p.file_name['ord'] for p in self.papers if p.file_name['name'] == name['name']]
@@ -1343,7 +1342,7 @@ Enter InChI:""")
   def start_server( self):
 
     import http_server2 as http_server
-    
+
     server_address = ('', 8008)
     httpd = http_server.bkchem_http_server( server_address, http_server.bkchem_http_handler)
 
@@ -1453,12 +1452,12 @@ Enter InChI:""")
   def clean( self):
     self.paper.clean_selected()
 
-    
+
 
   def update_cursor_position( self, x, y):
     self.cursor_position.set( "(%d, %d)" % (x,y))
 
-    
+
 
   def update_menu_after_selection_change( self, e):
     for temp in self.menu_template:
