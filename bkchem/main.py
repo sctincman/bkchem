@@ -507,7 +507,7 @@ class BKChem( Tk):
       plug = self.plug_man.get_plugin_handler( plug_name)
       module_name = plug.get_module_name()
       # no invalid characters in mode_name
-      mode_name = ''.join( [x in string.ascii_letters and x or "X" for x in module_name])
+      mode_name = ''.join(x in string.ascii_letters and x or "X" for x in module_name)
       try:
         module = imp.load_source( module_name, plug.filename)
       except ImportError:
