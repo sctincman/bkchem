@@ -1509,8 +1509,7 @@ Enter InChI:""")
       the_globals = {'App': Store.app,
                      'Args': opts[2:]}
 
-      execfile( plugin, the_globals)
-
-
-
+      with open(plugin) as f:
+        code = compile(f.read(), filename, 'exec')
+        exec(code, the_globals)
 
