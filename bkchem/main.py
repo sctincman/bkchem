@@ -974,8 +974,10 @@ class BKChem( Tk):
       self.svg_dir, svg_file = os.path.split( a)
       try:
         inp = open( a, "w")
-      except IOError, x:
-        raise ValueError, "unable to open to file ", x
+      except IOError as x:
+        e = ValueError("Unable to open to file ")
+        e.__traceback__ = x
+        raise e
       exporter = SVG_writer( self.paper)
       exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
@@ -1078,16 +1080,16 @@ class BKChem( Tk):
         cdml = 1
         try:
           doc = importer.get_cdml_dom( filename)
-        except plugins.plugin.import_exception, detail:
-          tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
+        except plugins.plugin.import_exception as detail:
+          tkMessageBox.showerror(_("Import error"), _("Plugin failed to import with following error:\n %s") % detail)
           return 0
       # others give directly a molecule object
       elif importer.gives_molecule:
         cdml = 0
         try:
           doc = importer.get_molecules( filename)
-        except plugins.plugin.import_exception, detail:
-          tkMessageBox.showerror( _("Import error"), _("Plugin failed to import with following error:\n %s") % detail) 
+        except plugins.plugin.import_exception as detail:
+          tkMessageBox.showerror(_("Import error"), _("Plugin failed to import with following error:\n %s") % detail)
       self.paper.clean_paper()
       if cdml == 0:
         # doc is a molecule
@@ -1134,7 +1136,7 @@ class BKChem( Tk):
         try:
           doc = exporter.write_to_file( a)
         except:
-          tkMessageBox.showerror( _("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
+          tkMessageBox.showerror(_("Export error"), _("Plugin failed to export with following error:\n %s") % sys.exc_value)
           return False
       else:
         doc = exporter.write_to_file( a)
@@ -1246,35 +1248,35 @@ Enter InChI:""")
       else:
         try:
           mol = oasa_bridge.read_inchi( text, self.paper)
-        except oasa.oasa_exceptions.oasa_not_implemented_error, e:
+        except oasa.oasa_exceptions.oasa_not_implemented_error as e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
-                                    _("Some feature of the submitted InChI is not supported.\n\nYou have most probaly submitted a multicomponent structure (having a . in the sumary layer"))
+            tkMessageBox.showerror(_("Error processing %s") % 'InChI',
+                                   _("Some feature of the submitted InChI is not supported.\n\nYou have most probaly submitted a multicomponent structure (having a . in the sumary layer"))
             return
           else:
-            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
-        except oasa.oasa_exceptions.oasa_inchi_error, e:
+            raise ValueError("the processing of inchi failed with following error %s" % sys.exc_value)
+        except oasa.oasa_exceptions.oasa_inchi_error as e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
-                                    _("There was an error reading the submitted InChI.\n\nIf you are sure it is a valid InChI, please send me a bug report."))
+            tkMessageBox.showerror(_("Error processing %s") % 'InChI',
+                                   _("There was an error reading the submitted InChI.\n\nIf you are sure it is a valid InChI, please send me a bug report."))
             return
           else:
-            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
-        except oasa.oasa_exceptions.oasa_unsupported_inchi_version_error, e:
+            raise ValueError("the processing of inchi failed with following error %s" % sys.exc_value)
+        except oasa.oasa_exceptions.oasa_unsupported_inchi_version_error as e:
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
-                                    _("The submitted InChI has unsupported version '%s'.\n\nYou migth try resubmitting with the version string (the first part of InChI) changed to '1'.") % e.version)
+            tkMessageBox.showerror(_("Error processing %s") % 'InChI',
+                                   _("The submitted InChI has unsupported version '%s'.\n\nYou migth try resubmitting with the version string (the first part of InChI) changed to '1'.") % e.version)
             return
           else:
-            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+            raise ValueError("the processing of inchi failed with following error %s" % sys.exc_value)
         except:
-          
+
           if not inchi:
-            tkMessageBox.showerror( _("Error processing %s") % 'InChI',
-                                    _("The reading of InChI failed with following error:\n\n'%s'\n\nIf you are sure you have submitted a valid InChI, please send me a bug report.") % sys.exc_value)
+            tkMessageBox.showerror(_("Error processing %s") % 'InChI',
+                                   _("The reading of InChI failed with following error:\n\n'%s'\n\nIf you are sure you have submitted a valid InChI, please send me a bug report.") % sys.exc_value)
             return
           else:
-            raise ValueError, "the processing of inchi failed with following error %s" % sys.exc_value
+            raise ValueError("the processing of inchi failed with following error %s" % sys.exc_value)
 
       self.paper.stack.append( mol)
       mol.draw()
@@ -1410,7 +1412,7 @@ Enter InChI:""")
             sms.append(inchi)
             sms.append("InChIKey="+key)
             sms.append("")
-    except oasa.oasa_exceptions.oasa_inchi_error, e:
+    except oasa.oasa_exceptions.oasa_inchi_error as e:
       sms = [_("InChI generation failed,"),_("make sure the path to the InChI program is correct in 'Options/InChI program path'"), "", str( e)]
     except:
       sms = [_("Unknown error occured during InChI generation, sorry."), _("Please, try to make sure the path to the InChI program is correct in 'Options/InChI program path'")]
