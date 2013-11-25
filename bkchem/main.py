@@ -20,6 +20,8 @@
 
 """the main application class resides here"""
 
+from __future__ import print_function
+
 from Tkinter import *
 from paper import chem_paper
 import Pmw
@@ -71,7 +73,7 @@ class BKChem( Tk):
 
     self.tk.call("tk", "useinputmethods", "1")
     #self.tk.call( "encoding", "system", "iso8859-2")
-    #print self.tk.call( "encoding", "system")
+    #print(self.tk.call( "encoding", "system"))
     #self.option_add( "*Background", "#eaeaea")
     self.option_add( "*Entry*Background", "white")
     self.option_add( "*Entry*Foreground", "#000000")
@@ -340,7 +342,7 @@ class BKChem( Tk):
         self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-12-*-*-*-p-*-iso10646-1"))
         ##self.option_add( "*font", ("-adobe-helvetica-medium-r-normal-*-*-100-*-*-*-*-*-*"))
       except:
-        print "cannot init default font"
+        print("cannot init default font")
     else:
       self.option_add( "*font", ("Helvetica",10,"normal"))
     # colors
@@ -436,7 +438,7 @@ class BKChem( Tk):
 
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
-    #print >> sys.stderr, "loaded plugins:", plugs
+    #print("loaded plugins:", plugs, file=sys.stderr)
 
 
 
@@ -1158,7 +1160,7 @@ class BKChem( Tk):
         [o.redraw() for o in self.paper.apply_current_standard( objects=self.paper.selected, old_standard=old_standard)]
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
-  
+
 
 
 
@@ -1358,7 +1360,7 @@ Enter InChI:""")
     CAL_NS = "http://beda.zirael.org/pokusy"
     server = SOAP.SOAPServer(("localhost", 8888))
     server.registerObject(self, CAL_NS)
-    print "Starting server..."
+    print("Starting server...")
     t = threading.Thread( target=server.serve_forever, name='soap')
     t.setDaemon( 1)
     t.start()
