@@ -25,7 +25,6 @@
 
 """
 
-import misc
 import molecule
 
 from atom import atom
@@ -49,7 +48,7 @@ class validator:
   def validate_object( self, o):
     if isinstance(o, list):
       self.validate_list( o)
-    elif misc.isinstance_of_one( o, (atom,group,textatom)):
+    elif isinstance(o, (atom, group, textatom)):
       self.validate_atom( o)
     elif isinstance( o, molecule.molecule):
       self.validate_molecule( o)
