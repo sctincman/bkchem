@@ -18,15 +18,15 @@
 #--------------------------------------------------------------------------
 
 
-class Tuning:
+class Tuning(object):
 
     ## On screen rendering
-    class Screen:
+    class Screen(object):
         # how to shift subscript in relation to the baseline (y)
         # it lets you select different values for different font sizes
         # BKChem will inteligently(?) pick the nearest one
         subscript_y_shift = {7:0, 8:1, 9:1, 11:1, 12:1, 18:3}
-    
+
         # when placing subscript or superscript after a letter, how to tweak the x position
         # it lets you select different values for different font sizes
         # BKChem will inteligently(?) pick the nearest one
@@ -49,19 +49,19 @@ class Tuning:
             best_i = diffs.index( min( diffs))
             best_key = keys[best_i]
             #d[font_size] = d[best_key]
-            #print "cache miss", font_size, d[best_key]
+            #print("cache miss", font_size, d[best_key])
             return d[best_key]
             
         pick_best_value = classmethod( pick_best_value)
         
 
     ## SVG export
-    class SVG:
+    class SVG(object):
         text_x_shift = 1.3
         text_y_shift = 0
-    
+
 
     ## Piddle export
-    class Piddle:
+    class Piddle(object):
         # how to shift texts x coordinate when exporting via piddle
         text_x_shift = 0.7
