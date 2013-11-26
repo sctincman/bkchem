@@ -850,8 +850,9 @@ class chem_paper( Canvas, object):
           self.stack.remove( mol2)
         else:
           deleted.extend( mol.handle_overlap())
-      #print 4, time.time() - ttt
-      deleted.extend( reduce( operator.add, [mol.handle_overlap() for mol in misc.difference( a_eatenby_b2, a_eatenby_b1)], []))
+      #print(4, time.time() - ttt)
+      deleted.extend(j for i in [mol.handle_overlap() for mol in misc.difference(a_eatenby_b2, a_eatenby_b1)]
+                           for j in i)
       self.selected = misc.difference( self.selected, deleted)
       self.add_bindings()
       Store.log( _('concatenated overlaping atoms'))
