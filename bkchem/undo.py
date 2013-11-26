@@ -17,25 +17,31 @@
 
 #--------------------------------------------------------------------------
 
-"""this module implements undo_manager and state_record classes,
-should provide everything needed to perform undo management.
+"""This module implements undo_manager and state_record classes.
+
+Should provide everything needed to perform undo management.
 state_record is used only inside of undo_manager and is not
-exported in __all__."""
+exported in __all__.
+"""
 
 ## NOTE that undo uses a low-level access to objects in order to
 ## speed up the task.
 
-import misc
 import copy
 import inspect
+
+import misc
+
+
 
 __all__= ['undo_manager']
 
 ##-------------------- UNDO MANAGER --------------------
 
-class undo_manager:
-  """class to process requests for undo tracking and undoing"""
+class undo_manager(object):
+  """Class to process requests for undo tracking and undoing.
 
+  """
   MAX_RECORDS = 50
 
   def __init__( self, paper):
@@ -166,11 +172,11 @@ class undo_manager:
 
 
 ##-------------------- STATE RECORD --------------------
-    
-class state_record:
-  """class able to store state of the whole system and then set
-  the system back to that stored state"""
 
+class state_record(object):
+  """Class for storing and setting state of the whole system.
+
+  """
   def __init__( self, paper, name=''):
     """hmmm, what is supposed to be in comment for __init__?"""
     self.paper = paper
