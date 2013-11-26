@@ -164,92 +164,81 @@ class chem_paper( Canvas, object):
 
 
   # molecules
-  def _get_molecules( self):
+  @property
+  def molecules(self):
     return [o for o in self.stack if isinstance( o, molecule)]
-
-  molecules = property( _get_molecules)
 
 
   # arrows
-  def _get_arrows( self):
+  @property
+  def arrows(self):
     return [o for o in self.stack if isinstance( o, arrow.arrow)]
-
-  arrows = property( _get_arrows)
 
 
   # pluses
-  def _get_pluses( self):
+  @property
+  def pluses(self):
     return [o for o in self.stack if isinstance( o, classes.plus)]
-
-  pluses = property( _get_pluses)
-
 
 
   # texts
-  def _get_texts( self):
+  @property
+  def texts(self):
     return [o for o in self.stack if isinstance( o, classes.text)]
-
-  texts = property( _get_texts)
 
 
   # vectors
-  def _get_vectors( self):
+  @property
+  def vectors(self):
     return [o for o in self.stack if isinstance( o, graphics.vector_graphics_item)]
-
-  vectors = property( _get_vectors)
 
 
   # top_levels
-  def _get_top_levels( self):
+  @property
+  def top_levels(self):
     #print([o for o in self.stack if not isinstance( o, graphics.top_level)])
     return self.stack
     #return [o for o in self.stack if isinstance( o, graphics.top_level)]
 
-  top_levels = property( _get_top_levels)
-
 
   # selection related properties
-  def _get_selected_mols( self):
+  @property
+  def selected_mols(self):
     return [o for o in self.selected_to_unique_top_levels()[0] if isinstance( o, molecule)]
 
-  selected_mols = property( _get_selected_mols)
 
-  def _get_selected_atoms( self):
+  @property
+  def selected_atoms(self):
     return [o for o in self.selected if isinstance( o, oasa.graph.vertex)]
 
-  selected_atoms = property( _get_selected_atoms)
 
-  def _get_selected_bonds( self):
+  @property
+  def selected_bonds(self):
     return [o for o in self.selected if isinstance( o, oasa.graph.edge)]
 
-  selected_bonds = property( _get_selected_bonds)
 
-  def _is_two_or_more_selected( self):
+  @property
+  def two_or_more_selected(self):
     if len( self.selected_to_unique_top_levels()[0]) > 1:
       return True
     else:
       return False
 
-  two_or_more_selected = property( _is_two_or_more_selected)
 
-  def _get_groups_selected( self):
+  @property
+  def groups_selected(self):
     return [o for o in self.selected if isinstance( o, group)]
 
-  groups_selected = property( _get_groups_selected)
 
-
-  def _is_one_molecule_selected( self):
+  @property
+  def one_molecule_selected(self):
     if len( self.selected_mols) != 1:
       return False
     else:
       return True
 
-  one_mol_selected = property( _is_one_molecule_selected)
-
 
   ### // PROPERTIES
-
-
 
 
   def add_bindings( self, active_names=()):
@@ -1962,35 +1951,22 @@ class chem_paper( Canvas, object):
     return os.path.splitext( self.file_name['name'])[0]
 
 
-
-
-
-
-  def _get_full_path( self):
+  @property
+  def full_path(self):
     return os.path.abspath( os.path.join( self.file_name['dir'], self.file_name['name']))
 
-  full_path = property( _get_full_path)
 
-
-
-
-
-  def _get_window_name( self):
+  @property
+  def window_name(self):
     return self.create_window_name( self.file_name)
 
-  window_name = property( _get_window_name)
 
-
-
-
-  def create_window_name( name_dict):
+  @staticmethod
+  def create_window_name(name_dict):
     if name_dict['ord'] == 0:
       return name_dict['name']
     else:
       return name_dict['name'] + '<%d>' % name_dict['ord']
-
-  create_window_name = staticmethod( create_window_name)
-
 
 
   def clean_selected( self):
