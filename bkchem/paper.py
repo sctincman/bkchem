@@ -27,11 +27,7 @@ import classes
 import arrow
 from molecule import molecule
 try:
-  from oasa.oasa.transform import transform 
-  from oasa.oasa.transform3d import transform3d
 except ImportError:
-  from oasa.transform import transform
-  from oasa.transform3d import transform3d
 import misc
 from temp_manager import template_manager
 import string
@@ -53,6 +49,8 @@ import undo
 import math
 import xml_writer
 from oasa import periodic_table as PT
+from oasa.transform import transform
+from oasa.transform3d import transform3d
 try:
   from tkinter import Canvas, ALL
 except ImportError:
