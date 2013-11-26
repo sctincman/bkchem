@@ -76,14 +76,14 @@ class mode( object):
     self._key_sequences = {}
     self._recent_key_seq = ''
     self._specials_pressed = { 'C':0, 'A':0, 'M':0, 'S':0} # C-A-M-S
-    
+
   def mouse_down( self, event, modifiers=[]):
     pass
 
   def mouse_down3( self, event, modifiers=[]):
     pass
 
-  def mouse_down2( self, event, modifiers=[]):    
+  def mouse_down2( self, event, modifiers=[]):
     pass
 
   def mouse_up( self, event):
@@ -123,7 +123,7 @@ class mode( object):
           else:
             self._recent_key_seq = a
           first = 0
-      # then the key itself 
+      # then the key itself
       if self._recent_key_seq:
         if first:
           first = 0
@@ -146,7 +146,7 @@ class mode( object):
         # if we get here it means that the key is neither used nor a prefix
         self._recent_key_seq = ''
 
-      
+
   def key_released( self, event):
     key = event_to_key( event)
     if len( key) == 1 and key in 'CAMS':
@@ -225,7 +225,7 @@ class mode( object):
     if self.focused:
       self.focused.unfocus()
       self.focused = None
-  
+
 
   def startup( self):
     """called when switching to this mode"""
@@ -233,7 +233,7 @@ class mode( object):
     message = messages.__dict__.get( txt_name, "")
     if message:
       Store.log( message, delay=20, message_type="hint")
-    
+
 
   def on_submode_switch( self, submode_index, name=''):
     """called when submode is switched"""
@@ -252,7 +252,7 @@ class mode( object):
 ## -------------------- BASIC MODE --------------------
 
 class simple_mode( mode):
-  """little more sophisticated parent mode""" 
+  """little more sophisticated parent mode"""
 
 
   def __init__( self):
@@ -343,7 +343,7 @@ class basic_mode( simple_mode):
     if self.focused and not Store.app.paper.is_registered_object( self.focused):
       # focused object was deleted
       self.focused = None
-  
+
   def switch_mode( self, n, add=0):
     index = n+add-1
     if index < len( Store.app.modes_sort):
@@ -371,8 +371,8 @@ class edit_mode( basic_mode):
     # responses to key events
     self.register_key_sequence( ' ', self._set_name_to_selected)
     self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_selected)
-    self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)    
-    self.register_key_sequence( 'Return', self._set_old_name_to_selected) 
+    self.register_key_sequence( 'S-##'+string.ascii_lowercase, self._set_name_to_selected)
+    self.register_key_sequence( 'Return', self._set_old_name_to_selected)
     self.register_key_sequence( 'Delete', self._delete_selected, use_warning=0)
     self.register_key_sequence( 'BackSpace', self._delete_selected, use_warning=0)
     # object related key bindings
@@ -395,7 +395,7 @@ class edit_mode( basic_mode):
     self.rectangle_selection = True  # this can be overriden by children
 
     self._move_sofar = 0
-    
+
 
 
   def mouse_down( self, event, modifiers=None):
@@ -443,7 +443,7 @@ class edit_mode( basic_mode):
       if dialog.changes_made:
         Store.app.paper.start_new_undo_record()
       Store.app.paper.add_bindings()
-      
+
 
 
 
@@ -485,7 +485,7 @@ class edit_mode( basic_mode):
       Store.app.paper.add_bindings()
 
 
-    
+
   def mouse_click( self, event):
     if not self._shift:
       Store.app.paper.unselect_all()
@@ -595,7 +595,7 @@ class edit_mode( basic_mode):
         self._startx, self._starty = event.x, event.y
       else:
         Store.log( '%i, %i' % ( dx, dy))
-      
+
   def enter_object( self, object, event):
     if not self._dragging:
       if self.focused:
@@ -673,9 +673,9 @@ class edit_mode( basic_mode):
         if isinstance( item, parents.text_like):
           text = item.xml_ftext
       if text:
-	name = Store.app.editPool.activate( text=text, select=select)
+        name = Store.app.editPool.activate( text=text, select=select)
       else:
-	name = Store.app.editPool.activate()
+        name = Store.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
       name = unicode( name).encode('utf-8')
@@ -696,7 +696,7 @@ class edit_mode( basic_mode):
     [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
     [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
     Store.app.paper.add_bindings()
-    
+
 
 
 
@@ -732,7 +732,7 @@ class edit_mode( basic_mode):
 
 
 
-    
+
 
 ### -------------------- DRAW MODE --------------------
 
@@ -754,7 +754,7 @@ class draw_mode( edit_mode):
                            [_('fixed length'),_('freestyle')],
                            [_('normal double bonds for wedge/hatch'),_('simple double bonds for wedge/hatch')]]
     self.submode = [0, 0, 0, 0, 1]
-    
+
   def mouse_down( self, event, modifiers = []):
     edit_mode.mouse_down( self, event, modifiers = modifiers)
     Store.app.paper.unselect_all()
@@ -766,7 +766,7 @@ class draw_mode( edit_mode):
     #Store.app.paper.add_bindings()
 
 
-    
+
   def mouse_up( self, event):
     if not self._dragging:
       self.mouse_click( event)
@@ -926,7 +926,7 @@ class draw_mode( edit_mode):
     self.focused = object
     self.focused.focus()
 
-      
+
   def leave_object( self, event):
     if self.focused:
       self.focused.unfocus()
@@ -1124,11 +1124,11 @@ class template_mode( edit_mode):
     self.register_key_sequence( 'C-t', self._mark_focused_as_template_atom_or_bond)
     self._user_selected_template = ''
     self.template_manager = Store.tm
-    
+
   def mouse_click( self, event):
     if self.submodes == [[]]:
       Store.log( _("No template is available"))
-      return 
+      return
     Store.app.paper.unselect_all()
     if not self.focused:
       t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=Store.app.paper)
@@ -1183,10 +1183,10 @@ class template_mode( edit_mode):
   def _mark_focused_as_template_atom_or_bond( self):
     if self.focused and isinstance( self.focused, oasa.graph.vertex):
       self.focused.molecule.mark_template_atom( self.focused)
-      Store.log( _("focused atom marked as 'template atom'")) 
+      Store.log( _("focused atom marked as 'template atom'"))
     elif self.focused and isinstance( self.focused, bond):
       self.focused.molecule.mark_template_bond( self.focused)
-      Store.log( _("focused bond marked as 'template bond'")) 
+      Store.log( _("focused bond marked as 'template bond'"))
 
 
 
@@ -1240,7 +1240,7 @@ class text_mode( edit_mode):
         txt.draw()
         Store.app.paper.select( [txt])
         Store.app.paper.add_bindings()
-        Store.app.paper.start_new_undo_record()        
+        Store.app.paper.start_new_undo_record()
     else:
       if self.focused.object_type == 'text':
         Store.app.paper.select( [self.focused])
@@ -1316,7 +1316,7 @@ class rotate_mode( edit_mode):
       else:
         tkMessageBox.showerror( _("You can only rotate molecules and arrows in 2D!"), _("Sorry but you can only rotate molecules and arrows in 2D."))
 
-    
+
   def mouse_up( self, event):
     if not self._dragging:
       self.mouse_click( event)
@@ -1360,7 +1360,7 @@ class rotate_mode( edit_mode):
           # we have a fixed part
           if self._fixed.molecule != self._rotated_mol:
             Store.log( _("You can only rotate the molecule for which you fixed a bond."), message_type="error")
-            return 
+            return
           sig = abs(dx1) > abs(dy1) and misc.signum(dx1) or misc.signum(dy1)
           angle = round( sig * math.sqrt(dx1**2 +dy1**2) / 50.0, 3)
           t = geometry.create_transformation_to_rotate_around_particular_axis( self._fixed.atom2.get_xyz(), self._fixed.atom1.get_xyz(), angle)
@@ -1475,7 +1475,7 @@ class bond_align_mode( edit_mode):
     if hasattr( self, '_apply_to_'+self.get_submode(0)):
       apply_to = self.__class__.__dict__['_apply_to_'+self.get_submode(0)]( self)
       if apply_to == None:
-        return 
+        return
       [o.transform( tr) for o in apply_to]
     else:
       self._rotated_mol.transform( tr)
@@ -1508,7 +1508,7 @@ class bond_align_mode( edit_mode):
     tr.set_rotation( angle)
     tr.set_move(centerx, centery)
     return tr
-      
+
 
   def _transform_tovert( self, coords):
     x1, y1, x2, y2 = coords
@@ -1531,7 +1531,7 @@ class bond_align_mode( edit_mode):
 
   def _transform_invertthrough( self, coords):
     if len( coords) == 4:
-      x1, y1, x2, y2 = coords      
+      x1, y1, x2, y2 = coords
       x = ( x1 +x2) /2.0
       y = ( y1 +y2) /2.0
     else:
@@ -1692,7 +1692,7 @@ class vector_mode( edit_mode):
 
 
 
-## -------------------- MARK MODE --------------------    
+## -------------------- MARK MODE --------------------
 
 class mark_mode( edit_mode):
 
@@ -1780,7 +1780,7 @@ class mark_mode( edit_mode):
 
   def _move_mark_for_selected( self, dx, dy):
     to_move = [a for a in Store.app.paper.selected if isinstance( a, oasa.graph.vertex)]
-    
+
     for a in to_move:
       for m in a.marks:
         m.move( dx, dy)
@@ -1809,7 +1809,7 @@ class mark_mode( edit_mode):
     [i.register() for i in self._all_marks( paper)]
 
   def _unregister_all_marks( self, paper):
-    [i.unregister() for i in self._all_marks( paper)]    
+    [i.unregister() for i in self._all_marks( paper)]
 
   def _all_marks( self, paper):
     for m in paper.molecules:
@@ -1865,7 +1865,7 @@ class atom_mode( edit_mode):
         interactors.log_atom_type( a.__class__.__name__)
         Store.app.paper.select( [a])
         Store.app.paper.add_bindings()
-        Store.app.paper.start_new_undo_record()        
+        Store.app.paper.start_new_undo_record()
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         a = self.focused
@@ -1884,7 +1884,7 @@ class atom_mode( edit_mode):
           [self.reposition_bonds_around_bond( o) for o in Store.app.paper.bonds_to_update()]
           [self.reposition_bonds_around_atom( o) for o in Store.app.paper.selected if o.object_type == "atom"]
 
-          Store.app.paper.start_new_undo_record()        
+          Store.app.paper.start_new_undo_record()
           Store.app.paper.add_bindings()
 
 
@@ -1956,9 +1956,9 @@ class reaction_mode( basic_mode):
           self.arrow.reaction.pluses.append( self.focused)
         else:
           self.arrow.reaction.pluses.remove( self.focused)
-          
+
       self._mark_reaction()
-      
+
 
 
   def _mark_reaction( self):
@@ -1966,9 +1966,9 @@ class reaction_mode( basic_mode):
       Store.app.paper.delete( i)
     self._items = []
     width = 3
-    
+
     self._items.append( Store.app.paper.create_rectangle( self.arrow.bbox(), fill='', outline='blue', width=width))
-    
+
     for m in self.arrow.reaction.reactants:
       self._items.append( Store.app.paper.create_rectangle( m.bbox(), outline='green', width=width))
     for m in self.arrow.reaction.products:
@@ -1991,7 +1991,7 @@ class reaction_mode( basic_mode):
       Store.app.paper.add_bindings( active_names=('plus',))
     elif name == 'condition':
       Store.app.paper.add_bindings( active_names=('text',))
-    
+
 
 
   def on_submode_switch( self, submode_index, name=''):
@@ -2041,7 +2041,7 @@ class user_template_mode( template_mode):
     self.pulldown_menu_submodes = [0]
     #self.register_key_sequence( 'C-t C-1', self._mark_focused_as_template_atom_or_bond)
     self.template_manager = Store.utm
-    
+
 
 
 
@@ -2158,7 +2158,7 @@ class external_data_mode( basic_mode):
         label.pack()
         entry.pack()
       Tkinter.Button( self._frame, text=_("Set"), command=self._set_data).pack()
-    
+
 
   def _draw_the_arrows( self):
     for e in self._entries.values():
@@ -2168,7 +2168,7 @@ class external_data_mode( basic_mode):
         if obj:
           e.arrow = self._draw_arrow_from_to( e, obj)
     self._add_bindings_according_to_submode()
-    
+
 
   def _draw_arrow_from_to( self, e, obj):
     e.update()
@@ -2185,7 +2185,7 @@ class external_data_mode( basic_mode):
   def _add_bindings_according_to_submode( self):
     name = self.get_submode(0)
     self._add_bindings_according_to_active_name( name)
-    
+
 
   def _add_bindings_according_to_active_name( self, name):
     Store.app.paper.remove_bindings()
@@ -2197,7 +2197,7 @@ class external_data_mode( basic_mode):
       Store.app.paper.add_bindings( active_names=('bond',))
 
 
-    
+
 
 
   def on_submode_switch( self, submode_index, name=''):
@@ -2274,7 +2274,7 @@ class rapid_draw_mode( edit_mode):
     self.register_key_sequence( '##'+string.ascii_lowercase, self._set_name_to_last, use_warning=0)
     self._key_to_atom_map = {'l':'Cl', 'r':'Br', 'a':'Na','i':'Li'}
     self._bond_to_fix = None
-    
+
   def mouse_down( self, event, modifiers = []):
     #edit_mode.mouse_down( self, event, modifiers = modifiers)
     Store.app.paper.unselect_all()
@@ -2310,7 +2310,7 @@ class rapid_draw_mode( edit_mode):
         self._start_atom = self.focused
         self._bond_to_fix = list( self.molecule.bonds)[0]
     else:
-      return 
+      return
 
     if self._moved_line:
       Store.app.paper.delete( self._moved_line)
@@ -2320,7 +2320,7 @@ class rapid_draw_mode( edit_mode):
     self._moved_line = Store.app.paper.create_line( self._start_atom.x, self._start_atom.y, x, y)
 
     Store.app.paper.add_bindings()
-    
+
 
 
   def get_edge( self, mol, modifiers):
@@ -2359,7 +2359,7 @@ class rapid_draw_mode( edit_mode):
     self._moved_line = None
 
 
-    
+
   def mouse_up( self, event):
     pass
 
@@ -2378,7 +2378,7 @@ class rapid_draw_mode( edit_mode):
     self.focused = object
     self.focused.focus()
 
-      
+
   def leave_object( self, event):
     if self.focused:
       self.focused.unfocus()
@@ -2482,7 +2482,7 @@ class misc_mode( edit_mode):
 
 
   def mouse_click( self, event):
-    if self.get_submode( 0) == "numbering": 
+    if self.get_submode( 0) == "numbering":
       if self.focused and hasattr( self.focused, 'number'):
         self.focused.number = str( self._number)
         self._number += 1
@@ -2502,7 +2502,7 @@ class misc_mode( edit_mode):
         Store.app.paper.coords( self._line, *coords)
       else:
         self._line = Store.app.paper.create_line( *coords)
-        
+
 
   def mouse_up( self, event):
     if self.get_submode( 0) == "numbering":
@@ -2523,22 +2523,22 @@ class misc_mode( edit_mode):
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wavy_width/2.0)
     d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     step_size = self.wavy_width
-    dx = (x2 - x1)/d 
-    dy = (y2 - y1)/d 
-    ddx = x - x1 
-    ddy = y - y1 
+    dx = (x2 - x1)/d
+    dy = (y2 - y1)/d
+    ddx = x - x1
+    ddy = y - y1
 
     coords2 = []
     coords2.extend((x1, y1))
     for i in range( 0, int( round( d/ step_size))+1):
-      coords = [x1+dx*i*step_size+ddx, y1+dy*i*step_size+ddy, x1+dx*i*step_size-ddx, y1+dy*i*step_size-ddy] 
+      coords = [x1+dx*i*step_size+ddx, y1+dy*i*step_size+ddy, x1+dx*i*step_size-ddx, y1+dy*i*step_size-ddy]
       if i % 2:
         coords2.extend((coords[0], coords[1]))
       else:
         coords2.extend((coords[2], coords[3]))
-    coords2.extend((x2, y2)) 
+    coords2.extend((x2, y2))
     Store.app.paper.new_polyline( coords2).draw()
-      
+
 
   def cleanup( self):
     edit_mode.cleanup( self)
@@ -2552,7 +2552,7 @@ class misc_mode( edit_mode):
     Store.app.paper.add_bindings( active_names=('atom',))
     Store.app.paper.unselect_all()
     self._number = 1
-    
+
 
   def leave_object( self, event):
     if self.focused:
