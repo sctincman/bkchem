@@ -23,8 +23,6 @@
 from __future__ import division
 from __future__ import print_function
 
-from Tkinter import Canvas, ALL
-import tkFont, tkMessageBox
 import classes
 import arrow
 from molecule import molecule
@@ -43,11 +41,23 @@ import messages
 import dom_extensions
 import xml.dom.minidom as dom
 import operator
+try:
+  import tkinter.font as tkFont
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  import tkFont
+  import tkMessageBox
+
 from warnings import warn
 import undo
 import math
 import xml_writer
 from oasa import periodic_table as PT
+try:
+  from tkinter import Canvas, ALL
+except ImportError:
+  from Tkinter import Canvas, ALL
+
 import Pmw
 import graphics
 import types
