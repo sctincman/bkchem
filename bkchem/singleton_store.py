@@ -23,13 +23,12 @@ import misc
 
 
 
-class Store:
+class Store(object):
+  """A central point where all the application wide singleton objects are stored.
 
-  """Store class is used as a central point where all the application wide singleton
-  objects are stored.
   Making them class attributes allows to loosen the coupling in the system by
-  avoiding explicit linking of other objects to these singletons."""
-
+  avoiding explicit linking of other objects to these singletons.
+  """
   app = None          # the application
   tm = None           # the template manager
   utm = None          # uset templates manager
@@ -47,12 +46,10 @@ class Store:
 
 
 
+class Screen(object):
+  """Config stores values that are determined on startup.
 
-
-class Screen:
-
-  """Config stores values that are determined on startup"""
-
+  """
   dpi = 0  # this should be set on startup
 
 
