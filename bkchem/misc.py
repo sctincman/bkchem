@@ -170,9 +170,3 @@ def set_attr_or_property( obj, name, value):
   else:
     return False
 
-
-
-# Left here until all references are fixed
-# isinstance() supports tuple for type information since Python 2.2
-isinstance_of_one = isinstance
-
