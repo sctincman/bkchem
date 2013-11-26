@@ -28,7 +28,12 @@ import math
 try:
   from oasa.oasa.transform import transform 
   from oasa.oasa.transform3d import transform3d
+  import tkinter as Tkinter
+  import tkinter.messagebox as tkMessageBox
 except ImportError:
+  import Tkinter
+  import tkMessageBox
+
   from oasa.transform import transform
   from oasa.transform3d import transform3d
 import time
