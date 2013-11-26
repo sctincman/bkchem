@@ -371,7 +371,10 @@ class chem_paper( Canvas, object):
     # it was hacked because of the http_server2 functionality, but could break unexpected things
     self.__in = Store.app.mode.focused
 
-    if fobj and (fobj != self.__in or (misc.isinstance_of_one( fobj, self.classes_with_per_item_reselection) and self.__in_id != fid)):
+    if (fobj and
+        (fobj != self.__in or
+         (isinstance(fobj, self.classes_with_per_item_reselection) and
+          self.__in_id != fid))):
       self.__in = fobj
       self.__in_id = fid
       Store.app.mode.enter_object( self.__in, event)
