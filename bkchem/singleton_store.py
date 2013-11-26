@@ -52,47 +52,34 @@ class Screen(object):
   """
   dpi = 0  # this should be set on startup
 
-
-
-  def cm_to_px( self, cm):
+  @classmethod
+  def cm_to_px(self, cm):
     """transforms coord from cm to px"""
     return self.dpi * cm / 2.54
 
-  cm_to_px = classmethod( cm_to_px)
 
-
-
-  def in_to_px( self, inch):
+  @classmethod
+  def in_to_px(self, inch):
     """transforms coord from in to px"""
     return self.dpi * inch
 
-  in_to_px = classmethod( in_to_px)
 
-
-
-
-  def mm_to_px( self, mm):
+  @classmethod
+  def mm_to_px(self, mm):
     """transforms coord from mm to px"""
     return self.dpi * mm / 25.4
 
-  mm_to_px = classmethod( mm_to_px)
 
-
-
-
-
-  def read_xml_point( self, point):
+  @classmethod
+  def read_xml_point(self, point):
     x = point.getAttribute( 'x')
     y = point.getAttribute( 'y')
     z = point.getAttribute( 'z')
     return map( self.any_to_px, (x,y,z))
 
-  read_xml_point = classmethod( read_xml_point)
 
-
-
-
-  def any_to_px( self, xyz):
+  @classmethod
+  def any_to_px(self, xyz):
     if isinstance(xyz, (tuple, list)):
       return [self.any_to_px( i) for i in xyz]
     a, au = misc.split_number_and_unit( xyz)
@@ -107,23 +94,15 @@ class Screen(object):
         return a
     return a
 
-  any_to_px = classmethod( any_to_px)
 
-
-
-
-
-  def px_to_cm( self, px):
+  @classmethod
+  def px_to_cm(self, px):
     """transforms coord from px to cm"""
     return self.px_to_unit( px, unit='cm')
 
-  px_to_cm = classmethod( px_to_cm)
 
-
-
-
-
-  def px_to_unit( self, xyz, unit='cm', round_to=3):
+  @classmethod
+  def px_to_unit(self, xyz, unit='cm', round_to=3):
     # handle sets of values
     if isinstance(xyz, (tuple, list)):
       return [self.px_to_unit( i, unit=unit, round_to=round_to) for i in xyz]
@@ -146,12 +125,9 @@ class Screen(object):
     else:
       return round( xyz/dots_per_unit, round_to)
 
-  px_to_unit = classmethod( px_to_unit)
 
-
-
-
-  def px_to_text_with_unit( self, xyz, unit='cm', round_to=3):
+  @classmethod
+  def px_to_text_with_unit(self, xyz, unit='cm', round_to=3):
     # handle sets of values
     if isinstance(xyz, (tuple, list)):
       return [self.px_to_text_with_unit( i, unit=unit, round_to=round_to) for i in xyz]
@@ -161,4 +137,3 @@ class Screen(object):
     else:
       return ('%.'+str( round_to)+'f%s') % (self.px_to_unit( xyz, unit=unit, round_to=round_to), unit)
 
-  px_to_text_with_unit = classmethod( px_to_text_with_unit)
