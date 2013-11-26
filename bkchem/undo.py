@@ -315,7 +315,7 @@ class state_record(object):
     # now redrawing
     # sort the to_redraw
     to_redraw = list( to_redraw)
-    to_redraw.sort( _redraw_sorting)
+    to_redraw.sort(key=_redraw_sorting)
     for o in to_redraw:
       if o not in deleted and o.object_type != 'molecule' and hasattr(o,'redraw'):
         if hasattr( o, "after_undo"):
@@ -367,6 +367,29 @@ class state_record(object):
 
 REDRAW_PREFERENCES = ("atom", "bond")
 
+def cmp_to_key(mycmp):
+    """Convert a cmp= function into a key= function.
+
+    """
+    class K(object):
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K
+
+
+@cmp_to_key
 def _redraw_sorting( o1, o2):
   for obj_type in REDRAW_PREFERENCES:
     if o1.object_type == obj_type:
