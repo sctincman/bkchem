@@ -231,7 +231,7 @@ class chem_paper( Canvas, object):
 
 
   @property
-  def one_molecule_selected(self):
+  def one_mol_selected(self):
     if len( self.selected_mols) != 1:
       return False
     else:
