@@ -140,7 +140,7 @@ class mode( object):
       else:
         # or its a prefix of some registered sequence
         for key in self._key_sequences.keys():
-          if not string.find( key, self._recent_key_seq):
+          if not key.find(self._recent_key_seq):
             Store.log( self._recent_key_seq)
             return None
         # if we get here it means that the key is neither used nor a prefix
@@ -196,7 +196,7 @@ class mode( object):
             UserWarning, 2)
     elif use_warning:
       for key in self._key_sequences.keys():
-        if not string.find( key, sequence):
+        if not key.find(sequence):
           warn( "binding of sequence %s to function %s shadows %s (binded to %s)" %
                 (sequence, function.__name__, key, self._key_sequences[ key].__name__),
                 UserWarning, 2)
@@ -2574,7 +2574,7 @@ def event_to_key( event):
   if key in data.strange_key_symbols:
     key = data.strange_key_symbols[ key]
   # second is for keys that are more consistent in their behavior (char is not changing with Ctrl)
-  elif len(key) > 1 and string.lower( key) == key:
+  elif len(key) > 1 and key.lower() == key:
     key = event.char
   # now special keys as Ctrl, Alt etc.
   elif key in data.special_key_symbols:
@@ -2582,7 +2582,7 @@ def event_to_key( event):
   else:
     # normal keys should be lowercase, specials uppercase
     if len( key) == 1:
-      key = string.lower( key)
+      key = key.lower()
   if key:
     return key
   else:
