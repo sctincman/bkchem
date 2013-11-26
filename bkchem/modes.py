@@ -464,7 +464,10 @@ class edit_mode( basic_mode):
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
         # repositioning of atoms and double bonds
-        atoms = reduce( operator.add, [o.neighbors for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex) and not o in Store.app.paper.selected], [])
+        atoms = [j for i in [o.neighbors for o in Store.app.paper.selected
+                                             if (isinstance(o, oasa.graph.vertex) and
+                                                 o not in Store.app.paper.selected)]
+                     for j in i]
         atoms = misc.filter_unique( [o for o in Store.app.paper.selected if isinstance( o, oasa.graph.vertex)] + atoms)
         [o.decide_pos() for o in atoms]
         [o.redraw() for o in atoms]
@@ -624,7 +627,7 @@ class edit_mode( basic_mode):
     bs = misc.filter_unique( b.atom1.neighbor_edges + b.atom2.neighbor_edges)
     [b.redraw( recalc_side = 1) for b in bs if b.order == 2]
     # all atoms to update
-    atms = misc.filter_unique( reduce( operator.add, [[b.atom1,b.atom2] for b in bs], []))
+    atms = misc.filter_unique(j for i in [[b.atom1, b.atom2] for b in bs] for j in i)
     [a.reposition_marks() for a in atms if isinstance( a, atom)]
 
 
@@ -1153,7 +1156,7 @@ class template_mode( edit_mode):
         atms = self.focused.atom1.neighbors + self.focused.atom2.neighbors
         atms = misc.difference( atms, [self.focused.atom1, self.focused.atom2])
         coords = [a.get_xy() for a in atms]
-        if reduce( operator.add, [geometry.on_which_side_is_point( (x1,y1,x2,y2), xy) for xy in coords], 0) > 0:
+        if sum(geometry.on_which_side_is_point((x1,y1,x2,y2), xy) for xy in coords) > 0:
           x1, y1, x2, y2 = x2, y2, x1, y1
         t = self._get_transformed_template( self.submode[0], (x1,y1,x2,y2), type='bond', paper=Store.app.paper)
         if not t:
