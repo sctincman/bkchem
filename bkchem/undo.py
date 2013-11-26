@@ -27,8 +27,6 @@ exported in __all__."""
 
 import misc
 import copy
-from types import *  #should be safe
-
 import inspect
 
 __all__= ['undo_manager']
@@ -39,14 +37,14 @@ class undo_manager:
   """class to process requests for undo tracking and undoing"""
 
   MAX_RECORDS = 50
-  
+
   def __init__( self, paper):
     """well, init"""
     self.paper = paper
     self._records = []
     self.clean()
     self.start_new_record()
-    
+
   def start_new_record( self, name=''):
     """starts new undo_record closing the recent
     name may be set for a record"""
@@ -108,7 +106,7 @@ class undo_manager:
 
   def get_number_of_records( self):
     return len( self._records)
-  
+
 
   def can_undo( self):
     return bool( self._pos)
@@ -138,11 +136,11 @@ class undo_manager:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == set:
+      if isinstance(obj, (list, set)):
         for i in obj:
           if not self.compare_records( i, state_rec1, state_rec2):
             return False
-      elif type( obj) == DictType:
+      elif isinstance(obj, dict):
         for i in obj.itervalues():
           if not self.compare_records( i, state_rec1, state_rec2):
             return False
@@ -215,9 +213,9 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == set:
+      if isinstance(obj, (list, set)):
         [self.record_object( i) for i in obj]
-      elif type( obj) == DictType:
+      elif isinstance(obj, dict):
         [self.record_object( i) for i in obj.itervalues() if i]
       else:
         self.record_object( obj)
@@ -346,11 +344,11 @@ class state_record:
     # process the chidren
     for a in o.meta__undo_children_to_record:
       obj = getattr( o, a)
-      if type( obj) == ListType or type( obj) == set:
+      if isinstance(obj, (list, set)):
         for i in obj:
           if self.object_changed( i):
             return True
-      elif type( obj) == DictType:
+      elif isinstance(obj, dict):
         for i in obj.itervalues():
           if self.object_changed( i):
             return True
@@ -358,7 +356,7 @@ class state_record:
         if self.object_changed( obj):
           return True
     return False
-    
+
 
 
 REDRAW_PREFERENCES = ("atom", "bond")
@@ -371,5 +369,4 @@ def _redraw_sorting( o1, o2):
       return 1
 
   return -1
-  
-  
+
