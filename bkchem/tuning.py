@@ -36,6 +36,7 @@ class Tuning(object):
         drawable_chem_vertex_bbox_mod_after_descent_removal = (0,0,0,1)
 
         # do not edit this! (unless you know what you are doing)
+        @classmethod
         def pick_best_value( self, name, font_size):
             if not hasattr( self, name):
                 raise AttributeError("attribute %s does not exist" % name)
@@ -51,9 +52,7 @@ class Tuning(object):
             #d[font_size] = d[best_key]
             #print("cache miss", font_size, d[best_key])
             return d[best_key]
-            
-        pick_best_value = classmethod( pick_best_value)
-        
+
 
     ## SVG export
     class SVG(object):
