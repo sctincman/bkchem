@@ -79,13 +79,12 @@ def normalize_coords( coords):
   return (x1, y1, x2, y2)
 
 
-def list_difference( list):
-  """return a list of differences between list members,
-  the list is by 1 shorter than the original"""
-  ret = []
-  for i in range( len( list)-1):
-    ret.append( list[i]-list[i+1])
-  return ret
+def list_difference(l):
+  """Return a list of differences between list members.
+
+  The list is by 1 shorter than the original.
+  """
+  return [l[i] - l[i+1] for i in range(len(l)-1)]
 
 
 def split_number_and_unit( txt):
