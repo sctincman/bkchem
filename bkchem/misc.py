@@ -21,16 +21,14 @@
 #
 #--------------------------------------------------------------------------
 
-"""module containing miscelanous functions used in BKChem that don't
-fit anywhere else. Does not contain any objects"""
+"""Module containing miscelanous functions used in BKChem that don't
+fit anywhere else. Does not contain any objects.
+"""
 
-import math
-import time
-import string
-from warnings import warn
 import re
-import types
-import base64
+
+from warnings import warn
+
 
 
 def intersection( a, b):
@@ -61,12 +59,10 @@ def signum( a):
 
 
 def filter_unique( items):
-  #t1 = time.time()
   ret = []
   for item in items:
     if item not in ret:
       ret.append( item)
-  #print time.time() - t1
   return ret
 
 
@@ -75,7 +71,7 @@ def filter_unique( items):
 
 def reverse_molecule_formula( formula):
   pass
-  
+
 
 def normalize_coords( coords):
   x1, y1, x2, y2 = coords
@@ -122,8 +118,6 @@ def lazy_apply_ignorant( function, arguments):
   return lambda *x: function( *arguments)
 
 
-
-
 def extend_bbox( bbox, pixels=1):
   minx = min( (bbox[0], bbox[2]))
   maxx = max( (bbox[0], bbox[2]))
@@ -149,10 +143,6 @@ def smallest_common_bbox( bboxes):
       _y1 = maxy
   return _x1, _y1, _x0, _y0
 
-      
-    
-
-
 
 def has_one_value_only( iterable):
   if not iterable:
@@ -162,7 +152,6 @@ def has_one_value_only( iterable):
     if a != i:
       return 0
   return 1
-
 
 
 def plural_or_singular( iterable):
@@ -177,7 +166,6 @@ def len_and_ending( iterable):
   return (len( iterable), plural_or_singular( iterable))
 
 
-
 def set_attr_or_property( obj, name, value):
   """sets value of attribute or property of object name to value"""
   if hasattr( obj, name):
@@ -188,9 +176,7 @@ def set_attr_or_property( obj, name, value):
 
 
 
-
 # some helper, higher order functions
-
 map_functions = lambda funcs, value: zip( apply, funcs, len(funcs)*[value])
 
 something_true = lambda vals: len( filter( None, vals))
@@ -198,7 +184,6 @@ something_true = lambda vals: len( filter( None, vals))
 some_apply = lambda func, vals: something_true( map( func, vals))
 
 
-
 # some results
-
 isinstance_of_one = lambda obj, parents: some_apply( lambda x: isinstance( obj, x), parents)
+
