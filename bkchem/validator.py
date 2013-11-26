@@ -21,14 +21,17 @@
 #
 #--------------------------------------------------------------------------
 
-"""provides validator class that checks chemistry"""
+"""Provide validator class that checks chemistry.
 
-import types
+"""
+
+import misc
+import molecule
+
 from atom import atom
 from group import group
 from textatom import textatom
-import molecule
-import misc
+
 
 
 class validator:
@@ -44,7 +47,7 @@ class validator:
     self.validate_object( o)
 
   def validate_object( self, o):
-    if type( o) == types.ListType:
+    if isinstance(o, list):
       self.validate_list( o)
     elif misc.isinstance_of_one( o, (atom,group,textatom)):
       self.validate_atom( o)
