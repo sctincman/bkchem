@@ -23,20 +23,16 @@
 from __future__ import division
 from __future__ import print_function
 
-import classes
-import arrow
-from molecule import molecule
-try:
-except ImportError:
-import misc
-from temp_manager import template_manager
-import string
-import data
-import config
-import messages
-import dom_extensions
-import xml.dom.minidom as dom
+import os
+import sys
+import math
+import oasa
 import operator
+import xml.dom.minidom as dom
+try:
+  import exceptions
+except ImportError:
+  pass
 try:
   import tkinter.font as tkFont
   import tkinter.messagebox as tkMessageBox
@@ -45,9 +41,7 @@ except ImportError:
   import tkMessageBox
 
 from warnings import warn
-import undo
-import math
-import xml_writer
+from oasa import geometry
 from oasa import periodic_table as PT
 from oasa.transform import transform
 from oasa.transform3d import transform3d
@@ -57,30 +51,35 @@ except ImportError:
   from Tkinter import Canvas, ALL
 
 import Pmw
-import graphics
-import types
-import os_support
+import misc
 import copy
-import dialogs
-import CDML_versions
-import os
-import parents
-from reaction import reaction
-import debug
-import oasa
-from external_data import external_data_manager
-from group import group
-from atom import atom
-from textatom import textatom
-import oasa
-from oasa import geometry
-from id_manager import id_manager
-import interactors
-import exceptions
+import data
+import undo
+import arrow
 import checks
-from helper_graphics import selection_rect
-      
+import config
+import classes
+import dialogs
+import parents
+import graphics
+import messages
+import os_support
+import xml_writer
+import interactors
+import CDML_versions
+import dom_extensions
+
+from atom import atom
+from group import group
+from textatom import textatom
+from molecule import molecule
+from reaction import reaction
+from id_manager import id_manager
+from temp_manager import template_manager
 from singleton_store import Store, Screen
+from helper_graphics import selection_rect
+from external_data import external_data_manager
+
 
 
 class chem_paper( Canvas, object):
