@@ -17,41 +17,41 @@
 
 #--------------------------------------------------------------------------
 
+from __future__ import print_function
 
-class bkchem_error( Exception):
+
+
+class bkchem_error(Exception):
 
   def __init__( self):
-    Exception.__init__( self)    
+    Exception.__init__( self)
 
 
 
+class bkchem_graph_error(bkchem_error):
+  """Exception for reporting graph related exceptions.
 
-class bkchem_graph_error( bkchem_error):
-  """exception for reporting graph related exceptions"""
-
+  """
   def __init__( self, id, value):
     self.id = id
     self.value = value
 
 
   def __str__( self):
-    print "BKChem graph error, id=%s, value=%s" % (self.id, self.value)
+    print("BKChem graph error, id=%s, value=%s" % (self.id, self.value))
 
 
 
+class bkchem_fragment_error(bkchem_error):
+  """Exceptions related to fragments consistency etc.
 
-
-class bkchem_fragment_error( bkchem_error):
-  """exceptions related to fragments consistency etc.
-  ids: inconsistent"""
-
+  ids: inconsistent
+  """
   def __init__( self, id, value):
     self.id = id
     self.value = value
 
 
   def __str__( self):
-    print "BKChem fragments error, id=%s, value=%s" % (self.id, self.value)
+    print("BKChem fragments error, id=%s, value=%s" % (self.id, self.value))
 
-
-  
