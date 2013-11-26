@@ -1855,7 +1855,7 @@ class chem_paper( Canvas, object):
       root.appendChild( st.get_package( doc))
       dom_extensions.safe_indent( root)
       try:
-        f = file( name, 'w')
+        f = open(name, 'w')
       except IOError:
         return 0
       try:
