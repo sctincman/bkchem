@@ -681,7 +681,6 @@ class edit_mode( basic_mode):
         name = Store.app.editPool.activate()
       if not name or dom_extensions.isOnlyTags( name):
         return
-      name = unicode( name).encode('utf-8')
       self.set_given_name_to_selected( name, interpret=Store.app.editPool.interpret)
 
 
@@ -1233,7 +1232,6 @@ class text_mode( edit_mode):
       name = Store.app.editPool.activate()
       if not name:
         return
-      name = unicode( name).encode( 'utf-8')
       # there is either something selected or a new thing is added
       # the unselecting code before does ensure that nothing is selected
       # when we click outside to create something new
@@ -1857,7 +1855,6 @@ class atom_mode( edit_mode):
       name = Store.app.editPool.activate()
       if not name:
         return
-      name = unicode( name).encode( 'utf-8')
       if name and not dom_extensions.isOnlyTags( name):
         mol = Store.app.paper.new_molecule()
         a = mol.create_vertex_according_to_text( None, name, interpret=Store.app.editPool.interpret)
