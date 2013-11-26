@@ -557,7 +557,8 @@ class chem_paper( Canvas, object):
 
 
   def bonds_to_update( self, exclude_selected_bonds=True):
-    a = reduce( operator.or_, map( set, [v.get_neighbor_edges() for v in self.selected if v.object_type == "atom"]), set())
+    a = set().union(*(set(i) for i in (v.get_neighbor_edges() for v in self.selected
+                                                                if v.object_type == "atom")))
     # if bond is also selected then it moves with and should not be updated
     if exclude_selected_bonds:
       return [b for b in a if b not in self.selected]
