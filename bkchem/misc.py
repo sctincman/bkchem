@@ -66,9 +66,6 @@ def filter_unique( items):
   return ret
 
 
-#def sub_all_numbers( text):
-#  return re.sub( "\d+", '<sub>\g<0><\\sub>', text)
-
 def reverse_molecule_formula( formula):
   pass
 
@@ -176,14 +173,7 @@ def set_attr_or_property( obj, name, value):
 
 
 
-# some helper, higher order functions
-map_functions = lambda funcs, value: zip( apply, funcs, len(funcs)*[value])
-
-something_true = lambda vals: len( filter( None, vals))
-
-some_apply = lambda func, vals: something_true( map( func, vals))
-
-
-# some results
-isinstance_of_one = lambda obj, parents: some_apply( lambda x: isinstance( obj, x), parents)
+# Left here until all references are fixed
+# isinstance() supports tuple for type information since Python 2.2
+isinstance_of_one = isinstance
 
