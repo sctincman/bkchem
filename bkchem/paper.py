@@ -82,11 +82,11 @@ class chem_paper( Canvas, object):
   # composite objects is focused - this is typical for selection_rect that needs to respond
   # differently in different corners
   classes_with_per_item_reselection = (selection_rect,)
-  
+
 
   def __init__( self, master = None, file_name={}, **kw):
     Canvas.__init__( self, master, kw)
-    
+
     self.clipboard = None
 
     self.standard = self.get_personal_standard()
@@ -268,7 +268,7 @@ class chem_paper( Canvas, object):
     else:
       [self.tag_unbind( id, '<Enter>') for id in ids]
       [self.tag_unbind( id, '<Leave>') for id in ids]
-    
+
   ## event bound methods
 
   ## overall
@@ -288,7 +288,7 @@ class chem_paper( Canvas, object):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     Store.app.mode.mouse_up( event)
-    
+
 
 
 
@@ -299,7 +299,7 @@ class chem_paper( Canvas, object):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
     Store.app.update_cursor_position( event.x, event.y)
-    Store.app.mode.mouse_drag( event) 
+    Store.app.mode.mouse_drag( event)
     b = self.find_overlapping( event.x-2, event.y-2, event.x+2, event.y+2)
     b = filter( self.is_registered_id, b)
     a = map( self.id_to_object, b)
@@ -551,9 +551,9 @@ class chem_paper( Canvas, object):
 
     ## check reactions
     [a.reaction.check_the_references( self.stack) for a in self.arrows]
-    self.event_generate( "<<selection-changed>>")      
+    self.event_generate( "<<selection-changed>>")
 
-      
+
 
 
   def bonds_to_update( self, exclude_selected_bonds=True):
@@ -593,16 +593,16 @@ class chem_paper( Canvas, object):
 
 
   def read_package( self, CDML, draw=True):
-    self.onread_id_sandbox_activate() # to sandbox the ids 
+    self.onread_id_sandbox_activate() # to sandbox the ids
 
     original_version = CDML.getAttribute( 'version')
     success = CDML_versions.transform_dom_to_version( CDML, config.current_CDML_version)
     if not success:
-      if not tkMessageBox.askokcancel( _('Proceed'),
-				       _('''This CDML document does not seem to have supported version.
-				       \n Do you want to proceed reading this document?'''),
-                                       default = 'ok',
-				       parent=self):
+      if not tkMessageBox.askokcancel(_('Proceed'),
+                                      _('''This CDML document does not seem to have supported version.
+                                      \n Do you want to proceed reading this document?'''),
+                                      default = 'ok',
+                                      parent=self):
         return None
     # paper properties
     paper = [o for o in CDML.childNodes if (not o.nodeValue) and (o.localName == 'paper')]
@@ -658,10 +658,10 @@ class chem_paper( Canvas, object):
             o.draw()
     # now check if the old standard differs
     if new_standard and old_standard != self.standard and not Store.app.in_batch_mode:
-      if not tkMessageBox.askokcancel( _('Replace standard values'),
-				       messages.standards_differ_text,
-                                       default = 'ok',
-				       parent=self):
+      if not tkMessageBox.askokcancel(_('Replace standard values'),
+                                      messages.standards_differ_text,
+                                      default = 'ok',
+                                      parent=self):
         self.standard = old_standard
 
     # external data
@@ -675,7 +675,7 @@ class chem_paper( Canvas, object):
 
     # this forces forgetting of old viewport and effectively transforms the coordinates for rest of work
     self.set_viewport()
-    
+
     if draw:
       self.add_bindings()
     self.um.start_new_record()
@@ -687,7 +687,7 @@ class chem_paper( Canvas, object):
     This is especialy needed for copying and template addition (although this is done somewhere else)"""
     self.__old_id_manager = Store.id_manager
     Store.id_manager = id_manager()
-    
+
 
   def onread_id_sandbox_finish( self, apply_to=None):
     Store.id_manager = self.__old_id_manager
@@ -733,7 +733,7 @@ class chem_paper( Canvas, object):
       root.appendChild( edm_doc)
 
     return doc
-    
+
 
   def mrproper( self):
     self.unselect_all()
@@ -771,7 +771,7 @@ class chem_paper( Canvas, object):
 
 
     self.clean_paper()
-    
+
     self.um.mrproper()
 
     del self.clipboard
@@ -798,12 +798,12 @@ class chem_paper( Canvas, object):
       obj.paper = None
       if hasattr( obj, 'id'):
         Store.id_manager.unregister_id( obj.id, obj)
-        
+
     del self.stack
     self.stack = []
     self.um.clean()
     self.changes_made = 0
-    
+
 
 
 
@@ -827,7 +827,7 @@ class chem_paper( Canvas, object):
         if (a != b) and ( 'atom' in self.gettags( b)):
           a1 = self.id_to_object( a)
           a2 = self.id_to_object( b)
-          if ( abs( a1.x - a2.x) < 2) and ( abs( a1.y - a2.y) < 2): 
+          if ( abs( a1.x - a2.x) < 2) and ( abs( a1.y - a2.y) < 2):
             if (not [a2,a1] in overlap) and a1.z == a2.z:
               overlap.append( [a1,a2])
 
@@ -1119,7 +1119,7 @@ class chem_paper( Canvas, object):
       self.onread_id_sandbox_finish( apply_to=os)
       self.handle_overlap()
       self.start_new_undo_record()
-      
+
 
 
 
@@ -1156,7 +1156,7 @@ class chem_paper( Canvas, object):
     if o:
       self.stack.append( o)
     return o
-    
+
 
 
 
@@ -1197,33 +1197,33 @@ class chem_paper( Canvas, object):
     # modes dealing with x
     if mode in 'lrv':
       if mode == 'l':
-        xs = [bboxes[i] for i in range( 0, len( bboxes), 4)] 
+        xs = [bboxes[i] for i in range( 0, len( bboxes), 4)]
         x = min( xs)
       elif mode == 'r':
-        xs = [bboxes[i] for i in range( 2, len( bboxes), 4)] 
+        xs = [bboxes[i] for i in range( 2, len( bboxes), 4)]
         x = max( xs)
       else:
-        xmaxs = [bboxes[i] for i in range( 0, len( bboxes), 4)] 
+        xmaxs = [bboxes[i] for i in range( 0, len( bboxes), 4)]
         xmins = [bboxes[i] for i in range( 2, len( bboxes), 4)]
         xs = map( operator.add, xmaxs, xmins)
         xs = map( operator.div, xs, len(xs)*[2])
-        x = (max( xs) + min( xs)) / 2 # reduce( operator.add, xs) / len( xs) # this makes mean value rather then center 
+        x = (max( xs) + min( xs)) / 2 # reduce( operator.add, xs) / len( xs) # this makes mean value rather then center
       for i in range( len( xs)):
         to_align[i].move( x-xs[i], 0)
     # modes dealing with y
     elif mode in 'tbh':
       if mode == 'b':
-        ys = [bboxes[i] for i in range( 3, len( bboxes), 4)] 
+        ys = [bboxes[i] for i in range( 3, len( bboxes), 4)]
         y = max( ys)
       elif mode == 't':
-        ys = [bboxes[i] for i in range( 1, len( bboxes), 4)] 
+        ys = [bboxes[i] for i in range( 1, len( bboxes), 4)]
         y = min( ys)
       else:
-        ymaxs = [bboxes[i] for i in range( 1, len( bboxes), 4)] 
+        ymaxs = [bboxes[i] for i in range( 1, len( bboxes), 4)]
         ymins = [bboxes[i] for i in range( 3, len( bboxes), 4)]
         ys = map( operator.add, ymaxs, ymins)
         ys = map( operator.div, ys, len(ys)*[2])
-        y = (max( ys) + min( ys)) /2 # reduce( operator.add, ys) / len( ys) 
+        y = (max( ys) + min( ys)) /2 # reduce( operator.add, ys) / len( ys)
       for i in range( len( ys)):
         to_align[i].move( 0, y-ys[i])
     self.start_new_undo_record()
@@ -1307,7 +1307,7 @@ class chem_paper( Canvas, object):
         else:
           unique = 0
     return (filtrate, unique)
-          
+
 
 
 
@@ -1322,7 +1322,7 @@ class chem_paper( Canvas, object):
                          i) % i)
     else:
       Store.log( _("no further undo"))
-    self.event_generate( "<<undo>>")    
+    self.event_generate( "<<undo>>")
 
 
 
@@ -1338,7 +1338,7 @@ class chem_paper( Canvas, object):
     else:
       Store.log( _("no further redo"))
     self.event_generate( "<<redo>>")
-    
+
 
 
 
@@ -1494,7 +1494,7 @@ class chem_paper( Canvas, object):
     if len( s_mols) > 1:
       dialog.insert( '1.0', "\n")
       dialog.insert( "1.0", _("Individual molecules:"), 'headline')
-      dialog.insert( '1.end', "\n")      
+      dialog.insert( '1.end', "\n")
       dialog.insert( 'end', "\n")
       dialog.insert( "end", _("Summary for all selected molecules:"), 'headline')
       dialog.insert( 'end', "\n\n")
@@ -1535,9 +1535,9 @@ class chem_paper( Canvas, object):
 
   def select_all( self):
     self.unselect_all()
-    self.select( [o for o in map( self.id_to_object, self.find_all()) if o and hasattr( o, 'select') and o.object_type != 'arrow']) 
+    self.select( [o for o in map( self.id_to_object, self.find_all()) if o and hasattr( o, 'select') and o.object_type != 'arrow'])
     self.add_bindings()
-    
+
 
 
 
@@ -1545,7 +1545,7 @@ class chem_paper( Canvas, object):
   def set_viewport( self, view=(0,0,640,480)):
     x1, y1, x2, y2 = view
     self._view = tuple( view)
-    
+
     self._real2screen = transform()
     self._real2screen.set_move( -x1, -y1)
     ratiox, ratioy = 640/(x2-x1), 480/(y2-y1)
@@ -1556,7 +1556,7 @@ class chem_paper( Canvas, object):
     ratiox, ratioy = (x2-x1)/640, (y2-y1)/480
     self._screen2real.set_scaling_xy( ratiox, ratioy)
     self._screen2real.set_move( x1, y1)
-  
+
 
 
 
@@ -1676,7 +1676,7 @@ class chem_paper( Canvas, object):
     else:
       r, g, b = map( lambda x: (x < 256 and x) or (x >= 256 and x//256),  self.winfo_rgb( color))
       return "#%02x%02x%02x" % (r,g,b)
-  
+
 
 
   def set_default_paper_properties( self):
@@ -1691,7 +1691,7 @@ class chem_paper( Canvas, object):
                               'orientation': o,
                               'size_x': sx,
                               'size_y': sy}
-                              
+
     if not 'background' in self.__dict__ or not self.background:
       self.background = self.create_rectangle( 0, 0, '%dm'%sx, '%dm'%sy, fill='white', outline='black', tags="no_export")
     else:
@@ -1705,7 +1705,7 @@ class chem_paper( Canvas, object):
     self._paper_properties['replace_minus'] = Store.pm.get_preference( "replace_minus") or 0
     self.update_scrollregion()
 
-    
+
 
   def create_background( self):
     sx = self._paper_properties['size_x']
@@ -1715,7 +1715,7 @@ class chem_paper( Canvas, object):
       self.background = self.create_rectangle( 0, 0, '%dm'%sx, '%dm'%sy, fill='white', outline='black', tags="no_export")
     else:
       self.coords( self.background, 0, 0, '%dm'%sx, '%dm'%sy)
-    
+
 
 
   def set_paper_properties( self, type=None, orientation=None, x=None, y=None, crop_svg=None, all=None, crop_margin=None, use_real_minus=None, replace_minus=None):
@@ -1738,7 +1738,7 @@ class chem_paper( Canvas, object):
       self._paper_properties['orientation'] = o
       self._paper_properties['size_x'] = sx
       self._paper_properties['size_y'] = sy
-                              
+
     # crop svg
     if crop_svg != None:
       self._paper_properties['crop_svg'] = crop_svg
@@ -1773,7 +1773,7 @@ class chem_paper( Canvas, object):
 
 
 
-    
+
 ## def coords( self, item, *args, **keyargs):
 ##     if 'unit' in keyargs:
 ##       u = keyargs['unit']
@@ -1823,7 +1823,7 @@ class chem_paper( Canvas, object):
         m.read_standard_values( self.standard, old_standard=old_standard)
         to_redraw.append( m)
     return to_redraw
-          
+
 
 
 
@@ -1925,7 +1925,7 @@ class chem_paper( Canvas, object):
       if m in self.molecules:
         m.flush_graph_to_file()
         return
-    
+
 
 
 
@@ -1953,7 +1953,7 @@ class chem_paper( Canvas, object):
     return os.path.abspath( os.path.join( self.file_name['dir'], self.file_name['name']))
 
   full_path = property( _get_full_path)
-    
+
 
 
 
@@ -1971,7 +1971,7 @@ class chem_paper( Canvas, object):
       return name_dict['name']
     else:
       return name_dict['name'] + '<%d>' % name_dict['ord']
-    
+
   create_window_name = staticmethod( create_window_name)
 
 
@@ -2011,11 +2011,11 @@ class chem_paper( Canvas, object):
           # how to mirror the molecule at the end
           atom1, atom2 = selected
           side = sum( [geometry.on_which_side_is_point( (atom1.x, atom1.y, atom2.x, atom2.y), (a.x,a.y)) for a in notselected])
-          
+
         for a in notselected:
           a.x = None
           a.y = None
-          
+
         oasa.coords_generator.calculate_coords( mol, force=0, bond_length=-1)
 
         if len( selected) == 2:
@@ -2043,7 +2043,7 @@ class chem_paper( Canvas, object):
   def get_cropping_bbox( self):
     if hasattr( self, '_cropping_bbox') and self._cropping_bbox:
       return self._cropping_bbox
-      
+
     margin = self.get_paper_property('crop_margin')
     items = list( self.find_all())
     items.remove( self.background)
@@ -2058,7 +2058,7 @@ class chem_paper( Canvas, object):
 
   def set_cropping_bbox( self, coords):
     self._cropping_bbox = coords
-    
+
 
   def fix_current_cropping_bbox( self):
     self.set_cropping_bbox( self.get_cropping_bbox())
@@ -2098,4 +2098,4 @@ class chem_paper( Canvas, object):
     if ymax < y1:
       ymax = y1
     return xmin, ymin, xmax, ymax
-  
+
