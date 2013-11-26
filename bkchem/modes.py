@@ -18,13 +18,16 @@
 #--------------------------------------------------------------------------
 
 
-"""the modes in which the paper operates (such as edit, draw etc.) reside here"""
+"""Modes in which the paper operates (such as edit, draw etc.) reside here.
 
-import misc
-from warnings import warn
-import operator
-from oasa import geometry
+"""
+
+import oasa
 import math
+import time
+import string
+import xml.sax
+import xml.sax.saxutils
 try:
   import tkinter as Tkinter
   import tkinter.messagebox as tkMessageBox
@@ -32,37 +35,35 @@ except ImportError:
   import Tkinter
   import tkMessageBox
 
-import time
+from warnings import warn
+from oasa import geometry
+from oasa import periodic_table as PT
 from oasa.transform import transform
 from oasa.transform3d import transform3d
 
+import Pmw
 import data
-import config
-import string
-import dialogs
-import xml.sax, xml.sax.saxutils
-import tkMessageBox
-import helper_graphics as hg
-import dom_extensions
-import messages
-from bond import bond
-from atom import atom
-from group import group
-from textatom import textatom
-from context_menu import context_menu
-from reaction import reaction
-import parents, special_parents
-import oasa
-import Pmw, Tkinter
-from oasa import periodic_table as PT
-import external_data
-
-import interactors
+import misc
 import marks
 import types
+import config
+import dialogs
+import parents
+import messages
+import interactors
+import external_data
+import dom_extensions
+import special_parents
+import helper_graphics as hg
+
+from bond import bond
+from atom import atom
 from arrow import arrow
 from ftext import ftext
-
+from group import group
+from textatom import textatom
+from reaction import reaction
+from context_menu import context_menu
 from singleton_store import Store, Screen
 
 
@@ -814,7 +815,7 @@ class draw_mode( edit_mode):
 
   def mouse_click( self, event):
     if not self.focused:
-      #print "it should not get here!!!"
+      #print("it should not get here!!!")
       mol = Store.app.paper.new_molecule()
       a = mol.create_new_atom( event.x, event.y)
       Store.app.paper.add_bindings()
