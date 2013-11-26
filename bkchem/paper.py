@@ -21,6 +21,7 @@
 """chem_paper - the main drawing part for BKChem resides here"""
 
 from __future__ import division
+from __future__ import print_function
 
 from Tkinter import Canvas, ALL
 import tkFont, tkMessageBox
@@ -109,7 +110,7 @@ class chem_paper( Canvas, object):
     # external data management
     self.edm = external_data_manager()
     self.edm.load_available_definitions()
-    #print "loaded definitions for classes:", self.edm.load_available_definitions()
+    #print("loaded definitions for classes:", self.edm.load_available_definitions())
 
     # file name
     self.file_name = file_name
@@ -193,7 +194,7 @@ class chem_paper( Canvas, object):
 
   # top_levels
   def _get_top_levels( self):
-    #print [o for o in self.stack if not isinstance( o, graphics.top_level)]
+    #print([o for o in self.stack if not isinstance( o, graphics.top_level)])
     return self.stack
     #return [o for o in self.stack if isinstance( o, graphics.top_level)]
 
@@ -401,9 +402,9 @@ class chem_paper( Canvas, object):
 ##     b = self.find_overlapping( event.x-3, event.y-3, event.x+3, event.y+3)
 ##     b = filter( self.is_registered_id, b)
 ##     a = map( self.id_to_object, b)
-##     print a
+##     print(a)
 ##     a = [i for i in a if i not in self._do_not_focus]
-##     print a
+##     print(a)
 
 ##     if a:
 ##       a = a[-1]
@@ -462,7 +463,7 @@ class chem_paper( Canvas, object):
         self.selected.append( o)
         o.select()
     self.event_generate( "<<selection-changed>>")
-    #print [o.object_type for o in self.selected]
+    #print([o.object_type for o in self.selected])
 
 
 
@@ -835,7 +836,7 @@ class chem_paper( Canvas, object):
     deleted = []
     if overlap:
       mols = misc.filter_unique( map( lambda a: map( lambda b: b.molecule, a), overlap))
-      #print 3, time.time() - ttt
+      #print(3, time.time() - ttt)
       a_eatenby_b1 = []
       a_eatenby_b2 = []
       for (mol, mol2) in mols:
@@ -861,8 +862,8 @@ class chem_paper( Canvas, object):
     for a, b in overlap:
       preserved.append( a in deleted and b or a)
     return deleted, preserved
-    #print 5, time.time() - ttt
-      
+    #print(5, time.time() - ttt)
+
 
 
 
@@ -1665,7 +1666,7 @@ class chem_paper( Canvas, object):
   def _open_debug_console( self):
     m = Store.app.mode
     for i in m.__dict__:
-      print i, ' : ', m.__dict__[i]
+      print(i, ' : ', m.__dict__[i])
 
 
 
@@ -1997,13 +1998,13 @@ class chem_paper( Canvas, object):
         # we must check if the selection defines one connected subgraph of the molecule
         # otherwise the coordinate generation will not work
         if len( selected) == 1:
-          print "sorry, but the selection must contain at least two atoms (one bond)"
+          print("sorry, but the selection must contain at least two atoms (one bond)")
           return
         else:
           sub = mol.get_new_induced_subgraph( selected, mol.vertex_subgraph_to_edge_subgraph( selected))
           subs = [comp for comp in sub.get_connected_components()]
           if len( subs) != 1:
-            print "sorry, but the selection must define a continuos block in the molecule"
+            print("sorry, but the selection must define a continuos block in the molecule")
             return
 
         # now we check what has been selected
