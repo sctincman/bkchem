@@ -529,7 +529,7 @@ class edit_mode( basic_mode):
 
   def double_click( self, event):
     if self.focused:
-      if misc.isinstance_of_one( self.focused, (oasa.graph.vertex, bond)):
+      if isinstance(self.focused, (oasa.graph.vertex, bond)):
         Store.app.paper.select( tuple( self.focused.molecule)) # molecule is iterator
 
 
@@ -1434,7 +1434,7 @@ class bond_align_mode( edit_mode):
   def mouse_down( self, event, modifiers = []):
     if not self.focused:
       return
-    if not misc.isinstance_of_one( self.focused, (oasa.graph.vertex, bond)):
+    if not isinstance(self.focused, (oasa.graph.vertex, bond)):
       return
     if self._needs_two_atoms[ self.submode[0]] == -1 and isinstance( self.focused, oasa.graph.vertex):
       return
