@@ -70,7 +70,7 @@ class ColorButton( Tkinter.Button):
     if not self.color:
       self.foreground_color = "#000"
       return
-    elif type( color) != type(()):
+    elif not isinstance(color, tuple):
       c = self.master.winfo_rgb( self.color)
     else:
       c = color
