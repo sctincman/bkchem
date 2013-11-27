@@ -41,7 +41,8 @@ from molecule import molecule
 from singleton_store import Store, Screen
 
 
-class template_manager:
+
+class template_manager(object):
   templates = []
 
   def __init__( self):
@@ -57,7 +58,7 @@ class template_manager:
         return
     try:
       doc = dom.parse( file).getElementsByTagName( 'cdml')[0]
-    except xml.sax.SAXException: 
+    except xml.sax.SAXException:
       warn( "template file %s cannot be parsed - ignoring" % file)
       return
     # when loading old versions of CDML try to convert them, but do nothing when they cannot be converted
@@ -134,8 +135,8 @@ class template_manager:
     current.t_bond_first = None
     current.t_bond_second = None
     #return ready template
-    return current 
-  
+    return current
+
   def transform_template( self, temp, trans):
     for a in temp.atoms:
       a.x, a.y = trans.transform_xy( a.x, a.y)
@@ -147,5 +148,4 @@ class template_manager:
     Store.app.paper.apply_current_standard( [temp], template_mode=1)
     # return the ready template
     return temp
-
 
