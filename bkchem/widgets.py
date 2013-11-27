@@ -115,14 +115,13 @@ class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
     Tkinter.Frame.pack( self, **kw)
 
 
-  def _get_color( self):
+  @property
+  def color(self):
     if not self.transparent.get():
       return self.button.color
     else:
       return ''
 
-  color = property( _get_color, None, None, "")
-  
 
   def _set_trasparency( self):
     if self.transparent.get():
@@ -458,14 +457,18 @@ class HTMLLikeInput( Tkinter.Frame, object):
       self.__dict__[i].pack( side='left')
 
 
-  def _get_text( self):
+  @property
+  def text(self):
+    """The text property.
+
+    """
     return self.editPool.get()
 
-  def _set_text( self, text):
+
+  @text.setter
+  def text(self, text):
     self.editPool.delete(0, last='end')
     self.editPool.insert(0, text)
-
-  text = property( _get_text, _set_text, None, "the text property")
 
 
   def _numbersToSubButtonPressed( self, *e):
