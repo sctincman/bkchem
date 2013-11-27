@@ -282,20 +282,19 @@ class point( point_drawable, interactive, child):
     x, y = tr.transform_xy( self.x, self.y)
     self.move_to( x, y)
 
+
   # parent
-  def _get_parent( self):
+  @property
+  def parent(self):
+    """Returns self.arrow.
+
+    """
     return self.arrow
 
-  def _set_parent( self, par):
+
+  @parent.setter
+  def parent(self, par):
     self.arrow = par
-
-  parent = property( _get_parent, _set_parent, None,
-                     "returns self.molecule")
-
-
-
-
-
 
 
 
@@ -646,16 +645,23 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
 
   # xml_ftext
-  def _get_xml_ftext( self):
+  @property
+  def xml_ftext(self):
+    """Text used for rendering using the ftext class.
+
+    """
     return self._ftext
 
-  def _set_xml_ftext( self, text):
-    if not type( text) == unicode:
-      text = text.decode( 'utf-8')
+
+  @xml_ftext.setter
+  def xml_ftext(self, text):
+    if sys.version_info[0] > 2:
+      if isinstance(text, bytes):
+        text = text.decode('utf-8')
+    else:
+      if isinstance(text, str):
+        text = text.decode('utf-8')
     self._ftext = text
-
-  xml_ftext = property( _get_xml_ftext, _set_xml_ftext, None, "the text used for rendering using the ftext class")
-
 
 
   def bbox( self):
