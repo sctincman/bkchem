@@ -18,8 +18,11 @@
 #--------------------------------------------------------------------------
 
 
+try:
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  import tkMessageBox
 
-import tkMessageBox
 from singleton_store import Store
 import sys
 
