@@ -24,23 +24,23 @@
 from __future__ import division
 from __future__ import generators
 
+import sys
+import xml.dom.minidom as dom
 try:
   import tkinter.font as tkFont
 except ImportError:
   import tkFont
 
 from math import atan2, sin, cos, pi, sqrt
-import misc
 from warnings import warn
-from ftext import ftext
+
 import dom_extensions
-import xml.dom.minidom as dom
-import operator
+
+from ftext import ftext
 from parents import meta_enabled, container, with_line, text_like, line_colored
 from parents import area_colored, point_drawable, interactive, drawable, top_level
 from parents import child, with_font
 from reaction import reaction
-
 from singleton_store import Screen
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
