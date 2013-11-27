@@ -26,9 +26,17 @@ fit anywhere else. Does not contain any objects.
 """
 
 import re
+import sys
 
 from warnings import warn
 
+
+
+def myisstr(obj):
+  if sys.version_info[0] > 2:
+    return isinstance(obj, str)
+  else:
+    return isinstance(obj, basestring)
 
 
 def intersection( a, b):

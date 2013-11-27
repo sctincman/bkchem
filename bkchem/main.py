@@ -577,17 +577,10 @@ class BKChem( Tk):
     dialog.activate()
 
 
-  def _myisstr(self, obj):
-    if sys.version_info[0] > 2:
-      return isinstance(obj, str)
-    else:
-      return isinstance(obj, basestring)
-
-
   def change_mode( self, tag):
     old_mode = self.mode
     self.mode = self.modes[ tag]
-    if not self._myisstr(old_mode):
+    if not misc.myisstr(old_mode):
       old_mode.cleanup()
       self.mode.copy_settings( old_mode)
 
@@ -684,7 +677,7 @@ class BKChem( Tk):
       # the rest
       self.paper = self.papers[i]
       if (hasattr(self, 'mode') and
-          not self._myisstr(self.mode) and
+          not misc.myisstr(self.mode) and
           old_paper in self.papers and
           self.paper != old_paper):
         # this is not true on startup and tab closing
@@ -960,7 +953,7 @@ class BKChem( Tk):
             return None
       self.paper.clean_paper()
       self.paper.read_package( doc, draw=draw)
-      if not self._myisstr(self.mode):
+      if not misc.myisstr(self.mode):
         self.mode.startup()
       Store.log( _("loaded file: ")+self.paper.full_path)
       self._record_recent_file( os.path.abspath( self.paper.full_path))
