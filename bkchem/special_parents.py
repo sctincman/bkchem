@@ -57,9 +57,20 @@ class vertex_common( object):
     self._number = None
 
 
-
   # number
-  def _set_number( self, number):
+  @property
+  def number(self):
+    """Number associated with the atom.
+
+    """
+    if hasattr(self, "_number"):
+      return self._number
+    else:
+      return None
+
+
+  @number.setter
+  def number(self, number):
     if number:
       self._number = unicode( number)
     else:
@@ -72,17 +83,17 @@ class vertex_common( object):
         numbers[0].redraw()
 
 
-  def _get_number( self):
-    if hasattr( self, "_number"):
-      return self._number
-    else:
-      return None
-
-  number = property( _get_number, _set_number, None, "the number associated with the atom")
-
-
   # show_number
-  def _set_show_number( self, show_number):
+  @property
+  def show_number(self):
+    """Should the number (if present) be displayed.
+
+    """
+    return self._show_number
+
+
+  @show_number.setter
+  def show_number(self, show_number):
     self._show_number = show_number
     if self._show_number and self.number:
       numbers = self.get_marks_by_type( "atom_number")
@@ -92,13 +103,6 @@ class vertex_common( object):
       numbers = self.get_marks_by_type( "atom_number")
       if numbers:
         self.remove_mark( numbers[0])
-        
-
-  def _get_show_number( self):
-    return self._show_number
-
-  show_number = property( _get_show_number, _set_show_number, None, "should the number (if present) be displayed")
-
 
 
   def _mark_to_name_and_class( self, mark):
@@ -323,114 +327,113 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.focus_item = None
 
 
-
-
   ## ---------------------------------------- PROPERTIES ------------------------------
 
 
-
   # molecule
-  def _get_molecule( self):
+  @property
+  def molecule(self):
     return self._molecule
 
-  def _set_molecule( self, mol):
-    self._molecule = mol
 
-  molecule = property( _get_molecule, _set_molecule)
+  @molecule.setter
+  def molecule(self, mol):
+    self._molecule = mol
 
 
   # x
-  def _get_x( self):
+  @property
+  def x(self):
     return self._x
 
-  def _set_x( self, x):
-    self._x = Screen.any_to_px( x)
 
-  x = property( _get_x, _set_x)
+  @x.setter
+  def x( self, x):
+    self._x = Screen.any_to_px( x)
 
 
   # y
-  def _get_y( self):
+  @property
+  def y(self):
     return self._y
 
-  def _set_y( self, y):
+  @y.setter
+  def y(self, y):
     self._y = Screen.any_to_px( y)
-
-  y = property( _get_y, _set_y)
 
 
   # z
-  def _get_z( self):
+  @property
+  def z(self):
     return self._z or 0
 
-  def _set_z( self, z):
+
+  @z.setter
+  def z(self, z):
     self._z = z
-
-  z = property( _get_z, _set_z)
-
 
 
   # pos
-  def _get_pos( self):
+  @property
+  def pos(self):
     return self._pos
 
-  def _set_pos( self, pos):
+
+  @pos.setter
+  def pos(self, pos):
     self._pos = pos
     self.dirty = 1
 
-  pos = property( _get_pos, _set_pos)
-
-
 
   # parent
-  def _get_parent( self):
+  @property
+  def parent(self):
+    """Returns self.molecule.
+
+    """
     return self.molecule
 
-  def _set_parent( self, par):
+
+  @parent.setter
+  def parent(self, par):
     self.molecule = par
-
-  parent = property( _get_parent, _set_parent, None,
-                     "returns self.molecule")
-
 
 
   # drawn
-  def _get_drawn( self):
-    """is the atoms drawn? on the paper or just virtual"""
+  @property
+  def drawn(self):
+    """Is the atoms drawn?
+
+    On the paper or just virtual.
+    """
     if self.item:
       return 1
     return 0
 
-  drawn = property( _get_drawn, None, None, "tells if the atom is already drawn")
-
-
 
   # font_size (override of text_like.font_size)
-  def _get_font_size( self):
+  @property
+  def font_size(self):
     return self._font_size
 
-  def _set_font_size( self, font_size):
+
+  @font_size.setter
+  def font_size(self, font_size):
     self._font_size = font_size
     self.dirty = 1
 
-  font_size = property( _get_font_size, _set_font_size)
-
-
-
 
   # xml_ftext (override text_like.xml_ftext)
-  def _get_xml_ftext( self):
+  @property
+  def xml_ftext(self):
+    """Text used for rendering using the ftext class.
+
+    """
     return self.symbol
-
-  xml_ftext = property( _get_xml_ftext, None, None, "the text used for rendering using the ftext class")
-
-
 
 
   ## // -------------------- END OF PROPERTIES --------------------------
 
-
-  
 
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
