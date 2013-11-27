@@ -17,9 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Set of basic classes such as standard, plus, text etc.
 
-"""set of basic classes such as standard, plus, text etc.
-also imports atom, bond and molecule from historical reasons :)"""
+"""
 
 from __future__ import division
 from __future__ import generators
@@ -78,6 +78,7 @@ class standard:
         return 0
     return 1
 
+
   def __ne__( self, other):
     return not self.__eq__( other)
 
@@ -103,6 +104,7 @@ class standard:
     dom_extensions.elementUnder( ret, 'arrow', (('length', str( self.arrow_length)),))
     dom_extensions.elementUnder( ret, 'atom', (('show_hydrogens', str( int( self.show_hydrogens))),))
     return ret
+
 
   def read_package( self, p):
     for attr in ('line_width', 'font_size', 'font_family', 'line_color','area_color',
@@ -130,9 +132,6 @@ class standard:
       elif show_hydrogens == "True":
         show_hydrogens = 1
       self.show_hydrogens = int( show_hydrogens)
-      
-    
-
 
 
 
@@ -147,7 +146,7 @@ class point( point_drawable, interactive, child):
 
   # undo related metas
   meta__undo_properties = point_drawable.meta__undo_properties
-  
+
 
   def __init__( self, paper, xy=(), arrow=None, package=None, type='invisible'):
     point_drawable.__init__( self)
@@ -174,8 +173,9 @@ class point( point_drawable, interactive, child):
         self.item = self.paper.create_oval( self.x-2, self.y-2, self.x+2, self.y+2, fill='grey', outline='grey', tags='point')
       else:
         warn( 'unknown point type')
-        return 
+        return
       self.paper.register_id( self.item, self)
+
 
   def redraw( self):
     if not self.item:
@@ -187,12 +187,14 @@ class point( point_drawable, interactive, child):
       if self.selector:
         self.paper.coords( self.selector, self.x-2, self.y-2, self.x+2, self.y+2)
 
+
   def move( self, dx, dy):
     self.x += dx
     self.y += dy
     self.paper.move( self.item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
+
 
   def move_to( self, x, y):
     if not self.item:
@@ -204,28 +206,34 @@ class point( point_drawable, interactive, child):
       dy = y -self.y
       self.move( dx, dy)
 
+
   def focus( self):
     self.focus_item = self.paper.create_oval( self.x-4, self.y-4, self.x+4, self.y+4)
     if self.item:
       self.paper.lift( self.item)
+
 
   def unfocus( self):
     if self.focus_item:
       self.paper.delete( self.focus_item)
       self.focus_item = None
 
+
   def select( self):
     if not self.selector:
       self.selector = self.paper.create_rectangle( self.x-2, self.y-2, self.x+2, self.y+2)
       self.paper.lower( self.selector)
 
+
   def unselect( self):
     if self.selector:
       self.paper.delete( self.selector)
       self.selector = None
-    
+
+
   def get_xy( self):
     return self.x, self.y
+
 
   def delete( self):
     self.unselect()
@@ -235,12 +243,14 @@ class point( point_drawable, interactive, child):
       self.paper.delete( self.item)
       self.item = None
 
+
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
     x, y, z = Screen.read_xml_point( package)
     self.x, self.y = self.paper.real_to_screen_coords( (x,y))
     #self.z = int( package.getAttribute( 'z') )
-  
+
+
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -251,15 +261,18 @@ class point( point_drawable, interactive, child):
                                         ('y', y)))
     return pnt
 
+
   def lift( self):
     if self.selector:
       self.paper.lift( self.selector)
     if self.item:
       self.paper.lift( self.item)
 
+
   def change_type( self, type):
     self.type = type
     self.redraw()
+
 
   def transform( self, tr):
     x, y = tr.transform_xy( self.x, self.y)
@@ -297,6 +310,7 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
                           with_font.meta__undo_properties +\
                           area_colored.meta__undo_properties
 
+
   def __init__( self, paper, xy=(), package=None):
     area_colored.__init__( self)
     point_drawable.__init__( self)
@@ -316,7 +330,8 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
       self.read_package( package)
     # standard values
     self.update_font()
-    
+
+
   def draw( self):
     self.update_font()
     self.item = self.paper.create_text( self.x, self.y, text='+', tags='plus', font = self.font, fill=self.line_color)
@@ -333,27 +348,33 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
       self.paper.coords( self.selector, self.paper.bbox( self.item))
       self.paper.itemconfig( self.selector, fill=self.area_color, outline=self.area_color)
 
+
   def focus( self):
     if self.selector:
       self.paper.itemconfig( self.selector, fill='grey')
+
 
   def unfocus( self):
     if self.selector:
       self.paper.itemconfig( self.selector, fill=self.area_color)
 
+
   def get_id( self):
     return self.item
+
 
   def select( self):
     if self.selector:
       self.paper.itemconfig( self.selector, outline='black')
     self._selected = 1
- 
+
+
   def unselect( self):
     if self.selector:
       self.paper.itemconfig( self.selector, outline=self.area_color)
     self._selected = 0
-    
+
+
   def move( self, dx, dy):
     self.x += dx
     self.y += dy
@@ -362,10 +383,12 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
     if self.selector:
       self.paper.move( self.selector, dx, dy)
 
+
   def move_to( self, x, y):
     dx = x - self.x
     dy = y - self.y
     self.move( dx, dy)
+
 
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
@@ -374,12 +397,13 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
     pnt = package.getElementsByTagName( 'point')[0]
     self.x, self.y, z = Screen.read_xml_point( pnt)
     if package.getAttribute( 'font_size'):
-      self.font_size = int( package.getAttribute( 'font_size')) 
+      self.font_size = int( package.getAttribute( 'font_size'))
     if package.getAttribute( 'color'):
       self.line_color = package.getAttribute( 'color')
     if package.getAttribute( 'background-color'):
       self.area_color = package.getAttribute( 'background-color')
-  
+
+
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -396,13 +420,16 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
       pls.setAttribute( 'background-color', self.area_color)
     return pls
 
+
   def delete( self):
     self.paper.delete( self.selector)
     self.paper.unregister_id( self.item)
     self.paper.delete( self.item)
 
+
   def get_xy( self):
     return self.x, self.y
+
 
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
@@ -412,13 +439,16 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
       dx = self.font.measure( '+') / 2
       return self.x + dx, self.y + 0.7*self.font_size, self.x - dx, self.y - 0.3*self.font_size
 
+
   def scale_font( self, ratio):
     """scales font of plus. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
 
+
   def update_font( self):
     self.font = tkFont.Font( family=self.font_family, size=self.font_size)
+
 
   def lift( self):
     if self.selector:
@@ -441,7 +471,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
                           text_like.meta__undo_properties +\
                           area_colored.meta__undo_properties +\
                           ("xml_ftext",)
-  
+
 
   def __init__( self, paper, xy=(), text='', package=None):
     text_like.__init__( self)
@@ -463,11 +493,12 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.focus_item = None
     self.justify = 'right'
 
-  # public methods
 
+  # public methods
   def set_xy( self, x, y):
     self.x = round( x, 2)
     self.y = round( y, 2)
+
 
   def draw( self):
     "draws text"
@@ -481,6 +512,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self.paper.lift( self.item)
     self.paper.register_id( self.item, self)
 
+
   def redraw( self):
     self.paper.unregister_id( self.item)
     self.paper.delete( self.item)
@@ -492,20 +524,21 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if self._selected:
       self.select()
 
+
   def focus( self):
     if self.selector:
       self.paper.itemconfig( self.selector, fill='gray')
+
 
   def unfocus( self):
     if self.selector:
       self.paper.itemconfig( self.selector, fill=self.area_color)
 
+
   def select( self):
     if self.selector:
       self.paper.itemconfig( self.selector, outline='black')
     self._selected = 1
-
-
 
 
   def unselect( self):
@@ -586,7 +619,6 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.area_color = package.getAttribute( 'background-color')
 
 
-
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -626,19 +658,15 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     return self.ftext.bbox()
 
 
-
   def update_font( self):
     #if 'font_family' in self.__dict__ and 'font_size' in self.__dict__:
     self.font = tkFont.Font( family=self.font_family, size=self.font_size)
-
 
 
   def scale_font( self, ratio):
     """scales font of text. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
-
-
 
 
   def lift( self):
@@ -648,5 +676,4 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.ftext.lift()
     if self.item:
       self.paper.lift( self.item)
-
 
