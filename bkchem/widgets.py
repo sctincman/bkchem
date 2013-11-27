@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Set of specialized widgets, such as color-selection-buttons etc.
 
-"""set of specialized widgets, such as color-selection-buttons etc."""
+"""
 
 from __future__ import division
 
@@ -81,7 +82,7 @@ class ColorButton( Tkinter.Button):
       self.rgb = color[0]
       self.configure( background=self.color, activebackground=self.color,
                       activeforeground=self.foreground_color, foreground=self.foreground_color)
-      
+
 
 
 class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
@@ -120,7 +121,7 @@ class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
       self.button.configure( state="disabled")
     else:
       self.button.configure( state="active")
-  
+
 
 
 
@@ -212,7 +213,7 @@ class FontFamilyChooser( Pmw.ScrolledListBox):
 
 class WidthCounter( Pmw.Counter):
   """the counter widget used to implement WidthChooser"""
-  
+
   def __init__( self, parent, value, label=None):
     l = label or _('Width')
     Pmw.Counter.__init__( self,
@@ -227,7 +228,7 @@ class WidthCounter( Pmw.Counter):
 
 class LengthCounter( Pmw.Counter):
   """the counter widget used to implement LengthChooser"""
-  
+
   def __init__( self, parent, value, label=None):
     l = label or _('Length')
     Pmw.Counter.__init__( self,
@@ -242,7 +243,7 @@ class LengthCounter( Pmw.Counter):
 
 class RatioCounter( Pmw.Counter):
   """Counter used to input ratio information"""
-  
+
   def __init__( self, parent, value, label=None):
     l = label or _('Ratio')
     Pmw.Counter.__init__( self,
@@ -297,7 +298,8 @@ class ValueWithUnitParent( Tkinter.Frame):
 
   def getvalue( self):
     return '%s%s' % (self.counter.getvalue(), self.unit.getvalue())
-    
+
+
 
 class WidthChooser( ValueWithUnitParent):
 
@@ -327,7 +329,7 @@ class FileSelectionEntry( Tkinter.Frame):
     self.value = value
     self.filetypes = filetypes
     self.type = type
-    
+
     Tkinter.Label( self, text=prompt).pack( side="left", padx=0)
 
     self.entry = Tkinter.Entry( self, width=40)
@@ -366,8 +368,6 @@ class FileSelectionEntry( Tkinter.Frame):
   def get( self):
     return self.entry.get()
 
-
-  
 
 
 class FileSelectionWithText( Pmw.Dialog):
@@ -474,7 +474,7 @@ class HTMLLikeInput( Tkinter.Frame, object):
     else:
       self.editPool.insert( Tkinter.INSERT, '<%s></%s>' % (tag, tag))
       self.editPool.icursor( self.editPool.index( Tkinter.INSERT) - len( tag) - 3)
-      
+
 
   def _key( self, event):
     if len(event.keysym) > 1 and event.keysym in keysyms:
@@ -511,8 +511,3 @@ def font_size_validator( input):
       return Pmw.PARTIAL
   return Pmw.ERROR
 
-
-
-
-
-    
