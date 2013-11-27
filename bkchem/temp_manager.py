@@ -26,17 +26,18 @@
 """
 
 import math
-from molecule import molecule
+import os.path
+import xml.sax
 import xml.dom.minidom as dom
+
 from warnings import warn
 from oasa.transform import transform
 
-import config
-import os.path
-import os_support
-import xml.sax
 import misc
+import config
+import os_support
 
+from molecule import molecule
 from singleton_store import Store, Screen
 
 
