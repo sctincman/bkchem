@@ -52,13 +52,12 @@ class logger:
   def __init__( self):
     self.handling = normal
 
-    
 
   def log( self, message, message_type="info", delay=4):
     """message_type is one of (info, warning, error, debug, hint),
-    delay means the amount of time for which the text should be visible (for 'status-bar' only)""" 
+    delay means the amount of time for which the text should be visible (for 'status-bar' only)"""
     if message_type not in logger.type_to_text:
-      raise ValueError, "unknown message type %s" % message_type
+      raise ValueError("unknown message type %s" % message_type)
 
     handle = self.handling[ message_type]
     self.__class__.__dict__['log_to_'+handle]( self, message, message_type=message_type, delay=delay)
