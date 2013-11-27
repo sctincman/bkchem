@@ -24,6 +24,11 @@
 from __future__ import division
 from __future__ import generators
 
+try:
+  import tkinter.font as tkFont
+except ImportError:
+  import tkFont
+
 from math import atan2, sin, cos, pi, sqrt
 import misc
 from warnings import warn
@@ -31,7 +36,6 @@ from ftext import ftext
 import dom_extensions
 import xml.dom.minidom as dom
 import operator
-import tkFont
 from parents import meta_enabled, container, with_line, text_like, line_colored
 from parents import area_colored, point_drawable, interactive, drawable, top_level
 from parents import child, with_font
