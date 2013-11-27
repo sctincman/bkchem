@@ -17,6 +17,10 @@
 
 #--------------------------------------------------------------------------
 
+try:
+  import tkinter.font as tkFont
+except ImportError:
+  import tkFont
 
 import misc
 import marks
@@ -29,7 +33,6 @@ from parents import meta_enabled, area_colored, point_drawable, text_like, child
 from singleton_store import Store, Screen
 from ftext import ftext
 import xml.dom.minidom as dom
-import tkFont
 import debug
 from tuning import Tuning
 import operator
