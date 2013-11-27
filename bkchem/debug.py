@@ -17,10 +17,13 @@
 
 #--------------------------------------------------------------------------
 
+from __future__ import print_function
 
-import config
 import sys
 import inspect
+
+import config
+
 
 
 def log( *args, **kw):
@@ -40,7 +43,7 @@ def log( *args, **kw):
       for i in levels:
         if i < len( frames):
           frame = frames[i][0]
-          print "  %s:%d -> %s()" % (frame.f_globals.get('__file__'), frame.f_lineno, frame.f_code.co_name)
+          print("  %s:%d -> %s()" % (frame.f_globals.get('__file__'), frame.f_lineno, frame.f_code.co_name))
     finally:
       del frames
       try:
@@ -48,8 +51,6 @@ def log( *args, **kw):
       except:
         pass
     for arg in args:
-      print >> out, arg,
-    print >> out
+      print(arg, end=' ', file=out)
+    print(file=out)
 
-
-  
