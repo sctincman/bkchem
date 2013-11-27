@@ -23,7 +23,9 @@
 
 from __future__ import division
 
+import re
 import math
+import os.path
 try:
     import tkinter as Tkinter
     import tkinter.font as tkFont
@@ -36,13 +38,12 @@ except ImportError:
     import tkFileDialog
 
 from oasa import geometry
+from keysymdef import keysyms
+
 import Pmw
 import data
-import config
-import re
 import misc
-import os.path
-from keysymdef import keysyms
+import config
 
 from singleton_store import Store
 
