@@ -108,13 +108,13 @@ class vertex_common( object):
     """sets the mark and takes care of charge and multiplicity changes;
     mark may be either the class or mark name"""
     mark_name, _ = self._mark_to_name_and_class( mark)
-    
+
     if not self.meta__allowed_marks or mark_name in self.meta__allowed_marks:
       m = self.create_mark( mark=mark, angle=angle, angle_resolution=angle_resolution)
       self._set_mark_helper( mark, sign=1)
       return m
     else:
-      raise ValueError, "not a allowed mark for this type - %s" % mark
+      raise ValueError("not a allowed mark for this type - %s" % mark)
 
 
 
@@ -132,9 +132,9 @@ class vertex_common( object):
       if mark in self.marks:
         m = mark
       else:
-        raise ValueError, "trying to remove a mark that does not belong to this atom"
+        raise ValueError("trying to remove a mark that does not belong to this atom")
     else:
-      raise TypeError, "mark is on unknown type " + str( mark)
+      raise TypeError("mark is on unknown type " + str( mark))
 
     m.delete()
     self.marks.remove( m)
@@ -142,15 +142,11 @@ class vertex_common( object):
     return m
 
 
-
   def _set_mark_helper( self, mark, sign=1):
     mark_name, _ = self._mark_to_name_and_class( mark)
     if mark_name == "atom_number":
       if not self.get_marks_by_type( "atom_number"):
         self.show_number = False
-
-    
-
 
 
   def create_mark( self, mark='radical', angle='auto', draw=1, angle_resolution=1):
@@ -166,9 +162,9 @@ class vertex_common( object):
         bbox = self.bbox()
         x2 = self.x + round( cos( angle) *1000)
         y2 = self.y + round( sin( angle) *1000)
-        x1, y1 = geometry.intersection_of_line_and_rect( (self.x,self.y,x2,y2), bbox, round_edges=0)      
+        x1, y1 = geometry.intersection_of_line_and_rect( (self.x,self.y,x2,y2), bbox, round_edges=0)
         dist = geometry.point_distance( self.x, self.y, x1, y1) + round( mark_class.standard_size / 2)
-        
+
       x = self.x + round( cos( angle) *dist)
       y = self.y + round( sin( angle) *dist)
       #ang = angle
@@ -212,13 +208,12 @@ class vertex_common( object):
     if mark_class.meta__mark_positioning == 'righttop':
       bbox = self.bbox()
       return bbox[2]+2, bbox[1]
-    
+
     # deal with marks in linear_form
     if self.is_part_of_linear_fragment():
       if mark_name == "atom_number":
         bbox = self.bbox()
         return int( self.x-0.5*self.font_size), bbox[1]-2
-    
 
     if not self.show:
       dist = 5 + round( mark_class.standard_size / 2)
@@ -262,13 +257,12 @@ class vertex_common( object):
     dist = geometry.point_distance( x, y, x1, y1) + round( mark_class.standard_size / 2)
     # //
 
-    
     retx, rety = geometry.point_on_circle( x, y, dist, direction=(cos(angle), sin( angle)), resolution=resolution)
 
     # in visible text x,y are not on the center, therefore we compensate for it
 #    if self.show:
 #      y -= 0.166 * self.font_size
-    
+
     return retx, rety
 
 
@@ -452,7 +446,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     coords of the vertex"""
     if self.is_part_of_linear_fragment():
       self.pos = 'center-first'
-      return 
+      return
     atms = self.get_neighbors()
     p = 0
     for a in atms:
@@ -525,7 +519,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       self.unselect()
     if not self.dirty:
       pass
-      #print "redrawing non-dirty atom"
+      #print("redrawing non-dirty atom")
     self.dirty = 0
 
 
@@ -639,13 +633,8 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.redraw()
 
 
-
-
-
   def update_font( self):
     self.font = tkFont.Font( family=self.font_family, size=self.font_size)
-        
-
 
 
   def scale_font( self, ratio):
@@ -701,10 +690,10 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
         dx = self.font.measure( self.text[0]) / 2
         descent = self.font.metrics()['descent']
         ascent = self.font.metrics()['ascent']
-        return (self.x + length - dx, self.y + descent, self.x - dx, self.y - ascent) 
+        return (self.x + length - dx, self.y + descent, self.x - dx, self.y - ascent)
       else:
         dx = self.font.measure( self.text[-1]) / 2
-        return (self.x + dx, self.y + descent, self.x - length + dx, self.y - ascent) 
+        return (self.x + dx, self.y + descent, self.x - length + dx, self.y - ascent)
 
 
   def is_part_of_linear_fragment( self):
@@ -715,4 +704,4 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       return True
     else:
       return False
-    
+
