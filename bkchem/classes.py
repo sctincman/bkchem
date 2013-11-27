@@ -51,7 +51,7 @@ from singleton_store import Screen
 
 ##-------------------- STANDARD CLASS ------------------------------
 
-class standard:
+class standard(object):
 
   def __init__( self):
     # common
