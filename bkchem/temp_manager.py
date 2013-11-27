@@ -21,16 +21,16 @@
 #
 #--------------------------------------------------------------------------
 
-"""template manager resides here"""
+"""Template manager resides here.
+
+"""
 
 import math
-try:
-  from oasa.oasa.transform import transform
-except ImportError:
-  from oasa.transform import transform
 from molecule import molecule
 import xml.dom.minidom as dom
 from warnings import warn
+from oasa.transform import transform
+
 import config
 import os.path
 import os_support
