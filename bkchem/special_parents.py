@@ -17,25 +17,26 @@
 
 #--------------------------------------------------------------------------
 
+import oasa
+import types
+import operator
+import xml.dom.minidom as dom
 try:
   import tkinter.font as tkFont
 except ImportError:
   import tkFont
 
+from oasa import geometry
+from math import sin, cos, sqrt, pi
+
 import misc
 import marks
 
-from oasa import geometry
-from math import sin, cos, sqrt, pi
-import types
-import oasa
-from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
-from singleton_store import Store, Screen
 from ftext import ftext
-import xml.dom.minidom as dom
-import debug
 from tuning import Tuning
-import operator
+from singleton_store import Store, Screen
+from parents import meta_enabled, area_colored, point_drawable, text_like, child_with_paper
+
 
 
 class vertex_common( object):
