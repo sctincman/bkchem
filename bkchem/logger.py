@@ -29,11 +29,12 @@ from singleton_store import Store
 
 
 
-class logger:
-  """provides logging capabilities based on the message types,
-  each type is associated with a string describing how to handle it,
-  it can be one of ('status_bar','dialog','console','ignore')"""
+class logger(object):
+  """Provides logging capabilities based on the message types.
 
+  Each type is associated with a string describing how to handle it,
+  it can be one of ('status_bar','dialog','console','ignore').
+  """
   type_to_text = {'info':_('Info'),
                   'error':_('Error'),
                   'debug':_('Debug'),
