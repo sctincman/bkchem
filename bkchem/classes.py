@@ -77,7 +77,7 @@ class standard(object):
 
 
   def __eq__( self, other):
-    for (k,v) in self.__dict__.iteritems():
+    for k, v in self.__dict__.items():
       if str( v) != str( other.__dict__[ k]):
         return 0
     return 1
