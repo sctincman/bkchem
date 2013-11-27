@@ -23,17 +23,24 @@
 
 from __future__ import division
 
-import Tkinter
-import tkColorChooser
-import tkFont
 import math
+try:
+    import tkinter as Tkinter
+    import tkinter.font as tkFont
+    import tkinter.colorchooser as tkColorChooser
+    import tkinter.filedialog as tkFileDialog
+except ImportError:
+    import Tkinter
+    import tkFont
+    import tkColorChooser
+    import tkFileDialog
+
 from oasa import geometry
 import Pmw
 import data
 import config
 import re
 import misc
-import tkFileDialog
 import os.path
 from keysymdef import keysyms
 
