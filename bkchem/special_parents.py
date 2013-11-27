@@ -18,7 +18,6 @@
 #--------------------------------------------------------------------------
 
 import oasa
-import types
 import operator
 import xml.dom.minidom as dom
 try:
@@ -105,11 +104,11 @@ class vertex_common( object):
         self.remove_mark( numbers[0])
 
 
-  def _mark_to_name_and_class( self, mark):
-    if type( mark) in (types.ClassType, types.TypeType):
+  def _mark_to_name_and_class(self, mark):
+    if isinstance(mark, type):
       return mark.__name__, mark
     else:
-      return mark, marks.__dict__[ mark]
+      return mark, marks.__dict__[mark]
 
 
   def set_mark( self, mark='radical', angle='auto', draw=1, angle_resolution=1):
@@ -130,7 +129,7 @@ class vertex_common( object):
     """mark is either mark instance of type, in case of instance, the instance is removed,
     in case of type a random mark of this type (if present is removed).
     Returns the removed mark or None"""
-    if type( mark) == types.StringType:
+    if misc.myisstr(mark):
       ms = [m for m in self.marks if m.__class__.__name__ == mark]
       if ms:
         m = ms[0]
