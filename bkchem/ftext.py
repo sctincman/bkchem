@@ -17,21 +17,25 @@
 
 #--------------------------------------------------------------------------
 
+"""Extended methods for formating text items (for canvas).
 
-"""this module provides extended methods for formating of text items (for canvas)
 ftext is XML based. Tags used for formating are:
-sub - (sub)script, sup - (sup)erscript, b - bold, i - italic"""
+sub - (sub)script,
+sup - (sup)erscript,
+b - bold,
+i - italic
+"""
 
-import dom_extensions
-import xml.sax
 import sys
 import copy
+import xml.sax
 try:
   import tkinter.font as tkFont
 except ImportError:
   import tkFont
 
 import tuning
+import dom_extensions
 
 
 
