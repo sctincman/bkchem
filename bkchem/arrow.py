@@ -110,8 +110,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def read_standard_values( self, standard, old_standard=None):
     meta_enabled.read_standard_values( self, standard, old_standard=old_standard)
     if not old_standard or (standard.line_width != old_standard.line_width):
-      self.line_width = Screen.any_to_px( standard.line_width)    
-    
+      self.line_width = Screen.any_to_px( standard.line_width)
+
 
 
   def draw( self):
@@ -124,7 +124,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       # here we call a private draw method corresponding to the current type
       self.items = getattr(self,'_draw_'+self.type)()
       [self.paper.register_id( i, self) for i in self.items]
-    
+
   def redraw( self):
     if self.items:
       map( self.paper.unregister_id, self.items)
@@ -176,7 +176,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.items = []
 
   def is_empty_or_single_point( self):
-    return len( self.points) < 2 
+    return len( self.points) < 2
 
   def move( self, dx, dy):
     [p.move( dx, dy) for p in self.points]
@@ -204,7 +204,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.line_color = package.getAttribute( 'color')
     for p in package.getElementsByTagName( 'point'):
       self.points.append( point( self.paper, arrow=self, package=p))
-  
+
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -239,7 +239,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     return self.paper.list_bbox( self.items)
 
   def set_pins( self, start=None, end=None):
-    st, en = self.get_pins()      
+    st, en = self.get_pins()
     if start != None:
       st = start
     if end != None:
@@ -263,7 +263,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     self.redraw()
 
   # -- private drawing methods for different arrow types --
-  
+
   def _draw_normal_old( self):
     ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
     item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
@@ -295,7 +295,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
     return items
 
-  
+
 
   def _draw_electron( self):
     coords = [p.get_xy() for p in self.points]
@@ -445,7 +445,7 @@ def single_sided_arrow_head (x1,y1,x2,y2,a,b,c,lw):
   a,b,c like tkinter
   a = leght from point 2 where the head touches the line (out point A)
   b = total lenght of the head (defines also help point P on the line)
-  c = width 
+  c = width
   Point B will be the outer Point of the head
   rl = "r" the head is on the right , = "l" left,
   lw is the line_width of the line the arrow will be attached to'''
@@ -463,7 +463,7 @@ def double_sided_arrow_head (x1,y1,x2,y2,a,b,c):
   a,b,c like tkinter
   a = leght from point 2 where the head touches the line (out point A)
   b = total lenght of the head (defines also help point P on the line)
-  c = width 
+  c = width
   Point B will be the outer Point of the head
   rl = "r" the head is on the right , = "l" left'''
   xa,ya = x2,y2
