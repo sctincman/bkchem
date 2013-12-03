@@ -24,6 +24,7 @@ sub - (sub)script, sup - (sup)erscript, b - bold, i - italic"""
 
 import dom_extensions
 import xml.sax
+import sys
 import copy
 try:
   import tkinter.font as tkFont
@@ -137,11 +138,18 @@ class ftext(object):
     return bbox
 
 
-
   def get_chunks( self):
     text = self.sanitized_text()
+    # BytesIO expects byte string (called by xml.sax.parseString)
+    if sys.version_info[0] > 2:
+      if isinstance(text, str):
+        text = text.encode('utf-8')
+    else:
+      if isinstance(text, unicode):
+        text = text.encode('utf-8')
     handler = FtextHandler()
     xml.sax.parseString( text, handler)
+    # Chunks will decode and store unicode text
     chunks = []
     for ch in handler.chunks:
       parts = ch.text.split("\n")
@@ -201,15 +209,28 @@ class ftext(object):
 
   @classmethod
   def sanitize_text( cls, text):
-    if type( text) != unicode:
-      text = text.decode('utf-8')
-    text = unescape_html_entity_references( text).encode('utf-8')
-    x = "<ftext>%s</ftext>" % text
+    text = unescape_html_entity_references(text)
+    # Explicitly decode byte strings to avoid polluting results with b''
+    if sys.version_info[0] > 2:
+      if isinstance(text, bytes):
+        text = text.decode('utf-8')
+    else:
+      if isinstance(text, str):
+        text = text.decode('utf-8')
+    # BytesIO expects byte string (called by xml.sax.parseString)
+    x = ("<ftext>%s</ftext>" % text).encode('utf-8')
     try:
       xml.sax.parseString( x, xml.sax.ContentHandler())
     except xml.sax.SAXParseException:
       text = xml.sax.saxutils.escape( text)
       x = "<ftext>%s</ftext>" % text
+    # Handle only unicode strings in the rest of the program
+    if sys.version_info[0] > 2:
+      if isinstance(x, bytes):
+        x = x.decode('utf-8')
+    else:
+      if isinstance(x, str):
+        x = x.decode('utf-8')
     return x
 
 
@@ -217,6 +238,13 @@ class ftext(object):
 class text_chunk(object):
 
   def __init__( self, text, attrs=None, newline_after=False):
+    # Internally use only unicode strings
+    if sys.version_info[0] > 2:
+      if isinstance(text, bytes):
+        text = text.decode('utf-8')
+    else:
+      if isinstance(text, str):
+        text = text.decode('utf-8')
     self.text = text
     self.attrs = attrs or set()
     self.item = None
@@ -264,7 +292,16 @@ except ImportError:
 
 
 def unescape_html_entity_references( text):
-  return re.sub( "&([a-zA-Z]+);", _unescape_one_html_entity_reference, text)
+  reX = "&([a-zA-Z]+);"
+  # Type of text and reX has to be the same
+  if sys.version_info[0] > 2:
+    if isinstance(text, bytes):
+      reX = reX.encode('utf-8')
+  else:
+    if isinstance(text, unicode):
+      reX = reX.decode('utf-8')
+  return re.sub(reX , _unescape_one_html_entity_reference, text)
+
 
 def _unescape_one_html_entity_reference( m):
   """we will use this function inside a regexp to replace entities"""
