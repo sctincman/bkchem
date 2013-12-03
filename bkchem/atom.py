@@ -232,7 +232,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     else:
       #  otherwise always center the first letter
       self.pos = "center-first"
-  
+
 
   ## // -------------------- END --------------------
 
@@ -286,11 +286,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     return False
 
 
-
-
-
-
-
   def draw( self, redraw=False):
     "draws atom with respect to its properties"
     if self.show:
@@ -307,9 +302,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self._reposition_on_redraw = 0
 
 
-
-
-
   def focus( self):
     if self.show:
       drawable_chem_vertex.focus( self)
@@ -319,16 +311,12 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.paper.lift( self.item)
 
 
-
-
   def unfocus( self):
     if self.show:
       drawable_chem_vertex.unfocus( self)
     if self.focus_item:
       self.paper.delete( self.focus_item)
       self.focus_item = None
-
-
 
 
   def select( self):
@@ -344,8 +332,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self._selected = 1
 
 
-
-
   def unselect( self):
     if self.show:
       drawable_chem_vertex.unselect( self)
@@ -353,7 +339,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.paper.delete( self.selector)
       self.selector = None
       self._selected = 0
-
 
 
   def read_package( self, package):
@@ -419,7 +404,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.free_sites = int( package.getAttribute( 'free_sites'))
 
 
-
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -432,7 +416,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     if self.charge:
       a.setAttribute( "charge", str( self.charge))
     #show attribute is set only when non default
-    if (self.show and self.symbol=='C') or (not self.show and self.symbol!='C'): 
+    if (self.show and self.symbol=='C') or (not self.show and self.symbol!='C'):
       a.setAttribute('show', yes_no[ self.show])
     if self.show:
       a.setAttribute( 'pos', self.pos)
@@ -451,7 +435,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
-    else: 
+    else:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
     for o in self.marks:
@@ -471,9 +455,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     return a
 
 
-
-
-
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
@@ -481,9 +462,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     if self.free_valency > 0:
       ret['H'] = self.free_valency
     return ret
-
-
-
 
 
   # overrides special_parents.drawable_chem_vertex method
@@ -498,8 +476,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.multiplicity += 1*sign
     elif mark == "biradical":
       self.multiplicity += 2*sign
-    
-
 
 
   def update_after_valency_change( self):
@@ -509,11 +485,8 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.redraw()
 
 
-
-
   def __str__( self):
     return self.id
-
 
 
   def get_charge_from_marks( self):
@@ -526,9 +499,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     return res
 
 
-
-
-
   def generate_marks_from_cheminfo( self):
     if self.charge == 1 and not self.get_marks_by_type( 'plus'):
       self.create_mark( 'plus', draw=0)
@@ -538,9 +508,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.create_mark( 'radical', draw=0)
     elif self.multiplicity == 3 and not (self.get_marks_by_type( 'biradical') or len( self.get_marks_by_type( 'radical')) == 2):
       self.create_mark( 'biradical', draw=0)
-  
-
-
 
 
   def set_valency_from_name( self):
@@ -553,7 +520,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       if fv >= 0:
         return
 
-    
 
   def bbox( self, substract_font_descent=False):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
@@ -565,7 +531,6 @@ class atom( drawable_chem_vertex, oasa.atom):
       else:
         # we have to calculate it, the atoms was not drawn yet
         return self.x, self.y, self.x, self.y
-
 
 
   ##LOOK  (make static)
@@ -594,3 +559,4 @@ class atom( drawable_chem_vertex, oasa.atom):
   def after_undo( self):
     """this is run after undo"""
     self._clean_cache()
+
