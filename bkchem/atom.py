@@ -72,42 +72,52 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.set_name( 'C')
 
 
-
   ## ---------------------------------------- PROPERTIES ------------------------------
-      
+
   # symbol (overrides the oasa.atom.symbol property)
-  def _get_symbol( self):
+  @property
+  def symbol(self):
+    """Atom symbol.
+
+    """
     return self._symbol
 
-  def _set_symbol( self, symbol):
+
+  @symbol.setter
+  def symbol(self, symbol):
     oasa.atom._set_symbol( self, symbol)
     if self._symbol != 'C':
       self.show = True
 
-  symbol = property( _get_symbol, _set_symbol, None, "the atom symbol")
-
 
   # show
-  def _get_show( self):
+  @property
+  def show(self):
+    """Should the atom symbol be displayed?
+
+    Accepts both 0|1 and yes|no.
+    """
     return self._show
 
-  def _set_show( self, show):
+
+  @show.setter
+  def show(self, show):
     if show in data.booleans:
-      self._show = data.booleans.index( show)
+      self._show = data.booleans.index(show)
     else:
-      self._show = int( show)
+      self._show = int(show)
     self.dirty = 1
     self._reposition_on_redraw = 1
 
-  show = property( _get_show, _set_show, None,
-                   "should the atom symbol be displayed? accepts both 0|1 and yes|no")
-
 
   # show_hydrogens
-  def _get_show_hydrogens( self):
+  @property
+  def show_hydrogens(self):
     return self._show_hydrogens
 
-  def _set_show_hydrogens( self, show_hydrogens):
+
+  @show_hydrogens.setter
+  def show_hydrogens(self, show_hydrogens):
     if show_hydrogens in data.on_off:
       self._show_hydrogens = data.on_off.index( show_hydrogens)
     else:
@@ -115,38 +125,49 @@ class atom( drawable_chem_vertex, oasa.atom):
     self.dirty = 1
     self._reposition_on_redraw = 1
 
-  show_hydrogens = property( _get_show_hydrogens, _set_show_hydrogens)
-
 
   # charge (override of oasa.chem_vertex.charge)
-  def _get_charge( self):
-    return drawable_chem_vertex._get_charge( self)
+  @property
+  def charge(self):
+    return drawable_chem_vertex._get_charge(self)
 
-  def _set_charge( self, charge):
-    drawable_chem_vertex._set_charge( self, charge)
+
+  @charge.setter
+  def charge(self, charge):
+    drawable_chem_vertex._set_charge(self, charge)
     self.dirty = 1
-
-  charge = property( _get_charge, _set_charge)
-
 
 
   # valency
-  def _get_valency( self):
+  @property
+  def valency(self):
+    """Atom's (maximum) valency.
+
+    Used for hydrogen counting.
+    """
     try:
       self._valency
     except AttributeError:
       self.set_valency_from_name()
     return self._valency
 
-  def _set_valency( self, val):
-    drawable_chem_vertex._set_valency( self, val)
 
-  valency = property( _get_valency, _set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
-
+  @valency.setter
+  def valency(self, val):
+    drawable_chem_vertex._set_valency(self, val)
 
 
   # free-sites - replaces oasa.atom.free_sites
-  def _set_free_sites( self, free_sites):
+  @property
+  def free_sites(self):
+    """Free sites of the atom.
+
+    """
+    return self._free_sites
+
+
+  @free_sites.setter
+  def free_sites(self, free_sites):
     self._free_sites = free_sites
     marks = self.get_marks_by_type( "free_sites")
     if self._free_sites:
@@ -159,32 +180,33 @@ class atom( drawable_chem_vertex, oasa.atom):
         self.remove_mark( "free_sites")
 
 
-  def _get_free_sites( self):
-    return self._free_sites
+  @property
+  def free_sites_text(self):
+    """Atom's free_sites as text.
 
-  free_sites = property( _get_free_sites, _set_free_sites, None, "atoms free_sites")
-
-
-  def _get_free_sites_text( self):
-    """used by free-site mark"""
+    Used by free-site mark.
+    """
     if self.free_sites:
       return "[%d]" % self.free_sites
     else:
       return ""
 
-  free_sites_text = property( _get_free_sites_text, None, None, "atoms free_sites as text")
-
 
   # oxidation number as text
-  def _get_oxidation_number_text( self):
-    return data.roman_numbers[ self._get_oxidation_number()]
+  @property
+  def oxidation_number_text(self):
+    """Atom's oxidation number as text.
 
-  oxidation_number_text = property( _get_oxidation_number_text, None, None, "atoms oxidation number as text")
-
+    """
+    return data.roman_numbers[self._get_oxidation_number()]
 
 
   # xml_ftext (override drawable_chem_vertex.xml_ftext)
-  def _get_xml_ftext( self):
+  @property
+  def xml_ftext(self):
+    """Text used for rendering using the ftext class.
+
+    """
     ret = self.symbol
     if not self.pos:
       self.decide_pos()
@@ -217,9 +239,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     else:
       ret = ret + ch
     return ret.encode('utf-8')
-
-  xml_ftext = property( _get_xml_ftext, None, None, "the text used for rendering using the ftext class")
-
 
 
   ## // -------------------- END OF PROPERTIES --------------------------
