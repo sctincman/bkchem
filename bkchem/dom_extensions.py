@@ -57,6 +57,7 @@ def elementUnder( parent, name, attributes=()):
       a.setAttribute( i[0], i[1])
   return a
 
+
 def textOnlyElementUnder( parent, name, text, attributes=()):
   a = elementUnder( parent, name, attributes=attributes)
   if attributes:
@@ -64,7 +65,8 @@ def textOnlyElementUnder( parent, name, text, attributes=()):
       a.setAttribute( i[0], i[1])
   a.appendChild( parent.ownerDocument.createTextNode( text))
   return a
-  
+
+
 def getTextFromElement( element):
   text = ''
   for child in element.childNodes:
@@ -72,8 +74,10 @@ def getTextFromElement( element):
       text += child.nodeValue
   return text
 
+
 def childNodesWithoutEmptySpaces( node):
   return filter( isNotEmptyText, node.childNodes)
+
 
 def isNotEmptyText( element):
   empty = re.compile('^\s*$')
@@ -81,6 +85,7 @@ def isNotEmptyText( element):
     return 0
   else:
     return 1
+
 
 def getAllTextFromElement( element):
   """like getTextFromElement but mines text also from child nodes"""
@@ -92,13 +97,16 @@ def getAllTextFromElement( element):
       text += getAllTextFromElement( child)
   return text
 
+
 def setAttributes( element, attributes):
   for a in attributes:
     element.setAttribute( a[0], a[1])
-  
+
+
 def getAttributes( element, names):
   """returns a list of attribute values from a list of attr names"""
   return [element.getAttribute( n) for n in names]
+
 
 def getParentNameList( element):
   """returns a list of parent names (from father to grandfather...)"""
@@ -107,6 +115,7 @@ def getParentNameList( element):
     return [par.nodeName] + getParentNameList( par)
   else:
     return []
+
 
 def getFirstChildNamed( element, name):
   l = getChildrenNamed( element, name)
@@ -117,8 +126,7 @@ def getFirstChildNamed( element, name):
 
 
 def getChildrenNamed( element, name):
-  return [o for o in element.childNodes if (not o.nodeValue) and (o.localName == name)]  
-
+  return [o for o in element.childNodes if (not o.nodeValue) and (o.localName == name)]
 
 
 def isOnlyTags( text):
@@ -130,7 +138,7 @@ def isOnlyTags( text):
   if getAllTextFromElement( doc):
     return 0
   return 1
-  
+
 
 def simpleXPathSearch( element, path):
   atomic_paths = path.split( "/")
@@ -139,7 +147,6 @@ def simpleXPathSearch( element, path):
     search_with_path = lambda x: _atomicXPathSearch( x, atomic_path)
     out =  [j for i in map(search_with_path, out) for j in i]
   return out
-
 
 
 def _atomicXPathSearch( element, path):
@@ -152,5 +159,4 @@ def _atomicXPathSearch( element, path):
     return element.childNodes
   else:
     return getChildrenNamed( element, path) #element.getElementsByTagName( path)
-
 
