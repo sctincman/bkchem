@@ -16,17 +16,14 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""some extensions to DOM for more convenient work"""
+"""Some extensions to DOM for more convenient work.
+
+"""
 
 import re
 import xml.dom.minidom as dom
-import operator
-#from __future__ import division
+
 
 
 def safe_indent( element, level=0, step=2, dont_indent=("ftext","text")):
