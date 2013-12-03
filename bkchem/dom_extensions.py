@@ -108,7 +108,7 @@ def getAttributes( element, names):
 def getParentNameList( element):
   """returns a list of parent names (from father to grandfather...)"""
   par = element.parentNode
-  if par != None:
+  if par is not None:
     return [par.nodeName] + getParentNameList( par)
   else:
     return []
