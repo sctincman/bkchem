@@ -17,29 +17,29 @@
 
 #--------------------------------------------------------------------------
 
+"""Home for group - a vertex of a molecular graph.
 
-"""home for group - a vertex of a molecular graph"""
+"""
 
 from __future__ import division
 from __future__ import print_function
 
+import re
 import sys
+import oasa
 
 from warnings import warn
-import dom_extensions
 from oasa import periodic_table as PT
-import groups_table as GT
-from special_parents import drawable_chem_vertex
 from oasa.known_groups import name_to_smiles
 
 import data
-import re
 import debug
 import marks
-
-import oasa
+import dom_extensions
+import groups_table as GT
 
 from singleton_store import Store, Screen
+from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
