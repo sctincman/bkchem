@@ -123,7 +123,7 @@ class editPool( Frame):
 
   def _interpretButtonPressed( self, *e):
     t = self.editPool.get()
-    if string.lower( t) in groups_table:
+    if t.lower() in groups_table:
       self._setText( t)
       #self._setText( groups_table[ string.lower(t)]['text'])
       #self.editPool.insert(0, self.text)
