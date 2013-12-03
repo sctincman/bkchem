@@ -68,10 +68,13 @@ class textatom( drawable_chem_vertex):
   ## ---------------------------------------- PROPERTIES ------------------------------
 
   # symbol
-  def _get_symbol( self):
+  @property
+  def symbol(self):
     return self._symbol
 
-  def _set_symbol( self, symbol):
+
+  @symbol.setter
+  def symbol(self, symbol):
     try:
       t = unicode( symbol)
     except UnicodeDecodeError:
@@ -79,34 +82,32 @@ class textatom( drawable_chem_vertex):
     self._symbol = t
     self.dirty = 1
 
-  symbol = property( _get_symbol, _set_symbol)
-
-
 
   ## JUST TO MIMICK ATOM
   # show
-  def _get_show( self):
+  @property
+  def show(self):
+    """Should the atom symbol be displayed?
+
+    Accepts both 0|1 and yes|no.
+    """
     return 1
 
-  def _set_show( self, show):
-    pass
 
-  show = property( _get_show, _set_show, None,
-                   "should the atom symbol be displayed? accepts both 0|1 and yes|no")
+  @show.setter
+  def show(self, show):
+    pass
 
 
   # show_hydrogens
-  def _get_show_hydrogens( self):
+  @property
+  def show_hydrogens(self):
     return 1
 
-  def _set_show_hydrogens( self, show_hydrogens):
+
+  @show_hydrogens.setter
+  def show_hydrogens(self, show_hydrogens):
     pass
-
-  show_hydrogens = property( _get_show_hydrogens, _set_show_hydrogens)
-
-  ## //
-
-
 
 
   ## // -------------------- END OF PROPERTIES --------------------------
