@@ -79,8 +79,7 @@ class context_menu( Tkinter.Menu):
             tup[2].extend( objs)
 
     # then sort the items and polulate the menu
-    keys = items.keys()
-    keys.sort()
+    keys = sorted(items.keys())
     for key in keys:
       casc = Tkinter.Menu( self, tearoff=0)
       self.add_cascade( label=key, menu=casc)
