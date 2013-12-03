@@ -307,7 +307,10 @@ def _unescape_one_html_entity_reference( m):
   """we will use this function inside a regexp to replace entities"""
   hit = m.group(1)
   if hit not in ["amp","gt","lt"] and hit in name2codepoint:
-    return unichr( name2codepoint[hit])
+    if sys.version_info[0] > 2:
+      return chr(name2codepoint[hit])
+    else:
+      return unichr(name2codepoint[hit])
   else:
     return "&"+hit+";"
 
