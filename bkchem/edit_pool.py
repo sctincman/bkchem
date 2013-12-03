@@ -71,7 +71,7 @@ class editPool( Frame):
       self.interpretButton = None
 
     if 'asis' in buttons:
-      pix = Store.app.request( 'pixmap', name='asis')      
+      pix = Store.app.request( 'pixmap', name='asis')
       self.setButton = Button( self,
                                image=pix,
                                text=_('As is'),
@@ -120,7 +120,6 @@ class editPool( Frame):
     self.specialCharButton.pack( side='left')
     self.active = False
 
-      
 
   def _interpretButtonPressed( self, *e):
     t = self.editPool.get()
@@ -133,10 +132,12 @@ class editPool( Frame):
       self.text = re.sub( "\\\\n", "\n", self.text)
     self._quit()
 
+
   def _setButtonPressed( self, *e):
     self._setText( self.editPool.get())
     self.interpret = 0
     self._quit()
+
 
   def _numbersToSubButtonPressed( self, *e):
     self._setText( re.sub( "\d+", '<sub>\g<0></sub>', self.editPool.get()))
@@ -147,6 +148,7 @@ class editPool( Frame):
     self._setText( None)
     self.active = False
     self._quit()
+
 
   def _quit( self):
     self.grab_release()
@@ -166,7 +168,8 @@ class editPool( Frame):
     self.superscript.configure( state='disabled')
     self.subscript.configure( state='disabled')
     self.specialCharButton.configure( state='disabled')
-    
+
+
   def _enable( self):
     self.interpretButton.configure( state='normal')
     self.numbersToSubButton.configure( state='normal')
@@ -178,14 +181,17 @@ class editPool( Frame):
     self.subscript.configure( state='normal')
     self.specialCharButton.configure( state='normal')
 
+
   def _setText( self, text):
     self.text = text
     self._update()
+
 
   def _update( self):
     self.editPool.delete(0, last='end')
     if self.text:
       self.editPool.insert(0, self.text)
+
 
   def activate( self, text=None, select=1):
     """activates edit_pool and returns inserted value (None if cancel occured),
@@ -209,6 +215,7 @@ class editPool( Frame):
     else:
       return None
 
+
   def _tag_it( self, tag):
     if self.editPool.selection_present():
       self.editPool.insert( Tkinter.SEL_FIRST, '<%s>' % tag)
@@ -216,7 +223,7 @@ class editPool( Frame):
     else:
       self.editPool.insert( Tkinter.INSERT, '<%s></%s>' % (tag, tag))
       self.editPool.icursor( self.editPool.index( Tkinter.INSERT) - len( tag) - 3)
-      
+
 
   def _key( self, event):
     if len(event.keysym) > 1 and event.keysym in keysyms:
@@ -235,8 +242,6 @@ class editPool( Frame):
     if text != None:
       self.editPool.insert( Tkinter.INSERT, text)
     self.grab_set()
-
-
 
 
 class special_character_menu( Tkinter.Menu):
@@ -266,3 +271,4 @@ class special_character_menu( Tkinter.Menu):
     Tkinter.Menu.post( self, x, y)
     if os.name != 'nt':
       self.grab_set()
+
