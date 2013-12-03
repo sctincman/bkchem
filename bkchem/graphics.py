@@ -462,14 +462,12 @@ class polygon( vector_graphics_item, container, area_colored):
 
 
   # shape_defining_points
-  def _get_shape_defining_points( self):
+  @property
+  def shape_defining_points(self):
+    """List of point_drawable instances.
+
+    """
     return self.points
-
-  shape_defining_points = property( _get_shape_defining_points, None, None,
-                                    "should give list of point_drawable instances")
-
-
-
 
 
 
@@ -608,8 +606,10 @@ class polyline( vector_graphics_item, container, line_colored):
 
 
   # shape_defining_points
-  def _get_shape_defining_points( self):
+  @property
+  def shape_defining_points(self):
+    """List of point_drawable instances.
+
+    """
     return self.points
 
-  shape_defining_points = property( _get_shape_defining_points, None, None,
-                                    "should give list of point_drawable instances")
