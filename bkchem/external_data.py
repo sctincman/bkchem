@@ -123,9 +123,9 @@ class external_data_manager( object):
       try:
         self.records[ dclass][ obj][ category] = self.convert_to_type( value, t)
       except ValueError:
-        raise ValueError, "the value '%s' type does not match the definition." % str( value)
+        raise ValueError("the value '%s' type does not match the definition." % str( value))
     else:
-      raise ValueError, "the value '%s' type does not match the definition." % str( value)
+      raise ValueError("the value '%s' type does not match the definition." % str( value))
     
 
 
@@ -139,23 +139,23 @@ class external_data_manager( object):
         elif category in self.definitions[dclass][obj.object_type]:
           return None
         else:
-          raise ValueError, "wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass)
+          raise ValueError("wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass))
       elif obj.object_type in self.definitions[dclass].keys():
         return None
       else:
-        raise ValueError, "wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)        
-    raise ValueError, "not registered dclass: %s" % dclass
+        raise ValueError("wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)        )
+    raise ValueError("not registered dclass: %s" % dclass)
       
 
 
   def value_matches_definition( self, dclass, obj, category, value):
     """checks if the value is of the type provided in definition""" 
     if not dclass in self.records.keys():
-      raise ValueError, "not registered dclass: %s" % dclass
+      raise ValueError("not registered dclass: %s" % dclass)
     if not obj.object_type in self.definitions[dclass].keys():
-      raise ValueError, "wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)
+      raise ValueError("wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass))
     if not category in self.definitions[dclass][obj.object_type].keys():
-      raise ValueError, "wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass)
+      raise ValueError("wrong category '%s' for type '%s' in dclass '%s'" % ( category, obj.object_type, dclass))
 
     t = self.definitions[ dclass][ obj.object_type][ category]['type']
     if self.conforms_to_type( value, t):
@@ -326,3 +326,4 @@ class ExternalDataListSelection( Pmw.RadioSelect, object):
     if self.arrow:
       paper.delete( self.arrow)
       self.arrow = None
+
