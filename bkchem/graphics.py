@@ -364,7 +364,8 @@ class polygon( vector_graphics_item, container, area_colored):
 
   def draw( self):
     [p.draw() for p in self.points]
-    coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+    coords = (j for i in map(lambda b: b.get_xy(), self.points)
+                  for j in i)
     self.item = self.paper.create_polygon( tuple( coords),
                                            fill=self.area_color,
                                            outline=self.line_color,
@@ -382,7 +383,8 @@ class polygon( vector_graphics_item, container, area_colored):
     if not self.item:
       self.draw()
     else:
-      coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+      coords = (j for i in map(lambda b: b.get_xy(), self.points)
+                    for j in i)
       self.paper.coords( self.item, tuple( coords))
       self.paper.itemconfig( self.item, width=self.line_width, fill=self.area_color, outline=self.line_color)
 
@@ -502,7 +504,8 @@ class polyline( vector_graphics_item, container, line_colored):
 
   def draw( self):
     [p.draw() for p in self.points]
-    coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+    coords = (j for i in map(lambda b: b.get_xy(), self.points)
+                  for j in i)
     self.item = self.paper.create_line( tuple( coords),
                                         fill=self.line_color,
                                         width=self.line_width,
@@ -520,7 +523,8 @@ class polyline( vector_graphics_item, container, line_colored):
     if not self.item:
       self.draw()
     else:
-      coords = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+      coords = (j for i in map(lambda b: b.get_xy(), self.points)
+                    for j in i)
       self.paper.coords( self.item, tuple( coords))
       self.paper.itemconfig( self.item, width=self.line_width, fill=self.line_color, smooth=self.spline)
 
