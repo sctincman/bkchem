@@ -64,7 +64,7 @@ class context_menu( Tkinter.Menu):
 
         if vals and attr not in already_there:
           items[ vals[ I18N_NAME]] = []
-          self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [attr] 
+          self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [attr]
           for v in vals[ VALUES]:
             if type( v) == types.TupleType:
               items[ vals[ I18N_NAME]].append( (v[1], attr, objs, v[0]))
@@ -85,11 +85,10 @@ class context_menu( Tkinter.Menu):
       for (v1, attr, objs, v0) in items[ key]:
         casc.add_command( label=v1, command=misc.lazy_apply( self.callback, (attr, objs, v0)))
 
-    
     # commands
     if already_there and len( [o for o in self.selected if o.object_type != 'mark']):
       # marks do not have entry in properties dialog
-      self.add_separator()        
+      self.add_separator()
     i = False
     i += self.register_command_by_object_type( _("Center bond"), ('bond',), center)
     i += self.register_command_by_class_name( _("Expand group"), ('group',), expand_groups)
@@ -102,7 +101,7 @@ class context_menu( Tkinter.Menu):
       # marks do not have entry in properties dialog
       if i:
         self.add_separator()
-      self.add_command( label=_("Properties"), command=Store.app.paper.config_selected) 
+      self.add_command( label=_("Properties"), command=Store.app.paper.config_selected)
 
 
   def callback( self, command, objects, value):
@@ -120,7 +119,7 @@ class context_menu( Tkinter.Menu):
     else:
       if misc.set_attr_or_property( o, name, value):
         o.redraw()
-        self.changes_made = 1    
+        self.changes_made = 1
 
 
   def finish( self):
@@ -130,17 +129,14 @@ class context_menu( Tkinter.Menu):
       Store.app.paper.add_bindings()
 
 
-
   def close( self, event):
     self.unpost()
-
 
 
   def post( self, x, y):
     Tkinter.Menu.post( self, x, y)
     if os.name != 'nt':
       self.grab_set()
-    
 
 
   def register_command_by_object_type( self, label, types, callback):
@@ -150,14 +146,11 @@ class context_menu( Tkinter.Menu):
     return self._register_command( label, apply_to, callback)
 
 
-
-
   def register_command_by_class_name( self, label, types, callback):
     apply_to = []
     for t in types:
       apply_to.extend( [o for o in self.selected if o.__class__.__name__ == t])
     return self._register_command( label, apply_to, callback)
-
 
 
   def _register_command( self, label, apply_to, callback):
@@ -175,9 +168,6 @@ class context_menu( Tkinter.Menu):
       return self._register_command( label, apply_to, callback)
     else:
       return False
-      
-
-
 
 
   def apply_command( self, callback, apply_to):
@@ -187,11 +177,10 @@ class context_menu( Tkinter.Menu):
 
 
 
-
-# functions used in configurable 
+# functions used in configurable
 
 def draw_mark_circle( objs):
-  """used in configurable for marks to choose if there is any mark that ability to have circle around""" 
+  """used in configurable for marks to choose if there is any mark that ability to have circle around"""
   circled = [o for o in objs if hasattr( o, "draw_circle")]
   if not circled:
     return "draw_circle", None
@@ -225,7 +214,6 @@ def mark_size( objs):
     return "mark_size", None
 
 
-
 # command filters
 
 def mark_template_atom_filter( objs):
@@ -234,7 +222,6 @@ def mark_template_atom_filter( objs):
     return _("Mark as template atom"), set_template_atom, atms
   else:
     return None
-
 
 
 def mark_template_bond_filter( objs):
@@ -246,9 +233,7 @@ def mark_template_bond_filter( objs):
 
 
 
-
 # CONFIGURABLE VALUES
-
 
 config_values = { 'show':             ( _("Show symbol"),        (('yes',_("yes")),
                                                                   ('no', _("no")))),
@@ -307,7 +292,6 @@ VALUES = 1
 
 ## SETTER FUNCTIONS
 
-
 def set_show( o, value):
   o.show = value
   o.redraw()
@@ -320,7 +304,7 @@ def set_show_hydrogens( o, value):
     o.show = 1  # hydrogens imply showing the symbol
   o.redraw()
   [b.redraw() for b in o.paper.bonds_to_update( exclude_selected_bonds=False)]
-  
+
 
 def set_bond_auto_sign( o, value):
   o.auto_bond_sign = value
@@ -370,17 +354,17 @@ def center( bonds):
     b.center = 1
     b.redraw()
 
+
 def expand_groups( groups):
   all_gs = set( [g for g in groups if isinstance( g, group)])
   mols = set( [g.molecule for g in all_gs])
   for mol in mols:
     gs = set( mol.vertices) & set( all_gs)
     mol.expand_groups( atoms=gs)
-    
+
 
 def set_atom_number( atoms):
   interactors.set_atom_number( atoms)
-
 
 
 def set_template_atom( objs):
@@ -390,11 +374,9 @@ def set_template_atom( objs):
       a.molecule.mark_template_atom( a)
 
 
-
 def set_template_bond( objs):
   if len( objs) == 1:
     b = objs[0]
     if isinstance( b, oasa.bond):
       b.molecule.mark_template_bond( b)
-
 
