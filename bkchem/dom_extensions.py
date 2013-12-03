@@ -33,7 +33,7 @@ def safe_indent( element, level=0, step=2, dont_indent=("ftext","text")):
   """indents DOM tree. Does not add any extra whitespaces to text elements."""
   if not element.childNodes:
     pass
-  elif reduce( operator.add, [isinstance( child, dom.Text) for child in element.childNodes], 0):
+  elif any(isinstance(child, dom.Text) for child in element.childNodes):
     pass
   elif element.nodeName in dont_indent:
     pass
