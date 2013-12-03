@@ -140,7 +140,8 @@ class textatom( drawable_chem_vertex):
     self.y = y
     ft = package.getElementsByTagName('ftext')
     if ft:
-      self.set_name( reduce( operator.add, [e.nodeValue for e in ft[0].childNodes if isinstance( e, dom.Text)], '').encode('utf-8'))
+      self.set_name(''.join(e.nodeValue for e in ft[0].childNodes
+                                          if isinstance(e, dom.Text)))
     else:
       raise TypeError("Not text atom.")
     # font and fill color
