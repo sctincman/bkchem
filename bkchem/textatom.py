@@ -17,25 +17,25 @@
 
 #--------------------------------------------------------------------------
 
+"""Home for the textatom - a vertex of a molecular graph.
 
-"""home for the textatom - a vertex of a molecular graph"""
+"""
 
 from __future__ import division
 
-from warnings import warn
-import dom_extensions
-import xml.dom.minidom as dom
-import operator
-from oasa import periodic_table as PT
-from special_parents import drawable_chem_vertex
-import data
 import re
-import debug
-import marks
-
 import oasa
 
+from warnings import warn
+from oasa import periodic_table as PT
+
+import data
+import marks
+import dom_extensions
+import xml.dom.minidom as dom
+
 from singleton_store import Screen
+from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
