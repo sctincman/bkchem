@@ -162,7 +162,7 @@ class group( drawable_chem_vertex):
   def _set_group_type( self, group_type):
     allowed_types = (None,"builtin","explicit","implicit","chain","general")
     if group_type not in allowed_types:
-      raise ValueError, "group_type must be one of "+ str( allowed_types) + "got %s" % group_type
+      raise ValueError("group_type must be one of "+ str( allowed_types) + "got %s" % group_type)
     self.__group_type = group_type
 
   group_type = property( _get_group_type, _set_group_type)
@@ -270,7 +270,7 @@ class group( drawable_chem_vertex):
     if self.group_type:
       a.setAttribute( 'group-type', self.group_type)
     else:
-      raise ValueError, "trying to save group without set group-type"
+      raise ValueError("trying to save group without set group-type")
 
     if self.font_size != self.paper.standard.font_size \
        or self.font_family != self.paper.standard.font_family \
