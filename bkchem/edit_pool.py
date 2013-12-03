@@ -20,13 +20,18 @@
 
 """the 'edit pool' widget resides here"""
 
-from Tkinter import Frame, Button, Entry
-import Tkinter
 import config, re, string
 from groups_table import groups_table
 import misc
 from keysymdef import keysyms
 import os
+try:
+  import tkinter as Tkinter
+  from tkinter import Frame, Button, Entry
+except ImportError:
+  import Tkinter
+  from Tkinter import Frame, Button, Entry
+
 from xml.sax import saxutils
 
 from singleton_store import Store
