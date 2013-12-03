@@ -22,10 +22,13 @@
 ftext is XML based. Tags used for formating are:
 sub - (sub)script, sup - (sup)erscript, b - bold, i - italic"""
 
-import tkFont
 import dom_extensions
 import xml.sax
 import copy
+try:
+  import tkinter.font as tkFont
+except ImportError:
+  import tkFont
 
 import tuning
 
@@ -253,8 +256,12 @@ class FtextHandler ( xml.sax.ContentHandler):
 
 
 
-from htmlentitydefs import name2codepoint
 import re
+try:
+  from html.entities import name2codepoint
+except ImportError:
+  from htmlentitydefs import name2codepoint
+
 
 def unescape_html_entity_references( text):
   return re.sub( "&([a-zA-Z]+);", _unescape_one_html_entity_reference, text)
