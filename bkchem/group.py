@@ -84,10 +84,13 @@ class group( drawable_chem_vertex):
   ## ---------------------------------------- PROPERTIES ------------------------------
 
   # symbol
-  def _get_symbol( self):
+  @property
+  def symbol(self):
     return self._symbol
 
-  def _set_symbol(self, symbol):
+
+  @symbol.setter
+  def symbol(self, symbol):
     # Use unicode strings internally
     if sys.version_info[0] > 2:
       if isinstance(symbol, bytes):
@@ -98,25 +101,28 @@ class group( drawable_chem_vertex):
     self._symbol = symbol
     self.dirty = 1
 
-  symbol = property( _get_symbol, _set_symbol)
-
-
 
   #valency (overrides chem_vertex.valency)
-  def _get_valency( self):
+  @property
+  def valency(self):
+    """Atoms (maximum) valency, used for hydrogen counting.
+
+    """
     # is always equal to the currently occupied_valency so that free_valency is always == 0
     return self.occupied_valency
 
-  def _set_valency( self, val):
+
+  @valency.setter
+  def valency(self, val):
     pass
-
-  valency = property( _get_valency, _set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
-
-
 
 
   # xml_ftext (override drawable_chem_vertex.xml_ftext)
-  def _get_xml_ftext( self):
+  @property
+  def xml_ftext(self):
+    """Text used for rendering using the ftext class.
+
+    """
     if self.group_type == "builtin":
       if self.pos == 'center-first':
         return GT.groups_table[ self.symbol.lower()]['textf']
@@ -133,47 +139,46 @@ class group( drawable_chem_vertex):
       return x
 
 
-  xml_ftext = property( _get_xml_ftext, None, None, "the text used for rendering using the ftext class")
-
-
-
 
   ## JUST TO MIMICK ATOM
   # show
-  def _get_show( self):
+  @property
+  def show(self):
+    """Should the atom symbol be displayed?
+
+    Accepts both 0|1 and yes|no.
+    """
     return 1
 
-  def _set_show( self, show):
-    pass
 
-  show = property( _get_show, _set_show, None,
-                   "should the atom symbol be displayed? accepts both 0|1 and yes|no")
+  @show.setter
+  def show(self, show):
+    pass
 
 
   # show_hydrogens
-  def _get_show_hydrogens( self):
+  @property
+  def show_hydrogens(self):
     return 1
 
-  def _set_show_hydrogens( self, show_hydrogens):
+
+  @show_hydrogens.setter
+  def show_hydrogens(self, show_hydrogens):
     pass
-
-  show_hydrogens = property( _get_show_hydrogens, _set_show_hydrogens)
-
-  ## //
 
 
   #group_type
-  def _get_group_type( self):
+  @property
+  def group_type(self):
     return self.__group_type
 
-  def _set_group_type( self, group_type):
+
+  @group_type.setter
+  def group_type(self, group_type):
     allowed_types = (None,"builtin","explicit","implicit","chain","general")
     if group_type not in allowed_types:
       raise ValueError("group_type must be one of "+ str( allowed_types) + "got %s" % group_type)
     self.__group_type = group_type
-
-  group_type = property( _get_group_type, _set_group_type)
-
 
 
 
