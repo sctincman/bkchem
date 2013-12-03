@@ -17,7 +17,12 @@
 
 #--------------------------------------------------------------------------
 
-"""set of dialogs used by BKChem"""
+"""Set of dialogs used by BKChem.
+
+"""
+
+import os
+import re
 try:
     import tkinter as Tkinter
     import tkinter.font as tkFont
@@ -30,12 +35,12 @@ except ImportError:
 import Pmw
 import misc
 import data
-import re
-import widgets
 import classes
-import os
+import widgets
 import os_support
+
 from singleton_store import Store, Screen
+
 
 
 ## SCALE DIALOG
