@@ -239,8 +239,10 @@ class external_data_manager( object):
 
 
 
-
-from Tkinter import Entry
+try:
+  from tkinter import Entry
+except ImportError:
+  from Tkinter import Entry
 import Pmw
 
 
