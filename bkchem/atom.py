@@ -22,6 +22,8 @@
 
 from __future__ import division
 
+import sys
+
 from warnings import warn
 import dom_extensions
 import operator
@@ -244,6 +246,12 @@ class atom( drawable_chem_vertex, oasa.atom):
 
 
   def _set_name( self, name, interpret=1, check_valency=1, occupied_valency=None):
+    if sys.version_info[0] > 2:
+      if isinstance(name, bytes):
+        name = name.decode('utf-8')
+    else:
+      if isinstance(name, str):
+        name = name.decode('utf-8')
     # every time name is set the charge should be set to zero or the value specified by marks
     self.charge = self.get_charge_from_marks()
     self.dirty = 1
