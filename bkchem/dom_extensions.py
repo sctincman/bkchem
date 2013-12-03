@@ -137,7 +137,7 @@ def simpleXPathSearch( element, path):
   out = [element]
   for atomic_path in atomic_paths:
     search_with_path = lambda x: _atomicXPathSearch( x, atomic_path)
-    out =  reduce( operator.add, map( search_with_path, out), [])
+    out =  [j for i in map(search_with_path, out) for j in i]
   return out
 
 
