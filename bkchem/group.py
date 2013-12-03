@@ -21,6 +21,7 @@
 """home for group - a vertex of a molecular graph"""
 
 from __future__ import division
+from __future__ import print_function
 
 from warnings import warn
 import dom_extensions
@@ -332,7 +333,7 @@ class group( drawable_chem_vertex):
         self.group_graph = Store.gm.get_transformed_template( names.index( self.symbol), (x1,y1,x2,y2), type='atom1')
         replacement = self.group_graph.next_to_t_atom
       else:
-        print "unknown group %s" % a.symbol
+        print("unknown group %s" % a.symbol)
         return None
 
     elif self.group_type == "chain":
