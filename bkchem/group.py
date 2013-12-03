@@ -26,12 +26,10 @@ from __future__ import print_function
 from warnings import warn
 import dom_extensions
 from oasa import periodic_table as PT
-try:
-  from oasa.oasa.known_groups import name_to_smiles
-except ImportError:
-  from oasa.known_groups import name_to_smiles
 import groups_table as GT
 from special_parents import drawable_chem_vertex
+from oasa.known_groups import name_to_smiles
+
 import data
 import re
 import debug
