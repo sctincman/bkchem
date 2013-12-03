@@ -74,7 +74,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     line_colored.__init__( self)
     drawable.__init__( self)
     with_line.__init__( self)
-    # 
+    #
     self.type = type
     self.order = order
     self.item = None
@@ -402,7 +402,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       _k = 0
     else:
       _k = (1-self.double_length_ratio)/2
-      
+
     x1, y1, x2, y2 = where
     if self.bond_width == None:
       self._decide_distance_and_center()
@@ -423,7 +423,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.paper.itemconfig( self.item, fill='')
     # the small lines
     self.items = self._draw_hatch( (x1,y1,x2,y2))
-    return x1,y1,x2,y2    
+    return x1,y1,x2,y2
 
   def _draw_h2( self):
     if self.center == None or self.bond_width == None:
@@ -470,24 +470,24 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def _draw_hatch( self, coords):
     """returns list items"""
-    if not hasattr( self, 'equithick'): 
-      self.equithick = 0                
+    if not hasattr( self, 'equithick'):
+      self.equithick = 0
     x1, y1, x2, y2 = coords
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
-    xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0) 
+    xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0)
     d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
-    if d == 0:  
+    if d == 0:
       return []  # to prevent division by zero
-    dx1 = (x0 - xa)/d 
-    dy1 = (y0 - ya)/d 
-    dx2 = (2*x2 -x0 -2*x1 +xa)/d 
-    dy2 = (2*y2 -y0 -2*y1 +ya)/d 
-    # params for equithick	
-    dx = (x2 - x1)/d 
-    dy = (y2 - y1)/d 
-    ddx = x - x1 
-    ddy = y - y1 
+    dx1 = (x0 - xa)/d
+    dy1 = (y0 - ya)/d
+    dx2 = (2*x2 -x0 -2*x1 +xa)/d
+    dy2 = (2*y2 -y0 -2*y1 +ya)/d
+    # params for equithick
+    dx = (x2 - x1)/d
+    dy = (y2 - y1)/d
+    ddx = x - x1
+    ddy = y - y1
 
     # we have to decide if the first line should be at the position of the first atom
     draw_start = 0  # is index not boolean
@@ -505,17 +505,17 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # now we finally draw
     items = []
     for i in range( draw_start, int( round( d/ step_size)) +draw_end):
-      if self.equithick: 
+      if self.equithick:
         coords = [x1 + i*step_size*dx + ddx, y1 + i*step_size*dy + ddy, x1 + i*step_size*dx - ddx, y1 + i*step_size*dy - ddy]
-        if coords[0] == coords[2] and coords[1] == coords[3]: 
-          if (dx1+dx2) > (dy1+dy2):  
-            coords[0] += 1 
-          else: 
-            coords[1] += 1 
-      else: # real wedge, not "equithick" 
-        coords = [xa+dx1*i*step_size, ya+dy1*i*step_size, 2*x1-xa+dx2*i*step_size, 2*y1-ya+dy2*i*step_size] 
         if coords[0] == coords[2] and coords[1] == coords[3]:
-          if (dx1+dx2) > (dy1+dy2): 
+          if (dx1+dx2) > (dy1+dy2):
+            coords[0] += 1
+          else:
+            coords[1] += 1
+      else: # real wedge, not "equithick"
+        coords = [xa+dx1*i*step_size, ya+dy1*i*step_size, 2*x1-xa+dx2*i*step_size, 2*y1-ya+dy2*i*step_size]
+        if coords[0] == coords[2] and coords[1] == coords[3]:
+          if (dx1+dx2) > (dy1+dy2):
             coords[0] += 1
           else:
             coords[1] += 1
@@ -536,7 +536,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.paper.itemconfig( self.item, fill='')
     # the small lines
     self.items = self._draw_dash( (x1,y1,x2,y2))
-    return x1,y1,x2,y2    
+    return x1,y1,x2,y2
 
   def _draw_d2( self):
     if self.center == None or self.bond_width == None:
@@ -615,8 +615,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       _d += sum( dashing)
     dashing = map( lambda x: x * d/_d, dashing)
     # //
-    dx = (x2 - x1)/d 
-    dy = (y2 - y1)/d 
+    dx = (x2 - x1)/d
+    dy = (y2 - y1)/d
 
     # now we finally draw
     items = []
@@ -751,15 +751,15 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_wedge
     self.second = _second_draw_method( (x,y,x0,y0))
     self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
-    
-    
+
+
   def _draw_wedge( self, coords):
     """returns the polygon item"""
     x1, y1, x2, y2 = coords
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
-    xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0) 
-    return [self._create_polygon_with_transform( (xa, ya, x0, y0, 2*x2-x0, 2*y2-y0, 2*x1-xa, 2*y1-ya), width=0, fill=self.line_color, joinstyle="miter")] 
+    xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0)
+    return [self._create_polygon_with_transform( (xa, ya, x0, y0, 2*x2-x0, 2*y2-y0, 2*x1-xa, 2*y1-ya), width=0, fill=self.line_color, joinstyle="miter")]
 
 
   def _draw_a1( self):
@@ -822,8 +822,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def _draw_adder( self, coords):
     """returns list items"""
-    if not hasattr( self, 'equithick'): 
-      self.equithick = 0                
+    if not hasattr( self, 'equithick'):
+      self.equithick = 0
     x1, y1, x2, y2 = coords
     # main item
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.wedge_width/2.0)
@@ -833,25 +833,25 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     else:
       step_size = self.line_width+1
 
-    dx1 = (x0 - x1)/d 
-    dy1 = (y0 - y1)/d 
-    dx2 = (2*x2 -x0 -x1)/d 
-    dy2 = (2*y2 -y0 -y1)/d 
-    # params for equithick	
-    dx = (x2 - x1)/d 
-    dy = (y2 - y1)/d 
-    ddx = x - x1 
-    ddy = y - y1 
+    dx1 = (x0 - x1)/d
+    dy1 = (y0 - y1)/d
+    dx2 = (2*x2 -x0 -x1)/d
+    dy2 = (2*y2 -y0 -y1)/d
+    # params for equithick
+    dx = (x2 - x1)/d
+    dy = (y2 - y1)/d
+    ddx = x - x1
+    ddy = y - y1
 
     coords2 = []
     coords2.extend((x1, y1))
     for i in range( 0, int( round( d/ step_size))+1):
-      if self.equithick: 
-        coords = [x1+dx*i*step_size+ddx, y1+dy*i*step_size+ddy, x1+dx*i*step_size-ddx, y1+dy*i*step_size-ddy] 
+      if self.equithick:
+        coords = [x1+dx*i*step_size+ddx, y1+dy*i*step_size+ddy, x1+dx*i*step_size-ddx, y1+dy*i*step_size-ddy]
       else:
         coords = [x1+dx1*i*step_size, y1+dy1*i*step_size, x1+dx2*i*step_size, y1+dy2*i*step_size]
       if (coords[0] == coords[2] and coords[1] == coords[3]) and not self.equithick:
-        if (dx1+dx2) > (dy1+dy2): 
+        if (dx1+dx2) > (dy1+dy2):
           coords[0] += 1
         else:
           coords[1] += 1
@@ -859,7 +859,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         coords2.extend((coords[0], coords[1]))
       else:
         coords2.extend((coords[2], coords[3]))
-    coords2.extend((x2, y2)) 
+    coords2.extend((x2, y2))
     if self.equithick:
       return [self._create_line_with_transform( coords2, width=self.line_width, fill=self.line_color, smooth=1)]
     else:
@@ -902,7 +902,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.paper.itemconfig( self.item, fill='')
     # the small lines
     self.items = self._draw_dotted( (x1,y1,x2,y2))
-    return x1,y1,x2,y2    
+    return x1,y1,x2,y2
 
 
   def _draw_o2( self):
@@ -971,7 +971,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self._draw_dotted(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
     self.third = self._draw_dotted(( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy))
 
-    
+
 
   def _draw_dotted( self, coords):
     """returns list items"""
@@ -988,8 +988,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       i += 1.0
     spacing += (_d - d) / i
     # //
-    dx = (x2 - x1)/d 
-    dy = (y2 - y1)/d 
+    dx = (x2 - x1)/d
+    dy = (y2 - y1)/d
 
     # now we finally draw
     items = []
@@ -1051,7 +1051,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     else:
       self.paper.coords( self.item, x1, y1, x2, y2)
     self.paper.itemconfig( self.item, width = self.line_width, fill=self.line_color)
-    
+
 
 
 
@@ -1078,7 +1078,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       if self.center:
         items.remove( self.item)
       [self.paper.itemconfigure( item, fill='white', outline='black', width=1) for item in items]
-      
+
 
 
 
@@ -1138,7 +1138,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.selector:
       items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
-      
+
 
 
 
@@ -1209,8 +1209,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       sign, center = self._compute_sign_and_center()
       if self.bond_width and self.bond_width * sign < 0:
         self.auto_bond_sign = -1
-      
-  
+
+
 
 
 
@@ -1235,7 +1235,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         if self.auto_bond_sign != 1:
           bnd.setAttribute( 'auto_sign', str( self.auto_bond_sign))
     if self.type != 'n':
-      bnd.setAttribute( 'wedge_width', str( self.wedge_width * self.paper.screen_to_real_ratio())) 
+      bnd.setAttribute( 'wedge_width', str( self.wedge_width * self.paper.screen_to_real_ratio()))
     if self.line_color != '#000':
       bnd.setAttribute( 'color', self.line_color)
     if self.type != 'n' and self.order != 1:
@@ -1335,7 +1335,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.center = 0
     if self.order > 1:
       self._decide_distance_and_center()
-    
+
 
 
 
@@ -1348,7 +1348,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       #self.bond_width = round( length / 5, 1)
     # does not need to go further if the bond is not double
     if self.order != 2:
-      return 
+      return
     sign, center = self._compute_sign_and_center()
     self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
     self.center = center
@@ -1416,7 +1416,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         n.transform( inv)
     # /end of back transform
     return ret
-    
 
 
 
@@ -1464,7 +1463,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def transform( self, tr):
     if not self.item:
-      return 
+      return
     for i in [self.item] + self.second + self.third + self.items:
       coords = self.paper.coords( i)
       tr_coords = tr.transform_xy_flat_list( coords)
