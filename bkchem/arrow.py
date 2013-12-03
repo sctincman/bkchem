@@ -17,24 +17,27 @@
 
 #--------------------------------------------------------------------------
 
-"""the arrow class resides here"""
+"""The arrow class resides here.
+
+"""
 
 from __future__ import division
-from __future__ import generators
+
+import xml.dom.minidom as dom
+
+from oasa import geometry
+from warnings import warn
+
+import misc
+import dom_extensions
 
 from classes import point
-from warnings import warn
-import dom_extensions
-import xml.dom.minidom as dom
-import operator
-from parents import meta_enabled, container, with_line, line_colored
-from parents import point_drawable, interactive, drawable, top_level
 from reaction import reaction
 from singleton_store import Screen
-from oasa import geometry
-import misc
+from parents import meta_enabled, container, with_line, line_colored
+from parents import point_drawable, interactive, drawable, top_level
 
-import debug
+
 
 ##-------------------- ARROW CLASS ------------------------------
 
