@@ -23,18 +23,23 @@ import xml_writer
 import dom_extensions
 
 
-def export_CD_SVG( paper, filename, gzipped=0):
-  """exports to CD-SVG, returns 1 on success, 0 otherwise; optionally compresses with gzip"""
-  if gzipped:
-    import gzip as module
-  else:
-    import __builtin__ as module
+
+def export_CD_SVG(paper, filename, gzipped=0):
+  """Export to CD-SVG.
+
+  Return 1 on success, 0 otherwise. Optionally compress with gzip.
+  """
   try:
-    inp = module.open( filename, "w")
-  except IOError, x:
+    if gzipped:
+      import gzip
+      f = gzip.open(filename, "w")
+    else:
+      f = open(filename, "w")
+  except IOError as x:
     return 0
-  exporter = xml_writer.SVG_writer( paper)
-  exporter.construct_dom_tree( paper.top_levels)
+
+  exporter = xml_writer.SVG_writer(paper)
+  exporter.construct_dom_tree(paper.top_levels)
   doc = exporter.document
   cdml = paper.get_package().childNodes[0]
   doc.childNodes[0].appendChild( cdml)
@@ -44,16 +49,20 @@ def export_CD_SVG( paper, filename, gzipped=0):
   return 1
 
 
-def export_CDML( paper, filename, gzipped=0):
-  """exports to CDML, returns 1 on success, 0 otherwise; optionally compresses with gzip"""
-  if gzipped:
-    import gzip as module
-  else:
-    import __builtin__ as module
+def export_CDML(paper, filename, gzipped=0):
+  """Export to CDML.
+
+  Rreturn 1 on success, 0 otherwise. Optionally compress with gzip.
+  """
   try:
-    inp = module.open( filename, "w")
-  except IOError, x:
+    if gzipped:
+      import gzip
+      f = gzip.open(filename, "w")
+    else:
+      f = open(filename, "w")
+  except IOError as x:
     return 0
+
   doc = paper.get_package()
   dom_extensions.safe_indent( doc.childNodes[0], dont_indent=("text","ftext","user-data"))
   inp.write( unicode(doc.toxml()).encode('utf-8'))
