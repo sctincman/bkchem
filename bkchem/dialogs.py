@@ -91,7 +91,6 @@ class scale_dialog:
                                                        variable = self.scale_fonts)
     self.scale_fonts_entry.pack( anchor="w")
     self.scale_fonts.set( 1)
-    
 
     self.dialog.activate()
 
@@ -109,15 +108,18 @@ class scale_dialog:
         self.result = (self.result[0], self.result[0])
     self.dialog.deactivate()
 
+
   def _scalex_changed( self):
     if self.preserve_ratio.get():
       if self.entryy.get() != self.entryx.get():
         self.entryy.setentry( self.entryx.get())
 
+
   def _scaley_changed( self):
     if self.preserve_ratio.get():
       if self.entryy.get() != self.entryx.get():
         self.entryx.setentry( self.entryy.get())
+
 
   def _preserve_ratio_changed( self):
     if self.preserve_ratio.get():
@@ -126,8 +128,6 @@ class scale_dialog:
           self.entryx.setentry( self.entryy.get())
         else:
           self.entryy.setentry( self.entryx.get())
-    
-
 
 
 
@@ -148,7 +148,7 @@ class config_dialog:
     #parent.bind_all( "<Button-1>", self.raise_me, add='+')
     self.pages = Pmw.NoteBook( self.dialog.interior())
     self.pages.pack( anchor='w', pady=0, padx=0, fill='both', expand=1)
-    
+
     # create pages for different item types
     self.atom_page = None
     self.bond_page = None
@@ -256,7 +256,6 @@ class config_dialog:
       self.wedge_width = widgets.WidthChooser( self.bond_page, dist, label=_('Wedge/Hatch width'))
       self.wedge_width.pack( anchor='ne', padx=10, pady=5)
 
-
       # double bond length ratio
       ratios = misc.filter_unique( [o.double_length_ratio for o in items if o.object_type == 'bond'])
       if len( ratios) == 1:
@@ -267,8 +266,6 @@ class config_dialog:
                                                        ratio,
                                                        label=_('Double-bond length ratio'))
       self.double_length_ratio.pack( anchor='nw', padx=10, pady=5)
-
-
 
     # ARROW
     if 'arrow' in types:
@@ -316,7 +313,6 @@ class config_dialog:
                                                command = self._spline_changed)
       self.spline_changed = 0
       self.spline_entry.pack( anchor='w')
-      
 
     # TEXTS
 
@@ -342,7 +338,6 @@ class config_dialog:
         self.used_family = ''
       self.font_family = widgets.FontFamilyChooser( self.font_page, self.used_family)
       self.font_family.pack( anchor="nw", side = 'bottom')
-
 
     # COMMON
     self.common_page = self.pages.add(_('Common'))
@@ -390,7 +385,7 @@ class config_dialog:
     if button != _('OK'):
       pass
     else:
-      #print self.marks.get()
+      #print(self.marks.get())
       # apply changes
       for o in self.items:
         change = 0
@@ -438,7 +433,7 @@ class config_dialog:
             if ratio != o.double_length_ratio:
               o.double_length_ratio = ratio
               change = 1
-            
+
         # ARROW - most is in common now
         elif o.object_type == 'arrow':
           if self.arrow_start_changed:
@@ -450,7 +445,7 @@ class config_dialog:
           if self.spline_changed:
             o.spline = self.spline.get()
             change = 1
-            
+
         # TEXT - all is in common now
         # PLUS - all is in common now
         # VECTOR - all is in common now
@@ -483,7 +478,7 @@ class config_dialog:
             a = self.font_family.getcurselection()[0]
             o.font_family = a
             change = 1
-          
+
         # APPLY THE CHANGES
         if change:
           o.redraw()
@@ -494,18 +489,23 @@ class config_dialog:
   def _arrow_end_changed( self):
     self.arrow_end_changed = 1
 
+
   def _arrow_start_changed( self):
     self.arrow_start_changed = 1
+
 
   def _spline_changed( self):
     self.spline_changed = 1
 
+
   def raise_me( self, event):
     self.dialog.tkraise()
+
 
   def cleanup( self):
     pass
     #self.parent.unbind_all( "<Button-1>")
+
 
 
 ## -------------------- FILE PROPERTIES DIALOG --------------------
@@ -523,6 +523,7 @@ class file_properties_dialog:
                               master='parent')
     self.draw()
     self.dialog.activate()
+
 
   def draw( self):
     paper_frame = Tkinter.Frame( self.dialog.interior(),
@@ -606,8 +607,6 @@ class file_properties_dialog:
     #replace_minus_button.pack( anchor='w', padx=5, pady=5)
 
 
-
-
   def done( self, button):
     self.dialog.deactivate()
     if button == _('OK'):
@@ -628,14 +627,12 @@ class file_properties_dialog:
 
 
   def crop_paper_changed( self):
-    return 
+    return
     val = self.crop_paper_in_svg.get()
     if not val:
       self.margin_entry.configure( entry_state="disabled")
     else:
       self.margin_entry.configure( entry_state="normal")
-
-
 
 
 
@@ -656,6 +653,7 @@ class standard_values_dialog:
     #self.body.pack( fill='both', expand=1)
     self.draw()
     self.dialog.activate()
+
 
   def draw( self):
     self.pages = Pmw.NoteBook( self.body)
@@ -798,7 +796,7 @@ class standard_values_dialog:
       else:
         tkMessageBox.showerror( _("Standard not saved"),
                                 _("For some reason the standard couldn't be saved. Probably the right location for personal profile couldn't be found or wasn't writable. Sorry for the inconvenience."))
-      return 
+      return
     self.dialog.deactivate()
     if button == _('OK'):
       self.standard = self.get_the_standard()
@@ -848,10 +846,6 @@ class standard_values_dialog:
 
 
 
-
-
-
-
 ##-------------------- PREFERENCES DIALOG --------------------
 
 class preferences_dialog:
@@ -878,7 +872,6 @@ class preferences_dialog:
     self.dialog.activate()
 
 
-
   def draw( self):
     self.pages = Pmw.NoteBook( self.body)
     self.pages.pack( anchor='w', pady=0, padx=0, fill='both', expand=1)
@@ -898,7 +891,6 @@ class preferences_dialog:
     self.pages.setnaturalsize()
 
 
-
   def done( self, button):
     self.dialog.deactivate()
     if button == _('OK'):
@@ -908,10 +900,6 @@ class preferences_dialog:
         self.result = 1
     else:
       pass
-
-
-
-
 
 
 
@@ -1030,7 +1018,7 @@ class logging_dialog( Pmw.Dialog):
                                  buttontype='radiobutton',
                                  orient='horizontal',
                                  pady=0)
-      self.choosers[message_type] = chooser                                         
+      self.choosers[message_type] = chooser
       for handle_type in self.logger.handle_order:
         chooser.add( self.logger.handle_to_text[handle_type])
       chooser.invoke( self.logger.handle_order.index( self.logger.handling[message_type]))
@@ -1103,8 +1091,6 @@ class language_dialog( Pmw.Dialog):
     if button == _("OK"):
       self.proceed = True
     self.deactivate()
-    
-
 
 
 
@@ -1118,7 +1104,7 @@ class progress_dialog( Tkinter.Toplevel):
 
 
   def __init__(self, parent, title=None):
-    
+
     self.parent = parent
 
     Tkinter.Toplevel.__init__(self, parent)
@@ -1127,7 +1113,7 @@ class progress_dialog( Tkinter.Toplevel):
                               parent.winfo_rooty()+200))
     #self.resizable( 0, 0)
     self.update_idletasks()
-    
+
     if title:
       self.title(title)
 
@@ -1163,13 +1149,13 @@ class progress_dialog( Tkinter.Toplevel):
       self.top_text.set( top_text)
     if bottom_text:
       self.bottom_text.set( bottom_text)
-    
+
     self.update_idletasks()
-    
+
 
   def set_ratio( self, ratio):
     self.canvas.coords( self.bar, 0, 0, ratio*self.bar_width, self.bar_height)
-    self.canvas.itemconfig( self.ratio, text="%d%%" % (100*ratio)) 
+    self.canvas.itemconfig( self.ratio, text="%d%%" % (100*ratio))
 
 
   def close( self):
