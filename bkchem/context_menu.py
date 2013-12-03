@@ -17,7 +17,8 @@
 
 #--------------------------------------------------------------------------
 
-import misc
+import os
+import oasa
 import types
 try:
   import tkinter as Tkinter
@@ -25,18 +26,16 @@ except ImportError:
   import Tkinter
 
 from oasa import periodic_table as PT
-import os
+
+import misc
+import marks
+import parents
+import interactors
+
 from atom import atom
 from group import group
-
-import types
-import interactors
-import parents
-import oasa
-import marks
-
-
 from singleton_store import Store
+
 
 
 class context_menu( Tkinter.Menu):
