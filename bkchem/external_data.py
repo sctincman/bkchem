@@ -43,7 +43,7 @@ class external_data_manager( object):
   types = {'atom': (atom,group,textatom,queryatom),
            'bond': (bond,),
            'molecule': (molecule,),
-           'IntType': (types.IntType,),
+           'IntType': (int,),
            #'toplevel': ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction','polyline')
            }
            
@@ -165,7 +165,7 @@ class external_data_manager( object):
     
 
   def conforms_to_type( self, value, t):
-    if type( t) == types.ListType:
+    if isinstance(t, list):
       for v2 in t:
         if value == v2:
           return True
@@ -224,7 +224,7 @@ class external_data_manager( object):
 
 
   def convert_to_type( self, value, vtype):
-    if type( vtype) == types.ListType:
+    if isinstance(vtype, list):
       return value
     if vtype in types.__dict__:
       t = self.expand_type( vtype)[0]
