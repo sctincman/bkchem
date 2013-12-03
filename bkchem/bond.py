@@ -1134,7 +1134,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   def move( self, dx, dy):
     """moves object with his selector (when present)"""
-    items = filter( None, [self.item] + self.second + self.third + self.items)
+    items = [i for i in ([self.item] + self.second + self.third + self.items)
+                 if i]
     if self.selector:
       items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
@@ -1378,12 +1379,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     for ring in self.molecule.get_smallest_independent_cycles_dangerous_and_cached():
       if self.atom1 in ring and self.atom2 in ring:
         on_which_side = lambda xy: geometry.on_which_side_is_point( line, xy)
-        circles += reduce( operator.add, map( on_which_side, [a.get_xy() for a in ring if a not in self.atoms]))
+        circles += sum(map(on_which_side, [a.get_xy() for a in ring if a not in self.atoms]))
     if circles:
       side = circles
     else:
       sides = [geometry.on_which_side_is_point( line, xy, threshold=0.1) for xy in coords]
-      side = reduce( operator.add, sides, 0)
+      side = sum(sides)
     # on which side to put the second line
     if side == 0 and (len( self.atom1.get_neighbors()) == 1 or
                       len( self.atom2.get_neighbors()) == 1):
@@ -1403,7 +1404,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
                 sides[i] *= 0.1 # this discriminates H
               elif atms[i].symbol != 'C':
                 sides[i] *= 0.2 # this makes "non C" less then C but more then H
-            side = reduce( operator.add, sides, 0)
+            side = sum(sides)
       if not ret:
         if side < 0:
           ret = (-1, 0)
