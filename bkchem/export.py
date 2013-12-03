@@ -17,7 +17,11 @@
 
 #--------------------------------------------------------------------------
 
-"""support for exporters resides here"""
+"""Support for exporters resides here.
+
+"""
+
+import sys
 
 import xml_writer
 import dom_extensions
@@ -42,10 +46,20 @@ def export_CD_SVG(paper, filename, gzipped=0):
   exporter.construct_dom_tree(paper.top_levels)
   doc = exporter.document
   cdml = paper.get_package().childNodes[0]
-  doc.childNodes[0].appendChild( cdml)
-  dom_extensions.safe_indent( doc.childNodes[0], dont_indent=("text","ftext","user-data"))
-  inp.write( unicode(doc.toxml()).encode('utf-8'))
-  inp.close()
+  doc.childNodes[0].appendChild(cdml)
+  dom_extensions.safe_indent(doc.childNodes[0],
+                             dont_indent=("text", "ftext", "user-data"))
+
+  s = doc.toxml()
+  if sys.version_info[0] > 2:
+    if isinstance(s, bytes):
+      s = s.decode('utf-8')
+  else:
+    if isinstance(s, str):
+      s = s.decode('utf-8')
+  f.write(s)
+  f.close()
+
   return 1
 
 
@@ -64,8 +78,18 @@ def export_CDML(paper, filename, gzipped=0):
     return 0
 
   doc = paper.get_package()
-  dom_extensions.safe_indent( doc.childNodes[0], dont_indent=("text","ftext","user-data"))
-  inp.write( unicode(doc.toxml()).encode('utf-8'))
-  inp.close()
+  dom_extensions.safe_indent(doc.childNodes[0],
+                             dont_indent=("text", "ftext", "user-data"))
+
+  s = doc.toxml()
+  if sys.version_info[0] > 2:
+    if isinstance(s, bytes):
+      s = s.decode('utf-8')
+  else:
+    if isinstance(s, str):
+      s = s.decode('utf-8')
+  f.write(s)
+  f.close()
+
   return 1
 
