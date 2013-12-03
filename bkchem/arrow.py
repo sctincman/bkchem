@@ -91,20 +91,25 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # PROPERTIES
 
   # shape_defining_points
-  def _get_shape_defining_points( self):
+  @property
+  def shape_defining_points(self):
+    """Should give list of point_drawable instances.
+
+    """
     return self.points
 
-  shape_defining_points = property( _get_shape_defining_points, None, None,
-                                    "should give list of point_drawable instances")
 
+  @property
+  def reaction(self):
+    """Reaction associated with this arrow.
 
-  def _get_reaction( self):
+    """
     return self.__reaction
 
-  def _set_reaction( self, reaction):
-    self.__reaction = reaction
 
-  reaction = property( _get_reaction, _set_reaction, None, "the reaction associated with this arrow")
+  @reaction.setter
+  def reaction(self, reaction):
+    self.__reaction = reaction
 
 
   # // PROPERTIES
@@ -475,5 +480,4 @@ def double_sided_arrow_head (x1,y1,x2,y2,a,b,c):
   xd,yd = geometry.point_at_distance_from_line (x1,y1,xp,yp,-c)
   xc,yc = geometry.elongate_line (x1,y1,x2,y2,-a)
   return xa,ya, xb,yb, xc,yc, xd,yd
-
 
