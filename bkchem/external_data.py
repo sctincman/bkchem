@@ -75,7 +75,6 @@ class external_data_manager( object):
     return self.definitions.keys()
 
 
-
   def read_data_definition( self, filename):
     doc = dom.parse( filename)
     root = doc.childNodes[0]
@@ -101,7 +100,6 @@ class external_data_manager( object):
     self.records[ cls] = {}
 
 
-
   def get_definitions_for_class_and_type( self, def_class, item_type):
     dclass = self.definitions.get( def_class, None)
     if dclass:
@@ -112,7 +110,6 @@ class external_data_manager( object):
 
   def get_definition_classes( self):
     return self.definitions.keys()
-
 
 
   def set_data( self, dclass, obj, category, value):
@@ -129,7 +126,6 @@ class external_data_manager( object):
     else:
       raise ValueError("the value '%s' type does not match the definition." % str( value))
     
-
 
   def get_data( self, dclass, obj, category):
     """gets data for an object from the internal dictionary,
@@ -148,7 +144,6 @@ class external_data_manager( object):
         raise ValueError("wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)        )
     raise ValueError("not registered dclass: %s" % dclass)
       
-
 
   def value_matches_definition( self, dclass, obj, category, value):
     """checks if the value is of the type provided in definition""" 
@@ -183,11 +178,8 @@ class external_data_manager( object):
       return isinstance( value, t)
     
 
-
-
   def expand_type( self, t):
     return self.types[ t]
-
 
 
   def get_package( self, doc):
@@ -223,8 +215,6 @@ class external_data_manager( object):
           self.set_data( cls, obj, vcat, vvalue)
 
 
-
-
   def convert_to_type( self, value, vtype):
     if isinstance(vtype, list):
       return value
@@ -237,7 +227,6 @@ class external_data_manager( object):
         return v
       else:
         return value
-
 
 
 
@@ -258,17 +247,20 @@ class ExternalDataEntry( Entry, object):
     #self.value = None
 
 
-  def _set_value( self, value):
-    self.delete( 0, last='end')
-    if value != None:
-      self._value = value
-      self.insert( 0, str( self._value))
+  @property
+  def value(self):
+    """Value of the Entry, str() is run on it when displaying.
 
-  def _get_value( self):
+    """
     return self.get()
 
-  value = property( _get_value, _set_value, None, "value of the Entry, str() is run on it when displaying")
 
+  @value.setter
+  def value(self, value):
+    self.delete(0, last='end')
+    if value is not None:
+      self._value = value
+      self.insert(0, str(self._value))
 
 
   def cleanup( self, paper):
@@ -286,16 +278,21 @@ class ExternalDataList( Pmw.OptionMenu, object):
     self.arrow = None
     self.type = type
 
-  def _set_value( self, value):
-    if value:
-      self.setvalue( value)
-    else:
-      self.setvalue( "")
 
-  def _get_value( self):
+  @property
+  def value(self):
+    """Value of the List.
+
+    """
     return self.getvalue()
 
-  value = property( _get_value, _set_value, None, "value of the List")
+
+  @value.setter
+  def value(self, value):
+    if value:
+      self.setvalue(value)
+    else:
+      self.setvalue("")
 
 
   def cleanup( self, paper):
@@ -315,15 +312,19 @@ class ExternalDataListSelection( Pmw.RadioSelect, object):
     self.arrow = None
     self.type = type
 
-  def _set_value( self, value):
-    if value:
-      self.invoke( value)
 
+  @property
+  def value(self):
+    """Value of the List.
 
-  def _get_value( self):
+    """
     return self.getvalue()
 
-  value = property( _get_value, _set_value, None, "value of the List")
+
+  @value.setter
+  def value(self, value):
+    if value:
+      self.invoke(value)
 
 
   def cleanup( self, paper):
