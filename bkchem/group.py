@@ -81,7 +81,6 @@ class group( drawable_chem_vertex):
     return False
 
   ## ---------------------------------------- PROPERTIES ------------------------------
-      
 
   # symbol
   def _get_symbol( self):
@@ -174,7 +173,6 @@ class group( drawable_chem_vertex):
   ## // -------------------- END OF PROPERTIES --------------------------
 
 
-
   def set_name( self, name, interpret=1, occupied_valency=None):
     if occupied_valency == None:
       occupied_valency = self.occupied_valency
@@ -213,9 +211,6 @@ class group( drawable_chem_vertex):
   def interpret_name( self, name):
     lf = oasa.linear_formula.linear_formula( name, start_valency=self.valency)
     return lf.molecule
-      
-
-
 
 
   def read_package( self, package):
@@ -262,7 +257,6 @@ class group( drawable_chem_vertex):
       self.number = package.getAttribute( 'number')
 
 
-
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -293,7 +287,7 @@ class group( drawable_chem_vertex):
     x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
-    else: 
+    else:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
     for o in self.marks:
@@ -304,8 +298,6 @@ class group( drawable_chem_vertex):
       a.setAttribute( 'show_number', data.booleans[ int( self.show_number)])
 
     return a
-
-
 
 
   def get_formula_dict( self):
@@ -323,13 +315,10 @@ class group( drawable_chem_vertex):
       return form
     else:
       return PT.formula_dict( self.symbol)
-      
 
 
   def __str__( self):
     return self.id
-
-
 
 
   def expand( self):
@@ -371,7 +360,7 @@ class group( drawable_chem_vertex):
       replacement = self.connecting_atom
       replacement.x = self.x
       replacement.y = self.y
-      
+
     self.molecule.eat_molecule( self.group_graph)
     self.molecule.move_bonds_between_atoms( self, replacement)
     self.molecule.delete_vertex( self)
@@ -388,3 +377,4 @@ class group( drawable_chem_vertex):
       dy = y - replacement.y
       [a.move( dx, dy) for a in self.group_graph.vertices]
     return self.group_graph.vertices
+
