@@ -18,10 +18,15 @@
 #--------------------------------------------------------------------------
 
 """set of dialogs used by BKChem"""
+try:
+    import tkinter as Tkinter
+    import tkinter.font as tkFont
+    import tkinter.messagebox as tkMessageBox
+except ImportError:
+    import Tkinter
+    import tkFont
+    import tkMessageBox
 
-import Tkinter
-import tkFont
-import tkMessageBox
 import Pmw
 import misc
 import data
