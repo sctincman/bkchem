@@ -19,7 +19,7 @@
 
 import os
 import oasa
-import types
+import collections
 try:
   import tkinter as Tkinter
 except ImportError:
@@ -49,7 +49,7 @@ class context_menu( Tkinter.Menu):
     # at first prepare all the items
     items = {}
     for obj_type in configurable.keys():
-      if type( obj_type) == types.StringType:
+      if misc.myisstr(obj_type):
         objs = [o for o in self.selected if o.object_type == obj_type]
       else:
         objs = [o for o in self.selected if isinstance( o, obj_type)]
@@ -57,10 +57,10 @@ class context_menu( Tkinter.Menu):
       if not objs:
         continue
       for attr in configurable[ obj_type]:
-        if type( attr) == types.StringType:
+        if misc.myisstr(attr):
           # attr can be either a string (key of config_values)
           vals = config_values[ attr]
-        if type( attr) == types.FunctionType:
+        if isinstance(attr, collections.Callable):
           # or it can be a callable that takes list of objects and returns the desired tuple
           attr, vals = attr( [o for o in self.selected if o.object_type == obj_type])
 
@@ -68,7 +68,7 @@ class context_menu( Tkinter.Menu):
           items[ vals[ I18N_NAME]] = []
           self.configurable[ obj_type] = self.configurable.get( obj_type, []) + [attr]
           for v in vals[ VALUES]:
-            if type( v) == types.TupleType:
+            if isinstance(v, tuple):
               items[ vals[ I18N_NAME]].append( (v[1], attr, objs, v[0]))
             else:
               items[ vals[ I18N_NAME]].append( (v, attr, objs, v))
