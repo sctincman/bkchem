@@ -370,7 +370,9 @@ class atom( drawable_chem_vertex, oasa.atom):
     self.y = y
     ft = package.getElementsByTagName('ftext')
     if ft:
-      self.set_name( reduce( operator.add, [e.toxml() for e in ft[0].childNodes], '').encode('utf-8'), check_valency=0, interpret=0)
+      self.set_name(''.join([e.toxml() for e in ft[0].childNodes]).encode('utf-8'),
+                    check_valency=0,
+                    interpret=0)
     else:
       self.set_name( package.getAttribute( 'name'), check_valency=0)
     # charge
