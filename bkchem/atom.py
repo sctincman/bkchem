@@ -17,25 +17,25 @@
 
 #--------------------------------------------------------------------------
 
+"""Home for atom class.
 
-"""home for atom class"""
+"""
 
 from __future__ import division
 
+import re
 import sys
+import oasa
 
 from warnings import warn
-import dom_extensions
-import operator
-from oasa import periodic_table as PT
-import marks
-from special_parents import drawable_chem_vertex
-import data
-import re
-import debug
 
-import oasa
+import data
+import marks
+import dom_extensions
+
+from oasa import periodic_table as PT
 from singleton_store import Screen, Store
+from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
