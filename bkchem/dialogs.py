@@ -45,8 +45,10 @@ from singleton_store import Store, Screen
 
 ## SCALE DIALOG
 
-class scale_dialog:
-  """dialog used to get ratio for scaling in percent"""
+class scale_dialog(object):
+  """Dialog used to get ratio for scaling in percent.
+
+  """
   def __init__( self, parent):
     self.dialog = Pmw.Dialog( parent,
                               buttons=(_('OK'), _('Cancel')),
@@ -138,8 +140,10 @@ class scale_dialog:
 
 ## CONFIG DIALOG
 
-class config_dialog:
-  """items configuration"""
+class config_dialog(object):
+  """Items configuration.
+
+  """
   def __init__( self, parent, items):
     self.items = items
     self.changes_made = 0
@@ -515,7 +519,7 @@ class config_dialog:
 
 ## -------------------- FILE PROPERTIES DIALOG --------------------
 
-class file_properties_dialog:
+class file_properties_dialog(object):
 
   def __init__( self, parent, paper):
     self.parent = parent
@@ -643,7 +647,7 @@ class file_properties_dialog:
 
 ##-------------------- STANDARD VALUES DIALOG --------------------
 
-class standard_values_dialog:
+class standard_values_dialog(object):
 
   def __init__( self, parent, standard):
     self.parent = parent
@@ -853,7 +857,7 @@ class standard_values_dialog:
 
 ##-------------------- PREFERENCES DIALOG --------------------
 
-class preferences_dialog:
+class preferences_dialog(object):
 
   def __init__( self, parent, preferences):
     self.parent = parent
