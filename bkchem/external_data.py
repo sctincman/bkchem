@@ -17,23 +17,25 @@
 
 #--------------------------------------------------------------------------
 
-"""provides external_data_manager class, which takes care of reading external data
-specification, stores the references between objects and data and saves the data
-to CDML"""
+"""Provide external_data_manager class.
 
+Takes care of reading external data specification,
+stores the references between objects and data and saves the data to CDML.
+"""
+
+import types
+import os.path
+import xml.dom.minidom as dom
+
+import os_support
+import dom_extensions as dom_ext
 
 from atom import atom
 from bond import bond
-from textatom import textatom
-from queryatom import queryatom
 from group import group
 from molecule import molecule
-import types
-import dom_extensions as dom_ext
-import xml.dom.minidom as dom
-import os.path
-import os_support
-
+from textatom import textatom
+from queryatom import queryatom
 from singleton_store import Store
 
 
