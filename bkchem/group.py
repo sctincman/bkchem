@@ -23,6 +23,8 @@
 from __future__ import division
 from __future__ import print_function
 
+import sys
+
 from warnings import warn
 import dom_extensions
 from oasa import periodic_table as PT
@@ -85,12 +87,15 @@ class group( drawable_chem_vertex):
   def _get_symbol( self):
     return self._symbol
 
-  def _set_symbol( self, symbol):
-    try:
-      t = unicode( symbol)
-    except UnicodeDecodeError:
-      t = symbol.decode( 'utf-8')
-    self._symbol = t.encode('utf-8')
+  def _set_symbol(self, symbol):
+    # Use unicode strings internally
+    if sys.version_info[0] > 2:
+      if isinstance(symbol, bytes):
+        symbol = symbol.decode('utf-8')
+    else:
+      if isinstance(symbol, str):
+        symbol = symbol.decode('utf-8')
+    self._symbol = symbol
     self.dirty = 1
 
   symbol = property( _get_symbol, _set_symbol)
@@ -121,7 +126,10 @@ class group( drawable_chem_vertex):
       x = re.sub( "\d+", '<sub>\g<0></sub>', self.symbol)
       x = re.sub( "[+-]", '<sup>\g<0></sup>', x)
       if self.paper.get_paper_property('use_real_minus'):
-        x = re.sub("-", unichr(8722), x)
+        if sys.version_info[0] > 2:
+          x = re.sub("-", chr(8722), x)
+        else:
+          x = re.sub("-", unichr(8722), x)
       return x
 
 
