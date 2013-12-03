@@ -53,7 +53,7 @@ class ftext:
     self.fill = fill
     self.justify = justify
 
-    
+
   def draw( self):
     # split text to chunks
     chs = self.get_chunks()
@@ -67,7 +67,7 @@ class ftext:
     self.items = chs
     last_attrs = set()
     last_x = self._current_x
-    
+
     for ch in self.items:
       scale = 1
       if set(('sub','sup')) & ch.attrs:
@@ -87,7 +87,6 @@ class ftext:
         self._current_y = bbox[3] + self.font.metrics()['linespace'] / 2.0
         self._current_x = self.x
 
-
     #does not work when 1. character is not regular
     if self.pos == 'center-first':
       self.diff = self.font.measure( self.items[0].text[0])/2.0
@@ -96,9 +95,6 @@ class ftext:
       self.diff = x2 -x1 -self.font.measure( self.items[0].text[-1])/2.0 -2
     self.move( -self.diff, 0)
     return self.bbox()
-
-
-
 
 
   def _draw_chunk( self, chunk, scale=1):
@@ -159,7 +155,6 @@ class ftext:
     return chunks
 
 
-    
   def bbox( self, complete=False):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     xbbox = list( self.canvas.list_bbox( [i.item for i in self.items if complete or not i.ignore_x]))
@@ -174,12 +169,12 @@ class ftext:
 ##         if y1 < bbox[1]:
 ##           bbox[1] -= 2 # hack
     return bbox
-          
 
 
   def move( self, dx, dy):
     for i in self.items:
       self.canvas.move( i.item, dx, dy)
+
 
   def move_to( self, x, y):
     dx = self.x - x - self.diff
@@ -187,15 +182,17 @@ class ftext:
     for i in self.items:
       self.canvas.move( i.item, dx, dy)
 
+
   def lift( self):
     for i in self.items:
       self.canvas.lift( i.item)
+
 
   def delete( self):
     for i in self.items:
       self.canvas.delete( i.item)
 
-      
+
   def sanitized_text( self):
     return self.__class__.sanitize_text( self.text)
 
@@ -212,8 +209,6 @@ class ftext:
       text = xml.sax.saxutils.escape( text)
       x = "<ftext>%s</ftext>" % text
     return x
-    
-    
 
 
 class text_chunk:
@@ -235,6 +230,7 @@ class FtextHandler ( xml.sax.ContentHandler):
     self._above = []
     self.chunks = []
     self._text = ""
+
 
   def startElement( self, name, attrs):
     self._closeCurrentText()
@@ -270,3 +266,4 @@ def _unescape_one_html_entity_reference( m):
     return unichr( name2codepoint[hit])
   else:
     return "&"+hit+";"
+
