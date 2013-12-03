@@ -17,26 +17,25 @@
 
 #--------------------------------------------------------------------------
 
+"""Home of the bond class.
 
-"""home of the bond class"""
+"""
 
 from __future__ import division
 
 import math
-import misc
+import oasa
+import xml.dom.minidom as dom
+
 from oasa import geometry
 from warnings import warn
-from ftext import ftext
+
+import misc
 import dom_extensions
-import xml.dom.minidom as dom
-import operator
-import copy
-from parents import meta_enabled, line_colored, drawable, with_line, interactive, child_with_paper
-import debug
 
-import oasa
-
+from ftext import ftext
 from singleton_store import Store, Screen
+from parents import meta_enabled, line_colored, drawable, with_line, interactive, child_with_paper
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
@@ -1014,7 +1013,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def redraw( self, recalc_side=0):
     if not self.__dirty:
       pass
-      #print "redrawing non-dirty bond"
+      #print("redrawing non-dirty bond")
     sel = self.selector
     if self.item:
       self.delete()
