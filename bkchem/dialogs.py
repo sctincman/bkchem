@@ -33,8 +33,8 @@ except ImportError:
     import tkMessageBox
 
 import Pmw
-import misc
 import data
+import misc
 import classes
 import widgets
 import os_support
@@ -545,8 +545,7 @@ class file_properties_dialog(object):
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
-    paper_types = data.paper_types.keys()
-    paper_types.sort()
+    paper_types = sorted(data.paper_types.keys())
     self.paper_type_chooser = Pmw.OptionMenu( paper_frame,
                                               items=paper_types, #+[_('Custom')],
                                               initialitem = t,
@@ -726,8 +725,7 @@ class standard_values_dialog(object):
       t = _('Custom')
     else:
       t = self.paper._paper_properties['type']
-    paper_types = data.paper_types.keys()
-    paper_types.sort()
+    paper_types = sorted(data.paper_types.keys())
     self.paper_type_chooser = Pmw.OptionMenu( paper_group,
                                               items=paper_types, #+[_('Custom')],
                                               initialitem = t,
@@ -816,6 +814,7 @@ class standard_values_dialog(object):
       self.change = 0
       self.apply_all = 0
 
+
   def get_the_standard( self):
     st = classes.standard()
     st.bond_width = self.bond_width.getvalue()
@@ -844,6 +843,7 @@ class standard_values_dialog(object):
     # crop_margin
     st.paper_crop_margin = self.margin_entry.getvalue()
     return st
+
 
   def _apply_button_callback( self, tag):
     if self.apply_button.index( tag) != 0:
@@ -965,7 +965,6 @@ class fragment_dialog( Pmw.Dialog):
       self._highlight( frag)
 
 
-
   def _highlight( self, frag, size=3):
     for b in frag.edges:
       x1, y1 = b.atom1.get_xy()
@@ -975,7 +974,6 @@ class fragment_dialog( Pmw.Dialog):
       self._items.add( self.paper.create_oval( x-size, y-size, x+size, y+size, fill="orange", outline="red"))
     for a in frag.vertices:
       self._items.add( self.paper.create_oval( a.x-size, a.y-size, a.x+size, a.y+size, fill="orange", outline="red"))
-
 
 
   def clean( self):
@@ -1046,8 +1044,6 @@ class logging_dialog( Pmw.Dialog):
 
 
 
-
-
 ## -------------------- language dialog --------------------
 
 class language_dialog( Pmw.Dialog):
@@ -1062,7 +1058,6 @@ class language_dialog( Pmw.Dialog):
                          master='parent')
     self.proceed = False
     self.init_list()
-
 
 
   def init_list( self):
