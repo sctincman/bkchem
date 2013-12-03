@@ -17,14 +17,12 @@
 
 #--------------------------------------------------------------------------
 
+"""The 'edit pool' widget resides here.
 
-"""the 'edit pool' widget resides here"""
+"""
 
-import config, re, string
-from groups_table import groups_table
-import misc
-from keysymdef import keysyms
 import os
+import re
 try:
   import tkinter as Tkinter
   from tkinter import Frame, Button, Entry
@@ -33,8 +31,14 @@ except ImportError:
   from Tkinter import Frame, Button, Entry
 
 from xml.sax import saxutils
+from keysymdef import keysyms
+
+import misc
+import config
 
 from singleton_store import Store
+from groups_table import groups_table
+
 
 
 class editPool( Frame):
