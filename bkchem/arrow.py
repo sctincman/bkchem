@@ -265,7 +265,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # -- private drawing methods for different arrow types --
 
   def _draw_normal_old( self):
-    ps = reduce( operator.add, map( lambda b: b.get_xy(), self.points))
+    ps = tuple(j for i in map(lambda b: b.get_xy(), self.points) for j in i)
     item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
                                    width=self.line_width, smooth=self.spline, fill=self.line_color)
     return [item]
@@ -283,8 +283,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
       coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
-      
-    ps = reduce( operator.add, coords)
+
+    ps = tuple(j for i in coords for j in i)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
@@ -310,8 +310,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
       coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
-      
-    ps = reduce( operator.add, coords)
+
+    ps = tuple(j for i in coords for j in i)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
@@ -339,7 +339,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     # the lines
     for sig in (-1,1):
       cs = geometry.find_parallel_polyline( coords, sig*width)
-      ps = reduce( operator.add, cs)
+      ps = tuple(j for i in cs for j in i)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color)
       items.append( item1)
@@ -361,7 +361,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
         x2, y2 = coords[-1]
         coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
       # the line
-      ps = reduce( operator.add, coords)
+      ps = tuple(j for i in coords for j in i)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color)
       items.append( item1)
@@ -407,7 +407,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
                                               smooth=self.spline, fill=self.line_color,
                                               joinstyle="miter"))
       # the line (with optional pin)
-      ps = reduce( operator.add, coords)
+      ps = tuple(j for i in coords for j in i)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color,
                                       joinstyle="miter")
