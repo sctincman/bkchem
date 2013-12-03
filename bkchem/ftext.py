@@ -31,8 +31,7 @@ import tuning
 
 
 
-class ftext:
-
+class ftext(object):
 
   def __init__( self, canvas, xy, text, font=None, pos="center-first", fill='#000', big_charges=True, justify='right'):
     self.big_charges = big_charges  # should +- in <sup> be drawn in bigger font (not scaled down)?
@@ -211,7 +210,8 @@ class ftext:
     return x
 
 
-class text_chunk:
+
+class text_chunk(object):
 
   def __init__( self, text, attrs=None, newline_after=False):
     self.text = text
