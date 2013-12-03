@@ -65,9 +65,8 @@ class textatom( drawable_chem_vertex):
       self.read_package( package)
 
 
-
   ## ---------------------------------------- PROPERTIES ------------------------------
-      
+
   # symbol
   def _get_symbol( self):
     return self._symbol
@@ -118,8 +117,6 @@ class textatom( drawable_chem_vertex):
     return True
 
 
-
-
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""
     a = ['no','yes']
@@ -164,8 +161,6 @@ class textatom( drawable_chem_vertex):
       self.number = package.getAttribute( 'number')
 
 
-
-
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -192,7 +187,7 @@ class textatom( drawable_chem_vertex):
     x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
-    else: 
+    else:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
     for o in self.marks:
@@ -205,25 +200,12 @@ class textatom( drawable_chem_vertex):
     return a
 
 
-
-
-
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
     return PT.formula_dict()
 
 
-
   def __str__( self):
     return self.id
-
-
-
-
-
-
-
-
-
 
