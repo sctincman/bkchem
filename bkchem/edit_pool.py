@@ -204,7 +204,7 @@ class editPool( Frame):
     # this is because I need to distinguish whether the mainloop was terminated "from inside"
     # or from outside (this most of the time means the application was killed and the widgets are no longer available)
     self._normaly_terminated = 0
-    if text != None:
+    if text is not None:
       self._setText( text)
     self.editPool.focus_set()
     if select:
@@ -239,7 +239,7 @@ class editPool( Frame):
 
 
   def _insertText( self, text):
-    if text != None:
+    if text is not None:
       self.editPool.insert( Tkinter.INSERT, text)
     self.grab_set()
 
