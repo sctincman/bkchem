@@ -17,10 +17,13 @@
 
 #--------------------------------------------------------------------------
 
-
-import Tkinter
 import misc
 import types
+try:
+  import tkinter as Tkinter
+except ImportError:
+  import Tkinter
+
 from oasa import periodic_table as PT
 import os
 from atom import atom
