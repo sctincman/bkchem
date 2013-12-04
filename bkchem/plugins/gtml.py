@@ -41,12 +41,10 @@ gtml_to_bkchem_bond_order_remap = ['empty','single','double','triple']
 
 
 ## DEFINITIONS
-
-class gtml_importer:
+class gtml_importer(object):
 
   gives_molecule = 1
   gives_cdml = 0
-
 
 
   def __init__( self, paper):
