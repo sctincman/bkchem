@@ -727,11 +727,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         self.t_bond_first = b.atom2
         self.t_bond_second = b.atom1
     else:
-      raise ValueError, "submitted bond does not belong to this molecule"
+      raise ValueError("Submitted bond does not belong to this molecule.")
 
 
   def mark_template_atom( self, v):
     if v in self.vertices:
       self.t_atom = v
     else:
-      raise ValueError, "submitted atom does not belong to this molecule"
+      raise ValueError("Submitted atom does not belong to this molecule.")
+
