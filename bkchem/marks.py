@@ -182,7 +182,7 @@ class mark( simple_parent):
         m._after_read_package()
       return m
     else:
-      raise ValueError, "no such mark type %s" % typ
+      raise ValueError("no such mark type %s" % typ)
 
   read_package = classmethod( read_package)
 
