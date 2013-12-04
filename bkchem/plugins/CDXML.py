@@ -25,12 +25,13 @@
 
 """CDXML import-export plugin"""
 
-import plugin
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import math
 from molecule import molecule
 from classes import plus, point, text as text_class
+
+from . import plugin
 from arrow import arrow
 from singleton_store import Screen
 import re
