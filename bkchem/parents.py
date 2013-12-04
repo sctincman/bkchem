@@ -69,6 +69,7 @@ class id_enabled( simple_parent):
   def _generate_id( self):
     return Store.id_manager.generate_and_register_id( self, prefix=self.object_type)
 
+
   # id
   def _get_id( self):
     try:
@@ -79,19 +80,18 @@ class id_enabled( simple_parent):
 
   def _set_id( self, id):
     if Store.id_manager.is_registered_object( self):
-      Store.id_manager.unregister_object( self) 
+      Store.id_manager.unregister_object( self)
     Store.id_manager.register_id( self, id)
     self.__id = id
 
   id = property( _get_id, _set_id)
-  
+
 
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     pass
     #other.id = self.id
 
-    
 
 
 class meta_enabled( id_enabled):
@@ -103,6 +103,7 @@ class meta_enabled( id_enabled):
     id_enabled.__init__( self)
     if standard:
       self.read_standard_values( standard)
+
 
   def read_standard_values( self, standard, old_standard=None):
     """if old_standard is given the recent value is read from standard
@@ -121,8 +122,6 @@ class meta_enabled( id_enabled):
             break
         if not is_prop:
           self.__dict__[i] = standard.__dict__[i]
-
-
 
 
 
@@ -146,7 +145,7 @@ class drawable( simple_parent):
 
   dirty = property( _get_dirty, _set_dirty)
 
-  
+
   # public methods
   def move( self, dx, dy):
     pass
@@ -156,9 +155,6 @@ class drawable( simple_parent):
 
   def redraw( self):
     pass
-
-
-
 
 
 
@@ -204,12 +200,10 @@ class point_drawable( drawable):
 
 
 
-
-
 class with_line( simple_parent):
 
   meta__undo_properties = ("line_width",)
-  
+
   # line_width
   def _get_line_width( self):
     return self.__line_width
@@ -219,7 +213,7 @@ class with_line( simple_parent):
     self.dirty = 1
 
   line_width = property( _get_line_width, _set_line_width)
-  
+
 
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
@@ -228,14 +222,12 @@ class with_line( simple_parent):
 
 
 
-
-
 class line_colored( simple_parent):
   """parent for objects having line shape and thus defining only one color -
   the line_color"""
 
   meta__undo_properties = ("line_color",)
-  
+
 
   def __init__( self):
     simple_parent.__init__( self)
@@ -260,14 +252,12 @@ class line_colored( simple_parent):
     other.line_color = self.line_color
 
 
-  
-
 
 class area_colored( line_colored):
 
   meta__undo_properties = line_colored.meta__undo_properties + \
                           ("area_color",)
-  
+
   def __init__( self):
     line_colored.__init__( self)
     self.area_color = '#ffffff'
@@ -289,7 +279,6 @@ class area_colored( line_colored):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     line_colored.copy_settings( self, other)
     other.area_color = self.area_color
-
 
 
 
@@ -335,7 +324,6 @@ class with_font( simple_parent):
 
 
 
-
 class text_like( with_font):
   """for text like objects needing font_size and font_family properties and variable text and xml_ftext"""
 
@@ -351,7 +339,7 @@ class text_like( with_font):
 
   text = property( _get_text, None, None,
                    "the unmarked plain-text representing the object - it is taken from xml_ftext and the markup is stripped")
- 
+
 
   # xml_ftext
   def _get_xml_ftext( self):
@@ -361,23 +349,22 @@ class text_like( with_font):
 
 
 
-
-
-
 class interactive( simple_parent):
 
   def focus( self):
     pass
 
+
   def unfocus( self):
     pass
+
 
   def select( self):
     pass
 
+
   def unselect( self):
     pass
-
 
 
 
@@ -403,8 +390,6 @@ class container( simple_parent):
 ##     return self
 
 ##   def next( self):
-
-  
 
 
 
@@ -434,7 +419,6 @@ class top_level:
 
 
 
-
 class with_paper( object):
 
   # paper
@@ -461,8 +445,4 @@ class child_with_paper( child, with_paper):
     raise KeyError, "trying to set paper in a child - set it in parent instead"
 
   paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
-
-
-
-
 
