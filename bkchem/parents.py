@@ -17,16 +17,19 @@
 
 #--------------------------------------------------------------------------
 
+"""This file stores the oldest parents of used classes.
 
-"""This file stores the oldest parents of used classes which are used to provide
-mostly the desired meta_behaviour"""
+Used to provide mostly the desired meta_behaviour.
+"""
 
+import xml.dom.minidom as dom
 
 import misc
-from singleton_store import Store
-import xml.dom.minidom as dom
-import dom_extensions
 import ftext
+import dom_extensions
+
+from singleton_store import Store
+
 
 
 class simple_parent( object):
