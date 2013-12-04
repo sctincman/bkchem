@@ -88,7 +88,7 @@ class CML2_atom(CML.CML_atom):
       return None # raise cml_exception( "missing "+str( self.not_enough_data())+" in atom specification")
     out = doc.createElement( 'atom')
     #id
-    if self.z == None:
+    if self.z is None:
       dom_ext.setAttributes( out, (('id', str( self.id)),
                                    ('x2', str( self.x)),
                                    ('y2', str( self.y)),
