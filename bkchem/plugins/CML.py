@@ -23,14 +23,15 @@
 
 """CML import-export plugin"""
 
+import math
 import xml.dom.minidom as dom
 try:
   import tkinter.messagebox as tkMessageBox
 except ImportError:
   import tkMessageBox
 
+import validator
 import dom_extensions as dom_ext
-import math
 
 from . import plugin
 
@@ -199,7 +200,6 @@ class CML_exporter( plugin.exporter):
     
 
   def check_chemistry( self):
-    import validator
     val = validator.validator()
     val.validate( self.paper.molecules)
     if val.report.text_atoms:
