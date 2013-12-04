@@ -17,16 +17,16 @@
 
 #--------------------------------------------------------------------------
 
+"""Images for buttons all over BKChem.
 
-"""images for buttons all over BKChem"""
+"""
 
-import import_checker
-import os_support
 try:
     import tkinter as Tkinter
 except ImportError:
     import Tkinter
 
+import os_support
 
 __all__ = ['images']
 
