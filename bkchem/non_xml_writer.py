@@ -37,7 +37,11 @@ else:
   enabled = 0
 
 import operator
-import StringIO
+try:
+  from io import StringIO
+except ImportError:
+  import StringIO
+
 
 def RGB_color( r, g, b):
   """converts 3 RGB values to one for use in PIL.Image"""
