@@ -76,21 +76,22 @@ class id_enabled(simple_parent):
     return Store.id_manager.generate_and_register_id( self, prefix=self.object_type)
 
 
-  # id
-  def _get_id( self):
+  @property
+  def id(self):
     try:
       return self.__id
     except AttributeError:
       self.__id = self._generate_id()
     return self.__id
 
-  def _set_id( self, id):
+
+  @id.setter
+  def id(self, id):
     if Store.id_manager.is_registered_object( self):
       Store.id_manager.unregister_object( self)
     Store.id_manager.register_id( self, id)
     self.__id = id
 
-  id = property( _get_id, _set_id)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -144,16 +145,14 @@ class drawable(simple_parent):
     self.dirty = 0
 
 
-  # public properties
-
-  # dirty
-  def _get_dirty( self):
+  @property
+  def dirty(self):
     return self.__dirty
 
-  def _set_dirty( self, dirty):
-    self.__dirty = dirty
 
-  dirty = property( _get_dirty, _set_dirty)
+  @dirty.setter
+  def dirty(self, dirty):
+    self.__dirty = dirty
 
 
   # public methods
@@ -182,27 +181,28 @@ class point_drawable(drawable):
     self.x = 0
     self.y = 0
 
-  # public properties
 
-  # x
-  def _get_x( self):
+  @property
+  def x(self):
     return self.__x
 
-  def _set_x( self, x):
+
+  @x.setter
+  def x(self, x):
     self.__x = x
     self.dirty = 1
 
-  x = property( _get_x, _set_x)
 
-  # y
-  def _get_y( self):
+  @property
+  def y(self):
     return self.__y
 
-  def _set_y( self, y):
+
+  @y.setter
+  def y(self, y):
     self.__y = y
     self.dirty = 1
 
-  y = property( _get_y, _set_y)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -219,15 +219,16 @@ class with_line(simple_parent):
 
   meta__undo_properties = ("line_width",)
 
-  # line_width
-  def _get_line_width( self):
+  @property
+  def line_width(self):
     return self.__line_width
 
-  def _set_line_width( self, line_width):
+
+  @line_width.setter
+  def line_width(self, line_width):
     self.__line_width = line_width
     self.dirty = 1
 
-  line_width = property( _get_line_width, _set_line_width)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -249,17 +250,17 @@ class line_colored(simple_parent):
     simple_parent.__init__( self)
     self.line_color = '#000'
 
-  # public properties
 
-  # line_color
-  def _get_line_color( self):
+  @property
+  def line_color(self):
     return self.__line_color
 
-  def _set_line_color( self, line_color):
+
+  @line_color.setter
+  def line_color(self, line_color):
     self.__line_color = line_color
     self.dirty = 1
 
-  line_color = property( _get_line_color, _set_line_color)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -280,17 +281,17 @@ class area_colored(line_colored):
     line_colored.__init__( self)
     self.area_color = '#ffffff'
 
-  # public properties
 
-  # area_color
-  def _get_area_color( self):
+  @property
+  def area_color(self):
     return self._area_color
 
-  def _set_area_color( self, area_color):
+
+  @area_color.setter
+  def area_color(self, area_color):
     self._area_color = area_color
     self.dirty = 1
 
-  area_color = property( _get_area_color, _set_area_color)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -315,26 +316,26 @@ class with_font(simple_parent):
     self.font_family = 'helvetica'
 
 
-  # font_size
-  def _get_font_size( self):
+  @property
+  def font_size(self):
     return self.__font_size
 
-  def _set_font_size( self, font_size):
+  @font_size.setter
+  def font_size(self, font_size):
     self.__font_size = font_size
     self.dirty = 1
 
-  font_size = property( _get_font_size, _set_font_size)
 
-
-  # font_family
-  def _get_font_family( self):
+  @property
+  def font_family(self):
     return self.__font_family
 
-  def _set_font_family( self, font_family):
+
+  @font_family.setter
+  def font_family(self, font_family):
     self.__font_family = font_family
     self.dirty = 1
 
-  font_family = property( _get_font_family, _set_font_family)
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -355,21 +356,22 @@ class text_like(with_font):
     with_font.__init__(self)
 
 
+  @property
+  def text(self):
+    """Unmarked plain-text representing the object.
 
-  # text
-  def _get_text( self):
-    doc = dom.parseString( ftext.ftext.sanitize_text( self.xml_ftext))
-    return dom_extensions.getAllTextFromElement( doc)
-
-  text = property( _get_text, None, None,
-                   "the unmarked plain-text representing the object - it is taken from xml_ftext and the markup is stripped")
+    Taken from xml_ftext and the markup is stripped.
+    """
+    doc = dom.parseString( ftext.ftext.sanitize_text(self.xml_ftext))
+    return dom_extensions.getAllTextFromElement(doc)
 
 
-  # xml_ftext
-  def _get_xml_ftext( self):
+  @property
+  def xml_ftext(self):
+    """Text used for rendering using the ftext class.
+
+    """
     return ""
-
-  xml_ftext = property( _get_xml_ftext, None, None, "the text used for rendering using the ftext class")
 
 
 
@@ -394,40 +396,37 @@ class interactive(simple_parent):
 
 class container(simple_parent):
 
-  # shape_defining_points
-  def _get_shape_defining_points( self):
+  @property
+  def shape_defining_points(self):
+    """List of point_drawable instances.
+
+    """
     return []
 
-  shape_defining_points = property( _get_shape_defining_points, None, None,
-                                    "should give list of point_drawable instances")
 
+  @property
+  def children(self):
+    """List of child instances.
 
-  # children
-  def _get_children( self):
+    By default is alias for self.shape_defining_points.
+    """
     return self.shape_defining_points
 
-  children = property( _get_children, None, None,
-                       "should give list of child instances, by default is alias for self.shape_defining_points")
-
-##   # iterator
-##   def __iter__( self):
-##     return self
-
-##   def next( self):
 
 
 class child(simple_parent):
 
+  @property
+  def parent(self):
+    """Container.
 
-  # parent
-  def _get_parent( self):
+    """
     return None
 
-  def _set_parent( self, par):
+  @parent.setter
+  def parent(self, par):
     pass
 
-  parent = property( _get_parent, _set_parent, None,
-                     "should give a container")
 
   def copy_settings(self, other):
     """Copy settings of self to other.
@@ -447,28 +446,34 @@ class top_level(object):
 
 class with_paper(object):
 
-  # paper
-  def _get_paper( self):
+  @property
+  def paper(self):
+    """Paper that the object is drawn onto.
+
+    """
     return self._paper
 
-  def _set_paper( self, paper):
+
+  @paper.setter
+  def paper(self, paper):
     self._paper = paper
 
-  paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
 
 
 class child_with_paper(child, with_paper):
 
+  @property
+  def paper(self):
+    """Paper that the object is drawn onto.
 
-  # paper
-  def _get_paper( self):
+    """
     if self.parent:
       return self.parent.paper
     else:
       return None
 
-  def _set_paper( self, paper):
-    raise KeyError("Trying to set paper in a child - set it in parent instead.")
 
-  paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
+  @paper.setter
+  def paper(self, paper):
+    raise KeyError("Trying to set paper in a child - set it in parent instead.")
 
