@@ -21,6 +21,7 @@
 
 """
 
+import sys
 try:
   import tkinter.messagebox as tkMessageBox
 except ImportError:
@@ -89,15 +90,22 @@ class molfile_exporter(plugin.exporter):
       self.molecule = mols[0]
       return 1
 
-  def write_to_file( self, name):
-    if type( name) == types.StringType or type( name) == types.UnicodeType:
-      file = open( name, 'w')
-    else:
-      file = name
-    tr = invert_coords( self.molecule)
-    oasa_bridge.write_molfile( self.molecule, file)
-    invert_coords( self.molecule)
 
+  def write_to_file(self, name):
+    if sys.version_info[0] > 2:
+      if isinstance(name, (bytes, str)):
+        f = open(name, 'w')
+      else:
+        f = name
+    else:
+      if isinstance(name, basestring):
+        f = open(name, 'w')
+      else:
+        f = name
+    tr = invert_coords(self.molecule)
+    oasa_bridge.write_molfile(self.molecule, f)
+    invert_coords(self.molecule)
+    f.close()
 
 
 
