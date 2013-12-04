@@ -103,8 +103,8 @@ class plugin_manager(object):
     if not type:
       return self.plugins.keys()
     else:
-      return [k for k, v in self.plugins.iteritems() if v.type == type]
-    
+      return [k for k, v in self.plugins.items() if v.type == type]
+
 
   def get_description( self, name):
     handler = self.get_plugin_handler( name)
