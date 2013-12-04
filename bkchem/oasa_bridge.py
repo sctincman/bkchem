@@ -39,6 +39,7 @@ def read_smiles( text, paper):
   oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
   return oasa_mol_to_bkchem_mol( mol, paper)
 
+
 def mol_to_smiles( mol):
   m = bkchem_mol_to_oasa_mol( mol)
   m.remove_unimportant_hydrogens()
@@ -52,7 +53,8 @@ def read_inchi( text, paper):
   #oasa.coords_generator.calculate_coords( mol, bond_length=1.0, force=1)
   m = oasa_mol_to_bkchem_mol( mol, paper)
   return m
-  
+
+
 def mol_to_inchi( mol, program):
   m = bkchem_mol_to_oasa_mol( mol)
   # we do not use mol_to_text because generate_inchi_and_inchikey returns extra warning messages
@@ -73,18 +75,16 @@ def write_molfile( mol, file):
   m = bkchem_mol_to_oasa_mol( mol)
   oasa.molfile.mol_to_file( m, file)
 
-  
 
 # ==================================================
 # OASA -> BKCHEM
-
 def oasa_mol_to_bkchem_mol( mol, paper):
   m = molecule.molecule( paper)
   if None in reduce( operator.add, [[a.x, a.y] for a in mol.atoms], []):
     calc_position = 0
   else:
     calc_position = 1
-    
+
   minx = None
   maxx = None
   miny = None
@@ -143,6 +143,7 @@ def oasa_atom_to_bkchem_atom( a, paper, m):
   at.multiplicity = at.multiplicity
   return at
 
+
 def oasa_bond_to_bkchem_bond( b, paper):
   bo = bond.bond( standard=paper.standard)
   bo.type = b.type
@@ -152,7 +153,6 @@ def oasa_bond_to_bkchem_bond( b, paper):
 
 # ==================================================
 # BKCHEM -> OASA
-
 def bkchem_mol_to_oasa_mol( mol):
   m = oasa.molecule()
   for a in mol.atoms:
@@ -165,8 +165,6 @@ def bkchem_mol_to_oasa_mol( mol):
     b2.vertices = (v1, v2)
     m.add_edge( v1, v2, b2)
   return m
-
-
 
 
 def bkchem_atom_to_oasa_atom( a):
@@ -183,10 +181,10 @@ def bkchem_atom_to_oasa_atom( a):
     ret.isotope = a.isotope
   return ret
 
+
 def bkchem_bond_to_oasa_bond( b):
   ret = oasa.bond( order=b.order, type=b.type)
   return ret
-
 
 
 ### TODO
