@@ -60,8 +60,6 @@ class gtml_importer(object):
     return 1
 
 
-
-
   def get_molecules( self, file_name):
     self.molecules = []
 
@@ -77,10 +75,9 @@ class gtml_importer(object):
     f.write( the_file.read())
     the_file.close()
     f.seek(0)
-    
+
     doc = dom.parse( f)
     f.close()
-
 
     for ch in xpath.Evaluate( "//graph[@type='molecule']", doc):
       m = self._read_molecule( ch)
@@ -100,9 +97,6 @@ class gtml_importer(object):
     return self.molecules
 
 
-
-
-
   def _read_molecule( self, el):
     m = molecule( self.paper)
     for v in xpath.Evaluate( "vertex", el):
@@ -117,8 +111,6 @@ class gtml_importer(object):
 
     self._mol_ids[ el.getAttribute( 'id')] = m
     return m
-
-
 
 
   def _read_atom( self, at, mol):
@@ -142,14 +134,12 @@ class gtml_importer(object):
     return a
 
 
-
   def _read_bond( self, bo):
     b = bond( self.paper)
     b.order = gtml_to_bkchem_bond_order_remap.index( dom_ext.getAllTextFromElement( xpath.Evaluate("bond", bo)[0]))
     ids = [i.nodeValue for i in xpath.Evaluate( "end/@idref", bo)]
     b.atoms = [self._atom_id_remap[ i] for i in ids]
     return b
-
 
 
   def place_molecules( self):
@@ -187,7 +177,7 @@ class gtml_importer(object):
             arr.reaction.products.extend( [self._mol_ids[m] for m in products])
             arr.pluses = plus_objs
             self.molecules.append( arr)
-          
+
     else:
       for m in self.molecules:
         last_anchor_x = self._scale_and_move_molecule( m, last_anchor_x, last_anchor_y)
@@ -216,12 +206,10 @@ class gtml_importer(object):
     m.move( anchor_x-minx, anchor_y - (maxy-miny)/2 - miny)
 
     #import graphics
-    #self.molecules.append( graphics.rect( self.paper, coords = m.bbox()))                                       
+    #self.molecules.append( graphics.rect( self.paper, coords = m.bbox()))
     #self.molecules.append( graphics.rect( self.paper, coords = (anchor_x + (maxx), 100, anchor_x + (maxx) + 2, 300)))
 
     return anchor_x + maxx - minx
-
-
 
 
   def process_reactions( self, doc):
@@ -237,7 +225,6 @@ class gtml_importer(object):
         if id not in products:
           products.append( id)
       self._reactions.append( (reactants,products))
-          
 
 
 
@@ -246,19 +233,11 @@ class gtml_exporter:
   def __init__( self, paper):
     pass
 
-  
+
+
 # PLUGIN INTERFACE SPECIFICATION
 name = "GTML"
 extensions = [".gtml",".xml"]
 importer = gtml_importer
 exporter = gtml_exporter
-
-
-
-
-
-
-## PRIVATE CLASSES AND FUNCTIONS
-
-
 
