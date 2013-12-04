@@ -36,13 +36,13 @@ from singleton_store import Store
 
 
 
-
 class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
   dirs = ('smiles','inchi','gtml','images')
 
   def __init__( self, *args):
     BaseHTTPServer.BaseHTTPRequestHandler.__init__( self, *args)
+
 
   def do_GET_fallback( self):
     protocol, address, path, parameters, query, fragment = urlparse.urlparse( self.path)
@@ -55,9 +55,9 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       method = 'serve' + path
 
       if method in self.__class__.__dict__:
-	self.__class__.__dict__[ method]( self)
+        self.__class__.__dict__[ method]( self)
       else:
-	self.return_error()
+        self.return_error()
     else:
       method = "servedir_" + path_list[0]
       self.__class__.__dict__[ method]( self, path_list[1:])
@@ -84,12 +84,10 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     self.wfile.write( exporter.document.toxml())
 
 
-
-  def serve__content_html( self): 
+  def serve__content_html( self):
     self.send_response( 200)
     self.send_header("Content-Type", "text/html")
     self.end_headers()
-
 
     result = '''
     <html>
@@ -135,13 +133,11 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     </html>
     ''' % {'smiles': self._get_all_smiles()}
     self.wfile.write( result)
-   
 
 
   def serve__content_png( self):
     Store.app.plugin_export( "PNG (Cairo)", filename="http_temp.png", interactive=False)
     self._serve_file( "http_temp.png", "image/png")
-    
 
 
   def servedir_smiles( self, path_list):
@@ -152,6 +148,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       Store.app.paper.create_background()
       Store.app.read_smiles( path_list[0])
       self.serve__content_svg()
+
 
   def servedir_inchi( self, path_list):
     Store.app.paper.clean_paper()
@@ -165,7 +162,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     Store.app.paper.create_background()
     Store.app.plugin_import( 'GTML', '/'.join( path_list))
     self.serve__content_svg()
-    
+
 
   def servedir_images( self, path_list):
     self._serve_file( os.path.join( "..", "pixmaps", *path_list))
@@ -173,17 +170,14 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
   def serve__bkchem_js( self):
     self._serve_file( "bkchem.js", content_type="text/javascript")
-    
-    
 
 
   def return_error( self):
     self.send_response( 400)
     self.send_header("Content-Type", "text/html")
-    self.end_headers()    
+    self.end_headers()
 
     self.wfile.write("<html><body><h1>Bad request</h1><p>This address does not exist</p></body></html>")
-
 
 
   def do_GET( self):
@@ -199,12 +193,11 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
           except:
             smiles = "SMILES not available"
           self._serve_xml( "<smiles>%s</smiles>" % smiles)
-          
+
       else:
         self.serve__content_html()
     else:
       self.do_GET_fallback()
-
 
 
   def _action_click( self, attrs):
@@ -216,7 +209,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     Store.app.mode.mouse_down( e)
     Store.app.mode.mouse_up( e)
     #Store.app.mode.leave_object( e)
-    
+
 
   def _action_undo( self, attrs):
     Store.app.mode.undo()
@@ -243,7 +236,6 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     Store.app.mode.set_submode( attrs['temp'])
 
 
-
   def _serve_xml( self, text):
     self.send_response( 200)
     self.send_header("Content-Type", "text/xml")
@@ -256,11 +248,10 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     self.send_response( 200)
     self.send_header("Content-Type", content_type)
     self.end_headers()
-    
+
     f = file( filename, "rb")
     self.wfile.write( f.read())
     f.close()
-    
 
 
   def _get_attrs( self, query):
@@ -282,17 +273,16 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
 
   # LOGGING
-
   def log_request( self, *args):
     pass
+
 
   def log_message( self, *args):
     pass
 
+
   def log_error( self, *args):
     pass
-
-
 
 
 
@@ -308,3 +298,4 @@ class Event:
   def __init__( self, x, y):
     self.x = x
     self.y = y
+
