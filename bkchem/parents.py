@@ -24,7 +24,6 @@ Used to provide mostly the desired meta_behaviour.
 
 import xml.dom.minidom as dom
 
-import misc
 import ftext
 import dom_extensions
 
