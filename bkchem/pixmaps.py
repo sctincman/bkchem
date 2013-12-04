@@ -31,22 +31,25 @@ except ImportError:
 __all__ = ['images']
 
 
-class images_dict( dict):
-  """if asked about an pixmap it looks to the filesystem and
-  adds the path into itself if found"""
 
-  def __getitem__( self, item):
+class images_dict(dict):
+  """Paths to pictures.
+
+  If asked about a pixmap it looks to the filesystem and
+  adds the path into itself if found.
+  """
+  def __getitem__(self, item):
     # try if we need to recode the name
     try:
-      item = name_recode_map[ item]
+      item = name_recode_map[item]
     except KeyError:
       pass
     try:
-      return dict.__getitem__( self, item)
+      return dict.__getitem__(self, item)
     except:
       try:
-        i = Tkinter.PhotoImage( file = os_support.get_path( item+'.gif', 'pixmap'))
-        self.__setitem__( item, i)
+        i = Tkinter.PhotoImage(file=os_support.get_path(item + '.gif', 'pixmap'))
+        self.__setitem__(item, i)
         return i
       except ValueError:
         raise KeyError
@@ -55,27 +58,24 @@ class images_dict( dict):
   def __contains__( self, item):
     # try if we need to recode the name
     try:
-      item = name_recode_map[ item]
+      item = name_recode_map[item]
     except KeyError:
       pass
 
-    if dict.__contains__( self, item):
+    if dict.__contains__(self, item):
       return 1
     else:
       try:
-        self.__setitem__( item, Tkinter.PhotoImage( file = os_support.get_path( item+'.gif', 'pixmap')))
+        self.__setitem__(item, Tkinter.PhotoImage(file=os_support.get_path(item + '.gif', 'pixmap')))
         return 1
       except:
-        #print "pixmap not found: " + item
         return 0
 
 
 # images for which the name and file name differs
-name_recode_map = { #'vector': 'oval',
-                    'fixed': 'fixed_length'
-                    }
-
+name_recode_map = {#'vector': 'oval',
+                   'fixed': 'fixed_length'
+                  }
 
 images = images_dict()
-
 
