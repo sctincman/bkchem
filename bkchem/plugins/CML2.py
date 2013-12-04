@@ -165,7 +165,7 @@ class CML2_bond(CML.CML_bond):
         if self.order.lower() in types:
           self.order = types.index( self.order.lower()) + 1
         else:
-          raise plugin.import_exception, "unknown bond type %s" % self.order
+          raise plugin.import_exception("unknown bond type %s" % self.order)
     if cml.getAttribute( 'atomRefs2'):
       atoms = cml.getAttribute( 'atomRefs2').split( ' ')
       if len( atoms) == 2:
