@@ -90,7 +90,9 @@ class plugin_manager(object):
       sys.path.append( dirname)
       the_globals = {'App': Store.app}
       try:
-        execfile( filename, the_globals)
+        with open(filename) as f:
+          code = compile(f.read(), filename, 'exec')
+          exec(code, the_globals)
       finally:
         del sys.path[-1]
     else:
