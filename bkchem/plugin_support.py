@@ -27,11 +27,12 @@ from singleton_store import Store
 
 
 
-class plugin_manager( object):
+class plugin_manager(object):
 
   def __init__( self):
     self.plugins = {}
     self.descriptions = {}
+
 
   def get_available_plugins( self):
     dir2 = os_support.get_dirs( 'plugin')
@@ -50,7 +51,6 @@ class plugin_manager( object):
           #  debug.log( "could not load plugin file", name)
 
     return self.plugins.keys()
-
 
 
   def read_plugin_file( self, dir, name):
@@ -78,7 +78,6 @@ class plugin_manager( object):
                                  desc=self._select_correct_text( descs),
                                  menu=menu)
         self.plugins[ name] = plugin
-
 
 
   def run_plugin( self, name):
@@ -137,12 +136,10 @@ class plugin_manager( object):
 
 
 
+class plugin_handler(object):
+  """This class stores information about plugin.
 
-  
-
-class plugin_handler:
-  """this class stores information about plugin"""
-
+  """
   def __init__( self, name, filename, type="script", desc="", menu=""):
     self.name = name
     self.type = type
@@ -150,7 +147,7 @@ class plugin_handler:
     self.filename = filename
     self.menu = menu
 
-    
+
   def get_module_name( self):
     """returns name of module suitable for loading of this plugin via import"""
     return os.path.splitext( os.path.split( self.filename)[1])[0]
@@ -160,5 +157,3 @@ class plugin_handler:
     """returns directory where the plugin resides"""
     return os.path.split( self.filename)[0]
 
-
-  
