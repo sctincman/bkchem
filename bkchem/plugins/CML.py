@@ -24,6 +24,11 @@
 """CML import-export plugin"""
 
 import xml.dom.minidom as dom
+try:
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  import tkMessageBox
+
 import dom_extensions as dom_ext
 import math
 
@@ -183,7 +188,6 @@ class CML_exporter( plugin.exporter):
 
   def on_begin( self):
     if self.check_chemistry():
-      import tkMessageBox      
       yes = tkMessageBox.askyesno( _("Normalize bond length?"),
                                    _("If you are exporting to some kind of computational software it might be important to rescale the molecule, so that the bond lengths are in range of normal chemical bonds. Do you want to do this? It will influence only the exported CML file, not the drawing."))
       if yes:
@@ -199,19 +203,16 @@ class CML_exporter( plugin.exporter):
     val = validator.validator()
     val.validate( self.paper.molecules)
     if val.report.text_atoms:
-      import tkMessageBox
       tkMessageBox.showerror( _("CML export error"),
                               _("Sorry but your drawing includes 'text atoms'\n - atoms with no chemical sense.") + "\n\n" +
                               _("It is not possible to export it to valid CML.") + "\n\n" +
                               _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
       return 0
     if val.report.exceeded_valency:
-      import tkMessageBox
       tkMessageBox.showwarning( _("CML export warning"),
                                 _("Your drawing includes some atoms with exceeded valency.") + "\n\n" + 
                                 _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
     if val.report.group_atoms:
-      import tkMessageBox
       yes = tkMessageBox.askyesno( _("Expand groups?"),
                                 _("Your drawing includes some groups.") + "\n\n" + 
                                 _("These must be expanded in order to export to valid CML. The expansion could be undone with undo after the export") + "\n\n"+
