@@ -275,10 +275,7 @@ local_name = _("CML")
 
 
 ## PRIVATE CLASSES AND FUNCTIONS
-
-
-
-class CML_atom:
+class CML_atom(object):
 
   def __init__( self, atom=None, cml=None, scaling=1.0):
     self._scaling = scaling
@@ -355,7 +352,7 @@ class CML_atom:
 
 
 
-class CML_bond:
+class CML_bond(object):
 
   def __init__( self, bond=None, cml=None):
     self.order = 1
