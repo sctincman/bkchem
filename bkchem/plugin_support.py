@@ -17,11 +17,13 @@
 
 #--------------------------------------------------------------------------
 
-import xml.dom.minidom as dom
-import dom_extensions as dom_ext
-import os_support
 import os
+import sys
+import xml.dom.minidom as dom
+
 import debug
+import os_support
+import dom_extensions as dom_ext
 
 from singleton_store import Store
 
@@ -86,7 +88,6 @@ class plugin_manager(object):
     if handler.type == "script":
       filename = handler.filename
       dirname = handler.get_directory_name()
-      import sys
       sys.path.append( dirname)
       the_globals = {'App': Store.app}
       try:
