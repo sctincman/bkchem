@@ -23,13 +23,15 @@
 
 """CML import-export plugin"""
 
-import plugin
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import math
 
-## DEFINITIONS
+from . import plugin
 
+
+
+## DEFINITIONS
 class CML_importer( plugin.importer):
   """Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."""
   doc_string = _("Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard.")
