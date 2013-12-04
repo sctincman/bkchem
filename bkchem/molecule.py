@@ -17,40 +17,35 @@
 
 #--------------------------------------------------------------------------
 
+"""Home of the molecule class.
 
-"""home of the molecule class"""
+"""
 
 from __future__ import division
-from __future__ import generators
 
-from math import atan2, sin, cos, pi, sqrt
-import operator
-import misc
-import time
+import copy
+import oasa
+import xml.dom.minidom as dom
+
 from oasa import geometry
 from warnings import warn
-import dom_extensions
-import xml.dom.minidom as dom
 from oasa import periodic_table as PT
+from math import atan2, sin, cos, pi, sqrt
+
+import misc
+import dom_extensions
+import bkchem_exceptions
 import groups_table as GT
-import copy
 import helper_graphics as hg
-from parents import container, top_level, id_enabled, with_paper
+
 from bond import bond
 from atom import atom
 from group import group
+from fragment import fragment
 from textatom import textatom
 from queryatom import queryatom
-from fragment import fragment
-import bkchem_exceptions
-
-
-
-
-
-import oasa
-
 from singleton_store import Store, Screen
+from parents import container, top_level, id_enabled, with_paper
 
 
 
