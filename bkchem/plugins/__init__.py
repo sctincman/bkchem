@@ -20,8 +20,21 @@
 from __future__ import print_function
 
 __all__ = []
-_names = ['CML','CML2','openoffice','ps_builtin','molfile','pdf_piddle','ps_piddle','pdf_cairo','png_cairo',"odf", "svg_cairo",'ps_cairo','CDXML']
+
 # 'bitmap' and 'gtml' were removed for the release
+_names = ["CML",
+          "CML2",
+          "openoffice",
+          "ps_builtin",
+          "molfile",
+          "pdf_piddle",
+          "ps_piddle",
+          "pdf_cairo",
+          "png_cairo",
+          "odf",
+          "svg_cairo",
+          "ps_cairo",
+          "CDXML"]
 
 import sys
 
