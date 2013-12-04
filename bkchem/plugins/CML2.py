@@ -16,14 +16,13 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""CML2 import-export plugin"""
+"""CML2 import-export plugin.
+
+"""
 
 import xml.dom.minidom as dom
+
 import dom_extensions as dom_ext
 
 from . import CML
@@ -32,27 +31,32 @@ from . import plugin
 
 
 ## DEFINITIONS
+class CML2_importer(CML.CML_importer):
+  """Import a CML (Chemical Markup Language) document.
 
-class CML2_importer( CML.CML_importer):
-  """Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."""
+  Uses version 2.0 of the CML standard."""
   doc_string = _("Imports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard.")
 
-  def __init__( self):
-    CML.CML_importer.__init__( self)
+  def __init__(self):
+    CML.CML_importer.__init__(self)
     self.CML_atom = CML2_atom
     self.CML_bond = CML2_bond
 
 
-class CML2_exporter( CML.CML_exporter):
-  """Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard."""
+
+class CML2_exporter(CML.CML_exporter):
+  """Export a CML (Chemical Markup Language) document.
+
+  Uses version 2.0 of the CML standard."""
   doc_string = _("Exports a CML (Chemical Markup Language) document, uses version 2.0 of the CML standard.")
 
-  def __init__( self, paper):
-    CML.CML_exporter.__init__( self, paper)
+  def __init__(self, paper):
+    CML.CML_exporter.__init__(self, paper)
     self.CML_atom = CML2_atom
     self.CML_bond = CML2_bond
 
   
+
 # PLUGIN INTERFACE SPECIFICATION
 name = "CML2"
 extensions = [".cml",".xml"]
@@ -62,13 +66,8 @@ local_name = _("CML2")
 
 
 
-
-
 ## PRIVATE CLASSES AND FUNCTIONS
-
-
-
-class CML2_atom( CML.CML_atom):
+class CML2_atom(CML.CML_atom):
 
   def __init__( self, atom=None, cml=None, scaling=1.0):
     self._scaling = scaling
@@ -83,6 +82,7 @@ class CML2_atom( CML.CML_atom):
     elif cml:
       self.read_CML( cml)
     
+
   def get_CML_dom( self, doc):
     if self.not_enough_data():
       return None # raise cml_exception( "missing "+str( self.not_enough_data())+" in atom specification")
@@ -109,6 +109,7 @@ class CML2_atom( CML.CML_atom):
   #def read_atom( self, atom):
   #  CML.CML_atom.read_atom( self, atom)
 
+
   def read_CML( self, cml):
     if cml.getAttribute( 'id'):
       self.id = cml.getAttribute( 'id')
@@ -129,7 +130,7 @@ class CML2_atom( CML.CML_atom):
 
 
 
-class CML2_bond( CML.CML_bond):
+class CML2_bond(CML.CML_bond):
 
   def __init__( self, bond=None, cml=None):
     self.order = 1
@@ -152,6 +153,7 @@ class CML2_bond( CML.CML_bond):
     out.setAttribute( 'atomRefs2', '%s %s' % ( str( self.atom1), str( self.atom2)))
 
     return out
+
 
   def read_CML( self, cml):
     if cml.getAttribute( 'order'):
@@ -177,11 +179,13 @@ class CML2_bond( CML.CML_bond):
       else:
         self.stereo = 'n'
 
-class cml_exception( Exception):
-  def __init__( self, value):
+
+
+class cml_exception(Exception):
+  def __init__(self, value):
     self.value = value
 
-  def __str__( self):
+
+  def __str__(self):
     return self.value
 
-  
