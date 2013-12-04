@@ -22,7 +22,10 @@
 
 import import_checker
 import os_support
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 __all__ = ['images']
