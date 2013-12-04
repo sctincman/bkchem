@@ -17,25 +17,29 @@
 
 #--------------------------------------------------------------------------
 
+"""Set of marks such as charges, radicals etc.
 
-"""set of marks such as charges, radicals etc."""
+"""
 
 from __future__ import division
-from oasa import geometry
-import xml.dom.minidom as dom
-import dom_extensions
+
+import math
 import warnings
+import xml.dom.minidom as dom
 try:
   import tkinter.font as tkFont
 except ImportError:
   import tkFont
 
+from oasa import geometry
+from oasa import transform
+
 from parents import simple_parent
 from singleton_store import Screen
+
 import data
-import math
-import debug
-from oasa import transform
+import dom_extensions
+
 
 
 class mark( simple_parent):
