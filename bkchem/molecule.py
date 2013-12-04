@@ -720,7 +720,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       atms = misc.difference( atms, [b.atom1, b.atom2])
       coords = [a.get_xy() for a in atms]
       line = b.atom1.get_xy() + b.atom2.get_xy()
-      if reduce( operator.add, [geometry.on_which_side_is_point( line, xy) for xy in coords], 0) > 0:
+      if sum(geometry.on_which_side_is_point(line, xy) for xy in coords) > 0:
         self.t_bond_first = b.atom1
         self.t_bond_second = b.atom2
       else:
