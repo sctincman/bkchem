@@ -32,8 +32,10 @@ from singleton_store import Store
 
 
 
-class simple_parent( object):
-  """this class only gives reasonable default values to meta attributes"""
+class simple_parent(object):
+  """This class only gives reasonable default values to meta attributes.
+
+  """
   object_type = "object"
   # if a class is a container in paper meaning (is not part of bigger structure)
   meta__is_container = 0
@@ -58,9 +60,10 @@ class simple_parent( object):
 
 
 
-class id_enabled( simple_parent):
-  """the basic parent that has something to do with the paper, it provides id support"""
+class id_enabled(simple_parent):
+  """Basic parent that has something to do with the paper, provides id support.
 
+  """
   def __init__( self):
     simple_parent.__init__( self)
 
@@ -89,17 +92,18 @@ class id_enabled( simple_parent):
 
   id = property( _get_id, _set_id)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
+    Does not check if other is capable of receiving it."""
     pass
-    #other.id = self.id
 
 
 
-class meta_enabled( id_enabled):
-  """class that has usefull behaviour implemented according to meta infomation"""
+class meta_enabled(id_enabled):
+  """Class that has usefull behaviour implemented according to meta infomation.
 
+  """
   meta__used_standard_values = []
 
   def __init__( self, standard=None):
@@ -108,10 +112,12 @@ class meta_enabled( id_enabled):
       self.read_standard_values( standard)
 
 
-  def read_standard_values( self, standard, old_standard=None):
-    """if old_standard is given the recent value is read from standard
-    only if it differs from the old one - used for 'inteligent' changes of
-    standard properties of existing drawing"""
+  def read_standard_values(self, standard, old_standard=None):
+    """Intelligent changes of standard properties of existing drawing.
+
+    If old_standard is given the recent value is read from standard
+    only if it differs from the old one.
+    """
     for i in self.meta__used_standard_values:
       if old_standard and (standard.__dict__[i] == old_standard.__dict__[i]):
         continue
@@ -128,10 +134,11 @@ class meta_enabled( id_enabled):
 
 
 
-class drawable( simple_parent):
-  """basic class for all drawable type - sets the dirty property and the
-  move, draw and redraw methods"""
+class drawable(simple_parent):
+  """Basic class for all drawable type.
 
+  Sets the dirty property and the move, draw and redraw methods.
+  """
   def __init__( self):
     simple_parent.__init__( self)
     self.dirty = 0
@@ -153,18 +160,21 @@ class drawable( simple_parent):
   def move( self, dx, dy):
     pass
 
+
   def draw( self):
     pass
+
 
   def redraw( self):
     pass
 
 
 
-class point_drawable( drawable):
-  """this is a specialized drawable that is of point nature - that is has x,y coords
-  that define its position"""
+class point_drawable(drawable):
+  """Specialized drawable that is of point nature.
 
+  Has x, y coordinates that define its position.
+  """
   meta__undo_properties = ("x","y")
 
   def __init__( self):
@@ -194,16 +204,18 @@ class point_drawable( drawable):
 
   y = property( _get_y, _set_y)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
-    drawable.copy_settings( self, other)
+    Does not check if other is capable of receiving it.
+    """
+    drawable.copy_settings(self, other)
     other.x = self.x
     other.y = self.y
 
 
 
-class with_line( simple_parent):
+class with_line(simple_parent):
 
   meta__undo_properties = ("line_width",)
 
@@ -217,20 +229,21 @@ class with_line( simple_parent):
 
   line_width = property( _get_line_width, _set_line_width)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
-    simple_parent.copy_settings( self, other)
+    Does not check if other is capable of receiving it.
+    """
+    simple_parent.copy_settings(self, other)
     other.line_width = self.line_width
 
 
 
-class line_colored( simple_parent):
-  """parent for objects having line shape and thus defining only one color -
-  the line_color"""
+class line_colored(simple_parent):
+  """Parent for objects having line shape and thus defining only one color.
 
+  """
   meta__undo_properties = ("line_color",)
-
 
   def __init__( self):
     simple_parent.__init__( self)
@@ -248,15 +261,17 @@ class line_colored( simple_parent):
 
   line_color = property( _get_line_color, _set_line_color)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
-    simple_parent.copy_settings( self, other)
+    Does not check if other is capable of receiving it.
+    """
+    simple_parent.copy_settings(self, other)
     other.line_color = self.line_color
 
 
 
-class area_colored( line_colored):
+class area_colored(line_colored):
 
   meta__undo_properties = line_colored.meta__undo_properties + \
                           ("area_color",)
@@ -277,19 +292,22 @@ class area_colored( line_colored):
 
   area_color = property( _get_area_color, _set_area_color)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
+    Does not check if other is capable of receiving it.
+    """
     line_colored.copy_settings( self, other)
     other.area_color = self.area_color
 
 
 
-class with_font( simple_parent):
-  """for text like objects needing font_size and font_family properties, however not variable text"""
+class with_font(simple_parent):
+  """For text like objects needing font_size and font_family properties.
 
+  But not variable text.
+  """
   meta__undo_properties = ("font_size", "font_family")
-
 
   def __init__( self):
     simple_parent.__init__( self)
@@ -318,21 +336,24 @@ class with_font( simple_parent):
 
   font_family = property( _get_font_family, _set_font_family)
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
-    simple_parent.copy_settings( self, other)
+    Does not check if other is capable of receiving it.
+    """
+    simple_parent.copy_settings(self, other)
     other.font_family = self.font_family
     other.font_size = self.font_size
 
 
 
-class text_like( with_font):
-  """for text like objects needing font_size and font_family properties and variable text and xml_ftext"""
+class text_like(with_font):
+  """For text like objects with font_size, font_family properties, variable text, xml_ftext.
 
+  """
+  def __init__(self):
+    with_font.__init__(self)
 
-  def __init__( self):
-    with_font.__init__( self)
 
 
   # text
@@ -352,26 +373,26 @@ class text_like( with_font):
 
 
 
-class interactive( simple_parent):
+class interactive(simple_parent):
 
-  def focus( self):
+  def focus(self):
     pass
 
 
-  def unfocus( self):
+  def unfocus(self):
     pass
 
 
-  def select( self):
+  def select(self):
     pass
 
 
-  def unselect( self):
+  def unselect(self):
     pass
 
 
 
-class container( simple_parent):
+class container(simple_parent):
 
   # shape_defining_points
   def _get_shape_defining_points( self):
@@ -395,8 +416,8 @@ class container( simple_parent):
 ##   def next( self):
 
 
+class child(simple_parent):
 
-class child( simple_parent):
 
   # parent
   def _get_parent( self):
@@ -408,21 +429,23 @@ class child( simple_parent):
   parent = property( _get_parent, _set_parent, None,
                      "should give a container")
 
+  def copy_settings(self, other):
+    """Copy settings of self to other.
 
-  def copy_settings( self, other):
-    """copies settings of self to other, does not check if other is capable of receiving it"""
-    simple_parent.copy_settings( self, other)
+    Does not check if other is capable of receiving it.
+    """
+    simple_parent.copy_settings(self, other)
     other.parent = self.parent
 
 
 
-class top_level:
+class top_level(object):
 
   pass
 
 
 
-class with_paper( object):
+class with_paper(object):
 
   # paper
   def _get_paper( self):
@@ -434,8 +457,8 @@ class with_paper( object):
   paper = property( _get_paper, _set_paper, None, "the paper that the object is drawn onto")
 
 
+class child_with_paper(child, with_paper):
 
-class child_with_paper( child, with_paper):
 
   # paper
   def _get_paper( self):
