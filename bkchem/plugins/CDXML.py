@@ -22,22 +22,26 @@
 
 #--------------------------------------------------------------------------
 
+"""CDXML import-export plugin.
 
-"""CDXML import-export plugin"""
+"""
+
+import re
+import math
 
 import xml.dom.minidom as dom
+
 import dom_extensions as dom_ext
-import math
-from molecule import molecule
-from classes import plus, point, text as text_class
 
 from . import plugin
 from arrow import arrow
+from classes import plus, point, text as text_class
+from molecule import molecule
 from singleton_store import Screen
-import re
+
+
 
 ## DEFINITIONS
-
 class CDXML_importer( plugin.importer):
   """Imports a CDXML (ChemDraw XML format) document"""
   doc_string = _("Imports a CDXML (ChemDraw XML format) document.")
