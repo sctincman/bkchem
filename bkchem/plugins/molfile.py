@@ -27,9 +27,9 @@ try:
 except ImportError:
   import tkMessageBox
 
-import oasa_bridge
-import types
 from oasa import transform
+
+import oasa_bridge
 
 from . import plugin
 
