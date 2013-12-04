@@ -94,8 +94,7 @@ class plugin_manager(object):
       finally:
         del sys.path[-1]
     else:
-      raise ValueError, "Wrong type of plugin %s" % name
-
+      raise ValueError("Wrong type of plugin %s" % name)
 
 
   def get_names( self, type=""):
