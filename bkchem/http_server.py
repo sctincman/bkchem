@@ -20,6 +20,7 @@
 
 """here is the http server that server data from application on demand"""
 
+from __future__ import print_function
 
 import BaseHTTPServer
 import xml_writer
@@ -68,7 +69,8 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     doc = dom.Document()
     xml_serializer.serialize( Store.app.paper, doc, doc)
     self.wfile.write( doc.toxml())
-    print "%.2f ms" % (1000*(time.time() - t))
+    print("%.2f ms" % (1000*(time.time() - t)))
+
 
   def serve__content_svg( self):
     self.send_response( 200)
