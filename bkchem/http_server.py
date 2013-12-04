@@ -40,6 +40,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
   def __init__( self, *args):
     BaseHTTPServer.BaseHTTPRequestHandler.__init__( self, *args)
 
+
   def do_GET( self):
     path_list = filter( None, self.path.split("/"))
 
@@ -50,9 +51,9 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       method = 'serve' + path
 
       if method in self.__class__.__dict__:
-	self.__class__.__dict__[ method]( self)
+        self.__class__.__dict__[ method]( self)
       else:
-	self.return_error()
+        self.return_error()
     else:
       method = "servedir_" + path_list[0]
       self.__class__.__dict__[ method]( self, path_list[1:])
@@ -88,6 +89,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
       Store.app.read_smiles( path_list[0])
       self.serve__content_svg()
 
+
   def servedir_inchi( self, path_list):
     Store.app.paper.clean_paper()
     Store.app.paper.create_background()
@@ -100,29 +102,27 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
     Store.app.paper.create_background()
     Store.app.plugin_import( 'GTML', '/'.join( path_list))
     self.serve__content_svg()
-    
 
 
   def return_error( self):
     self.send_response( 400)
     self.send_header("Content-Type", "text/html")
-    self.end_headers()    
+    self.end_headers()
 
     self.wfile.write("<html><body><h1>Bad request</h1><p>This address does not exist</p></body></html>")
 
 
   # LOGGING
-
   def log_request( self, *args):
     pass
+
 
   def log_message( self, *args):
     pass
 
+
   def log_error( self, *args):
     pass
-
-
 
 
 
