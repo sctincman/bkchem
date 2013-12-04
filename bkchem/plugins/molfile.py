@@ -53,11 +53,12 @@ class molfile_importer(plugin.importer):
   def on_begin( self):
     return 1
 
-  def get_molecules( self, name):
-    file = open( name, 'r')
-    mols = oasa_bridge.read_molfile( file, self.paper)
-    file.close()
-    [invert_coords( mol) for mol in mols]
+
+  def get_molecules(self, name):
+    f = open(name, 'r')
+    mols = oasa_bridge.read_molfile(f, self.paper)
+    f.close()
+    [invert_coords(mol) for mol in mols]
     return mols
 
 
