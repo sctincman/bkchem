@@ -40,10 +40,8 @@ class images_dict(dict):
   """
   def __getitem__(self, item):
     # try if we need to recode the name
-    try:
+    if item in name_recode_map:
       item = name_recode_map[item]
-    except KeyError:
-      pass
     try:
       return dict.__getitem__(self, item)
     except:
@@ -57,10 +55,8 @@ class images_dict(dict):
 
   def __contains__( self, item):
     # try if we need to recode the name
-    try:
+    if item in name_recode_map:
       item = name_recode_map[item]
-    except KeyError:
-      pass
 
     if dict.__contains__(self, item):
       return 1
