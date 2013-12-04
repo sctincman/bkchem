@@ -62,11 +62,13 @@ class mark( simple_parent):
     self.auto = auto
     #self.draw()
 
-  def _get_paper( self):
-    return self.atom.paper
 
-  paper = property( _get_paper, None, None, "the paper the mark is drawn onto")
-  
+  @property
+  def paper(self):
+    """The paper the mark is drawn onto.
+
+    """
+    return self.atom.paper
 
 
   def draw( self):
@@ -153,7 +155,7 @@ class mark( simple_parent):
     return a
 
 
-
+  @classmethod
   def read_package( self, package, atom):
     typ = package.getAttribute( 'type')
     cls = globals().get( typ, None)
@@ -184,22 +186,22 @@ class mark( simple_parent):
     else:
       raise ValueError("no such mark type %s" % typ)
 
-  read_package = classmethod( read_package)
 
+  @property
+  def line_color(self):
+    """Line color.
 
-  def _get_line_color( self):
-    if not hasattr( self, "_line_color") or not self._line_color:
+    If not set, it is taken from atom, otherwise as set.
+    """
+    if not hasattr(self, "_line_color") or not self._line_color:
       return self.atom.line_color
     else:
       return self._line_color
 
 
-  def _set_line_color( self, color):
+  @line_color.setter
+  def line_color(self, color):
     self._line_color = color
-
-  line_color = property( _get_line_color, _set_line_color, None,
-                         "the line color - if not set, it is taken from atom, otherwise as set")
-
 
 
 
@@ -480,15 +482,19 @@ class text_mark( mark):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
     self.text = text
 
-  # the text property
-  def _set_text( self, text):
-    self._text = str( text)
 
-  def _get_text( self):
+  @property
+  def text(self, text):
+    """Text of the mark.
+
+    """
+    self._text = str(text)
+
+
+  @text.setter
+  def text(self):
     return self._text
 
-  text = property( _get_text, _set_text, None, "the text of the mark")
-    
 
   def draw( self):
     self.items = [self.paper.create_text( self.x,
@@ -531,12 +537,13 @@ class referencing_text_mark( text_mark, mark):
     mark.__init__( self, atom, x, y, size=size, auto=auto)
 
 
-  # the text property
-  def _get_text( self):
+  @property
+  def text(self):
+    """Text of the mark.
+
+    """
     if hasattr( self.atom, self.refname):
       return getattr( self.atom, self.refname)
-
-  text = property( _get_text, None, None, "the text of the mark")
 
 
   def draw( self):
