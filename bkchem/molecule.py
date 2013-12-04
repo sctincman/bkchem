@@ -58,7 +58,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
-  
+
   object_type = 'molecule'
   # other meta infos
   meta__is_container = 1
@@ -67,7 +67,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   meta__undo_properties = ('id',)
   meta__undo_copy = ('atoms', 'bonds', 'fragments')
   meta__undo_children_to_record = ('atoms','bonds','fragments')
-  
+
+
   def __init__( self, paper=None, package = None):
     oasa.molecule.__init__( self)
     id_enabled.__init__( self)
@@ -77,7 +78,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     self.sign = 1
     self.user_data = []
 
-    self._last_used_atom = None 
+    self._last_used_atom = None
     self.name = ''
     self._iterator = 0
     self.t_bond_first = None  # template
@@ -91,6 +92,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def __iter__( self):
     return self.children_generator()
+
 
   def children_generator( self):
     for a in self.atoms:
@@ -223,7 +225,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return x, y
 
 
-
   def get_angle( self, a1, a2):
     "what is the angle between horizontal line through i1 and i1-i2 line"
     a = a2.x - a1.x
@@ -231,7 +232,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return atan2( b, a)
 
 
-    
   def delete_items( self, items, redraw=1, delete_single_atom=1):
     """deletes items and also makes cleaning of orphan bonds and atoms"""
     if not items:
@@ -274,11 +274,13 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       deleted += map( self.delete_bond, copy.copy( self.bonds))
     return deleted, offspring
 
+
   def delete_bond( self, item):
     item.delete()
     self.disconnect_edge( item)
     return item
-      
+
+
   def delete_atom( self, item):
     "remove links to atom from molecule records"
     self.vertices.remove( item)
@@ -291,6 +293,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
       t_bond_second = None
     return item
 
+
   def create_new_atom( self, x, y, name=None, vertex_class=None):
     a = self.create_vertex()
     a.coords = (x, y)
@@ -300,11 +303,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     a.draw()
     return a
 
+
   def insert_atom( self, at):
     "inserts atom to molecule without any connections"
     self.atoms.append( at)
     at.molecule = self
-  
 
 
   def check_integrity( self):
@@ -334,7 +337,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     for name, cls in {'atom':atom, 'group':group, 'text': textatom, 'query': queryatom}.iteritems():
       for a in dom_extensions.simpleXPathSearch( package, name):
         self.insert_atom( cls( standard=std, package=a, molecule=self))
-      
+
     self._id_map = [a.id for a in self.atoms]
     for b in dom_extensions.simpleXPathSearch( package, 'bond'):
       bnd = bond( standard=std, package=b, molecule=self)
@@ -370,7 +373,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
     # final check of atoms valecies
     [a.raise_valency_to_senseful_value() for a in self.vertices if isinstance( a, atom)]
-    
 
 
   def get_package( self, doc, items=None):
@@ -405,12 +407,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return mol
 
 
-
   def draw( self, automatic="none"):
     [a.draw() for a in self.atoms]
     [a.draw( automatic=automatic) for a in copy.copy( self.bonds)]
     self.lift()
-    
+
 
   ##LOOK
   def bond_between( self, a1, a2):
@@ -448,7 +449,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     bonds = set( self.bonds)
     for b in bonds_to_check:
       if not b in self.bonds:
-        #print b, "not in self.bonds"
+        #print(b, "not in self.bonds")
         continue
       recent_b = None
       for recent_b in self.gen_bonds_between( b.atom1, b.atom2):
@@ -494,23 +495,21 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     [o.delete() for o in list(self.bonds)+self.atoms]
 
 
-
   def redraw( self, reposition_double=0):
     for o in self.bonds:
       if o.order == 2:
         o.redraw( recalc_side=reposition_double)
       else:
         o.redraw()
-    [o.redraw() for o in self.atoms]  
+    [o.redraw() for o in self.atoms]
 
-    
+
   def get_formula_dict( self):
     """returns a formula dict as defined in the periodic_table.py::formula_dict"""
     comp = PT.formula_dict()
     for a in self.atoms:
       comp += a.get_formula_dict()
     return comp
-
 
 
   def expand_groups( self, atoms=[]):
@@ -530,7 +529,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         [e.draw() for e in edges]
         self.create_fragment( a.symbol, edges, to_draw, type="implicit")
     self.redraw()
-    
+
 
   def move_bonds_between_atoms( self, a1, a2):
     """transfers all bonds from one atom to the other; both atoms must be in self"""
@@ -552,11 +551,11 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         f.vertices.add( new)
 
 
-
   def lift( self):
     [o.lift_selector() for o in self.atoms]
     [o.lift() for o in self.bonds]
     [o.lift() for o in self.atoms]
+
 
   def find_least_crowded_place_around_atom( self, a, range=10):
     atms = a.neighbors
@@ -575,9 +574,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
     return x +range*cos( angle), y +range*sin( angle)
-    
-
-
 
 
   def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
@@ -590,14 +586,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     f.close()
 
 
-
   def transform( self, tr):
     """applies given transformation to its children"""
     for a in self.atoms:
       a.transform( tr)
     for b in self.bonds:
       b.transform( tr)
-
 
 
   def get_geometry( self):
@@ -623,7 +617,6 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return ((maxx,maxy,minx,miny),bl)
 
 
-
   def create_vertex_according_to_text( self, old, text, interpret=1):
     if not interpret:
       v = self.create_vertex( vertex_class=textatom)
@@ -641,9 +634,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         return v
 
 
-
   # fragment support
-
   def create_fragment( self, name, edges, vertices, type="explicit", strict=False):
     if (strict and self.defines_connected_subgraph_e( edges)) or not strict:
       nf = fragment( Store.id_manager.generate_id( "frag"), name=name, type=type)
@@ -722,10 +713,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return True
 
 
-
-
   # template support
-
   def mark_template_bond( self, b):
     if b in self.edges:
       atms = b.atom1.neighbors + b.atom2.neighbors
