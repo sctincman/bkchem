@@ -17,18 +17,20 @@
 
 #--------------------------------------------------------------------------
 
+"""Here is the http server that server data from application on demand.
 
-"""here is the http server that server data from application on demand"""
+"""
 
 from __future__ import print_function
 
-import BaseHTTPServer
-import xml_writer
-import string
-import xml_serializer
-import xml.dom.minidom as dom
 import time
+import string
 import os.path
+import BaseHTTPServer
+import xml.dom.minidom as dom
+
+import xml_writer
+import xml_serializer
 
 from singleton_store import Store
 
