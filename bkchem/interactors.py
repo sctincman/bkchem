@@ -20,9 +20,13 @@
 """here reside functions that implement a glue between application or paper
 (main.py or paper.py) and the dialogs (dialogs.py)"""
 
+try:
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  import tkMessageBox
+
 from molecule import molecule
 import Pmw
-import tkMessageBox
 import validator
 import widgets
 import xml
@@ -118,19 +122,16 @@ def check_validity( mols):
   val = validator.validator()
   val.validate( mols)
   if val.report.text_atoms:
-    import tkMessageBox
     tkMessageBox.showerror( _("Validity error"),
                             _("Sorry but your drawing includes 'text atoms'\n - atoms with no chemical sense.") + "\n\n" +
                             _("It is not possible to export them.") + "\n\n" +
                             _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
     return 0
   if val.report.exceeded_valency:
-    import tkMessageBox
     tkMessageBox.showwarning( _("Validity warning"),
                               _("Your drawing includes some atoms with exceeded valency.") + "\n\n" +
                               _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
   if val.report.group_atoms:
-    import tkMessageBox
     yes = tkMessageBox.askokcancel( _("Expand groups?"),
                                     _("Your drawing includes some groups.") + "\n\n" +
                                     _("These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards.") + "\n\n"+
