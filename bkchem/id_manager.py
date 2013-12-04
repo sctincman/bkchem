@@ -64,7 +64,7 @@ class id_manager:
     return id
 
 
-  def is_registered_object( self, obj): 
+  def is_registered_object( self, obj):
     return (obj in self.id_map.values())
 
 
@@ -75,6 +75,6 @@ class id_manager:
     return None
 
 
-
   def unregister_object( self, obj):
     self.unregister_id( self.get_id_of_object( obj), obj)
+
