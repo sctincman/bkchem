@@ -24,57 +24,57 @@ from warnings import warn
 
 class id_manager:
 
-  def __init__( self):
+  def __init__(self):
     self.id_map = {}
 
 
-  def register_id( self, obj, id):
-    if self.is_registered_object( obj):
-      raise ValueError("object is already registered " + str(obj))
-    self.id_map[ id] = obj
+  def register_id(self, obj, Id):
+    if self.is_registered_object(obj):
+      raise ValueError("Object is already registered " + str(obj))
+    self.id_map[Id] = obj
 
 
-  def unregister_id( self, id, obj):
+  def unregister_id(self, Id, obj):
     try:
-      if self.id_map[ id] != obj:
-        raise ValueError("id and object do not correspond")
-      del self.id_map[ id]
+      if self.id_map[Id] != obj:
+        raise ValueError("Id and object do not correspond")
+      del self.id_map[Id]
     except KeyError:
-      raise ValueError("id %s is not registered" % id)
+      raise ValueError("Id %s is not registered" % Id)
 
 
-  def get_object_with_id( self, id):
-    return self.id_map[ id]
+  def get_object_with_id(self, Id):
+    return self.id_map[Id]
 
 
-  def get_object_with_id_or_none( self, id):
-    return self.id_map.get( id, None)
+  def get_object_with_id_or_none(self, Id):
+    return self.id_map.get(Id, None)
 
 
-  def generate_id( self, prefix='id'):
+  def generate_id(self, prefix='id'):
     while 1:
-      id = prefix + str( randint( 1, 100000))
-      if id not in self.id_map:
-        return id
+      Id = prefix + str(randint(1, 100000))
+      if Id not in self.id_map:
+        return Id
 
 
-  def generate_and_register_id( self, obj, prefix='id'):
-    id = self.generate_id( prefix=prefix)
-    self.register_id( obj, id)
-    return id
+  def generate_and_register_id(self, obj, prefix='id'):
+    Id = self.generate_id(prefix=prefix)
+    self.register_id(obj, Id)
+    return Id
 
 
-  def is_registered_object( self, obj):
+  def is_registered_object(self, obj):
     return (obj in self.id_map.values())
 
 
-  def get_id_of_object( self, obj):
+  def get_id_of_object(self, obj):
     for k, v in self.id_map.items():
       if v == obj:
         return k
     return None
 
 
-  def unregister_object( self, obj):
-    self.unregister_id( self.get_id_of_object( obj), obj)
+  def unregister_object(self, obj):
+    self.unregister_id(self.get_id_of_object(obj), obj)
 
