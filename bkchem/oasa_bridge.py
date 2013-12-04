@@ -28,7 +28,6 @@ import bond
 import atom
 
 import math
-import operator
 
 from singleton_store import Screen
 from oasa import transform3d
@@ -80,7 +79,8 @@ def write_molfile( mol, file):
 # OASA -> BKCHEM
 def oasa_mol_to_bkchem_mol( mol, paper):
   m = molecule.molecule( paper)
-  if None in reduce( operator.add, [[a.x, a.y] for a in mol.atoms], []):
+  if None in (j for i in ((a.x, a.y) for a in mol.atoms)
+                  for j in i):
     calc_position = 0
   else:
     calc_position = 1
