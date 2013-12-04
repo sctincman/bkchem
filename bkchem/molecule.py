@@ -99,20 +99,21 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   ### PROPERTIES
 
   # shape_defining_points
-  def _get_shape_defining_points( self):
-    return self.atoms
+  @property
+  def shape_defining_points(self):
+    """List of atoms.
 
-  shape_defining_points = property( _get_shape_defining_points, None, None,
-                                    "returns list of atoms")
+    """
+    return self.atoms
 
 
   # children
-  def _get_children( self):
-    return self.atoms + list( self.bonds)
+  @property
+  def children(self):
+    """List of atoms and bonds.
 
-  children = property( _get_children, None, None,
-                       "returns list of atoms and bonds")
-
+    """
+    return self.atoms + list(self.bonds)
 
 
   ### // PROPERTIES
