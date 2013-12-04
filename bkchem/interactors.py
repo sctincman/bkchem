@@ -375,7 +375,7 @@ def convert_selected_to_linear_fragment( paper):
     except ValueError:
       Store.log( _("The selection does not define connected subgraph"), message_type="error")
       return
-    except excs.bkchem_graph_error, e:
+    except excs.bkchem_graph_error as e:
       if e.id == "circular_selection":
         Store.log( e.value, message_type="error")
       else:
