@@ -17,19 +17,12 @@
 
 #--------------------------------------------------------------------------
 
+"""GTML import-export plugin.
 
-"""GTML import-export plugin"""
-
-from molecule import molecule
-from atom import atom
-from bond import bond
-from classes import plus, arrow
-from reaction import reaction
-from oasa.oasa.transform import transform
+"""
 
 import math
 import xml.sax
-import dom_extensions as dom_ext
 import xml.dom.minidom as dom
 try:
   from io import StringIO
@@ -37,8 +30,16 @@ except ImportError:
   import StringIO
 
 from xml import xpath
+from oasa.transform import transform
+
+import dom_extensions as dom_ext
 
 from . import plugin
+from atom import atom
+from bond import bond
+from molecule import molecule
+from reaction import reaction
+from classes import plus, arrow
 
 
 
