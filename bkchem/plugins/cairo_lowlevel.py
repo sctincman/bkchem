@@ -18,16 +18,17 @@
 #--------------------------------------------------------------------------
 
 
-from oasa import transform
 import cairo
 
+from oasa import transform
 
 from . import plugin
 from .tk2cairo import tk2cairo
 from singleton_store import Screen, Store
 
 
-class cairo_exporter( plugin.exporter):
+
+class cairo_exporter(plugin.exporter):
 
   def __init__( self, paper, converter_class=None, attrs=None):
     """converter_class is the class used for convert, it is tk2piddle or its derivative;
@@ -40,7 +41,6 @@ class cairo_exporter( plugin.exporter):
       self.converter_class = converter_class
 
 
-
   def init_surface( self):
     """to be overriden; makes use of self.pagesize and self.filename"""
     pass
@@ -51,7 +51,6 @@ class cairo_exporter( plugin.exporter):
     return cairo.Context( self.surface)
 
 
-
   def save( self):
     """to be overriden; makes use of self.filename"""
     pass
@@ -60,7 +59,6 @@ class cairo_exporter( plugin.exporter):
   def get_scaling( self, x, y):
     """x and y are the original sizes of the drawing"""
     return 1, 1
-
 
 
   def on_begin( self, scaling=None):
