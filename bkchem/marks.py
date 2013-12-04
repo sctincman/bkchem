@@ -25,10 +25,14 @@ from oasa import geometry
 import xml.dom.minidom as dom
 import dom_extensions
 import warnings
+try:
+  import tkinter.font as tkFont
+except ImportError:
+  import tkFont
+
 from parents import simple_parent
 from singleton_store import Screen
 import data
-import tkFont
 import math
 import debug
 from oasa import transform
