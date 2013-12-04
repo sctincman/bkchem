@@ -30,9 +30,13 @@ from oasa.oasa.transform import transform
 
 import math
 import xml.sax
-import StringIO
 import dom_extensions as dom_ext
 import xml.dom.minidom as dom
+try:
+  from io import StringIO
+except ImportError:
+  import StringIO
+
 from xml import xpath
 
 
