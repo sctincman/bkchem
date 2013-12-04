@@ -334,7 +334,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     self.name = package.getAttribute( 'name')
     if package.getAttribute( 'id'):
       self.id = package.getAttribute( 'id')
-    for name, cls in {'atom':atom, 'group':group, 'text': textatom, 'query': queryatom}.iteritems():
+    for name, cls in {'atom': atom, 'group': group, 'text': textatom, 'query': queryatom}.items():
       for a in dom_extensions.simpleXPathSearch( package, name):
         self.insert_atom( cls( standard=std, package=a, molecule=self))
 
