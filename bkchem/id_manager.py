@@ -20,6 +20,8 @@
 from random import randint
 from warnings import warn
 
+
+
 class id_manager:
 
   def __init__( self):
@@ -28,27 +30,25 @@ class id_manager:
 
   def register_id( self, obj, id):
     if self.is_registered_object( obj):
-      raise ValueError, "object is already registered "+str(obj)
+      raise ValueError("object is already registered " + str(obj))
     self.id_map[ id] = obj
 
 
   def unregister_id( self, id, obj):
     try:
       if self.id_map[ id] != obj:
-        raise ValueError, "id and object do not correspond"
+        raise ValueError("id and object do not correspond")
       del self.id_map[ id]
     except KeyError:
-      raise ValueError, "id %s is not registered" % id
+      raise ValueError("id %s is not registered" % id)
 
 
   def get_object_with_id( self, id):
     return self.id_map[ id]
 
 
-
   def get_object_with_id_or_none( self, id):
     return self.id_map.get( id, None)
-
 
 
   def generate_id( self, prefix='id'):
@@ -56,7 +56,6 @@ class id_manager:
       id = prefix + str( randint( 1, 100000))
       if id not in self.id_map:
         return id
-    
 
 
   def generate_and_register_id( self, obj, prefix='id'):
