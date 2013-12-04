@@ -23,10 +23,13 @@
 
 """CML2 import-export plugin"""
 
-import plugin
-import CML
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
+
+from . import CML
+from . import plugin
+
+
 
 ## DEFINITIONS
 
