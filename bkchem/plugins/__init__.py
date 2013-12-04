@@ -17,6 +17,7 @@
 
 #--------------------------------------------------------------------------
 
+from __future__ import print_function
 
 __all__ = []
 _names = ['CML','CML2','openoffice','ps_builtin','molfile','pdf_piddle','ps_piddle','pdf_cairo','png_cairo',"odf", "svg_cairo",'ps_cairo','CDXML']
@@ -25,12 +26,11 @@ _names = ['CML','CML2','openoffice','ps_builtin','molfile','pdf_piddle','ps_pidd
 import sys
 
 for _name in _names:
-  #exec 'import %s' % _name
   try:
-    exec 'import %s' % _name
-    __all__.append( _name)
-  except:
-    print >> sys.stderr, "could not load module %s" % _name
+    exec('from . import %s' % _name)
+    __all__.append(_name)
+  except IOError:
+    print("Could not load module %s" % _name, file=sys.stderr)
 
 del _name
 del _names
