@@ -16,12 +16,10 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""CML import-export plugin"""
+"""CML import-export plugin.
+
+"""
 
 import math
 import xml.dom.minidom as dom
@@ -38,8 +36,11 @@ from . import plugin
 
 
 ## DEFINITIONS
-class CML_importer( plugin.importer):
-  """Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."""
+class CML_importer(plugin.importer):
+  """Import a CML (Chemical Markup Language) document.
+
+  Uses version 1.0 of the CML standard.
+  """
   doc_string = _("Imports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard.")
 
   def __init__( self):
@@ -182,8 +183,11 @@ class CML_importer( plugin.importer):
 
 
 
-class CML_exporter( plugin.exporter):
-  """Exports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."""
+class CML_exporter(plugin.exporter):
+  """Export a CML (Chemical Markup Language) document.
+
+  Uses version 1.0 of the CML standard.
+  """
   doc_string = _("Exports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard.")
 
 
@@ -441,11 +445,11 @@ class CML_bond(object):
 ## dom_ext.safe_indent( d.childNodes[0])
 ## print d.toxml()
 
-class cml_exception( Exception):
-  def __init__( self, value):
+class cml_exception(Exception):
+  def __init__(self, value):
     self.value = value
 
 
-  def __str__( self):
+  def __str__(self):
     return self.value
 
