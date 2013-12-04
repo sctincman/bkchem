@@ -99,7 +99,7 @@ class CML_importer( plugin.importer):
     out = doc.createElement( 'atom')
     try:
       atom = self.CML_atom( cml=a)
-    except cml_exception, detail:
+    except cml_exception as detail:
       # problems converting cml to atom
       raise plugin.import_exception( detail)
     if atom.not_enough_data():
@@ -121,7 +121,7 @@ class CML_importer( plugin.importer):
     out = doc.createElement( 'bond')
     try:
       bond = self.CML_bond( cml=b)
-    except cml_exception, detail:
+    except cml_exception as detail:
       # problems converting cml to bond
       raise plugin.import_exception( str( detail))
     return self.transform_CML_bond( bond, doc)
