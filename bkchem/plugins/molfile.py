@@ -26,11 +26,11 @@ try:
 except ImportError:
   import tkMessageBox
 
-import plugin
 import oasa_bridge
 import types
 from oasa import transform
 
+from . import plugin
 
 
 
