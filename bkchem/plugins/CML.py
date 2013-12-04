@@ -50,11 +50,13 @@ class CML_importer( plugin.importer):
     self.xs = []
     self.ys = []
 
+
   def on_begin( self):
     self.xs = []
     self.ys = []
     self.atoms = []
     return 1
+
 
   def get_cdml_dom( self, file_name):
     tree = dom.parse( file_name)
@@ -70,6 +72,7 @@ class CML_importer( plugin.importer):
       viewport.setAttribute( 'viewport', '%f %f %f %f' % view)
       root.insertBefore( viewport, root.firstChild)
     return root
+
 
   def transform_molecule( self, mol, doc):
     #atoms
@@ -90,6 +93,7 @@ class CML_importer( plugin.importer):
       for b in self.add_nonexisting_bonds():
         out.appendChild( b)
     return out
+
 
   def transform_atom( self, a, doc):
     out = doc.createElement( 'atom')
@@ -122,6 +126,7 @@ class CML_importer( plugin.importer):
       raise plugin.import_exception( str( detail))
     return self.transform_CML_bond( bond, doc)
 
+
   def transform_CML_bond( self, bond, doc):
     """called by transform_bond in order to do the transform from CML_bond instance to CDML"""
     if bond.not_enough_data():
@@ -137,7 +142,7 @@ class CML_importer( plugin.importer):
 
   def on_end_set_viewport( self):
     if self.xs and self.ys:
-      x1, y1, x2, y2 = min(self.xs), min(self.ys), max(self.xs), max(self.ys) 
+      x1, y1, x2, y2 = min(self.xs), min(self.ys), max(self.xs), max(self.ys)
       if (x1 != x2) and (y1 != y2):
         dx = x2 - x1
         dy = y2 - y1
@@ -153,6 +158,7 @@ class CML_importer( plugin.importer):
           dx = dy/0.75
         return (cx-dx, cy-dy, cx+dx, cy+dy)
     return None
+
 
   def add_nonexisting_bonds( self):
     connect = []
@@ -173,7 +179,8 @@ class CML_importer( plugin.importer):
           b.atom2 = a[j].id
           bonds.append( self.transform_CML_bond( b))
     return bonds
-    
+
+
 
 class CML_exporter( plugin.exporter):
   """Exports a CML (Chemical Markup Language) document, uses version 1.0 of the CML standard."""
@@ -187,6 +194,7 @@ class CML_exporter( plugin.exporter):
     self.CML_bond = CML_bond
     self.scale = 1.0
 
+
   def on_begin( self):
     if self.check_chemistry():
       yes = tkMessageBox.askyesno( _("Normalize bond length?"),
@@ -197,7 +205,7 @@ class CML_exporter( plugin.exporter):
         self.scale = 1.0
       return 1
     return 0
-    
+
 
   def check_chemistry( self):
     val = validator.validator()
@@ -210,11 +218,11 @@ class CML_exporter( plugin.exporter):
       return 0
     if val.report.exceeded_valency:
       tkMessageBox.showwarning( _("CML export warning"),
-                                _("Your drawing includes some atoms with exceeded valency.") + "\n\n" + 
+                                _("Your drawing includes some atoms with exceeded valency.") + "\n\n" +
                                 _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
     if val.report.group_atoms:
       yes = tkMessageBox.askyesno( _("Expand groups?"),
-                                _("Your drawing includes some groups.") + "\n\n" + 
+                                _("Your drawing includes some groups.") + "\n\n" +
                                 _("These must be expanded in order to export to valid CML. The expansion could be undone with undo after the export") + "\n\n"+
                                 _("Proceed with expansion?"))
       if yes:
@@ -223,7 +231,7 @@ class CML_exporter( plugin.exporter):
       else:
         return 0
     return 1
-        
+
 
   def write_to_file( self, name):
     out = dom.Document()
@@ -255,15 +263,14 @@ class CML_exporter( plugin.exporter):
     else:
       return 0
 
-  
+
+
 # PLUGIN INTERFACE SPECIFICATION
 name = "CML"
 extensions = [".cml",".xml"]
 importer = CML_importer
 exporter = CML_exporter
 local_name = _("CML")
-
-
 
 
 
@@ -285,7 +292,8 @@ class CML_atom:
       self.read_atom( atom)
     elif cml:
       self.read_CML( cml)
-    
+
+
   def get_CML_dom( self, doc):
     if self.not_enough_data():
       return None # raise cml_exception( "missing "+str( self.not_enough_data())+" in atom specification")
@@ -306,6 +314,7 @@ class CML_atom:
       dom_ext.textOnlyElementUnder( out, 'float', str( self.z), (('builtin','z3'),))
     return out
 
+
   def not_enough_data( self):
     if (self.id and self.symbol and self.x!=None and self.y!=None):
       return 0
@@ -316,12 +325,14 @@ class CML_atom:
           res.append( i)
       return res
 
+
   def read_atom( self, atom):
     self.x = atom.x * self._scaling
     self.y = atom.y * self._scaling
     self.id = atom.id
     self.symbol = atom.symbol
     self.charge = atom.charge
+
 
   def read_CML( self, cml):
     # id could be attribute
@@ -341,7 +352,6 @@ class CML_atom:
         self.y = float( dom_ext.getTextFromElement( e))
       elif attr == 'z3':
         self.z = float( dom_ext.getTextFromElement( e))
-      
 
 
 
@@ -357,7 +367,7 @@ class CML_bond:
     elif cml:
       self.read_CML( cml)
 
-    
+
   def get_CML_dom( self, doc):
     if self.not_enough_data():
       return None
@@ -377,6 +387,7 @@ class CML_bond:
                                                                        ('convention','CML')))
     return out
 
+
   def not_enough_data( self):
     if (self.order and self.atom1 and self.atom2):
       return 0
@@ -386,7 +397,7 @@ class CML_bond:
         if not self.__dict__[i]:
           res.append( i)
       return res
-      
+
 
   def read_bond( self, bond):
     self.atom1 = bond.atom1.id
@@ -397,6 +408,7 @@ class CML_bond:
     else:
       self.stereo = ""
     self.order = bond.order
+
 
   def read_CML( self, cml):
     for e in cml.childNodes:
@@ -422,7 +434,8 @@ class CML_bond:
         if stereo:
           self.stereo = stereo.upper()
 
-      
+
+
 ## a = CML_importer()
 ## d = a.get_cdml_dom( 'ccl4.xml')
 ## dom_ext.safe_indent( d.childNodes[0])
@@ -432,7 +445,7 @@ class cml_exception( Exception):
   def __init__( self, value):
     self.value = value
 
+
   def __str__( self):
     return self.value
 
-  
