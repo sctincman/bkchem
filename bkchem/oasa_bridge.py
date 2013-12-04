@@ -17,20 +17,22 @@
 
 #--------------------------------------------------------------------------
 
+import math
+
 oasa_available = 1
 try:
   import oasa
 except ImportError:
   oasa_available = 0
 
-import molecule
+from oasa import transform3d
+
 import bond
 import atom
-
-import math
+import molecule
 
 from singleton_store import Screen
-from oasa import transform3d
+
 
 
 def read_smiles( text, paper):
