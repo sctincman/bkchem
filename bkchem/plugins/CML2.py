@@ -55,7 +55,7 @@ class CML2_exporter(CML.CML_exporter):
     self.CML_atom = CML2_atom
     self.CML_bond = CML2_bond
 
-  
+
 
 # PLUGIN INTERFACE SPECIFICATION
 name = "CML2"
@@ -81,7 +81,7 @@ class CML2_atom(CML.CML_atom):
       self.read_atom( atom)
     elif cml:
       self.read_CML( cml)
-    
+
 
   def get_CML_dom( self, doc):
     if self.not_enough_data():
@@ -142,12 +142,12 @@ class CML2_bond(CML.CML_bond):
     elif cml:
       self.read_CML( cml)
 
-    
+
   def get_CML_dom( self, doc):
     if self.not_enough_data():
       return None
     out = doc.createElement( 'bond')
-    out.setAttribute('order', str( self.order))    
+    out.setAttribute('order', str( self.order))
     if self.stereo:
       dom_ext.textOnlyElementUnder( out, 'stereo', self.stereo)
     out.setAttribute( 'atomRefs2', '%s %s' % ( str( self.atom1), str( self.atom2)))
