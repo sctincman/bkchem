@@ -446,8 +446,7 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     return changes
 
   else:
-    raise ValueError, "the vertices do not define connected subgraph"
-
+    raise ValueError("Vertices do not define connected subgraph.")
 
 
 def compute_oxidation_number( paper):
