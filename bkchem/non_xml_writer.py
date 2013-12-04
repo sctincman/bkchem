@@ -16,15 +16,12 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""provides basic class(es) for exporting to non-XML formates
-(bitmaps or text oriented formats)"""
+"""Basic class(es) for exporting to non-XML formats (bitmaps or text).
 
-__all__ = ['enabled','Bitmap_writer']
+"""
+
+__all__ = ['enabled', 'Bitmap_writer']
 
 import import_checker
 # try to import PIL
@@ -36,24 +33,31 @@ if import_checker.PIL_available:
 else:
   enabled = 0
 
-import operator
 try:
   from io import StringIO
 except ImportError:
   import StringIO
 
 
-def RGB_color( r, g, b):
-  """converts 3 RGB values to one for use in PIL.Image"""
-  return r*65536+g*256+b
+
+def RGB_color(r, g, b):
+  """Convert 3 RGB values to one for use in PIL.Image.
+
+  """
+  return r * 65536 + g * 256 + b
+
+
 
 class Bitmap_writer:
-  """class to export to bitmap formates"""
+  """Exporter to bitmap formats.
+
+  """
   def __init__( self, paper, mode='RGB'):
     self.paper = paper
     self.image = Image.new( mode, (int(self.paper.cget('width')), int(self.paper.cget('height'))), RGB_color( 255, 255, 255))
     self.draw = ImageDraw.Draw( self.image)
     self.fill_image()
+
 
   def fill_image( self):
     for item in self.paper.find_all():
@@ -63,7 +67,7 @@ class Bitmap_writer:
         pass
         #font = ImageFont.load( '../fonts/helvR10.pil')
         #self.draw.text( self.paper.coords( item), self.paper.itemcget( item, 'text'), font=font, fill=0)
-        
+
 
   def write_image( self, name):
     del self.draw
