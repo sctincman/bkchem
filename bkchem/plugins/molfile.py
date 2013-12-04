@@ -38,9 +38,11 @@ class molfile_importer( plugin.importer):
 
   doc_string = _("Imports a molfile document.")
 
+
   def __init__( self, paper):
     plugin.importer.__init__( self)
     self.paper = paper
+
 
   def on_begin( self):
     return 1
@@ -60,6 +62,7 @@ class molfile_exporter( plugin.exporter):
 
   def __init__( self, paper):
     plugin.exporter.__init__( self, paper)
+
 
   def on_begin( self):
     conts, u = self.paper.selected_to_unique_top_levels()
@@ -104,7 +107,6 @@ def invert_coords( molecule, tr=None):
 
   molecule.transform( tr)
   return tr
-
 
 
 
