@@ -573,7 +573,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
 
   def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
-    f = file( name, 'w')
+    f = open(name, 'w')
     for a in self.atoms:
       f.write('%s ' % a.symbol)
     f.write('\n')
