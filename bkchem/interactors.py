@@ -17,27 +17,28 @@
 
 #--------------------------------------------------------------------------
 
-"""here reside functions that implement a glue between application or paper
-(main.py or paper.py) and the dialogs (dialogs.py)"""
+"""Glue functions between application or paper and the dialogs.
 
+"""
+
+import os
+import xml
 try:
   import tkinter.messagebox as tkMessageBox
 except ImportError:
   import tkMessageBox
 
-from molecule import molecule
 import Pmw
-import validator
-import widgets
-import xml
-import os_support
-import os
 import dialogs
-
+import widgets
+import validator
+import os_support
 import bkchem_exceptions as excs
-from singleton_store import Store
+
 from atom import atom
-import operator
+from molecule import molecule
+from singleton_store import Store
+
 
 
 def ask_name_for_selected( paper):
