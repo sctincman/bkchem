@@ -110,7 +110,7 @@ class CML_importer( plugin.importer):
                                  ('id', atom.id)))
     pnt = dom_ext.elementUnder( out, 'point', (('x', str( atom.x)),
                                                ('y', str( atom.y))))
-    if atom.z != None:
+    if atom.z is not None:
       pnt.setAttribute( 'z', str( atom.z))
     self.xs.append( atom.x)
     self.ys.append( atom.y)
@@ -302,7 +302,7 @@ class CML_atom(object):
     dom_ext.textOnlyElementUnder( out, 'string', str( self.symbol), (('builtin','elementType'),
                                                                    ('convention','CML')))
     # x, y
-    if self.z == None:
+    if self.z is None:
       dom_ext.textOnlyElementUnder( out, 'float', str( self.x), (('builtin','x2'),))
       dom_ext.textOnlyElementUnder( out, 'float', str( self.y), (('builtin','y2'),))
     else:
@@ -313,7 +313,10 @@ class CML_atom(object):
 
 
   def not_enough_data( self):
-    if (self.id and self.symbol and self.x!=None and self.y!=None):
+    if (self.id and
+        self.symbol and
+        self.x is not None and
+        self.y is not None):
       return 0
     else:
       res = []
