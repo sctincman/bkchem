@@ -457,7 +457,7 @@ def compute_oxidation_number( paper):
     Store.log( _("Groups must be expanded to compute oxidation number for them."), message_type="hint")
     logged = True
   # we have to check if the neighbors of the atoms we are processing are not groups or so...
-  ns = list( reduce( operator.or_, map(set, [a.neighbors for a in paper.selected_atoms])))
+  ns = set().union(*map(set, [a.neighbors for a in paper.selected_atoms]))
   v.validate( ns)
   if v.report.group_atoms or v.report.text_atoms:
     Store.log( _("Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."), message_type="warning")
