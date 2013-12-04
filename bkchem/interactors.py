@@ -66,8 +66,6 @@ def ask_name_for_selected( paper):
   paper.start_new_undo_record()
 
 
-
-
 def ask_id_for_selected( paper):
   """opens dialog for input of molecule ID and sets it"""
   top_levels, unique = paper.selected_to_unique_top_levels()
@@ -76,7 +74,7 @@ def ask_id_for_selected( paper):
   if not ms:
     tkMessageBox.showerror( _("No molecule selected."),
                             _("At least one molecule must be selected. Please select it."))
-    return 
+    return
 
   if len( ms) > 1:
     tkMessageBox.showerror( _("Only one molecule should be selected."),
@@ -116,9 +114,6 @@ def ask_id_for_selected( paper):
   paper.start_new_undo_record()
 
 
-
-
-
 def check_validity( mols):
   val = validator.validator()
   val.validate( mols)
@@ -132,12 +127,12 @@ def check_validity( mols):
   if val.report.exceeded_valency:
     import tkMessageBox
     tkMessageBox.showwarning( _("Validity warning"),
-                              _("Your drawing includes some atoms with exceeded valency.") + "\n\n" + 
+                              _("Your drawing includes some atoms with exceeded valency.") + "\n\n" +
                               _("For details check the chemistry with '%s/%s'.") % (_("Chemistry"), _("Check chemistry")))
   if val.report.group_atoms:
     import tkMessageBox
     yes = tkMessageBox.askokcancel( _("Expand groups?"),
-                                    _("Your drawing includes some groups.") + "\n\n" + 
+                                    _("Your drawing includes some groups.") + "\n\n" +
                                     _("These must be expanded in order to get chemicaly valid drawing. The expansion could be undone afterwards.") + "\n\n"+
                                     _("Proceed with expansion?"))
     if yes:
@@ -146,9 +141,6 @@ def check_validity( mols):
     else:
       return 0
   return 1
-
-
-
 
 
 def ask_inchi_program_path():
@@ -167,7 +159,6 @@ def ask_inchi_program_path():
   return 0
 
 
-
 def ask_display_form_for_selected( paper):
   top_levels, unique = paper.selected_to_unique_top_levels()
   ms = [o for o in top_levels if isinstance( o, molecule)]
@@ -184,7 +175,7 @@ def ask_display_form_for_selected( paper):
   input = widgets.HTMLLikeInput( dial.interior())
   input.pack()
   input.editPool.focus_set()
-                                 
+
   # if only one mol is selected use it as default
   if len( ms) == 1 and ms[0].display_form:
     input.text = ms[0].display_form
@@ -201,7 +192,7 @@ def ask_display_form_for_selected( paper):
       # related to XML wellfomedness but rather to encoding
       try:
         xml.sax.parseString( "<a>%s</a>" % df, xml.sax.ContentHandler())
-      except xml.sax.SAXParseException:        
+      except xml.sax.SAXParseException:
         tkMessageBox.showerror( _("Parse Error"), _("Unable to parse the text-\nprobably problem with input encoding!"))
         Store.app.paper.bell()
         return
@@ -212,9 +203,6 @@ def ask_display_form_for_selected( paper):
     m.display_form = df
   Store.log( _('Display form %s was set to molecule(s)') % df)
   paper.start_new_undo_record()
-
-
-
 
 
 def save_as_template( paper):
@@ -268,8 +256,6 @@ def save_as_template( paper):
     dialog.tag_config( 'headline', underline=1)
     dialog.activate()
 
-
-
   if not errors:
     # check the template directory
     path = os_support.get_local_templates_path()
@@ -310,7 +296,6 @@ def save_as_template( paper):
         return name
 
 
-
 def create_fragment_from_selected( paper):
   top_levels, unique = paper.selected_to_unique_top_levels()
   if len( top_levels) != 1:
@@ -336,13 +321,9 @@ def create_fragment_from_selected( paper):
       Store.log( _("The bonds and atoms could not have been used for creation of a new molecular fragment, they are probably not defining a connected subgraph of the molecular graph."), message_type="warning")
 
 
-
-
-
 def view_fragments( paper):
   a = dialogs.fragment_dialog( paper, deletion=True)
   a.activate()
-
 
 
 def set_atom_number( atoms):
@@ -357,8 +338,6 @@ def set_atom_number( atoms):
       a.number = dial.get()
     Store.log( _("Number %s was set to atom(s).") % dial.get(), message_type="info")
 
-  
-
 
 def log_atom_type( vtype):
   """according to vtype tells the user how an atom text was interpreted"""
@@ -368,7 +347,6 @@ def log_atom_type( vtype):
     Store.log( _("BKChem thinks it can interpret the entered text as a group, try to expand it to find out how it was interpreted."))
   elif vtype == "textatom":
     Store.log( _("BKChem could not interpret the entered text as anything with chemical meaning"))
-
 
 
 def select_language( paper):
@@ -383,8 +361,6 @@ def select_language( paper):
         Store.pm.add_preference( "lang", a.languages[lang[0]])
       tkMessageBox.showinfo( _("Info"),
                              _("The selected language will be used the next time you start BKChem."))
-
-
 
 
 def convert_selected_to_linear_fragment( paper):
@@ -412,11 +388,6 @@ def convert_selected_to_linear_fragment( paper):
 
   if changes:
     paper.start_new_undo_record()
-
-
-
-
-
 
 
 def atoms_to_linear_fragment( mol, vs, bond_length=10):
@@ -492,7 +463,7 @@ def compute_oxidation_number( paper):
   if v.report.group_atoms or v.report.text_atoms:
     Store.log( _("Unexpanded groups or text-only atoms may cause incorrect computation of oxidation number."), message_type="warning")
     logged = True
-    
+
   for a in paper.selected_atoms:
     if isinstance( a, atom):
       oxes = a.get_marks_by_type( "oxidation_number")
@@ -509,3 +480,4 @@ def compute_oxidation_number( paper):
 def set_logging( paper, logger):
   d = dialogs.logging_dialog( paper, logger)
   d.activate()
+
