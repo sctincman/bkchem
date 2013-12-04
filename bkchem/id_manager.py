@@ -69,7 +69,7 @@ class id_manager:
 
 
   def get_id_of_object( self, obj):
-    for k,v in self.id_map.iteritems():
+    for k, v in self.id_map.items():
       if v == obj:
         return k
     return None
