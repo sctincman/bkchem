@@ -21,6 +21,10 @@
 
 """
 
+try:
+  import tkinter.messagebox as tkMessageBox
+except ImportError:
+  import tkMessageBox
 
 import plugin
 import oasa_bridge
@@ -71,12 +75,10 @@ class molfile_exporter(plugin.exporter):
     conts, u = self.paper.selected_to_unique_top_levels()
     mols = [o for o in conts if o.object_type == 'molecule']
     if not mols:
-      import tkMessageBox
       tkMessageBox.showerror( _("No molecule selected."),
                               _('You have to select exactly one molecule (any atom or bond will do).'))
       return 0
     elif len( mols) > 1:
-      import tkMessageBox
       tkMessageBox.showerror(
         ngettext("%d molecules selected.",
                  "%d molecules selected.",
