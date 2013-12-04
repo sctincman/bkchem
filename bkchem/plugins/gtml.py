@@ -20,7 +20,6 @@
 
 """GTML import-export plugin"""
 
-import plugin
 from molecule import molecule
 from atom import atom
 from bond import bond
@@ -38,6 +37,8 @@ except ImportError:
   import StringIO
 
 from xml import xpath
+
+from . import plugin
 
 
 
