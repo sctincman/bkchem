@@ -69,11 +69,11 @@ class CDXML_importer( plugin.importer):
     # read molecules
     for elem1 in doc.getElementsByTagName("fragment"):
       if elem1.parentNode.nodeName=="page":
-        mol = molecule( paper=self.paper) 
+        mol = molecule( paper=self.paper)
         atom_id_to_atom = {}
         atom_id_to_text = {}
         for elem2 in elem1.childNodes:
-          
+
           # atom
           if elem2.nodeName=="n":
             font = ""
@@ -94,11 +94,11 @@ class CDXML_importer( plugin.importer):
                         font=Font
                     Size= int(elem4.getAttribute("size"))
                     text += dom_ext.getAllTextFromElement( elem4).strip()
-            
+
             position = elem2.getAttribute("p").split()
             assert len( position) == 2
-            
-            
+
+
             # we must postpone symbol assignment until we know the valency of the atoms
             atom_id_to_text[ elem2.getAttribute('id')] = text
             atom = mol.create_vertex()
@@ -109,7 +109,7 @@ class CDXML_importer( plugin.importer):
             atom.y = float( position[1])
             mol.add_vertex( atom)
             atom_id_to_atom[ elem2.getAttribute('id')] = atom
-          
+
           # bond
           #{"v BKChemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
           bondType2={"WedgeBegin":"w",
@@ -118,7 +118,7 @@ class CDXML_importer( plugin.importer):
           "Bold":"b",
           "Dash":"d"
           }
-          
+
           if elem2.nodeName=="b":
             if elem2.hasAttribute("color"):
               color2 = colors[(int(elem2.getAttribute("color"))-2)]
@@ -126,7 +126,7 @@ class CDXML_importer( plugin.importer):
               color2="#000000"
             order = 1
             if elem2.hasAttribute("Order"):
-              order = int( elem2.getAttribute("Order"))      
+              order = int( elem2.getAttribute("Order"))
             bond = mol.create_edge()
             if elem2.hasAttribute("Display"):
               display = elem2.getAttribute("Display").strip()
@@ -138,8 +138,7 @@ class CDXML_importer( plugin.importer):
             atom1 = atom_id_to_atom[ elem2.getAttribute("B")]
             atom2 = atom_id_to_atom[ elem2.getAttribute("E")]
             mol.add_edge( atom1, atom2, bond)
-        
-        
+
         # here we reassign the symbols
         for id,atom in atom_id_to_atom.iteritems():
           text = atom_id_to_text[ id]
@@ -177,17 +176,17 @@ class CDXML_importer( plugin.importer):
                 for rodic in rodice:
                   text100 = "<%s>%s</%s>" % (rodic,text100,rodic)
             celyText += text100
-  
+
             if elem5.hasAttribute("color"):
               color3=colors[(int(elem5.getAttribute("color"))-2)]
             else:
               color3="#000000"
-              
+
             font_id = elem51.getAttribute("font")
             if font_id != "":
               font=fonts[int(font_id)]
             #text = dom_ext.getAllTextFromElement(elem51)
-        #print celyText    
+        #print celyText
         text = celyText
         t = text_class( self.paper, position, text=text)
         t.line_color = color3
@@ -197,7 +196,7 @@ class CDXML_importer( plugin.importer):
         if font:
           t.font_family = font
         molecules.append(t)
-        
+
     # read graphics - plus
     for elem6 in doc.getElementsByTagName("graphic"):
       if elem6.getAttribute("GraphicType")=="Symbol" and elem6.getAttribute("SymbolType")=="Plus":
@@ -211,25 +210,25 @@ class CDXML_importer( plugin.importer):
         pl = plus(self.paper, position2)
         pl.line_color = color4
         molecules.append(pl)
-        
+
     sipka=[]
     #for elem71 in doc.getElementsByTagName("graphic"):
       #if elem71.getAttribute("GraphicType")=="Line":
 
-    
     for elem7 in doc.getElementsByTagName("arrow"):
       sipka.insert(0,elem7.getAttribute('Head3D') )
       sipka.insert(1,elem7.getAttribute('Tail3D') )
-      if elem7.hasAttribute("color"): 
+      if elem7.hasAttribute("color"):
         sipka.insert(0,colors[(int(elem7.getAttribute("color"))-2)])
       point1 = map( float, sipka[1].split())
       point2 = map( float, sipka[2].split())
       arr = arrow( self.paper, points=[point2[0:2],point1[0:2]], fill=sipka[0])
       arr.line_color=sipka[0]
       molecules.append( arr)
-    
+
     sipka=[]
     return molecules
+
 
 
 class CDXML_exporter( plugin.exporter):
@@ -243,7 +242,7 @@ class CDXML_exporter( plugin.exporter):
 
   def on_begin( self):
     return 1
-    
+
 
   def write_to_file( self, name):
      #{"v BKChemu bond.type":"v ChemDraw hodnota atributu Display elementu b"}
@@ -273,12 +272,11 @@ class CDXML_exporter( plugin.exporter):
     elem01=out.createElement("colortable")
     root.appendChild(elem01)
 
-
     elem03=out.createElement("fonttable")
     root.appendChild(elem03)
 
     elem1=out.createElement("page")
-    root.appendChild(elem1) 
+    root.appendChild(elem1)
     PaperX=int(Screen.mm_to_px( self.paper.get_paper_property("size_x") ) )
     PaperY=int(Screen.mm_to_px( self.paper.get_paper_property("size_y") ) )
     elem1.setAttribute("BoundingBox","%d %d %d %d" % (0,0,PaperX,PaperY) )
@@ -289,14 +287,14 @@ class CDXML_exporter( plugin.exporter):
     for mol in self.paper.molecules:
       elem2=out.createElement("fragment")
       elem1.appendChild(elem2)
-  
+
       for atom in mol.atoms:
         elem3=out.createElement("n")
         elem2.appendChild(elem3)
-        elem3.setAttribute("id",re.sub("atom","",atom.id) ) 
+        elem3.setAttribute("id",re.sub("atom","",atom.id) )
         elem3.setAttribute("p","%f %f" %(atom.x,atom.y) )
         elem3.setAttribute("NumHydrogens","%d" % atom.free_valency)
-    
+
         if atom.symbol != "C" or atom.show:
           elem4=out.createElement("t")
           elem3.appendChild(elem4)
@@ -319,7 +317,7 @@ class CDXML_exporter( plugin.exporter):
               ShowColor=str(colors.index(color)+2)
           elem4.setAttribute("color",ShowColor)
           elem6.setAttribute("color",ShowColor)
-      
+
           NewFont=atom.font_family
           if NewFont not in fonts:
             fonts.append(NewFont)
@@ -327,18 +325,18 @@ class CDXML_exporter( plugin.exporter):
             if font==NewFont:
               FontId=str(fonts.index(font)+3)
           elem6.setAttribute("font",FontId)
-  
+
       for bond in mol.bonds:
         elem5=out.createElement("b")
         elem2.appendChild(elem5)
-        elem5.setAttribute("B",re.sub("atom","",bond.atom1.id) ) 
+        elem5.setAttribute("B",re.sub("atom","",bond.atom1.id) )
         elem5.setAttribute("E",re.sub("atom","",bond.atom2.id) )
         for bondB,bondC in bondType.iteritems():
           if bond.type==bondB:
             elem5.setAttribute("Display",bondC)
           elif bond.type=="h" and bond.equithick==1:
             elem5.setAttribute("Display","Hash")
-    
+
         NewColor=self.paper.any_color_to_rgb_string( bond.line_color)
         if NewColor not in colors:
           colors.append (NewColor)
@@ -346,19 +344,19 @@ class CDXML_exporter( plugin.exporter):
           if color==NewColor:
             ShowColor=str(colors.index(color)+2)
         elem5.setAttribute("color",ShowColor)
-    
+
         #print int( self.paper.any_color_to_rgb_string( bond.line_color)[1:3], 16)
         if bond.order > 1:
           elem5.setAttribute("Order","%d" % bond.order )
         #print bond.type,bond.equithick,bond.simple_double
-    
+
     for text in self.paper.texts:
       elem7=out.createElement("t")
       elem1.appendChild(elem7)
       elem7.setAttribute("id",re.sub("text","",text.id))
       elem7.setAttribute("p","%f %f" % (text.x,text.y))
       elem7.setAttribute("BoundingBox","%d %d %d %d" % (text.bbox()[0],text.bbox()[1],text.bbox()[2],text.bbox()[3]) )
-      
+
       minidoc = dom.parseString( "<a>%s</a>" % text.xml_ftext.encode('utf-8'))
       textik={"i":2,
               "b":1,
@@ -377,35 +375,35 @@ class CDXML_exporter( plugin.exporter):
               par = par.parentNode
             texts.append( (unicode(ch.nodeValue), parents))
           else:
-            texts += get_text( ch)  
-        return texts              
-      
+            texts += get_text( ch)
+        return texts
+
       texts2= get_text(minidoc.childNodes[0])
 
-      for text2 in texts2:   
+      for text2 in texts2:
         elem001=out.createElement("s")
         elem7.appendChild(elem001)
         elem001.setAttribute("size", str(text.font_size))
         text001=out.createTextNode(text2[0])
         elem001.appendChild(text001)
-        
+
         def LogOR(xs):
           if len(xs) == 0:
             return 0
           else:
             return xs[0] | LogOR (xs[1:])
-  
+
         Faces=[]
-  
+
         for xxx in text2[1]:
           for (P,F) in textik.iteritems():
             if P==xxx:
               Faces.append(F)
-  
+
         Face=LogOR(Faces)
         if Face!=0:
           elem001.setAttribute("face",str(Face) )
-      
+
         NewFont=text.font_family
         if NewFont not in fonts:
           fonts.append(NewFont)
@@ -413,7 +411,7 @@ class CDXML_exporter( plugin.exporter):
           if font==NewFont:
             FontId=str(fonts.index(font)+3)
         elem001.setAttribute("font",FontId)
-        
+
         NewColor=self.paper.any_color_to_rgb_string(text.line_color)
         if NewColor not in colors:
           colors.append (NewColor)
@@ -422,8 +420,7 @@ class CDXML_exporter( plugin.exporter):
             ShowColor=str(colors.index(color)+2)
         elem001.setAttribute("color",ShowColor)
         elem7.setAttribute("color",ShowColor)
-      
-  
+
     for plus in self.paper.pluses:
       elem9=out.createElement("graphic")
       elem1.appendChild(elem9)
@@ -442,7 +439,7 @@ class CDXML_exporter( plugin.exporter):
 
     for arrow in self.paper.arrows:
       arrowPoints=[p.get_xy() for p in arrow.points]
-  
+
       elem10=out.createElement("graphic")
       elem1.appendChild(elem10)
       elem10.setAttribute("GraphicType","Line")
@@ -461,7 +458,7 @@ class CDXML_exporter( plugin.exporter):
       elem1.appendChild(elem11)
       for arrowB,arrowC in arrowType.iteritems():
           if arrow.type==arrowB:
-            elem11.setAttribute("ArrowheadHead",arrowC[1]) 
+            elem11.setAttribute("ArrowheadHead",arrowC[1])
             elem11.setAttribute("ArrowheadTail",arrowC[2])
             elem11.setAttribute("ArrowheadType",arrowC[3])
       elem11.setAttribute("Head3D",str(arrowPoints[-1][0])+" "+str(arrowPoints[-1][1]))
@@ -477,7 +474,7 @@ class CDXML_exporter( plugin.exporter):
       red=str(int(color[1:3],16)/255.0)
       green=str(int(color[3:5],16)/255.0)
       blue=str(int(color[5:7],16)/255.0)
-  
+
       elem02.setAttribute("r",red)
       elem02.setAttribute("g",green)
       elem02.setAttribute("b",blue)
@@ -485,11 +482,11 @@ class CDXML_exporter( plugin.exporter):
     FontId=3
     for font in fonts:
       elem04=out.createElement("font")
-      elem03.appendChild(elem04) 
+      elem03.appendChild(elem04)
       elem04.setAttribute("id",str(FontId) )
       FontId+=1
       elem04.setAttribute("name",font)
-    
+
     f = open( name, "w")
     f.write( out.toxml().encode('utf-8'))
     f.close()
