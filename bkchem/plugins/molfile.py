@@ -16,12 +16,11 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""Molfile Export plugin"""
+"""Molfile Export plugin.
+
+"""
+
 
 import plugin
 import oasa_bridge
@@ -30,9 +29,11 @@ from oasa import transform
 
 
 
-class molfile_importer( plugin.importer):
-  """Imports a molfile document."""
 
+class molfile_importer(plugin.importer):
+  """Imports a molfile document.
+
+  """
   gives_molecule = 1
   gives_cdml = 0
 
@@ -55,9 +56,11 @@ class molfile_importer( plugin.importer):
     return mols
 
 
-class molfile_exporter( plugin.exporter):
-  """Exports to molfile document."""
 
+class molfile_exporter(plugin.exporter):
+  """Exports to molfile document.
+
+  """
   doc_string = _("Exports to molfile document.")
 
   def __init__( self, paper):
