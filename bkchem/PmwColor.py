@@ -1,16 +1,22 @@
 # Functions for converting colors and modifying the color scheme of
 # an application.
 
+import sys
 import math
 import string
-import sys
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
+
 
 _PI = math.pi
 _TWO_PI = _PI * 2
 _THIRD_PI = _PI / 3
 _SIXTH_PI = _PI / 6
 _MAX_RGB = float(256 * 256 - 1) # max size of rgb values returned from Tk
+
+
 
 def setscheme(root, background=None, **kw):
     root = root._root()
