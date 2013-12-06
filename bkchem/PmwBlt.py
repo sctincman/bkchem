@@ -3,7 +3,11 @@
 
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
+
 
 # Supported commands:
 _busyCommand = '::blt::busy'
@@ -15,6 +19,8 @@ _tabsetCommand = '::blt::tabset'
 
 _haveBlt = None
 _haveBltBusy = None
+
+
 
 def _checkForBlt(window):
     global _haveBlt
