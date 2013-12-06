@@ -89,7 +89,7 @@ def vector_names(pattern = None):
     tk = Tkinter._default_root.tk
     return tk.splitlist(tk.call(_vectorCommand, 'names', pattern))
 
-class Vector:
+class Vector(object):
     _varnum = 0
     def __init__(self, size=None, master=None):
         # <size> can be either an integer size, or a string "first:last".
