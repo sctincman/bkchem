@@ -22,6 +22,7 @@ import cairo
 
 from .tk2cairo import tk2cairo
 from .cairo_lowlevel import cairo_exporter
+from singleton_store import Screen
 
 
 
@@ -53,7 +54,6 @@ class svg_cairo_exporter(cairo_exporter):
 
 
   def _get_scaling_ratio( self):
-    from singleton_store import Screen
     return 72.0/Screen.dpi
 
 
