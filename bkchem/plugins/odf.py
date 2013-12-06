@@ -25,6 +25,7 @@
 # in the Tcl/Tk 8.3.4 than in the version I have used before. Maybe I would have to switch
 # to px sizes instead of pt sizes.
 
+from __future__ import print_function
 
 import plugin
 import xml.dom.minidom as dom
@@ -588,22 +589,20 @@ class ODF_exporter(plugin.exporter):
                                          ( 'draw:style-name', gr_style_name)))
 
 
-
-
   def create_oo_bezier2( self, points, page, gr_style_name):
     points_txt = ""
     for (sx, sy, cxa, cya, cxb, cyb, ex, ey) in geometry.tkspline_to_cubic_bezier( points):
       if not points_txt:
         points_txt += "m %d %d c " % (1000*(sx), 1000*(sy))
       points_txt += "%d %d %d %d %d %d " % (1000*(cxa-sx),1000*(cya-sy),1000*(cxb-sx),1000*(cyb-sy),1000*(ex-sx),1000*(ey-sy))
-    print points_txt
+    print(points_txt)
 
     w = self.paper.get_paper_property( 'size_x')/10.0
     h = self.paper.get_paper_property( 'size_y')/10.0
     #wpx = Screen.cm_to_px( w)
     #hpx = Screen.cm_to_px( h)
-    #print 'svg:viewBox', '0 0 %d %d' % (wpx*1000,hpx*1000)
-    print 'svg:viewBox', '0 0 %d %d' % (w*1000,h*1000)
+    #print('svg:viewBox', '0 0 %d %d' % (wpx*1000,hpx*1000))
+    print('svg:viewBox', '0 0 %d %d' % (w*1000,h*1000))
     line = dom_extensions.elementUnder( page, 'draw:path',
                                         (( 'svg:x', '0cm'),
                                          ( 'svg:y', '0cm'),
