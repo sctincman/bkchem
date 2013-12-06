@@ -231,7 +231,7 @@ class atom( drawable_chem_vertex, oasa.atom):
       if self.charge -self.get_charge_from_marks() > 0:
         ch = '<sup>%s+</sup>' % ch
       else:
-        ch = u'<sup>%s%s</sup>' % (ch, self.paper.get_paper_property( 'use_real_minus') and unichr( 8722) or "-")
+        ch = '<sup>%s%s</sup>' % (ch, self.paper.get_paper_property('use_real_minus') and unichr(8722) or "-")
     else:
       ch = ''
     if self.pos == 'center-last':
