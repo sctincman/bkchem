@@ -202,10 +202,10 @@ class Vector(object):
     def search(self, start, end=None):
         return self._master._getints(self.tk.call(
                 self._name, 'search', start, end))
-    def set(self, list):
-        if type(list) != types.TupleType:
-            list = tuple(list)
-        self.tk.call(self._name, 'set', list)
+    def set(self, l):
+        if type(l) != types.TupleType:
+            l = tuple(l)
+        self.tk.call(self._name, 'set', l)
 
     # The blt vector sort method has different semantics to the python
     # list sort method.  Call these blt_sort:
