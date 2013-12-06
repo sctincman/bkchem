@@ -201,7 +201,7 @@ class config_dialog(object):
       self.atom_show = Pmw.OptionMenu( self.atom_page,
                                        labelpos = 'nw',
                                        label_text = _('Atom name'),
-                                       items = (_("don't show"),_("show"),u""),
+                                       items = (_("don't show"), _("show"), ""),
                                        initialitem = show)
       self.atom_show.pack( anchor = 'nw')
       # positioning
@@ -218,7 +218,7 @@ class config_dialog(object):
         self.atom_pos = Pmw.OptionMenu( self.atom_page,
                                         labelpos = 'nw',
                                         label_text = _('Atom positioning'),
-                                        items = (_("center first letter"),_("center last letter"), u""),
+                                        items = (_("center first letter"), _("center last letter"), ""),
                                         initialitem = pos)
 
         self.atom_pos.pack( anchor = 'nw')
@@ -231,7 +231,7 @@ class config_dialog(object):
       self.atom_show_h = Pmw.OptionMenu( self.atom_page,
                                          labelpos = 'nw',
                                          label_text = _('Hydrogens'),
-                                         items = (_("off"),_("on"), u""),
+                                         items = (_("off"), _("on"), ""),
                                          initialitem = show)
 
       self.atom_show_h.pack( anchor = 'nw')
