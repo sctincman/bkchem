@@ -5377,7 +5377,7 @@ class PanedWidget(MegaWidget):
             if self._relsize[name] is None:
                 #special case
                 if self._size[name] == 0:
-                    self._size[name] = apply(majorspec, (self._frame[name],))
+                    self._size[name] = majorspec(*(self._frame[name],))
                     self._setrel(name)
             else:
                 self._size[name] = self._absSize(self._relsize[name])
