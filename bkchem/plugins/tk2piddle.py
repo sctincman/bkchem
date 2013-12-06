@@ -45,13 +45,11 @@ class tk2piddle:
     self.canvas.flush()
 
 
-
   def paper_to_canvas_color( self, color):
     if not color:
       return piddle.transparent
     colors = self.paper.winfo_rgb( color)
     return piddle.Color( *map( lambda x: x/65535.0, colors))
-
 
 
   def paper_to_canvas_coord( self, x):
@@ -65,7 +63,6 @@ class tk2piddle:
     return tr
 
 
-
   def draw_document( self):
     # the conversion function for coordinates
     for item in self.paper.find_all():
@@ -75,7 +72,6 @@ class tk2piddle:
           print "method to draw %s is not implemented" % self.paper.type( item)
         else:
           getattr( self, method)( item)
-
 
 
   def _draw_line( self, item):
@@ -99,9 +95,9 @@ class tk2piddle:
       if end:
         coords[-2] = end[0]
         coords[-1] = end[1]
-   
+
       if len( coords) > 4:
-        if self.paper.itemcget( item, 'smooth') != "0":   #smooth is spline 
+        if self.paper.itemcget( item, 'smooth') != "0":   #smooth is spline
           outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
           fill = piddle.transparent
           width = self.convert( float( self.paper.itemcget( item, 'width')))
@@ -110,7 +106,7 @@ class tk2piddle:
           for bez in beziers:
             x1, y1, x2, y2, x3, y3, x4, y4 = bez
             self.canvas.drawCurve(x1, y1, x2, y2, x3, y3, x4, y4, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=0)
-        
+
         else:
           # polyline
           outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'fill'))
@@ -152,8 +148,8 @@ class tk2piddle:
     x1, y1, x2, y2 = coords
     if fill != piddle.transparent or outline != piddle.transparent:
       self.canvas.drawRect( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
-    
-    
+
+
   def _draw_polygon( self, item):
     coords = self.transformer.transform_xy_flat_list( self.paper.coords( item))
     outline = self.paper_to_canvas_color( self.paper.itemcget( item, 'outline'))
@@ -161,7 +157,7 @@ class tk2piddle:
     width = self.convert( float( self.paper.itemcget( item, 'width')))
     cs = self._flat_list_to_list_of_tuples( coords)
     self.canvas.drawPolygon( cs, edgeColor=outline, edgeWidth=width, fillColor=fill, closed=1)
-    
+
 
   def _draw_oval( self, item):
     coords = self.transformer.transform_4( self.paper.coords( item))
@@ -170,11 +166,9 @@ class tk2piddle:
     width = self.convert( float( self.paper.itemcget( item, 'width')))
     x1, y1, x2, y2 = coords
     self.canvas.drawEllipse( x1, y1, x2, y2, edgeColor=outline, edgeWidth=width, fillColor=fill)
-    
 
 
   # other than drawing private methods
-
   def _create_arrow( self, shape, start, to, color):
     """creates an arrow with 'shape' pointing from 'start' to 'to' filled with 'color'
     and returns x, y - where the to should be to not to overlay the arrow"""
@@ -188,9 +182,8 @@ class tk2piddle:
     points = tr.transform_xy_flat_list( points)
     points = self.transformer.transform_xy_flat_list( points)
     points = self._flat_list_to_list_of_tuples( points)
-    self.canvas.drawPolygon( points, edgeColor=color, edgeWidth=0, fillColor=color, closed=1)    
+    self.canvas.drawPolygon( points, edgeColor=color, edgeWidth=0, fillColor=color, closed=1)
     return points[2]
-
 
 
   def _flat_list_to_list_of_tuples( self, coords):
@@ -223,7 +216,6 @@ class tk2piddle_pdf( tk2piddle):
     cap = self.paper.itemcget( item, 'capstyle')
     self.canvas.pdf.setLineCap( self._caps[ cap])
     tk2piddle._draw_line( self, item)
-  
 
 
 
@@ -240,3 +232,4 @@ class tk2piddle_ps( tk2piddle):
     cap = self.paper.itemcget( item, 'capstyle')
     self.canvas.setLineCap( self._caps[ cap])
     tk2piddle._draw_line( self, item)
+
