@@ -25,7 +25,7 @@ from singleton_store import Screen, Store
 
 
 
-class piddle_exporter( plugin.exporter):
+class piddle_exporter(plugin.exporter):
 
   def __init__( self, paper, converter_class=None):
     """converter_class is the class used for convert, it is tk2piddle or its derivative"""
@@ -35,9 +35,9 @@ class piddle_exporter( plugin.exporter):
     else:
       self.converter_class = converter_class
 
+
   def init_canvas( self, pagesize=None):
     pass
-
 
 
   def on_begin( self):
@@ -67,6 +67,7 @@ class piddle_exporter( plugin.exporter):
     self.canvas = self.init_canvas( pagesize=(scale*dx, scale*dy))
     self.converter = self.converter_class()
     return 1
+
 
   def write_to_file( self, name):
     self.converter.export_to_piddle_canvas( self.paper, self.canvas, transformer=self.transformer)
