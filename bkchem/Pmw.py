@@ -167,7 +167,7 @@ def __methods(cls):
 # any other parameters.
 __stringBody = (
     'def %(method)s(this, *args, **kw): return ' +
-    'apply(this.%(attribute)s.%(method)s, args, kw)')
+    'this.%(attribute)s.%(method)s(*args, **kw)')
 
 # Get a unique id
 __counter = 0
@@ -182,7 +182,7 @@ def __unique():
 # by invoking the resolution function.
 __funcBody = (
     'def %(method)s(this, *args, **kw): return ' +
-    'apply(this.%(forwardFunc)s().%(method)s, args, kw)')
+    'this.%(forwardFunc)s().%(method)s(*args, **kw)')
 
 def forwardmethods(fromClass, toClass, toPart, exclude = ()):
     # Forward all methods from one class to another.
@@ -565,7 +565,7 @@ class MegaArchetype:
             # multiple trailing arguments to createcomponent() or as a
             # single tuple argument.
             widgetArgs = widgetArgs[0]
-        widget = apply(widgetClass, widgetArgs, kw)
+        widget = widgetClass(*widgetArgs, **kw)
         componentClass = widget.__class__.__name__
         self.__componentInfo[componentName] = (widget, widget.configure,
                 componentClass, widget.cget, componentGroup)
@@ -761,8 +761,8 @@ class MegaArchetype:
                                    '" for ' + self.__class__.__name__)
 
         # Call the configure methods for any components.
-        map(apply, indirectOptions.keys(),
-                ((),) * len(indirectOptions), indirectOptions.values())
+        for f, kv in indirectOptions.items():
+            f(**kv)
 
         # Call the configuration callback function for each option.
         for option in directOptions:
@@ -772,7 +772,7 @@ class MegaArchetype:
               func()
 
     def __setitem__(self, key, value):
-        apply(self.configure, (), {key: value})
+        self.configure(**{key: value})
 
     #======================================================================
     # Methods used to query the megawidget.
@@ -1560,7 +1560,7 @@ class _TraceTk:
                 (_recursionCounter, '  ' * _recursionCounter, argStr))
         _recursionCounter = _recursionCounter + 1
         try:
-            result = apply(self.tclInterp.call, args, kw)
+            result = self.tclInterp.call(*args, **kw)
         except Tkinter.TclError, errorString:
             _callToTkReturned = 1
             _recursionCounter = _recursionCounter - 1
@@ -1639,7 +1639,7 @@ def __TkinterToplevelTitle(self, *args):
         self._Pmw_WM_DELETE_name = self.register(self.destroy, None, 0)
         self.protocol('WM_DELETE_WINDOW', self._Pmw_WM_DELETE_name)
 
-    return apply(Tkinter.Wm.title, (self,) + args)
+    return Tkinter.Wm.title(*(self,) + args)
 
 _haveBltBusy = None
 def _havebltbusy(window):
@@ -1664,7 +1664,7 @@ class _BusyWrapper:
 
     def callback(self, *args):
         showbusycursor()
-        rtn = apply(self._command, args)
+        rtn = self._command(*args)
 
         # Call update before hiding the busy windows to clear any
         # events that may have occurred over the busy windows.
@@ -1711,7 +1711,7 @@ def drawarrow(canvas, color, direction, tag, baseOffset = 0.25, edgeOffset = 0.1
     else:
         coords = (base, low, base, high, apex, middle)
     kw = {'fill' : color, 'outline' : color, 'tag' : tag}
-    apply(canvas.create_polygon, coords, kw)
+    canvas.create_polygon(*coords, **kw)
 
 #=============================================================================
 
@@ -1765,7 +1765,7 @@ class __TkinterCallWrapper:
     def __call__(self, *args):
         try:
             if self.subst:
-                args = apply(self.subst, args)
+                args = self.subst(*args)
             if _traceTk:
                 if not _callToTkReturned:
                     _traceTkFile.write('\n')
@@ -1787,7 +1787,7 @@ class __TkinterCallWrapper:
                 _traceTkFile.write('CALLBACK> %d:%s%s%s\n' %
                     (_recursionCounter, '  ' * _recursionCounter, name, argStr))
                 _traceTkFile.flush()
-            return apply(self.func, args)
+            return self.func(*args)
         except SystemExit as msg:
             raise SystemExit(msg)
         except:
@@ -2794,9 +2794,9 @@ class ButtonBox(MegaWidget):
         if not kw.has_key('text'):
             kw['text'] = componentName
         kw['default'] = 'normal'
-        button = apply(self.createcomponent, (componentName,
+        button = self.createcomponent(*(componentName,
                 (), 'Button',
-                Tkinter.Button, (self._buttonBoxFrame,)), kw)
+                Tkinter.Button, (self._buttonBoxFrame,)), **kw)
 
         index = self.index(beforeComponent, 1)
         horizontal = self['orient'] == 'horizontal'
@@ -2827,7 +2827,7 @@ class ButtonBox(MegaWidget):
         return button
 
     def add(self, componentName, **kw):
-        return apply(self.insert, (componentName, len(self._buttonList)), kw)
+        return self.insert(*(componentName, len(self._buttonList)), **kw)
 
     def delete(self, index):
         index = self.index(index)
@@ -3082,9 +3082,9 @@ class EntryField(MegaWidget):
         self._previousText = None
 
         if type(dict['min']) == types.StringType and strFunction is not None:
-            dict['min'] = apply(strFunction, (dict['min'],), args)
+            _dict['min'] = strFunction(*(_dict['min'],), **args)
         if type(dict['max']) == types.StringType and strFunction is not None:
-            dict['max'] = apply(strFunction, (dict['max'],), args)
+            _dict['max'] = strFunction(*(_dict['max'],), **args)
 
         self._checkValidity()
 
@@ -3154,7 +3154,7 @@ class EntryField(MegaWidget):
         args = self._validationArgs
 
         if dict['validator'] is not None:
-            status = apply(dict['validator'], (text,), args)
+            status = dict['validator'](*(text,), **args)
             if status != OK:
                 return status
 
@@ -3164,7 +3164,7 @@ class EntryField(MegaWidget):
             max = dict['max']
             if min is None and max is None:
                 return OK
-            val = apply(dict['stringtovalue'], (text,), args)
+            val = dict['stringtovalue'](*(text,), **args)
             if min is not None and val < min:
                 if dict['minstrict']:
                     return ERROR
@@ -3662,11 +3662,11 @@ class MainMenuBar(MegaArchetype):
         else:
             parentMenu = self.component(parentMenuName)
 
-        apply(parentMenu.add_cascade, (), kw)
+        parentMenu.add_cascade(**kw)
 
-        menu = apply(self.createcomponent, (menuName,
+        menu = self.createcomponent(*(menuName,
                 (), 'Menu',
-                Tkinter.Menu, (parentMenu,)), menukw)
+                Tkinter.Menu, (parentMenu,)), **menukw)
         parentMenu.entryconfigure('end', menu = menu)
 
         self._menuInfo[parentMenuName][1].append(statusHelp)
@@ -3698,7 +3698,7 @@ class MainMenuBar(MegaArchetype):
             raise ValueError('unknown menuitem type "%s"' % itemType)
 
         self._menuInfo[menuName][1].append(statusHelp)
-        apply(command, (), kw)
+        command(**kw)
 
     def _addHotkeyToOptions(self, menuName, kw, traverseSpec):
 
@@ -3892,9 +3892,9 @@ class MenuBar(MegaWidget):
         self._addHotkeyToOptions(parentMenuName, kw, textKey, traverseSpec)
 
         if parentMenuName is None:
-            button = apply(self.createcomponent, (menuName + '-button',
+            button = self.createcomponent(*(menuName + '-button',
                     (), 'Button',
-                    Tkinter.Menubutton, (self.interior(),)), kw)
+                    Tkinter.Menubutton, (self.interior(),)), **kw)
             button.pack(side=side, padx = self['padx'])
             balloon = self['balloon']
             if balloon is not None:
@@ -3902,12 +3902,12 @@ class MenuBar(MegaWidget):
             parentMenu = button
         else:
             parentMenu = self.component(parentMenuName + '-menu')
-            apply(parentMenu.add_cascade, (), kw)
+            parentMenu.add_cascade(**kw)
             self._menuInfo[parentMenuName][1].append(statusHelp)
 
-        menu = apply(self.createcomponent, (menuName + '-menu',
+        menu = self.createcomponent(*(menuName + '-menu',
                 (), 'Menu',
-                Tkinter.Menu, (parentMenu,)), menukw)
+                Tkinter.Menu, (parentMenu,)), **menukw)
         if parentMenuName is None:
             button.configure(menu = menu)
         else:
@@ -3945,7 +3945,7 @@ class MenuBar(MegaWidget):
             raise ValueError('unknown menuitem type "%s"' % itemType)
 
         self._menuInfo[menuName][1].append(statusHelp)
-        apply(command, (), kw)
+        command(**kw)
 
     def _addHotkeyToOptions(self, menuName, kw, textKey, traverseSpec):
 
@@ -4402,9 +4402,9 @@ class NoteBook(MegaArchetype):
                 raise KeyError('Unknown option "' + key + '"')
 
         # Create the frame to contain the page.
-        page = apply(self.createcomponent, (pageName,
+        page = self.createcomponent(*(pageName,
                 (), 'Page',
-                Tkinter.Frame, self._hull), pageOptions)
+                Tkinter.Frame, self._hull), **pageOptions)
 
         attributes = {}
         attributes['page'] = page
@@ -4415,9 +4415,9 @@ class NoteBook(MegaArchetype):
             def raiseThisPage(self = self, pageName = pageName):
                 self.selectpage(pageName)
             tabOptions['command'] = raiseThisPage
-            tab = apply(self.createcomponent, (pageName + '-tab',
+            tab = self.createcomponent(*(pageName + '-tab',
                     (), 'Tab',
-                    Tkinter.Button, self._hull), tabOptions)
+                    Tkinter.Button, self._hull), **tabOptions)
 
             if self['arrownavigation']:
                 # Allow the use of the arrow keys for Tab navigation:
@@ -4455,7 +4455,7 @@ class NoteBook(MegaArchetype):
         return page
 
     def add(self, pageName, **kw):
-        return apply(self.insert, (pageName, len(self._pageNames)), kw)
+        return self.insert(*(pageName, len(self._pageNames)), **kw)
 
     def delete(self, *pageNames):
         newTopPage = 0
@@ -4481,7 +4481,7 @@ class NoteBook(MegaArchetype):
 
             if self._withTabs:
                 self.destroycomponent(pageName + '-tab')
-                apply(self._hull.delete, pageInfo['tabitems'])
+                self._hull.delete(*pageInfo['tabitems'])
             self.destroycomponent(pageName)
             del self._pageAttrs[pageName]
             del self._pageNames[pageIndex]
@@ -5135,7 +5135,7 @@ class PanedWidget(MegaWidget):
         return self._frame[name]
 
     def add(self, name, **kw):
-        return apply(self.insert, (name, len(self._paneNames)), kw)
+        return self.insert(*(name, len(self._paneNames)), **kw)
 
     def delete(self, name):
         deletePos = self._nameToIndex(name)
@@ -5411,7 +5411,7 @@ class PanedWidget(MegaWidget):
 
     def _iterate(self, names, proc, n):
         for i in names:
-            n = apply(proc, (i, n))
+            n = proc(*(i, n))
             if n == 0:
                 break
 
@@ -5875,9 +5875,9 @@ class RadioSelect(MegaWidget):
             if not kw.has_key('anchor'):
                 kw['anchor'] = 'w'
 
-        button = apply(self.createcomponent, (componentName,
+        button = self.createcomponent(*(componentName,
                 (), 'Button',
-                self.buttonClass, (self._radioSelectFrame,)), kw)
+                self.buttonClass, (self._radioSelectFrame,)), **kw)
 
         if self['orient'] == 'horizontal':
             self._radioSelectFrame.grid_rowconfigure(0, weight=1)
@@ -6774,7 +6774,7 @@ class ScrolledListBox(MegaWidget):
         if type(items) != types.TupleType:
             items = tuple(items)
         if len(items) > 0:
-            apply(self._listbox.insert, ('end',) + items)
+            self._listbox.insert(*('end',) + items)
 
         _registerScrolledList(self._listbox, self)
 
@@ -6862,7 +6862,7 @@ class ScrolledListBox(MegaWidget):
         if len(items) > 0:
             if type(items) != types.TupleType:
                 items = tuple(items)
-            apply(self._listbox.insert, (0,) + items)
+            self._listbox.insert(*(0,) + items)
 
     # Override Tkinter.Listbox get method, so that if it is called with
     # no arguments, return all list elements (consistent with other widgets).
@@ -8901,8 +8901,8 @@ class Counter(MegaWidget):
 
         text = self._counterEntry.get()
         try:
-            value = apply(self._counterCommand,
-                    (text, factor, self['increment']), self._counterArgs)
+            value = self._counterCommand(
+                    *(text, factor, self['increment']), **self._counterArgs)
         except ValueError:
             self.bell()
             return
@@ -8920,8 +8920,8 @@ class Counter(MegaWidget):
         self._timerId = None
         origtext = self._counterEntry.get()
         try:
-            value = apply(self._counterCommand,
-                    (origtext, factor, self['increment']), self._counterArgs)
+            value = self._counterCommand(
+                    *(origtext, factor, self['increment']), **self._counterArgs)
         except ValueError:
             # If text is invalid, stop counting.
             self._stopCounting()
