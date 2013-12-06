@@ -29,7 +29,9 @@ from oasa import geometry
 
 from .piddle import piddle
 
-class tk2piddle:
+
+
+class tk2piddle(object):
 
   # this is useful for tweaking the output
   text_x_shift = 0.7
