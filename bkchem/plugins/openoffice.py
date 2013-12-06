@@ -26,7 +26,7 @@
 # to px sizes instead of pt sizes.
 
 
-import plugin
+from . import plugin
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import dom_extensions
