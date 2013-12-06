@@ -550,10 +550,10 @@ class OO_exporter(plugin.exporter):
                                          ( 'draw:style-name', gr_style_name)))
 
 
-
   def create_oo_bezier( self, points, page, gr_style_name):
-    ps = reduce( operator.add, map( geometry.quadratic_beziere_to_polyline,
-                                    geometry.tkspline_to_quadratic_bezier( points)))
+    ps = [j for i in map(geometry.quadratic_beziere_to_polyline,
+                         geometry.tkspline_to_quadratic_bezier(points))
+              for j in i]
     maxX, maxY, minX, minY = None,None,None,None
     for (x,y) in ps:
       if not maxX or x > maxX:
