@@ -264,7 +264,7 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
             execString = \
                 __funcBody % {'forwardFunc' : forwardName, 'method' : method}
 
-        exec execString in d
+        exec(execString, d)
 
         # this creates a method
         setattr(fromClass, method, d[method])
