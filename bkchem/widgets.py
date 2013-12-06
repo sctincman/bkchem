@@ -38,13 +38,13 @@ except ImportError:
     import tkFileDialog
 
 from oasa import geometry
-from keysymdef import keysyms
 
 import Pmw
 import data
 import misc
 import config
 
+from keysymdef import keysyms
 from singleton_store import Store
 
 
