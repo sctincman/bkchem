@@ -23,16 +23,19 @@ from .piddle_lowlevel import piddle_exporter
 
 
 
-class pdf_exporter( piddle_exporter):
-  """Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode
-strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used."""
+class pdf_exporter(piddle_exporter):
+  """Export PDF files via the Piddle library.
 
+  It does a pretty good job, however does not support
+  unicode strings (ASCII only) and the position of the text
+  may be slightly off, depending on the fonts used.
+  """
   doc_string = _("Exports PDF files via the Piddle library. It does a pretty good job, however does not support unicode strings (ASCII only) and the position of the text may be slightly off, depending on the fonts used.")
 
 
   def __init__( self, paper):
     piddle_exporter.__init__( self, paper, converter_class=tk2piddle_pdf)
-    
+
 
   def init_canvas( self, pagesize=None):
     return piddlePDF.PDFCanvas( pagesize=pagesize)
