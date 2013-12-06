@@ -1,8 +1,8 @@
 # Python interface to some of the commands of the 2.4 version of the
 # BLT extension to tcl.
 
+import misc
 import string
-import types
 try:
     import tkinter as Tkinter
 except ImportError:
@@ -203,7 +203,7 @@ class Vector(object):
         return self._master._getints(self.tk.call(
                 self._name, 'search', start, end))
     def set(self, l):
-        if type(l) != types.TupleType:
+        if not isinstance(l, tuple):
             l = tuple(l)
         self.tk.call(self._name, 'set', l)
 
@@ -291,7 +291,7 @@ class Graph(Tkinter.Widget):
         return self.tk.call(self._w, 'axis', 'cget', axisName, '-' + key)
     def axis_configure(self, axes, option=None, **kw):
         # <axes> may be a list of axisNames.
-        if type(axes) == types.StringType:
+        if misc.myisstr(axes):
             axes = [axes]
         subcommand = (self._w, 'axis', 'configure') + tuple(axes)
         return _doConfigure(self, subcommand, option, kw)
@@ -419,7 +419,7 @@ class Graph(Tkinter.Widget):
 
     def element_configure(self, names, option=None, **kw):
         # <names> may be a list of elemNames.
-        if type(names) == types.StringType:
+        if misc.myisstr(names):
             names = [names]
         subcommand = (self._w, 'element', 'configure') + tuple(names)
         return _doConfigure(self, subcommand, option, kw)
@@ -481,7 +481,7 @@ class Graph(Tkinter.Widget):
         return self.tk.call(self._w, 'pen', 'cget', name, '-' + key)
     def pen_configure(self, names, option=None, **kw):
         # <names> may be a list of penNames.
-        if type(names) == types.StringType:
+        if misc.myisstr(names):
             names = [names]
         subcommand = (self._w, 'pen', 'configure') + tuple(names)
         return _doConfigure(self, subcommand, option, kw)
@@ -520,7 +520,7 @@ class Graph(Tkinter.Widget):
         return self.tk.call(self._w, 'marker', 'cget', name, '-' + key)
     def marker_configure(self, names, option=None, **kw):
         # <names> may be a list of markerIds.
-        if type(names) == types.StringType:
+        if misc.myisstr(names):
             names = [names]
         subcommand = (self._w, 'marker', 'configure') + tuple(names)
         return _doConfigure(self, subcommand, option, kw)
@@ -625,7 +625,7 @@ class Tabset(Tkinter.Widget):
 
     def tab_configure(self, tabIndexes, option=None, **kw):
         # <tabIndexes> may be a list of tabs.
-        if type(tabIndexes) in (types.StringType, types.IntType):
+        if isinstance(tabIndexes, int) or misc.myisstr(tabIndexes):
             tabIndexes = [tabIndexes]
         subcommand = (self._w, 'tab', 'configure') + tuple(tabIndexes)
         return _doConfigure(self, subcommand, option, kw)
