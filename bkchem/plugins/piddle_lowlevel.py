@@ -17,12 +17,12 @@
 
 #--------------------------------------------------------------------------
 
-
-import plugin
-from tk2piddle import tk2piddle
 from oasa import transform
 
+from . import plugin
+from .tk2piddle import tk2piddle
 from singleton_store import Screen, Store
+
 
 
 class piddle_exporter( plugin.exporter):
