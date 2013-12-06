@@ -56,11 +56,14 @@ def installedversions(alpha = 0):
 # the MegaToplevel or MegaWidget class.
 
 import os
-import string
 import sys
+import string
 import traceback
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 # Special values used in index() methods of several megawidgets.
 END = ['end']
@@ -1987,7 +1990,10 @@ class _ErrorWindow:
 
 import sys
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 # A Toplevel with a ButtonBox and child site.
@@ -2315,7 +2321,10 @@ def stringtoreal(text, separator = '.'):
 ### File: PmwBalloon.py
 import os
 import string
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class Balloon(MegaToplevel):
@@ -2684,7 +2693,10 @@ class Balloon(MegaToplevel):
 # Based on iwidgets2.2.0/buttonbox.itk code.
 
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ButtonBox(MegaWidget):
@@ -2913,7 +2925,10 @@ class ButtonBox(MegaWidget):
 import re
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 # Possible return values of validation functions.
@@ -3370,7 +3385,10 @@ def _postProcess(event):
 ######################################################################
 ### File: PmwGroup.py
 import string
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 def aligngrouptags(groups):
@@ -3485,7 +3503,10 @@ class Group( MegaWidget ):
 
 ######################################################################
 ### File: PmwLabeledWidget.py
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class LabeledWidget(MegaWidget):
@@ -3526,7 +3547,10 @@ class LabeledWidget(MegaWidget):
 
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class MainMenuBar(MegaArchetype):
@@ -3754,7 +3778,11 @@ forwardmethods(MainMenuBar, Tkinter.Menu, '_hull')
 
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
+
 
 
 class MenuBar(MegaWidget):
@@ -3999,7 +4027,10 @@ class MenuBar(MegaWidget):
 # Class to display messages in an information line.
 
 import string
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class MessageBar(MegaWidget):
@@ -4144,7 +4175,10 @@ forwardmethods(MessageBar, Tkinter.Entry, '_messageBarEntry')
 ### File: PmwMessageDialog.py
 # Based on iwidgets2.2.0/messagedialog.itk code.
 
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class MessageDialog(Dialog):
@@ -4220,7 +4254,10 @@ class MessageDialog(Dialog):
 ### File: PmwNoteBook.py
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class NoteBook(MegaArchetype):
@@ -4839,7 +4876,10 @@ forwardmethods(NoteBook, Tkinter.Canvas, '_hull')
 ######################################################################
 ### File: PmwOptionMenu.py
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class OptionMenu(MegaWidget):
@@ -4990,10 +5030,13 @@ class OptionMenu(MegaWidget):
 # PanedWidget
 # a frame which may contain several resizable sub-frames
 
-import string
 import sys
+import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class PanedWidget(MegaWidget):
@@ -5672,7 +5715,10 @@ forwardmethods(PromptDialog, EntryField, '_promptDialogEntry')
 ######################################################################
 ### File: PmwRadioSelect.py
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class RadioSelect(MegaWidget):
@@ -5908,7 +5954,10 @@ class RadioSelect(MegaWidget):
 
 ######################################################################
 ### File: PmwScrolledCanvas.py
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ScrolledCanvas(MegaWidget):
@@ -6194,13 +6243,16 @@ class ScrolledCanvas(MegaWidget):
     # Need to explicitly forward this to override the stupid
     # (grid_)bbox method inherited from Tkinter.Frame.Grid.
     def bbox(self, *args):
-        return apply(self._canvas.bbox, args)
+        return self._canvas.bbox(*args)
 
 forwardmethods(ScrolledCanvas, Tkinter.Canvas, '_canvas')
 
 ######################################################################
 ### File: PmwScrolledField.py
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ScrolledField(MegaWidget):
@@ -6258,7 +6310,10 @@ forwardmethods(ScrolledField, Tkinter.Entry, '_scrolledFieldEntry')
 ### File: PmwScrolledFrame.py
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ScrolledFrame(MegaWidget):
@@ -6657,7 +6712,10 @@ class ScrolledFrame(MegaWidget):
 # Based on iwidgets2.2.0/scrolledlistbox.itk code.
 
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ScrolledListBox(MegaWidget):
@@ -7028,14 +7086,17 @@ def _handleEvent(event, eventType):
 
     # A binding earlier in the bindtags list may have destroyed the
     # megawidget, so need to check.
-    if _listboxCache.has_key(event.widget):
+    if event.widget in _listboxCache:
         _listboxCache[event.widget]._handleEvent(event, eventType)
 
 ######################################################################
 ### File: PmwScrolledText.py
 # Based on iwidgets2.2.0/scrolledtext.itk code.
 
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ScrolledText(MegaWidget):
@@ -7728,10 +7789,13 @@ forwardmethods(TextDialog, ScrolledText, '_text')
 ### File: PmwTimeCounter.py
 # Authors: Joe VanAndel and Greg McFarlane
 
-import string
 import sys
 import time
-import Tkinter
+import string
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class TimeCounter(MegaWidget):
@@ -8170,7 +8234,10 @@ def aboutcontact(value):
 import os
 import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class ComboBox(MegaWidget):
@@ -8613,10 +8680,13 @@ forwardmethods(ComboBoxDialog, ComboBox, '_combobox')
 
 ######################################################################
 ### File: PmwCounter.py
-import string
 import sys
+import string
 import types
-import Tkinter
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
 
 
 class Counter(MegaWidget):
