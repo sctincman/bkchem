@@ -20,7 +20,11 @@
 from __future__ import print_function
 
 from piddle import piddle
-import tkFont
+try:
+  import tkinter.font as tkFont
+except ImportError:
+  import tkFont
+
 from oasa import transform
 from oasa import geometry
 
