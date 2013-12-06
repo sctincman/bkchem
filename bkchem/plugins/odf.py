@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""ODF Draw export plugin.
 
-"""ODF Draw export plugin"""
+"""
 
 # there is a problem with font sizes. It seems that OpenOffice does not distinguish
 # between pt and px. Unfortunately it seems that the font sizes handling is also different
@@ -27,13 +28,15 @@
 
 from __future__ import print_function
 
+import math
+
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import dom_extensions
-import math
-import operator
-import os_support
+
 from oasa import geometry
+
+import os_support
 
 from . import plugin
 from singleton_store import Screen
