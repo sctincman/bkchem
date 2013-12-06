@@ -207,14 +207,12 @@ class tk2piddle(object):
 
 
 
+class tk2piddle_pdf(tk2piddle):
+  """Specialized class for piddle PDF.
 
-
-
-
-class tk2piddle_pdf( tk2piddle):
-  """specialized class to make use of available additional functions of the piddle PDF
-  interface (and pdfgen)"""
-
+  To make use of available additional functions of the piddle PDF
+  interface (and pdfgen).
+  """
   _caps = {'butt': 0,
            'round': 1,
            'projecting': 2}
@@ -226,11 +224,12 @@ class tk2piddle_pdf( tk2piddle):
 
 
 
+class tk2piddle_ps(tk2piddle):
+  """Specialized class for piddle PS.
 
-class tk2piddle_ps( tk2piddle):
-  """specialized class to make use of available additional functions of the piddle PS
-  interface"""
-
+  To make use of available additional functions of the piddle PS
+  interface.
+  """
   _caps = {'butt': 0,
            'round': 1,
            'projecting': 2}
