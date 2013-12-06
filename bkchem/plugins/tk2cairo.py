@@ -153,7 +153,7 @@ class tk2cairo(object):
 
 
   def _draw_text( self, item):
-    text = unicode( self.paper.itemcget( item, 'text')).encode('utf-8')
+    text = self.paper.itemcget(item, 'text')
     x1, y1, x2, y2 = self.paper.bbox( item)
     x1, y1, x2, y2 = self.transformer.transform_4( (x1+1, y1, x2-2, y2))
     afont = tkFont.Font( font=self.paper.itemcget( item, 'font'))
