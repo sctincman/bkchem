@@ -85,9 +85,10 @@ local_name = _("PNG (Cairo)")
 
 
 
+class scale_dialog(object):
+  """Dialog used to get ratio for scaling in percent.
 
-class scale_dialog:
-  """dialog used to get ratio for scaling in percent"""
+  """
   def __init__( self, parent, x, y):
     self.orig_x = int( x)
     self.orig_y = int( y)
