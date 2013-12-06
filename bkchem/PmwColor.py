@@ -200,12 +200,12 @@ def name2rgb(root, colorName, asInt = 0):
         # the colormap is full - it will return the rbg values of the
         # closest color available.
         colorName = colorName[1:]
-        digits = len(colorName) / 3
+        digits = int(len(colorName) / 3)
         factor = 16 ** (4 - digits)
         rgb = (
-            string.atoi(colorName[0:digits], 16) * factor,
-            string.atoi(colorName[digits:digits * 2], 16) * factor,
-            string.atoi(colorName[digits * 2:digits * 3], 16) * factor,
+            int(colorName[0:digits], 16) * factor,
+            int(colorName[digits:digits * 2], 16) * factor,
+            int(colorName[digits * 2:digits * 3], 16) * factor,
         )
     else:
         # We have no choice but to ask Tk what the rgb values are.
@@ -352,13 +352,13 @@ def bordercolors(root, colorName):
     lightRGB = []
     darkRGB = []
     for value in name2rgb(root, colorName, 1):
-        value40pc = (14 * value) / 10
+        value40pc = int((14 * value) / 10)
         if value40pc > _MAX_RGB:
             value40pc = _MAX_RGB
         valueHalfWhite = (_MAX_RGB + value) / 2;
         lightRGB.append(max(value40pc, valueHalfWhite))
 
-        darkValue = (60 * value) / 100
+        darkValue = int((60 * value) / 100)
         darkRGB.append(darkValue)
 
     return (
