@@ -1557,7 +1557,7 @@ class _TraceTk:
         _recursionCounter = _recursionCounter + 1
         try:
             result = self.tclInterp.call(*args, **kw)
-        except Tkinter.TclError, errorString:
+        except Tkinter.TclError as errorString:
             _callToTkReturned = 1
             _recursionCounter = _recursionCounter - 1
             _traceTkFile.write('\nTK ERROR> %d:%s-> %s\n' %
