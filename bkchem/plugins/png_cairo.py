@@ -19,9 +19,16 @@
 
 import sys
 import cairo
+try:
+    import tkinter as Tkinter
+except ImportError:
+    import Tkinter
+
+import Pmw
 
 from .tk2cairo import tk2cairo
 from .cairo_lowlevel import cairo_exporter
+from singleton_store import Screen
 
 
 
@@ -77,9 +84,6 @@ exporter = png_cairo_exporter
 local_name = _("PNG (Cairo)")
 
 
-
-import Pmw, Tkinter
-from singleton_store import Screen
 
 
 class scale_dialog:
