@@ -17,11 +17,14 @@
 
 #--------------------------------------------------------------------------
 
-
-from cairo_lowlevel import cairo_exporter
-from tk2cairo import tk2cairo
-import cairo
 import sys
+import cairo
+
+from .tk2cairo import tk2cairo
+from .cairo_lowlevel import cairo_exporter
+
+
+
 # try if there is SVGSurface in cairo
 _x = cairo.SVGSurface
 
