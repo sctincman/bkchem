@@ -30,28 +30,36 @@ from singleton_store import Screen
 _x = cairo.PDFSurface
 
 
-class pdf_cairo_exporter( cairo_exporter):
-  """Exports PDF via the Cairo (pycairo) library. This is the preferred PDF output plugin
-as it supports unicode strings and the output is of very good quality."""
 
+class pdf_cairo_exporter(cairo_exporter):
+  """Exports PDF via the Cairo (pycairo) library.
+
+  This is the preferred PDF output plugin as it supports unicode strings and
+  the output is of very good quality.
+  """
   doc_string = _("Exports PDF via the Cairo (pycairo) library. This is the preferred PDF output plugin as it supports unicode strings and the output is of very good quality.")
 
   def __init__( self, paper, attrs=None):
     cairo_exporter.__init__( self, paper, converter_class=tk2cairo, attrs=attrs)
 
+
   def init_surface( self):
     w, h = map( int, map( round, self.pagesize))
     return cairo.PDFSurface(self.filename.encode(sys.getfilesystemencoding()), w, h)
+
 
   def get_scaling( self, x, y):
     sc = self._get_scaling_ratio()
     return sc, sc
 
+
   def _get_scaling_ratio( self):
     return 72.0/Screen.dpi
 
+
   def save( self):
     self.surface.finish()
+
 
 
 # PLUGIN INTERFACE SPECIFICATION
