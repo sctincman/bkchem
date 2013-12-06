@@ -16,27 +16,31 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""PostScript Export plugin"""
+"""PostScript Export plugin.
 
-import plugin
+"""
 
-class PS_exporter( plugin.exporter):
-  """Exports Encapsulated PostScript files. It uses a builtin (Tk) functions for PS export.
-The results vary with the system, problems are usually font-related.""" 
+from . import plugin
 
+
+
+class PS_exporter(plugin.exporter):
+  """Exports Encapsulated PostScript files.
+
+  It uses a builtin (Tk) functions for PS export.
+  The results vary with the system, problems are usually font-related.
+  """
   doc_string = _("Exports Encapsulated PostScript files. It uses builtin (Tk) functions for PS export. The results vary with the system, problems are usually font-related.")
 
   def __init__( self, paper):
     #plugin.exporter.__init__( self, paper)
     self.paper = paper
 
+
   def on_begin( self):
     return 1
+
 
   def write_to_file( self, name):
     self.paper.unselect_all()
