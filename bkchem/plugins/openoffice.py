@@ -626,9 +626,9 @@ exporter = OO_exporter
 local_name = _("OpenOffice 1.0 Draw")
 
 
-## PRIVATE CLASSES AND FUNCTIONS
 
-class style:
+## PRIVATE CLASSES AND FUNCTIONS
+class style(object):
 
   def __init__( self):
     pass
