@@ -871,12 +871,8 @@ class MegaArchetype:
 
     def components(self):
         # Return a list of all components.
-
         # This list includes the 'hull' component and all widget subcomponents
-
-        names = self.__componentInfo.keys()
-        names.sort()
-        return names
+        return sorted(self.__componentInfo.keys())
 
     def componentaliases(self):
         # Return a list of all component aliases.
@@ -1848,8 +1844,7 @@ def _reporterror(func, args):
     if eventArg:
         msg = msg + '\n================================================\n'
         msg = msg + '  Event contents:\n'
-        keys = args[0].__dict__.keys()
-        keys.sort()
+        keys = sorted(args[0].__dict__.keys())
         for key in keys:
             msg = msg + '    %s: %s\n' % (key, args[0].__dict__[key])
 
