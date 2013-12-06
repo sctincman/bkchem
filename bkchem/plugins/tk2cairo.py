@@ -19,6 +19,9 @@
 
 from __future__ import print_function
 
+import math
+import string
+
 import cairo
 
 try:
@@ -28,9 +31,8 @@ except ImportError:
 
 from oasa import transform
 from oasa import geometry
-import math
+
 import misc
-import string
 
 
 class tk2cairo:
