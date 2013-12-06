@@ -27,7 +27,6 @@
 
 from __future__ import print_function
 
-import plugin
 import xml.dom.minidom as dom
 import dom_extensions as dom_ext
 import dom_extensions
@@ -36,6 +35,7 @@ import operator
 import os_support
 from oasa import geometry
 
+from . import plugin
 from singleton_store import Screen
 
 
