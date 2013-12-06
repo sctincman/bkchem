@@ -243,9 +243,12 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
     __methodDict(toClass, dict)
 
     # discard special methods
+    tmp = []
     for ex in dict.keys():
         if ex[:1] == '_' or ex[-1:] == '_':
-            del dict[ex]
+            tmp.append(ex)
+    for i in tmp:
+        del dict[i]
     # discard dangerous methods supplied by the caller
     for ex in exclude:
         if ex in dict:
@@ -534,12 +537,13 @@ class MegaArchetype:
 
         componentPrefix = componentName + '_'
         nameLen = len(componentPrefix)
+        tmp = []
         for option in keywords.keys():
             if len(option) > nameLen and option[:nameLen] == componentPrefix:
                 # The keyword argument refers to this component, so add
                 # this to the options to use when constructing the widget.
                 kw[option[nameLen:]] = keywords[option][0]
-                del keywords[option]
+                tmp.append(option)
             else:
                 # Check if this keyword argument refers to the group
                 # of this component.  If so, add this to the options
@@ -552,6 +556,8 @@ class MegaArchetype:
                     rest = option[(index + 1):]
                     kw[rest] = keywords[option][0]
                     keywords[option][1] = 1
+        for i in tmp:
+            del keywords[i]
 
         if 'pyclass' in kw:
             widgetClass = kw['pyclass']
@@ -4384,15 +4390,18 @@ class NoteBook(MegaArchetype):
             }
 
         # Divide the keyword options into the 'page_' and 'tab_' options.
+        tmp = []
         for key in kw.keys():
             if key[:5] == 'page_':
                 pageOptions[key[5:]] = kw[key]
-                del kw[key]
+                tmp.append(key)
             elif self._withTabs and key[:4] == 'tab_':
                 tabOptions[key[4:]] = kw[key]
-                del kw[key]
+                tmp.append(key)
             else:
                 raise KeyError('Unknown option "' + key + '"')
+        for i in tmp:
+            del kw[i]
 
         # Create the frame to contain the page.
         page = self.createcomponent(*(pageName,
