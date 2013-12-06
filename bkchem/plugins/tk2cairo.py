@@ -60,8 +60,6 @@ class tk2cairo:
     self.draw_document()
 
 
-
-
   def set_cairo_color( self, color):
     if not color:
       self.context.set_source_rgba( 0,0,0,1)
@@ -83,8 +81,6 @@ class tk2cairo:
     return self.width_scaling * w
 
 
-
-
   def draw_document( self):
     # initial values
     self.context.set_fill_rule( cairo.FILL_RULE_EVEN_ODD)
@@ -97,7 +93,6 @@ class tk2cairo:
         else:
           getattr( self, method)( item)
     self.context.show_page()
-
 
 
   def _draw_line( self, item):
@@ -187,8 +182,6 @@ class tk2cairo:
         self.context.show_text( text)
 
 
-
-
   def _draw_rectangle( self, item):
     coords = self.transformer.transform_4( self.paper.coords( item))
     outline = self.paper.itemcget( item, 'outline')
@@ -206,7 +199,6 @@ class tk2cairo:
       self.context.stroke()
     else:
       self.context.new_path()
-
 
 
   def _draw_polygon( self, item):
@@ -260,10 +252,7 @@ class tk2cairo:
       self.context.new_path()
 
 
-
-
   # other than drawing private methods
-
   def _create_arrow( self, shape, start, to, color):
     """creates an arrow with 'shape' pointing from 'start' to 'to' filled with 'color'
     and returns x, y - where the to should be to not to overlay the arrow"""
@@ -287,7 +276,6 @@ class tk2cairo:
     return points[1]
 
 
-
   def _flat_list_to_list_of_tuples( self, coords):
     i = 0
     cs = []
@@ -299,7 +287,6 @@ class tk2cairo:
         cs.append( (x, c))
         i = 0
     return cs
-
 
 
   def _create_cairo_path( self, points, closed=False):
@@ -347,9 +334,4 @@ class tk2cairo:
       cairo_size *= tk_length/width
       self.context.set_font_size( cairo_size)
     return cairo_size
-
-
-
-
-
 
