@@ -3035,7 +3035,7 @@ class EntryField(MegaWidget):
                 return validator
 
     def _validate(self):
-        dict = {
+        _dict = {
             'validator' : None,
             'min' : None,
             'max' : None,
@@ -3043,22 +3043,22 @@ class EntryField(MegaWidget):
             'maxstrict' : 1,
         }
         opt = self['validate']
-        if type(opt) is types.DictionaryType:
-            dict.update(opt)
+        if isinstance(opt, dict):
+            _dict.update(opt)
         else:
-            dict['validator'] = opt
+            _dict['validator'] = opt
 
         # Look up validator maps and replace 'validator' field with
         # the corresponding function.
-        validator = dict['validator']
+        validator = _dict['validator']
         valFunction = self._getValidatorFunc(validator, 0)
         self._checkValidateFunction(valFunction, 'validate', validator)
-        dict['validator'] = valFunction
+        _dict['validator'] = valFunction
 
         # Look up validator maps and replace 'stringtovalue' field
         # with the corresponding function.
         if 'stringtovalue' in _dict:
-            stringtovalue = dict['stringtovalue']
+            stringtovalue = _dict['stringtovalue']
             strFunction = self._getValidatorFunc(stringtovalue, 1)
             self._checkValidateFunction(
                     strFunction, 'stringtovalue', stringtovalue)
@@ -3066,10 +3066,10 @@ class EntryField(MegaWidget):
             strFunction = self._getValidatorFunc(validator, 1)
             if strFunction == validator:
                 strFunction = len
-        dict['stringtovalue'] = strFunction
+        _dict['stringtovalue'] = strFunction
 
-        self._validationInfo = dict
-        args = dict.copy()
+        self._validationInfo = _dict
+        args = _dict.copy()
         del args['validator']
         del args['min']
         del args['max']
@@ -3079,9 +3079,9 @@ class EntryField(MegaWidget):
         self._validationArgs = args
         self._previousText = None
 
-        if type(dict['min']) == types.StringType and strFunction is not None:
+        if type(_dict['min']) == types.StringType and strFunction is not None:
             _dict['min'] = strFunction(*(_dict['min'],), **args)
-        if type(dict['max']) == types.StringType and strFunction is not None:
+        if type(_dict['max']) == types.StringType and strFunction is not None:
             _dict['max'] = strFunction(*(_dict['max'],), **args)
 
         self._checkValidity()
