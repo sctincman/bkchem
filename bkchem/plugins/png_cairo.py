@@ -70,7 +70,6 @@ support and antialiased fonts. The output should look the same as the PDF (Cairo
       return 1.0, 1.0
 
 
-
   def save( self):
     self.surface.write_to_png(self.filename.encode(sys.getfilesystemencoding()))
     self.surface.finish()
@@ -92,7 +91,7 @@ class scale_dialog(object):
   def __init__( self, parent, x, y):
     self.orig_x = int( x)
     self.orig_y = int( y)
-    
+
 
     self.dialog = Pmw.Dialog( parent,
                               buttons=(_('OK'), _('Cancel')),
@@ -185,7 +184,6 @@ class scale_dialog(object):
     self.dialog.activate()
 
 
-
   def done( self, button):
     """called on dialog exit"""
     if not button or button == _('Cancel'):
@@ -199,7 +197,6 @@ class scale_dialog(object):
   def _set_value( self, entry, value):
     entry.component('entry').delete( 0, Tkinter.END)
     entry.component('entry').insert( 0, value)
-
 
 
   def _set_values( self, rx, ry, x, y, dpi):
@@ -249,6 +246,4 @@ class scale_dialog(object):
     res_x = self.orig_x * scale * 0.01
     res_y = self.orig_y * scale * 0.01
     self._set_values( scale, scale, res_x, res_y, False)
-
-    
 
