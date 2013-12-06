@@ -232,7 +232,7 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
             # the forwarding function. The forwarding function name is
             # guaranteed to be unique, so that it can't be hidden by subclasses
             forwardName = '__fwdfunc__' + __unique()
-            fromClass.__dict__[forwardName] = toPart
+            setattr(fromClass, forwardName, toPart)
 
         # It's not a valid type
         else:
@@ -267,7 +267,7 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
         exec execString in d
 
         # this creates a method
-        fromClass.__dict__[method] = d[method]
+        setattr(fromClass, method, d[method])
 
 #=============================================================================
 
