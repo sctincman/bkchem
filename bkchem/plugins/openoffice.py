@@ -38,17 +38,19 @@ from oasa import geometry
 from singleton_store import Screen
 
 
+
 ## DEFINITIONS
+class OO_exporter(plugin.exporter):
+  """Export the drawing into OpenOffice Draw format (native for OO prior to 2.0).
 
-class OO_exporter( plugin.exporter):
-  """Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0),
-note that this is not an ODF (Open Document Format) export."""
-
+  Note that this is not an ODF (Open Document Format) export.
+  """
   doc_string = _("Exports the drawing into OpenOffice Draw format (native for OO prior to 2.0), note that this is not an ODF (Open Document Format) export.")
 
   def __init__( self, paper):
     self.paper = paper
     self.used_styles = []
+
 
   def on_begin( self):
     return 1
@@ -57,6 +59,7 @@ note that this is not an ODF (Open Document Format) export."""
 ##                                  _('This plugin is not finished and will probably not work correctly.') + ' ' +
 ##                                  _('Proceed?'))
 ##     return yes
+
 
   def write_to_file( self, name):
     self.doc = dom.Document()
@@ -98,7 +101,7 @@ note that this is not an ODF (Open Document Format) export."""
         self.add_polygon( o, page)
 
 #    dom_ext.safe_indent( root)
-    
+
     import tempfile
     # content file
     cfname = tempfile.mktemp()
@@ -182,7 +185,6 @@ note that this is not an ODF (Open Document Format) export."""
       self.create_oo_line( coords, page, style_name)
 
 
-
   def add_atom( self, a, page):
     """adds atom to document"""
     if a.show:
@@ -235,7 +237,6 @@ note that this is not an ODF (Open Document Format) export."""
 ##                                     ( 'draw:style-name', style_name)))
 
 
-
   def add_text( self, a, page):
     """adds text object to document"""
     gr_style = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( a.line_color),
@@ -263,7 +264,6 @@ note that this is not an ODF (Open Document Format) export."""
 
     coords = map( Screen.px_to_cm, self.paper.coords( a.selector))
     self.create_oo_text( '<ftext>+</ftext>', coords, page, para_style_name, txt_style_name, gr_style_name)
-
 
 
   def add_arrow( self, a, page):
@@ -301,7 +301,6 @@ note that this is not an ODF (Open Document Format) export."""
           self.create_oo_polyline( points, page, style_name)
         else:
           self.create_oo_bezier( points, page, style_name)
-        
 
 
   def add_polygon( self, o, page):
@@ -325,7 +324,7 @@ note that this is not an ODF (Open Document Format) export."""
                                         ( 'svg:width', '%fcm' %  (x2-x)),
                                         ( 'svg:height', '%fcm' % (y2-y)),
                                         ( 'draw:style-name', style_name)))
-    
+
 
   def add_oval( self, o, page):
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.line_color),
@@ -339,7 +338,7 @@ note that this is not an ODF (Open Document Format) export."""
                                         ( 'svg:width', '%fcm' %  (x2-x)),
                                         ( 'svg:height', '%fcm' % (y2-y)),
                                         ( 'draw:style-name', style_name)))
-    
+
 
   def add_radical_mark( self, o, page):
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.atom.line_color),
@@ -356,6 +355,7 @@ note that this is not an ODF (Open Document Format) export."""
                                     ( 'svg:height', '%fcm' % size),
                                     ( 'draw:style-name', style_name)))
 
+
   def add_electronpair_mark( self, o, page):
     i = o.items[0]
     width = float( self.paper.itemcget( i, 'width'))
@@ -365,7 +365,7 @@ note that this is not an ODF (Open Document Format) export."""
     style_name = self.get_appropriate_style_name( s)
     coords = map( Screen.px_to_cm, self.paper.coords( i))
     self.create_oo_line( coords, page, style_name)
-      
+
 
   def add_plus_mark( self, o, page):
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.atom.line_color),
@@ -398,7 +398,7 @@ note that this is not an ODF (Open Document Format) export."""
         # end of hack
         coords = map( Screen.px_to_cm, coords)
         self.create_oo_line( coords, page, style_name)
-        
+
 
   def add_orbital( self, o, page):
     s = graphics_style( stroke_color=self.paper.any_color_to_rgb_string( o.atom.line_color),
@@ -415,8 +415,9 @@ note that this is not an ODF (Open Document Format) export."""
       else:
         points.append( map( Screen.px_to_cm, (x, c)))
         i = 0
-      
+
     self.create_oo_polygon( points, page, style_name)
+
 
   def add_text_mark( self, a, page):
     """adds text object to document"""
@@ -432,10 +433,7 @@ note that this is not an ODF (Open Document Format) export."""
     self.create_oo_text( '<ftext>%s</ftext>' % a.text, coords, page, para_style_name, txt_style_name, gr_style_name)
 
 
-
-
-# HELPER METHODS
-
+  # HELPER METHODS
   def get_appropriate_style_name( self, style):
     """if same style already exists return its name, otherwise append the current style and return its name"""
     for s in self.used_styles:
@@ -445,6 +443,7 @@ note that this is not an ODF (Open Document Format) export."""
     self.used_styles.append( style)
     self.styles_element.appendChild( style.to_dom( self.doc))
     return style.name
+
 
   def ftext_dom_to_oo_dom( self, ftext, oo_dom):
     if ftext.nodeValue:
@@ -470,8 +469,8 @@ note that this is not an ODF (Open Document Format) export."""
       for el in ftext.childNodes:
         self.ftext_dom_to_oo_dom( el, oo_dom)
 
-## AUTOMATIZED CREATION OF OO OBJECTS
 
+  ## AUTOMATIZED CREATION OF OO OBJECTS
   def create_oo_line( self, coords, page, gr_style_name):
     x1, y1, x2, y2 = coords
     dom_extensions.elementUnder( page, 'draw:line',
@@ -481,7 +480,7 @@ note that this is not an ODF (Open Document Format) export."""
                                   ( 'svg:y2', '%fcm' %  y2),
                                   ( 'draw:layer', 'layout'),
                                   ( 'draw:style-name', gr_style_name)))
-    
+
 
   def create_oo_text( self, ftext, coords, page, para_style_name, txt_style_name, gr_style_name):
     x, y, x2, y2 = coords
@@ -497,6 +496,7 @@ note that this is not an ODF (Open Document Format) export."""
     oo_text = dom_extensions.elementUnder( text, 'text:span', (('text:style-name', '%s' % txt_style_name),))
     to_parse = dom.parseString( ftext).childNodes[0]
     self.ftext_dom_to_oo_dom( to_parse, oo_text)
+
 
   def create_oo_polygon( self, points, page, gr_style_name):
     maxX, maxY, minX, minY = None,None,None,None
@@ -569,7 +569,7 @@ note that this is not an ODF (Open Document Format) export."""
       if not points_txt:
         points_txt += "m %d %d c " % (1000*(sx-minX), 1000*(sy-minY))
       points_txt += "%d %d %d %d %d %d " % (1000*(cxa-sx),1000*(cya-sy),1000*(cxb-sx),1000*(cyb-sy),1000*(ex-sx),1000*(ey-sy))
-  
+
     line = dom_extensions.elementUnder( page, 'draw:path',
                                         (( 'svg:x', '%fcm' % minX),
                                          ( 'svg:y', '%fcm' % minY),
@@ -579,8 +579,6 @@ note that this is not an ODF (Open Document Format) export."""
                                          ( 'svg:d', points_txt),
                                          ( 'draw:layer', 'layout'),
                                          ( 'draw:style-name', gr_style_name)))
-
-
 
 
   def create_styles_document( self):
@@ -620,7 +618,7 @@ note that this is not an ODF (Open Document Format) export."""
     return style_doc
 
 
-  
+
 # PLUGIN INTERFACE SPECIFICATION
 name = "OpenOffice Draw"
 extensions = [".sxd",".zip"]
@@ -635,6 +633,7 @@ class style:
   def __init__( self):
     pass
 
+
   def __eq__( self, other):
     for a in self.__dict__:
       if a == 'name':
@@ -646,11 +645,14 @@ class style:
         return 0
     return 1
 
+
   def __ne__( self, other):
     return not self.__eq__( other)
 
+
   def to_dom( self, doc):
     pass
+
 
 
 class graphics_style( style):
@@ -673,6 +675,7 @@ class graphics_style( style):
     self.padding_top, self.padding_bottom = padding
     self.padding_left = 0
     self.padding_right = 0
+
 
   def to_dom( self, doc):
     style = doc.createElement( 'style:style')
@@ -710,8 +713,9 @@ class graphics_style( style):
       prop.setAttribute('draw:stroke', 'none')
     else:
       prop.setAttribute('draw:stroke', self.stroke_color)
-      
+
     return style
+
 
 
 class paragraph_style( style):
@@ -738,6 +742,7 @@ class paragraph_style( style):
     return style
 
 
+
 class text_style( style):
 
   def __init__( self, name='text', font_size='12pt', font_family='Helvetica', font_style='normal', font_weight='normal'):
@@ -762,6 +767,7 @@ class text_style( style):
     return style
 
 
+
 class span_style( style):
 
   def __init__( self, name='span', font_style=None, font_weight=None, text_position=None):
@@ -782,9 +788,11 @@ class span_style( style):
       prop.setAttribute( 'fo:font-weight', self.font_weight)
     if self.text_position:
       prop.setAttribute( 'style:text-position', self.text_position)
-      
+
     return style
+
 
 
 font_family_remap = {'helvetica': 'Albany',
                      'times': 'Thorndale'}
+
