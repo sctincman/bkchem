@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Openoffice Draw export plugin.
 
-"""Openoffice Draw export plugin"""
+"""
 
 # there is a problem with font sizes. It seems that OpenOffice does not distinguish
 # between pt and px. Unfortunately it seems that the font sizes handling is also different
@@ -26,15 +27,16 @@
 # to px sizes instead of pt sizes.
 
 
-from . import plugin
-import xml.dom.minidom as dom
-import dom_extensions as dom_ext
-import dom_extensions
 import math
-import operator
-import os_support
+import xml.dom.minidom as dom
+
 from oasa import geometry
 
+import os_support
+import dom_extensions
+import dom_extensions as dom_ext
+
+from . import plugin
 from singleton_store import Screen
 
 
