@@ -2779,7 +2779,7 @@ class ButtonBox(MegaWidget):
                 return self._defaultButton
             raise ValueError('ButtonBox has no default')
         else:
-            names = map(lambda t: t[0], self._buttonList)
+            names = list(map(lambda t: t[0], self._buttonList))
             if index in names:
                 return names.index(index)
             validValues = 'a name, a number, END or DEFAULT'
