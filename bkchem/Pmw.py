@@ -12,7 +12,9 @@ from misc import myisstr as _myisstr
 
 
 # by BK to support non-ascii menus etc.
-str = unicode
+import sys
+if sys.version_info[0] == 2:
+    str = unicode
 
 
 ### Loader functions:
