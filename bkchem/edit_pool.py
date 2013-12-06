@@ -31,11 +31,11 @@ except ImportError:
   from Tkinter import Frame, Button, Entry
 
 from xml.sax import saxutils
-from keysymdef import keysyms
 
 import misc
 import config
 
+from keysymdef import keysyms
 from singleton_store import Store
 from groups_table import groups_table
 
