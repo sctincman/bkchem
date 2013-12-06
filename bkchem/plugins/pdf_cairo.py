@@ -20,8 +20,9 @@
 import sys
 import cairo
 
-from .cairo_lowlevel import cairo_exporter
 from .tk2cairo import tk2cairo
+from .cairo_lowlevel import cairo_exporter
+from singleton_store import Screen
 
 
 
@@ -47,7 +48,6 @@ as it supports unicode strings and the output is of very good quality."""
     return sc, sc
 
   def _get_scaling_ratio( self):
-    from singleton_store import Screen
     return 72.0/Screen.dpi
 
   def save( self):
