@@ -18,11 +18,11 @@ _VERSION = '1.2'
 
 def setversion(version):
     if version != _VERSION:
-        raise ValueError, 'Dynamic versioning not available'
+        raise ValueError('Dynamic versioning not available')
 
 def setalphaversions(*alpha_versions):
     if alpha_versions != ():
-        raise ValueError, 'Dynamic versioning not available'
+        raise ValueError('Dynamic versioning not available')
 
 def version(alpha = 0):
     if alpha:
@@ -236,7 +236,7 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
 
         # It's not a valid type
         else:
-            raise TypeError, 'toPart must be attribute name, function or method'
+            raise TypeError('toPart must be attribute name, function or method')
 
     # get the full set of candidate methods
     dict = {}
@@ -501,12 +501,12 @@ class MegaArchetype:
             componentGroup, widgetClass, *widgetArgs, **kw):
         # Create a component (during construction or later).
 
-        if self.__componentInfo.has_key(componentName):
-            raise ValueError, 'Component "%s" already exists' % componentName
+        if componentName in self.__componentInfo:
+            raise ValueError('Component "%s" already exists' % componentName)
 
         if '_' in componentName:
-            raise ValueError, \
-                    'Component name "%s" must not contain "_"' % componentName
+            raise ValueError(
+                'Component name "%s" must not contain "_"' % componentName)
 
         if hasattr(self, '_constructorKeywords'):
             keywords = self._constructorKeywords
@@ -632,8 +632,8 @@ class MegaArchetype:
                     text = 'Unknown option "'
                 else:
                     text = 'Unknown options "'
-                raise KeyError, text + string.join(unusedOptions, ', ') + \
-                        '" for ' + self.__class__.__name__
+                raise KeyError(text + string.join(unusedOptions, ', ') +
+                               '" for ' + self.__class__.__name__)
 
             # Call the configuration callback function for every option.
             FUNCTION = _OPT_FUNCTION
@@ -711,9 +711,8 @@ class MegaArchetype:
                 # This is one of the options of this megawidget.
                 # Make sure it is not an initialisation option.
                 if optionInfo[option][FUNCTION] is INITOPT:
-                    raise KeyError, \
-                            'Cannot configure initialisation option "' \
-                            + option + '" for ' + self.__class__.__name__
+                    raise KeyError('Cannot configure initialisation option "'
+                        + option + '" for ' + self.__class__.__name__)
                 optionInfo[option][VALUE] = value
                 directOptions.append(option)
             else:
@@ -746,8 +745,8 @@ class MegaArchetype:
 
                         if len(componentConfigFuncs) == 0 and \
                                 component not in self._dynamicGroups:
-                            raise KeyError, 'Unknown option "' + option + \
-                                    '" for ' + self.__class__.__name__
+                            raise KeyError('Unknown option "' + option +
+                                           '" for ' + self.__class__.__name__)
 
                     # Add the configure method(s) (may be more than
                     # one if this is configuring a component group)
@@ -758,8 +757,8 @@ class MegaArchetype:
                         indirectOptions[componentConfigFunc][componentOption] \
                                 = value
                 else:
-                    raise KeyError, 'Unknown option "' + option + \
-                            '" for ' + self.__class__.__name__
+                    raise KeyError('Unknown option "' + option +
+                                   '" for ' + self.__class__.__name__)
 
         # Call the configure methods for any components.
         map(apply, indirectOptions.keys(),
@@ -852,8 +851,8 @@ class MegaArchetype:
                             componentCget = info[3]
                             return componentCget(componentOption)
 
-        raise KeyError, 'Unknown option "' + option + \
-                '" for ' + self.__class__.__name__
+        raise KeyError('Unknown option "' + option +
+                       '" for ' + self.__class__.__name__)
 
     __getitem__ = cget
 
@@ -1145,7 +1144,7 @@ class MegaToplevel(MegaArchetype):
 
     def activate(self, globalMode = 0, geometry = 'centerscreenfirst'):
         if self._active:
-            raise ValueError, 'Window is already active'
+            raise ValueError('Window is already active')
         if self.state() == 'normal':
             self.withdraw()
 
@@ -1387,7 +1386,7 @@ def setbusycursorattributes(window, **kw):
         elif name == 'cursorName':
             _toplevelBusyInfo[window]['busyCursorName'] = value
         else:
-            raise KeyError, 'Unknown busycursor attribute "' + name + '"'
+            raise KeyError('Unknown busycursor attribute "' + name + '"')
 
 def _addRootToToplevelBusyInfo():
     # Include the Tk root window in the list of toplevels.  This must
@@ -1402,9 +1401,8 @@ def _addRootToToplevelBusyInfo():
 
 def busycallback(command, updateFunction = None):
     if not callable(command):
-        raise ValueError, \
-            'cannot register non-command busy callback %s %s' % \
-                (repr(command), type(command))
+        raise ValueError('cannot register non-command busy callback %s %s'
+                         % (repr(command), type(command)))
     wrapper = _BusyWrapper(command, updateFunction)
     return wrapper.callback
 
@@ -1572,7 +1570,7 @@ class _TraceTk:
             if _withStackTrace:
                 _traceTkFile.write('CALL  TK> stack:\n')
                 traceback.print_stack()
-            raise Tkinter.TclError, errorString
+            raise Tkinter.TclError(errorString)
 
         _recursionCounter = _recursionCounter - 1
         if _callToTkReturned:
@@ -1790,8 +1788,8 @@ class __TkinterCallWrapper:
                     (_recursionCounter, '  ' * _recursionCounter, name, argStr))
                 _traceTkFile.flush()
             return apply(self.func, args)
-        except SystemExit, msg:
-            raise SystemExit, msg
+        except SystemExit as msg:
+            raise SystemExit(msg)
         except:
             _reporterror(self.func, args)
 
@@ -2027,9 +2025,8 @@ class Dialog(MegaToplevel):
         # Set up pack options according to the position of the button box.
         pos = self['buttonboxpos']
         if pos not in 'nsew':
-            raise ValueError, \
-                'bad buttonboxpos option "%s":  should be n, s, e, or w' \
-                    % pos
+            raise ValueError(
+                'bad buttonboxpos option "%s":  should be n, s, e, or w' % pos)
 
         if pos in 'ns':
             orient = 'horizontal'
@@ -2124,8 +2121,8 @@ class Dialog(MegaToplevel):
     def _buttons(self):
         buttons = self['buttons']
         if type(buttons) != types.TupleType and type(buttons) != types.ListType:
-            raise ValueError, \
-                'bad buttons option "%s": should be a tuple' % str(buttons)
+            raise ValueError(
+                'bad buttons option "%s": should be a tuple' % str(buttons))
         if self.oldButtons == buttons:
           return
 
@@ -2178,7 +2175,7 @@ import string
 def timestringtoseconds(text, separator = ':'):
   inputList = string.split(string.strip(text), separator)
   if len(inputList) != 3:
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
 
   sign = 1
   if len(inputList[0]) > 0 and inputList[0][0] in ('+', '-'):
@@ -2187,14 +2184,14 @@ def timestringtoseconds(text, separator = ':'):
     inputList[0] = inputList[0][1:]
 
   if re.search('[^0-9]', string.join(inputList, '')) is not None:
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
 
   hour = string.atoi(inputList[0])
   minute = string.atoi(inputList[1])
   second = string.atoi(inputList[2])
 
   if minute >= 60 or second >= 60:
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
   return sign * (hour * 60 * 60 + minute * 60 + second)
 
 _year_pivot = 50
@@ -2212,10 +2209,10 @@ def setyearpivot(pivot, century = None):
 def datestringtojdn(text, format = 'ymd', separator = '/'):
   inputList = string.split(string.strip(text), separator)
   if len(inputList) != 3:
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
 
   if re.search('[^0-9]', string.join(inputList, '')) is not None:
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
   formatList = list(format)
   day = string.atoi(inputList[formatList.index('d')])
   month = string.atoi(inputList[formatList.index('m')])
@@ -2230,7 +2227,7 @@ def datestringtojdn(text, format = 'ymd', separator = '/'):
 
   jdn = ymdtojdn(year, month, day)
   if jdntoymd(jdn) != (year, month, day):
-    raise ValueError, 'invalid value: ' + text
+    raise ValueError('invalid value: ' + text)
   return jdn
 
 def _cdiv(a, b):
@@ -2311,7 +2308,7 @@ def jdntoymd(jdn, julian = -1, papal = 1):
 def stringtoreal(text, separator = '.'):
     if separator != '.':
         if string.find(text, '.') >= 0:
-            raise ValueError, 'invalid value: ' + text
+            raise ValueError('invalid value: ' + text)
         index = string.find(text, separator)
         if index >= 0:
             text = text[:index] + '.' + text[index + 1:]
@@ -2532,14 +2529,14 @@ class Balloon(MegaToplevel):
 
     def _state(self):
         if self['state'] not in ('both', 'balloon', 'status', 'none'):
-            raise ValueError, 'bad state option ' + repr(self['state']) + \
-                ': should be one of \'both\', \'balloon\', ' + \
-                '\'status\' or \'none\''
+            raise ValueError('bad state option ' + repr(self['state']) +
+                ': should be one of \'both\', \'balloon\', ' +
+                '\'status\' or \'none\'')
 
     def _relmouse(self):
         if self['relmouse'] not in ('both', 'x', 'y', 'none'):
-            raise ValueError, 'bad relmouse option ' + repr(self['relmouse'])+ \
-                ': should be one of \'both\', \'x\', ' + '\'y\' or \'none\''
+            raise ValueError('bad relmouse option ' + repr(self['relmouse']) +
+                ': should be one of \'both\', \'x\', ' + '\'y\' or \'none\'')
 
     def _enter(self, event, widget, statusHelp, balloonHelp, isItem):
 
@@ -2736,8 +2733,8 @@ class ButtonBox(MegaWidget):
         elif orient == 'vertical':
             interior.grid_rowconfigure(columnOrRow, weight = 1)
         else:
-            raise ValueError, 'bad orient option ' + repr(orient) + \
-                ': must be either \'horizontal\' or \'vertical\''
+            raise ValueError('bad orient option ' + repr(orient) +
+                ': must be either \'horizontal\' or \'vertical\'')
 
         # Initialise instance variables.
 
@@ -2771,29 +2768,29 @@ class ButtonBox(MegaWidget):
             elif not forInsert and index < listLength:
                 return index
             else:
-                raise ValueError, 'index "%s" is out of range' % index
+                raise ValueError('index "%s" is out of range' % index)
         elif index is END:
             if forInsert:
                 return listLength
             elif listLength > 0:
                 return listLength - 1
             else:
-                raise ValueError, 'ButtonBox has no buttons'
+                raise ValueError('ButtonBox has no buttons')
         elif index is DEFAULT:
             if self._defaultButton is not None:
                 return self._defaultButton
-            raise ValueError, 'ButtonBox has no default'
+            raise ValueError('ButtonBox has no default')
         else:
             names = map(lambda t: t[0], self._buttonList)
             if index in names:
                 return names.index(index)
             validValues = 'a name, a number, END or DEFAULT'
-            raise ValueError, \
-                'bad index "%s": must be %s' % (index, validValues)
+            raise ValueError(
+                'bad index "%s": must be %s' % (index, validValues))
 
     def insert(self, componentName, beforeComponent = 0, **kw):
         if componentName in self.components():
-            raise ValueError, 'button "%s" already exists' % componentName
+            raise ValueError('button "%s" already exists' % componentName)
         if not kw.has_key('text'):
             kw['text'] = componentName
         kw['default'] = 'normal'
@@ -3104,7 +3101,7 @@ class EntryField(MegaWidget):
             standard = tuple(standard)
             msg = 'bad %s value "%s":  must be a function or one of ' \
                 'the standard validators %s or extra validators %s'
-            raise ValueError, msg % (option, validator, standard, extra)
+            raise ValueError(msg % (option, validator, standard, extra))
 
     def _executeCommand(self, event = None):
         cmd = self['command']
@@ -3639,7 +3636,7 @@ class MainMenuBar(MegaArchetype):
             traverseSpec, kw):
 
         if (menuName) in self.components():
-            raise ValueError, 'menu "%s" already exists' % menuName
+            raise ValueError('menu "%s" already exists' % menuName)
 
         menukw = {}
         if kw.has_key('tearoff'):
@@ -3698,7 +3695,7 @@ class MainMenuBar(MegaArchetype):
         elif itemType == 'cascade':
             command = menu.add_cascade
         else:
-            raise ValueError, 'unknown menuitem type "%s"' % itemType
+            raise ValueError('unknown menuitem type "%s"' % itemType)
 
         self._menuInfo[menuName][1].append(statusHelp)
         apply(command, (), kw)
@@ -3880,7 +3877,7 @@ class MenuBar(MegaWidget):
             traverseSpec, side, textKey, kw):
 
         if (menuName + '-menu') in self.components():
-            raise ValueError, 'menu "%s" already exists' % menuName
+            raise ValueError('menu "%s" already exists' % menuName)
 
         menukw = {}
         if kw.has_key('tearoff'):
@@ -3945,7 +3942,7 @@ class MenuBar(MegaWidget):
         elif itemType == 'cascade':
             command = menu.add_cascade
         else:
-            raise ValueError, 'unknown menuitem type "%s"' % itemType
+            raise ValueError('unknown menuitem type "%s"' % itemType)
 
         self._menuInfo[menuName][1].append(statusHelp)
         apply(command, (), kw)
@@ -4217,9 +4214,9 @@ class MessageDialog(Dialog):
                     (), None,
                     Tkinter.Label, (interior,))
             if iconpos not in 'nsew':
-                raise ValueError, \
-                    'bad iconpos option "%s":  should be n, s, e, or w' \
-                        % iconpos
+                raise ValueError(
+                    'bad iconpos option "%s":  should be n, s, e, or w'
+                    % iconpos)
 
             if iconpos in 'nw':
                 icon = 1
@@ -4287,8 +4284,8 @@ class NoteBook(MegaArchetype):
 
         tabpos = self['tabpos']
         if tabpos is not None and tabpos != 'n':
-            raise ValueError, \
-                'bad tabpos option %s:  should be n or None' % repr(tabpos)
+            raise ValueError(
+                'bad tabpos option %s:  should be n or None' % repr(tabpos))
         self._withTabs = (tabpos is not None)
         self._pageMargin = self['pagemargin']
         self._borderWidth = self['borderwidth']
@@ -4380,7 +4377,7 @@ class NoteBook(MegaArchetype):
     def insert(self, pageName, before = 0, **kw):
         if self._pageAttrs.has_key(pageName):
             msg = 'Page "%s" already exists.' % pageName
-            raise ValueError, msg
+            raise ValueError(msg)
 
         # Do this early to catch bad <before> spec before creating any items.
         beforeIndex = self.index(before, 1)
@@ -4402,7 +4399,7 @@ class NoteBook(MegaArchetype):
                 tabOptions[key[4:]] = kw[key]
                 del kw[key]
             else:
-                raise KeyError, 'Unknown option "' + key + '"'
+                raise KeyError('Unknown option "' + key + '"')
 
         # Create the frame to contain the page.
         page = apply(self.createcomponent, (pageName,
@@ -4527,24 +4524,24 @@ class NoteBook(MegaArchetype):
             elif not forInsert and index < listLength:
                 return index
             else:
-                raise ValueError, 'index "%s" is out of range' % index
+                raise ValueError('index "%s" is out of range' % index)
         elif index is END:
             if forInsert:
                 return listLength
             elif listLength > 0:
                 return listLength - 1
             else:
-                raise ValueError, 'NoteBook has no pages'
+                raise ValueError('NoteBook has no pages')
         elif index is SELECT:
             if listLength == 0:
-                raise ValueError, 'NoteBook has no pages'
+                raise ValueError('NoteBook has no pages')
             return self._pageNames.index(self.getcurselection())
         else:
             if index in self._pageNames:
                 return self._pageNames.index(index)
             validValues = 'a name, a number, END or SELECT'
-            raise ValueError, \
-                'bad index "%s": must be %s' % (index, validValues)
+            raise ValueError(
+                'bad index "%s": must be %s' % (index, validValues))
 
     def selectpage(self, page):
         pageName = self._pageNames[self.index(page)]
@@ -4994,23 +4991,22 @@ class OptionMenu(MegaWidget):
             if index < listLength:
                 return index
             else:
-                raise ValueError, 'index "%s" is out of range' % index
+                raise ValueError('index "%s" is out of range' % index)
         elif index is END:
             if listLength > 0:
                 return listLength - 1
             else:
-                raise ValueError, 'OptionMenu has no items'
+                raise ValueError('OptionMenu has no items')
         else:
             if index is SELECT:
                 if listLength > 0:
                     index = self.getcurselection()
                 else:
-                    raise ValueError, 'OptionMenu has no items'
+                    raise ValueError('OptionMenu has no items')
             if index in self._itemList:
                 return self._itemList.index(index)
-            raise ValueError, \
-                    'bad index "%s": must be a ' \
-                    'name, a number, END or SELECT' % (index,)
+            raise ValueError('bad index "%s": must be a '
+                'name, a number, END or SELECT' % (index,))
 
     def invoke(self, index = SELECT):
         index = self.index(index)
@@ -5063,8 +5059,8 @@ class PanedWidget(MegaWidget):
         self.bind('<Configure>', self._handleConfigure)
 
         if self['orient'] not in ('horizontal', 'vertical'):
-            raise ValueError, 'bad orient option ' + repr(self['orient']) + \
-                ': must be either \'horizontal\' or \'vertical\''
+            raise ValueError('bad orient option ' + repr(self['orient']) +
+                ': must be either \'horizontal\' or \'vertical\'')
 
         self._separatorThickness = self['separatorthickness']
         self._handleSize = self['handlesize']
@@ -5257,7 +5253,7 @@ class PanedWidget(MegaWidget):
             elif arg == 'max':
                 self._max[name], self._relmax[name] = value, relvalue
             else:
-                raise ValueError, 'keyword must be "size", "min", or "max"'
+                raise ValueError('keyword must be "size", "min", or "max"')
 
     def _absSize(self, relvalue):
         return int(round(relvalue * self._majorSize))
@@ -5766,8 +5762,8 @@ class RadioSelect(MegaWidget):
         elif self['selectmode'] == 'multiple':
             self._singleSelect = 0
         else:
-            raise ValueError, 'bad selectmode option "' + \
-                    self['selectmode'] + '": should be single or multiple'
+            raise ValueError('bad selectmode option "' +
+                self['selectmode'] + '": should be single or multiple')
 
         if self['buttontype'] == 'button':
             self.buttonClass = Tkinter.Button
@@ -5779,9 +5775,9 @@ class RadioSelect(MegaWidget):
             self._singleSelect = 0
             self.buttonClass = Tkinter.Checkbutton
         else:
-            raise ValueError, 'bad buttontype option "' + \
-                    self['buttontype'] + \
-                    '": should be button, radiobutton or checkbutton'
+            raise ValueError('bad buttontype option "' +
+                self['buttontype'] +
+                '": should be button, radiobutton or checkbutton')
 
         if self._singleSelect:
             self.selection = None
@@ -5789,8 +5785,8 @@ class RadioSelect(MegaWidget):
             self.selection = []
 
         if self['orient'] not in ('horizontal', 'vertical'):
-            raise ValueError, 'bad orient option ' + repr(self['orient']) + \
-                ': must be either \'horizontal\' or \'vertical\''
+            raise ValueError('bad orient option ' + repr(self['orient']) +
+                ': must be either \'horizontal\' or \'vertical\'')
 
         # Check keywords and initialise options.
         self.initialiseoptions()
@@ -5840,20 +5836,20 @@ class RadioSelect(MegaWidget):
             if index < listLength:
                 return index
             else:
-                raise ValueError, 'index "%s" is out of range' % index
+                raise ValueError('index "%s" is out of range' % index)
         elif index is END:
             if listLength > 0:
                 return listLength - 1
             else:
-                raise ValueError, 'RadioSelect has no buttons'
+                raise ValueError('RadioSelect has no buttons')
         else:
             for count in range(listLength):
                 name = self._buttonList[count]
                 if index == name:
                     return count
             validValues = 'a name, a number or END'
-            raise ValueError, \
-                    'bad index "%s": must be %s' % (index, validValues)
+            raise ValueError(
+                'bad index "%s": must be %s' % (index, validValues))
 
     def button(self, buttonIndex):
         name = self._buttonList[self.index(buttonIndex)]
@@ -5861,7 +5857,7 @@ class RadioSelect(MegaWidget):
 
     def add(self, componentName, **kw):
         if componentName in self._buttonList:
-            raise ValueError, 'button "%s" already exists' % componentName
+            raise ValueError('button "%s" already exists' % componentName)
 
         kw['command'] = \
                 lambda self=self, name=componentName: self.invoke(name)
@@ -6087,7 +6083,7 @@ class ScrolledCanvas(MegaWidget):
                 self._toggleHorizScrollbar()
         else:
             message = 'bad hscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -6107,7 +6103,7 @@ class ScrolledCanvas(MegaWidget):
                 self._toggleVertScrollbar()
         else:
             message = 'bad vscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -6515,7 +6511,7 @@ class ScrolledFrame(MegaWidget):
                 self._toggleHorizScrollbar()
         else:
             message = 'bad hscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
     def _vscrollMode(self):
         # The vertical scroll mode has been configured.
@@ -6533,7 +6529,7 @@ class ScrolledFrame(MegaWidget):
                 self._toggleVertScrollbar()
         else:
             message = 'bad vscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
     def _horizflex(self):
         # The horizontal flex mode has been configured.
@@ -6543,7 +6539,7 @@ class ScrolledFrame(MegaWidget):
         if flex not in self._flexoptions:
             message = 'bad horizflex option "%s": should be one of %s' % \
                     (flex, str(self._flexoptions))
-            raise ValueError, message
+            raise ValueError(message)
 
         self.reposition()
 
@@ -6555,7 +6551,7 @@ class ScrolledFrame(MegaWidget):
         if flex not in self._flexoptions:
             message = 'bad vertflex option "%s": should be one of %s' % \
                     (flex, str(self._flexoptions))
-            raise ValueError, message
+            raise ValueError(message)
 
         self.reposition()
 
@@ -6853,13 +6849,13 @@ class ScrolledListBox(MegaWidget):
             if textOrList in listitems:
                 self._listbox.selection_set(listitems.index(textOrList))
             else:
-                raise ValueError, 'no such item "%s"' % textOrList
+                raise ValueError('no such item "%s"' % textOrList)
         else:
             for item in textOrList:
                 if item in listitems:
                     self._listbox.selection_set(listitems.index(item))
                 else:
-                    raise ValueError, 'no such item "%s"' % item
+                    raise ValueError('no such item "%s"' % item)
 
     def setlist(self, items):
         self._listbox.delete(0, 'end')
@@ -6896,7 +6892,7 @@ class ScrolledListBox(MegaWidget):
                 self._toggleHorizScrollbar()
         else:
             message = 'bad hscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -6916,7 +6912,7 @@ class ScrolledListBox(MegaWidget):
                 self._toggleVertScrollbar()
         else:
             message = 'bad vscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -7320,7 +7316,7 @@ class ScrolledText(MegaWidget):
                 self._toggleHorizScrollbar()
         else:
             message = 'bad hscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -7340,7 +7336,7 @@ class ScrolledText(MegaWidget):
                 self._toggleVertScrollbar()
         else:
             message = 'bad vscrollmode option "%s": should be static, dynamic, or none' % mode
-            raise ValueError, message
+            raise ValueError(message)
 
         self._configureScrollCommands()
 
@@ -8078,7 +8074,7 @@ class TimeCounter(MegaWidget):
     def setvalue(self, text):
         list = string.split(text, ':')
         if len(list) != 3:
-            raise ValueError, 'invalid value: ' + text
+            raise ValueError('invalid value: ' + text)
 
         self._hour = string.atoi(list[0])
         self._minute = string.atoi(list[1])
@@ -8407,7 +8403,7 @@ class ComboBox(MegaWidget):
             if text in items:
                 index = list(items).index(text)
             else:
-                raise IndexError, 'index "%s" not found' % text
+                raise IndexError('index "%s" not found' % text)
         elif setentry:
             text = self._list.get(0, 'end')[index]
 
@@ -8784,8 +8780,8 @@ class Counter(MegaWidget):
                 frame.grid_rowconfigure(2, pad = pady)
                 frame.grid_columnconfigure(0, pad = padx)
         else:
-            raise ValueError, 'bad orient option ' + repr(orient) + \
-                ': must be either \'horizontal\' or \'vertical\''
+            raise ValueError('bad orient option ' + repr(orient) +
+                ': must be either \'horizontal\' or \'vertical\'')
 
         self.createlabel(interior)
 
@@ -8895,8 +8891,8 @@ class Counter(MegaWidget):
         else:
             validValues = _counterCommands.keys()
             validValues.sort()
-            raise ValueError, ('bad datatype value "%s":  must be a' +
-                    ' function or one of %s') % (datatype, validValues)
+            raise ValueError(('bad datatype value "%s":  must be a' +
+                ' function or one of %s') % (datatype, validValues))
 
     def _forceCount(self, factor):
         if not self.valid():
@@ -9151,8 +9147,8 @@ def _font_initialise(root, size=None, fontScheme = None):
         root.option_add('*Text*Font',       textFont,     'userDefault')
 
 def logicalfont(name='Helvetica', sizeIncr = 0, **kw):
-  if not _fontInfo.has_key(name):
-    raise ValueError, 'font %s does not exist' % name
+  if name not in _fontInfo:
+    raise ValueError('font %s does not exist' % name)
 
   rtn = []
   for field in _fontFields:
