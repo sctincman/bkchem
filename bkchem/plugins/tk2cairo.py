@@ -35,8 +35,8 @@ from oasa import geometry
 import misc
 
 
-class tk2cairo:
 
+class tk2cairo(object):
 
   _caps = {'butt': cairo.LINE_CAP_BUTT,
            'round': cairo.LINE_CAP_ROUND,
