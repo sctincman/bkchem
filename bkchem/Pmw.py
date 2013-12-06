@@ -1826,7 +1826,7 @@ def _reporterror(func, args):
 
     # If the argument to the callback is an event, add the event type.
     if eventArg:
-        eventNum = string.atoi(args[0].type)
+        eventNum = int(args[0].type)
         if eventNum in _eventTypeToName.keys():
             msg = msg + '  Event type: %s (type num: %d)\n' % \
                     (_eventTypeToName[eventNum], eventNum)
@@ -2666,8 +2666,8 @@ class Balloon(MegaToplevel):
             y = bottomrel + widget.winfo_rooty()
         y = y + self['yoffset']
 
-        edges = (string.atoi(str(self.cget('hull_highlightthickness'))) +
-            string.atoi(str(self.cget('hull_borderwidth')))) * 2
+        edges = (int(str(self.cget('hull_highlightthickness'))) +
+            int(str(self.cget('hull_borderwidth')))) * 2
         if x + self._label.winfo_reqwidth() + edges > screenWidth:
             x = screenWidth - self._label.winfo_reqwidth() - edges
 
@@ -3956,11 +3956,11 @@ class MenuBar(MegaWidget):
             for menuName in self._menuInfo.keys():
                 if self._menuInfo[menuName][0] is None:
                     menubutton = self.component(menuName + '-button')
-                    underline = string.atoi(str(menubutton.cget('underline')))
+                    underline = int(str(menubutton.cget('underline')))
                     if underline != -1:
                         label = str(menubutton.cget(textKey))
                         if underline < len(label):
-                            hotkey = string.lower(label[underline])
+                            hotkey = label[underline].lower()
                             if hotkey not in hotkeyList:
                                 hotkeyList.append(hotkey)
         else:
@@ -3969,12 +3969,11 @@ class MenuBar(MegaWidget):
             if end is not None:
                 for item in range(end + 1):
                     if menu.type(item) not in ('separator', 'tearoff'):
-                        underline = string.atoi(
-                            str(menu.entrycget(item, 'underline')))
+                        underline = int(str(menu.entrycget(item, 'underline')))
                         if underline != -1:
                             label = str(menu.entrycget(item, textKey))
                             if underline < len(label):
-                                hotkey = string.lower(label[underline])
+                                hotkey = label[underline].lower()
                                 if hotkey not in hotkeyList:
                                     hotkeyList.append(hotkey)
 
@@ -3985,8 +3984,11 @@ class MenuBar(MegaWidget):
             if traverseSpec in name and lowerLetter not in hotkeyList:
                 kw['underline'] = string.index(name, traverseSpec)
         else:
-            targets = string.digits + string.letters
-            lowerName = string.lower(name)
+            if sys.version_info[0] > 2:
+                targets = string.digits + string.ascii_letters
+            else:
+                targets = string.digits + string.letters
+            lowerName = name.lower()
             for letter_index in range(len(name)):
                 letter = lowerName[letter_index]
                 if letter in targets and letter not in hotkeyList:
@@ -4664,8 +4666,8 @@ class NoteBook(MegaArchetype):
 
         hullWidth, hullHeight = self._canvasSize
         borderWidth = self._borderWidth
-        canvasBorder = string.atoi(self._hull['borderwidth']) + \
-            string.atoi(self._hull['highlightthickness'])
+        canvasBorder = int(self._hull['borderwidth']) + \
+            int(self._hull['highlightthickness'])
         if not self._withTabs:
             self.tabBottom = canvasBorder
         oldTabBottom = self.tabBottom
