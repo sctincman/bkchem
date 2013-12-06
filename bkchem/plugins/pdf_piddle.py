@@ -17,10 +17,10 @@
 
 #--------------------------------------------------------------------------
 
+from .piddle import piddlePDF
+from .tk2piddle import tk2piddle_pdf
+from .piddle_lowlevel import piddle_exporter
 
-from piddle_lowlevel import piddle_exporter
-from tk2piddle import tk2piddle_pdf
-from piddle import piddlePDF
 
 
 class pdf_exporter( piddle_exporter):
