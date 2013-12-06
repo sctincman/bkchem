@@ -17,6 +17,7 @@
 
 #--------------------------------------------------------------------------
 
+from __future__ import print_function
 
 from piddle import piddle
 import tkFont
@@ -69,7 +70,7 @@ class tk2piddle:
       if not "no_export" in self.paper.gettags( item):
         method = "_draw_" + self.paper.type( item)
         if not hasattr( self, method):
-          print "method to draw %s is not implemented" % self.paper.type( item)
+          print("Method to draw %s is not implemented" % self.paper.type(item))
         else:
           getattr( self, method)( item)
 
