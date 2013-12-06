@@ -512,7 +512,7 @@ class MegaArchetype:
             keywords = {}
         for alias, component in componentAliases:
             # Create aliases to the component and its sub-components.
-            index = string.find(component, '_')
+            index = component.find('_')
             if index < 0:
                 self.__componentAliases[alias] = (component, None)
             else:
@@ -547,7 +547,7 @@ class MegaArchetype:
                 # keyword argument as being used, but do not remove it
                 # since it may be required when creating another
                 # component.
-                index = string.find(option, '_')
+                index = option.find('_')
                 if index >= 0 and componentGroup == option[:index]:
                     rest = option[(index + 1):]
                     kw[rest] = keywords[option][0]
@@ -710,7 +710,7 @@ class MegaArchetype:
                 optionInfo[option][VALUE] = value
                 directOptions.append(option)
             else:
-                index = string.find(option, '_')
+                index = option.find('_')
                 if index >= 0:
                     # This option may be of the form <component>_<option>.
                     component = option[:index]
@@ -778,7 +778,7 @@ class MegaArchetype:
         # widget components directly.
 
         # Find the main component and any subcomponents
-        index = string.find(name, '_')
+        index = name.find('_')
         if index < 0:
             component = name
             remainingComponents = None
@@ -819,7 +819,7 @@ class MegaArchetype:
         if option in self._optionInfo:
             return self._optionInfo[option][_OPT_VALUE]
         else:
-            index = string.find(option, '_')
+            index = option.find('_')
             if index >= 0:
                 component = option[:index]
                 componentOption = option[(index + 1):]
