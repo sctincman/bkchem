@@ -19,7 +19,6 @@
 
 from __future__ import print_function
 
-from piddle import piddle
 try:
   import tkinter.font as tkFont
 except ImportError:
@@ -28,6 +27,7 @@ except ImportError:
 from oasa import transform
 from oasa import geometry
 
+from .piddle import piddle
 
 class tk2piddle:
 
