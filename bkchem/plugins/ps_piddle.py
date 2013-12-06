@@ -17,16 +17,18 @@
 
 #--------------------------------------------------------------------------
 
+from .piddle import piddlePS
+from .tk2piddle import tk2piddle_ps
+from .piddle_lowlevel import piddle_exporter
 
-from piddle_lowlevel import piddle_exporter
-from tk2piddle import tk2piddle_ps
-from piddle import piddlePS
 
 
-class ps_exporter( piddle_exporter):
-  """Exports Encapsulated PostScript files via the Piddle library. Usually gives better results
-than the builtin method, but does not support unicode and the texts might be slightly misplaced.""" 
+class ps_exporter(piddle_exporter):
+  """Exports Encapsulated PostScript files via the Piddle library.
 
+  Usually gives better results than the builtin method, but does not
+  support unicode and the texts might be slightly misplaced.
+  """
   doc_string = _("Exports Encapsulated PostScript files via the Piddle library. Usually gives better results than the builtin method, but does not support unicode and the texts might be slightly misplaced.")
 
   def __init__( self, paper):
