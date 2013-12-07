@@ -288,8 +288,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         self.bond_width = Screen.any_to_px( standard.bond_width)
 
 
-
-
   def draw( self, automatic="none"):
     """call the appropriate draw method, automatic specifies what to automatically compute -
     all, sign, none (sign is often needed to retain the look after transformation)"""
@@ -327,7 +325,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   # THE DRAW HELPER METHODS
-
   def _where_to_draw_from_and_to( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
@@ -348,9 +345,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return (x1, y1, x2, y2)
 
 
-
   # normal bond
-
   def _draw_n1( self):
     where = self._where_to_draw_from_and_to()
     if not where:
@@ -368,6 +363,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self.third = []
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
+
 
   def _draw_n2( self):
     where = self._draw_n1()
@@ -388,6 +384,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self._draw_second_line( [x, y, x0, y0])
     if self.center:
       self.third = self._draw_second_line( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
 
   def _draw_n3( self):
     where = self._draw_n1()
@@ -411,7 +408,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.third = self._draw_second_line( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
 
-
   def _draw_h1( self):
     where = self._draw_n1()
     if not where:
@@ -423,6 +419,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # the small lines
     self.items = self._draw_hatch( (x1,y1,x2,y2))
     return x1,y1,x2,y2
+
 
   def _draw_h2( self):
     if self.center == None or self.bond_width == None:
@@ -451,6 +448,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.center:
       self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
+
   def _draw_h3( self):
     where = self._draw_h1()
     if not where:
@@ -466,6 +464,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_hatch
     self.second = _second_draw_method( (x,y,x0,y0))
     self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
 
   def _draw_hatch( self, coords):
     """returns list items"""
@@ -524,7 +523,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   # dashed bond
-
   def _draw_d1( self):
     where = self._draw_n1()
     if not where:
@@ -536,6 +534,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     # the small lines
     self.items = self._draw_dash( (x1,y1,x2,y2))
     return x1,y1,x2,y2
+
 
   def _draw_d2( self):
     if self.center == None or self.bond_width == None:
@@ -575,6 +574,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self._draw_dash(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
     if self.center:
       self.third = self._draw_dash(( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
 
   def _draw_d3( self):
     if self.simple_double:
@@ -667,7 +667,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return [self._create_line_with_transform( (x, y, x0, y0), width=self.line_width, fill=self.line_color)]
 
 
-
   def _get_3dtransform_for_drawing( self):
     """this is a helper method that returns a transform3d which rotates
     self to coincide with the x-axis and rotates neighbors to be in (x,y)
@@ -693,8 +692,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     t.set_rotation_y( math.pi/2.0)
     return t
 
-  # wedge bonds
 
+  # wedge bonds
   def _draw_w1( self):
     where = self._where_to_draw_from_and_to()
     if not where:
@@ -708,6 +707,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self.third = []
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
+
 
   def _draw_w2( self):
     if self.center == None or self.bond_width == None:
@@ -734,6 +734,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = _second_draw_method( (x,y,x0,y0))
     if self.center:
       self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
+
 
   def _draw_w3( self):
     where = self._draw_w1()
@@ -774,6 +775,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = self.third = []
     self.paper.register_id( self.item, self)
     return x1,y1,x2,y2
+
 
   def _draw_a2( self):
     if self.center == None or self.bond_width == None:
@@ -864,12 +866,14 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     else:
       return [self._create_line_with_transform( coords2, width=self.line_width, fill=self.line_color)]
 
+
   def _draw_b1( self):
     where = self._draw_n1()
     if not where:
       # the bond is too short to draw it
       return None
     self.paper.itemconfigure( self.item, width = self.wedge_width)
+
 
   def _draw_b2( self):
     self._draw_n2()
@@ -878,6 +882,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     else:
       items = [self.item] + self.second + self.third
     [self.paper.itemconfigure( item, width = self.wedge_width) for item in items]
+
 
   def _draw_b3( self):
     self._draw_n3()
@@ -888,9 +893,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     [self.paper.itemconfigure( item, width = self.wedge_width) for item in items]
 
 
-
   # dotted bonds
-
   def _draw_o1( self):
     where = self._draw_n1()
     if not where:
@@ -944,7 +947,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.third = self._draw_dotted(( 2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
 
-
   def _draw_o3( self):
     if self.simple_double:
       where = self._draw_n1()
@@ -969,7 +971,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     dy = y-y0
     self.second = self._draw_dotted(( x-_k*dx, y-_k*dy, x0+_k*dx, y0+_k*dy))
     self.third = self._draw_dotted(( 2*x1-x-_k*dx, 2*y1-y-_k*dy, 2*x2-x0+_k*dx, 2*y2-y0+_k*dy))
-
 
 
   def _draw_dotted( self, coords):
@@ -1006,10 +1007,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return items
 
 
-
-
   ## // DRAW HELPER METHODS
-
   def redraw( self, recalc_side=0):
     if not self.__dirty:
       pass
@@ -1022,8 +1020,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if sel:
       self.select()
     self.__dirty = 0
-
-
 
 
   def simple_redraw( self):
@@ -1052,9 +1048,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.paper.itemconfig( self.item, width = self.line_width, fill=self.line_color)
 
 
-
-
-
   def focus( self):
     # all the items of the bond
     if self.simple_double and not self.center:
@@ -1077,9 +1070,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       if self.center:
         items.remove( self.item)
       [self.paper.itemconfigure( item, fill='white', outline='black', width=1) for item in items]
-
-
-
 
 
   def unfocus( self):
@@ -1108,8 +1098,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       [self.paper.itemconfigure( item, fill=self.line_color, width=0) for item in items]
 
 
-
-
   def select( self):
     x1, y1 = self.atom1.get_xy()
     x2, y2 = self.atom2.get_xy()
@@ -1122,13 +1110,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.paper.lower( self.selector)
 
 
-
-
   def unselect( self):
     self.paper.delete( self.selector)
     self.selector = None
-
-
 
 
   def move( self, dx, dy):
@@ -1138,8 +1122,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.selector:
       items.append( self.selector)
     [self.paper.move( o, dx, dy) for o in items]
-
-
 
 
   def delete( self):
@@ -1153,9 +1135,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.items = []
     map( self.paper.delete, items)
     return self
-
-
-
 
 
   def read_package( self, package):
@@ -1199,8 +1178,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.atom2 = Store.id_manager.get_object_with_id( package.getAttribute( 'end'))
 
 
-
-
   def post_read_analysis( self):
     """this method is called by molecule after the *whole* molecule is
     read to perform a post-load analysis of double bond positioning"""
@@ -1209,9 +1186,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       sign, center = self._compute_sign_and_center()
       if self.bond_width and self.bond_width * sign < 0:
         self.auto_bond_sign = -1
-
-
-
 
 
   def get_package( self, doc):
@@ -1241,9 +1215,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.type != 'n' and self.order != 1:
       bnd.setAttribute( 'simple_double', str( int( self.simple_double)))
     return bnd
-
-
-
 
 
   def toggle_type( self, only_shift = 0, to_type='n', to_order=1, simple_double=1):
@@ -1313,9 +1284,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.redraw()
 
 
-
-
-
   def switch_to_type( self, type):
     if type in "wha" and self.type not in "wha":
       # get the standard width only if the changes is not within the "wha" group
@@ -1326,17 +1294,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.type = type
 
 
-
-
-
   def switch_to_order( self, order):
     self.order = order
     if self.order == 3:
       self.center = 0
     if self.order > 1:
       self._decide_distance_and_center()
-
-
 
 
   def _decide_distance_and_center( self):
@@ -1352,7 +1315,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     sign, center = self._compute_sign_and_center()
     self.bond_width = self.auto_bond_sign * sign * abs( self.bond_width)
     self.center = center
-
 
 
   def _compute_sign_and_center( self):
@@ -1418,12 +1380,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return ret
 
 
-
-
   def get_atoms( self):
     return self.get_vertices()
-
-
 
 
   def change_atoms( self, a1, a2):
@@ -1437,13 +1395,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       warn("not bonds' atom in bond.change_atoms(): "+str( a1), UserWarning, 2)
 
 
-
   def bbox( self):
     """returns the bounding box of the object as a list of [x1,y1,x2,y2]"""
     return self.paper.bbox( self.item)
-
-
-
 
 
   def lift( self):
@@ -1456,9 +1410,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       [self.paper.lift( o) for o in self.third]
     if self.item:
       self.paper.lift( self.item)
-
-
-
 
 
   def transform( self, tr):
@@ -1480,7 +1431,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       sign = geometry.on_which_side_is_point( line, (x,y))
       if sign * self.bond_width < 0:
         self.bond_width *= -1
-
 
 
   def get_exportable_items( self):
@@ -1533,6 +1483,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       coords = self._transform.transform_xy_flat_list( coords)
     return self.paper.create_line( coords, **kw)
 
+
   def _create_oval_with_transform( self, coords, **kw):
     """this is a private method intended to pass things to self.paper.create_oval,
     but ensuring that a proper transformation takes place in case it is needed.
@@ -1540,6 +1491,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self._transform:
       coords = self._transform.transform_xy_flat_list( coords)
     return self.paper.create_oval( coords, **kw)
+
 
   def _create_polygon_with_transform( self, coords, **kw):
     """this is a private method intended to pass things to self.paper.create_polygon,
