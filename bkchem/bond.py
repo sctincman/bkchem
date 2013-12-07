@@ -43,7 +43,6 @@ from parents import meta_enabled, line_colored, drawable, with_line, interactive
 ### not set in __init__ itself
 
 
-# class BOND--------------------------------------------------
 class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_with_paper, oasa.bond):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
@@ -94,182 +93,171 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.read_package( package)
 
 
-
-  ## ------------------------------ PROPERTIES ------------------------------
-
-
-  # dirty
-  # override of drawable.dirty
-  def _get_dirty( self):
+  # Override of drawable.dirty
+  @property
+  def dirty(self):
     return self.__dirty # or self.atom1.dirty or self.atom2.dirty
 
-  def _set_dirty( self, dirty):
+
+  @dirty.setter
+  def dirty(self, dirty):
     self.__dirty = dirty
 
-  dirty = property( _get_dirty, _set_dirty)
 
-
-  # molecule
-  def _get_molecule( self):
+  @property
+  def molecule(self):
     return self.__molecule
 
-  def _set_molecule( self, mol):
+
+  @molecule.setter
+  def molecule(self, mol):
     self.__molecule = mol
 
-  molecule = property( _get_molecule, _set_molecule)
 
-
-  # type
-  def _get_type( self):
+  @property
+  def type(self):
     return self.__type
 
-  def _set_type( self, mol):
+
+  @type.setter
+  def type(self, mol):
     self.__type = mol
     self.__dirty = 1
 
-  type = property( _get_type, _set_type)
 
+  @property
+  def order(self):
 
-  # order
-  def _get_order( self):
     return self.get_order()
 
-  def _set_order( self, mol):
+  @order.setter
+  def order(self, mol):
     self.set_order( mol)
     self.__dirty = 1
 
-  order = property( _get_order, _set_order)
 
-
-  # atom1
-  def _get_atom1( self):
+  @property
+  def atom1(self):
     try:
       return self._vertices[0]
     except IndexError:
       return None
 
-  def _set_atom1( self, mol):
+
+  @atom1.setter
+  def atom1(self, mol):
     try:
       self._vertices[0] = mol
     except IndexError:
       self._vertices = [mol, None]
     self.__dirty = 1
 
-  atom1 = property( _get_atom1, _set_atom1)
 
-
-  # atom2
-  def _get_atom2( self):
+  @property
+  def atom2(self):
     try:
       return self._vertices[1]
     except IndexError:
       return None
 
-  def _set_atom2( self, mol):
+
+  @atom2.setter
+  def atom2(self, mol):
     try:
       self._vertices[1] = mol
     except IndexError:
       self._vertices = [None, mol]
     self.__dirty = 1
 
-  atom2 = property( _get_atom2, _set_atom2)
 
-
-  # atoms
-  def _get_atoms( self):
+  @property
+  def atoms(self):
     return self._vertices
 
-  def _set_atoms( self, mol):
+
+  @atoms.setter
+  def atoms(self, mol):
     self._vertices = mol
     self.__dirty = 1
 
-  atoms = property( _get_atoms, _set_atoms)
 
-
-  # center
-  def _get_center( self):
+  @property
+  def center(self):
     return self.__center
 
-  def _set_center( self, mol):
+
+  @center.setter
+  def center(self, mol):
     self.__center = mol
     self.__dirty = 1
 
-  center = property( _get_center, _set_center)
 
-
-  # bond_width
-  def _get_bond_width( self):
+  @property
+  def bond_width(self):
     return self.__bond_width
 
-  def _set_bond_width( self, mol):
+
+  @bond_width.setter
+  def bond_width(self, mol):
     self.__bond_width = mol
     self.__dirty = 1
 
-  bond_width = property( _get_bond_width, _set_bond_width)
 
-
-  # wedge_width
-  def _get_wedge_width( self):
+  @property
+  def wedge_width(self):
     return self.__wedge_width
 
-  def _set_wedge_width( self, mol):
+
+  @wedge_width.setter
+  def wedge_width(self, mol):
     self.__wedge_width = mol
     self.__dirty = 1
 
-  wedge_width = property( _get_wedge_width, _set_wedge_width)
 
-
-  # simple_double
-  def _get_simple_double( self):
+  @property
+  def simple_double(self):
     return self.__simple_double
 
-  def _set_simple_double( self, mol):
+
+  @simple_double.setter
+  def simple_double(self, mol):
     self.__simple_double = mol
     self.__dirty = 1
 
-  simple_double = property( _get_simple_double, _set_simple_double)
 
-
-  # double_length_ratio
-  def _get_double_length_ratio( self):
+  @property
+  def double_length_ratio(self):
     return self.__double_length_ratio
 
-  def _set_double_length_ratio( self, mol):
+
+  @double_length_ratio.setter
+  def double_length_ratio(self, mol):
     self.__double_length_ratio = mol
     self.__dirty = 1
 
-  double_length_ratio = property( _get_double_length_ratio, _set_double_length_ratio)
 
-
-  # auto_bond_sign
-  def _get_auto_bond_sign( self):
+  @property
+  def auto_bond_sign(self):
     return self.__auto_bond_sign
 
-  def _set_auto_bond_sign( self, mol):
+
+  @auto_bond_sign.setter
+  def auto_bond_sign(self, mol):
     self.__auto_bond_sign = mol
     self.__dirty = 1
 
-  auto_bond_sign = property( _get_auto_bond_sign, _set_auto_bond_sign)
 
+  @property
+  def parent(self):
+    """Returns self.molecule.
 
-
-  # parent
-  def _get_parent( self):
+    """
     return self.molecule
 
-  def _set_parent( self, par):
+
+  @parent.setter
+  def parent(self, par):
     self.molecule = par
-
-  parent = property( _get_parent, _set_parent, None,
-                     "returns self.molecule")
-
-
-
-
-  ## // ------------------------------ END OF PROPERTIES --------------------
-
-
-
 
 
   def read_standard_values( self, standard, old_standard=None):
