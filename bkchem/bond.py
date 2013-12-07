@@ -127,12 +127,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   @property
   def order(self):
+    return oasa.bond.order.__get__(self)
 
-    return self.get_order()
 
   @order.setter
   def order(self, mol):
-    self.set_order( mol)
+    oasa.bond.order.__set__(self, mol)
     self.__dirty = 1
 
 
