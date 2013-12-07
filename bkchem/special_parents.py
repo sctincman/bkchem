@@ -227,7 +227,7 @@ class vertex_common( object):
     else:
       dist = 0.75*self.font_size + round( mark_class.standard_size / 2)
 
-    atms = self.get_neighbors()
+    atms = self.neighbors
     x, y = self.get_xy()
 
     # special cases
@@ -453,7 +453,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     if self.is_part_of_linear_fragment():
       self.pos = 'center-first'
       return
-    atms = self.get_neighbors()
+    atms = self.neighbors
     p = 0
     for a in atms:
       if a.x < self.x:
