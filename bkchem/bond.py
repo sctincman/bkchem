@@ -1320,7 +1320,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
         n.transform( transform)
     # /end of check
     line = self.atom1.get_xy() + self.atom2.get_xy()
-    atms = self.atom1.get_neighbors() + self.atom2.get_neighbors()
+    atms = self.atom1.neighbors + self.atom2.neighbors
     atms = misc.difference( atms, [self.atom1, self.atom2])
     coords = [a.get_xy() for a in atms]
     # searching for circles
@@ -1335,8 +1335,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       sides = [geometry.on_which_side_is_point( line, xy, threshold=0.1) for xy in coords]
       side = sum(sides)
     # on which side to put the second line
-    if side == 0 and (len( self.atom1.get_neighbors()) == 1 or
-                      len( self.atom2.get_neighbors()) == 1):
+    if side == 0 and (len(self.atom1.neighbors) == 1 or
+                      len(self.atom2.neighbors) == 1):
       # maybe we should center, but this is usefull only when one of the atoms has no other substitution
       ret = (1 ,1)
     else:
