@@ -43,8 +43,7 @@ from special_parents import drawable_chem_vertex
 ### not set in __init__ itself
 
 
-### Class ATOM --------------------------------------------------
-class atom( drawable_chem_vertex, oasa.atom):
+class atom(drawable_chem_vertex, oasa.atom):
   # note that all children of simple_parent have default meta infos set
   # therefor it is not necessary to provide them for all new classes if they
   # don't differ
@@ -72,9 +71,7 @@ class atom( drawable_chem_vertex, oasa.atom):
       self.set_name( 'C')
 
 
-  ## ---------------------------------------- PROPERTIES ------------------------------
-
-  # symbol (overrides the oasa.atom.symbol property)
+  # Override the oasa.atom.symbol property
   @property
   def symbol(self):
     """Atom symbol.
@@ -85,12 +82,11 @@ class atom( drawable_chem_vertex, oasa.atom):
 
   @symbol.setter
   def symbol(self, symbol):
-    oasa.atom._set_symbol( self, symbol)
+    oasa.atom.symbol.__set__(self, symbol)
     if self._symbol != 'C':
       self.show = True
 
 
-  # show
   @property
   def show(self):
     """Should the atom symbol be displayed?
@@ -110,7 +106,6 @@ class atom( drawable_chem_vertex, oasa.atom):
     self._reposition_on_redraw = 1
 
 
-  # show_hydrogens
   @property
   def show_hydrogens(self):
     return self._show_hydrogens
@@ -126,19 +121,18 @@ class atom( drawable_chem_vertex, oasa.atom):
     self._reposition_on_redraw = 1
 
 
-  # charge (override of oasa.chem_vertex.charge)
+  # Override of oasa.chem_vertex.charge
   @property
   def charge(self):
-    return drawable_chem_vertex._get_charge(self)
+    return drawable_chem_vertex.charge.__get__(self)
 
 
   @charge.setter
   def charge(self, charge):
-    drawable_chem_vertex._set_charge(self, charge)
+    drawable_chem_vertex.charge.__set__(self, charge)
     self.dirty = 1
 
 
-  # valency
   @property
   def valency(self):
     """Atom's (maximum) valency.
@@ -154,10 +148,10 @@ class atom( drawable_chem_vertex, oasa.atom):
 
   @valency.setter
   def valency(self, val):
-    drawable_chem_vertex._set_valency(self, val)
+    drawable_chem_vertex.valency.__set__(self, val)
 
 
-  # free-sites - replaces oasa.atom.free_sites
+  # Replace oasa.atom.free_sites
   @property
   def free_sites(self):
     """Free sites of the atom.
@@ -192,16 +186,16 @@ class atom( drawable_chem_vertex, oasa.atom):
       return ""
 
 
-  # oxidation number as text
+  # Oxidation number as text
   @property
   def oxidation_number_text(self):
     """Atom's oxidation number as text.
 
     """
-    return data.roman_numbers[self._get_oxidation_number()]
+    return data.roman_numbers[self.oxidation_number]
 
 
-  # xml_ftext (override drawable_chem_vertex.xml_ftext)
+  # Override drawable_chem_vertex.xml_ftext
   @property
   def xml_ftext(self):
     """Text used for rendering using the ftext class.
@@ -241,11 +235,7 @@ class atom( drawable_chem_vertex, oasa.atom):
     return ret.encode('utf-8')
 
 
-  ## // -------------------- END OF PROPERTIES --------------------------
-
-
   ## -------------------- OVERRIDES OF CHEM_VERTEX METHODS --------------------
-
   def decide_pos( self):
     if self.show_hydrogens or self.free_valency:
       # in case hydrogens are shown, use the chem_vertex.decide_pos algorithm
