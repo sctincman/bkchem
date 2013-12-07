@@ -74,7 +74,7 @@ class vertex_common( object):
       self._number = unicode( number)
     else:
       self._number = number # we do not want to convert None to unicode :)
-    if self._number != None and self.show_number:
+    if self._number is not None and self.show_number:
       numbers = self.get_marks_by_type( "atom_number")
       if not numbers:
         self.create_mark( "atom_number", draw=self.drawn)
