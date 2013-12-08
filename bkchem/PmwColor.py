@@ -24,6 +24,7 @@ def setscheme(root, background=None, **kw):
     for option, value in palette.items():
         root.option_add('*' + option, value, 'widgetDefault')
 
+
 def getdefaultpalette(root):
     # Return the default values of all options, using the defaults
     # from a few widgets.
@@ -52,8 +53,8 @@ def getdefaultpalette(root):
 
     return orig
 
-#======================================================================
 
+#======================================================================
 # Functions dealing with brightness, hue, saturation and intensity of colors.
 
 def changebrightness(root, colorName, brightness):
@@ -65,6 +66,7 @@ def changebrightness(root, colorName, brightness):
     if saturation == 0.0:
         hue = None
     return hue2name(hue, brightness)
+
 
 def hue2name(hue, brightness = None):
     # Convert the requested hue and brightness into a color name.  If
@@ -86,6 +88,7 @@ def hue2name(hue, brightness = None):
             rgb = hsi2rgb(hue, s, i)
 
     return rgb2name(rgb)
+
 
 def bhi2saturation(brightness, hue, intensity):
     while hue < 0:
@@ -109,6 +112,7 @@ def bhi2saturation(brightness, hue, intensity):
     elif hue == 5: rgb = (pv, pp, pq)
 
     return (intensity - brightness) / rgb2brightness(rgb)
+
 
 def hsi2rgb(hue, saturation, intensity):
     i = intensity
@@ -143,6 +147,7 @@ def hsi2rgb(hue, saturation, intensity):
 
     return rgb
 
+
 def average(rgb1, rgb2, fraction):
     return (
         rgb2[0] * fraction + rgb1[0] * (1.0 - fraction),
@@ -150,9 +155,11 @@ def average(rgb1, rgb2, fraction):
         rgb2[2] * fraction + rgb1[2] * (1.0 - fraction)
     )
 
+
 def rgb2name(rgb):
     return '#%02x%02x%02x' % \
         (int(rgb[0] * 255), int(rgb[1] * 255), int(rgb[2] * 255))
+
 
 def rgb2brightness(rgb):
     # Return the perceived grey level of the color
@@ -162,6 +169,7 @@ def rgb2brightness(rgb):
     gf = 0.587
     bf = 0.114
     return rf * rgb[0] + gf * rgb[1] + bf * rgb[2]
+
 
 def rgb2hsi(rgb):
     maxc = max(rgb[0], rgb[1], rgb[2])
@@ -192,6 +200,7 @@ def rgb2hsi(rgb):
 
     return (hue, saturation, intensity)
 
+
 def name2rgb(root, colorName, asInt = 0):
     if colorName[0] == '#':
         # Extract rgb information from the color name itself, assuming
@@ -214,6 +223,7 @@ def name2rgb(root, colorName, asInt = 0):
     if not asInt:
         rgb = (rgb[0] / _MAX_RGB, rgb[1] / _MAX_RGB, rgb[2] / _MAX_RGB)
     return rgb
+
 
 def _calcPalette(root, background=None, **kw):
     # Create a map that has the complete new palette.  If some colors
@@ -284,6 +294,7 @@ def _calcPalette(root, background=None, **kw):
 
     return new
 
+
 def spectrum(numColors, correction = 1.0, saturation = 1.0, intensity = 1.0,
              extraOrange = 1, returnHues = 0):
     colorList = []
@@ -307,6 +318,7 @@ def spectrum(numColors, correction = 1.0, saturation = 1.0, intensity = 1.0,
             colorList.append(name)
     return colorList
 
+
 def correct(rgb, correction):
     correction = float(correction)
     rtn = []
@@ -314,8 +326,8 @@ def correct(rgb, correction):
         rtn.append((1 - (1 - rgb[index]) ** correction) ** (1 / correction))
     return rtn
 
-#==============================================================================
 
+#==============================================================================
 def _recolorTree(widget, oldpalette, newcolors):
     # Change the colors in a widget and its descendants.
 
@@ -338,6 +350,7 @@ def _recolorTree(widget, oldpalette, newcolors):
     for child in widget.winfo_children():
        _recolorTree(child, oldpalette, newcolors)
 
+
 def changecolor(widget, background=None, **kw):
      root = widget._root()
      if not hasattr(widget, '_Pmw_oldpalette'):
@@ -345,6 +358,7 @@ def changecolor(widget, background=None, **kw):
      newpalette = _calcPalette(*(root, background,), **kw)
      _recolorTree(widget, widget._Pmw_oldpalette, newpalette)
      widget._Pmw_oldpalette = newpalette
+
 
 def bordercolors(root, colorName):
     # This is the same method that Tk uses for shadows, in TkpGetShadows.
@@ -365,3 +379,4 @@ def bordercolors(root, colorName):
         '#%04x%04x%04x' % (lightRGB[0], lightRGB[1], lightRGB[2]),
         '#%04x%04x%04x' % (darkRGB[0], darkRGB[1], darkRGB[2])
     )
+
