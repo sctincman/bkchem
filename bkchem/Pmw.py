@@ -4092,10 +4092,10 @@ class MessageBar(MegaWidget):
         self._timer = [None] * self._numPriorities
         MegaWidget.destroy(self)
 
-    def message(self, type, text):
+    def message(self, t, text):
         # Display a message in the message bar.
 
-        (priority, showtime, bells, logmessage) = self['messagetypes'][type]
+        (priority, showtime, bells, logmessage) = self['messagetypes'][t]
 
         if not self['silent']:
             for i in range(bells):
@@ -4130,8 +4130,8 @@ class MessageBar(MegaWidget):
         else:
             self.message('help', text)
 
-    def resetmessages(self, type):
-        priority = self['messagetypes'][type][0]
+    def resetmessages(self, t):
+        priority = self['messagetypes'][t][0]
         self._clearActivemessage(priority)
         for messagetype, info in self['messagetypes'].items():
             thisPriority = info[0]
