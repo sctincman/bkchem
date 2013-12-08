@@ -140,7 +140,7 @@ _grabStack = []
 # filtered out). Flattening honours the MI method resolution rules
 # (depth-first search of bases in order). The dictionary has method names
 # for keys and functions for values.
-def __methodDict(cls, dict):
+def __methodDict(cls, d):
 
     # the strategy is to traverse the class in the _reverse_ of the normal
     # order, and overwrite any duplicates.
@@ -148,14 +148,14 @@ def __methodDict(cls, dict):
     baseList.reverse()
 
     # do bases in reverse order, so first base overrides last base
-    for super in baseList:
-        __methodDict(super, dict)
+    for s in baseList:
+        __methodDict(s, d)
 
     # do my methods last to override base classes
     for key, value in cls.__dict__.items():
         # ignore class attributes
         if isinstance(value, collections.Callable):
-            dict[key] = value
+            d[key] = value
 
 def __methods(cls):
     # Return all method names for a class.
@@ -163,9 +163,9 @@ def __methods(cls):
     # Return all method names for a class (attributes are filtered
     # out).  Base classes are searched recursively.
 
-    dict = {}
-    __methodDict(cls, dict)
-    return dict.keys()
+    d = {}
+    __methodDict(cls, d)
+    return d.keys()
 
 # Function body to resolve a forwarding given the target method name and the
 # attribute name. The resulting lambda requires only self, but will forward
@@ -244,27 +244,27 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
             raise TypeError('toPart must be attribute name, function or method')
 
     # get the full set of candidate methods
-    dict = {}
-    __methodDict(toClass, dict)
+    d = {}
+    __methodDict(toClass, d)
 
     # discard special methods
     tmp = []
-    for ex in dict.keys():
+    for ex in d.keys():
         if ex[:1] == '_' or ex[-1:] == '_':
             tmp.append(ex)
     for i in tmp:
-        del dict[i]
+        del d[i]
     # discard dangerous methods supplied by the caller
     for ex in exclude:
-        if ex in dict:
-            del dict[ex]
+        if ex in d:
+            del d[ex]
     # discard methods already defined in fromClass
     for ex in __methods(fromClass):
-        if ex in dict:
-            del dict[ex]
+        if ex in d:
+            del d[ex]
 
-    for method, func in dict.items():
-        d = {'method': method, 'func': func}
+    for method, func in d.items():
+        di = {'method': method, 'func': func}
         if _myisstr(toPart):
             execString = \
                 __stringBody % {'method' : method, 'attribute' : toPart}
@@ -272,10 +272,10 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
             execString = \
                 __funcBody % {'forwardFunc' : forwardName, 'method' : method}
 
-        exec(execString, d)
+        exec(execString, di)
 
         # this creates a method
-        setattr(fromClass, method, d[method])
+        setattr(fromClass, method, di[method])
 
 #=============================================================================
 
