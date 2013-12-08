@@ -283,7 +283,7 @@ class atom(drawable_chem_vertex, oasa.atom):
         # it is!
         a = form.keys()
         a.remove( 'H')
-        if occupied_valency == None:
+        if occupied_valency is None:
           valency = self.occupied_valency
         else:
           valency = occupied_valency
@@ -371,7 +371,7 @@ class atom(drawable_chem_vertex, oasa.atom):
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
     x, y, z = Screen.read_xml_point( position)
-    if z != None:
+    if z is not None:
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
     x, y = self.paper.real_to_screen_coords( (x, y))
