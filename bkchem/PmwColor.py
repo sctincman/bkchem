@@ -3,7 +3,6 @@
 
 import sys
 import math
-import string
 try:
     import tkinter as Tkinter
 except ImportError:
@@ -339,7 +338,7 @@ def _recolorTree(widget, oldpalette, newcolors):
     # the new value for that option.
 
     for dbOption in newcolors.keys():
-        option = string.lower(dbOption)
+        option = dbOption.lower()
         try:
             value = str(widget.cget(option))
         except:
