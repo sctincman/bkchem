@@ -4008,8 +4008,8 @@ class MenuBar(MegaWidget):
                 if str(menu.cget('tearoff')) == '1':
                     index = index - 1
                 if index >= 0:
-                    help = self._menuInfo[menuName][1][index]
-                    balloon.showstatus(help)
+                    h = self._menuInfo[menuName][1][index]
+                    balloon.showstatus(h)
 
     def _resetHelpmessage(self, event=None):
         balloon = self['balloon']
