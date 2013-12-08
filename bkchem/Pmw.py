@@ -327,7 +327,7 @@ def setgeometryanddeiconify(window, geom):
 
 #=============================================================================
 
-class MegaArchetype:
+class MegaArchetype(object):
     # Megawidget abstract root class.
 
     # This class provides methods which are inherited by classes
@@ -1227,6 +1227,7 @@ forwardmethods(MegaToplevel, Tkinter.Toplevel, '_hull')
 #=============================================================================
 
 class MegaWidget(MegaArchetype):
+
     def __init__(self, parent = None, **kw):
         # Define the options for this megawidget.
         optiondefs = (
@@ -1539,7 +1540,8 @@ def alignlabels(widgets, sticky = None):
 _callToTkReturned = 1
 _recursionCounter = 1
 
-class _TraceTk:
+class _TraceTk(object):
+
     def __init__(self, tclInterp):
         self.tclInterp = tclInterp
 
@@ -1657,7 +1659,8 @@ def _havebltbusy(window):
             _busy_release = PmwBlt.busy_release
     return _haveBltBusy
 
-class _BusyWrapper:
+class _BusyWrapper(object):
+
     def __init__(self, command, updateFunction):
         self._command = command
         self._updateFunction = updateFunction
@@ -1755,7 +1758,8 @@ def __TkinterWidgetDestroy(tkWidget):
 # Add code to Tkinter to improve the display of errors which occur in
 # callbacks.
 
-class __TkinterCallWrapper:
+class __TkinterCallWrapper(object):
+
     def __init__(self, func, subst, widget):
         self.func = func
         self.subst = subst
@@ -1858,7 +1862,8 @@ def _reporterror(func, args):
     except:
         pass
 
-class _ErrorWindow:
+class _ErrorWindow(object):
+
     def __init__(self):
 
         self._errorQueue = []
@@ -1995,6 +2000,7 @@ except ImportError:
 # A Toplevel with a ButtonBox and child site.
 
 class Dialog(MegaToplevel):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -2324,6 +2330,7 @@ except ImportError:
 
 
 class Balloon(MegaToplevel):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -2695,6 +2702,7 @@ except ImportError:
 
 
 class ButtonBox(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -2931,6 +2939,7 @@ ERROR = 0
 PARTIAL = -1
 
 class EntryField(MegaWidget):
+
     _classBindingsDefinedFor = 0
 
     def __init__(self, parent = None, **kw):
@@ -3408,7 +3417,8 @@ def aligngrouptags(groups):
         if group._tag is not None:
             group._tag.place(y = maxTagHeight / 2)
 
-class Group( MegaWidget ):
+class Group(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -3503,6 +3513,7 @@ except ImportError:
 
 
 class LabeledWidget(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -4027,6 +4038,7 @@ except ImportError:
 
 
 class MessageBar(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -4175,6 +4187,7 @@ except ImportError:
 
 
 class MessageDialog(Dialog):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -5658,6 +5671,7 @@ class PanedWidget(MegaWidget):
 # A Dialog with an entryfield
 
 class PromptDialog(Dialog):
+
     def __init__(self, parent = None, **kw):
         # Define the megawidget options.
 
@@ -5951,6 +5965,7 @@ except ImportError:
 
 
 class ScrolledCanvas(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -6246,6 +6261,7 @@ except ImportError:
 
 
 class ScrolledField(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -6305,6 +6321,7 @@ except ImportError:
 
 
 class ScrolledFrame(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -6706,6 +6723,7 @@ except ImportError:
 
 
 class ScrolledListBox(MegaWidget):
+
     _classBindingsDefinedFor = 0
 
     def __init__(self, parent = None, **kw):
@@ -7087,6 +7105,7 @@ except ImportError:
 
 
 class ScrolledText(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
@@ -7738,6 +7757,7 @@ forwardmethods(SelectionDialog, ScrolledListBox, '_list')
 
 
 class TextDialog(Dialog):
+
     def __init__(self, parent = None, **kw):
         # Define the megawidget options.
 
@@ -8225,6 +8245,7 @@ except ImportError:
 
 
 class ComboBox(MegaWidget):
+
     def __init__(self, parent = None, **kw):
 
         # Define the megawidget options.
