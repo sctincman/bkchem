@@ -38,10 +38,11 @@ from parents import meta_enabled, area_colored, point_drawable, text_like, child
 
 
 
-class vertex_common( object):
-  """implements some properties and methods common for all vertices
-  (children of oasa.chem_vertex), such as numbering and mark support"""
+class vertex_common(object):
+  """Properties and methods common for all vertices (oasa.chem_vertex).
 
+  Such as numbering and mark support.
+  """
   meta__undo_properties = ('number', 'show_number')
   meta__undo_copy = ('marks',)
   meta__undo_children_to_record = ('marks',)
@@ -56,7 +57,6 @@ class vertex_common( object):
     self._number = None
 
 
-  # number
   @property
   def number(self):
     """Number associated with the atom.
@@ -82,7 +82,6 @@ class vertex_common( object):
         numbers[0].redraw()
 
 
-  # show_number
   @property
   def show_number(self):
     """Should the number (if present) be displayed.
@@ -183,12 +182,8 @@ class vertex_common( object):
     return m
 
 
-
-
   def get_marks_by_type( self, mark_type):
     return [m for m in self.marks if m.__class__.__name__ == mark_type]
-
-
 
 
   def reposition_marks( self):
@@ -198,8 +193,6 @@ class vertex_common( object):
       x, y = self.find_place_for_mark( m.__class__.__name__)
       m.move_to( x, y)
       self.marks.add( m)
-
-
 
 
   def find_place_for_mark( self, mark, resolution=30):
@@ -274,19 +267,19 @@ class vertex_common( object):
 
 
 
+class drawable_chem_vertex(oasa.chem_vertex,
+                           meta_enabled,
+                           area_colored,
+                           point_drawable,
+                           text_like,
+                           child_with_paper,
+                           vertex_common):
+  """Common ancestor for all children of oasa.chem_vertex in BKChem.
 
-
-
-
-
-
-
-
-class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_drawable, text_like, child_with_paper, vertex_common):
-  """this is a common ancestor for all children of oasa.chem_vertex in BKChem. It adds some
-  basic functionality to the chem_vertex so that it is not needed to add it every child;
-  all the methods are tuned for always shown texts; atoms need to override something"""
-
+  It adds some basic functionality to the chem_vertex so that it is not needed
+  to add it every child. All the methods are tuned for always shown texts.
+  Atoms need to override something.
+  """
   # these values will be automaticaly read from paper.standard on __init__
   meta__used_standard_values = ['line_color','area_color','font_size','font_family','show_hydrogens']
   # undo meta infos
@@ -299,7 +292,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
                           ( 'z', 'molecule', 'pos', 'charge')
   meta__undo_copy = vertex_common.meta__undo_copy + ('_neighbors',)
   meta__undo_children_to_record = vertex_common.meta__undo_children_to_record
-
 
 
   def __init__( self, standard=None, xy=(), molecule=None):
@@ -326,10 +318,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.focus_item = None
 
 
-  ## ---------------------------------------- PROPERTIES ------------------------------
-
-
-  # molecule
   @property
   def molecule(self):
     return self._molecule
@@ -340,7 +328,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self._molecule = mol
 
 
-  # x
   @property
   def x(self):
     return self._x
@@ -351,17 +338,16 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self._x = Screen.any_to_px( x)
 
 
-  # y
   @property
   def y(self):
     return self._y
+
 
   @y.setter
   def y(self, y):
     self._y = Screen.any_to_px( y)
 
 
-  # z
   @property
   def z(self):
     return self._z or 0
@@ -372,7 +358,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self._z = z
 
 
-  # pos
   @property
   def pos(self):
     return self._pos
@@ -384,7 +369,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.dirty = 1
 
 
-  # parent
   @property
   def parent(self):
     """Returns self.molecule.
@@ -398,7 +382,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.molecule = par
 
 
-  # drawn
   @property
   def drawn(self):
     """Is the atoms drawn?
@@ -410,7 +393,7 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     return 0
 
 
-  # font_size (override of text_like.font_size)
+  # Override of text_like.font_size
   @property
   def font_size(self):
     return self._font_size
@@ -422,16 +405,13 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.dirty = 1
 
 
-  # xml_ftext (override text_like.xml_ftext)
+  # Override text_like.xml_ftext
   @property
   def xml_ftext(self):
     """Text used for rendering using the ftext class.
 
     """
     return self.symbol
-
-
-  ## // -------------------- END OF PROPERTIES --------------------------
 
 
   def copy_settings( self, other):
@@ -443,8 +423,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     child_with_paper.copy_settings( self, other)
     other.z = self.z
     #other.pos = self.pos
-
-
 
 
   def decide_pos( self):
@@ -464,8 +442,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       self.pos = 'center-last'
     else:
       self.pos = 'center-first'
-
-
 
 
   def draw( self, redraw=False):
@@ -499,8 +475,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self._reposition_on_redraw = 0
 
 
-
-
   def redraw( self, suppress_reposition=0):
     if self._reposition_on_redraw and not suppress_reposition:
       self.reposition_marks()
@@ -529,17 +503,12 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.dirty = 0
 
 
-
-
-
   def focus( self):
     self.paper.itemconfig( self.selector, fill='grey')
 
 
-
   def unfocus( self):
     self.paper.itemconfig( self.selector, fill=self.area_color)
-
 
 
   def select( self):
@@ -547,12 +516,9 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self._selected = 1
 
 
-
-
   def unselect( self):
     self.paper.itemconfig( self.selector, outline='')
     self._selected = 0
-
 
 
   def move( self, dx, dy, dont_move_marks=False):
@@ -574,18 +540,14 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     # self.dirty = d
 
 
-
   def move_to( self, x, y, dont_move_marks=False):
     dx = x - self.x
     dy = y - self.y
     self.move( dx, dy, dont_move_marks=dont_move_marks)
 
 
-
   def get_xy( self):
     return self.x, self.y
-
-
 
 
   def get_xyz( self, real=0):
@@ -597,9 +559,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       return x, y, z
     else:
       return self.x, self.y, self.z
-
-
-
 
 
   def delete( self):
@@ -619,9 +578,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     [m.delete() for m in self.marks]
     self.marks = set()
     return self
-
-
-
 
 
   def toggle_center( self, mode = 0):
@@ -649,8 +605,6 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
     self.update_font()
 
 
-
-
   def lift( self):
     # marks
     [m.lift() for m in self.marks]
@@ -665,14 +619,12 @@ class drawable_chem_vertex( oasa.chem_vertex, meta_enabled, area_colored, point_
       self.paper.lift( self.selector)
 
 
-
   def transform( self, tr):
     x, y, z = tr.transform_xyz( self.x, self.y, self.z)
     self.move_to( x, y, dont_move_marks=1)
     self.z = z
     for m in self.marks:
       m.transform( tr)
-
 
 
   def bbox( self, substract_font_descent=False):
