@@ -323,7 +323,8 @@ def set_symbol( a, name):
   a.molecule.replace_vertices( a, v)
   a.delete()
   v.draw()
-  [b.redraw() for b in v.get_neighbor_edges()]
+  for b in v.neighbor_edges:
+    b.redraw()
 
 
 def set_mark_size( o, value):
@@ -335,7 +336,8 @@ def set_mark_size( o, value):
 def set_symbol_pos( o, value):
   o.pos = value
   o.redraw()
-  [b.redraw() for b in o.neighbor_edges]
+  for b in o.neighbor_edges:
+    b.redraw()
 
 
 setter_functions = {'show': set_show,
