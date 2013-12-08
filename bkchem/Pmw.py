@@ -3150,28 +3150,28 @@ class EntryField(MegaWidget):
 
     def _getValidity(self):
         text = self._entryFieldEntry.get()
-        dict = self._validationInfo
+        d    = self._validationInfo
         args = self._validationArgs
 
-        if dict['validator'] is not None:
-            status = dict['validator'](*(text,), **args)
+        if d['validator'] is not None:
+            status = d['validator'](*(text,), **args)
             if status != OK:
                 return status
 
         # Check for out of (min, max) range.
-        if dict['stringtovalue'] is not None:
-            min = dict['min']
-            max = dict['max']
+        if d['stringtovalue'] is not None:
+            min = d['min']
+            max = d['max']
             if min is None and max is None:
                 return OK
-            val = dict['stringtovalue'](*(text,), **args)
+            val = d['stringtovalue'](*(text,), **args)
             if min is not None and val < min:
-                if dict['minstrict']:
+                if d['minstrict']:
                     return ERROR
                 else:
                     return PARTIAL
             if max is not None and val > max:
-                if dict['maxstrict']:
+                if d['maxstrict']:
                     return ERROR
                 else:
                     return PARTIAL
