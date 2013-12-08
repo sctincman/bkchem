@@ -2356,7 +2356,7 @@ class rapid_draw_mode( edit_mode):
         Store.app.paper.select( [self._bond_to_fix])
         self._bond_to_fix = None
       else:
-        Store.app.paper.select( [self._start_atom.get_neighbor_edges()[0]])
+        Store.app.paper.select([self._start_atom.neighbor_edges[0]])
       Store.app.clean()
 
     self._start_atom = None
