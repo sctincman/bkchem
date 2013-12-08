@@ -621,7 +621,7 @@ class chem_paper(Canvas, object):
   def onread_id_sandbox_finish( self, apply_to=None):
     Store.id_manager = self.__old_id_manager
     del self.__old_id_manager
-    if apply_to == None:
+    if apply_to is None:
       os = self.stack
     else:
       os = apply_to
@@ -1535,19 +1535,19 @@ class chem_paper(Canvas, object):
       self._paper_properties['size_y'] = sy
 
     # crop svg
-    if crop_svg != None:
+    if crop_svg is not None:
       self._paper_properties['crop_svg'] = crop_svg
 
-    if crop_margin != None:
+    if crop_margin is not None:
       self._paper_properties['crop_margin'] = crop_margin
 
-    if use_real_minus != None:
+    if use_real_minus is not None:
       old = 'use_real_minus' in self._paper_properties and self._paper_properties['use_real_minus'] or 0
       self._paper_properties['use_real_minus'] = use_real_minus
       if old != use_real_minus:
         [i.redraw() for i in self.stack]
 
-    if replace_minus != None:
+    if replace_minus is not None:
       self._paper_properties['replace_minus'] = replace_minus
 
     self.create_background()
