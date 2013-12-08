@@ -173,10 +173,10 @@ class Vector(object):
         return map(self.tk.getdouble, self.tk.splitlist(text))
 
 
-    def __setslice__(self, start, end, list):
+    def __setslice__(self, start, end, l):
         if start > end:
             end = start
-        self.set(self[:start] + list + self[end:])
+        self.set(self[:start] + l + self[end:])
 
 
     def __delslice__(self, start, end):
@@ -184,12 +184,12 @@ class Vector(object):
             self.set(self[:start] + self[end:])
 
 
-    def __add__(self, list):
-        return self[:] + list
+    def __add__(self, l):
+        return self[:] + l
 
 
-    def __radd__(self, list):
-        return list + self[:]
+    def __radd__(self, l):
+        return l + self[:]
 
 
     def __mul__(self, n):
