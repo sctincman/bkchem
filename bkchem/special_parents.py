@@ -70,8 +70,11 @@ class vertex_common(object):
 
   @number.setter
   def number(self, number):
-    if number:
-      self._number = unicode( number)
+    if number is not None:
+      if not isinstance(number, int):
+        self._number = int(number)
+      else:
+        self._number = number
     else:
       self._number = number # we do not want to convert None to unicode :)
     if self._number is not None and self.show_number:
