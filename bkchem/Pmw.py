@@ -3729,7 +3729,10 @@ class MainMenuBar(MegaArchetype):
             if traverseSpec in name and lowerLetter not in hotkeyList:
                 kw['underline'] = name.index(traverseSpec)
         else:
-            targets = string.digits + string.letters
+            if sys.version_info[0] > 2:
+                targets = string.digits + string.ascii_letters
+            else:
+                targets = string.digits + string.letters
             lowerName = name.lower()
             for letter_index in range(len(name)):
                 letter = lowerName[letter_index]
