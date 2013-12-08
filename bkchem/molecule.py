@@ -417,8 +417,8 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
 
   def gen_bonds_between( self, a1, a2):
     "yields all bonds between atoms a1 and a2"
-    for e in a1.get_neighbor_edges():
-      if e in a2.get_neighbor_edges():
+    for e in a1.neighbor_edges:
+      if e in a2.neighbor_edges:
         yield e
 
 
