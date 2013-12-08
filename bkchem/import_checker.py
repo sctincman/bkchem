@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Check whether all important imports are available.
 
-"""checks whether all important imports are available"""
+"""
 
 __all__ = ['PIL_available','Pmw_available','PIL_state','PIL_prefix',
            'oasa_available','python_version_ok','python_version']
