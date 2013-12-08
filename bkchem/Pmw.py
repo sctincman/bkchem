@@ -8069,13 +8069,13 @@ class TimeCounter(MegaWidget):
         return self.getstring()
 
     def setvalue(self, text):
-        list = string.split(text, ':')
-        if len(list) != 3:
+        l = string.split(text, ':')
+        if len(l) != 3:
             raise ValueError('invalid value: ' + text)
 
-        self._hour = string.atoi(list[0])
-        self._minute = string.atoi(list[1])
-        self._second = string.atoi(list[2])
+        self._hour = string.atoi(l[0])
+        self._minute = string.atoi(l[1])
+        self._second = string.atoi(l[2])
 
         self._setHMS()
 
