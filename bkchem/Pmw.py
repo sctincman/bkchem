@@ -2894,7 +2894,7 @@ class ButtonBox(MegaWidget):
         self._timerId = None
 
         # Determine the width of the maximum length button.
-        max = 0
+        maxV = 0
         horizontal = (self['orient'] == 'horizontal')
         for index in range(len(self._buttonList)):
             gridIndex = index * 2 + 1
@@ -2902,16 +2902,16 @@ class ButtonBox(MegaWidget):
                 width = self._buttonBoxFrame.grid_bbox(gridIndex, 0)[2]
             else:
                 width = self._buttonBoxFrame.grid_bbox(0, gridIndex)[2]
-            if width > max:
-                max = width
+            if width > maxV:
+                maxV = width
 
         # Set the width of all the buttons to be the same.
         if horizontal:
             for index in range(len(self._buttonList)):
                 self._buttonBoxFrame.grid_columnconfigure(index * 2 + 1,
-                        minsize = max)
+                        minsize = maxV)
         else:
-            self._buttonBoxFrame.grid_columnconfigure(0, minsize = max)
+            self._buttonBoxFrame.grid_columnconfigure(0, minsize = maxV)
 
 ######################################################################
 ### File: PmwEntryField.py
@@ -3157,17 +3157,17 @@ class EntryField(MegaWidget):
 
         # Check for out of (min, max) range.
         if d['stringtovalue'] is not None:
-            min = d['min']
-            max = d['max']
-            if min is None and max is None:
+            minV = d['min']
+            maxV = d['max']
+            if minV is None and maxV is None:
                 return OK
             val = d['stringtovalue'](*(text,), **args)
-            if min is not None and val < min:
+            if minV is not None and val < minV:
                 if d['minstrict']:
                     return ERROR
                 else:
                     return PARTIAL
-            if max is not None and val > max:
+            if maxV is not None and val > maxV:
                 if d['maxstrict']:
                     return ERROR
                 else:
@@ -8045,18 +8045,18 @@ class TimeCounter(MegaWidget):
             self._drawArrow(btn, self.arrowDirection[btn])
 
     def _min(self):
-        min = self['min']
-        if min is None:
+        minV = self['min']
+        if minV is None:
             self._minVal = 0
         else:
-            self._minVal = timestringtoseconds(min)
+            self._minVal = timestringtoseconds(minV)
 
     def _max(self):
-        max = self['max']
-        if max is None:
+        maxV = self['max']
+        if maxV is None:
             self._maxVal = None
         else:
-            self._maxVal = timestringtoseconds(max)
+            self._maxVal = timestringtoseconds(maxV)
 
     def getvalue(self):
         return self.getstring()
@@ -8107,12 +8107,12 @@ class TimeCounter(MegaWidget):
                 int(self._minuteCounterEntry.get()) * 60 + \
                 int(self._secondCounterEntry.get()) + \
                 factor * increment
-        min = self._minVal
-        max = self._maxVal
-        if value < min:
-          value = min
-        if max is not None and value > max:
-          value = max
+        minV = self._minVal
+        maxV = self._maxVal
+        if value < minV:
+          value = minV
+        if maxV is not None and value > maxV:
+          value = maxV
 
         self._hour = value /3600
         self._minute = (value - (self._hour*3600)) / 60
