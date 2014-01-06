@@ -9,7 +9,7 @@ for lang in os.listdir( locale_dir):
     print("-- language:", lang)
     filename = os.path.join( locale_dir, lang, 'BKChem.po')
     try:
-        f = file( filename, 'r')
+        f = open(filename, 'r')
     except:
         print("Could not open the file %s" % filename)
         continue
