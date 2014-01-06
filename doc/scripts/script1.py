@@ -9,15 +9,16 @@ if len(sys.argv) <= 1:
   sys.exit()
 
 # then we import bkchem and threading
-from bkchem.bkchem import bkchem
 import threading
+
+from bkchem.bkchem import bkchem
 
 # bkchem.myapp is the application instance
 app = bkchem.myapp
 
 # we need to set batch mode = 1 if we want to suppress some interactive warnings,
 # questions and mouse events
-app.in_batch_mode = 1  
+app.in_batch_mode = 1
 
 # now we start the application in a separate thread to be able to manipulate it
 t = threading.Thread( target=app.mainloop, name='app')
@@ -41,7 +42,4 @@ for mol in app.paper.molecules:
 # finally we save the result and quit
 app.save_CDML()
 app.destroy()
-
-
-
 
