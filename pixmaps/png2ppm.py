@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import PIL.Image as Image
 import os.path
 import os
@@ -23,4 +25,4 @@ for file in os.listdir( os.getcwd()):
         img.paste( Image.merge( "RGB", (r,g,b)), (0, 0, size[0], size[1]), a)
 
       img.convert('RGB').save( pth[0]+'.ppm','PPM')
-      print "converting %s.png to %s.ppm" % (pth[0],pth[0])
+      print("Converting %s.png to %s.ppm" % (pth[0], pth[0]))
