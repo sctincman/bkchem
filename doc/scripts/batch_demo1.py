@@ -1,4 +1,6 @@
 
+from __future__ import print_function
+
 import os
 
 
@@ -26,7 +28,7 @@ def update_svgs_in_path( dir):
         else:
           ignored += 1
 
-  print "resaved %d files, ignored %d" % (made, ignored)
+  print("Resaved %d files, ignored %d" % (made, ignored))
 
 
 
@@ -34,21 +36,21 @@ def update_svg( f):
   """tries to open a file in BKChem, in case of success sets font size of
   all atoms to 12 and resaves the file."""
 
-  print f, "...",
+  print(f, "...", end=' ')
   # App.load_CDML returns true on successful load;
   # if replace argument is set to 1 the file is loaded to the same tab,
   # instead of opening a new one;
   # this prevents memory comsumption to raise to incredible values
   # when many files are processed
   if App.load_CDML( f, replace=1):
-    print "OK"
+    print("OK")
     for mol in App.paper.molecules:
       for atom in mol.atoms:
         atom.font_size = 12
     App.save_CDML()
     return 1
   else:
-    print "ignoring"
+    print("ignoring")
     return 0
 
 
@@ -59,5 +61,5 @@ if Args:
   for arg in Args:
     update_svgs_in_path( arg)
 else:
-  print "You must supply a path as first argument to the batch script"
+  print("You must supply a path as first argument to the batch script.")
 
