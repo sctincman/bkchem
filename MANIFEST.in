@@ -7,6 +7,7 @@ include plugins/*.py
 include pixmaps/*.gif
 include images/logo.ppm
 include images/icon.ico
+include images/bkchem.svg
 include images/bkchem*.png
 recursive-include doc *.html *.py *.png *.pdf
 recursive-include dtd *.dtd *.xsd
