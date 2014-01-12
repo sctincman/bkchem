@@ -23,14 +23,16 @@ import sys
 
 
 env_vars = {'template': 'BKCHEM_TEMPLATE_PATH',
-            'pixmap': 'BKCHEM_PIXMAP_PATH',
-            'image': 'BKCHEM_IMAGE_PATH',
-            'plugin': 'BKCHEM_PLUGIN_PATH'}
+            'pixmap':   'BKCHEM_PIXMAP_PATH',
+            'image':    'BKCHEM_IMAGE_PATH',
+            'plugin':   'BKCHEM_PLUGIN_PATH',
+           }
 
 std_dirs = {'template': '../templates',
-            'pixmap': '../pixmaps',
-            'image': '../images',
-            'plugin': '../plugins'}
+            'pixmap':   '../pixmaps',
+            'image':    '../images',
+            'plugin':   '../plugins',
+           }
 
 
 
@@ -58,7 +60,6 @@ def get_path( filename, file_category):
     if os.path.isfile( path):
       return path
   return None
-
 
 
 def get_config_filename( name, level="global", mode="r"):
@@ -93,9 +94,6 @@ def get_config_filename( name, level="global", mode="r"):
   return None
 
 
-
-
-
 def get_dirs( file_category):
   if os.name in ('posix', 'nt'):
     if os.getenv( env_vars[ file_category]):
@@ -109,7 +107,6 @@ def get_dirs( file_category):
     dirs = std_dirs[ file_category]
 
   return dirs
-
 
 
 def get_local_templates():
