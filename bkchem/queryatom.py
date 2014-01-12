@@ -68,15 +68,13 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
       self.read_package( package)
 
 
-
-  ## ---------------------------------------- PROPERTIES ------------------------------
-
-
-  # name
-  def _get_name( self):
+  @property
+  def name(self):
     return self.__name
 
-  def _set_name( self, name):
+
+  @name.setter
+  def name(self, name):
     try:
       t = unicode( name)
     except UnicodeDecodeError:
@@ -84,61 +82,69 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
     self.__name = t.encode('utf-8')
     self.dirty = 1
 
-  name = property( _get_name, _set_name)
-
-
 
   #LOOK charge
-  def _get_charge( self):
+  @property
+  def charge(self):
     return self.__charge
 
-  def _set_charge( self, charge):
+
+  @charge.setter
+  def charge(self, charge):
     self.__charge = charge
     self.dirty = 1
 
-  charge = property( _get_charge, _set_charge)
-
-
 
   #LOOK valency (setting)
-  def _get_valency( self):
+  @property
+  def valency(self):
+    """Atom's (maximum) valency.
+
+    Used for hydrogen counting.
+    """
     return 1
 
-  def _set_valency( self, val):
+
+  @valency.setter
+  def valency(self, val):
     pass
 
-  valency = property( _get_valency, _set_valency, None, "atoms (maximum) valency, used for hydrogen counting")
 
+  @property
+  def show(self):
+    """Should the atom symbol be displayed?
 
-
-
-  ## JUST TO MIMICK ATOM
-  # show
-  def _get_show( self):
+    Accepts both 0|1 and yes|no.
+    """
     return 1
 
-  def _set_show( self, show):
+
+  @show.setter
+  def show(self, show):
     pass
 
-  show = property( _get_show, _set_show, None,
-                   "should the atom symbol be displayed? accepts both 0|1 and yes|no")
 
-
-  # show_hydrogens
-  def _get_show_hydrogens( self):
+  @property
+  def show_hydrogens(self):
     return 1
 
-  def _set_show_hydrogens( self, show_hydrogens):
+
+  @show_hydrogens.setter
+  def show_hydrogens(self, show_hydrogens):
     pass
-
-  show_hydrogens = property( _get_show_hydrogens, _set_show_hydrogens)
-
-  ## //
-
 
 
   # free-sites - replaces oasa.atom.free_sites
-  def _set_free_sites( self, free_sites):
+  @property
+  def free_sites(self):
+    """Atom's free_sites.
+
+    """
+    return self._free_sites
+
+
+  @free_sites.setter
+  def free_sites(self, free_sites):
     self._free_sites = free_sites
     marks = self.get_marks_by_type( "free_sites")
     if self._free_sites:
@@ -151,26 +157,16 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
         self.remove_mark( "free_sites")
 
 
-  def _get_free_sites( self):
-    return self._free_sites
+  @property
+  def free_sites_text(self):
+    """Atom's free_sites as text.
 
-  free_sites = property( _get_free_sites, _set_free_sites, None, "atoms free_sites")
-
-
-  def _get_free_sites_text( self):
-    """used by free-site mark"""
+    Used by free-site mark.
+    """
     if self.free_sites:
       return "[%d]" % self.free_sites
     else:
       return ""
-
-  free_sites_text = property( _get_free_sites_text, None, None, "atoms free_sites as text")
-
-
-
-
-  ## // -------------------- END OF PROPERTIES --------------------------
-
 
 
   def set_name( self, name, interpret=1, occupied_valency=None):
