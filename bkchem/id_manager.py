@@ -22,7 +22,7 @@ from warnings import warn
 
 
 
-class id_manager:
+class id_manager(object):
 
   def __init__(self):
     self.id_map = {}
