@@ -16,12 +16,10 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""set of helper graphics items such as selection rects etc."""
+"""Set of helper graphics items such as selection rects etc.
+
+"""
 
 import misc
 import copy
@@ -161,9 +159,11 @@ class selection_rect:
 
   
 
-class selection_square( selection_rect):
-  """used to draw square around an object with hanldes in corners;
-  provides user interaction for resizing, moving etc."""
+class selection_square(selection_rect):
+  """For drawing square around an object with hanldes in corners.
+
+  Provide user interaction for resizing, moving etc.
+  """
 
   def draw( self):
     if not self.coords:
@@ -219,7 +219,9 @@ class selection_square( selection_rect):
     self.redraw()
 
   def get_fix( self):
-    """returns the coords that should be fixed if we now start to drag the selected corner"""
+    """Return coords that should be fixed if we now drag selected corner.
+
+    """
     fix = [0,0]
     self.coords = misc.normalize_coords( self.coords)
     if self._active_item in (self._lt, self._lb):
