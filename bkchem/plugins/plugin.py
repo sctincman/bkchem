@@ -29,7 +29,8 @@ sys.path.append('../')
 import xml.dom.minidom as dom
 
 
-class importer:
+
+class importer(object):
 
   gives_cdml = 1
   gives_molecule = 0
@@ -46,11 +47,12 @@ class importer:
 
   def get_molecules( self, file_name):
     return []
- 
-  
-class exporter:
 
-  def __init__( self, paper):
+
+
+class exporter(object):
+
+  def __init__(self, paper):
     self.paper = paper
     self.interactive = True # whether the exporter should ask anything
 
