@@ -1,4 +1,7 @@
+RELEASE 0.14.0-pre3
+----------------------------------------
  * changes - increase required Python version to 2.6
+           - initial support for Python 3
 
  * translations - update strings from sources
                 - cs updated (Jiří Pinkava)

@@ -35,6 +35,13 @@ with BKChem in Windows binary builds. All the credit for this nice piece of
 software goes to its creators.
 This information comes with the software:
 
-Copyright © The International Union of Pure and Applied Chemistry 2005: IUPAC
+Copyright © 2011 IUPAC and InChI Trust Limited
 International Chemical Identifier (InChI)
-(contact: secretariat@iupac.org)
+International Union of Pure and Applied Chemistry (IUPAC)
+This library is free software; you can redistribute it and/or modify it under
+the terms of the IUPAC/InChI Trust InChI Licence No. 1.0, or (at your option)
+any later version.
+Contact        ulrich@inchi-trust.org
+IUPAC          http://www.iupac.org/inchi
+InChI Trust    http://www.inchi-trust.org
+

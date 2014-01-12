@@ -18,12 +18,12 @@
 #--------------------------------------------------------------------------
 
 
-debug = 1
+debug = 0
 devel = 0
 
 current_CDML_version = '0.16'
 
-current_BKChem_version = '0.14.0-pre2'
+current_BKChem_version = '0.14.0-pre3'
 
 
 
