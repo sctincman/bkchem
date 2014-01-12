@@ -33,7 +33,7 @@ class importer(object):
   gives_cdml = 1
   gives_molecule = 0
 
-  def __init__( self):
+  def __init__(self):
     pass
 
 
@@ -43,10 +43,12 @@ class importer(object):
     """
     return 1
 
-  def get_cdml_dom( self, file_name):
+
+  def get_cdml_dom(self, file_name):
     return None
 
-  def get_molecules( self, file_name):
+
+  def get_molecules(self, file_name):
     return []
 
 
@@ -57,26 +59,33 @@ class exporter(object):
     self.paper = paper
     self.interactive = True # whether the exporter should ask anything
 
-  def on_begin( self):
+
+  def on_begin(self):
     return 1
 
-  def write_to_file( self, file_name):
+
+  def write_to_file(self, file_name):
     pass
 
 
-class import_exception( Exception):
-  def __init__( self, value):
+
+class import_exception(Exception):
+
+  def __init__(self, value):
     self.value = value
 
-  def __str__( self):
+
+  def __str__(self):
     return self.value
 
 
-class export_exception( Exception):
-  def __init__( self, value):
+
+class export_exception(Exception):
+
+  def __init__(self, value):
     self.value = value
 
-  def __str__( self):
+
+  def __str__(self):
     return self.value
 
-  
