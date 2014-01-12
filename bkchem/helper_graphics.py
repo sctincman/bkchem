@@ -97,7 +97,7 @@ class selection_rect(object):
 
   def get_cursor( self, x, y):
     return "cross"
-  
+
   def focus( self, item=None):
     if item:
       if item == self._rect:
@@ -160,7 +160,7 @@ class selection_rect(object):
   def lift( self):
     [self.paper.lift( i) for i in self.get_items()]
 
-  
+
 
 class selection_square(selection_rect):
   """For drawing square around an object with hanldes in corners.
@@ -180,7 +180,7 @@ class selection_square(selection_rect):
     self._lb = self.paper.create_rectangle( (x1, y2-2, x1+2, y2), outline=self.color, fill=self.color, tags=('helper_rect'))
     self._rb = self.paper.create_rectangle( (x2-2, y2-2, x2, y2), outline=self.color, fill=self.color, tags=('helper_rect'))
     [self.paper.register_id( i, self) for i in self.get_items()]
-    
+
   def redraw( self):
     if not self._rect:
       self.draw()
