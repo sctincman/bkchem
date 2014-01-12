@@ -22,18 +22,16 @@
 
 """
 
-from oasa import geometry
 import xml.dom.minidom as dom
+
+from oasa import geometry
 from xml.dom.minidom import Document
-import re
+
 import data
 import dom_extensions
-import operator
-import dom_extensions
-import os
+
 from tuning import Tuning
 from ftext import ftext as ftext_class
-
 from singleton_store import Screen
 
 
