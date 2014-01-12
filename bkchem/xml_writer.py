@@ -18,7 +18,9 @@
 #--------------------------------------------------------------------------
 
 
-"""provides exporters to XML formats (SVG for now)"""
+"""Exporters to XML formats (SVG for now).
+
+"""
 
 from oasa import geometry
 import xml.dom.minidom as dom
@@ -47,12 +49,19 @@ class XML_writer:
   def construct_dom_tree( self, top_levels):
     pass
 
-  def write_xml_to_file( self, file):
-    "writes XML representation of entire 'paper' to 'file'"
+
+  def write_xml_to_file(self, file):
+    """Write XML representation of entire 'paper' to 'file'.
+
+    """
     pass
 
-  def get_nicely_formated_document( self):
-    """returns text form of self.document indented with dom_extensions.safe_indent"""
+
+  def get_nicely_formated_document(self):
+    """Return text form of self.document.
+
+    Indented with dom_extensions.safe_indent.
+    """
     dom_extensions.safe_indent( self.top, dont_indent=("text","ftext","user-data"))
     return self.document.toxml()
 
@@ -71,10 +80,11 @@ class SVG_writer( XML_writer):
     # the conversion function for coordinates
     self.convert = lambda x: "%.2f" % x
 
-    
 
-  def construct_dom_tree( self, top_levels):
-    """constructs the SVG dom from all top_levels"""
+  def construct_dom_tree(self, top_levels):
+    """Construct the SVG dom from all top_levels.
+
+    """
     # the constants
     border_size = self.paper.get_paper_property( 'crop_margin')
 
@@ -136,11 +146,12 @@ class SVG_writer( XML_writer):
           self.add_polygon( o)
         elif o.object_type == 'polyline':
           self.add_polyline( o)
-          
 
-    
-  def add_bond( self, b):
-    """adds bond item to SVG document"""
+
+  def add_bond(self, b):
+    """Add bond item to SVG document.
+
+    """
     if not b.item:
       return
     line_width = (b.type == 'b') and b.wedge_width or b.type != 'w' and b.line_width or 1.0
@@ -203,9 +214,11 @@ class SVG_writer( XML_writer):
                                            ( 'y2', self.convert( y2)),
                                            ( 'stroke-width', str( b.line_width))))
 
-            
-  def add_arrow( self, a):
-    """adds arrow item to SVG document"""
+
+  def add_arrow(self, a):
+    """Add arrow item to SVG document.
+
+    """
     i = self._id
     for item in a.items:
       # polygons (arrow heads, etc.)
@@ -273,8 +286,10 @@ class SVG_writer( XML_writer):
         self._id += 1
 
 
-  def add_text( self, t):
-    """adds text item to SVG document"""
+  def add_text(self, t):
+    """Add text item to SVG document.
+
+    """
     x1, y1 = t.get_xy()
     x, y, x2, y2 = t.ftext.bbox( complete=True)
     _x, y, _x2, y2 = t.ftext.bbox( complete=False)
@@ -298,8 +313,11 @@ class SVG_writer( XML_writer):
                                          ( 'textLength', "%d" % (x2-x+len( [1 for i in t.xml_ftext if i=="-" and t.paper.get_paper_property( 'replace_minus')])))))
     self.group.appendChild( text)
 
-  def add_plus( self, p):
-    """adds plus item to SVG document"""
+
+  def add_plus(self, p):
+    """Add plus item to SVG document.
+
+    """
     item = p.item
     x1, y1 = p.get_xy()
     x, y, x2, y2 = self.paper.bbox( item)
@@ -320,8 +338,11 @@ class SVG_writer( XML_writer):
                                                  ( "y", self.convert( round( y1))),
                                                  ( 'fill', self.cc( p.line_color))))
 
-  def add_atom( self, a):
-    """adds atom item to SVG document"""
+
+  def add_atom(self, a):
+    """Add atom item to SVG document.
+
+    """
     if a.show:
       item = a.selector
       x1, y1 = a.get_xy()
