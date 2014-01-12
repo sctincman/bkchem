@@ -22,7 +22,6 @@
 """
 
 import misc
-import copy
 
 class selection_rect:
   """used to draw rectangle around an object with hanldes on sides and in corners;
