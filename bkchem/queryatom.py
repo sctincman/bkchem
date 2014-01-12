@@ -17,22 +17,26 @@
 
 #--------------------------------------------------------------------------
 
+"""The query_atom class.
 
-"""home for query_atom class"""
+"""
 
 from __future__ import division
 
-from warnings import warn
-import dom_extensions
-from oasa import periodic_table as PT
-import marks
-from special_parents import drawable_chem_vertex
-import data
 import re
-import debug
-
 import oasa
+
+from oasa import periodic_table as PT
+
+import data
+import debug
+import marks
+import dom_extensions
+
+from warnings import warn
 from singleton_store import Screen
+from special_parents import drawable_chem_vertex
+
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
