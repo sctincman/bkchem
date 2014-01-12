@@ -238,7 +238,7 @@ class editPool( Frame):
     if len(event.keysym) > 1 and event.keysym in keysyms:
       if self.editPool.selection_present():
         self.editPool.delete( "anchor", "insert")
-      self.editPool.insert( 'insert', unicode( keysyms[ event.keysym]))
+      self.editPool.insert('insert', keysyms[event.keysym])
       return "break"
 
 
