@@ -33,7 +33,7 @@ from textatom import textatom
 
 
 
-class validator:
+class validator(object):
 
   def __init__( self):
     self.report = None
@@ -76,7 +76,7 @@ class validator:
     [self.validate_object( o) for o in objs]
 
 
-class validator_report:
+class validator_report(object):
 
   def __init__( self):
     #self._report_text = ""
