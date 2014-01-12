@@ -17,18 +17,17 @@
 
 #--------------------------------------------------------------------------
 
-
-to_serialize = { 'paper': ('molecules',),
-                 'molecule': ('atoms','bonds'),
-                 'atom': ('x','y','name','type'),
-                 'bond': ('type','order','atom1','atom2')
-                 }
-
 import types
 import xml.dom.minidom as dom
 
+to_serialize = {'paper':    ('molecules',),
+                'molecule': ('atoms','bonds'),
+                'atom':     ('x','y','name','type'),
+                'bond':     ('type','order','atom1','atom2')
+               }
 
-def serialize( o, doc, parent_element):
+
+def serialize(o, doc, parent_element):
   e = doc.createElement( o.object_type)
   parent_element.appendChild( e)
   if o.object_type in to_serialize:
@@ -39,12 +38,10 @@ def serialize( o, doc, parent_element):
       elif i in o.__class__.__dict__:
         v = o.__class__.__dict__[ i].fget( o)
       # serialize it
-      if type(v) == types.InstanceType: 
+      if type(v) == types.InstanceType:
         serialize( v, doc, e)
       elif type(v) in (types.ListType, types.TupleType):
         [serialize( j, doc, e) for j in v]
       else:
         e.setAttribute( i, str( v))
-    
-    
-    
+
