@@ -35,9 +35,13 @@ from ftext import ftext as ftext_class
 from singleton_store import Screen
 
 
-class XML_writer:
-  """This is abstract class that serves as parent for specialized writters - CDML, SVG ...
-  construct_dom_tree method is virtual and should be overriden"""
+
+class XML_writer(object):
+  """Abstract class that serves as parent for specialized writters.
+
+  CDML, SVG ...
+  construct_dom_tree method is virtual and should be overriden.
+  """
   def __init__( self, paper):
     self.paper = paper
     self.document = Document()
