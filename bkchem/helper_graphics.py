@@ -23,9 +23,13 @@
 
 import misc
 
-class selection_rect:
-  """used to draw rectangle around an object with hanldes on sides and in corners;
-  provides user interaction for resizing, moving etc."""
+
+
+class selection_rect(object):
+  """For drawing rectangle around an object with hanldes on sides and in corners.
+
+  Provide user interaction for resizing, moving etc.
+  """
 
   def __init__( self, paper, obj, resize_event=None, move_event=None, coords=()):
     self.object_type = 'selection_rect'
