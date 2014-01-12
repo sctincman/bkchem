@@ -234,7 +234,7 @@ class gtml_importer(object):
 
 
 
-class gtml_exporter:
+class gtml_exporter(object):
 
   def __init__( self, paper):
     pass
