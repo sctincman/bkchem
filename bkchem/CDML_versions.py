@@ -21,8 +21,8 @@
 
 """
 
-import dom_extensions as dom_ext      
 import data
+import dom_extensions as dom_ext
 
 class CDML_transformer_06_07:
 
