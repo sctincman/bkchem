@@ -1438,7 +1438,9 @@ Enter InChI:""")
       # we do not save (or load) handling info when in batch mode
       for key, value in Store.logger.handling.items():
         Store.pm.add_preference("logging_%s" % key, value)
-    f = os_support.get_opened_config_file( "prefs.xml", level="personal", mode="w")
+    f = os_support.get_opened_config_file("prefs.xml",
+                                          level="personal",
+                                          mode="wb")
     if f:
       Store.pm.write_to_file( f)
       f.close()
