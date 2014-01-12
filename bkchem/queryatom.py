@@ -57,7 +57,6 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
   # only number marks are allowed for query atoms
   #meta__allowed_marks = () #"atom_number","free_sites")
 
-
   def __init__( self, standard=None, xy=(), package=None, molecule=None):
     drawable_chem_vertex.__init__( self, standard=standard, xy=xy, molecule=molecule)
     if xy:
@@ -186,9 +185,6 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
   def interpret_name( self, name):
     lf = oasa.linear_formula.linear_formula( name, start_valency=self.valency)
     return lf.molecule
-      
-
-
 
 
   def read_package( self, package):
@@ -235,8 +231,6 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
       self.free_sites = int( package.getAttribute( 'free_sites'))
 
 
-
-
   def get_package( self, doc):
     """returns a DOM element describing the object in CDML,
     doc is the parent document which is used for element creation
@@ -261,7 +255,7 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
     x, y, z = map( Screen.px_to_text_with_unit, self.get_xyz( real=1))
     if self.z:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y), ('z', z)))
-    else: 
+    else:
       dom_extensions.elementUnder( a, 'point', attributes=(('x', x), ('y', y)))
     # marks
     for o in self.marks:
@@ -277,18 +271,12 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
     return a
 
 
-
-
   def get_formula_dict( self):
     """returns formula as dictionary that can
     be passed to functions in periodic_table"""
     return PT.formula_dict()
-      
 
 
   def __str__( self):
     return self.id
-
-
-
 
