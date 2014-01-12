@@ -24,7 +24,9 @@
 import data
 import dom_extensions as dom_ext
 
-class CDML_transformer_06_07:
+
+
+class CDML_transformer_06_07(object):
 
   output_version = '0.7'
   input_version = '0.6'
@@ -36,7 +38,8 @@ class CDML_transformer_06_07:
         b.setAttribute( 'type', 'up')
 
 
-class CDML_transformer_07_08:
+
+class CDML_transformer_07_08(object):
 
   output_version = '0.8'
   input_version = '0.7'
@@ -49,7 +52,9 @@ class CDML_transformer_07_08:
         t = types[ type]
         b.setAttribute( 'type', t)
 
-class CDML_transformer_08_09:
+
+
+class CDML_transformer_08_09(object):
 
   output_version = '0.9'
   input_version = '0.8'
@@ -58,7 +63,8 @@ class CDML_transformer_08_09:
     pass
 
 
-class CDML_transformer_09_10:
+
+class CDML_transformer_09_10(object):
 
   output_version = '0.10'
   input_version = '0.9'
@@ -83,7 +89,8 @@ class CDML_transformer_09_10:
                           (('length','1.6cm'),))
 
 
-class CDML_transformer_10_11:
+
+class CDML_transformer_10_11(object):
 
   output_version = '0.11'
   input_version = '0.10'
@@ -124,7 +131,8 @@ class CDML_transformer_10_11:
         b.removeAttribute( 'width')
 
 
-class CDML_transformer_11_12:
+
+class CDML_transformer_11_12(object):
 
   output_version = '0.12'
   input_version = '0.11'
@@ -134,7 +142,7 @@ class CDML_transformer_11_12:
 
 
 
-class CDML_transformer_12_13:
+class CDML_transformer_12_13(object):
 
   output_version = '0.13'
   input_version = '0.12'
@@ -148,10 +156,10 @@ class CDML_transformer_12_13:
         elif m.getAttribute( 'type') == 'minus':
           ch -= 1
       a.setAttribute( 'charge', str( ch))
-      
 
 
-class CDML_transformer_13_14:
+
+class CDML_transformer_13_14(object):
 
   output_version = '0.14'
   input_version = '0.13'
@@ -166,13 +174,15 @@ class CDML_transformer_13_14:
         a.setAttribute( "group-type", "builtin")
       else:
         pass
-      
 
 
-class CDML_transformer_14_15:
 
-  """CDML version 0.15 adds line_width attribute to the electronpair mark,
-  also multiplicity is now stored explicitly"""
+class CDML_transformer_14_15(object):
+  """CDML version 0.15.
+
+  Adds line_width attribute to the electronpair mark,
+  also multiplicity is now stored explicitly.
+  """
 
   output_version = '0.15'
   input_version = '0.14'
@@ -193,10 +203,12 @@ class CDML_transformer_14_15:
         a.setAttribute( "multiplicity", multiplicity)
 
 
-class CDML_transformer_15_16:
 
-  """CDML version 0.16 stores rich text as escaped value, not directly in XML -
-  that is '&lt;i>x&lt;/i>' instead of '<i>x</i>'
+class CDML_transformer_15_16(object):
+  """CDML version 0.16.
+
+  Stores rich text as escaped value, not directly in XML -
+  that is '&lt;i>x&lt;/i>' instead of '<i>x</i>'.
   """
 
   output_version = '0.16'
@@ -211,8 +223,8 @@ class CDML_transformer_15_16:
       a.appendChild( dom.ownerDocument.createTextNode( text))
 
 
-# LIST OF AVAILABLE TRANSFORMERS
 
+# LIST OF AVAILABLE TRANSFORMERS
 transformers = { '0.6': CDML_transformer_06_07,
                  '0.7': CDML_transformer_07_08,
                  '0.8': CDML_transformer_08_09,
