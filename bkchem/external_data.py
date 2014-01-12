@@ -48,7 +48,6 @@ class external_data_manager( object):
            'IntType': (int,),
            #'toplevel': ('molecule', 'arrow', 'plus', 'text', 'rect', 'oval', 'polygon', 'circle', 'square', 'reaction','polyline')
            }
-           
 
   reference_types = ("atom", "molecule", "bond")
 
@@ -70,7 +69,6 @@ class external_data_manager( object):
         self.read_data_definition( os.path.join( dir, name))
         #except:
         #  Store.log( "could not load definition file: %s", message_type="error")
-        
 
     return self.definitions.keys()
 
@@ -125,7 +123,7 @@ class external_data_manager( object):
         raise ValueError("the value '%s' type does not match the definition." % str( value))
     else:
       raise ValueError("the value '%s' type does not match the definition." % str( value))
-    
+
 
   def get_data( self, dclass, obj, category):
     """gets data for an object from the internal dictionary,
@@ -143,10 +141,10 @@ class external_data_manager( object):
       else:
         raise ValueError("wrong object type '%s' for dclass '%s'" % ( obj.object_type, dclass)        )
     raise ValueError("not registered dclass: %s" % dclass)
-      
+
 
   def value_matches_definition( self, dclass, obj, category, value):
-    """checks if the value is of the type provided in definition""" 
+    """checks if the value is of the type provided in definition"""
     if not dclass in self.records.keys():
       raise ValueError("not registered dclass: %s" % dclass)
     if not obj.object_type in self.definitions[dclass].keys():
@@ -159,7 +157,7 @@ class external_data_manager( object):
       return True
     else:
       return False
-    
+
 
   def conforms_to_type( self, value, t):
     if isinstance(t, list):
@@ -176,7 +174,7 @@ class external_data_manager( object):
         return False
     else:
       return isinstance( value, t)
-    
+
 
   def expand_type( self, t):
     return self.types[ t]
@@ -267,7 +265,7 @@ class ExternalDataEntry( Entry, object):
     if self.arrow:
       paper.delete( self.arrow)
       self.arrow = None
-    
+
 
 
 class ExternalDataList( Pmw.OptionMenu, object):
@@ -299,11 +297,11 @@ class ExternalDataList( Pmw.OptionMenu, object):
     if self.arrow:
       paper.delete( self.arrow)
       self.arrow = None
-    
+
 
 
 class ExternalDataListSelection( Pmw.RadioSelect, object):
-  
+
   def __init__( self, parent, type, **kw):
     Pmw.RadioSelect.__init__( self, parent, **kw)
     for t in type:
