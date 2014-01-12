@@ -114,16 +114,12 @@ def get_dirs( file_category):
 def get_local_templates():
   dir = get_local_templates_path()
   if os.path.isdir( dir):
-    return [os.path.join( dir, d) for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')] 
+    return [os.path.join( dir, d) for d in os.listdir( dir) if os.path.splitext( d)[1] in ('.cdml', '.cdgz', '.svg', '.svgz')]
   return []
-
-
 
 
 def get_personal_config_directory():
   return get_bkchem_private_dir()
-  
-
 
 
 def create_personal_config_directory( path=""):
@@ -144,12 +140,8 @@ def create_personal_config_directory( path=""):
   return None
 
 
-
-
 def get_local_templates_path():
   return os.path.join( get_personal_config_directory(), 'templates')
-  
-
 
 
 def get_module_path():
@@ -185,8 +177,6 @@ def get_bkchem_private_dir():
     dir = os.getenv( 'HOME') or '../'
     dir = os.path.join( dir, ".bkchem/")
   return dir
-  
-
 
 
 def get_bkchem_run_dir():
