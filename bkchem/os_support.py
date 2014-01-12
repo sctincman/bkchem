@@ -33,7 +33,8 @@ std_dirs = {'template': '../templates',
             'plugin': '../plugins'}
 
 
-class os_support_store:
+
+class os_support_store(object):
   private_dir_override = None
 
 
