@@ -16,12 +16,10 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""parent classes for import-export plugins"""
+"""Parent classes for import-export plugins.
+
+"""
 
 import sys
 sys.path.append('../')
@@ -38,8 +36,11 @@ class importer(object):
   def __init__( self):
     pass
 
-  def on_begin( self):
-    """this method is called before every import"""
+
+  def on_begin(self):
+    """This method is called before every import.
+
+    """
     return 1
 
   def get_cdml_dom( self, file_name):
