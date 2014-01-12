@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Starter of the application.
 
-"""this is just a starter of the application"""
+"""
 
 from __future__ import print_function
 
