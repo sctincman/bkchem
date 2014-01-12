@@ -48,7 +48,7 @@ def RGB_color(r, g, b):
 
 
 
-class Bitmap_writer:
+class Bitmap_writer(object):
   """Exporter to bitmap formats.
 
   """
