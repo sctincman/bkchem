@@ -35,8 +35,6 @@ class fragment( simple_parent):
   # explicit - created by user
   # linear_form - used to track linear forms
 
-  
-
   def __init__( self, id="", name="", type="explicit", strict=True):
     self.id = id
     self.name = name
@@ -45,31 +43,35 @@ class fragment( simple_parent):
     self.strict = strict # strict fragment must be a continuos subgraph, otherwise it is just a mixture of vertices and edges
     self.type = type # type is one of "explicit", "implicit", "linear_form" or custom string
     self.properties = {}  # this is the place for information about an particular fragment
-    
 
-  # properties
 
-  def _get_name( self):
+  @property
+  def name(self):
+    """Name of the fragment.
+
+    """
     return self._name
 
-  def _set_name( self, name):
+
+  @name.setter
+  def name(self, name):
     self._name = name
 
-  name = property( _get_name, _set_name, None, "name of the fragment")
 
+  @property
+  def id(self):
+    """ID of the fragment.
 
-  def _get_id( self):
+    """
     return self._id
 
-  def _set_id( self, id):
+
+  @id.setter
+  def id(self, id):
     self._id = id
 
-  id = property( _get_id, _set_id, None, "id of the fragment")
 
-
-
-
-  def is_consistent( self, molecule):
+  def is_consistent(self, molecule):
     for e in self.edges:
       if e not in molecule.edges:
         return False
@@ -77,18 +79,15 @@ class fragment( simple_parent):
       if v not in molecule.vertices:
         return False
     return True
-  
 
 
-  def get_all_vertices( self):
-    vs = set( self.vertices)
-    #for e in self.edges:
-    #  vs |= set( e.vertices)
+  @property
+  def all_vertices(self):
+    """Vertices associated with fragment bonds.
+
+    """
+    vs = set(self.vertices)
     return vs
-
-  # property for easier manipulation
-  all_vertices = property( get_all_vertices, None, None, "the vertices associated with fragment bonds")
-
 
 
   def get_package( self, doc):
@@ -110,7 +109,6 @@ class fragment( simple_parent):
                                              ("value",str( v)),
                                              ("type", itype)))
     return el
-
 
 
   def read_package( self, doc):
