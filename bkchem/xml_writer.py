@@ -48,7 +48,8 @@ class XML_writer(object):
     self.top = None # top level element
     #self.construct_dom_tree()
 
-  def construct_dom_tree( self, top_levels):
+
+  def construct_dom_tree(self, top_levels):
     pass
 
 
@@ -67,14 +68,16 @@ class XML_writer(object):
     dom_extensions.safe_indent( self.top, dont_indent=("text","ftext","user-data"))
     return self.document.toxml()
 
+
+
 # Tkinter states that it takes font sizes in pt. However this is not true (as for python 2.2.2)
 # therefor there is this variable to quickly change the settings and control the SVG output
 pt_or_px="pt"
 
 
-class SVG_writer( XML_writer):
+class SVG_writer(XML_writer):
 
-  def __init__( self, paper):
+  def __init__(self, paper):
     XML_writer.__init__( self, paper)
     self.full_size = not (paper.get_paper_property( 'crop_svg') and len( paper.stack))
     # shortcut for color conversion
@@ -121,7 +124,7 @@ class SVG_writer( XML_writer):
                                                ('stroke-linecap', 'round')))
     if not self.full_size:
       self.group.setAttribute( 'transform', 'translate(%d,%d)' % (-x1+border_size, -y1+border_size))
-      
+
     # sort the top_levels according to paper.stack
     cs = []
     for c in self.paper.stack:
@@ -359,7 +362,7 @@ class SVG_writer( XML_writer):
                                       ( 'fill', self.cc( a.area_color)),
                                       ( 'stroke', self.cc( a.area_color))))
 
-      # some fine tuning 
+      # some fine tuning
       y1 += a.font.metrics('descent') + Tuning.SVG.text_y_shift
       x += Tuning.SVG.text_x_shift ## hack to compensate for the wrong measuring of text
 
@@ -379,9 +382,7 @@ class SVG_writer( XML_writer):
         self.group.appendChild( m.get_svg_element( self.document))
 
 
-
-
-  def add_rect( self, o):
+  def add_rect(self, o):
     x1, y1, x2, y2 = o.coords
     el = dom_extensions.elementUnder( self.group, 'rect',
                                       (( 'x', self.convert( x1)),
@@ -392,10 +393,9 @@ class SVG_writer( XML_writer):
 
     el.setAttribute( 'fill', self.cc( o.area_color))
     el.setAttribute( 'stroke', self.cc( o.line_color))
-      
 
-    
-  def add_oval( self, o):
+
+  def add_oval(self, o):
     x1, y1, x2, y2 = o.coords
     el = dom_extensions.elementUnder( self.group, 'ellipse',
                                       (( 'cx', self.convert( (x2+x1)/2)),
@@ -408,7 +408,7 @@ class SVG_writer( XML_writer):
     el.setAttribute( 'stroke', self.cc( o.line_color))
 
 
-  def add_polygon( self, o):
+  def add_polygon(self, o):
     ps = ''
     for (x,y) in [p.get_xy() for p in o.points]:
       ps += '%.2f,%.2f ' % (x,y)
@@ -421,9 +421,7 @@ class SVG_writer( XML_writer):
     poly.setAttribute( 'stroke', self.cc( o.line_color))
 
 
-
-
-  def add_polyline( self, o):
+  def add_polyline(self, o):
     # the item
     points = [p.get_xy() for p in o.points]
     if o.spline and len( o.points) > 2:
