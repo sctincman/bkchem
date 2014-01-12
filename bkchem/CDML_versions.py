@@ -16,12 +16,10 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
-"""support for backward compatible CDML reading"""
+"""Support for backward compatible CDML reading.
+
+"""
 
 import dom_extensions as dom_ext      
 import data
@@ -227,11 +225,14 @@ transformers = { '0.6': CDML_transformer_06_07,
                  '0.15': CDML_transformer_15_16,
                  }
 
-# TRANSFORMING FUNCTION
 
-def transform_dom_to_version( dom, version):
-  """does inplace transformation of the dom tree to requested version, returns 1 on success"""
-  in_ver = dom.getAttribute( 'version')
+# TRANSFORMING FUNCTION
+def transform_dom_to_version(dom, version):
+  """Do inplace transformation of the dom tree to requested version.
+
+  Return 1 on success.
+  """
+  in_ver = dom.getAttribute('version')
   if not in_ver:
     return 0
   out_ver = version
@@ -243,5 +244,5 @@ def transform_dom_to_version( dom, version):
     else:
       return 0
   for tr in trans:
-    tr.tranform_dom( dom)
+    tr.tranform_dom(dom)
   return 1
