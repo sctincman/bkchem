@@ -309,7 +309,9 @@ class SVG_writer(XML_writer):
                                     ( 'stroke', self.cc( t.area_color))))
     y1 += (y2-y)/4.0
     x += 2 ## hack to compensate for the wrong measuring of text
-    text = ftext_dom_to_svg_dom( dom.parseString( t.ftext.sanitized_text()), self.document, replace_minus=t.paper.get_paper_property('replace_minus'))
+    text = ftext_dom_to_svg_dom(dom.parseString(t.ftext.sanitized_text().encode('utf-8')),
+                                self.document,
+                                replace_minus=t.paper.get_paper_property('replace_minus'))
     dom_extensions.setAttributes( text, (( "x", self.convert( x)),
                                          ( "y", self.convert( y1)),
                                          ( "font-family", t.font_family),
