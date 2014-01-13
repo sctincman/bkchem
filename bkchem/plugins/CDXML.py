@@ -94,7 +94,7 @@ class CDXML_importer( plugin.importer):
                   if elem4.nodeName=="s":
                     if elem3.hasAttribute("color"):
                       color1=colors[int(elem3.getAttribute("color"))-2]
-                    for (Id,Font) in fonts.iteritems():
+                    for Id, Font in fonts.items():
                       if Id==int(elem4.getAttribute("font")):
                         font=Font
                     Size= int(elem4.getAttribute("size"))
@@ -135,7 +135,7 @@ class CDXML_importer( plugin.importer):
             bond = mol.create_edge()
             if elem2.hasAttribute("Display"):
               display = elem2.getAttribute("Display").strip()
-              for bondC,bondB in bondType2.iteritems():
+              for bondC, bondB in bondType2.items():
                 if bondC ==display:
                   bond.type = bondB
             bond.line_color = color2
@@ -145,7 +145,7 @@ class CDXML_importer( plugin.importer):
             mol.add_edge( atom1, atom2, bond)
 
         # here we reassign the symbols
-        for id,atom in atom_id_to_atom.iteritems():
+        for id, atom in atom_id_to_atom.items():
           text = atom_id_to_text[ id]
           v = mol.create_vertex_according_to_text( atom, text)
           atom.copy_settings( v)
@@ -173,7 +173,7 @@ class CDXML_importer( plugin.importer):
                 text100=elem52.data
                 if elem51.hasAttribute("face"):
                   Face01=int(elem51.getAttribute("face"))
-                  for face,parent in textik.iteritems():
+                  for face, parent in textik.items():
                     for i in range(9):
                       if not Face01&2**i==0:
                         if face==Face01&2**i:
@@ -336,7 +336,7 @@ class CDXML_exporter( plugin.exporter):
         elem2.appendChild(elem5)
         elem5.setAttribute("B",re.sub("atom","",bond.atom1.id) )
         elem5.setAttribute("E",re.sub("atom","",bond.atom2.id) )
-        for bondB,bondC in bondType.iteritems():
+        for bondB, bondC in bondType.items():
           if bond.type==bondB:
             elem5.setAttribute("Display",bondC)
           elif bond.type=="h" and bond.equithick==1:
@@ -378,7 +378,7 @@ class CDXML_exporter( plugin.exporter):
             while not isinstance( par, dom.Document):
               parents.append( str(par.nodeName))
               par = par.parentNode
-            texts.append( (unicode(ch.nodeValue), parents))
+            texts.append((ch.nodeValue, parents))
           else:
             texts += get_text( ch)
         return texts
@@ -401,7 +401,7 @@ class CDXML_exporter( plugin.exporter):
         Faces=[]
 
         for xxx in text2[1]:
-          for (P,F) in textik.iteritems():
+          for P, F in textik.items():
             if P==xxx:
               Faces.append(F)
 
@@ -448,7 +448,7 @@ class CDXML_exporter( plugin.exporter):
       elem10=out.createElement("graphic")
       elem1.appendChild(elem10)
       elem10.setAttribute("GraphicType","Line")
-      for arrowB,arrowC in arrowType.iteritems():
+      for arrowB, arrowC in arrowType.items():
           if arrow.type==arrowB:
             elem10.setAttribute("ArrowType",arrowC[0])
       NewColor=self.paper.any_color_to_rgb_string(arrow.line_color)
@@ -461,7 +461,7 @@ class CDXML_exporter( plugin.exporter):
 
       elem11=out.createElement("arrow")
       elem1.appendChild(elem11)
-      for arrowB,arrowC in arrowType.iteritems():
+      for arrowB, arrowC in arrowType.items():
           if arrow.type==arrowB:
             elem11.setAttribute("ArrowheadHead",arrowC[1])
             elem11.setAttribute("ArrowheadTail",arrowC[2])
