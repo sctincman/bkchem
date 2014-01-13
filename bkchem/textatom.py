@@ -24,6 +24,7 @@
 from __future__ import division
 
 import re
+import sys
 import oasa
 
 from warnings import warn
@@ -75,11 +76,13 @@ class textatom( drawable_chem_vertex):
 
   @symbol.setter
   def symbol(self, symbol):
-    try:
-      t = unicode( symbol)
-    except UnicodeDecodeError:
-      t = symbol.decode( 'utf-8')
-    self._symbol = t
+    if sys.version_info[0] > 2:
+      if isinstance(symbol, bytes):
+        symbol = symbol.decode('utf-8')
+    else:
+      if isinstance(symbol, str):
+        symbol = symbol.decode('utf-8')
+    self._symbol = symbol
     self.dirty = 1
 
 
