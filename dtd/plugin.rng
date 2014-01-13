@@ -1,9 +1,9 @@
 
 <element name="plugin" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-    
+
     <optional>
       <element name="meta">
-	
+
 	<optional>
 	  <element name="author">
 	    <optional>
@@ -54,5 +54,4 @@
 
 
 </element>
-
 
