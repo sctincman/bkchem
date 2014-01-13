@@ -251,8 +251,8 @@ class CML_exporter(plugin.exporter):
       for b in m.bonds:
         bonds.appendChild( self.CML_bond( bond=b).get_CML_dom( out))
     dom_ext.safe_indent( root)
-    f = open( name, "w")
-    f.write( out.toxml())
+    f = open(name, 'wb')
+    f.write(out.toxml('utf-8'))
     f.close()
 
 
@@ -443,7 +443,7 @@ class CML_bond(object):
 ## a = CML_importer()
 ## d = a.get_cdml_dom( 'ccl4.xml')
 ## dom_ext.safe_indent( d.childNodes[0])
-## print d.toxml()
+## print d.toxml('utf-8')
 
 class cml_exception(Exception):
   def __init__(self, value):
