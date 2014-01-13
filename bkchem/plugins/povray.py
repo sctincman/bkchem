@@ -92,9 +92,8 @@ class POV_exporter( plugin.exporter):
   def write_to_file( self, name):
     self.fill_header()
     self.fill_image()
-    f = open( name, 'w')
-    f.write( self.doc.getvalue())
-    f.close()
+    with open(name, 'w') as f:
+      f.write(self.doc.getvalue())
     self.doc.close()
     
 ## HEADER
