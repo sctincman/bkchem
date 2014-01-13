@@ -1037,7 +1037,7 @@ class logging_dialog( Pmw.Dialog):
   def done( self, button):
     if button == _("OK"):
       self.proceed = True
-      for message_type,chooser in self.choosers.iteritems():
+      for message_type,chooser in self.choosers.items():
         index = chooser.index( chooser.getvalue())
         self.logger.set_handling( message_type, self.logger.handle_order[index])
     self.deactivate()
@@ -1064,7 +1064,7 @@ class language_dialog( Pmw.Dialog):
     langs = []
     import gettext
     self.languages = {}
-    for lang, language in data.languages.iteritems():
+    for lang, language in data.languages.items():
       system = gettext.find('BKChem', os.path.normpath(os.path.join(
         os_support.get_bkchem_run_dir(), '../../../../share/locale')), [lang])
       if not system:
