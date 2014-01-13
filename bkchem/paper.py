@@ -1633,11 +1633,11 @@ class chem_paper(Canvas, object):
       root.appendChild( st.get_package( doc))
       dom_extensions.safe_indent( root)
       try:
-        f = open(name, 'w')
+        f = open(name, 'wb')
       except IOError:
         return 0
       try:
-        f.write( doc.toxml().encode('utf-8'))
+        f.write(doc.toxml('utf-8'))
       except IOError:
         f.close()
         return 0
