@@ -9,7 +9,6 @@
   <!ELEMENT sup   (sub | b | i )*>
   <!ELEMENT b   (sub | sup | i )*>
   <!ELEMENT i   (sub | sup | b )*>
-        
 
 
    <!ELEMENT font (#PCDATA)>
