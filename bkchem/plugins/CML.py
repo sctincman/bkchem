@@ -251,9 +251,8 @@ class CML_exporter(plugin.exporter):
       for b in m.bonds:
         bonds.appendChild( self.CML_bond( bond=b).get_CML_dom( out))
     dom_ext.safe_indent( root)
-    f = open(name, 'wb')
-    f.write(out.toxml('utf-8'))
-    f.close()
+    with open(name, 'wb') as f:
+      f.write(out.toxml('utf-8'))
 
 
   def compute_scaling( self):
