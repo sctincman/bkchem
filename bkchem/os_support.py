@@ -75,7 +75,7 @@ def get_config_filename( name, level="global", mode="r"):
       dir = get_personal_config_directory()
 
   if dir:
-    if mode == "w":
+    if 'w' in mode:
       if not os.path.isdir( dir):
         try:
           os.mkdir( dir)
@@ -85,7 +85,7 @@ def get_config_filename( name, level="global", mode="r"):
         return os.path.join( dir, name)
       else:
         return None
-    elif mode == "r":
+    elif 'r' in mode:
       path = os.path.join( dir, name)
       if os.access( path, os.R_OK):
         return path
