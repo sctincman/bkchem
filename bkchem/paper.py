@@ -836,7 +836,7 @@ class chem_paper(Canvas, object):
 
 
   def object_to_id( self, obj):
-    for k, v in self._id_2_object.iteritems():
+    for k, v in self._id_2_object.items():
       if v == obj:
         return k
     return None
