@@ -492,9 +492,8 @@ class CDXML_exporter( plugin.exporter):
       FontId+=1
       elem04.setAttribute("name",font)
 
-    f = open(name, 'wb')
-    f.write(out.toxml('utf-8'))
-    f.close()
+    with open(name, 'wb') as f:
+      f.write(out.toxml('utf-8'))
 
 # PLUGIN INTERFACE SPECIFICATION
 name = "CDXML"
