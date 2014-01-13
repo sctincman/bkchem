@@ -66,7 +66,7 @@ class XML_writer(object):
     Indented with dom_extensions.safe_indent.
     """
     dom_extensions.safe_indent( self.top, dont_indent=("text","ftext","user-data"))
-    return self.document.toxml()
+    return self.document.toxml('utf-8')
 
 
 
