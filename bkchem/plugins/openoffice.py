@@ -107,13 +107,13 @@ class OO_exporter(plugin.exporter):
     import tempfile
     # content file
     cfname = tempfile.mktemp()
-    f = open( cfname, "w")
-    f.write( out.toxml().encode('utf-8'))
+    f = open(cfname, 'wb')
+    f.write(out.toxml('utf-8'))
     f.close()
     # styles file
     sfname = tempfile.mktemp()
-    f = open( sfname, "w")
-    f.write( self.create_styles_document().toxml().encode('utf-8'))
+    f = open(sfname, 'wb')
+    f.write(self.create_styles_document().toxml('utf-8'))
     f.close()
     import zipfile
     zip = zipfile.ZipFile( name, 'w', zipfile.ZIP_DEFLATED)
