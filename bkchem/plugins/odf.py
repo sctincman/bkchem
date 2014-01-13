@@ -119,14 +119,12 @@ class ODF_exporter(plugin.exporter):
     import tempfile
     # content file
     cfname = tempfile.mktemp()
-    f = open(cfname, 'wb')
-    f.write(out.toxml('utf-8'))
-    f.close()
+    with open(cfname, 'wb') as f:
+      f.write(out.toxml('utf-8'))
     # styles file
     sfname = tempfile.mktemp()
-    f = open(sfname, 'wb')
-    f.write(self.create_styles_document().toxml('utf-8'))
-    f.close()
+    with open(sfname, 'wb') as f:
+      f.write(self.create_styles_document().toxml('utf-8'))
     import zipfile
     zip = zipfile.ZipFile( name, 'w', zipfile.ZIP_DEFLATED)
     manifest = os_support.get_path( 'odf_manifest.xml', 'template')
