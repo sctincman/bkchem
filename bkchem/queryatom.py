@@ -24,6 +24,7 @@
 from __future__ import division
 
 import re
+import sys
 import oasa
 
 from oasa import periodic_table as PT
@@ -75,11 +76,13 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
 
   @name.setter
   def name(self, name):
-    try:
-      t = unicode( name)
-    except UnicodeDecodeError:
-      t = name.decode( 'utf-8')
-    self.__name = t.encode('utf-8')
+    if sys.version_info[0] > 2:
+      if isinstance(name, bytes):
+        name = name.decode('utf-8')
+    else:
+      if isinstance(name, str):
+        name = name.decode('utf-8')
+    self.__name = name
     self.dirty = 1
 
 
