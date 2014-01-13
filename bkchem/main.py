@@ -17,8 +17,9 @@
 
 #--------------------------------------------------------------------------
 
+"""Main application class.
 
-"""the main application class resides here"""
+"""
 
 from __future__ import print_function
 
@@ -167,8 +168,6 @@ class BKChem( Tk):
     self.mode = 'draw' # this is normaly not a string but it makes things easier on startup
 
 
-
-
   def init_menu( self):
     # defining menu
     menuf = Frame( self.main_frame, relief=RAISED, bd=config.border_width)
@@ -176,7 +175,6 @@ class BKChem( Tk):
 
     self.menu = Pmw.MenuBar( menuf, balloon=self.menu_balloon)
     self.menu.pack( side="left", expand=1, fill="both")
-
 
     self.menu_template = [
       # file menu
@@ -334,10 +332,6 @@ class BKChem( Tk):
       added_to.add( menu)
 
 
-
-
-
-
   def init_basics( self):
     Pmw.initialise( self)
     if os.name == 'posix':
@@ -368,7 +362,6 @@ class BKChem( Tk):
     self.__tab_name_2_paper = {}
     self.__last_tab = 0
 
-
     self._after = None
 
     self.balloon = Pmw.Balloon( self)
@@ -393,9 +386,6 @@ class BKChem( Tk):
     self.paper = None
 
 
-
-
-
   def init_plugins_menu( self):
     # PLUGINS
     names = sorted(self.plugins.keys())
@@ -412,9 +402,6 @@ class BKChem( Tk):
         self.menu.addmenuitem( _("Export"), 'command', label=local_name,
                                statusHelp=doc_string,
                                command=misc.lazy_apply( self.plugin_export, (plugin.name,)))
-
-
-
 
 
   def init_singletons( self):
@@ -441,7 +428,6 @@ class BKChem( Tk):
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
     #print("loaded plugins:", plugs, file=sys.stderr)
-
 
 
   def init_preferences( self):
@@ -475,7 +461,6 @@ class BKChem( Tk):
         value = Store.pm.get_preference( "logging_%s"%key)
         if value:
           Store.logger.set_handling( key, value)
-
 
 
   def init_modes( self):
@@ -518,9 +503,6 @@ class BKChem( Tk):
     del imp
 
 
-
-
-
   def init_mode_buttons( self):
     # mode selection panel
     radioFrame = Frame( self.main_frame)
@@ -552,9 +534,6 @@ class BKChem( Tk):
     # the remaining of sub modes support is now in self.change_mode
 
 
-
-
-
   def init_status_bar( self):
     status_frame = Frame( self.main_frame)
     status_frame.grid( row=5, sticky="we")
@@ -562,9 +541,6 @@ class BKChem( Tk):
     status.pack( side="left", expand=1, fill="both")
     position = Label( status_frame, relief=SUNKEN, bd=config.border_width, textvariable=self.cursor_position, anchor='w', height=2, justify='l')
     position.pack( side="right")
-
-
-
 
 
   def about( self):
@@ -639,13 +615,8 @@ class BKChem( Tk):
     self.mode.startup()
 
 
-
-
-
   def change_submode( self, tag):
     self.mode.set_submode( tag)
-
-
 
 
   def update_status( self, signal, time=None):
@@ -657,9 +628,6 @@ class BKChem( Tk):
       if self._after:
         self.after_cancel( self._after)
       self._after = self.after( int( time*1000), func=self.clear_status)
-
-
-
 
 
   def change_paper( self, name):
@@ -682,7 +650,6 @@ class BKChem( Tk):
           self.paper != old_paper):
         # this is not true on startup and tab closing
         self.mode.on_paper_switch( old_paper, self.paper)
-
 
 
   def add_new_paper( self, name=''):
@@ -761,10 +728,8 @@ class BKChem( Tk):
     return 1
 
 
-
   def clear_status( self):
     self.stat.set( '')
-
 
 
   def save_CDML( self, name=None, update_default_dir=1):
@@ -808,8 +773,6 @@ class BKChem( Tk):
       return None
 
 
-
-
   def _save_according_to_extension( self, filename, update_default_dir=1):
     """decides the format from the file extension and saves self.paper in it"""
     save_dir, save_file = os.path.split( filename)
@@ -838,7 +801,6 @@ class BKChem( Tk):
       return 0
 
 
-
   def set_file_name( self, name, check_ext=0):
     """if check_ext is true append a .svg extension if no is present"""
     if check_ext and not os.path.splitext( name)[1]:
@@ -846,8 +808,6 @@ class BKChem( Tk):
     else:
       self.paper.file_name = self.get_name_dic( name, local_file=1)
     self.notebook.tab( self.get_paper_tab_name( self.paper)).configure( text = self.paper.file_name['name'])
-
-
 
 
   def load_CDML( self, file=None, replace=0):
@@ -880,7 +840,6 @@ class BKChem( Tk):
       self.paper.mode = self.mode # somehow the raise event does not work here
       return self._load_CDML_file( a)
     return 0
-
 
 
   def _load_CDML_file( self, a, draw=True):
@@ -960,7 +919,6 @@ class BKChem( Tk):
       return 1
 
 
-
   def save_SVG( self, file_name=None):
     if not file_name:
       svg_file = self.paper.get_base_name()+".svg"
@@ -992,11 +950,8 @@ class BKChem( Tk):
       Store.log( _("exported to SVG file: ")+svg_file)
 
 
-
-
   def _update_geometry( self, e):
     pass
-
 
 
   def scale( self):
@@ -1007,7 +962,6 @@ class BKChem( Tk):
                                  y/100,
                                  fix_centers=dialog.preserve_centers.get(),
                                  scale_font=dialog.scale_fonts.get())
-
 
 
   def get_name_dic( self, name='', local_file=0):
@@ -1029,7 +983,6 @@ class BKChem( Tk):
       i = self.check_number_of_opened_same_names( name_dic)
       name_dic['ord'] = i
     return name_dic
-
 
 
   def _quit( self):
@@ -1151,10 +1104,8 @@ class BKChem( Tk):
     return False
 
 
-
   def change_properties( self):
     dial = dialogs.file_properties_dialog( self, self.paper)
-
 
 
   def standard_values( self):
@@ -1173,8 +1124,6 @@ class BKChem( Tk):
         [o.redraw() for o in self.paper.apply_current_standard( objects=self.paper.selected, old_standard=old_standard)]
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
-
-
 
 
   def request( self, type, **options):
@@ -1223,7 +1172,6 @@ Enter SMILES:""")
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
       return mol
-
 
 
   def read_inchi( self, inchi=None):
@@ -1290,8 +1238,6 @@ Enter InChI:""")
       self.paper.start_new_undo_record()
 
 
-
-
   def gen_smiles( self):
     if not oasa_bridge.oasa_available:
       return
@@ -1319,8 +1265,10 @@ Enter InChI:""")
     self._clipboard = xml
     self._clipboard_pos = pos
 
+
   def get_clipboard( self):
     return self._clipboard
+
 
   def get_clipboard_pos( self):
     return self._clipboard_pos
@@ -1343,6 +1291,7 @@ Enter InChI:""")
         return p
     return None
 
+
   def check_number_of_opened_same_names( self, name):
     """checks if there are papers with same name and returns the highest value"""
     ps = [p.file_name['ord'] for p in self.papers if p.file_name['name'] == name['name']]
@@ -1350,7 +1299,6 @@ Enter InChI:""")
       return 0
     else:
       return max( ps)+1
-
 
 
   def start_server( self):
@@ -1366,7 +1314,6 @@ Enter InChI:""")
     t.setDaemon( 1)
     t.start()
 
-
     # soap
     import SOAPpy as SOAP
     CAL_NS = "http://beda.zirael.org/pokusy"
@@ -1378,13 +1325,9 @@ Enter InChI:""")
     t.start()
 
 
-
-
   def get_new_tab_name( self):
     self.__last_tab += 1
     return "tab"+str(self.__last_tab)
-
-
 
 
   def get_paper_tab_name( self, paper):
@@ -1394,10 +1337,8 @@ Enter InChI:""")
     return None
 
 
-
   def read_user_templates( self):
     [Store.utm.add_template_from_CDML( n) for n in os_support.get_local_templates()]
-
 
 
   def gen_inchi( self):
@@ -1455,7 +1396,6 @@ Enter InChI:""")
       self.paper.start_new_undo_record()
 
 
-
   def save_as_template( self):
     name = interactors.save_as_template( self.paper)
     if name:
@@ -1463,16 +1403,12 @@ Enter InChI:""")
       Store.log( _("The file was saved as a template %s") % name)
 
 
-
-
   def clean( self):
     self.paper.clean_selected()
 
 
-
   def update_cursor_position( self, x, y):
     self.cursor_position.set( "(%d, %d)" % (x,y))
-
 
 
   def update_menu_after_selection_change( self, e):
@@ -1486,15 +1422,12 @@ Enter InChI:""")
         self.menu.component( temp[0] + "-menu").entryconfigure( temp[2], state=state)
 
 
-
-
   def _record_recent_file( self, name):
     if name in self._recent_files:
       self._recent_files.remove( name)
     self._recent_files.insert( 0, name)
     if len( self._recent_files) > 5:
       self._recent_files = self._recent_files[0:5]
-
 
 
   def ask_preferences( self):
@@ -1505,10 +1438,7 @@ Enter InChI:""")
         [j.redraw() for j in i.stack]
 
 
-
   ## ------------------------------ THE BATCH MODE ------------------------------
-
-
   def process_batch( self, opts):
 
     if opts[0] == "-b":
