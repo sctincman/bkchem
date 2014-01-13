@@ -72,14 +72,12 @@ class gtml_importer(object):
     # prepare the file to resolve entities
     f = StringIO.StringIO()
     f.write( "<!DOCTYPE item [")
-    entities = open('mathmlentities.ent')
-    f.write( entities.read())
-    entities.close()
+    with open('mathmlentities.ent') as entities:
+      f.write(entities.read())
     f.write( "<!ENTITY epsilon '&#x3B5;'><!ENTITY nevim '&amp;nevim;'>]>")
 
-    the_file = open(file_name)
-    f.write( the_file.read())
-    the_file.close()
+    with open(file_name) as the_file:
+      f.write(the_file.read())
     f.seek(0)
 
     doc = dom.parse( f)
