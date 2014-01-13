@@ -351,7 +351,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     df = package.getElementsByTagName('display-form')
     if df:
       df = df[0]
-      self.display_form = ''.join( [e.toxml() for e in df.childNodes]).encode('utf-8')
+      self.display_form = ''.join( [e.toxml('utf-8') for e in df.childNodes])
 
     # fragments
     for fel in dom_extensions.simpleXPathSearch( package, "fragment"):
