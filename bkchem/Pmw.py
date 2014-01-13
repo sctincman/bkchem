@@ -7260,15 +7260,16 @@ class ScrolledText(MegaWidget):
     def clear(self):
         self.settext('')
 
+
     def importfile(self, fileName, where = 'end'):
-        f = open(fileName, 'r')
-        self._textbox.insert(where, f.read())
-        f.close()
+        with open(fileName, 'r') as f:
+            self._textbox.insert(where, f.read())
+
 
     def exportfile(self, fileName):
-        f = open(fileName, 'w')
-        f.write(self._textbox.get('1.0', 'end'))
-        f.close()
+        with open(fileName, 'w') as f:
+            f.write(self._textbox.get('1.0', 'end'))
+
 
     def settext(self, text):
         disabled = (str(self._textbox.cget('state')) == 'disabled')
