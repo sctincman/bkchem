@@ -99,7 +99,7 @@ class fragment( simple_parent):
       dom_ext.elementUnder( el, "bond", (("id", e.id),))
     for v in self.vertices:
       dom_ext.elementUnder( el, "vertex", (("id", v.id),))
-    for k, v in self.properties.iteritems():
+    for k, v in self.properties.items():
       itype = 'UnicodeType'
       for tn in types.__dict__:
         if type( v) == types.__dict__[ tn]:
