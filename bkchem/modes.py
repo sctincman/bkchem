@@ -2102,7 +2102,7 @@ class external_data_mode( basic_mode):
   def _populate_table_for_active_object( self):
     defs = Store.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
     if defs:
-      for k,v in defs.iteritems():
+      for k,v in defs.items():
         val = Store.app.paper.edm.get_data( self.get_submode( 1), self._active_object, k)
         if hasattr( val, 'id'):
           self._entries[ k].value = val.id
@@ -2127,7 +2127,7 @@ class external_data_mode( basic_mode):
   def _set_data( self):
     defs = Store.app.paper.edm.get_definitions_for_class_and_type( self.get_submode( 1), self.get_submode( 0))
     if defs:
-      for k,v in defs.iteritems():
+      for k,v in defs.items():
         val = self._entries[ k].value
         if val != '':
           if v['type'] in Store.app.paper.edm.reference_types:
@@ -2148,7 +2148,7 @@ class external_data_mode( basic_mode):
     if defs:
       self._frame = Tkinter.Frame( Store.app.paper)
       self._win = Store.app.paper.create_window( 500, 100, window=self._frame)
-      for k,v in defs.iteritems():
+      for k,v in defs.items():
         label = Tkinter.Label( self._frame, text=v['text'])
         if v['type'] in Store.app.paper.edm.reference_types:
           entry = external_data.ExternalDataEntry( self._frame, v['type'], "reference")
