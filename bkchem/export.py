@@ -50,13 +50,7 @@ def export_CD_SVG(paper, filename, gzipped=0):
   dom_extensions.safe_indent(doc.childNodes[0],
                              dont_indent=("text", "ftext", "user-data"))
 
-  s = doc.toxml()
-  if sys.version_info[0] > 2:
-    if isinstance(s, str):
-      s = s.encode('utf-8')
-  else:
-    if isinstance(s, unicode):
-      s = s.encode('utf-8')
+  s = doc.toxml('utf-8')
   f.write(s)
   f.close()
 
@@ -71,9 +65,9 @@ def export_CDML(paper, filename, gzipped=0):
   try:
     if gzipped:
       import gzip
-      f = gzip.open(filename, "w")
+      f = gzip.open(filename, "wb")
     else:
-      f = open(filename, "w")
+      f = open(filename, "wb")
   except IOError as x:
     return 0
 
@@ -81,13 +75,7 @@ def export_CDML(paper, filename, gzipped=0):
   dom_extensions.safe_indent(doc.childNodes[0],
                              dont_indent=("text", "ftext", "user-data"))
 
-  s = doc.toxml()
-  if sys.version_info[0] > 2:
-    if isinstance(s, bytes):
-      s = s.decode('utf-8')
-  else:
-    if isinstance(s, str):
-      s = s.decode('utf-8')
+  s = doc.toxml('utf-8')
   f.write(s)
   f.close()
 
