@@ -149,7 +149,7 @@ class mark( simple_parent):
                                       ('y', y),
                                       ('auto', str( int( self.auto))),
                                       ('size', str( self.size))))
-    for (attr, typ) in self.meta__save_attrs.iteritems():
+    for (attr, typ) in self.meta__save_attrs.items():
       val = getattr( self, attr)
       if typ == bool:
         value = data.booleans[ int( val)]
@@ -173,7 +173,7 @@ class mark( simple_parent):
         m = cls( atom, x, y, auto=int(auto))
 
       # class specific attributes
-      for (attr, typ) in m.meta__save_attrs.iteritems():
+      for (attr, typ) in m.meta__save_attrs.items():
         val = package.getAttribute( attr)
         if val != '':
           if typ == bool:
