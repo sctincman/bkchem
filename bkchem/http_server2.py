@@ -73,7 +73,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
     doc = dom.Document()
     xml_serializer.serialize( Store.app.paper, doc, doc)
-    self.wfile.write( doc.toxml())
+    self.wfile.write(doc.toxml('utf-8'))
     print("%.2f ms" % (1000*(time.time() - t)))
 
 
@@ -84,7 +84,7 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
 
     exporter = xml_writer.SVG_writer( Store.app.paper)
     exporter.construct_dom_tree( Store.app.paper.top_levels)
-    self.wfile.write( exporter.document.toxml())
+    self.wfile.write(exporter.document.toxml('utf-8'))
 
 
   def serve__content_html( self):
