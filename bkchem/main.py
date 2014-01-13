@@ -929,7 +929,7 @@ class BKChem( Tk):
     if a != '':
       self.svg_dir, svg_file = os.path.split( a)
       try:
-        inp = open( a, "w")
+        inp = open(a, "wb")
       except IOError as x:
         e = ValueError("Unable to open to file ")
         e.__traceback__ = x
@@ -937,14 +937,7 @@ class BKChem( Tk):
       exporter = SVG_writer( self.paper)
       exporter.construct_dom_tree( self.paper.top_levels)
       dom_extensions.safe_indent( exporter.document.childNodes[0])
-      s = exporter.document.toxml()
-      # Write decoded strings
-      if sys.version_info[0] > 2:
-        if isinstance(s, bytes):
-          s = s.decode('utf-8')
-      else:
-        if isinstance(s, str):
-          s = s.decode('utf-8')
+      s = exporter.document.toxml('utf-8')
       inp.write(s)
       inp.close()
       Store.log( _("exported to SVG file: ")+svg_file)
@@ -1385,6 +1378,8 @@ Enter InChI:""")
     if f:
       Store.pm.write_to_file( f)
       f.close()
+    else:
+      print("Error: Failed to open prefs.xml file.")
 
 
   def run_plugin( self, name):
