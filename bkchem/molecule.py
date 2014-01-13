@@ -572,14 +572,15 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return x +range*cos( angle), y +range*sin( angle)
 
 
-  def flush_graph_to_file( self, name="/home/beda/oasa/oasa/mol.graph"):
-    f = open(name, 'w')
-    for a in self.atoms:
-      f.write('%s ' % a.symbol)
-    f.write('\n')
-    for b in self.bonds:
-      f.write('%d %d %d\n' % (b.order, self.atoms.index( b.atom1), self.atoms.index( b.atom2)))
-    f.close()
+  def flush_graph_to_file(self, name="/home/beda/oasa/oasa/mol.graph"):
+    with open(name, 'w') as f:
+      for a in self.atoms:
+        f.write('%s ' % a.symbol)
+      f.write('\n')
+      for b in self.bonds:
+        f.write('%d %d %d\n' % (b.order,
+                                self.atoms.index(b.atom1),
+                                self.atoms.index(b.atom2)))
 
 
   def transform( self, tr):
