@@ -66,9 +66,6 @@ class textatom( drawable_chem_vertex):
       self.read_package( package)
 
 
-  ## ---------------------------------------- PROPERTIES ------------------------------
-
-  # symbol
   @property
   def symbol(self):
     return self._symbol
@@ -86,8 +83,6 @@ class textatom( drawable_chem_vertex):
     self.dirty = 1
 
 
-  ## JUST TO MIMICK ATOM
-  # show
   @property
   def show(self):
     """Should the atom symbol be displayed?
@@ -102,7 +97,6 @@ class textatom( drawable_chem_vertex):
     pass
 
 
-  # show_hydrogens
   @property
   def show_hydrogens(self):
     return 1
@@ -111,9 +105,6 @@ class textatom( drawable_chem_vertex):
   @show_hydrogens.setter
   def show_hydrogens(self, show_hydrogens):
     pass
-
-
-  ## // -------------------- END OF PROPERTIES --------------------------
 
 
   def set_name( self, name, interpret=1, occupied_valency=None):
