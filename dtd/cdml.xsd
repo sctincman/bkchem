@@ -29,7 +29,7 @@
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="author" type="xsd:string"/>
-      
+
       <xsd:element name="application">
 	<xsd:annotation>
 	  <xsd:documentation>Application used to create this document</xsd:documentation>
@@ -42,7 +42,7 @@
 	  </xsd:simpleContent>
 	</xsd:complexType>
       </xsd:element>
-      
+
       <xsd:element name="info" type="xsd:string"/>
     </xsd:sequence>
   </xsd:complexType>
