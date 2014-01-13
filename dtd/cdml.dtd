@@ -17,7 +17,7 @@
         bond_width  CDATA #REQUIRED
         arrow_length CDATA #REQUIRED
         arrow_width CDATA #REQUIRED
-        >        
+        >
 
 <!-- molecule -->
  <!ELEMENT molecule (template?, ( atom | bond)*)>
@@ -31,10 +31,10 @@
   <!ELEMENT template EMPTY>
    <!ATTLIST template
         bond_first IDREF #IMPLIED
-        bond_second IDREF #IMPLIED 
+        bond_second IDREF #IMPLIED
         atom IDREF #IMPLIED>
 
-<!-- atom -->  
+<!-- atom -->
   <!ELEMENT atom ( font?, ftext, point)>
         <!ATTLIST atom
                 show  (yes|no) "no"
@@ -50,7 +50,7 @@
        <!ATTLIST point
                 x  CDATA  #REQUIRED
                 y  CDATA  #REQUIRED
-                z  CDATA  #IMPLIED>  
+                z  CDATA  #IMPLIED>
 
   <!ELEMENT bond EMPTY>
         <!ATTLIST bond
@@ -63,7 +63,7 @@
 
 
 <!-- ARROW -->
- <!-- start = "no" for no arrow, "5 6 2" - for arrow parameters, "yes" for default --> 
+ <!-- start = "no" for no arrow, "5 6 2" - for arrow parameters, "yes" for default -->
   <!ELEMENT arrow (point)+>
     <!ATTLIST arrow
          start (yes|no) "no"
