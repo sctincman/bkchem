@@ -191,10 +191,8 @@ class bkchem_http_handler( BaseHTTPServer.BaseHTTPRequestHandler):
         method = "_action_"+attrs['action']
         if hasattr( self, method):
           getattr( self, method)( attrs)
-          try:
-            smiles = self._get_all_smiles()
-          except:
-            smiles = "SMILES not available"
+          smiles = self._get_all_smiles()
+          #smiles = "SMILES not available"
           self._serve_xml( "<smiles>%s</smiles>" % smiles)
 
       else:
