@@ -1453,8 +1453,7 @@ class chem_paper(Canvas, object):
 
   def swap_selected_on_stack( self):
     os = self.selected_to_unique_top_levels()[0]
-    indxs = [self.stack.index( o) for o in os]
-    indxs.sort()
+    indxs = sorted(self.stack.index(o) for o in os)
     for i in range( len( indxs) // 2):
       self.stack[ indxs[i]], self.stack[ indxs[-1-i]] =  self.stack[ indxs[-1-i]], self.stack[ indxs[i]]
     Store.log( _("selected items were swapped"))
