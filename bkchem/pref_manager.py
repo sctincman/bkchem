@@ -120,7 +120,7 @@ class pref_manager( object):
           itype = 'UnicodeType'
         elif isinstance(v, unicode):
           itype = 'UnicodeType'
-      el = dom_extensions.textOnlyElementUnder(top, k, unicode(v),
+      el = dom_extensions.textOnlyElementUnder(top, k, v,
                                                attributes = (("type", itype),))
     return doc
 
