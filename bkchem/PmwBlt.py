@@ -225,9 +225,7 @@ class Vector(object):
 
 
     def sort(self, *args):
-        s = self[:]
-        s.sort()
-        self.set(s)
+        self.set(sorted(self))
 
 
     # Blt vector instance methods:
