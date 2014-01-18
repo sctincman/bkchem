@@ -130,7 +130,7 @@ def isOnlyTags( text):
   """this function takes a !string! as an argument and returns true if text is only tags"""
   try:
     doc = dom.parseString( '<a>%s</a>' % text)
-  except:
+  except IOError:
     return not len( text)
   if getAllTextFromElement( doc):
     return 0
