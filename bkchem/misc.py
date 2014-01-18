@@ -97,9 +97,9 @@ def list_difference(l):
 
 def split_number_and_unit( txt):
   try:
-    v = float( txt)
+    v = float(txt)
     return v, ''
-  except:
+  except (TypeError, ValueError):
     pass
   cutter = re.compile( "([+-]?\d*\.?\d*)\s*([a-zA-Z]*)")
   if txt:
