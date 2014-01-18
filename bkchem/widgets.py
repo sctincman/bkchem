@@ -197,8 +197,7 @@ class FontSizeChooser( Pmw.Counter):
 class FontFamilyChooser( Pmw.ScrolledListBox):
 
   def __init__( self, parent, value):
-      available_families = list( tkFont.families())
-      available_families.sort()
+      available_families = sorted(list(tkFont.families()))
       available_families.insert(-1, '')
       for fnt in data.always_available_fonts:
         available_families.insert(1, fnt)
@@ -283,8 +282,7 @@ class ValueWithUnitParent( Tkinter.Frame):
       self._recent_unit = units.keys()[0]
     self.counter.pack( side='left')
     # the unit selection widget
-    us = units.keys()
-    us.sort()
+    us = sorted(units.keys())
     self.unit = Pmw.OptionMenu( self, items=us, initialitem=self._recent_unit, command=self.unit_changed)
     self.unit.pack( side='left')
 
