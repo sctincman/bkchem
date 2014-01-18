@@ -10,7 +10,7 @@ for lang in os.listdir( locale_dir):
     filename = os.path.join( locale_dir, lang, 'BKChem.po')
     try:
         f = open(filename, 'r')
-    except:
+    except IOError:
         print("Could not open the file %s" % filename)
         continue
     msgid = ""
