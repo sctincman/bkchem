@@ -564,8 +564,7 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
         return x +range, y
     angles = [geometry.clockwise_angle_from_east( at.x-a.x, at.y-a.y) for at in atms]
     angles.append( 2*pi + min( angles))
-    angles.sort()
-    angles.reverse()
+    angles = sorted(angles, reverse=True)
     diffs = misc.list_difference( angles)
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
