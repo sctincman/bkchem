@@ -676,7 +676,9 @@ class chem_paper(Canvas, object):
           if hasattr( ch, "paper"):
             try:
               ch.paper = None
-            except:
+            except KeyError:
+              # Tried to set it on child, set it on parent
+              ch.parent.paper = None
               pass
           if hasattr( ch, "canvas"):
             try:
@@ -1615,7 +1617,7 @@ class chem_paper(Canvas, object):
     if name:
       try:
         cdml = dom.parse( name).childNodes[0]
-      except:
+      except IOError:
         return classes.standard()
       return self.read_standard_from_dom( cdml)
     return classes.standard()
