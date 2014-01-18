@@ -184,7 +184,7 @@ def ask_display_form_for_selected( paper):
   res = dial.activate()
   if res == _('OK'):
     df = input.editPool.get()
-    df = unicode( df).encode( 'utf-8')
+    df = df.encode('utf-8')
     ## catch not well-formed text
     try:
       xml.sax.parseString( "<a>%s</a>" % df, xml.sax.ContentHandler())
