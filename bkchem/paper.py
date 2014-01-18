@@ -681,10 +681,7 @@ class chem_paper(Canvas, object):
               ch.parent.paper = None
               pass
           if hasattr( ch, "canvas"):
-            try:
-              ch.canvas = None
-            except:
-              pass
+            ch.canvas = None
           if hasattr( ch, "ftext") and ch.ftext:
             ch.ftext.canvas = None
             for i in ch.ftext.items:
