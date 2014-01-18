@@ -1266,9 +1266,6 @@ class chem_paper(Canvas, object):
     exporter.construct_dom_tree( cont)
     self.clipboard_clear()
     xml = exporter.get_nicely_formated_document()
-    first_line = xml.splitlines()[0]
-    if first_line.startswith("<?") and first_line.endswith("?>"):
-      xml = "\n".join( xml.splitlines()[1:])
     self.clipboard_append( xml)
     Store.log( _("selected top_levels were exported to clipboard in SVG"))
 
