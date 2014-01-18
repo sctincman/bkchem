@@ -247,8 +247,7 @@ class vertex_common(object):
     # now we can compare the angles
     angles = [geometry.clockwise_angle_from_east( x1-x, y1-y) for x1,y1 in coords]
     angles.append( 2*pi + min( angles))
-    angles.sort()
-    angles.reverse()
+    angles = sorted(angles, reverse=True)
     diffs = misc.list_difference( angles)
     i = diffs.index( max( diffs))
     angle = (angles[i] +angles[i+1]) / 2
