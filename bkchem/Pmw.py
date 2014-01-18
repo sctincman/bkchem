@@ -883,8 +883,7 @@ class MegaArchetype(object):
 
         componentAliases = self.__componentAliases
 
-        names = componentAliases.keys()
-        names.sort()
+        names = sorted(componentAliases.keys())
         rtn = []
         for alias in names:
             (mainComponent, subComponent) = componentAliases[alias]
@@ -3099,12 +3098,8 @@ class EntryField(MegaWidget):
 
         if function is not None and not isinstance(function, collections.Callable):
             extraValidators = self['extravalidators']
-            extra = extraValidators.keys()
-            extra.sort()
-            extra = tuple(extra)
-            standard = _standardValidators.keys()
-            standard.sort()
-            standard = tuple(standard)
+            extra = tuple(sorted(extraValidators.keys()))
+            standard = tuple(sorted(_standardValidators.keys()))
             msg = 'bad %s value "%s":  must be a function or one of ' \
                 'the standard validators %s or extra validators %s'
             raise ValueError(msg % (option, validator, standard, extra))
@@ -8897,8 +8892,7 @@ class Counter(MegaWidget):
         elif isinstance(datatype, collections.Callable):
             self._counterCommand = datatype
         else:
-            validValues = _counterCommands.keys()
-            validValues.sort()
+            validValues = sorted(_counterCommands.keys())
             raise ValueError(('bad datatype value "%s":  must be a' +
                 ' function or one of %s') % (datatype, validValues))
 
