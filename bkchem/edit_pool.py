@@ -265,8 +265,7 @@ class special_character_menu( Tkinter.Menu):
   def __init__( self, callback, **kw):
     self.callback = callback
     Tkinter.Menu.__init__( self, Store.app, tearoff=0, **kw)
-    keys = self.chars.keys()
-    keys.sort()
+    keys = sorted(self.chars.keys())
     for k in keys:
       self.add_command( label=k, command=misc.lazy_apply( self.itemselected, (k,)))
     self.char = None
