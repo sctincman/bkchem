@@ -630,15 +630,13 @@ class BKChem( Tk):
       self._after = self.after( int( time*1000), func=self.clear_status)
 
 
-  def change_paper( self, name):
+  def change_paper(self, name):
     if self.papers:
       old_paper = self.paper
       # de-highlighting of current tab
-      try:
-        i = self.papers.index( old_paper)
-        self.notebook.tab( i).configure( background=config.background_color, fg="black")
-      except:
-        pass
+      if old_paper in self.papers:
+        i = self.papers.index(old_paper)
+        self.notebook.tab(i).configure(background=config.background_color, fg="black")
       i = self.notebook.index( name)
       # highlighting of current tab
       self.notebook.tab( i).configure( background="#777777", fg="white")
