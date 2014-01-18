@@ -91,7 +91,7 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
   config_name = os.path.join(py_dir, 'bkchem/site_config.py')
   try:
     f = open(config_name, 'w')
-  except:
+  except IOError:
     print("ERROR: couldn't open the file %s for write" %  config_name)
     sys.exit()
   f.write("# the bkchem configuration file, do not edit!\n #(unless you are pretty sure that you know what you are doing, which even I am not)\n")
@@ -108,13 +108,13 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
   if not os.path.isdir(bin_dir):
     try:
       os.mkdir(bin_dir)
-    except:
+    except IOError:
       print("ERROR: could not create directory %s" % bin_dir)
       sys.exit( 201)
   exec_name = os.path.join(bin_dir, 'bkchem')
   try:
     f = open(exec_name, 'w')
-  except:
+  except IOError:
     print("ERROR: couldn't open the file %s for write" %  exec_name)
     sys.exit(201)
   f.write("#!/bin/sh\n")
@@ -123,7 +123,7 @@ if len( sys.argv) > 1 and sys.argv[1] == 'install' and '--help' not in sys.argv:
   print("file %s created" % exec_name)
   try:
     os.chmod(os.path.join(bin_dir, 'bkchem'), 5+5*8+7*8*8)
-  except:
+  except IOError:
     print("ERROR: failed to make %s executable" % exec_name)
     sys.exit( 201)
   print("file %s made executable" % exec_name)
