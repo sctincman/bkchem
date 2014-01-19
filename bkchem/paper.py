@@ -117,7 +117,6 @@ class chem_paper(Canvas, object):
     # external data management
     self.edm = external_data_manager()
     self.edm.load_available_definitions()
-    #print("loaded definitions for classes:", self.edm.load_available_definitions())
 
     # file name
     self.file_name = file_name
@@ -187,9 +186,7 @@ class chem_paper(Canvas, object):
 
   @property
   def top_levels(self):
-    #print([o for o in self.stack if not isinstance( o, graphics.top_level)])
     return self.stack
-    #return [o for o in self.stack if isinstance( o, graphics.top_level)]
 
 
   @property
@@ -236,9 +233,6 @@ class chem_paper(Canvas, object):
         names = self.all_names_to_bind
       else:
         names = active_names
-##       for name in names:
-##         self.tag_bind( name, '<Enter>', self.enter_item)
-##         self.tag_bind( name, '<Leave>', self.leave_item)
     self._do_not_focus = [] # self._do_not_focus is temporary and is cleaned automatically here
     self.event_generate( "<<selection-changed>>")
     # we generate this event here because this method is often called after some change as a last thing
@@ -357,18 +351,6 @@ class chem_paper(Canvas, object):
     event.x = self.canvasx( event.x)
     event.y = self.canvasy( event.y)
 
-##     b = self.find_overlapping( event.x-3, event.y-3, event.x+3, event.y+3)
-##     b = filter( self.is_registered_id, b)
-##     a = map( self.id_to_object, b)
-##     print(a)
-##     a = [i for i in a if i not in self._do_not_focus]
-##     print(a)
-
-##     if a:
-##       a = a[-1]
-##     else:
-##       a = None
-
     try:
       a = self.id_to_object( self.find_withtag( 'current')[0])
     except IndexError:
@@ -409,7 +391,6 @@ class chem_paper(Canvas, object):
         self.selected.append( o)
         o.select()
     self.event_generate( "<<selection-changed>>")
-    #print([o.object_type for o in self.selected])
 
 
   def unselect( self, items):
@@ -737,8 +718,6 @@ class chem_paper(Canvas, object):
 
   def handle_overlap( self):
     "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
-    #import time
-    #ttt = time.time()
     overlap = []
     for a in self.find_withtag('atom'):
       x, y = self.id_to_object( a).get_xy()
@@ -753,7 +732,6 @@ class chem_paper(Canvas, object):
     deleted = []
     if overlap:
       mols = misc.filter_unique( map( lambda a: map( lambda b: b.molecule, a), overlap))
-      #print(3, time.time() - ttt)
       a_eatenby_b1 = []
       a_eatenby_b2 = []
       for (mol, mol2) in mols:
@@ -768,7 +746,6 @@ class chem_paper(Canvas, object):
           self.stack.remove( mol2)
         else:
           deleted.extend( mol.handle_overlap())
-      #print(4, time.time() - ttt)
       deleted.extend(j for i in [mol.handle_overlap() for mol in misc.difference(a_eatenby_b2, a_eatenby_b1)]
                            for j in i)
       self.selected = misc.difference( self.selected, deleted)
@@ -779,7 +756,6 @@ class chem_paper(Canvas, object):
     for a, b in overlap:
       preserved.append( a in deleted and b or a)
     return deleted, preserved
-    #print(5, time.time() - ttt)
 
 
   def set_name_to_selected( self, name, interpret=1):
@@ -1067,7 +1043,7 @@ class chem_paper(Canvas, object):
         xmins = [bboxes[i] for i in range( 2, len( bboxes), 4)]
         xs = map( operator.add, xmaxs, xmins)
         xs = map( operator.div, xs, len(xs)*[2])
-        x = (max( xs) + min( xs)) / 2 # reduce( operator.add, xs) / len( xs) # this makes mean value rather then center
+        x = (max(xs) + min(xs)) / 2
       for i in range( len( xs)):
         to_align[i].move( x-xs[i], 0)
     # modes dealing with y
@@ -1083,7 +1059,7 @@ class chem_paper(Canvas, object):
         ymins = [bboxes[i] for i in range( 3, len( bboxes), 4)]
         ys = map( operator.add, ymaxs, ymins)
         ys = map( operator.div, ys, len(ys)*[2])
-        y = (max( ys) + min( ys)) /2 # reduce( operator.add, ys) / len( ys)
+        y = (max(ys) + min(ys)) / 2
       for i in range( len( ys)):
         to_align[i].move( 0, y-ys[i])
     self.start_new_undo_record()
@@ -1559,20 +1535,6 @@ class chem_paper(Canvas, object):
       return self._paper_properties[ name]
     else:
       return None
-
-
-## def coords( self, item, *args, **keyargs):
-##     if 'unit' in keyargs:
-##       u = keyargs['unit']
-##       if u == 'cm':
-##         if args:
-##           return map( self.px_to_cm, Canvas.coords( self, item, args))
-##         else:
-##           return map( self.px_to_cm, Canvas.coords( self, item))
-##     if args:
-##       return Canvas.coords( self, item, *args)
-##     else:
-##       return Canvas.coords( self, item)
 
 
   def read_standard_from_dom( self, d):
