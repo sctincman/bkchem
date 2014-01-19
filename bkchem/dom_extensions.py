@@ -22,6 +22,7 @@
 """
 
 import re
+import sys
 import xml.dom.minidom as dom
 
 
@@ -129,7 +130,14 @@ def getChildrenNamed( element, name):
 def isOnlyTags( text):
   """this function takes a !string! as an argument and returns true if text is only tags"""
   try:
-    doc = dom.parseString( '<a>%s</a>' % text)
+    # With dom use encoded strings
+    if sys.version_info[0] > 2:
+      if isinstance(text, str):
+        text = text.encode('utf-8')
+    else:
+      if isinstance(text, unicode):
+        text = text.encode('utf-8')
+    doc = dom.parseString('<a>%s</a>' % text)
   except IOError:
     return not len( text)
   if getAllTextFromElement( doc):
