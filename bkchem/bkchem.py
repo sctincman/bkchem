@@ -121,7 +121,6 @@ if not config.debug:
     sys.exit()
 
 
-#import Tkinter
 from main import BKChem
 from splash import Splash
 from singleton_store import Store
@@ -156,14 +155,10 @@ if __name__ == '__main__':
       del opts[i]
   if "-b" in opts:
     i = opts.index("-b")
-    if len( opts) >= i:
-
-      # we are in batch mode
-      #import time
-      #t = time.time()
+    if len(opts) >= i:
+      # Batch mode
       myapp.initialize_batch()
-      myapp.process_batch( opts)
-      #print(" %f ms" % (1000*(time.time()-t)))
+      myapp.process_batch(opts)
     sys.exit()
   else:
     # normal interactive mode
@@ -171,7 +166,6 @@ if __name__ == '__main__':
     # splash screen
     splash = Splash()
     splash.withdraw()
-    #splash.overrideredirect( 1)
     splash.update_idletasks()
     width = splash.winfo_reqwidth()
     height = splash.winfo_reqheight()
@@ -197,13 +191,6 @@ if __name__ == '__main__':
       else:
         myapp.set_file_name( files[i], check_ext=1)
 
-    ## here we try to load psyco - this could speed things up
-##     try:
-##       import psyco
-##       psyco.profile()
-##     except ImportError:
-##       pass
-
     # destroy splash
     splash.destroy()
     del splash
@@ -218,9 +205,6 @@ if __name__ == '__main__':
   myapp.update_idletasks()
   myapp.deiconify()
   myapp.mainloop()
-  #import profile
-  #profile.run( 'myapp.mainloop()')
-  #print("BKChem finished")
   myapp.destroy()
 
 # the module was imported from outside
