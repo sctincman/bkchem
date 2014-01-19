@@ -156,10 +156,6 @@ class BKChem( Tk):
 
     # main drawing part packing
     self.notebook.grid( row=4, sticky="wens")
-    #self.notebook.setnaturalsize()
-
-
-    #self.papers.append( self.paper)
 
     # protocol bindings
     self.protocol("WM_DELETE_WINDOW", self._quit)
@@ -427,7 +423,6 @@ class BKChem( Tk):
 
     self.plug_man = plugin_manager()
     plugs = self.plug_man.get_available_plugins()
-    #print("loaded plugins:", plugs, file=sys.stderr)
 
 
   def init_preferences( self):
@@ -1151,14 +1146,8 @@ Enter SMILES:""")
       text = smiles
 
     if text:
-      #      try:
-      mol = oasa_bridge.read_smiles( text, self.paper)
-##       except :
-##      if not smiles:
-##        tkMessageBox.showerror( _("Error processing %s") % 'SMILES',
-##                                _("The oasa library ended with error:\n%s") % sys.exc_value)
-##      return
-      self.paper.stack.append( mol)
+      mol = oasa_bridge.read_smiles(text, self.paper)
+      self.paper.stack.append(mol)
       mol.draw()
       self.paper.add_bindings()
       self.paper.start_new_undo_record()
@@ -1229,26 +1218,21 @@ Enter InChI:""")
       self.paper.start_new_undo_record()
 
 
-  def gen_smiles( self):
+  def gen_smiles(self):
     if not oasa_bridge.oasa_available:
       return
     u, i = self.paper.selected_to_unique_top_levels()
-    if not interactors.check_validity( u):
+    if not interactors.check_validity(u):
       return
     sms = []
     for m in u:
       if m.object_type == 'molecule':
-        #try:
-        sms.append( oasa_bridge.mol_to_smiles( m))
-        #except:
-        #  tkMessageBox.showerror( _("Error generating %s") % 'SMILES',
-        #                          _("The oasa library ended with error:\n%s") % sys.exc_value)
-        #  return
-    text = '\n\n'.join( sms)
-    dial = Pmw.TextDialog( self,
-                           title=_('Generated SMILES'),
-                           buttons=(_('OK'),))
-    dial.insert( 'end', text)
+        sms.append(oasa_bridge.mol_to_smiles(m))
+    text = '\n\n'.join(sms)
+    dial = Pmw.TextDialog(self,
+                          title=_('Generated SMILES'),
+                          buttons=(_('OK'),))
+    dial.insert('end', text)
     dial.activate()
 
 
@@ -1263,13 +1247,6 @@ Enter InChI:""")
 
   def get_clipboard_pos( self):
     return self._clipboard_pos
-
-
-##   def get_named_paper( self, name):
-##     for p in self.papers:
-##       if p.get_base_name() == name:
-##         return p
-##     return None
 
 
   def check_if_the_file_is_opened( self, name, check_current=1):
