@@ -1,3 +1,9 @@
+RELEASE 0.14.0-pre4
+----------------------------------------
+ * bugfixes - write xml files in binary mode and utf-8 encoded
+            - some Python 3 fixes
+
+
 RELEASE 0.14.0-pre3
 ----------------------------------------
  * changes - increase required Python version to 2.6

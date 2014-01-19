@@ -3,10 +3,10 @@
 
 [Setup]
 AppName=BKChem
-AppVerName=BKChem-0.14.0-pre3
-OutputBaseFilename=bkchem-0.14.0-pre3
-VersionInfoVersion=0.14.0.3
-VersionInfoTextVersion=0.14.0-pre3
+AppVerName=BKChem-0.14.0-pre4
+OutputBaseFilename=bkchem-0.14.0-pre4
+VersionInfoVersion=0.14.0.4
+VersionInfoTextVersion=0.14.0-pre4
 AppPublisher=Reinis Danne
 AppPublisherURL=http://bkchem.zirael.org
 AppSupportURL=http://bkchem.zirael.org
