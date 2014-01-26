@@ -247,10 +247,8 @@ def forwardmethods(fromClass, toClass, toPart, exclude = ()):
     __methodDict(toClass, d)
 
     # discard special methods
-    tmp = []
-    for ex in d.keys():
-        if ex[:1] == '_' or ex[-1:] == '_':
-            tmp.append(ex)
+    tmp = [ex for ex in d.keys()
+                  if ex[:1] == '_' or ex[-1:] == '_']
     for i in tmp:
         del d[i]
     # discard dangerous methods supplied by the caller
