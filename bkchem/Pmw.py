@@ -983,7 +983,7 @@ def _grabtop():
     if globalMode == 'nograb':
         return
 
-    while 1:
+    while True:
         try:
             if globalMode:
                 topWidget.grab_set_global()
