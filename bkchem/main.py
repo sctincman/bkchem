@@ -27,6 +27,7 @@ import os
 import oasa
 import string
 import warnings
+import collections
 import xml.dom.minidom as dom
 
 try:
@@ -1385,7 +1386,7 @@ Enter InChI:""")
     for temp in self.menu_template:
       if temp[1] == "command" and temp[6] is not None:
         state = temp[6]
-        if callable( state):
+        if isinstance(state, collections.Callable):
           state = state() and 'normal' or 'disabled'
         elif state not in  ('normal', 'disabled'):
           state = getattr( self.paper, temp[6]) and 'normal' or 'disabled'
