@@ -616,7 +616,7 @@ class BKChem( Tk):
 
   def update_status( self, signal, time=None):
     """if time is none it is calculated based on the string length"""
-    if time == None and signal:
+    if time is None and signal:
       time = 4 + 0.05 * len( signal)
     if signal:
       self.stat.set( signal)
@@ -1383,7 +1383,7 @@ Enter InChI:""")
 
   def update_menu_after_selection_change( self, e):
     for temp in self.menu_template:
-      if temp[1] == "command" and temp[6] != None:
+      if temp[1] == "command" and temp[6] is not None:
         state = temp[6]
         if callable( state):
           state = state() and 'normal' or 'disabled'
