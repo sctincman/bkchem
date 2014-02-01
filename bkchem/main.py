@@ -744,9 +744,9 @@ class BKChem( Tk):
   def save_as_CDML( self):
     """asks the user the name for a file and saves the current paper there,
     dir and name should be given as starting values"""
-    dir = self.paper.file_name['dir']
+    d = self.paper.file_name['dir']
     name = self.paper.file_name['name']
-    a = asksaveasfilename( defaultextension = ".svg", initialdir = dir, initialfile = name,
+    a = asksaveasfilename( defaultextension = ".svg", initialdir = d, initialfile = name,
                            title = _("Save As..."), parent = self,
                            filetypes=((_("CD-SVG file"),".svg"),
                                       (_("Gzipped CD-SVG file"),".svgz"),
@@ -960,13 +960,13 @@ class BKChem( Tk):
           break
       name_dic = {'name':name, 'dir':self.save_dir, 'auto': 1, 'ord': 0}
     else:
-      dir, name = os.path.split( name)
-      if not dir and not local_file:
-        dir = self.save_dir
-      elif not dir:
+      d, name = os.path.split(name)
+      if not d and not local_file:
+        d = self.save_dir
+      elif not d:
         # the file should be in the local directory
-        dir = "./"
-      name_dic = {'name':name, 'dir':dir, 'auto': 0, 'ord': 0}
+        d = "./"
+      name_dic = {'name': name, 'dir': d, 'auto': 0, 'ord': 0}
       i = self.check_number_of_opened_same_names( name_dic)
       name_dic['ord'] = i
     return name_dic
