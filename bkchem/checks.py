@@ -17,16 +17,20 @@
 
 #--------------------------------------------------------------------------
 
-"""this module contains functions used for various checks and maintanence
-throughout BKChem - mainly from paper and modules"""
+"""Functions used for various checks and maintanence throughout BKChem.
+
+Mainly from paper and modules.
+"""
 
 import interactors
 from singleton_store import Store
 
 
 
-def check_linear_fragments( paper):
-  """checks the state of linear fragments present on the paper and resets their appearance"""
+def check_linear_fragments(paper):
+  """Check the state of linear fragments present on the paper.
+
+  Also reset their appearance."""
   #mols = paper.um.get_changed_molecules()
   last_record = paper.um.get_last_record()
   for mol in paper.molecules:
