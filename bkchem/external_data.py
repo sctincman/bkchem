@@ -57,18 +57,15 @@ class external_data_manager( object):
     self.definitions = {}
 
 
-  def load_available_definitions( self):
-    dir = os_support.get_bkchem_private_dir()
-    dir = os.path.join( dir, 'definitions')
-    if not os.path.isdir( dir):
+  def load_available_definitions(self):
+    d = os_support.get_bkchem_private_dir()
+    d = os.path.join(d, 'definitions')
+    if not os.path.isdir(d):
       return []
-    for name in os.listdir( dir):
-      base, ext = os.path.splitext( name)
+    for name in os.listdir(d):
+      base, ext = os.path.splitext(name)
       if ext == ".xml":
-        #try:
-        self.read_data_definition( os.path.join( dir, name))
-        #except:
-        #  Store.log( "could not load definition file: %s", message_type="error")
+        self.read_data_definition(os.path.join(d, name))
 
     return self.definitions.keys()
 
