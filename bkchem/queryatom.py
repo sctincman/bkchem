@@ -195,7 +195,7 @@ class queryatom( drawable_chem_vertex, oasa.query_atom):
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
     x, y, z = Screen.read_xml_point( position)
-    if z != None:
+    if z is not None:
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
     x, y = self.paper.real_to_screen_coords( (x, y))
