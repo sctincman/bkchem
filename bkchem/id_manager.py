@@ -52,7 +52,7 @@ class id_manager(object):
 
 
   def generate_id(self, prefix='id'):
-    while 1:
+    while True:
       Id = prefix + str(randint(1, 100000))
       if Id not in self.id_map:
         return Id
