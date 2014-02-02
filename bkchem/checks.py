@@ -36,7 +36,7 @@ def check_linear_fragments(paper):
   for mol in paper.molecules:
     to_del = set()
     fs = [f for f in mol.fragments if f.type == "linear_form"]
-    if fs and (last_record == None or last_record.object_changed( mol)):
+    if fs and (last_record is None or last_record.object_changed(mol)):
       for f in fs:
         if mol.check_linear_form_fragment( f) == False:
           to_del.add( f)
