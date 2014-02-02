@@ -186,7 +186,7 @@ class group( drawable_chem_vertex):
 
 
   def set_name( self, name, interpret=1, occupied_valency=None):
-    if occupied_valency == None:
+    if occupied_valency is None:
       occupied_valency = self.occupied_valency
     if occupied_valency == 1 and (name.lower() in GT.groups_table):
       # name is a known group
@@ -234,7 +234,7 @@ class group( drawable_chem_vertex):
     position = package.getElementsByTagName( 'point')[0]
     # reading of coords regardless of their unit
     x, y, z = Screen.read_xml_point( position)
-    if z != None:
+    if z is not None:
       self.z = z* self.paper.real_to_screen_ratio()
     # needed to support transparent handling of molecular size
     x, y = self.paper.real_to_screen_coords( (x, y))
@@ -368,7 +368,7 @@ class group( drawable_chem_vertex):
       for v in self.group_graph.vertices:
         v.x, v.y = None, None
         v.show = v.symbol != 'C'
-      assert self.connecting_atom != None
+      assert self.connecting_atom is not None
       replacement = self.connecting_atom
       replacement.x = self.x
       replacement.y = self.y
