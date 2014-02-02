@@ -16,10 +16,6 @@
 #     main directory of the program
 
 #--------------------------------------------------------------------------
-#
-#
-#
-#--------------------------------------------------------------------------
 
 """Template manager resides here.
 
@@ -73,14 +69,18 @@ class template_manager(object):
       added.append( m)
     Store.app.paper.onread_id_sandbox_finish( apply_to=[]) # just switch the id_managers, no id mangling
 
+
   def get_template( self, n):
     return self.templates[n]
+
 
   def get_templates_valency( self, name):
     return self._prepared_templates[ name].next_to_t_atom.occupied_valency -1
 
+
   def get_template_names( self):
     return [o.name for o in self._prepared_templates]
+
 
   def get_transformed_template( self, n, coords, type='empty', paper=None):
     """type is type of connection - 'bond', 'atom1'(for single atom), 'atom2'(for atom with more than 1 bond), 'empty'"""
@@ -136,6 +136,7 @@ class template_manager(object):
     current.t_bond_second = None
     #return ready template
     return current
+
 
   def transform_template( self, temp, trans):
     for a in temp.atoms:
