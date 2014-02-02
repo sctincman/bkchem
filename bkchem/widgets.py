@@ -62,6 +62,7 @@ class ColorButton( Tkinter.Button):
                              foreground=self.foreground_color, activeforeground=self.foreground_color,
                              text=text)
 
+
   def set_color( self, color):
     """sets the self.color and modifies self.foreground_color if needed for the text to be visible"""
     if color:
@@ -131,7 +132,6 @@ class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
 
 
 
-
 class GraphicalAngleChooser( Tkinter.Frame):
 
   def __init__( self, parent, angle, line_color="#000", fill_color="#ffffff"):
@@ -154,11 +154,14 @@ class GraphicalAngleChooser( Tkinter.Frame):
     self.angle = angle
     self._draw()
 
+
   def _draw( self):
     self._line = self.canvas.create_line( 30, 30, 30+20*math.cos( self.angle*math.pi/180), 30+20*math.sin( self.angle*math.pi/180))
 
+
   def _redraw( self):
     self.canvas.coords( self._line, 30, 30, 30+20*math.cos( self.angle*math.pi/180), 30+20*math.sin( self.angle*math.pi/180))
+
 
   def _counter_changed( self):
     try:
@@ -167,15 +170,16 @@ class GraphicalAngleChooser( Tkinter.Frame):
       self.angle = 0
     self._redraw()
 
+
   def _click( self, e):
     x = e.x
     y = e.y
     self.angle = int( round( 180*geometry.clockwise_angle_from_east( x - 30, y - 30) / math.pi))
     self.counter.setentry( self.angle)
 
+
   def get( self):
     return self.angle
-
 
 
 
@@ -232,6 +236,8 @@ class WidthCounter( Pmw.Counter):
                           increment = 1,
                           datatype = 'real')
 
+
+
 class LengthCounter( Pmw.Counter):
   """the counter widget used to implement LengthChooser"""
 
@@ -246,6 +252,8 @@ class LengthCounter( Pmw.Counter):
                           entry_width = 5,
                           increment = 1,
                           datatype = 'real')
+
+
 
 class RatioCounter( Pmw.Counter):
   """Counter used to input ratio information"""
@@ -286,6 +294,7 @@ class ValueWithUnitParent( Tkinter.Frame):
     self.unit = Pmw.OptionMenu( self, items=us, initialitem=self._recent_unit, command=self.unit_changed)
     self.unit.pack( side='left')
 
+
   def unit_changed( self, current):
     if self._recent_unit != current:
       unit = self.units[ current]
@@ -314,6 +323,7 @@ class WidthChooser( ValueWithUnitParent):
                                          'px':{'ratio':30,  'increment': 1   , 'round': 0}})
 
 
+
 class LengthChooser( ValueWithUnitParent):
 
   def __init__( self, parent, value, label=None):
@@ -323,9 +333,7 @@ class LengthChooser( ValueWithUnitParent):
 
 
 
-
 # a meta dialog for opening files
-
 class FileSelectionEntry( Tkinter.Frame):
 
   def __init__( self, parent, prompt="", value="", filetypes=(), type="open"):
@@ -388,10 +396,6 @@ class FileSelectionWithText( Pmw.Dialog):
                                      value=value,
                                      filetypes=filetypes)
     self.entry.pack()
-
-
-
-
 
 
 
@@ -472,6 +476,7 @@ class HTMLLikeInput( Tkinter.Frame, object):
   def _numbersToSubButtonPressed( self, *e):
     self.text = re.sub( "\d+", '<sub>\g<0></sub>', self.text)
 
+
   def _chargesToSupButtonPressed( self, *e):
     self.text = re.sub( "(\+|\.|-)+", '<sup>\g<0></sup>', self.text)
 
@@ -494,11 +499,7 @@ class HTMLLikeInput( Tkinter.Frame, object):
 
 
 
-
-
-
 ## -------------------- SUPPORT FUNCTIONS --------------------
-
 def font_size_counter( text, factor, increment):
   if text == '':
     return 12
