@@ -88,7 +88,7 @@ def ask_id_for_selected( paper):
 
   m = ms[0]
 
-  while 1:
+  while True:
     dial = Pmw.PromptDialog( paper,
                              title=_('Id'),
                              label_text=_('Id:'),
@@ -420,7 +420,7 @@ def atoms_to_linear_fragment( mol, vs, bond_length=10):
     y = current.y
     processed = set()
     current_e = None
-    while 1:
+    while True:
       processed.add( current)
       current.show_hydrogens = True
       current.redraw()
