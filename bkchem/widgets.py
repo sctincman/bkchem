@@ -49,12 +49,13 @@ from singleton_store import Store
 
 
 
-class ColorButton( Tkinter.Button):
-  """button used for color selection; has the choosen color in background and
-  when pressed opens tkColorChooser.askcolor dialog"""
+class ColorButton(Tkinter.Button):
+  """Button used for color selection.
 
-  def __init__( self, master=None, color=None, text=''):
-    """well, init..."""
+  Has the choosen color in background and when pressed
+  opens tkColorChooser.askcolor dialog.
+  """
+  def __init__(self, master=None, color=None, text=''):
     self.master = master
     self.set_color( color)
     Tkinter.Button.__init__( self, master=master, command=self._select_color,
@@ -63,8 +64,11 @@ class ColorButton( Tkinter.Button):
                              text=text)
 
 
-  def set_color( self, color):
-    """sets the self.color and modifies self.foreground_color if needed for the text to be visible"""
+  def set_color(self, color):
+    """Set the self.color.
+
+    Also modify self.foreground_color if needed for the text to be visible.
+    """
     if color:
       self.color = str( color)
     else:
@@ -94,10 +98,9 @@ class ColorButton( Tkinter.Button):
 
 
 
-class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
+class ColorButtonWithTransparencyChecker(Tkinter.Frame, object):
 
-  def __init__( self, master=None, color=None, text=''):
-    """well, init..."""
+  def __init__(self, master=None, color=None, text=''):
     Tkinter.Frame.__init__( self, master)
     self.master = master
     self.button = ColorButton( master=self, color=color, text=text)
@@ -132,10 +135,9 @@ class ColorButtonWithTransparencyChecker( Tkinter.Frame, object):
 
 
 
-class GraphicalAngleChooser( Tkinter.Frame):
+class GraphicalAngleChooser(Tkinter.Frame):
 
-  def __init__( self, parent, angle, line_color="#000", fill_color="#ffffff"):
-
+  def __init__(self, parent, angle, line_color="#000", fill_color="#ffffff"):
     Tkinter.Frame.__init__( self, parent)
     self.canvas = Tkinter.Canvas( self, width=60, height=60)
     self.canvas.bind('<Button-1>', self._click)
@@ -183,9 +185,9 @@ class GraphicalAngleChooser( Tkinter.Frame):
 
 
 
-class FontSizeChooser( Pmw.Counter):
+class FontSizeChooser(Pmw.Counter):
 
-  def __init__( self, parent, value):
+  def __init__(self, parent, value):
     Pmw.Counter.__init__( self,
                           parent,
                           labelpos = 'nw',
@@ -198,9 +200,9 @@ class FontSizeChooser( Pmw.Counter):
 
 
 
-class FontFamilyChooser( Pmw.ScrolledListBox):
+class FontFamilyChooser(Pmw.ScrolledListBox):
 
-  def __init__( self, parent, value):
+  def __init__(self, parent, value):
       available_families = sorted(list(tkFont.families()))
       available_families.insert(-1, '')
       for fnt in data.always_available_fonts:
@@ -221,10 +223,11 @@ class FontFamilyChooser( Pmw.ScrolledListBox):
 
 
 
-class WidthCounter( Pmw.Counter):
-  """the counter widget used to implement WidthChooser"""
+class WidthCounter(Pmw.Counter):
+  """Counter widget used to implement WidthChooser.
 
-  def __init__( self, parent, value, label=None):
+  """
+  def __init__(self, parent, value, label=None):
     l = label or _('Width')
     Pmw.Counter.__init__( self,
                           parent,
@@ -238,10 +241,11 @@ class WidthCounter( Pmw.Counter):
 
 
 
-class LengthCounter( Pmw.Counter):
-  """the counter widget used to implement LengthChooser"""
+class LengthCounter(Pmw.Counter):
+  """Counter widget used to implement LengthChooser.
 
-  def __init__( self, parent, value, label=None):
+  """
+  def __init__(self, parent, value, label=None):
     l = label or _('Length')
     Pmw.Counter.__init__( self,
                           parent,
@@ -255,10 +259,11 @@ class LengthCounter( Pmw.Counter):
 
 
 
-class RatioCounter( Pmw.Counter):
-  """Counter used to input ratio information"""
+class RatioCounter(Pmw.Counter):
+  """Counter used to input ratio information.
 
-  def __init__( self, parent, value, label=None):
+  """
+  def __init__(self, parent, value, label=None):
     l = label or _('Ratio')
     Pmw.Counter.__init__( self,
                           parent,
@@ -272,11 +277,16 @@ class RatioCounter( Pmw.Counter):
 
 
 
-class ValueWithUnitParent( Tkinter.Frame):
+class ValueWithUnitParent(Tkinter.Frame):
 
-  def __init__( self, parent, value, counter, label=None, units={}):
-    """the parent is standard widget parent, counter should be Pmw.Counter instance,
-    units is a dictionary of dictionaries keyed by unit name with ratio, round and increment"""
+  def __init__(self, parent, value, counter, label=None, units={}):
+    """Initialize ValueWithUnitParent object.
+
+    parent  - standard widget parent
+    counter - should be Pmw.Counter instance
+    units   - dictionary of dictionaries keyed by unit name with ratio,
+              round and increment
+    """
     Tkinter.Frame.__init__( self, parent)
     self.units = units
     v, self._recent_unit = misc.split_number_and_unit( value)
@@ -315,18 +325,18 @@ class ValueWithUnitParent( Tkinter.Frame):
 
 
 
-class WidthChooser( ValueWithUnitParent):
+class WidthChooser(ValueWithUnitParent):
 
-  def __init__( self, parent, value, label=None):
+  def __init__(self, parent, value, label=None):
     ValueWithUnitParent.__init__( self, parent, value, WidthCounter, label=label,
                                   units={'cm':{'ratio':1, 'increment': 0.02, 'round': 2},
                                          'px':{'ratio':30,  'increment': 1   , 'round': 0}})
 
 
 
-class LengthChooser( ValueWithUnitParent):
+class LengthChooser(ValueWithUnitParent):
 
-  def __init__( self, parent, value, label=None):
+  def __init__(self, parent, value, label=None):
     ValueWithUnitParent.__init__( self, parent, value, LengthCounter, label=label,
                                   units={'cm':{'ratio':1, 'increment': 0.2, 'round': 2},
                                          'px':{'ratio':30,  'increment': 10   , 'round': 0}})
@@ -334,9 +344,9 @@ class LengthChooser( ValueWithUnitParent):
 
 
 # a meta dialog for opening files
-class FileSelectionEntry( Tkinter.Frame):
+class FileSelectionEntry(Tkinter.Frame):
 
-  def __init__( self, parent, prompt="", value="", filetypes=(), type="open"):
+  def __init__(self, parent, prompt="", value="", filetypes=(), type="open"):
     Tkinter.Frame.__init__( self, parent)
     self.parent = parent
     self.value = value
@@ -383,9 +393,9 @@ class FileSelectionEntry( Tkinter.Frame):
 
 
 
-class FileSelectionWithText( Pmw.Dialog):
+class FileSelectionWithText(Pmw.Dialog):
 
-  def __init__( self, parent, title="", prompt="", value="", filetypes=()):
+  def __init__(self, parent, title="", prompt="", value="", filetypes=()):
     Pmw.Dialog.__init__( self,
                          parent,
                          buttons = (_('OK'),_('Cancel')),
@@ -399,13 +409,13 @@ class FileSelectionWithText( Pmw.Dialog):
 
 
 
-class HTMLLikeInput( Tkinter.Frame, object):
+class HTMLLikeInput(Tkinter.Frame, object):
 
   font_decorations = ('italic', 'bold', 'subscript', 'superscript')
   font_decorations_to_html = {'italic':'i', 'bold':'b', 'subscript':'sub', 'superscript':'sup'}
 
 
-  def __init__( self, master, **kw):
+  def __init__(self, master, **kw):
     Tkinter.Frame.__init__( self, master, **kw)
     self.editPool = Tkinter.Entry( self, width=60)
     self.editPool.pack( side='left')
