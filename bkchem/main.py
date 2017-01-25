@@ -427,24 +427,12 @@ class BKChem( Tk):
 
 
   def init_preferences( self):
-    # save_dir must be set after the preference manager is initiated
-    # we set the old directory only when the current working directory is
-    # the same as the installation directory and the install was really performed
-    # this is very common on windows, where you mostly start the program via an icon
-    # it is not easy to guess when the right situation occured
-    if sys.version_info[0] > 2:
-      os.getcwdu = os.getcwd
-    if os.path.abspath( os_support.get_bkchem_run_dir()) == os.path.abspath( os.getcwdu()):
-      # we are running from the installation directory
-      if os_support.site_config != None:
-        # we are probably on Linux after install, go ahead
-        self.save_dir = Store.pm.get_preference( "default-dir")
-      elif sys.path[0].endswith( ".exe"):
-        # we are running on windows from an exe file, good as well
-        self.save_dir = Store.pm.get_preference( "default-dir")
-      else:
-        # otherwise we do not want to reset the path - it could confuse the user
-        pass
+    # load the last working directory as def. dir.
+    self.save_dir = Store.pm.get_preference( "default-dir")
+    # self.paper has to be added before init_preferences (otherwise -> crash)
+    # so we need to update the save directory of the file now
+    self.paper.file_name = self.get_name_dic()
+    print(self.paper.file_name)
     for i in range( 5):
       path = Store.pm.get_preference( "recent-file%d" % (i+1))
       if path:
