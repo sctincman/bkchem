@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author>Beda Kosata</author>
+  </meta>
+
+  <source>
+    <file>mass_scissors.py</file>
+    <menu-text lang="en">Mass scissors</menu-text>
+    <menu-text lang="lv">Masas šķēres</menu-text>
+  </source>
+</plugin>
