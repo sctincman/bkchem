@@ -1,13 +1,12 @@
-BKChem is a free molecular drawing program.
+This piece of software is an unofficial fork of BKChem, 
+which is a free molecular drawing program.
 
-For more info on program capabilities, install instructions etc. see
-documentation in directory "doc" in the main BKChem directory or the BKChem
+For the official version, more info on program capabilities, install instructions etc.
+see documentation in directory "doc" in the main BKChem directory or the BKChem
 website on http://zirael.org/bkchem/
 
-Bug reports and suggestions please fill on Savanna:
-http://savannah.nongnu.org/projects/bkchem
-or send to the current maintainer:
-Reinis Danne <rei4dan@gmail.com>
+Bug reports and suggestions please contact:
+Simone Pilon <wertyseek@gmail.com>
 
 ---
 BKChem is free software and is distributed under GNU GPL. The program is
