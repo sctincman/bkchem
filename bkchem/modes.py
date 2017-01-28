@@ -421,7 +421,6 @@ class edit_mode(basic_mode):
     self._move_sofar = 0
 
   def set_paper_scale( self, scale):
-    print('setting scale to: '+str(scale))
     Store.app.paper.scale('all', 0, 0, scale, scale)
     Store.app.paper.update_scrollregion()
 
