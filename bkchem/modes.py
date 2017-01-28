@@ -410,12 +410,20 @@ class edit_mode(basic_mode):
     # 'C-a' from windoze is in use - 'C-S-a' instead
     # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
+    # simo test TODO bind these actions to mousewheel+ctrl
+    #                add called funtion to paper class.
+    self.register_key_sequence( 'C-m', lambda : self.set_paper_scale(1.5))
+    self.register_key_sequence( 'C-n', lambda : self.set_paper_scale(0.75))
 
     # config
     self.rectangle_selection = True  # this can be overriden by children
 
     self._move_sofar = 0
 
+  def set_paper_scale( self, scale):
+    print('setting scale to: '+str(scale))
+    Store.app.paper.scale('all', 0, 0, scale, scale)
+    Store.app.paper.update_scrollregion()
 
   def mouse_down( self, event, modifiers=None):
     mods = modifiers or []

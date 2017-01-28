@@ -432,7 +432,6 @@ class BKChem( Tk):
     # self.paper has to be added before init_preferences (otherwise -> crash)
     # so we need to update the save directory of the file now
     self.paper.file_name = self.get_name_dic()
-    print(self.paper.file_name)
     for i in range( 5):
       path = Store.pm.get_preference( "recent-file%d" % (i+1))
       if path:
