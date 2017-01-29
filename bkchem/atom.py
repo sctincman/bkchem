@@ -323,8 +323,8 @@ class atom(drawable_chem_vertex, oasa.atom):
     if self.show:
       drawable_chem_vertex.focus( self)
     else:
-      x, y = self.x, self.y
-      self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags=('helper_f','no_export'))
+      x, y = self.paper.coords(self.item)[0:2] 
+      self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags=('helper_f','no_export'), outline=self.paper.highlight_color)
       self.paper.lift( self.item)
 
 

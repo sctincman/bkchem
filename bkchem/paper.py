@@ -91,6 +91,7 @@ class chem_paper(Canvas, object):
   # composite objects is focused - this is typical for selection_rect that needs to respond
   # differently in different corners
   classes_with_per_item_reselection = (selection_rect,)
+  highlight_color = 'blue'
 
 
   def __init__( self, master = None, file_name={}, **kw):

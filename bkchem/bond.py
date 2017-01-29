@@ -1044,20 +1044,20 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       items = [self.item] + self.second + self.third
 
     if self.type in 'na':
-      [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+2) for item in items]
     elif self.type == 'b':
-      [self.paper.itemconfig( item, width = self.wedge_width+2) for item in items]
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.wedge_width+2) for item in items]
     elif self.type in 'ho':
-      self.paper.itemconfig( self.item, fill="black")
+      self.paper.itemconfig( self.item, fill=self.paper.highlight_color )
     elif self.type == 'd':
       if self.simple_double and not self.center and not self.order == 1:
-        [self.paper.itemconfig( item, width = self.line_width+2) for item in items]
+        [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+2) for item in items]
       else:
-        [self.paper.itemconfig( item, width = self.line_width + 2) for item in self.items+self.second+self.third]
+        [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width + 2) for item in self.items+self.second+self.third]
     elif self.type == 'w':
       if self.center:
         items.remove( self.item)
-      [self.paper.itemconfigure( item, fill='white', outline='black', width=1) for item in items]
+      [self.paper.itemconfigure( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color, width=1) for item in items]
 
 
   def unfocus( self):
@@ -1070,20 +1070,20 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.type in 'na':
       if not self.item:
         return
-      [self.paper.itemconfig( item, width = self.line_width) for item in items]
+      [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
     elif self.type == 'b':
-      [self.paper.itemconfig( item, width = self.wedge_width) for item in items]
+      [self.paper.itemconfig( item, fill=self.line_color, width = self.wedge_width) for item in items]
     elif self.type in 'ho':
-      self.paper.itemconfig( self.item, fill = "")
+      self.paper.itemconfig( self.item, fill=self.line_color )
     elif self.type == 'd':
       if self.simple_double and not self.center and not self.order == 1:
-        [self.paper.itemconfig( item, width = self.line_width) for item in items]
+        [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
       else:
-        [self.paper.itemconfig( item, width = self.line_width) for item in self.items+self.second+self.third]
+        [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in self.items+self.second+self.third]
     elif self.type == 'w':
       if self.center:
         items.remove( self.item)
-      [self.paper.itemconfigure( item, fill=self.line_color, width=0) for item in items]
+      [self.paper.itemconfigure( item, fill=self.line_color, outline=self.line_color, width=0) for item in items]
 
 
   def select( self):
