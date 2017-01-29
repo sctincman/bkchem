@@ -122,6 +122,7 @@ class chem_paper(Canvas, object):
     self.file_name = file_name
 
     # paper sizes etc.
+    self._scale = 1.0
     self._paper_properties = {}
     self.set_default_paper_properties()
 
@@ -154,6 +155,11 @@ class chem_paper(Canvas, object):
       # scrolling (linux only?)
       self.bind( "<Button-4>", lambda e: self.yview( "scroll", -1, "units"))
       self.bind( "<Button-5>", lambda e: self.yview( "scroll", 1, "units"))
+      # zoom in and out key bindings
+      self.bind( '<Control-Button-4>', lambda e: self.scale_all(2))
+      self.bind( '<Control-Button-5>', lambda e: self.scale_all(0.5))
+
+
       # scrolling (windows)
       #self.bind( "<MouseWheel>", lambda e: self.yview( "scroll", -misc.signum( e.delta), "units"))
       # hope it does not clash on some platforms :(
@@ -1234,6 +1240,7 @@ class chem_paper(Canvas, object):
     """Scale canvas, used to zoom in and out of the frame.
 	should not affect the *actual* size of the objects.""" 
     self.scale('all', 0, 0, scale, scale)
+    self._scale *= scale
     self.update_scrollregion()
 
   def selected_to_real_clipboard_as_SVG( self):

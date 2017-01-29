@@ -346,10 +346,6 @@ class basic_mode( simple_mode):
     # mode switching
     self.register_key_sequence_ending_with_number_range( 'C-', self.switch_mode, numbers=range(1,10))
     self.register_key_sequence_ending_with_number_range( 'C-A-', self.switch_mode, numbers=range(1,10), attrs={"add":9})
-    # TODO bind these actions to mousewheel+ctrl
-    # zoom in and out key bindings
-    self.register_key_sequence( 'C-m', lambda : Store.app.paper.scale_all(1.5))
-    self.register_key_sequence( 'C-n', lambda : Store.app.paper.scale_all(0.75))
 
 
   def undo( self):
