@@ -1230,6 +1230,11 @@ class chem_paper(Canvas, object):
       o.unselect()
       o.select()
 
+  def scale_all( self, scale):
+    """Scale canvas, used to zoom in and out of the frame.
+	should not affect the *actual* size of the objects.""" 
+    self.scale('all', 0, 0, scale, scale)
+    self.update_scrollregion()
 
   def selected_to_real_clipboard_as_SVG( self):
     """exports selected top_levels as SVG to system clipboard"""
