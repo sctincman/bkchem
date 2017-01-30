@@ -346,7 +346,9 @@ class basic_mode( simple_mode):
     # mode switching
     self.register_key_sequence_ending_with_number_range( 'C-', self.switch_mode, numbers=range(1,10))
     self.register_key_sequence_ending_with_number_range( 'C-A-', self.switch_mode, numbers=range(1,10), attrs={"add":9})
-
+    
+    # debug, simo
+    self.register_key_sequence( 'C-p', lambda : Store.app.paper.print_all_coords())
 
   def undo( self):
     Store.app.paper.undo()
@@ -765,6 +767,9 @@ class draw_mode( edit_mode):
 
 
   def mouse_down( self, event, modifiers = []):
+    """Starts a new bond, if no atom is focused (the mouse is being
+       pressed on bank space) creates a new atom.
+       The bond is completed upon release (mouse_up())."""
     edit_mode.mouse_down( self, event, modifiers = modifiers)
     Store.app.paper.unselect_all()
     if not self.focused:
@@ -776,7 +781,9 @@ class draw_mode( edit_mode):
 
 
   def mouse_up( self, event):
+    """Completion of bond started when pressing (mouse_down())."""
     if not self._dragging:
+      #Make sure this was not thrown after click
       self.mouse_click( event)
     else:
       if self._moved_atom:

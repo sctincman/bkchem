@@ -231,6 +231,15 @@ class chem_paper(Canvas, object):
     else:
       return True
 
+  def print_all_coords(self):
+    """Intended for debug only, will be removed.
+       Prints the coordinates of all atoms and all molecules in this paper."""
+    #simo TODO remove
+    for mol in self.molecules:
+     print('Molecule:')
+     for atom in mol.atoms:
+       print('[ '+str(atom.x)+' , '+str(atom.y)+' ]') 
+
 
   def add_bindings( self, active_names=()):
     self.lower( self.background)

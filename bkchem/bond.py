@@ -314,8 +314,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   # THE DRAW HELPER METHODS
   def _where_to_draw_from_and_to( self):
-    x1, y1 = self.atom1.get_xy()
-    x2, y2 = self.atom2.get_xy()
+    # TODO the following are not the actual coordinates atoms are moved to
+    #  when an atom connected to a bond is moved.
+    #  After placing the atom, it ends up in a different position.
+    x1, y1 = self.paper.coords(self.atom1.item)[0:2]
+    x2, y2 = self.paper.coords(self.atom2.item)[0:2]
     # at first check if the bboxes are not overlapping
     bbox1 = list( misc.normalize_coords( self.atom1.bbox( substract_font_descent=True)))
     bbox2 = list( misc.normalize_coords( self.atom2.bbox( substract_font_descent=True)))
@@ -1037,6 +1040,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def focus( self):
+    # Since selection has to do merely with GUI, item coords are used instead of real atom position
+    # TODO for some reason after being focused bonds acquire a temporary "simple bond"-type line.
+    #      I suspect it has to do with this function.
     # all the items of the bond
     if self.simple_double and not self.center:
       items = [self.item]
@@ -1087,8 +1093,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def select( self):
-    x1, y1 = self.atom1.get_xy()
-    x2, y2 = self.atom2.get_xy()
+    # Since selection has to do merely with GUI, item coords are used instead of real atom position
+    x1, y1, x2, y2 = self.paper.coords(self.item)
     x = ( x1 + x2) / 2
     y = ( y1 + y2) / 2
     if self.selector:

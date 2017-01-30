@@ -310,7 +310,8 @@ class atom(drawable_chem_vertex, oasa.atom):
     else:
       if self.item:
         warn( "drawing atom that is probably drawn", UserWarning, 2)
-      x, y = self.x, self.y
+      # Here we scale the coordinates, as self.item is not defined yet.
+      x, y = self.x*self.paper._scale, self.y*self.paper._scale
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
       self.selector = None
       if not redraw:
@@ -320,6 +321,7 @@ class atom(drawable_chem_vertex, oasa.atom):
 
 
   def focus( self):
+    # Since selection has to do merely with GUI, item coords are used instead of real atom position
     if self.show:
       drawable_chem_vertex.focus( self)
     else:
@@ -337,14 +339,15 @@ class atom(drawable_chem_vertex, oasa.atom):
 
 
   def select( self):
+    # Since selection has to do merely with GUI, item coords are used instead of real atom position
     if self.show:
       drawable_chem_vertex.select( self)
     else:
-      x, y = self.x, self.y
+      x, y = self.paper.coords(self.item)[0:2]
       if self.selector:
         self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
       else:
-        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2)
+        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
       self.paper.lower( self.selector)
       self._selected = 1
 
