@@ -168,8 +168,8 @@ class mode( object):
 
   def clean_key_queue( self):
     """cleans status of all special keys;
-    needed because especially after C-x C-f the C-release is grabed by dialog
-    and never makes it to paper, therefor paper calls this after a file was read"""
+    needed because especially after C-x C-f the C-release is grabbed by dialog
+    and never makes it to paper, therefore paper calls this after a file was read"""
     for key in self._specials_pressed.keys():
       self._specials_pressed[ key] = 0
 
