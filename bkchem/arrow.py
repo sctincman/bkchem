@@ -43,7 +43,7 @@ from parents import point_drawable, interactive, drawable, top_level
 
 class arrow( meta_enabled, drawable, with_line, line_colored, container, interactive, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   _pins = ['none', 'last', 'first', 'both']

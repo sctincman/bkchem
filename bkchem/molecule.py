@@ -51,7 +51,7 @@ from parents import container, top_level, id_enabled, with_paper
 
 class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ
 
   object_type = 'molecule'

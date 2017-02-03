@@ -1791,7 +1791,7 @@ class mark_mode( edit_mode):
 
   def mouse_drag( self, event):
     # this is here because the pz_orbital is rotated instead of moved when dragging,
-    # therefor we need to use the move_to to position the mark
+    # therefore we need to use the move_to to position the mark
     # "pivot point" under the cursor when drags begins
     if not self._dragging and self.focused and self.focused.object_type == "mark" and self.focused.__class__.__name__ == "pz_orbital":
       self.focused.move_to( event.x, event.y)

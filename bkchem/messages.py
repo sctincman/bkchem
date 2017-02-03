@@ -96,7 +96,7 @@ Sorry, but BKChem relies too heavily on Pmw to be usable without it. Please inst
 
 no_oasa_text = _("""UNABLE TO IMPORT OASA
 
-Sorry, but from version 0.10 BKChem uses the OASA library internally and therefor cannot run without it.""")
+Sorry, but from version 0.10 BKChem uses the OASA library internally and therefore cannot run without it.""")
 
 
 low_python_version_text = _("""Python version too low!

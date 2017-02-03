@@ -33,7 +33,7 @@ from parents import meta_enabled, drawable, interactive, area_colored, container
 
 class vector_graphics_item( meta_enabled, drawable, interactive, with_line, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'vector'
@@ -339,7 +339,7 @@ class circle( oval):
 # POLYGON
 class polygon( vector_graphics_item, container, area_colored):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'polygon'
@@ -475,7 +475,7 @@ class polygon( vector_graphics_item, container, area_colored):
 # Polyline
 class polyline( vector_graphics_item, container, line_colored):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'polyline'

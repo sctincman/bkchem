@@ -44,7 +44,7 @@ import dom_extensions
 
 class mark( simple_parent):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'mark'

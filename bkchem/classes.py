@@ -44,7 +44,7 @@ from reaction import reaction
 from singleton_store import Screen
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
-### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
+### is called during their __init__ (in fact meta_enabled.__init__), therefore these values are
 ### not set in __init__ itself
 
 
@@ -143,7 +143,7 @@ class standard(object):
 
 class point( point_drawable, interactive, child):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'point'
@@ -302,7 +302,7 @@ class point( point_drawable, interactive, child):
 
 class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'plus'
@@ -463,7 +463,7 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
 
 class text( meta_enabled, interactive, point_drawable, text_like, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'text'
