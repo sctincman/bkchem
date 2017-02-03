@@ -39,13 +39,13 @@ from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
-### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
+### is called during their __init__ (in fact meta_enabled.__init__), therefore these values are
 ### not set in __init__ itself
 
 
 class atom(drawable_chem_vertex, oasa.atom):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ
 
   object_type = 'atom'
@@ -305,13 +305,17 @@ class atom(drawable_chem_vertex, oasa.atom):
 
   def draw( self, redraw=False):
     "draws atom with respect to its properties"
+    # Here we scale the coordinates, as self.vertex_item is not defined yet.
+    x, y = self.x*self.paper._scale, self.y*self.paper._scale
+    # Vertex_item defines the position of the vertex on the canvas. 
+    self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
+    
     if self.show:
+      # Draws the atom label
       drawable_chem_vertex.draw( self, redraw=redraw)
     else:
       if self.item:
         warn( "drawing atom that is probably drawn", UserWarning, 2)
-      # Here we scale the coordinates, as self.item is not defined yet.
-      x, y = self.x*self.paper._scale, self.y*self.paper._scale
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
       self.selector = None
       if not redraw:

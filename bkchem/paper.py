@@ -1251,6 +1251,8 @@ class chem_paper(Canvas, object):
 	should not affect the *actual* size of the objects.""" 
     self.scale('all', 0, 0, scale, scale)
     self._scale *= scale
+    for o in self.stack:
+      o.redraw()    
     self.update_scrollregion()
 
   def selected_to_real_clipboard_as_SVG( self):

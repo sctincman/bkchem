@@ -450,13 +450,11 @@ class drawable_chem_vertex(oasa.chem_vertex,
     "draws vertex with respect to its properties"
     if self.item:
       warn( "drawing vertex that is probably drawn", UserWarning, 2)
-    x, y = self.x, self.y
-    self.update_font()
-
+    x, y = self.paper.coords(self.vertex_item)[0:2]
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
-    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, pos=self.pos, fill=self.line_color)
+    self.ftext = ftext( self.paper, (x, y), self.xml_ftext, font=self.on_screen_font(), pos=self.pos, fill=self.line_color)
     self.ftext.draw()
     # should we want a complete bbox? (yes only for atoms in linear form)
     if len( [x for x in self.molecule.get_fragments_with_vertex( self) if x.type=="linear_form" and x.properties.get('bond_length',0)>20]):
@@ -514,7 +512,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
 
   def select( self):
-    self.paper.itemconfig( self.selector, outline='black')
+    self.paper.itemconfig( self.selector, outline=Store.app.paper.highlight_color)
     self._selected = 1
 
 
@@ -531,6 +529,8 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self.y += dy
     if self.drawn:
       self.paper.move( self.item, dx, dy)
+      if self.vertex_item:
+        self.paper.move( self.vertex_item, dx, dy)
       if self.selector:
         self.paper.move( self.selector, dx, dy)
       if self.ftext:
@@ -606,6 +606,10 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
 
+  def on_screen_font(self):
+    """Returns a font adequate for on-screen display, using appropriate scaling."""
+    screen_font_size = int( round( self.font_size * self.paper._scale))
+    return tkFont.Font( family=self.font_family, size=screen_font_size)
 
   def lift( self):
     # marks
