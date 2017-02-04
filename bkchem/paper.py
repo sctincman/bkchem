@@ -238,8 +238,14 @@ class chem_paper(Canvas, object):
     for mol in self.molecules:
      print('Molecule:')
      for atom in mol.atoms:
-       print('[ '+str(atom.x)+' , '+str(atom.y)+' ]') 
-
+       print('[ '+str(atom.x)+' , '+str(atom.y)+' ]')
+       
+  def redraw_all(self):
+    """Intended for debug only, will be removed.
+        Redraws all the content of the paper."""
+    # simo TODO remove
+    for mol in self.molecules:
+      mol.redraw()
 
   def add_bindings( self, active_names=()):
     self.lower( self.background)

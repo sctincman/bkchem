@@ -314,9 +314,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
   # THE DRAW HELPER METHODS
   def _where_to_draw_from_and_to( self):
-    # TODO the following are not the actual coordinates atoms are moved to
-    #  when an atom connected to a bond is moved.
-    #  After placing the atom, it ends up in a different position.
     #if self.atom1.show:
     x1, y1 = self.paper.coords(self.atom1.vertex_item)[0:2]
     x2, y2 = self.paper.coords(self.atom2.vertex_item)[0:2]

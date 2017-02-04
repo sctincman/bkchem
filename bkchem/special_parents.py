@@ -525,11 +525,12 @@ class drawable_chem_vertex(oasa.chem_vertex,
     """moves object with his selector (when present)"""
     # saving old dirty value
     # d = self.dirty
-    self.x += dx
-    self.y += dy
+    self.x += dx/Store.app.paper._scale
+    self.y += dy/Store.app.paper._scale
     if self.drawn:
       self.paper.move( self.item, dx, dy)
-      if self.vertex_item:
+      if self.show:
+        # If (not self.show) self.vertex_item points already to self.item (no need to move it twice).
         self.paper.move( self.vertex_item, dx, dy)
       if self.selector:
         self.paper.move( self.selector, dx, dy)
@@ -546,7 +547,11 @@ class drawable_chem_vertex(oasa.chem_vertex,
     dx = x - self.x
     dy = y - self.y
     self.move( dx, dy, dont_move_marks=dont_move_marks)
-
+  
+  def screen_move_to(self, x, y, dont_move_marks=False):
+    dx = x - self.x*Store.app.paper._scale
+    dy = y - self.y*Store.app.paper._scale
+    self.move( dx, dy, dont_move_marks=dont_move_marks)
 
   def get_xy( self):
     return self.x, self.y

@@ -349,6 +349,7 @@ class basic_mode( simple_mode):
     
     # debug, simo
     self.register_key_sequence( 'C-p', lambda : Store.app.paper.print_all_coords())
+    self.register_key_sequence( 'C-r', lambda : Store.app.paper.redraw_all())
 
   def undo( self):
     Store.app.paper.undo()
@@ -471,9 +472,11 @@ class edit_mode(basic_mode):
       self.mouse_click( event)
     else:
       if self._dragging == 3:
+        ### select everything in selection rectangle
         self._end_of_empty_drag( self._startx, self._starty, event.x, event.y)
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
+        ### move all selected
         # repositioning of atoms and double bonds
         atoms = [j for i in [o.neighbors for o in Store.app.paper.selected
                                              if (isinstance(o, oasa.graph.vertex) and
@@ -487,6 +490,7 @@ class edit_mode(basic_mode):
         Store.app.paper.handle_overlap()
         Store.app.paper.start_new_undo_record()
       elif self._dragging == 2:
+        ### move container of focused item
         Store.app.paper.handle_overlap()
         Store.app.paper.start_new_undo_record()
       elif self._dragging == 4:
@@ -547,7 +551,7 @@ class edit_mode(basic_mode):
     else:
       dy = event.y-self._starty
     if not self._dragging:
-      # drag threshhold
+      # drag threshold
       self._move_sofar += math.sqrt( dx**2 + dy**2)
       if self._move_sofar <= 1.0:
         return
@@ -589,6 +593,7 @@ class edit_mode(basic_mode):
         ### don't do anything
         self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
+      ### move all selected
       [o.move( dx, dy) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
         self._moving_selected_arrow.move( dx, dy)
@@ -596,9 +601,11 @@ class edit_mode(basic_mode):
       [o.redraw() for o in self._arrows_to_update]
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 2:
+      ### move container of focused item
       self._dragged_molecule.move( dx, dy)
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 3:
+      # Creating the selection rectangle
       Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
       # whole means that the selection-rect is moving whole, not only one part
@@ -774,7 +781,7 @@ class draw_mode( edit_mode):
     Store.app.paper.unselect_all()
     if not self.focused:
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x, event.y)
+      a = mol.create_new_atom( event.x/Store.app.paper._scale, event.y/Store.app.paper._scale)
       a.focus()
       self.focused = a
     #Store.app.paper.add_bindings()
@@ -824,7 +831,7 @@ class draw_mode( edit_mode):
     if not self.focused:
       #print("it should not get here!!!")
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x, event.y)
+      a = mol.create_new_atom( event.x/Store.app.paper._scale, event.y/Store.app.paper._scale)
       Store.app.paper.add_bindings()
       b = bond( standard = Store.app.paper.standard,
                 type=self.__mode_to_bond_type(),
@@ -895,6 +902,7 @@ class draw_mode( edit_mode):
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
         if self.submode[3] == 1:
+          # Free-hand lenght
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
                                                                                        pos=(event.x, event.y))
@@ -914,18 +922,23 @@ class draw_mode( edit_mode):
     if self._start_atom:
       z = 0
       if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
+        # Close bond on existing atom.
         x, y = self.focused.get_xy()
         z = self.focused.z
+        self._moved_atom.move_to( x, y)
       elif self.submode[3] == 1:
+        # Free-hand lenght
         x, y = event.x, event.y
+        self._moved_atom.screen_move_to( x, y)
       else:
+        # Fixed lenght
         dx = event.x - self._startx
         dy = event.y - self._starty
         x0, y0 = self._start_atom.get_xy()
         x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
-      self._moved_atom.move_to( x, y)
+        self._moved_atom.move_to( x, y)
       # to be able to connect atoms with non-zero z coordinate
       if z != 0:
         self._moved_atom.z = z
@@ -1016,10 +1029,10 @@ class arrow_mode( edit_mode):
           pos = self._arrow_to_update.points.index( self._start_point)
         self._moved_point = self._start_point.arrow.create_new_point( event.x, event.y, position=pos)
       if self.submode[1] == 1:
-        x, y = event.x, event.y
+        x, y = event.x/Store.app.paper._scale, event.y/Store.app.paper._scale
       else:
-        dx = event.x - self._startx
-        dy = event.y - self._starty
+        dx = event.x/Store.app.paper._scale - self._startx
+        dy = event.y/Store.app.paper._scale - self._starty
         x0, y0 = self._start_point.get_xy()
         x,y = geometry.point_on_circle( x0, y0,
                                         Screen.any_to_px( Store.app.paper.standard.arrow_length),
@@ -1152,7 +1165,9 @@ class template_mode( edit_mode):
       return
     Store.app.paper.unselect_all()
     if not self.focused:
-      t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=Store.app.paper)
+      t = self._get_transformed_template( self.submode[0], 
+                                          (event.x/Store.app.paper._scale, event.y/Store.app.paper._scale), 
+                                          type='empty', paper=Store.app.paper)
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         if self.focused.z != 0:

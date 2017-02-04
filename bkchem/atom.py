@@ -305,18 +305,22 @@ class atom(drawable_chem_vertex, oasa.atom):
 
   def draw( self, redraw=False):
     "draws atom with respect to its properties"
+    
     # Here we scale the coordinates, as self.vertex_item is not defined yet.
     x, y = self.x*self.paper._scale, self.y*self.paper._scale
-    # Vertex_item defines the position of the vertex on the canvas. 
-    self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
     
     if self.show:
+      # Vertex_item defines the position of the vertex on the canvas (for bonding). 
+      self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
       # Draws the atom label
       drawable_chem_vertex.draw( self, redraw=redraw)
     else:
       if self.item:
         warn( "drawing atom that is probably drawn", UserWarning, 2)
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
+      # Vertex_item is item if the atom is not shown.
+      self.vertex_item = self.item
+      # Generate selector
       self.selector = None
       if not redraw:
         [m.draw() for m in self.marks]
