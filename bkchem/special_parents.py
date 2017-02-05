@@ -528,12 +528,19 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self._selected = 0
 
 
-  def move( self, dx, dy, dont_move_marks=False):
-    """moves object with his selector (when present)"""
+  def move( self, dx, dy, use_paper_coords=False, dont_move_marks=False):
+    """Moves object and its representation.
+      By default uses real coordinates, can use the canvas coordinates too."""
     # saving old dirty value
     # d = self.dirty
-    self.x += dx/Store.app.paper._scale
-    self.y += dy/Store.app.paper._scale
+    if use_paper_coords:
+      self.x += dx/Store.app.paper._scale
+      self.y += dy/Store.app.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
+      dx *= Store.app.paper._scale
+      dy *= Store.app.paper._scale
     if self.drawn:
       self.paper.move( self.item, dx, dy)
       if self.show:
@@ -550,19 +557,18 @@ class drawable_chem_vertex(oasa.chem_vertex,
     # self.dirty = d
 
 
-  def move_to( self, x, y, dont_move_marks=False):
-    dx = x - self.x
-    dy = y - self.y
-    self.move( dx, dy, dont_move_marks=dont_move_marks)
-  
-  def screen_move_to(self, x, y, dont_move_marks=False):
-    dx = x - self.x*Store.app.paper._scale
-    dy = y - self.y*Store.app.paper._scale
-    self.move( dx, dy, dont_move_marks=dont_move_marks)
+  def move_to( self, x, y, use_paper_coords=False, dont_move_marks=False):
+    """Same as self.move() but the motion is not relative to the starting point."""
+    if use_paper_coords:
+      dx = x - self.x*Store.app.paper._scale
+      dy = y - self.y*Store.app.paper._scale
+    else:
+      dx = x - self.x
+      dy = y - self.y
+    self.move( dx, dy, use_paper_coords=use_paper_coords, dont_move_marks=dont_move_marks)
 
   def get_xy( self):
     return self.x, self.y
-
 
   def get_xyz( self, real=0):
     """returns atoms coordinates, default are screen coordinates, real!=0

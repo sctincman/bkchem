@@ -594,7 +594,7 @@ class edit_mode(basic_mode):
         self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
       ### move all selected
-      [o.move( dx, dy) for o in Store.app.paper.selected]
+      [o.move( dx, dy, use_paper_coords=True) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
         self._moving_selected_arrow.move( dx, dy)
       [o.redraw() for o in self._bonds_to_update]
@@ -602,7 +602,7 @@ class edit_mode(basic_mode):
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 2:
       ### move container of focused item
-      self._dragged_molecule.move( dx, dy)
+      self._dragged_molecule.move( dx, dy, use_paper_coords=True)
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 3:
       # Creating the selection rectangle
@@ -925,20 +925,20 @@ class draw_mode( edit_mode):
         # Close bond on existing atom.
         x, y = self.focused.get_xy()
         z = self.focused.z
-        self._moved_atom.move_to( x, y)
+        self._moved_atom.move_to( x, y, use_paper_coords=False)
       elif self.submode[3] == 1:
         # Free-hand lenght
         x, y = event.x, event.y
-        self._moved_atom.screen_move_to( x, y)
+        self._moved_atom.move_to( x, y, use_paper_coords=True)
       else:
         # Fixed lenght
         dx = event.x - self._startx
         dy = event.y - self._starty
-        x0, y0 = self._start_atom.get_xy()
-        x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length),
+        x0, y0 = self._start_atom.get_xy_on_paper()
+        x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length)*Store.app.paper._scale,
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
-        self._moved_atom.move_to( x, y)
+        self._moved_atom.move_to( x, y, use_paper_coords=True)
       # to be able to connect atoms with non-zero z coordinate
       if z != 0:
         self._moved_atom.z = z

@@ -737,10 +737,10 @@ class chem_paper(Canvas, object):
 
 
   def handle_overlap( self):
-    "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
+    "puts overlaping molecules together to one and then calls handle_overlap(a1, a2) for that molecule"
     overlap = []
     for a in self.find_withtag('atom'):
-      x, y = self.id_to_object( a).get_xy()
+      x, y = self.id_to_object( a).get_xy_on_paper()
       for b in self.find_overlapping( x-2, y-2, x+2, y+2):
         if (a != b) and ( 'atom' in self.gettags( b)):
           a1 = self.id_to_object( a)
