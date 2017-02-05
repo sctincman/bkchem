@@ -314,7 +314,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self.selector = None
     self._selected = 0 #Used to keep track whether this is selected or not
     self.item = None   #Used for selecting the vertex: a zero length line for non-label, bounding box for labels.
-    self.vertex_item = None#Used for bonding: zero length line indicating the vertex 
+    self.vertex_item = None#Used for bonding: zero length line indicating the vertex
     self.ftext = None  #Text used in label
 
     self.pos = None    #Alignment of label to vertex (first-center or last-center)
@@ -415,7 +415,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
     """
     return self.symbol
-  
+
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     meta_enabled.copy_settings( self, other)
@@ -465,6 +465,8 @@ class drawable_chem_vertex(oasa.chem_vertex,
       complete = False
     x1, y1, x2, y2 = self.ftext.bbox( complete=complete)
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom','no_export'))
+    ## For some reason the font is not created before TODO change position of this line.
+    self.update_font()
     ## shrink the selector according to the font size and properties
     hack_y = self.font.metrics()['descent'] - 1
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-hack_y, fill=self.area_color, outline='',tags=('helper_a','no_export'))
@@ -496,7 +498,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
     if self.vertex_item:
       self.paper.delete( self.vertex_item)
       self.vertex_item = None
-    
+
     # ...then we draw it again
     self.draw( redraw=True)
     [m.redraw() for m in self.marks]
@@ -579,7 +581,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
       return x, y, z
     else:
       return self.x, self.y, self.z
-  
+
   def get_xy_on_paper( self):
     """Returns the coordinates of the vertex on the paper reference system.
         These change based on zooming."""
@@ -695,4 +697,3 @@ class drawable_chem_vertex(oasa.chem_vertex,
       return True
     else:
       return False
-
