@@ -967,7 +967,8 @@ class BKChem( Tk):
       # we dont save configuration if we are in batch mode
       # this leads to window having size 0x0 and similar problems
       if self.svg_dir:
-        Store.pm.add_preference( "default-dir", os.path.abspath( self.save_dir))
+        if self.save_dir is not None:
+            Store.pm.add_preference( "default-dir", os.path.abspath( self.save_dir))
       i = 0
       # save recent files
       for name in self._recent_files:
@@ -1408,4 +1409,3 @@ Enter InChI:""")
       with open(plugin) as f:
         code = compile(f.read(), filename, 'exec')
         exec(code, the_globals)
-
