@@ -241,9 +241,7 @@ class chem_paper(Canvas, object):
        print('[ '+str(atom.x)+' , '+str(atom.y)+' ]')
        
   def redraw_all(self):
-    """Intended for debug only, will be removed.
-        Redraws all the content of the paper."""
-    # simo TODO remove
+    """Redraws all the content of the paper."""
     for mol in self.molecules:
       mol.redraw()
 
@@ -1257,8 +1255,9 @@ class chem_paper(Canvas, object):
 	should not affect the *actual* size of the objects.""" 
     self.scale('all', 0, 0, scale, scale)
     self._scale *= scale
-    for o in self.stack:
-      o.redraw()    
+    # Some geometries are required to scale, others not.
+    # So we need to redraw everything.
+    self.redraw_all()
     self.update_scrollregion()
 
   def selected_to_real_clipboard_as_SVG( self):

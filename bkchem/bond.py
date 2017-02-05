@@ -315,8 +315,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   # THE DRAW HELPER METHODS
   def _where_to_draw_from_and_to( self):
     #if self.atom1.show:
-    x1, y1 = self.paper.coords(self.atom1.vertex_item)[0:2]
-    x2, y2 = self.paper.coords(self.atom2.vertex_item)[0:2]
+    x1, y1 = self.atom1.get_xy_on_paper()
+    x2, y2 = self.atom2.get_xy_on_paper()
     # at first check if the bboxes are not overlapping
     bbox1 = list( misc.normalize_coords( self.atom1.bbox( substract_font_descent=True)))
     bbox2 = list( misc.normalize_coords( self.atom2.bbox( substract_font_descent=True)))

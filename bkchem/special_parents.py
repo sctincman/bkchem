@@ -312,12 +312,13 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
     # presentation attrs
     self.selector = None
-    self._selected = 0 #used to keep track whether this is selected or not
-    self.item = None
-    self.ftext = None
+    self._selected = 0 #Used to keep track whether this is selected or not
+    self.item = None   #Used for selecting the vertex: a zero length line for non-label, bounding box for labels.
+    self.vertex_item = None#Used for bonding: zero length line indicating the vertex 
+    self.ftext = None  #Text used in label
 
-    self.pos = None
-    self.focus_item = None
+    self.pos = None    #Alignment of label to vertex (first-center or last-center)
+    self.focus_item = None#As for selector, but for focus (also a bounding box)
 
 
   @property
@@ -414,8 +415,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
     """
     return self.symbol
-
-
+  
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     meta_enabled.copy_settings( self, other)
@@ -450,7 +450,9 @@ class drawable_chem_vertex(oasa.chem_vertex,
     "draws vertex with respect to its properties"
     if self.item:
       warn( "drawing vertex that is probably drawn", UserWarning, 2)
-    x, y = self.paper.coords(self.vertex_item)[0:2]
+    x, y = self.get_xy_on_paper()
+    if not self.vertex_item:
+      self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
@@ -480,19 +482,24 @@ class drawable_chem_vertex(oasa.chem_vertex,
       self.reposition_marks()
       self._reposition_on_redraw = 0
 
-    self.update_font()
+    if self.show:
+      self.update_font()
     # at first we delete everything...
     self.paper.unregister_id( self.item)
     self.paper.delete( self.item)
+    self.item = None
     if self.selector:
-      self.paper.delete( self. selector)
+      self.paper.delete( self.selector)
+      self.selector = None
     if self.ftext:
       self.ftext.delete()
-    self.item = None # to ensure that warning in draw() is not triggered when redrawing
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
+      self.vertex_item = None
+    
     # ...then we draw it again
     self.draw( redraw=True)
     [m.redraw() for m in self.marks]
-
     if self._selected:
       self.select()
     else:
@@ -566,6 +573,15 @@ class drawable_chem_vertex(oasa.chem_vertex,
       return x, y, z
     else:
       return self.x, self.y, self.z
+  
+  def get_xy_on_paper( self):
+    """Returns the coordinates of the vertex on the paper reference system.
+        These change based on zooming."""
+    # An item on the Canvas is used to keep track of current position (self.vertex_item)
+    if self.vertex_item:
+      return self.paper.coords(self.vertex_item)[0:2]
+    else:
+      return (self.x*self.paper._scale, self.y*self.paper._scale)
 
 
   def delete( self):

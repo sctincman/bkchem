@@ -306,34 +306,25 @@ class atom(drawable_chem_vertex, oasa.atom):
   def draw( self, redraw=False):
     "draws atom with respect to its properties"
     
-    # Here we scale the coordinates, as self.vertex_item is not defined yet.
-    x, y = self.x*self.paper._scale, self.y*self.paper._scale
-    
     if self.show:
-      # Vertex_item defines the position of the vertex on the canvas (for bonding). 
-      self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
-      # Draws the atom label
+      # Draws the atom with a label
       drawable_chem_vertex.draw( self, redraw=redraw)
     else:
       if self.item:
         warn( "drawing atom that is probably drawn", UserWarning, 2)
+      x, y = self.get_xy_on_paper()
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
-      # Vertex_item is item if the atom is not shown.
       self.vertex_item = self.item
-      # Generate selector
-      self.selector = None
       if not redraw:
         [m.draw() for m in self.marks]
       self.paper.register_id( self.item, self)
       self._reposition_on_redraw = 0
 
-
   def focus( self):
-    # Since selection has to do merely with GUI, item coords are used instead of real atom position
     if self.show:
       drawable_chem_vertex.focus( self)
     else:
-      x, y = self.paper.coords(self.item)[0:2] 
+      x, y = self.get_xy_on_paper() 
       self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags=('helper_f','no_export'), outline=self.paper.highlight_color)
       self.paper.lift( self.item)
 
@@ -347,26 +338,37 @@ class atom(drawable_chem_vertex, oasa.atom):
 
 
   def select( self):
-    # Since selection has to do merely with GUI, item coords are used instead of real atom position
     if self.show:
+      # Makes the selector of the label visible
       drawable_chem_vertex.select( self)
     else:
-      x, y = self.paper.coords(self.item)[0:2]
-      if self.selector:
-        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
-      else:
-        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
-      self.paper.lower( self.selector)
+      self.update_selector()
+      #It's not clear why, but when redrawing everything this line hides the selector.
+      #self.paper.lower( self.selector)
       self._selected = 1
 
 
   def unselect( self):
     if self.show:
       drawable_chem_vertex.unselect( self)
-    else:
+    elif self.selector:
       self.paper.delete( self.selector)
       self.selector = None
       self._selected = 0
+  
+  def update_selector(self):
+    """Modifies the selector in order to display it correctly.
+      If no selector is present, generates one.
+      This function is only needed for atoms without labels."""
+    print('update selector for '+str(self))
+    if not self.show:
+      # If atom is not visible, his selector is generated or updated ( size not scaled with paper )
+      x, y = self.get_xy_on_paper()
+      if self.selector:
+        print('selector existed')
+        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
+      else:
+        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
 
 
   def read_package( self, package):
