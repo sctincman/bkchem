@@ -342,7 +342,12 @@ class atom(drawable_chem_vertex, oasa.atom):
       # Makes the selector of the label visible
       drawable_chem_vertex.select( self)
     else:
-      self.update_selector()
+      # If atom is not visible, his selector is generated or updated ( size not scaled with paper )
+      x, y = self.get_xy_on_paper()
+      if self.selector:
+        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
+      else:
+        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
       #It's not clear why, but when redrawing everything this line hides the selector.
       #self.paper.lower( self.selector)
       self._selected = 1
@@ -355,21 +360,6 @@ class atom(drawable_chem_vertex, oasa.atom):
       self.paper.delete( self.selector)
       self.selector = None
       self._selected = 0
-  
-  def update_selector(self):
-    """Modifies the selector in order to display it correctly.
-      If no selector is present, generates one.
-      This function is only needed for atoms without labels."""
-    print('update selector for '+str(self))
-    if not self.show:
-      # If atom is not visible, his selector is generated or updated ( size not scaled with paper )
-      x, y = self.get_xy_on_paper()
-      if self.selector:
-        print('selector existed')
-        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
-      else:
-        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
-
 
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""

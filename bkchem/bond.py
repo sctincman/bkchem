@@ -82,6 +82,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if atoms:
       self.atom1, self.atom2 = atoms
     self.selector = None
+    self._selected = 0
 
     # implicit values
     self.center = None
@@ -1001,12 +1002,11 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if not self.__dirty:
       pass
       #print("redrawing non-dirty bond")
-    sel = self.selector
     if self.item:
       self.delete()
     self.draw( automatic=recalc_side and "both" or "none")
-    # reselect
-    if sel:
+    # redraw selection attribute
+    if self._selected:
       self.select()
     self.__dirty = 0
 
@@ -1091,7 +1091,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def select( self):
-    # Since selection has to do merely with GUI, item coords are used instead of real atom position
     x1, y1, x2, y2 = self.paper.coords(self.item)
     x = ( x1 + x2) / 2
     y = ( y1 + y2) / 2
@@ -1099,12 +1098,14 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
     else:
       self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=Store.app.paper.highlight_color)
-    self.paper.lower( self.selector)
-
+    #It's not clear why, but when redrawing everything this line hides the selector.
+    #self.paper.lower( self.selector)
+    self._selected = 1
 
   def unselect( self):
     self.paper.delete( self.selector)
     self.selector = None
+    self._selected = 0
 
 
   def move( self, dx, dy):
@@ -1117,8 +1118,10 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def delete( self):
-    self.unselect()
     items = [self.item] + self.second + self.third + self.items
+    if self.selector:
+      items += [self.selector]
+      self.selector = None
     if self.item:
       self.paper.unregister_id( self.item)
     self.item = None
