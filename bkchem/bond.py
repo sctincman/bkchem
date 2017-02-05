@@ -364,7 +364,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
-    d = self.bond_width
+    d = self.bond_width * self.paper._scale
     # double
     if self.center:
       self.paper.itemconfig( self.item, fill='')
@@ -392,7 +392,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     x1, y1, x2, y2 = where
     if self.bond_width == None:
       self._decide_distance_and_center()
-    d = self.bond_width
+    d = self.bond_width * self.paper._scale
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d*3/4)
     self.second = self._draw_second_line( [x, y, x0, y0])
     self.third = self._draw_second_line( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
@@ -1498,4 +1498,3 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self._transform:
       coords = self._transform.transform_xy_flat_list( coords)
     return self.paper.create_polygon( coords, **kw)
-
