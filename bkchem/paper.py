@@ -235,6 +235,8 @@ class chem_paper(Canvas, object):
     """Intended for debug only, will be removed.
        Prints the coordinates of all atoms and all molecules in this paper."""
     #simo TODO remove
+    print(self.submode)
+    print(self.mode)
     for mol in self.molecules:
      print('Molecule:')
      for atom in mol.atoms:

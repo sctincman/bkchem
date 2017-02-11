@@ -221,7 +221,7 @@ class point( point_drawable, interactive, child):
         self.y = y/self.paper._scale
         self.draw()
       else:
-        x2, y2 = get_xy_on_screen()
+        x2, y2 = self.get_xy_on_screen()
         dx = x -x2
         dy = y -y2
         self.move( dx, dy, use_paper_coords)

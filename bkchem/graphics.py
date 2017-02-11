@@ -503,7 +503,7 @@ class polyline( vector_graphics_item, container, line_colored):
 
   def draw( self):
     [p.draw() for p in self.points]
-    coords = (j for i in map(lambda b: b.get_xy(), self.points)
+    coords = (j for i in map(lambda b: b.get_xy_on_screen(), self.points)
                   for j in i)
     self.item = self.paper.create_line( tuple( coords),
                                         fill=self.line_color,
@@ -513,8 +513,11 @@ class polyline( vector_graphics_item, container, line_colored):
     self.paper.register_id( self.item, self)
 
 
-  def move( self, dx, dy):
-    [p.move( dx, dy) for p in self.points]
+  def move( self, dx, dy, use_paper_coords=False):
+    [p.move( dx, dy, use_paper_coords) for p in self.points]
+    if not use_paper_coords:
+      dx *= self.paper._scale
+      dy *= self.paper._scale
     self.paper.move( self.item, dx, dy)
 
 
@@ -522,11 +525,16 @@ class polyline( vector_graphics_item, container, line_colored):
     if not self.item:
       self.draw()
     else:
-      coords = (j for i in map(lambda b: b.get_xy(), self.points)
+      coords = (j for i in map(lambda b: b.get_xy_on_screen(), self.points)
                     for j in i)
       self.paper.coords( self.item, tuple( coords))
       self.paper.itemconfig( self.item, width=self.line_width, fill=self.line_color, smooth=self.spline)
 
+  def focus(self):
+    self.paper.itemconfig( self.item, width=self.line_width+2)
+    
+  def unfocus(self):
+    self.paper.itemconfig( self.item, width=self.line_width)
 
   def select( self):
     #self.selector = hg.selection_square( self.paper, self, coords=tuple( self.bbox()))

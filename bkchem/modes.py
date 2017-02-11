@@ -998,7 +998,7 @@ class arrow_mode( edit_mode):
       spline = (self.get_submode( 2) == 'spline')
       type = self.get_submode( 3)
       arr = Store.app.paper.new_arrow( spline=spline, type=type)
-      self._start_point = arr.create_new_point( event.x, event.y)
+      self._start_point = arr.create_new_point( event.x, event.y, use_paper_coords=True)
       self._start_point.focus()
       self.focused = self._start_point
       self._arrow_to_update = arr
@@ -1027,18 +1027,18 @@ class arrow_mode( edit_mode):
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        self._moved_point = self._start_point.arrow.create_new_point( event.x, event.y, position=pos)
+        self._moved_point = self._start_point.arrow.create_new_point( event.x, event.y, position=pos, use_paper_coords=True)
       if self.submode[1] == 1:
-        x, y = event.x/Store.app.paper._scale, event.y/Store.app.paper._scale
+        x, y = event.x, event.y
       else:
-        dx = event.x/Store.app.paper._scale - self._startx
-        dy = event.y/Store.app.paper._scale - self._starty
-        x0, y0 = self._start_point.get_xy()
+        dx = event.x - self._startx
+        dy = event.y - self._starty
+        x0, y0 = self._start_point.get_xy_on_screen()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Screen.any_to_px( Store.app.paper.standard.arrow_length),
+                                        Screen.any_to_px( Store.app.paper.standard.arrow_length)*Store.app.paper._scale,
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
-      self._moved_point.move_to( x, y)
+      self._moved_point.move_to( x, y, use_paper_coords=True)
       self._arrow_to_update.redraw()
 
 
@@ -1060,7 +1060,7 @@ class arrow_mode( edit_mode):
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
         pnt = self._arrow_to_update.create_new_point( x0+Screen.any_to_px( Store.app.paper.standard.arrow_length),
-                                                      y0, position=pos)
+                                                      y0, position=pos, use_paper_coords=True)
         Store.app.paper.select( [pnt])
         self._arrow_to_update.redraw()
       #self.mouse_click( event)
@@ -2438,6 +2438,11 @@ class bracket_mode( edit_mode):
 
 
   def _end_of_empty_drag( self, x1, y1, x2, y2):
+    #convert to real coords
+    x1 /= Store.app.paper._scale
+    x2 /= Store.app.paper._scale
+    y1 /= Store.app.paper._scale
+    y2 /= Store.app.paper._scale
     if self.get_submode(0) == "rectangularbracket":
       dx = 0.05*math.sqrt( (y2-y1)**2 + (x2-x1)**2)
       Store.app.paper.new_polyline( [x1+dx, y1,

@@ -156,8 +156,11 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     #self.selector.delete()
     [pnt.unselect() for pnt in self.points]
 
-  def create_new_point( self, x, y, position=-1):
-    "creates new point, position specifies relative position of point in points, usualy -1 or 0"
+  def create_new_point( self, x, y, position=-1, use_paper_coords=False):
+    "creates new point, position specifies relative position of point in points, usually -1 or 0"
+    if use_paper_coords:
+      x /= self.paper._scale
+      y /= self.paper._scale
     pnt = point( self.paper, xy=(x,y), arrow=self)
     if position < 0:
       self.points.append( pnt)
