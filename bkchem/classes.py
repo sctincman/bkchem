@@ -154,9 +154,11 @@ class point( point_drawable, interactive, child):
 
   def __init__( self, paper, xy=(), arrow=None, package=None, type='invisible'):
     point_drawable.__init__( self)
+    
+    self.paper = paper
+    self.vertex_item = None
     if xy:
       self.x, self.y = xy
-    self.paper = paper
     self.item = None
     self.focus_item = None
     self.selector = None
@@ -172,9 +174,11 @@ class point( point_drawable, interactive, child):
       self.redraw()
     else:
       if self.type == 'invisible':
-        self.item = self.paper.create_line( self.x, self.y, self.x, self.y, tags='point', fill='')
+        x, y = self.get_xy_on_screen()
+        self.item = self.paper.create_line( x, y, x, y, tags='point', fill='')
       elif self.type == 'circle':
-        self.item = self.paper.create_oval( self.x-2, self.y-2, self.x+2, self.y+2, fill='grey', outline='grey', tags='point')
+        x, y = self.get_xy_on_screen()
+        self.item = self.paper.create_oval( x-2, y-2, x+2, y+2, fill='grey', outline='grey', tags='point')
       else:
         warn( 'unknown point type')
         return
@@ -189,30 +193,51 @@ class point( point_drawable, interactive, child):
       self.item = None
       self.draw()
       if self.selector:
-        self.paper.coords( self.selector, self.x-2, self.y-2, self.x+2, self.y+2)
+        x, y = self.get_xy_on_screen()
+        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
+    if (use_paper_coords):
+      paper_dx = dx
+      paper_dy = dy
+      dx = paper_dx/self.paper._scale
+      dy = paper_dy/self.paper._scale
+    else:
+      paper_dx = dx*self.paper._scale
+      paper_dy = dy*self.paper._scale
     self.x += dx
     self.y += dy
-    self.paper.move( self.item, dx, dy)
+    self.paper.move( self.item, paper_dx, paper_dy)
+    self.paper.move( self.vertex_item, paper_dx, paper_dy)
     if self.selector:
-      self.paper.move( self.selector, dx, dy)
+      self.paper.move( self.selector, paper_dx, paper_dy)
 
 
-  def move_to( self, x, y):
-    if not self.item:
-      self.x = x
-      self.y = y
-      self.draw()
+  def move_to( self, x, y, use_paper_coords=False):
+    if (use_paper_coords):
+      if not self.item:
+        self.x = x/self.paper._scale
+        self.y = y/self.paper._scale
+        self.draw()
+      else:
+        x2, y2 = get_xy_on_screen()
+        dx = x -x2
+        dy = y -y2
+        self.move( dx, dy, use_paper_coords)
     else:
-      dx = x -self.x
-      dy = y -self.y
-      self.move( dx, dy)
-
+      if not self.item:
+        self.x = x
+        self.y = y
+        self.draw()
+      else:
+        dx = x -self.x
+        dy = y -self.y
+        self.move( dx, dy, use_paper_coords)
 
   def focus( self):
-    self.focus_item = self.paper.create_oval( self.x-4, self.y-4, self.x+4, self.y+4)
+    x, y = self.get_xy_on_screen()
+    self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, outline=self.paper.highlight_color)
     if self.item:
       self.paper.lift( self.item)
 
@@ -225,7 +250,8 @@ class point( point_drawable, interactive, child):
 
   def select( self):
     if not self.selector:
-      self.selector = self.paper.create_rectangle( self.x-2, self.y-2, self.x+2, self.y+2)
+      x, y = self.get_xy_on_screen()
+      self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
       self.paper.lower( self.selector)
 
 
@@ -237,6 +263,14 @@ class point( point_drawable, interactive, child):
 
   def get_xy( self):
     return self.x, self.y
+  
+  def get_xy_on_screen(self):
+    if self.vertex_item:
+      return self.paper.coords( self.vertex_item)[0:2]
+    else:
+      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags='no-export', fill='')
+      return xy
 
 
   def delete( self):

@@ -186,8 +186,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def is_empty_or_single_point( self):
     return len( self.points) < 2
 
-  def move( self, dx, dy):
-    [p.move( dx, dy) for p in self.points]
+  def move( self, dx, dy, use_paper_coords=False):
+    [p.move( dx, dy, use_paper_coords) for p in self.points]
     self.redraw()
 
   def read_package( self, package):
@@ -273,13 +273,13 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # -- private drawing methods for different arrow types --
 
   def _draw_normal_old( self):
-    ps = tuple(j for i in map(lambda b: b.get_xy(), self.points) for j in i)
+    ps = tuple(j for i in map(lambda b: b.get_xy_on_screen(), self.points) for j in i)
     item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
                                    width=self.line_width, smooth=self.spline, fill=self.line_color)
     return [item]
 
   def _draw_normal( self):
-    coords = [p.get_xy() for p in self.points]
+    coords = [p.get_xy_on_screen() for p in self.points]
     pins = []
     if self.pin in (2,3):
       x1, y1 = coords[1]
@@ -306,7 +306,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def _draw_electron( self):
-    coords = [p.get_xy() for p in self.points]
+    coords = [p.get_xy_on_screen() for p in self.points]
     pins = []
     if self.pin in (2,3):
       x1, y1 = coords[1]
@@ -333,7 +333,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def _draw_retro( self):
     width = 3
-    coords = [p.get_xy() for p in self.points]
+    coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     # the pins
     if self.pin in (2,3):
@@ -356,7 +356,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def _draw_equilibrium( self):
     width = 3
-    orig_coords = [p.get_xy() for p in self.points]
+    orig_coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)
@@ -382,7 +382,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def _draw_equilibrium2( self):
     width = 3
-    orig_coords = [p.get_xy() for p in self.points]
+    orig_coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)

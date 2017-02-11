@@ -596,7 +596,7 @@ class edit_mode(basic_mode):
       ### move all selected
       [o.move( dx, dy, use_paper_coords=True) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
-        self._moving_selected_arrow.move( dx, dy)
+        self._moving_selected_arrow.move( dx, dy, use_paper_coords=True)
       [o.redraw() for o in self._bonds_to_update]
       [o.redraw() for o in self._arrows_to_update]
       self._startx, self._starty = event.x, event.y
