@@ -451,8 +451,6 @@ class drawable_chem_vertex(oasa.chem_vertex,
     if self.item:
       warn( "drawing vertex that is probably drawn", UserWarning, 2)
     x, y = self.get_xy_on_paper()
-    if not self.vertex_item:
-      self.vertex_item = self.paper.create_line( x, y, x, y, tags=("no_export"))
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
@@ -589,7 +587,9 @@ class drawable_chem_vertex(oasa.chem_vertex,
     if self.vertex_item:
       return self.paper.coords(self.vertex_item)[0:2]
     else:
-      return (self.x*self.paper._scale, self.y*self.paper._scale)
+      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
+      return xy
 
 
   def delete( self):

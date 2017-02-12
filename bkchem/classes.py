@@ -525,6 +525,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.set_xy( xy[0], xy[1])
     self.xml_ftext = text
     self.item = None
+    self.vertex_item = None
     if package:
       self.read_package( package)
     self.focus_item = None
@@ -540,7 +541,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, fill=self.line_color, justify=self.justify)
+    x, y = self.get_xy_on_paper()
+    self.ftext = ftext( self.paper, (x, y), self.xml_ftext, font=self.on_screen_font(), fill=self.line_color, justify=self.justify)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text','no_export'))
@@ -574,7 +576,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def select( self):
     if self.selector:
-      self.paper.itemconfig( self.selector, outline='black')
+      self.paper.itemconfig( self.selector, outline=self.paper.highlight_color)
     self._selected = 1
 
 
@@ -584,22 +586,35 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self._selected = 0
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
     """moves object with his selector (when present)"""
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += dx/self.paper._scale
+      self.y += dy/self.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
+      dx *= self.paper._scale
+      dy *= self.paper._scale
     self.paper.move( self.item, dx, dy)
+    self.paper.move( self.vertex_item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
       self.ftext.move( dx, dy)
 
 
-  def move_to( self, x, y):
-    dx = x - self.x
-    dy = y - self.y
-    self.set_xy( x, y)
+  def move_to( self, x, y, use_paper_coords=False):
+    if use_paper_coords:
+      dx = x - self.x*self.paper._scale
+      dy = y - self.y*self.paper._scale
+      self.set_xy(x/self.paper._scale, y/self.paper._scale)
+    else:
+      dx = (x - self.x)*self.paper._scale
+      dy = (y - self.y)*self.paper._scale
+      self.set_xy( x, y)
     self.paper.move( self.item, dx, dy)
+    self.paper.move( self.vertex_item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
@@ -616,7 +631,17 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def get_xy( self):
     return self.x, self.y
-
+  
+  def get_xy_on_paper( self):
+    """Returns the coordinates of the vertex on the paper reference system.
+        These change based on zooming."""
+    # An item on the Canvas is used to keep track of current position (self.vertex_item)
+    if self.vertex_item:
+      return self.paper.coords(self.vertex_item)[0:2]
+    else:
+      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
+      return xy
 
   def delete( self):
     if self.focus_item:
@@ -712,6 +737,11 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     """scales font of text. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
+  
+  def on_screen_font(self):
+    """Returns a font adequate for on-screen display, using appropriate scaling."""
+    screen_font_size = int( round( self.font_size * self.paper._scale))
+    return tkFont.Font( family=self.font_family, size=screen_font_size)
 
 
   def lift( self):

@@ -244,8 +244,8 @@ class chem_paper(Canvas, object):
        
   def redraw_all(self):
     """Redraws all the content of the paper."""
-    for mol in self.molecules:
-      mol.redraw()
+    for o in self.stack:
+      o.redraw()
 
   def add_bindings( self, active_names=()):
     self.lower( self.background)
