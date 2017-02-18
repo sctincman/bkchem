@@ -63,6 +63,7 @@ class mark( simple_parent):
     self.atom = atom
     self.size = size
     self.items = []
+    self.vertex_item = None
     self.auto = auto
     #self.draw()
 
@@ -84,19 +85,41 @@ class mark( simple_parent):
       self.unregister()
     [self.paper.delete( o) for o in self.items]
     self.items = []
+    self.paper.delete( self.vertex_item)
+    self.vertex_item = None
 
 
-  def move( self, dx, dy):
-    self.x += dx
-    self.y += dy
+  def move( self, dx, dy, use_paper_coords=False):
+    if use_paper_coords:
+      self.x += dx/self.paper._scale
+      self.y += dy/self.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
+      dx *= self.paper._scale
+      dy *= self.paper._scale
     [self.paper.move( o, dx, dy) for o in self.items]
 
 
-  def move_to( self, x, y):
-    dx = x - self.x
-    dy = y - self.y
-    self.move( dx, dy)
-
+  def move_to( self, x, y, use_paper_coords=False):
+    if use_paper_coords:
+      dx = x - self.x*Store.app.paper._scale
+      dy = y - self.y*Store.app.paper._scale
+    else:
+      dx = x - self.x
+      dy = y - self.y
+    self.move( dx, dy, use_paper_coords=use_paper_coords)
+  
+  def get_xy_on_paper( self):
+    """Returns the coordinates of the vertex on the paper reference system.
+        These change based on zooming."""
+    # An item on the Canvas is used to keep track of current position (self.vertex_item)
+    if self.vertex_item:
+      return self.paper.coords(self.vertex_item)[0:2]
+    else:
+      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
+      return xy
 
   def lift( self):
     [self.paper.lift( i) for i in self.items]
@@ -216,7 +239,7 @@ class radical( mark):
     if self.items:
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
-    x, y = self.x, self.y
+    x, y = self.get_xy_on_paper()
     s = round( self.size / 2)
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s,
                                           fill=self.line_color, outline=self.line_color,
@@ -239,10 +262,14 @@ class radical( mark):
 
 class biradical( mark):
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
     """marks that have a direction and not only position should be redrawn on move"""
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += dx/self.paper._scale
+      self.y += dy/self.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
     self.redraw()
 
 
@@ -251,7 +278,8 @@ class biradical( mark):
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
     s = round( self.size / 2)
-    x1, y1, x2, y2 = self.x, self.y, self.atom.x, self.atom.y
+    x1, y1 = self.get_xy_on_paper()
+    x2, y2 = self.atom.get_xy_on_paper()
     x, y = geometry.find_parallel( x1, y1, x2, y2, s*1.5)[0:2]
     # one circle
     self.items = [self.paper.create_oval( x-s, y-s, x+s, y+s,
@@ -313,10 +341,14 @@ class electronpair( mark):
     self.line_width = 1
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
     """marks that have a direction and not only position should be redrawn on move"""
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += dx/self.paper._scale
+      self.y += dy/self.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
     self.redraw()
 
 
@@ -325,7 +357,8 @@ class electronpair( mark):
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
     s = round( self.size / 2)
-    x1, y1, x2, y2 = self.x, self.y, self.atom.x, self.atom.y
+    x1, y1 = self.get_xy_on_paper()
+    x2, y2 = self.atom.get_xy_on_paper()
     # one end
     x, y = geometry.find_parallel( x1, y1, x2, y2, s)[0:2]
     # and the other
@@ -374,7 +407,7 @@ class plus( mark):
     if self.items:
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
-    x, y = self.x, self.y
+    x, y = self.get_xy_on_paper()
     s = round( self.size / 2)
 
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
@@ -388,7 +421,7 @@ class plus( mark):
 
   def get_svg_element( self, doc):
     e = doc.createElement( 'g')
-    x, y = self.x, self.y
+    x, y = self.get_xy_on_paper()
     s = round( self.size / 2)
     if self.draw_circle:
       dom_extensions.elementUnder( e, 'ellipse',
@@ -435,7 +468,7 @@ class minus( mark):
     if self.items:
       warnings.warn( "draw called on already drawn mark!", UserWarning, 2)
       self.delete()
-    x, y = self.x, self.y
+    x, y = self.get_xy_on_paper()
     s = round( self.size / 2)
     self.items = [self.paper.create_line( x-s+2, y, x+s-2, y,
                                           fill=self.line_color, tags='mark')]
@@ -584,8 +617,12 @@ class pz_orbital( mark):
 
 
   def move( self, dx, dy):
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += dx/self.paper._scale
+      self.y += dy/self.paper._scale
+    else:
+      self.x += dx
+      self.y += dy
     self.redraw()
 
 

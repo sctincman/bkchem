@@ -652,6 +652,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if self.item:
       self.paper.unregister_id( self.item)
       self.paper.delete( self.item)
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
     if self.ftext:
       self.ftext.delete()
     return self

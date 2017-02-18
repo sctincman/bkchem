@@ -1091,7 +1091,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def select( self):
-    x1, y1, x2, y2 = self.paper.coords(self.item)
+    x1, y1 = self.atom1.get_xy_on_paper()
+    x2, y2 = self.atom2.get_xy_on_paper()
     x = ( x1 + x2) / 2
     y = ( y1 + y2) / 2
     if self.selector:
