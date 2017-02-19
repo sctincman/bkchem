@@ -940,7 +940,7 @@ class draw_mode( edit_mode):
         dy = event.y - self._starty
         x0, y0 = self._start_atom.get_xy_on_paper()
         x,y = geometry.point_on_circle( x0, y0, 
-                                        Screen.any_to_px( Store.app.paper.real_to_canvas(Store.app.paper.standard.bond_length)),
+                                        Store.app.paper.real_to_canvas(Screen.any_to_px( Store.app.paper.standard.bond_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
         self._moved_atom.move_to( x, y, use_paper_coords=True)
@@ -1040,7 +1040,7 @@ class arrow_mode( edit_mode):
         dy = event.y - self._starty
         x0, y0 = self._start_point.get_xy_on_screen()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Screen.any_to_px( Store.app.paper.real_to_canvas(Store.app.paper.standard.bond_length)),
+                                        Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.bond_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_point.move_to( x, y, use_paper_coords=True)
