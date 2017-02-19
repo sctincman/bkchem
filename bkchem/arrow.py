@@ -281,7 +281,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     return [item]
 
   def _draw_normal( self):
-    coords = [p.get_xy_on_screen() for p in self.points]
+    coords = [p.get_xy_on_paper() for p in self.points]
     pins = []
     if self.pin in (2,3):
       x1, y1 = coords[1]

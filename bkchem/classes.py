@@ -174,7 +174,7 @@ class point( point_drawable, interactive, child):
       self.redraw()
     else:
       if self.type == 'invisible':
-        x, y = self.get_xy_on_screen()
+        x, y = self.get_xy_on_paper()
         self.item = self.paper.create_line( x, y, x, y, tags='point', fill='')
       elif self.type == 'circle':
         x, y = self.get_xy_on_screen()
@@ -193,7 +193,7 @@ class point( point_drawable, interactive, child):
       self.item = None
       self.draw()
       if self.selector:
-        x, y = self.get_xy_on_screen()
+        x, y = self.get_xy_on_paper()
         self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
 
 
@@ -221,7 +221,7 @@ class point( point_drawable, interactive, child):
         self.y = self.paper.canvas_to_real(y)
         self.draw()
       else:
-        x2, y2 = self.get_xy_on_screen()
+        x2, y2 = self.get_xy_on_paper()
         dx = x -x2
         dy = y -y2
         self.move( dx, dy, use_paper_coords)
@@ -236,7 +236,7 @@ class point( point_drawable, interactive, child):
         self.move( dx, dy, use_paper_coords)
 
   def focus( self):
-    x, y = self.get_xy_on_screen()
+    x, y = self.get_xy_on_paper()
     self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, outline=self.paper.highlight_color)
     if self.item:
       self.paper.lift( self.item)
@@ -250,7 +250,7 @@ class point( point_drawable, interactive, child):
 
   def select( self):
     if not self.selector:
-      x, y = self.get_xy_on_screen()
+      x, y = self.get_xy_on_paper()
       self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
       self.paper.lower( self.selector)
 
@@ -264,7 +264,7 @@ class point( point_drawable, interactive, child):
   def get_xy( self):
     return self.x, self.y
   
-  def get_xy_on_screen(self):
+  def get_xy_on_paper(self):
     if self.vertex_item:
       return self.paper.coords( self.vertex_item)[0:2]
     else:

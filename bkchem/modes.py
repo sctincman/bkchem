@@ -1038,9 +1038,9 @@ class arrow_mode( edit_mode):
       else:
         dx = event.x - self._startx
         dy = event.y - self._starty
-        x0, y0 = self._start_point.get_xy_on_screen()
+        x0, y0 = self._start_point.get_xy_on_paper()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.bond_length)),
+                                        Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.arrow_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_point.move_to( x, y, use_paper_coords=True)
@@ -1059,12 +1059,12 @@ class arrow_mode( edit_mode):
         self._arrow_to_update.change_direction()
       # add point
       elif self._arrow_to_update:
-        x0, y0 = self._start_point.get_xy()
+        x0, y0 = self._start_point.get_xy_on_paper()
         if self._start_point == self._arrow_to_update.points[-1]:
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        pnt = self._arrow_to_update.create_new_point( x0+Screen.any_to_px( Store.app.paper.standard.arrow_length),
+        pnt = self._arrow_to_update.create_new_point( x0+Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.arrow_length)),
                                                       y0, position=pos, use_paper_coords=True)
         Store.app.paper.select( [pnt])
         self._arrow_to_update.redraw()
