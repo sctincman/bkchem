@@ -335,15 +335,16 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def _draw_retro( self):
     width = self.paper.real_to_canvas(3)
+    head_param = self.paper.real_to_canvas(8) # just a placeholder for "8"
     coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     # the pins
     if self.pin in (2,3):
-      head = retro_arrow_head(coords[1][0],coords[1][1],coords[0][0],coords[0][1],8,8,width)
+      head = retro_arrow_head(coords[1][0],coords[1][1],coords[0][0],coords[0][1],head_param,head_param,width)
       head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
       items.append( head_item)
     if self.pin in (1,3):
-      head = retro_arrow_head(coords[-2][0],coords[-2][1],coords[-1][0],coords[-1][1],8,8,width)
+      head = retro_arrow_head(coords[-2][0],coords[-2][1],coords[-1][0],coords[-1][1],head_param,head_param,width)
       head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
       items.append( head_item)
     # the lines
