@@ -1069,7 +1069,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return items
 
   def focus( self):
-    # simo TODO the algorithm still does not cover some less common cases./
+    # simo TODO the algorithm still does not cover some less common cases.
 #     print('Bond type: '+self.type)
 #     print('simple double: '+str(self.simple_double))
 #     print('center: '+str(self.center))
@@ -1084,7 +1084,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+1) for item in items]
     elif self.type == 'b':
-      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.wedge_width+1) for item in items]
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color) for item in items]
     elif self.type in 'wo':
       [self.paper.itemconfigure( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color) for item in items]
 
@@ -1095,7 +1095,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
     elif self.type == 'b':
-      [self.paper.itemconfig( item, fill=self.line_color, width = self.wedge_width) for item in items]
+      [self.paper.itemconfig( item, fill=self.line_color) for item in items]
     elif self.type == 'w':
       [self.paper.itemconfigure( item, fill=self.line_color, outline='') for item in items]
     elif self.type == 'o':
