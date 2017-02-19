@@ -72,22 +72,33 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     line_colored.__init__( self)
     drawable.__init__( self)
     with_line.__init__( self)
-    #
+    
+    # bond data
     self.type = type
+      #Bond types:
+      # n = normal
+      # w = wedge (3d out of screen)
+      # h = hatch (3d into screen)
+      # a = any stereochemistry
+      # b = bold
+      # d = dotted - - - -
+      # o = dotted . . . .
     self.order = order
-    self.item = None
-    self.second = []
-    self.third = []
-    self.items = []
     if atoms:
       self.atom1, self.atom2 = atoms
+    
+    # canvas data
+    self.item = None  #Used for selection, sometimes not displayed (eg. is a straight line for hatch bonds).
+    self.second = []  #see below --v
+    self.third = []   #Accessory items, used by double bonds ( both if centered, one if not ) and triple bonds (both, always centered).
+    self.items = []   #Used as main item to display by bonds with more items (hatch, dotted, ...)
     self.selector = None
     self._selected = 0
 
     # implicit values
-    self.center = None
+    self.center = None  #boolean, used by double bonds. If self.center -> only self.second and self.third are displayed.
     self.auto_bond_sign = 1
-    self.simple_double = simple_double
+    self.simple_double = simple_double  #TODO this is an option for non-normal bonds with order > 1. Currently does not affect appearence (BUG).
     self.equithick = 0
 
     if package:
@@ -364,7 +375,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
-    d = self.bond_width * self.paper._scale
+    d = self.bond_width * self.paper._scale #TODO add function to adjust all parameters
     # double
     if self.center:
       self.paper.itemconfig( self.item, fill='')
@@ -1036,59 +1047,59 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       self.paper.coords( self.item, x1, y1, x2, y2)
     self.paper.itemconfig( self.item, width = self.line_width, fill=self.line_color)
 
+  def visible_items(self):
+    """Returns a list of the items displayed by this bond.
+        Used by focus to modify the attributes of the items."""
+    # self.item is visible only in specific cases
+    items = []
+    if self.order in (1,3):
+      if self.type in 'nwba':
+        items = [self.item]
+    elif self.order == 2 and not self.center:
+      items = [self.item]
+    
+    # other items are always visible when defined
+    if self.second:
+      items += self.second
+    if self.third:
+      items += self.third
+    if self.items:
+      items += self.items
+    
+    return items
 
   def focus( self):
-    # Since selection has to do merely with GUI, item coords are used instead of real atom position
-    # TODO for some reason after being focused bonds acquire a temporary "simple bond"-type line.
-    #      I suspect it has to do with this function.
-    # all the items of the bond
-    if self.simple_double and not self.center:
-      items = [self.item]
-    else:
-      items = [self.item] + self.second + self.third
-
-    if self.type in 'na':
-      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+2) for item in items]
+    # simo TODO the algorithm still does not cover some less common cases.
+#     print('Bond type: '+self.type)
+#     print('simple double: '+str(self.simple_double))
+#     print('center: '+str(self.center))
+#     print('order: '+str(self.order))
+#     print(self.item)
+#     print(self.second)
+#     print(self.third)
+#     print(self.items)
+    
+    items = self.visible_items()
+    
+    if self.type in 'nahd':
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+1) for item in items]
     elif self.type == 'b':
-      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.wedge_width+2) for item in items]
-    elif self.type in 'ho':
-      self.paper.itemconfig( self.item, fill=self.paper.highlight_color )
-    elif self.type == 'd':
-      if self.simple_double and not self.center and not self.order == 1:
-        [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+2) for item in items]
-      else:
-        [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width + 2) for item in self.items+self.second+self.third]
-    elif self.type == 'w':
-      if self.center:
-        items.remove( self.item)
-      [self.paper.itemconfigure( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color, width=1) for item in items]
-
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.wedge_width+1) for item in items]
+    elif self.type in 'wo':
+      [self.paper.itemconfigure( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color) for item in items]
 
   def unfocus( self):
-    # all the items of the bond
-    if self.simple_double and not self.center:
-      items = [self.item]
-    else:
-      items = [self.item] + self.second + self.third
-
-    if self.type in 'na':
-      if not self.item:
-        return
+    
+    items = self.visible_items()
+    
+    if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
     elif self.type == 'b':
       [self.paper.itemconfig( item, fill=self.line_color, width = self.wedge_width) for item in items]
-    elif self.type in 'ho':
-      self.paper.itemconfig( self.item, fill=self.line_color )
-    elif self.type == 'd':
-      if self.simple_double and not self.center and not self.order == 1:
-        [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
-      else:
-        [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in self.items+self.second+self.third]
     elif self.type == 'w':
-      if self.center:
-        items.remove( self.item)
-      [self.paper.itemconfigure( item, fill=self.line_color, outline=self.line_color, width=0) for item in items]
-
+      [self.paper.itemconfigure( item, fill=self.line_color, outline='') for item in items]
+    elif self.type == 'o':
+      [self.paper.itemconfigure( item, fill=self.line_color, outline=self.line_color) for item in items]
 
   def select( self):
     x1, y1 = self.atom1.get_xy_on_paper()
