@@ -1,7 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
-
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
@@ -1389,6 +1388,27 @@ class chem_paper(Canvas, object):
     self._screen2real.set_scaling_xy( ratiox, ratioy)
     self._screen2real.set_move( x1, y1)
 
+  def real_to_canvas(self, lenghts):
+    """Transforms distances or coordinates from real (as stored in eg: atom.x)
+        to those in the canvas (as stored for items)."""
+    try:
+      result = []
+      for lenght in lenghts:
+        result.append(lenght*self._scale)
+      return result
+    except TypeError:
+      return lenghts*self._scale
+  
+  def canvas_to_real(self, lenghts):
+    """Transforms distances or coordinates from those in the canvas (as stored for items)
+        to real ones (as stored in eg: atom.x)."""
+    try:
+      result = []
+      for lenght in lenghts:
+        result.append(lenght/self._scale)
+      return result
+    except TypeError:
+      return lenghts/self._scale
 
   def screen_to_real_coords( self, coords):
     """transforms set of x,y coordinates to real coordinates, input list must have even length.
@@ -1403,7 +1423,7 @@ class chem_paper(Canvas, object):
 
   def real_to_screen_coords( self, coords):
     """transforms set of x,y coordinates to screen coordinates, input list must have even length.
-    it's called when importing files."""
+    It's called when importing files."""
     if len( coords) % 2:
       raise ValueError("only even number of coordinates could be transformed")
     out = []
