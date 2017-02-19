@@ -781,7 +781,9 @@ class draw_mode( edit_mode):
     Store.app.paper.unselect_all()
     if not self.focused:
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x/Store.app.paper._scale, event.y/Store.app.paper._scale)
+      x = Store.app.paper.canvas_to_real(event.x)
+      y = Store.app.paper.canvas_to_real(event.y)
+      a = mol.create_new_atom( x, y)
       a.focus()
       self.focused = a
     #Store.app.paper.add_bindings()
@@ -831,7 +833,9 @@ class draw_mode( edit_mode):
     if not self.focused:
       #print("it should not get here!!!")
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x/Store.app.paper._scale, event.y/Store.app.paper._scale)
+      x = Store.app.paper.canvas_to_real(event.x)
+      y = Store.app.paper.canvas_to_real(event.y)
+      a = mol.create_new_atom( x, y)
       Store.app.paper.add_bindings()
       b = bond( standard = Store.app.paper.standard,
                 type=self.__mode_to_bond_type(),
@@ -935,7 +939,8 @@ class draw_mode( edit_mode):
         dx = event.x - self._startx
         dy = event.y - self._starty
         x0, y0 = self._start_atom.get_xy_on_paper()
-        x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length)*Store.app.paper._scale,
+        x,y = geometry.point_on_circle( x0, y0, 
+                                        Screen.any_to_px( Store.app.paper.real_to_canvas(Store.app.paper.standard.bond_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
         self._moved_atom.move_to( x, y, use_paper_coords=True)
@@ -1035,7 +1040,7 @@ class arrow_mode( edit_mode):
         dy = event.y - self._starty
         x0, y0 = self._start_point.get_xy_on_screen()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Screen.any_to_px( Store.app.paper.standard.arrow_length)*Store.app.paper._scale,
+                                        Screen.any_to_px( Store.app.paper.real_to_canvas(Store.app.paper.standard.bond_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
       self._moved_point.move_to( x, y, use_paper_coords=True)
@@ -1165,8 +1170,9 @@ class template_mode( edit_mode):
       return
     Store.app.paper.unselect_all()
     if not self.focused:
+      xy = Store.app.paper.canvas_to_real((event.x, event.y))
       t = self._get_transformed_template( self.submode[0], 
-                                          (event.x/Store.app.paper._scale, event.y/Store.app.paper._scale), 
+                                          xy, 
                                           type='empty', paper=Store.app.paper)
     else:
       if isinstance( self.focused, oasa.graph.vertex):
@@ -2439,10 +2445,10 @@ class bracket_mode( edit_mode):
 
   def _end_of_empty_drag( self, x1, y1, x2, y2):
     #convert to real coords
-    x1 /= Store.app.paper._scale
-    x2 /= Store.app.paper._scale
-    y1 /= Store.app.paper._scale
-    y2 /= Store.app.paper._scale
+    x1 = Store.app.paper.canvas_to_real(x1)
+    x2 = Store.app.paper.canvas_to_real(x2)
+    y1 = Store.app.paper.canvas_to_real(y1)
+    y2 = Store.app.paper.canvas_to_real(y2)
     if self.get_submode(0) == "rectangularbracket":
       dx = 0.05*math.sqrt( (y2-y1)**2 + (x2-x1)**2)
       Store.app.paper.new_polyline( [x1+dx, y1,

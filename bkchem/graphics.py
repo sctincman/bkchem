@@ -516,8 +516,8 @@ class polyline( vector_graphics_item, container, line_colored):
   def move( self, dx, dy, use_paper_coords=False):
     [p.move( dx, dy, use_paper_coords) for p in self.points]
     if not use_paper_coords:
-      dx *= self.paper._scale
-      dy *= self.paper._scale
+      dx = self.paper.real_to_canvas(dx)
+      dy = self.paper.real_to_canvas(dy)
     self.paper.move( self.item, dx, dy)
 
 

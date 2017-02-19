@@ -91,20 +91,20 @@ class mark( simple_parent):
 
   def move( self, dx, dy, use_paper_coords=False):
     if use_paper_coords:
-      self.x += dx/self.paper._scale
-      self.y += dy/self.paper._scale
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dy)
     else:
       self.x += dx
       self.y += dy
-      dx *= self.paper._scale
-      dy *= self.paper._scale
+      dx = self.paper.real_to_canvas(dx)
+      dy = self.paper.real_to_canvas(dy)
     [self.paper.move( o, dx, dy) for o in self.items]
 
 
   def move_to( self, x, y, use_paper_coords=False):
     if use_paper_coords:
-      dx = x - self.x*Store.app.paper._scale
-      dy = y - self.y*Store.app.paper._scale
+      dx = x - self.paper.real_to_canvas(self.x)#Store.app.paper?
+      dy = y - self.paper.real_to_canvas(self.y)
     else:
       dx = x - self.x
       dy = y - self.y
@@ -117,7 +117,7 @@ class mark( simple_parent):
     if self.vertex_item:
       return self.paper.coords(self.vertex_item)[0:2]
     else:
-      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      xy = self.paper.real_to_canvas((self.x, self.y))
       self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
       return xy
 
@@ -265,8 +265,8 @@ class biradical( mark):
   def move( self, dx, dy, use_paper_coords=False):
     """marks that have a direction and not only position should be redrawn on move"""
     if use_paper_coords:
-      self.x += dx/self.paper._scale
-      self.y += dy/self.paper._scale
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dy)
     else:
       self.x += dx
       self.y += dy
@@ -344,8 +344,8 @@ class electronpair( mark):
   def move( self, dx, dy, use_paper_coords=False):
     """marks that have a direction and not only position should be redrawn on move"""
     if use_paper_coords:
-      self.x += dx/self.paper._scale
-      self.y += dy/self.paper._scale
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dy)
     else:
       self.x += dx
       self.y += dy
@@ -618,8 +618,8 @@ class pz_orbital( mark):
 
   def move( self, dx, dy):
     if use_paper_coords:
-      self.x += dx/self.paper._scale
-      self.y += dy/self.paper._scale
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dx)
     else:
       self.x += dx
       self.y += dy

@@ -1123,8 +1123,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
   def move( self, dx, dy, use_paper_coords=False):
     """moves object with his selector (when present)"""
     if not use_paper_coords:
-      dx *= self.paper._scale
-      dy *= self.paper._scale
+      dx = self.paper.real_to_canvas(dx)
+      dy = self.paper.real_to_canvas(dy)
     items = [i for i in ([self.item] + self.second + self.third + self.items)
                  if i]
     if self.selector:

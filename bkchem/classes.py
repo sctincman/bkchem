@@ -201,11 +201,11 @@ class point( point_drawable, interactive, child):
     if (use_paper_coords):
       paper_dx = dx
       paper_dy = dy
-      dx = paper_dx/self.paper._scale
-      dy = paper_dy/self.paper._scale
+      dx = self.paper.canvas_to_real(paper_dx)
+      dy = self.paper.canvas_to_real(paper_dy)
     else:
-      paper_dx = dx*self.paper._scale
-      paper_dy = dy*self.paper._scale
+      paper_dx = self.paper.real_to_canvas(dx)
+      paper_dy = self.paper.real_to_canvas(dy)
     self.x += dx
     self.y += dy
     self.paper.move( self.item, paper_dx, paper_dy)
@@ -217,8 +217,8 @@ class point( point_drawable, interactive, child):
   def move_to( self, x, y, use_paper_coords=False):
     if (use_paper_coords):
       if not self.item:
-        self.x = x/self.paper._scale
-        self.y = y/self.paper._scale
+        self.x = self.paper.canvas_to_real(x)
+        self.y = self.paper.canvas_to_real(y)
         self.draw()
       else:
         x2, y2 = self.get_xy_on_screen()
@@ -268,7 +268,7 @@ class point( point_drawable, interactive, child):
     if self.vertex_item:
       return self.paper.coords( self.vertex_item)[0:2]
     else:
-      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      xy = self.paper.real_to_canvas((self.x, self.y))
       self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags='no-export', fill='')
       return xy
 
@@ -589,13 +589,13 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def move( self, dx, dy, use_paper_coords=False):
     """moves object with his selector (when present)"""
     if use_paper_coords:
-      self.x += dx/self.paper._scale
-      self.y += dy/self.paper._scale
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dy)
     else:
       self.x += dx
       self.y += dy
-      dx *= self.paper._scale
-      dy *= self.paper._scale
+      dx = self.paper.real_to_canvas(dx)
+      dy = self.paper.real_to_canvas(dy)
     self.paper.move( self.item, dx, dy)
     self.paper.move( self.vertex_item, dx, dy)
     if self.selector:
@@ -606,12 +606,12 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def move_to( self, x, y, use_paper_coords=False):
     if use_paper_coords:
-      dx = x - self.x*self.paper._scale
-      dy = y - self.y*self.paper._scale
-      self.set_xy(x/self.paper._scale, y/self.paper._scale)
+      dx = x - self.paper.real_to_canvas(self.x)
+      dy = y - self.paper.real_to_canvas(self.y)
+      self.set_xy(self.paper.canvas_to_real((x,y)))
     else:
-      dx = (x - self.x)*self.paper._scale
-      dy = (y - self.y)*self.paper._scale
+      dx = self.paper.real_to_canvas(x - self.x)
+      dy = self.paper.real_to_canvas(y - self.y)
       self.set_xy( x, y)
     self.paper.move( self.item, dx, dy)
     self.paper.move( self.vertex_item, dx, dy)
@@ -639,7 +639,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if self.vertex_item:
       return self.paper.coords(self.vertex_item)[0:2]
     else:
-      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      xy = self.paper.real_to_canvas((self.x, self.y))
       self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
       return xy
 
@@ -742,7 +742,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   
   def on_screen_font(self):
     """Returns a font adequate for on-screen display, using appropriate scaling."""
-    screen_font_size = int( round( self.font_size * self.paper._scale))
+    screen_font_size = int( round( self.paper.real_to_canvas(self.font_size) ))
     return tkFont.Font( family=self.font_family, size=screen_font_size)
 
 

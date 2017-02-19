@@ -534,13 +534,13 @@ class drawable_chem_vertex(oasa.chem_vertex,
     # saving old dirty value
     # d = self.dirty
     if use_paper_coords:
-      self.x += dx/Store.app.paper._scale
-      self.y += dy/Store.app.paper._scale
+      self.x += Store.app.paper.canvas_to_real(dx)
+      self.y += Store.app.paper.canvas_to_real(dy)
     else:
       self.x += dx
       self.y += dy
-      dx *= Store.app.paper._scale
-      dy *= Store.app.paper._scale
+      dx = Store.app.paper.real_to_canvas(dx)
+      dy = Store.app.paper.real_to_canvas(dy)
     if self.drawn:
       self.paper.move( self.item, dx, dy)
       if self.show:
@@ -560,8 +560,8 @@ class drawable_chem_vertex(oasa.chem_vertex,
   def move_to( self, x, y, use_paper_coords=False, dont_move_marks=False):
     """Same as self.move() but the motion is not relative to the starting point."""
     if use_paper_coords:
-      dx = x - self.x*Store.app.paper._scale
-      dy = y - self.y*Store.app.paper._scale
+      dx = x - Store.app.paper.real_to_canvas(self.x)
+      dy = y - Store.app.paper.real_to_canvas(self.y)
     else:
       dx = x - self.x
       dy = y - self.y
@@ -587,7 +587,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
     if self.vertex_item:
       return self.paper.coords(self.vertex_item)[0:2]
     else:
-      xy = (self.x*self.paper._scale, self.y*self.paper._scale)
+      xy = self.paper.real_to_canvas( self.get_xy() )
       self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
       return xy
 
@@ -637,7 +637,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
   def on_screen_font(self):
     """Returns a font adequate for on-screen display, using appropriate scaling."""
-    screen_font_size = int( round( self.font_size * self.paper._scale))
+    screen_font_size = int( round( self.paper.real_to_canvas(self.font_size) ))
     return tkFont.Font( family=self.font_family, size=screen_font_size)
 
   def lift( self):
