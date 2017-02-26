@@ -604,6 +604,9 @@ class drawable_chem_vertex(oasa.chem_vertex,
       self.paper.unregister_id( self.item)
       self.paper.delete( self.item)
       self.item = None
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
+      self.vertex_item = None
     if self.ftext:
       self.ftext.delete()
     [m.delete() for m in self.marks]
