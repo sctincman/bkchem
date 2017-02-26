@@ -65,6 +65,7 @@ class standard(object):
     self.bond_width = '6px'
     self.wedge_width = '5px'
     self.double_length_ratio = 0.75
+    self.min_wedge_angle = pi/8
     # atom
     self.show_hydrogens = 0
     # arrow
@@ -104,7 +105,8 @@ class standard(object):
     dom_extensions.elementUnder( ret, 'bond', (('length', str( self.bond_length)),
                                                ('width', str( self.bond_width)),
                                                ('wedge-width', str( self.wedge_width)),
-                                               ('double-ratio', str( self.double_length_ratio))))
+                                               ('double-ratio', str( self.double_length_ratio)),
+                                               ('min_wedge_angle', str( self.min_wedge_angle))))
     dom_extensions.elementUnder( ret, 'arrow', (('length', str( self.arrow_length)),))
     dom_extensions.elementUnder( ret, 'atom', (('show_hydrogens', str( int( self.show_hydrogens))),))
     return ret
@@ -125,6 +127,8 @@ class standard(object):
       self.double_length_ratio = b.getAttribute( 'double-ratio') or self.double_length_ratio
       self.double_length_ratio = float( self.double_length_ratio)
       self.wedge_width = b.getAttribute( 'wedge-width') or self.wedge_width
+      if b.getAttribute( 'min_wedge_angle'):
+        self.min_wedge_angle = float(b.getAttribute( 'min_wedge_angle'))
     a = dom_extensions.getFirstChildNamed( p, 'arrow')
     if a:
       self.arrow_length = a.getAttribute( 'length')
