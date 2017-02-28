@@ -433,6 +433,8 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return start
     elif thickness == -1:
       thickness = self.paper.real_to_canvas(self.line_width)
+    # Internally the function uses 1/2 the thickness
+    thickness *= 0.5
     
     x_S, y_S = start
     x_E, y_E = end
