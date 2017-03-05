@@ -5,7 +5,6 @@
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
 #     (at your option) any later version.
-
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -532,16 +531,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_h1( self):
-    where = self._draw_n1()
-    if not where:
-      # the bond is too short to draw it
-      return None
-    x1, y1, x2, y2 = where
-    # main item
-    self.paper.itemconfig( self.item, fill='')
-    # the small lines
-    self.items = self._draw_hatch( (x1,y1,x2,y2))
-    return x1,y1,x2,y2
+    return self._draw_hatch()
 
 
   def _draw_h2( self):
@@ -550,15 +540,14 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     d = self.paper.real_to_canvas(self.bond_width)
     # double
     if self.center:
-      where = self._draw_n1()
+      where = self._where_to_draw_from_and_to()
       if not where:
         # the bond is too short to draw it
         return None
       x1, y1, x2, y2 = where
-      self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
-      where = self._draw_h1()
+      where = self._draw_hatch()
       if not where:
         # the bond is too short to draw it
         return None
@@ -589,26 +578,38 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
 
-  def _draw_hatch( self, coords):
+  def _draw_hatch( self ):
     """returns list items"""
     if not hasattr( self, 'equithick'):
       self.equithick = 0
-    x1, y1, x2, y2 = coords
-    # main item
-    x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, self.paper.real_to_canvas(self.wedge_width)/2.0)
-    xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0)
+    
+    # Get vertex coordinates and check
+    coords = self._where_to_draw_from_and_to()
+    if coords:
+      x1, y1, x2, y2 = coords
+    else:
+      return None
+    
+    # Create the outer mask of the bond
+    wedge_width = self.paper.real_to_canvas(self.wedge_width)
+    if self.equithick:
+      polygon_mask = self._polygon_bond_mask(thickness1 = wedge_width, thickness2 = wedge_width)
+    else:
+      polygon_mask = self._polygon_bond_mask(thickness2 = wedge_width)
+    
+    # Invisible outer mask is used as item
+    self.item = self._create_polygon_with_transform( polygon_mask, width=0, fill="", tags=('bond',))
+    self.paper.register_id( self.item, self)
+    
+    # Generate perperdincular lines
+    x_P1, y_P1, x_P2, y_P2 = geometry.find_parallel( x1, y1, x2, y2, wedge_width)
     d = math.sqrt( (x1-x2)**2 + (y1-y2)**2) # length of the bond
     if d == 0:
-      return []  # to prevent division by zero
-    dx1 = (x0 - xa)/d
-    dy1 = (y0 - ya)/d
-    dx2 = (2*x2 -x0 -2*x1 +xa)/d
-    dy2 = (2*y2 -y0 -2*y1 +ya)/d
-    # params for equithick
+      return None  # to prevent division by zero
     dx = (x2 - x1)/d
     dy = (y2 - y1)/d
-    ddx = x - x1
-    ddy = y - y1
+    ddx = x_P1 - x1
+    ddy = y_P1 - y1
 
     # we have to decide if the first line should be at the position of the first atom
     draw_start = 0  # is index not boolean
@@ -618,31 +619,25 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if not self.atom2.show and self.atom2.occupied_valency > 1:
       draw_end = 0
 
-    # djust the step length
+    # adjust the step length
     step_size = 2*self.paper.real_to_canvas(self.line_width+1)
     ns = round( d / step_size) or 1
     step_size = d / ns
 
     # now we finally draw
-    items = []
+    self.items = []
     for i in range( draw_start, int( round( d/ step_size)) +draw_end):
-      if self.equithick:
-        coords = [x1 + i*step_size*dx + ddx, y1 + i*step_size*dy + ddy, x1 + i*step_size*dx - ddx, y1 + i*step_size*dy - ddy]
-        if coords[0] == coords[2] and coords[1] == coords[3]:
-          if (dx1+dx2) > (dy1+dy2):
-            coords[0] += 1
-          else:
-            coords[1] += 1
-      else: # real wedge, not "equithick"
-        coords = [xa+dx1*i*step_size, ya+dy1*i*step_size, 2*x1-xa+dx2*i*step_size, 2*y1-ya+dy2*i*step_size]
-        if coords[0] == coords[2] and coords[1] == coords[3]:
-          if (dx1+dx2) > (dy1+dy2):
-            coords[0] += 1
-          else:
-            coords[1] += 1
-      items.append( self._create_line_with_transform( coords, width=self.line_width, fill=self.line_color))
-
-    return items
+      coords = [x1 + i*step_size*dx + ddx, y1 + i*step_size*dy + ddy, x1 + i*step_size*dx - ddx, y1 + i*step_size*dy - ddy]
+      if coords[0] == coords[2] and coords[1] == coords[3]:
+        if (dx1+dx2) > (dy1+dy2):
+          coords[0] += 1
+        else:
+          coords[1] += 1
+      segments = geometry.intersection_of_line_and_polygon( coords, polygon_mask)
+      for i in range(0, len(segments), 2):
+        self.items.append( self._create_line_with_transform( (segments[i][0], segments[i][1], segments[i+1][0], segments[i+1][1]), 
+                                                        width=self.line_width, fill=self.line_color))
+    return x1, y1, x2, y2
 
 
   # dashed bond
@@ -876,7 +871,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
 
-  def _draw_wedge( self, coords):
+  def _draw_wedge( self):
     """returns the polygon item"""
     polygon = self._polygon_bond_mask(thickness2 = self.paper.real_to_canvas(self.wedge_width))
     return [self._create_polygon_with_transform( polygon, width=0, fill=self.line_color, joinstyle="miter")]
