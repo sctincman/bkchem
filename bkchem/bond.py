@@ -1,12 +1,10 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
-
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
 #     (at your option) any later version.
-
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -344,7 +342,130 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return None
     else:
       return (x1, y1, x2, y2)
+  
+  def _polygon_bond_mask( self, thickness1=-1, thickness2=-1):
+    """Returns a polygon as x,y coords list which represents a filled bond from atom1 to 2.
+      Thickness at start and end can be used to obtain wedge and bold bonds."""
+    
+    # Define start and end points
+    atom_coords = self._where_to_draw_from_and_to()
+    if not atom_coords:
+      return None
+    
+    # Define some arrays to access the data in a for cycle
+    thickness = (thickness1, thickness2)
+    atoms = (self.atom1, self.atom2)
+    atom_coords2 = ((atom_coords[0],atom_coords[1]),(atom_coords[2],atom_coords[3]))
+    caps = []
+    
+    # Preference defined parameters
+    threshold_angle = self.paper.standard.min_wedge_angle
+    
+    for ctr in (0,1):
+      if atoms[ctr].show:
+        # Atom has a visible label, use a simple cap
+        caps.append( self._polygon_cap( atom_coords2[ctr], atom_coords2[1-ctr], thickness[ctr]))
+      else:
+        neighbors = atoms[ctr].neighbors
+        neighbors.remove( atoms[1-ctr] )
+        
+        if neighbors:
+          if len(neighbors) == 1:
+            # Atom has a single additional neighbor
+            neighbor_xy = neighbors[0].get_xy_on_paper()
+            angle = geometry.angle_between_lines(  (atom_coords2[ctr][0], atom_coords2[ctr][1], atom_coords2[1-ctr][0], atom_coords2[1-ctr][1]),
+                                                   (atom_coords2[ctr][0], atom_coords2[ctr][1], neighbor_xy[0], neighbor_xy[1]))
+            if abs(angle) > math.pi-threshold_angle or abs(angle) < threshold_angle:
+              caps.append( self._polygon_cap( atom_coords2[ctr], atom_coords2[1-ctr], thickness[ctr]))
+            else:
+              direction = ( neighbor_xy[0]-atom_coords2[ctr][0], neighbor_xy[1]-atom_coords2[ctr][1])
+              caps.append( self._polygon_cap( atom_coords2[ctr], atom_coords2[1-ctr], thickness[ctr], [direction]))
+          else:
+            # Atom has multiple neighbors
+            
+            # Take the two closest neighbors above and below bond_line (by angle)
+            bond_line = (atom_coords2[ctr][0], atom_coords2[ctr][1], atom_coords2[1-ctr][0], atom_coords2[1-ctr][1])
+            neighbor_bond_line_below = None
+            angle_below = -math.pi+threshold_angle
+            neighbor_bond_line_above = None
+            angle_above = math.pi-threshold_angle
+            for neighbor in neighbors:
+              x_N, y_N = neighbor.get_xy_on_paper()
+              neighbor_bond_line = (atom_coords2[ctr][0], atom_coords2[ctr][1], x_N, y_N)
+              angle = geometry.angle_between_lines(bond_line, neighbor_bond_line)
+              if angle > threshold_angle and angle < angle_above:
+                angle_above = angle
+                neighbor_bond_line_above = neighbor_bond_line
+              elif angle < -threshold_angle and angle > angle_below:
+                angle_below = angle
+                neighbor_bond_line_below = neighbor_bond_line
+            # Get the directions
+            directions = []
+            if neighbor_bond_line_above:
+              directions.append( (neighbor_bond_line_above[2]-neighbor_bond_line_above[0], neighbor_bond_line_above[3]-neighbor_bond_line_above[1]) )
+            if neighbor_bond_line_below:
+              directions.append( (neighbor_bond_line_below[2]-neighbor_bond_line_below[0], neighbor_bond_line_below[3]-neighbor_bond_line_below[1]) )  
+            # Get the cap
+            caps.append( self._polygon_cap( atom_coords2[ctr], atom_coords2[1-ctr], thickness[ctr], directions))
+        else:
+          # Atom has no other neighbor, simple cap
+          caps.append( self._polygon_cap( atom_coords2[ctr], atom_coords2[1-ctr], thickness[ctr]))
+    
+    # Check that caps are not twisted
+    if geometry.on_which_side_is_point(atom_coords, (caps[0][0],caps[0][1])) == geometry.on_which_side_is_point(atom_coords, (caps[1][0],caps[1][1])):
+      return caps[0] + caps[1][::-1]
+    else:
+      return caps[0] + caps[1]
 
+  def _polygon_cap(self, start, end, thickness=-1, directions=[]):
+    """Returns the cap for a polygon defined bond as a list of coords (always returns the start cap).
+        thickness = thickness of the cap at specified point.
+        directions = list of (dx,dy) tuples defining the borders of the cap (from 0 to 2 directions are allowed)."""
+    #    S1___
+    #   /     -----____E1
+    #  S                E
+    #   \      ____----E2
+    #    S2----
+    
+    if thickness == 0:
+      # Just one point
+      return start
+    elif thickness == -1:
+      thickness = self.paper.real_to_canvas(self.line_width)
+    # Internally the function uses 1/2 the thickness
+    thickness *= 0.5
+    
+    x_S, y_S = start
+    x_E, y_E = end
+    x_P1, y_P1, x_P2, y_P2 = geometry.find_parallel( x_S, y_S, x_E, y_E, thickness)
+    
+    if not directions:
+      # Simple 2-points cap perp. to start-end
+      return (2*x_S-x_P1, 2*y_S-y_P1, x_P1, y_P1)
+    
+    elif len(directions) == 1:
+      # 2-points cap parallel to given direction
+      x_S1, y_S1 = geometry.intersection_of_two_lines(x_P1, y_P1, x_P2, y_P2, x_S, y_S, x_S+directions[0][0], y_S+directions[0][1])[0:2]
+      #x_S1, y_S1 = geometry.point_on_circle( x_S, y_S, thickness, direction=directions[0], resolution = None)
+      return (2*x_S-x_S1, 2*y_S-y_S1, x_S1, y_S1)
+    
+    elif len(directions) == 2:
+      # 3-points cap
+      # Note this does not check that directions are on opposite sides of bonds, you need to check that before calling.
+      bond = (x_S, y_S, x_E, y_E)
+      x_O1, y_O1 = x_S+directions[0][0], y_S+directions[0][1]
+      x_S1, y_S1 = geometry.intersection_of_two_lines(x_P1, y_P1, x_P2, y_P2, x_S, y_S, x_O1, y_O1)[0:2]
+      if not geometry.on_which_side_is_point(bond, (x_O1, y_O1)) == geometry.on_which_side_is_point(bond, (x_S1, y_S1)):
+        x_S1 = 2*x_S - x_S1
+        y_S1 = 2*y_S - y_S1
+      x_O2, y_O2 = x_S+directions[1][0], y_S+directions[1][1]
+      x_S2, y_S2 = geometry.intersection_of_two_lines(x_P1, y_P1, x_P2, y_P2, x_S, y_S, x_O2, y_O2)[0:2]
+      if not geometry.on_which_side_is_point(bond, (x_O2, y_O2)) == geometry.on_which_side_is_point(bond, (x_S2, y_S2)):
+        x_S2 = 2*x_S - x_S2
+        y_S2 = 2*y_S - y_S2
+      #x_S1, y_S1 = geometry.point_on_circle( x_S, y_S, thickness, direction=directions[0], resolution = None)
+      #x_S2, y_S2 = geometry.point_on_circle( x_S, y_S, thickness, direction=directions[1], resolution = None)
+      return (x_S2, y_S2, x_S, y_S, x_S1, y_S1)
 
   # normal bond
   def _draw_n1( self):
@@ -702,7 +823,7 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       return None
     x1, y1, x2, y2 = where
 
-    self.item = self._draw_wedge( (x1,y1,x2,y2))[0]
+    self.item = self._draw_wedge_central()[0]
     self.paper.addtag_withtag( "bond", self.item)
     # draw helper items
     self.second = self.third = []
@@ -711,24 +832,24 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_w2( self):
+    #Check bond lenght
+    where = self._where_to_draw_from_and_to()
+    if not where:
+      # the bond is too short to draw it
+      return None
+    x1, y1, x2, y2 = where
+    #Check required geometry
     if self.center == None or self.bond_width == None:
       self._decide_distance_and_center()
+    #Scale width
     d = self.paper.real_to_canvas(self.bond_width)
-    # double
+    
     if self.center:
-      where = self._draw_n1()
-      if not where:
-        # the bond is too short to draw it
-        return None
-      x1, y1, x2, y2 = where
+      self._draw_n1()
       self.paper.itemconfig( self.item, fill='')
       d = int( round( d/3))
     else:
-      where = self._draw_w1()
-      if not where:
-        # the bond is too short to draw it
-        return None
-      x1, y1, x2, y2 = where
+      self._draw_w1()
     x, y, x0, y0 = geometry.find_parallel( x1, y1, x2, y2, d)
     # gray magic (not black, but not so white :)
     _second_draw_method = (self.simple_double and not self.center) and self._draw_second_line or self._draw_wedge
@@ -753,7 +874,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     self.second = _second_draw_method( (x,y,x0,y0))
     self.third = _second_draw_method( (2*x1-x, 2*y1-y, 2*x2-x0, 2*y2-y0))
 
-
   def _draw_wedge( self, coords):
     """returns the polygon item"""
     x1, y1, x2, y2 = coords
@@ -762,7 +882,12 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     xa, ya, xb, yb = geometry.find_parallel( x1, y1, x2, y2, self.line_width/2.0)
     return [self._create_polygon_with_transform( (xa, ya, x0, y0, 2*x2-x0, 2*y2-y0, 2*x1-xa, 2*y1-ya), width=0, fill=self.line_color, joinstyle="miter")]
 
+  def _draw_wedge_central( self):
+    """returns the polygon item"""
+    polygon = self._polygon_bond_mask(thickness2 = self.paper.real_to_canvas(self.wedge_width))
+    return [self._create_polygon_with_transform( polygon, width=0, fill=self.line_color, joinstyle="miter")]
 
+  # zig zag bonds
   def _draw_a1( self):
     where = self._where_to_draw_from_and_to()
     if not where:
@@ -869,30 +994,34 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
 
 
   def _draw_b1( self):
-    where = self._draw_n1()
-    if not where:
-      # the bond is too short to draw it
-      return None
-    self.paper.itemconfigure( self.item, width = self.paper.real_to_canvas(self.wedge_width))
-
+    self.item = self._draw_bold_central()[0]
+    self.paper.addtag_withtag( "bond", self.item)
+    self.paper.register_id( self.item, self)
 
   def _draw_b2( self):
-    self._draw_n2()
     if self.simple_double and not self.center:
-      items = [self.item]
+      self.item = self._draw_bold_central()[0]
+      self.paper.addtag_withtag( "bond", self.item)
+      self.paper.register_id( self.item, self)
     else:
+      self._draw_n2()
       items = [self.item] + self.second + self.third
-    [self.paper.itemconfigure( item, width = self.paper.real_to_canvas(self.wedge_width)) for item in items]
+      [self.paper.itemconfigure( item, width = self.paper.real_to_canvas(self.wedge_width)) for item in items]
 
 
   def _draw_b3( self):
-    self._draw_n3()
     if self.simple_double:
-      items = [self.item]
+      self.item = self._draw_bold_central()[0]
+      self.paper.addtag_withtag( "bond", self.item)
+      self.paper.register_id( self.item, self)
     else:
+      self._draw_n3()
       items = [self.item] + self.second + self.third
-    [self.paper.itemconfigure( item, width = self.paper.real_to_canvas(self.wedge_width)) for item in items]
+      [self.paper.itemconfigure( item, width = self.paper.real_to_canvas(self.wedge_width)) for item in items]
 
+  def _draw_bold_central(self):
+    polygon = self._polygon_bond_mask(thickness1 = self.paper.real_to_canvas(self.wedge_width), thickness2 = self.paper.real_to_canvas(self.wedge_width))
+    return [self._create_polygon_with_transform( polygon, width=0, fill=self.line_color, joinstyle="miter")]
 
   # dotted bonds
   def _draw_o1( self):
@@ -1055,8 +1184,9 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     if self.order in (1,3):
       if self.type in 'nwba':
         items = [self.item]
-    elif self.order == 2 and not self.center:
-      items = [self.item]
+    elif self.order == 2:
+      if not self.type == 'h' and not self.center:
+        items = [self.item]
     
     # other items are always visible when defined
     if self.second:
@@ -1069,37 +1199,24 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return items
 
   def focus( self):
-    # simo TODO the algorithm still does not cover some less common cases.
-#     print('Bond type: '+self.type)
-#     print('simple double: '+str(self.simple_double))
-#     print('center: '+str(self.center))
-#     print('order: '+str(self.order))
-#     print(self.item)
-#     print(self.second)
-#     print(self.third)
-#     print(self.items)
-    
     items = self.visible_items()
     
     if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.paper.highlight_color, width = self.line_width+1) for item in items]
-    elif self.type == 'b':
-      [self.paper.itemconfig( item, fill=self.paper.highlight_color) for item in items]
-    elif self.type in 'wo':
-      [self.paper.itemconfigure( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color) for item in items]
+    elif self.type == 'o':
+      [self.paper.itemconfig( item, fill=self.paper.highlight_color, outline=self.paper.highlight_color) for item in items]
+    elif self.type in 'wb':
+      [self.paper.itemconfigure( item, fill=self.paper.highlight_color) for item in items]
 
   def unfocus( self):
-    
     items = self.visible_items()
     
     if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
-    elif self.type == 'b':
-      [self.paper.itemconfig( item, fill=self.line_color) for item in items]
-    elif self.type == 'w':
-      [self.paper.itemconfigure( item, fill=self.line_color, outline='') for item in items]
     elif self.type == 'o':
-      [self.paper.itemconfigure( item, fill=self.line_color, outline=self.line_color) for item in items]
+      [self.paper.itemconfig( item, fill=self.line_color, outline=self.line_color) for item in items]
+    elif self.type in 'wb':
+      [self.paper.itemconfigure( item, fill=self.line_color) for item in items]
 
   def select( self):
     x1, y1 = self.atom1.get_xy_on_paper()
