@@ -1199,16 +1199,6 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
     return items
 
   def focus( self):
-    # simo TODO the algorithm still does not cover some less common cases.
-#     print('Bond type: '+self.type)
-#     print('simple double: '+str(self.simple_double))
-#     print('center: '+str(self.center))
-#     print('order: '+str(self.order))
-#     print(self.item)
-#     print(self.second)
-#     print(self.third)
-#     print(self.items)
-    
     items = self.visible_items()
     
     if self.type in 'nahd':
@@ -1219,14 +1209,13 @@ class bond( meta_enabled, line_colored, drawable, with_line, interactive, child_
       [self.paper.itemconfigure( item, fill=self.paper.highlight_color) for item in items]
 
   def unfocus( self):
-    
     items = self.visible_items()
     
     if self.type in 'nahd':
       [self.paper.itemconfig( item, fill=self.line_color, width = self.line_width) for item in items]
     elif self.type == 'o':
       [self.paper.itemconfig( item, fill=self.line_color, outline=self.line_color) for item in items]
-    elif self.type == 'wb':
+    elif self.type in 'wb':
       [self.paper.itemconfigure( item, fill=self.line_color) for item in items]
 
   def select( self):
