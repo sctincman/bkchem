@@ -169,7 +169,7 @@ class SVG_writer(XML_writer):
 
     line_items, items = b.get_exportable_items()
     # export itself
-    if b.type in 'nbhd':
+    if b.type in 'nhd':
       for i in items:
         x1, y1, x2, y2 = self.paper.coords( i)
         line = dom_extensions.elementUnder( l_group, 'line',
@@ -186,14 +186,14 @@ class SVG_writer(XML_writer):
                                       ( 'rx', self.convert( 0.5*(x2-x1))),
                                       ( 'ry', self.convert( 0.5*(y2-y1))),
                                       ( 'stroke-width', '1.0')))
-    elif b.type == 'w':
+    elif b.type in 'wb':
       for i in items:
         coords = self.paper.coords( b.item)
         line = dom_extensions.elementUnder( l_group, 'polygon',
                                             (( 'fill', self.cc( b.line_color)),
                                              ( 'stroke', self.cc( b.line_color)),
                                              ( 'points', list_to_svg_points( coords))))
-    elif b.type in 'h':
+    elif b.type == 'h':
       for i in items:
         for p in i:
           x1, y1, x2, y2 = self.paper.coords( p)
