@@ -43,7 +43,7 @@ from parents import point_drawable, interactive, drawable, top_level
 
 class arrow( meta_enabled, drawable, with_line, line_colored, container, interactive, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   _pins = ['none', 'last', 'first', 'both']
@@ -156,9 +156,11 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
     #self.selector.delete()
     [pnt.unselect() for pnt in self.points]
 
-  def create_new_point( self, x, y, position=-1):
-    "creates new point, position specifies relative position of point in points, usualy -1 or 0"
-    pnt = point( self.paper, xy=(x,y), arrow=self)
+  def create_new_point( self, x, y, position=-1, use_paper_coords=False):
+    "creates new point, position specifies relative position of point in points, usually -1 or 0"
+    if use_paper_coords:
+      xy = self.paper.canvas_to_real((x,y))
+    pnt = point( self.paper, xy=xy, arrow=self)
     if position < 0:
       self.points.append( pnt)
     else:
@@ -186,8 +188,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   def is_empty_or_single_point( self):
     return len( self.points) < 2
 
-  def move( self, dx, dy):
-    [p.move( dx, dy) for p in self.points]
+  def move( self, dx, dy, use_paper_coords=False):
+    [p.move( dx, dy, use_paper_coords) for p in self.points]
     self.redraw()
 
   def read_package( self, package):
@@ -273,31 +275,31 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
   # -- private drawing methods for different arrow types --
 
   def _draw_normal_old( self):
-    ps = tuple(j for i in map(lambda b: b.get_xy(), self.points) for j in i)
+    ps = tuple(j for i in map(lambda b: b.get_xy_on_screen(), self.points) for j in i)
     item = self.paper.create_line( ps, tags='arrow', arrow=self._pins[ self.pin], arrowshape=self.shape,\
                                    width=self.line_width, smooth=self.spline, fill=self.line_color)
     return [item]
 
   def _draw_normal( self):
-    coords = [p.get_xy() for p in self.points]
+    coords = [p.get_xy_on_paper() for p in self.points]
     pins = []
     if self.pin in (2,3):
       x1, y1 = coords[1]
       x2, y2 = coords[0]
       pins.append( (x1,y1,x2,y2))
-      coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[0] = geometry.elongate_line( x1,y1,x2,y2, self.paper.real_to_canvas(-8)) # shorten the line - looks better
     if self.pin in (1,3):
       x1, y1 = coords[-2]
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
-      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8)) # shorten the line - looks better
 
     ps = tuple(j for i in coords for j in i)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
     for x1,y1,x2,y2 in pins:
-      coords = double_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3)
+      coords = double_sided_arrow_head(x1, y1, x2, y2, self.paper.real_to_canvas(8), self.paper.real_to_canvas(10), self.paper.real_to_canvas(3))
       items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
 
@@ -306,25 +308,25 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def _draw_electron( self):
-    coords = [p.get_xy() for p in self.points]
+    coords = [p.get_xy_on_screen() for p in self.points]
     pins = []
     if self.pin in (2,3):
       x1, y1 = coords[1]
       x2, y2 = coords[0]
       pins.append( (x1,y1,x2,y2))
-      coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[0] = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8)) # shorten the line - looks better
     if self.pin in (1,3):
       x1, y1 = coords[-2]
       x2, y2 = coords[-1]
       pins.append( (x1,y1,x2,y2))
-      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+      coords[-1] = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8)) # shorten the line - looks better
 
     ps = tuple(j for i in coords for j in i)
     item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                     smooth=self.spline, fill=self.line_color)
     items = [item1]
     for x1,y1,x2,y2 in pins:
-      coords = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 4, self.line_width)
+      coords = single_sided_arrow_head(x1, y1, x2, y2, self.paper.real_to_canvas(8), self.paper.real_to_canvas(10), self.paper.real_to_canvas(4), self.line_width)
       items.append( self.paper.create_polygon( coords, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
 
@@ -332,16 +334,17 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def _draw_retro( self):
-    width = 3
-    coords = [p.get_xy() for p in self.points]
+    width = self.paper.real_to_canvas(3)
+    head_param = self.paper.real_to_canvas(8) # just a placeholder for "8"
+    coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     # the pins
     if self.pin in (2,3):
-      head = retro_arrow_head(coords[1][0],coords[1][1],coords[0][0],coords[0][1],8,8,width)
+      head = retro_arrow_head(coords[1][0],coords[1][1],coords[0][0],coords[0][1],head_param,head_param,width)
       head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
       items.append( head_item)
     if self.pin in (1,3):
-      head = retro_arrow_head(coords[-2][0],coords[-2][1],coords[-1][0],coords[-1][1],8,8,width)
+      head = retro_arrow_head(coords[-2][0],coords[-2][1],coords[-1][0],coords[-1][1],head_param,head_param,width)
       head_item = self.paper.create_line( head, width=self.line_width,fill=self.line_color,joinstyle="miter")
       items.append( head_item)
     # the lines
@@ -355,26 +358,26 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
 
   def _draw_equilibrium( self):
-    width = 3
-    orig_coords = [p.get_xy() for p in self.points]
+    width = self.paper.real_to_canvas(3)
+    orig_coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)
       if sig == -1:
         x1, y1 = coords[1]
         x2, y2 = coords[0]
-        coords[0] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+        coords[0] = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8)) # shorten the line - looks better
       else:
         x1, y1 = coords[-2]
         x2, y2 = coords[-1]
-        coords[-1] = geometry.elongate_line( x1,y1,x2,y2,-8) # shorten the line - looks better
+        coords[-1] = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8)) # shorten the line - looks better
       # the line
       ps = tuple(j for i in coords for j in i)
       item1 = self.paper.create_line( ps, tags='arrow', width=self.line_width,
                                       smooth=self.spline, fill=self.line_color)
       items.append( item1)
       # the pin
-      cs = single_sided_arrow_head(x1, y1, x2, y2, 8, 10, 3, self.line_width)
+      cs = single_sided_arrow_head(x1, y1, x2, y2, self.paper.real_to_canvas(8), self.paper.real_to_canvas(10), self.paper.real_to_canvas(3), self.line_width)
       items.append( self.paper.create_polygon( cs, fill=self.line_color, outline=self.line_color,
                                                width=1, tags="arrow_no_focus", joinstyle="miter"))
     return items
@@ -382,7 +385,7 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
 
   def _draw_equilibrium2( self):
     width = 3
-    orig_coords = [p.get_xy() for p in self.points]
+    orig_coords = [p.get_xy_on_screen() for p in self.points]
     items = []
     for sig in (-1,1):
       coords = geometry.find_parallel_polyline( orig_coords, sig*width)
@@ -391,14 +394,14 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
         if sig == -1:
           x1, y1 = coords[1]
           x2, y2 = coords[0]
-          xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
-          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+          xp, yp = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8))
+          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,self.paper.real_to_canvas(5))
           coords.insert(0,(xp,yp))
         else:
           x1, y1 = coords[-2]
           x2, y2 = coords[-1]
-          xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
-          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+          xp, yp = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8))
+          xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,self.paper.real_to_canvas(5))
           coords.append((xp,yp))
       else:
         # splines must have a sharp point at the end - the must have a separate head
@@ -408,8 +411,8 @@ class arrow( meta_enabled, drawable, with_line, line_colored, container, interac
         else:
           x1, y1 = coords[-2]
           x2, y2 = coords[-1]
-        xp, yp = geometry.elongate_line( x1,y1,x2,y2,-8)
-        xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,5)
+        xp, yp = geometry.elongate_line( x1,y1,x2,y2,self.paper.real_to_canvas(-8))
+        xp, yp = geometry.point_at_distance_from_line( x1,y1,xp,yp,self.paper.real_to_canvas(5))
         items.append( self.paper.create_line( (x2,y2,xp,yp),
                                               tags='arrow', width=self.line_width,
                                               smooth=self.spline, fill=self.line_color,

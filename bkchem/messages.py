@@ -77,7 +77,8 @@ bond_align_mode_mirrorthrough = _("click a bond or two atoms to mirror the molec
 
 about_text = _("""BKChem was conceived and written by Beda Kosata
 and is performed by Python, Pmw & (optionally) Cairo.
-Currently it is maintained by Reinis Danne <rei4dan@gmail.com>.
+
+This version is an unofficial fork maintained by Simone Pilon <wertyseek@gmail.com>.
 
 BKChem is free software and is distributed under GNU GPL.
 BKChem is provided as is without warranty of any kind.
@@ -95,7 +96,7 @@ Sorry, but BKChem relies too heavily on Pmw to be usable without it. Please inst
 
 no_oasa_text = _("""UNABLE TO IMPORT OASA
 
-Sorry, but from version 0.10 BKChem uses the OASA library internally and therefor cannot run without it.""")
+Sorry, but from version 0.10 BKChem uses the OASA library internally and therefore cannot run without it.""")
 
 
 low_python_version_text = _("""Python version too low!

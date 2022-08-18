@@ -39,13 +39,13 @@ from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
-### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
+### is called during their __init__ (in fact meta_enabled.__init__), therefore these values are
 ### not set in __init__ itself
 
 
 class atom(drawable_chem_vertex, oasa.atom):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ
 
   object_type = 'atom'
@@ -305,26 +305,27 @@ class atom(drawable_chem_vertex, oasa.atom):
 
   def draw( self, redraw=False):
     "draws atom with respect to its properties"
+    
     if self.show:
+      # Draws the atom with a label
       drawable_chem_vertex.draw( self, redraw=redraw)
     else:
       if self.item:
         warn( "drawing atom that is probably drawn", UserWarning, 2)
-      x, y = self.x, self.y
+      x, y = self.get_xy_on_paper()
       self.item = self.paper.create_line( x, y, x, y, tags=("atom", 'nonSVG'), fill='')
-      self.selector = None
+      self.vertex_item = self.item
       if not redraw:
         [m.draw() for m in self.marks]
       self.paper.register_id( self.item, self)
       self._reposition_on_redraw = 0
 
-
   def focus( self):
     if self.show:
       drawable_chem_vertex.focus( self)
     else:
-      x, y = self.x, self.y
-      self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags=('helper_f','no_export'))
+      x, y = self.get_xy_on_paper() 
+      self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, tags=('helper_f','no_export'), outline=self.paper.highlight_color)
       self.paper.lift( self.item)
 
 
@@ -338,25 +339,27 @@ class atom(drawable_chem_vertex, oasa.atom):
 
   def select( self):
     if self.show:
+      # Makes the selector of the label visible
       drawable_chem_vertex.select( self)
     else:
-      x, y = self.x, self.y
+      # If atom is not visible, his selector is generated or updated ( size not scaled with paper )
+      x, y = self.get_xy_on_paper()
       if self.selector:
         self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
       else:
-        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2)
-      self.paper.lower( self.selector)
+        self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
+      #It's not clear why, but when redrawing everything this line hides the selector.
+      #self.paper.lower( self.selector)
       self._selected = 1
 
 
   def unselect( self):
     if self.show:
       drawable_chem_vertex.unselect( self)
-    else:
+    elif self.selector:
       self.paper.delete( self.selector)
       self.selector = None
       self._selected = 0
-
 
   def read_package( self, package):
     """reads the dom element package and sets internal state according to it"""

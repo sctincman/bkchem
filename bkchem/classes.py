@@ -44,7 +44,7 @@ from reaction import reaction
 from singleton_store import Screen
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
-### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
+### is called during their __init__ (in fact meta_enabled.__init__), therefore these values are
 ### not set in __init__ itself
 
 
@@ -65,6 +65,7 @@ class standard(object):
     self.bond_width = '6px'
     self.wedge_width = '5px'
     self.double_length_ratio = 0.75
+    self.min_wedge_angle = pi/8
     # atom
     self.show_hydrogens = 0
     # arrow
@@ -104,7 +105,8 @@ class standard(object):
     dom_extensions.elementUnder( ret, 'bond', (('length', str( self.bond_length)),
                                                ('width', str( self.bond_width)),
                                                ('wedge-width', str( self.wedge_width)),
-                                               ('double-ratio', str( self.double_length_ratio))))
+                                               ('double-ratio', str( self.double_length_ratio)),
+                                               ('min_wedge_angle', str( self.min_wedge_angle))))
     dom_extensions.elementUnder( ret, 'arrow', (('length', str( self.arrow_length)),))
     dom_extensions.elementUnder( ret, 'atom', (('show_hydrogens', str( int( self.show_hydrogens))),))
     return ret
@@ -125,6 +127,8 @@ class standard(object):
       self.double_length_ratio = b.getAttribute( 'double-ratio') or self.double_length_ratio
       self.double_length_ratio = float( self.double_length_ratio)
       self.wedge_width = b.getAttribute( 'wedge-width') or self.wedge_width
+      if b.getAttribute( 'min_wedge_angle'):
+        self.min_wedge_angle = float(b.getAttribute( 'min_wedge_angle'))
     a = dom_extensions.getFirstChildNamed( p, 'arrow')
     if a:
       self.arrow_length = a.getAttribute( 'length')
@@ -143,7 +147,7 @@ class standard(object):
 
 class point( point_drawable, interactive, child):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'point'
@@ -154,9 +158,11 @@ class point( point_drawable, interactive, child):
 
   def __init__( self, paper, xy=(), arrow=None, package=None, type='invisible'):
     point_drawable.__init__( self)
+    
+    self.paper = paper
+    self.vertex_item = None
     if xy:
       self.x, self.y = xy
-    self.paper = paper
     self.item = None
     self.focus_item = None
     self.selector = None
@@ -172,9 +178,11 @@ class point( point_drawable, interactive, child):
       self.redraw()
     else:
       if self.type == 'invisible':
-        self.item = self.paper.create_line( self.x, self.y, self.x, self.y, tags='point', fill='')
+        x, y = self.get_xy_on_paper()
+        self.item = self.paper.create_line( x, y, x, y, tags='point', fill='')
       elif self.type == 'circle':
-        self.item = self.paper.create_oval( self.x-2, self.y-2, self.x+2, self.y+2, fill='grey', outline='grey', tags='point')
+        x, y = self.get_xy_on_screen()
+        self.item = self.paper.create_oval( x-2, y-2, x+2, y+2, fill='grey', outline='grey', tags='point')
       else:
         warn( 'unknown point type')
         return
@@ -189,30 +197,51 @@ class point( point_drawable, interactive, child):
       self.item = None
       self.draw()
       if self.selector:
-        self.paper.coords( self.selector, self.x-2, self.y-2, self.x+2, self.y+2)
+        x, y = self.get_xy_on_paper()
+        self.paper.coords( self.selector, x-2, y-2, x+2, y+2)
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
+    if (use_paper_coords):
+      paper_dx = dx
+      paper_dy = dy
+      dx = self.paper.canvas_to_real(paper_dx)
+      dy = self.paper.canvas_to_real(paper_dy)
+    else:
+      paper_dx = self.paper.real_to_canvas(dx)
+      paper_dy = self.paper.real_to_canvas(dy)
     self.x += dx
     self.y += dy
-    self.paper.move( self.item, dx, dy)
+    self.paper.move( self.item, paper_dx, paper_dy)
+    self.paper.move( self.vertex_item, paper_dx, paper_dy)
     if self.selector:
-      self.paper.move( self.selector, dx, dy)
+      self.paper.move( self.selector, paper_dx, paper_dy)
 
 
-  def move_to( self, x, y):
-    if not self.item:
-      self.x = x
-      self.y = y
-      self.draw()
+  def move_to( self, x, y, use_paper_coords=False):
+    if (use_paper_coords):
+      if not self.item:
+        self.x = self.paper.canvas_to_real(x)
+        self.y = self.paper.canvas_to_real(y)
+        self.draw()
+      else:
+        x2, y2 = self.get_xy_on_paper()
+        dx = x -x2
+        dy = y -y2
+        self.move( dx, dy, use_paper_coords)
     else:
-      dx = x -self.x
-      dy = y -self.y
-      self.move( dx, dy)
-
+      if not self.item:
+        self.x = x
+        self.y = y
+        self.draw()
+      else:
+        dx = x -self.x
+        dy = y -self.y
+        self.move( dx, dy, use_paper_coords)
 
   def focus( self):
-    self.focus_item = self.paper.create_oval( self.x-4, self.y-4, self.x+4, self.y+4)
+    x, y = self.get_xy_on_paper()
+    self.focus_item = self.paper.create_oval( x-4, y-4, x+4, y+4, outline=self.paper.highlight_color)
     if self.item:
       self.paper.lift( self.item)
 
@@ -225,7 +254,8 @@ class point( point_drawable, interactive, child):
 
   def select( self):
     if not self.selector:
-      self.selector = self.paper.create_rectangle( self.x-2, self.y-2, self.x+2, self.y+2)
+      x, y = self.get_xy_on_paper()
+      self.selector = self.paper.create_rectangle( x-2, y-2, x+2, y+2, outline=self.paper.highlight_color)
       self.paper.lower( self.selector)
 
 
@@ -237,6 +267,14 @@ class point( point_drawable, interactive, child):
 
   def get_xy( self):
     return self.x, self.y
+  
+  def get_xy_on_paper(self):
+    if self.vertex_item:
+      return self.paper.coords( self.vertex_item)[0:2]
+    else:
+      xy = self.paper.real_to_canvas((self.x, self.y))
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags='no-export', fill='')
+      return xy
 
 
   def delete( self):
@@ -302,7 +340,7 @@ class point( point_drawable, interactive, child):
 
 class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'plus'
@@ -463,7 +501,7 @@ class plus(meta_enabled, interactive, point_drawable, with_font, area_colored, t
 
 class text( meta_enabled, interactive, point_drawable, text_like, area_colored, top_level):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ (are not non-empty)
 
   object_type = 'text'
@@ -491,6 +529,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
       self.set_xy( xy[0], xy[1])
     self.xml_ftext = text
     self.item = None
+    self.vertex_item = None
     if package:
       self.read_package( package)
     self.focus_item = None
@@ -506,7 +545,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
   def draw( self):
     "draws text"
     self.update_font()
-    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, fill=self.line_color, justify=self.justify)
+    x, y = self.get_xy_on_paper()
+    self.ftext = ftext( self.paper, (x, y), self.xml_ftext, font=self.on_screen_font(), fill=self.line_color, justify=self.justify)
     self.ftext.draw()
     x1, y1, x2, y2 = self.ftext.bbox()
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('text','no_export'))
@@ -540,7 +580,7 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def select( self):
     if self.selector:
-      self.paper.itemconfig( self.selector, outline='black')
+      self.paper.itemconfig( self.selector, outline=self.paper.highlight_color)
     self._selected = 1
 
 
@@ -550,22 +590,35 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     self._selected = 0
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
     """moves object with his selector (when present)"""
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += self.paper.canvas_to_real(dx)
+      self.y += self.paper.canvas_to_real(dy)
+    else:
+      self.x += dx
+      self.y += dy
+      dx = self.paper.real_to_canvas(dx)
+      dy = self.paper.real_to_canvas(dy)
     self.paper.move( self.item, dx, dy)
+    self.paper.move( self.vertex_item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
       self.ftext.move( dx, dy)
 
 
-  def move_to( self, x, y):
-    dx = x - self.x
-    dy = y - self.y
-    self.set_xy( x, y)
+  def move_to( self, x, y, use_paper_coords=False):
+    if use_paper_coords:
+      dx = x - self.paper.real_to_canvas(self.x)
+      dy = y - self.paper.real_to_canvas(self.y)
+      self.set_xy(self.paper.canvas_to_real((x,y)))
+    else:
+      dx = self.paper.real_to_canvas(x - self.x)
+      dy = self.paper.real_to_canvas(y - self.y)
+      self.set_xy( x, y)
     self.paper.move( self.item, dx, dy)
+    self.paper.move( self.vertex_item, dx, dy)
     if self.selector:
       self.paper.move( self.selector, dx, dy)
     if self.ftext:
@@ -582,7 +635,17 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
 
   def get_xy( self):
     return self.x, self.y
-
+  
+  def get_xy_on_paper( self):
+    """Returns the coordinates of the vertex on the paper reference system.
+        These change based on zooming."""
+    # An item on the Canvas is used to keep track of current position (self.vertex_item)
+    if self.vertex_item:
+      return self.paper.coords(self.vertex_item)[0:2]
+    else:
+      xy = self.paper.real_to_canvas((self.x, self.y))
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
+      return xy
 
   def delete( self):
     if self.focus_item:
@@ -593,6 +656,8 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     if self.item:
       self.paper.unregister_id( self.item)
       self.paper.delete( self.item)
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
     if self.ftext:
       self.ftext.delete()
     return self
@@ -678,6 +743,11 @@ class text( meta_enabled, interactive, point_drawable, text_like, area_colored, 
     """scales font of text. does not redraw !!"""
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
+  
+  def on_screen_font(self):
+    """Returns a font adequate for on-screen display, using appropriate scaling."""
+    screen_font_size = int( round( self.paper.real_to_canvas(self.font_size) ))
+    return tkFont.Font( family=self.font_family, size=screen_font_size)
 
 
   def lift( self):

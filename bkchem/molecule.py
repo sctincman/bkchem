@@ -51,7 +51,7 @@ from parents import container, top_level, id_enabled, with_paper
 
 class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ
 
   object_type = 'molecule'
@@ -465,12 +465,12 @@ class molecule( container, top_level, id_enabled, oasa.molecule, with_paper):
     return deleted
 
 
-  def move( self, dx, dy):
+  def move( self, dx, dy, use_paper_coords=False):
     """moves the whole molecule"""
     for o in self.atoms:
-      o.move( dx, dy)
+      o.move( dx, dy, use_paper_coords=use_paper_coords)
     for o in self.bonds:
-      o.move( dx, dy)
+      o.move( dx, dy, use_paper_coords=use_paper_coords)
 
 
   def bbox( self):

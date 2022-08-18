@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author email="beda@zirael.org">Beda Kosata</author>
+    <description lang="en">
+      Tries to convert the textatom to a group.
+    </description>
+    <description lang="de">
+      Falls möglich, konvertiert es ein Textatom zu einer Gruppe.
+    </description>
+    <description lang="lv">
+      Mēģina pārvērst teksta ātomu grupā.
+    </description>
+  </meta>
+
+  <source>
+    <file>text_to_group.py</file>
+    <menu-text lang="en">Textatom to group</menu-text>
+    <menu-text lang="de">Textatom zu Gruppe</menu-text>
+    <menu-text lang="lv">Teksta atoms uz grupu</menu-text>
+  </source>
+</plugin>

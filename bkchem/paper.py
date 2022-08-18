@@ -1,7 +1,6 @@
 #--------------------------------------------------------------------------
 #     This file is part of BKChem - a chemical drawing program
 #     Copyright (C) 2002-2009 Beda Kosata <beda@zirael.org>
-
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
@@ -91,6 +90,7 @@ class chem_paper(Canvas, object):
   # composite objects is focused - this is typical for selection_rect that needs to respond
   # differently in different corners
   classes_with_per_item_reselection = (selection_rect,)
+  highlight_color = 'blue'
 
 
   def __init__( self, master = None, file_name={}, **kw):
@@ -122,6 +122,7 @@ class chem_paper(Canvas, object):
     self.file_name = file_name
 
     # paper sizes etc.
+    self._scale = 1.0
     self._paper_properties = {}
     self.set_default_paper_properties()
 
@@ -154,6 +155,11 @@ class chem_paper(Canvas, object):
       # scrolling (linux only?)
       self.bind( "<Button-4>", lambda e: self.yview( "scroll", -1, "units"))
       self.bind( "<Button-5>", lambda e: self.yview( "scroll", 1, "units"))
+      # zoom in and out key bindings
+      self.bind( '<Control-Button-4>', lambda e: self.scale_all(2))
+      self.bind( '<Control-Button-5>', lambda e: self.scale_all(0.5))
+
+
       # scrolling (windows)
       #self.bind( "<MouseWheel>", lambda e: self.yview( "scroll", -misc.signum( e.delta), "units"))
       # hope it does not clash on some platforms :(
@@ -224,6 +230,21 @@ class chem_paper(Canvas, object):
     else:
       return True
 
+  def print_all_coords(self):
+    """Intended for debug only, will be removed.
+       Prints the coordinates of all atoms and all molecules in this paper."""
+    #simo TODO remove
+    print(self.submode)
+    print(self.mode)
+    for mol in self.molecules:
+     print('Molecule:')
+     for atom in mol.atoms:
+       print('[ '+str(atom.x)+' , '+str(atom.y)+' ]')
+       
+  def redraw_all(self):
+    """Redraws all the content of the paper."""
+    for o in self.stack:
+      o.redraw()
 
   def add_bindings( self, active_names=()):
     self.lower( self.background)
@@ -717,10 +738,10 @@ class chem_paper(Canvas, object):
 
 
   def handle_overlap( self):
-    "puts overlaping molecules together to one and then calles handle_overlap(a1, a2) for that molecule"
+    "puts overlaping molecules together to one and then calls handle_overlap(a1, a2) for that molecule"
     overlap = []
     for a in self.find_withtag('atom'):
-      x, y = self.id_to_object( a).get_xy()
+      x, y = self.id_to_object( a).get_xy_on_paper()
       for b in self.find_overlapping( x-2, y-2, x+2, y+2):
         if (a != b) and ( 'atom' in self.gettags( b)):
           a1 = self.id_to_object( a)
@@ -1230,6 +1251,15 @@ class chem_paper(Canvas, object):
       o.unselect()
       o.select()
 
+  def scale_all( self, scale):
+    """Scale canvas, used to zoom in and out of the frame.
+	should not affect the *actual* size of the objects.""" 
+    self.scale('all', 0, 0, scale, scale)
+    self._scale *= scale
+    # Some geometries are required to scale, others not.
+    # So we need to redraw everything.
+    self.redraw_all()
+    self.update_scrollregion()
 
   def selected_to_real_clipboard_as_SVG( self):
     """exports selected top_levels as SVG to system clipboard"""
@@ -1358,9 +1388,31 @@ class chem_paper(Canvas, object):
     self._screen2real.set_scaling_xy( ratiox, ratioy)
     self._screen2real.set_move( x1, y1)
 
+  def real_to_canvas(self, lenghts):
+    """Transforms distances or coordinates from real (as stored in eg: atom.x)
+        to those in the canvas (as stored for items)."""
+    try:
+      result = []
+      for lenght in lenghts:
+        result.append(lenght*self._scale)
+      return result
+    except TypeError:
+      return lenghts*self._scale
+  
+  def canvas_to_real(self, lenghts):
+    """Transforms distances or coordinates from those in the canvas (as stored for items)
+        to real ones (as stored in eg: atom.x)."""
+    try:
+      result = []
+      for lenght in lenghts:
+        result.append(lenght/self._scale)
+      return result
+    except TypeError:
+      return lenghts/self._scale
 
   def screen_to_real_coords( self, coords):
-    """transforms set of x,y coordinates to real coordinates, input list must have even length"""
+    """transforms set of x,y coordinates to real coordinates, input list must have even length.
+    It's called when exporting files."""
     if len( coords) % 2:
       raise ValueError("only even number of coordinates could be transformed")
     out = []
@@ -1370,7 +1422,8 @@ class chem_paper(Canvas, object):
 
 
   def real_to_screen_coords( self, coords):
-    """transforms set of x,y coordinates to screen coordinates, input list must have even length"""
+    """transforms set of x,y coordinates to screen coordinates, input list must have even length.
+    It's called when importing files."""
     if len( coords) % 2:
       raise ValueError("only even number of coordinates could be transformed")
     out = []

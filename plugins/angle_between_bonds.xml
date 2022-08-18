@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+
+  <meta>
+    <author>Beda Kosata</author>
+    <description lang="en">
+      Measures angle between two selected bonds.
+    </description>
+    <description lang="de">
+      Misst den Winkel zwischen zwei ausgewählen Bindungen.
+    </description>
+    <description lang="lv">
+      Nosaka leņķi starp divām izvēlētām saitēm.
+    </description>
+  </meta>
+
+  <source>
+    <file>angle_between_bonds.py</file>
+    <menu-text lang="en">Angle between bonds</menu-text>
+    <menu-text lang="de">Bindungswinkel</menu-text>
+    <menu-text lang="lv">Saišu leņķis</menu-text>
+  </source>
+</plugin>

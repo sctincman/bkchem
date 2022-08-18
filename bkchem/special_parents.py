@@ -312,12 +312,13 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
     # presentation attrs
     self.selector = None
-    self._selected = 0 #used to keep track whether this is selected or not
-    self.item = None
-    self.ftext = None
+    self._selected = 0 #Used to keep track whether this is selected or not
+    self.item = None   #Used for selecting the vertex: a zero length line for non-label, bounding box for labels.
+    self.vertex_item = None#Used for bonding: zero length line indicating the vertex
+    self.ftext = None  #Text used in label
 
-    self.pos = None
-    self.focus_item = None
+    self.pos = None    #Alignment of label to vertex (first-center or last-center)
+    self.focus_item = None#As for selector, but for focus (also a bounding box)
 
 
   @property
@@ -415,7 +416,6 @@ class drawable_chem_vertex(oasa.chem_vertex,
     """
     return self.symbol
 
-
   def copy_settings( self, other):
     """copies settings of self to other, does not check if other is capable of receiving it"""
     meta_enabled.copy_settings( self, other)
@@ -450,13 +450,11 @@ class drawable_chem_vertex(oasa.chem_vertex,
     "draws vertex with respect to its properties"
     if self.item:
       warn( "drawing vertex that is probably drawn", UserWarning, 2)
-    x, y = self.x, self.y
-    self.update_font()
-
+    x, y = self.get_xy_on_paper()
     if not self.pos:
       self.decide_pos()
     # we use self.text to force undo when it is changed (e.g. when atom is added to OH so it changes to O)
-    self.ftext = ftext( self.paper, (self.x, self.y), self.xml_ftext, font=self.font, pos=self.pos, fill=self.line_color)
+    self.ftext = ftext( self.paper, (x, y), self.xml_ftext, font=self.on_screen_font(), pos=self.pos, fill=self.line_color)
     self.ftext.draw()
     # should we want a complete bbox? (yes only for atoms in linear form)
     if len( [x for x in self.molecule.get_fragments_with_vertex( self) if x.type=="linear_form" and x.properties.get('bond_length',0)>20]):
@@ -465,6 +463,8 @@ class drawable_chem_vertex(oasa.chem_vertex,
       complete = False
     x1, y1, x2, y2 = self.ftext.bbox( complete=complete)
     self.item = self.paper.create_rectangle( x1, y1, x2, y2, fill='', outline='', tags=('atom','no_export'))
+    ## For some reason the font is not created before TODO change position of this line.
+    self.update_font()
     ## shrink the selector according to the font size and properties
     hack_y = self.font.metrics()['descent'] - 1
     self.selector = self.paper.create_rectangle( x1, y1, x2, y2-hack_y, fill=self.area_color, outline='',tags=('helper_a','no_export'))
@@ -482,19 +482,24 @@ class drawable_chem_vertex(oasa.chem_vertex,
       self.reposition_marks()
       self._reposition_on_redraw = 0
 
-    self.update_font()
+    if self.show:
+      self.update_font()
     # at first we delete everything...
     self.paper.unregister_id( self.item)
     self.paper.delete( self.item)
+    self.item = None
     if self.selector:
-      self.paper.delete( self. selector)
+      self.paper.delete( self.selector)
+      self.selector = None
     if self.ftext:
       self.ftext.delete()
-    self.item = None # to ensure that warning in draw() is not triggered when redrawing
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
+      self.vertex_item = None
+
     # ...then we draw it again
     self.draw( redraw=True)
     [m.redraw() for m in self.marks]
-
     if self._selected:
       self.select()
     else:
@@ -514,7 +519,7 @@ class drawable_chem_vertex(oasa.chem_vertex,
 
 
   def select( self):
-    self.paper.itemconfig( self.selector, outline='black')
+    self.paper.itemconfig( self.selector, outline=Store.app.paper.highlight_color)
     self._selected = 1
 
 
@@ -523,14 +528,24 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self._selected = 0
 
 
-  def move( self, dx, dy, dont_move_marks=False):
-    """moves object with his selector (when present)"""
+  def move( self, dx, dy, use_paper_coords=False, dont_move_marks=False):
+    """Moves object and its representation.
+      By default uses real coordinates, can use the canvas coordinates too."""
     # saving old dirty value
     # d = self.dirty
-    self.x += dx
-    self.y += dy
+    if use_paper_coords:
+      self.x += Store.app.paper.canvas_to_real(dx)
+      self.y += Store.app.paper.canvas_to_real(dy)
+    else:
+      self.x += dx
+      self.y += dy
+      dx = Store.app.paper.real_to_canvas(dx)
+      dy = Store.app.paper.real_to_canvas(dy)
     if self.drawn:
       self.paper.move( self.item, dx, dy)
+      if self.show:
+        # If (not self.show) self.vertex_item points already to self.item (no need to move it twice).
+        self.paper.move( self.vertex_item, dx, dy)
       if self.selector:
         self.paper.move( self.selector, dx, dy)
       if self.ftext:
@@ -542,15 +557,18 @@ class drawable_chem_vertex(oasa.chem_vertex,
     # self.dirty = d
 
 
-  def move_to( self, x, y, dont_move_marks=False):
-    dx = x - self.x
-    dy = y - self.y
-    self.move( dx, dy, dont_move_marks=dont_move_marks)
-
+  def move_to( self, x, y, use_paper_coords=False, dont_move_marks=False):
+    """Same as self.move() but the motion is not relative to the starting point."""
+    if use_paper_coords:
+      dx = x - Store.app.paper.real_to_canvas(self.x)
+      dy = y - Store.app.paper.real_to_canvas(self.y)
+    else:
+      dx = x - self.x
+      dy = y - self.y
+    self.move( dx, dy, use_paper_coords=use_paper_coords, dont_move_marks=dont_move_marks)
 
   def get_xy( self):
     return self.x, self.y
-
 
   def get_xyz( self, real=0):
     """returns atoms coordinates, default are screen coordinates, real!=0
@@ -561,6 +579,17 @@ class drawable_chem_vertex(oasa.chem_vertex,
       return x, y, z
     else:
       return self.x, self.y, self.z
+
+  def get_xy_on_paper( self):
+    """Returns the coordinates of the vertex on the paper reference system.
+        These change based on zooming."""
+    # An item on the Canvas is used to keep track of current position (self.vertex_item)
+    if self.vertex_item:
+      return self.paper.coords(self.vertex_item)[0:2]
+    else:
+      xy = self.paper.real_to_canvas( self.get_xy() )
+      self.vertex_item = self.paper.create_line( xy[0], xy[1], xy[0], xy[1], tags=("no_export"))
+      return xy
 
 
   def delete( self):
@@ -575,6 +604,9 @@ class drawable_chem_vertex(oasa.chem_vertex,
       self.paper.unregister_id( self.item)
       self.paper.delete( self.item)
       self.item = None
+    if self.vertex_item:
+      self.paper.delete( self.vertex_item)
+      self.vertex_item = None
     if self.ftext:
       self.ftext.delete()
     [m.delete() for m in self.marks]
@@ -606,6 +638,10 @@ class drawable_chem_vertex(oasa.chem_vertex,
     self.font_size = int( round( self.font_size * ratio))
     self.update_font()
 
+  def on_screen_font(self):
+    """Returns a font adequate for on-screen display, using appropriate scaling."""
+    screen_font_size = int( round( self.paper.real_to_canvas(self.font_size) ))
+    return tkFont.Font( family=self.font_family, size=screen_font_size)
 
   def lift( self):
     # marks
@@ -664,4 +700,3 @@ class drawable_chem_vertex(oasa.chem_vertex,
       return True
     else:
       return False
-

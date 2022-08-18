@@ -168,8 +168,8 @@ class mode( object):
 
   def clean_key_queue( self):
     """cleans status of all special keys;
-    needed because especially after C-x C-f the C-release is grabed by dialog
-    and never makes it to paper, therefor paper calls this after a file was read"""
+    needed because especially after C-x C-f the C-release is grabbed by dialog
+    and never makes it to paper, therefore paper calls this after a file was read"""
     for key in self._specials_pressed.keys():
       self._specials_pressed[ key] = 0
 
@@ -346,7 +346,10 @@ class basic_mode( simple_mode):
     # mode switching
     self.register_key_sequence_ending_with_number_range( 'C-', self.switch_mode, numbers=range(1,10))
     self.register_key_sequence_ending_with_number_range( 'C-A-', self.switch_mode, numbers=range(1,10), attrs={"add":9})
-
+    
+    # debug, simo
+    self.register_key_sequence( 'C-p', lambda : Store.app.paper.print_all_coords())
+    self.register_key_sequence( 'C-r', lambda : Store.app.paper.redraw_all())
 
   def undo( self):
     Store.app.paper.undo()
@@ -410,12 +413,10 @@ class edit_mode(basic_mode):
     # 'C-a' from windoze is in use - 'C-S-a' instead
     # chains (C-d as draw)
     self.register_key_sequence_ending_with_number_range( 'C-d', self.add_chain, numbers=range(2,10))
-
     # config
     self.rectangle_selection = True  # this can be overriden by children
 
     self._move_sofar = 0
-
 
   def mouse_down( self, event, modifiers=None):
     mods = modifiers or []
@@ -471,9 +472,11 @@ class edit_mode(basic_mode):
       self.mouse_click( event)
     else:
       if self._dragging == 3:
+        ### select everything in selection rectangle
         self._end_of_empty_drag( self._startx, self._starty, event.x, event.y)
         Store.app.paper.delete( self._selection_rect)
       elif self._dragging == 1:
+        ### move all selected
         # repositioning of atoms and double bonds
         atoms = [j for i in [o.neighbors for o in Store.app.paper.selected
                                              if (isinstance(o, oasa.graph.vertex) and
@@ -487,6 +490,7 @@ class edit_mode(basic_mode):
         Store.app.paper.handle_overlap()
         Store.app.paper.start_new_undo_record()
       elif self._dragging == 2:
+        ### move container of focused item
         Store.app.paper.handle_overlap()
         Store.app.paper.start_new_undo_record()
       elif self._dragging == 4:
@@ -547,7 +551,7 @@ class edit_mode(basic_mode):
     else:
       dy = event.y-self._starty
     if not self._dragging:
-      # drag threshhold
+      # drag threshold
       self._move_sofar += math.sqrt( dx**2 + dy**2)
       if self._move_sofar <= 1.0:
         return
@@ -589,16 +593,19 @@ class edit_mode(basic_mode):
         ### don't do anything
         self._dragging = 10  # just a placeholder to know that click should not be called
     if self._dragging == 1:
-      [o.move( dx, dy) for o in Store.app.paper.selected]
+      ### move all selected
+      [o.move( dx, dy, use_paper_coords=True) for o in Store.app.paper.selected]
       if self._moving_selected_arrow:
-        self._moving_selected_arrow.move( dx, dy)
+        self._moving_selected_arrow.move( dx, dy, use_paper_coords=True)
       [o.redraw() for o in self._bonds_to_update]
       [o.redraw() for o in self._arrows_to_update]
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 2:
-      self._dragged_molecule.move( dx, dy)
+      ### move container of focused item
+      self._dragged_molecule.move( dx, dy, use_paper_coords=True)
       self._startx, self._starty = event.x, event.y
     elif self._dragging == 3:
+      # Creating the selection rectangle
       Store.app.paper.coords( self._selection_rect, self._startx, self._starty, event.x, event.y)
     elif self._dragging == 4:
       # whole means that the selection-rect is moving whole, not only one part
@@ -767,18 +774,25 @@ class draw_mode( edit_mode):
 
 
   def mouse_down( self, event, modifiers = []):
+    """Starts a new bond, if no atom is focused (the mouse is being
+       pressed on bank space) creates a new atom.
+       The bond is completed upon release (mouse_up())."""
     edit_mode.mouse_down( self, event, modifiers = modifiers)
     Store.app.paper.unselect_all()
     if not self.focused:
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x, event.y)
+      x = Store.app.paper.canvas_to_real(event.x)
+      y = Store.app.paper.canvas_to_real(event.y)
+      a = mol.create_new_atom( x, y)
       a.focus()
       self.focused = a
     #Store.app.paper.add_bindings()
 
 
   def mouse_up( self, event):
+    """Completion of bond started when pressing (mouse_down())."""
     if not self._dragging:
+      #Make sure this was not thrown after click
       self.mouse_click( event)
     else:
       if self._moved_atom:
@@ -819,7 +833,9 @@ class draw_mode( edit_mode):
     if not self.focused:
       #print("it should not get here!!!")
       mol = Store.app.paper.new_molecule()
-      a = mol.create_new_atom( event.x, event.y)
+      x = Store.app.paper.canvas_to_real(event.x)
+      y = Store.app.paper.canvas_to_real(event.y)
+      a = mol.create_new_atom( x, y)
       Store.app.paper.add_bindings()
       b = bond( standard = Store.app.paper.standard,
                 type=self.__mode_to_bond_type(),
@@ -890,6 +906,7 @@ class draw_mode( edit_mode):
                   order=self.__mode_to_bond_order(),
                   simple_double=self.submode[4])
         if self.submode[3] == 1:
+          # Free-hand lenght
           self._moved_atom, self._bonds_to_update = self.focused.molecule.add_atom_to( self.focused,
                                                                                        bond_to_use=b,
                                                                                        pos=(event.x, event.y))
@@ -909,18 +926,24 @@ class draw_mode( edit_mode):
     if self._start_atom:
       z = 0
       if self.focused and self.focused != self._start_atom and isinstance( self.focused, oasa.graph.vertex):
+        # Close bond on existing atom.
         x, y = self.focused.get_xy()
         z = self.focused.z
+        self._moved_atom.move_to( x, y, use_paper_coords=False)
       elif self.submode[3] == 1:
+        # Free-hand lenght
         x, y = event.x, event.y
+        self._moved_atom.move_to( x, y, use_paper_coords=True)
       else:
+        # Fixed lenght
         dx = event.x - self._startx
         dy = event.y - self._starty
-        x0, y0 = self._start_atom.get_xy()
-        x,y = geometry.point_on_circle( x0, y0, Screen.any_to_px( Store.app.paper.standard.bond_length),
+        x0, y0 = self._start_atom.get_xy_on_paper()
+        x,y = geometry.point_on_circle( x0, y0, 
+                                        Store.app.paper.real_to_canvas(Screen.any_to_px( Store.app.paper.standard.bond_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
-      self._moved_atom.move_to( x, y)
+        self._moved_atom.move_to( x, y, use_paper_coords=True)
       # to be able to connect atoms with non-zero z coordinate
       if z != 0:
         self._moved_atom.z = z
@@ -980,7 +1003,7 @@ class arrow_mode( edit_mode):
       spline = (self.get_submode( 2) == 'spline')
       type = self.get_submode( 3)
       arr = Store.app.paper.new_arrow( spline=spline, type=type)
-      self._start_point = arr.create_new_point( event.x, event.y)
+      self._start_point = arr.create_new_point( event.x, event.y, use_paper_coords=True)
       self._start_point.focus()
       self.focused = self._start_point
       self._arrow_to_update = arr
@@ -1009,18 +1032,18 @@ class arrow_mode( edit_mode):
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        self._moved_point = self._start_point.arrow.create_new_point( event.x, event.y, position=pos)
+        self._moved_point = self._start_point.arrow.create_new_point( event.x, event.y, position=pos, use_paper_coords=True)
       if self.submode[1] == 1:
         x, y = event.x, event.y
       else:
         dx = event.x - self._startx
         dy = event.y - self._starty
-        x0, y0 = self._start_point.get_xy()
+        x0, y0 = self._start_point.get_xy_on_paper()
         x,y = geometry.point_on_circle( x0, y0,
-                                        Screen.any_to_px( Store.app.paper.standard.arrow_length),
+                                        Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.arrow_length)),
                                         direction = (dx, dy),
                                         resolution = int( self.submodes[0][ self.submode[ 0]]))
-      self._moved_point.move_to( x, y)
+      self._moved_point.move_to( x, y, use_paper_coords=True)
       self._arrow_to_update.redraw()
 
 
@@ -1036,13 +1059,13 @@ class arrow_mode( edit_mode):
         self._arrow_to_update.change_direction()
       # add point
       elif self._arrow_to_update:
-        x0, y0 = self._start_point.get_xy()
+        x0, y0 = self._start_point.get_xy_on_paper()
         if self._start_point == self._arrow_to_update.points[-1]:
           pos = -1
         else:
           pos = self._arrow_to_update.points.index( self._start_point)
-        pnt = self._arrow_to_update.create_new_point( x0+Screen.any_to_px( Store.app.paper.standard.arrow_length),
-                                                      y0, position=pos)
+        pnt = self._arrow_to_update.create_new_point( x0+Store.app.paper.real_to_canvas( Screen.any_to_px( Store.app.paper.standard.arrow_length)),
+                                                      y0, position=pos, use_paper_coords=True)
         Store.app.paper.select( [pnt])
         self._arrow_to_update.redraw()
       #self.mouse_click( event)
@@ -1147,7 +1170,10 @@ class template_mode( edit_mode):
       return
     Store.app.paper.unselect_all()
     if not self.focused:
-      t = self._get_transformed_template( self.submode[0], (event.x, event.y), type='empty', paper=Store.app.paper)
+      xy = Store.app.paper.canvas_to_real((event.x, event.y))
+      t = self._get_transformed_template( self.submode[0], 
+                                          xy, 
+                                          type='empty', paper=Store.app.paper)
     else:
       if isinstance( self.focused, oasa.graph.vertex):
         if self.focused.z != 0:
@@ -1786,7 +1812,7 @@ class mark_mode( edit_mode):
 
   def mouse_drag( self, event):
     # this is here because the pz_orbital is rotated instead of moved when dragging,
-    # therefor we need to use the move_to to position the mark
+    # therefore we need to use the move_to to position the mark
     # "pivot point" under the cursor when drags begins
     if not self._dragging and self.focused and self.focused.object_type == "mark" and self.focused.__class__.__name__ == "pz_orbital":
       self.focused.move_to( event.x, event.y)
@@ -2418,6 +2444,11 @@ class bracket_mode( edit_mode):
 
 
   def _end_of_empty_drag( self, x1, y1, x2, y2):
+    #convert to real coords
+    x1 = Store.app.paper.canvas_to_real(x1)
+    x2 = Store.app.paper.canvas_to_real(x2)
+    y1 = Store.app.paper.canvas_to_real(y1)
+    y2 = Store.app.paper.canvas_to_real(y2)
     if self.get_submode(0) == "rectangularbracket":
       dx = 0.05*math.sqrt( (y2-y1)**2 + (x2-x1)**2)
       Store.app.paper.new_polyline( [x1+dx, y1,

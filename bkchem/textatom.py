@@ -40,14 +40,14 @@ from special_parents import drawable_chem_vertex
 
 
 ### NOTE: now that all classes are children of meta_enabled, so the read_standard_values method
-### is called during their __init__ (in fact meta_enabled.__init__), therefor these values are
+### is called during their __init__ (in fact meta_enabled.__init__), therefore these values are
 ### not set in __init__ itself
 
 
 ### Class TEXTATOM --------------------------------------------------
 class textatom( drawable_chem_vertex):
   # note that all children of simple_parent have default meta infos set
-  # therefor it is not necessary to provide them for all new classes if they
+  # therefore it is not necessary to provide them for all new classes if they
   # don't differ
 
   object_type = 'atom'
